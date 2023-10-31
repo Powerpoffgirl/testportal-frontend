@@ -1,25 +1,11 @@
 import React from "react";
 import "../App.css";
-import { useState,useEffect } from "react";
+
+import { useMediaQuery } from "react-responsive";
 
 export default function Login() {
 
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-    useEffect(() => {
-        // Function to update the windowWidth state when the window is resized
-        function handleResize() {
-          setWindowWidth(window.innerWidth);
-        }
-    
-        // Add an event listener for the resize event
-        window.addEventListener('resize', handleResize);
-    
-        // Clean up the event listener when the component unmounts
-        return () => {
-          window.removeEventListener('resize', handleResize);
-        };
-      }, []); // Empty dependency array to run this effect only once
-
+  let isTab = useMediaQuery({ query: "(max-width: 640px)" });
 
 
 
@@ -79,7 +65,7 @@ export default function Login() {
     <>
 <div className="bg-customRed min-h-screen relative overflow-hidden">
 
-      { windowWidth> 640 ? (
+      { !isTab ? (
         <>
           <div
             className="absolute sm:top-[-400px] sm:right-[-400px] md:top-[-200px] md:right-[-200px] lg:top-0 lg:right-0"

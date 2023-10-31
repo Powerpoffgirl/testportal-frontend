@@ -7,6 +7,7 @@ module.exports = {
     extend: {
       colors: {
         customRed: '#08DA75', // Define a custom color with a hex code
+        customGreen:'#E4FFF2'
       },
       width: {
         '413': '413px',
