@@ -43,7 +43,7 @@ export default function Admin() {
             width: isTab ? "100%" : "77%",
           }}
         >
-          <Header line1="Find" line2="Doctors"></Header>
+          <Header line1="Find" line2="Doctors" isAdd='true'></Header>
 
           <div
             className="flex flex-col gap-2 px-3 w-full"

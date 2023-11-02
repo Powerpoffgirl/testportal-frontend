@@ -14,6 +14,9 @@ function Sidebar() {
  const dispatch = useDispatch();
 
 
+ 
+
+
   const sidebar_animation = isTab
     ? //Mobile
       {
@@ -109,6 +112,12 @@ function Sidebar() {
           >
             <li>
               <NavLink to="/">Doctor's List</NavLink>
+            </li>
+            <li>
+              <NavLink to="/">Patient’s List</NavLink>
+            </li>
+            <li>
+              <NavLink to="/">Edit Profile</NavLink>
             </li>
             <li>
               <NavLink to="/">Support</NavLink>

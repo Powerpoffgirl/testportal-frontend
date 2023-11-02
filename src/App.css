@@ -2,7 +2,9 @@ body {
     overflow: auto;
     background-color: #E4FFF2;
   }
-
+input::placeholder {
+    color: white;
+  }
 
   
 
