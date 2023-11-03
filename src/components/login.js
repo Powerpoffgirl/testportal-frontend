@@ -115,56 +115,56 @@ export default function Login()
 
       console.log(data);
     }
-    if (isDoctor)
-    {
-      const response = await fetch(
-        "https://dr.nixonbit.com/api/v1/doctor/login_doctor",
-        {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-          }),
-        }
-      );
-      const data = await response.json();
-      if (data.success === true)
-      {
-        if (data.token)
-        {
-          localStorage.setItem("token", data.token);
-          navigate("/patientlist");
-        }
-      }
-      if (data.success === false)
-      {
-        toast.error("Wrong Credentials", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      } else
-      {
-        toast.error("Validation failed", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-    }
+    // if (isDoctor)
+    // {
+    //   const response = await fetch(
+    //     "https://dr.nixonbit.com/api/v1/doctor/login_doctor",
+    //     {
+    //       method: "post",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify({
+    //         email: email,
+    //         password: password,
+    //       }),
+    //     }
+    //   );
+    //   const data = await response.json();
+    //   if (data.success === true)
+    //   {
+    //     if (data.token)
+    //     {
+    //       localStorage.setItem("token", data.token);
+    //       navigate("/patientlist");
+    //     }
+    //   }
+    //   if (data.success === false)
+    //   {
+    //     toast.error("Wrong Credentials", {
+    //       position: "top-center",
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //   } else
+    //   {
+    //     toast.error("Validation failed", {
+    //       position: "top-center",
+    //       autoClose: 5000,
+    //       hideProgressBar: false,
+    //       closeOnClick: true,
+    //       pauseOnHover: true,
+    //       draggable: true,
+    //       progress: undefined,
+    //       theme: "light",
+    //     });
+    //   }
+    // }
   };
 
   return (
