@@ -1,10 +1,23 @@
 import React from "react";
+import { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Sidebar from "./sidebar";
 import Header from "./header";
+import "react-responsive-modal/styles.css";
+import { Modal } from "react-responsive-modal";
+
+const svg2=`<svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M30.96 52.56L56.34 27.18L51.3 22.14L30.96 42.48L20.7 32.22L15.66 37.26L30.96 52.56ZM36 72C31.02 72 26.34 71.055 21.96 69.165C17.58 67.275 13.77 64.71 10.53 61.47C7.29 58.23 4.725 54.42 2.835 50.04C0.945 45.66 0 40.98 0 36C0 31.02 0.945 26.34 2.835 21.96C4.725 17.58 7.29 13.77 10.53 10.53C13.77 7.29 17.58 4.725 21.96 2.835C26.34 0.945 31.02 0 36 0C40.98 0 45.66 0.945 50.04 2.835C54.42 4.725 58.23 7.29 61.47 10.53C64.71 13.77 67.275 17.58 69.165 21.96C71.055 26.34 72 31.02 72 36C72 40.98 71.055 45.66 69.165 50.04C67.275 54.42 64.71 58.23 61.47 61.47C58.23 64.71 54.42 67.275 50.04 69.165C45.66 71.055 40.98 72 36 72ZM36 64.8C44.04 64.8 50.85 62.01 56.43 56.43C62.01 50.85 64.8 44.04 64.8 36C64.8 27.96 62.01 21.15 56.43 15.57C50.85 9.99 44.04 7.2 36 7.2C27.96 7.2 21.15 9.99 15.57 15.57C9.99 21.15 7.2 27.96 7.2 36C7.2 44.04 9.99 50.85 15.57 56.43C21.15 62.01 27.96 64.8 36 64.8Z" fill="white"/>
+</svg>`
+
 
 export default function UserAdmin() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+
+  const [open, setOpen] = useState(false);
+
+  const onOpenModal = () => setOpen(true);
+  const onCloseModal = () => setOpen(false);
 
   return (
     <>
@@ -13,6 +26,43 @@ export default function UserAdmin() {
     box-border"
       >
         <Sidebar></Sidebar>
+
+        <Modal
+          open={open}
+          onClose={onCloseModal}
+          center
+          styles={{
+            modal: {
+              // Set your custom width here (e.g., '70%')
+              width: isTab ? "80%" : "40%",
+              backgroundColor: "#08DA75",
+              alignContent: "center",
+            },
+          }}
+        >
+          <div
+            className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
+            style={{ borderRadius: "5px" }}
+          >
+            <text style={{
+              fontWeight:600,
+              fontSize:isTab?'54px':'64px',
+              lineHeight:'55px',
+              fontFamily: "Kanit, sans-serif",
+              color:'white',
+              marginBottom:'4%'
+            }}>Accepted</text>
+            <span
+            style={{
+              width:'72px',
+              height:'72px',
+              marginBottom:'4%'
+            }}
+              dangerouslySetInnerHTML={{ __html: svg2 }}
+            ></span>
+          </div>
+        </Modal>
+
         <div
           className="flex flex-col bg-customGreen"
           style={{
@@ -51,15 +101,15 @@ export default function UserAdmin() {
                     alt="Avatar"
                     style={{
                       borderRadius: "50%",
-                      height: isTab?"40px":"81px",
-                      width: isTab?"40px":"81px",
+                      height: isTab ? "40px" : "81px",
+                      width: isTab ? "40px" : "81px",
                     }}
                   ></img>
 
                   <text
                     className="ml-4"
                     style={{
-                      fontSize: isTab?"16px":"24px",
+                      fontSize: isTab ? "16px" : "24px",
                       fontWeight: 400,
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
@@ -71,13 +121,13 @@ export default function UserAdmin() {
                 <span className="flex flex-row gap-2 items-center">
                   <button
                     style={{
-                      width: !isTab?"111px":"73px",
+                      width: !isTab ? "111px" : "73px",
                       height: "45px",
                       borderRadius: "35px",
                       backgroundColor: "#EF5F5F",
                       color: "white",
                       fontWeight: 400,
-                      fontSize: isTab?"11px":"24px",
+                      fontSize: isTab ? "11px" : "24px",
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
                     }}
@@ -86,16 +136,17 @@ export default function UserAdmin() {
                   </button>
                   <button
                     style={{
-                      width: !isTab?"111px":"73px",
+                      width: !isTab ? "111px" : "73px",
                       height: "45px",
                       borderRadius: "35px",
                       backgroundColor: "#08DA75",
                       color: "white",
                       fontWeight: 400,
-                      fontSize: isTab?"11px":"24px",
+                      fontSize: isTab ? "11px" : "24px",
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
                     }}
+                    onClick={onOpenModal}
                   >
                     Accept
                   </button>
@@ -113,15 +164,15 @@ export default function UserAdmin() {
                     alt="Avatar"
                     style={{
                       borderRadius: "50%",
-                      height: isTab?"40px":"81px",
-                      width: isTab?"40px":"81px",
+                      height: isTab ? "40px" : "81px",
+                      width: isTab ? "40px" : "81px",
                     }}
                   ></img>
 
                   <text
                     className="ml-4"
                     style={{
-                      fontSize: isTab?"16px":"24px",
+                      fontSize: isTab ? "16px" : "24px",
                       fontWeight: 400,
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
@@ -133,13 +184,13 @@ export default function UserAdmin() {
                 <span className="flex flex-row gap-2 items-center">
                   <button
                     style={{
-                      width: !isTab?"111px":"73px",
+                      width: !isTab ? "111px" : "73px",
                       height: "45px",
                       borderRadius: "35px",
                       backgroundColor: "#EF5F5F",
                       color: "white",
                       fontWeight: 400,
-                      fontSize: isTab?"11px":"24px",
+                      fontSize: isTab ? "11px" : "24px",
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
                     }}
@@ -148,13 +199,13 @@ export default function UserAdmin() {
                   </button>
                   <button
                     style={{
-                      width: !isTab?"111px":"73px",
+                      width: !isTab ? "111px" : "73px",
                       height: "45px",
                       borderRadius: "35px",
                       backgroundColor: "#08DA75",
                       color: "white",
                       fontWeight: 400,
-                      fontSize: isTab?"11px":"24px",
+                      fontSize: isTab ? "11px" : "24px",
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
                     }}
@@ -174,15 +225,15 @@ export default function UserAdmin() {
                     alt="Avatar"
                     style={{
                       borderRadius: "50%",
-                      height: isTab?"40px":"81px",
-                      width: isTab?"40px":"81px",
+                      height: isTab ? "40px" : "81px",
+                      width: isTab ? "40px" : "81px",
                     }}
                   ></img>
 
                   <text
                     className="ml-4"
                     style={{
-                      fontSize: isTab?"16px":"24px",
+                      fontSize: isTab ? "16px" : "24px",
                       fontWeight: 400,
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
@@ -194,13 +245,13 @@ export default function UserAdmin() {
                 <span className="flex flex-row gap-2 items-center">
                   <button
                     style={{
-                      width: !isTab?"111px":"73px",
+                      width: !isTab ? "111px" : "73px",
                       height: "45px",
                       borderRadius: "35px",
                       backgroundColor: "#EF5F5F",
                       color: "white",
                       fontWeight: 400,
-                      fontSize: isTab?"11px":"24px",
+                      fontSize: isTab ? "11px" : "24px",
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
                     }}
@@ -209,13 +260,13 @@ export default function UserAdmin() {
                   </button>
                   <button
                     style={{
-                      width: !isTab?"111px":"73px",
+                      width: !isTab ? "111px" : "73px",
                       height: "45px",
                       borderRadius: "35px",
                       backgroundColor: "#08DA75",
                       color: "white",
                       fontWeight: 400,
-                      fontSize: isTab?"11px":"24px",
+                      fontSize: isTab ? "11px" : "24px",
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
                     }}
@@ -235,15 +286,15 @@ export default function UserAdmin() {
                     alt="Avatar"
                     style={{
                       borderRadius: "50%",
-                      height: isTab?"40px":"81px",
-                      width: isTab?"40px":"81px",
+                      height: isTab ? "40px" : "81px",
+                      width: isTab ? "40px" : "81px",
                     }}
                   ></img>
 
                   <text
                     className="ml-4"
                     style={{
-                      fontSize: isTab?"16px":"24px",
+                      fontSize: isTab ? "16px" : "24px",
                       fontWeight: 400,
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
@@ -255,13 +306,13 @@ export default function UserAdmin() {
                 <span className="flex flex-row gap-2 items-center">
                   <button
                     style={{
-                      width: !isTab?"111px":"73px",
+                      width: !isTab ? "111px" : "73px",
                       height: "45px",
                       borderRadius: "35px",
                       backgroundColor: "#EF5F5F",
                       color: "white",
                       fontWeight: 400,
-                      fontSize: isTab?"11px":"24px",
+                      fontSize: isTab ? "11px" : "24px",
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
                     }}
@@ -270,13 +321,13 @@ export default function UserAdmin() {
                   </button>
                   <button
                     style={{
-                      width: !isTab?"111px":"73px",
+                      width: !isTab ? "111px" : "73px",
                       height: "45px",
                       borderRadius: "35px",
                       backgroundColor: "#08DA75",
                       color: "white",
                       fontWeight: 400,
-                      fontSize: isTab?"11px":"24px",
+                      fontSize: isTab ? "11px" : "24px",
                       lineHeight: "28.8px",
                       fontFamily: "Lato, sans-serif",
                     }}
