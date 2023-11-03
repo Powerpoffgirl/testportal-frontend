@@ -1,65 +1,102 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect,useState } from "react";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
 import { useDispatch, useSelector } from "react-redux";
 import { openSidebar, closeSidebar } from "../slices/sidebar/toggleSlice";
-import "react-responsive-modal/styles.css";
+import { useNavigate } from "react-router-dom";
 import { Modal } from "react-responsive-modal";
 
-function Sidebar() {
+function Sidebar()
+{
+
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
 
-  const isOpen = useSelector((state) => state.sidebar.isOpen);
+  const isOpen = useSelector((state) => state.sidebar.isOpen)
+
+  const navigate = useNavigate();
 
   const dispatch = useDispatch();
+  const baseUrl = process.env.REACT_APP_BASE_URL
 
   const [open, setOpen] = useState(false);
-
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
 
   const sidebar_animation = isTab
     ? //Mobile
-      {
-        open: {
-          x: 0,
-          width: "18rem",
-          transition: {
-            damping: 40,
-          },
+    {
+      open: {
+        x: 0,
+        width: "18rem",
+        transition: {
+          damping: 40,
         },
-        closed: {
-          x: -20,
-          width: 0,
-          transition: {
-            damping: 40,
-            delay: 0.15,
-          },
-          border: "0px",
-          padding: "0px",
+      },
+      closed: {
+        x: -20,
+        width: 0,
+        transition: {
+          damping: 40,
+          delay: 0.15,
         },
-      }
+        border: "0px",
+        padding: "0px",
+      },
+    }
     : //desktop
-      {
-        open: {
-          width: "20rem",
-          transition: {
-            damping: 40,
-          },
+    {
+      open: {
+        width: "20rem",
+        transition: {
+          damping: 40,
         },
-      };
+      },
+    };
 
-  useEffect(() => {
-    if (isTab) {
+  useEffect(() =>
+  {
+    if (isTab)
+    {
       dispatch(closeSidebar());
-    } else {
+    } else
+    {
       dispatch(openSidebar());
     }
   }, [isTab]);
 
+  const handlelogout = async () =>
+  {
+    const token = localStorage.getItem("token");
+
+    // Check if the token exists
+    if (!token)
+    {
+      console.error("No token found in local storage");
+      return;
+    }
+    const response = await fetch(
+      `${baseUrl}/api/v1/admin/logout`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,  // Add the token to the request headers
+        },
+        body: JSON.stringify({})
+      }
+    );
+    const data = await response.json();
+    if (data.success === true)
+    {
+      navigate("/");
+      localStorage.removeItem("token");
+    }
+  }
+
   return (
     <>
+
       <Modal
         open={open}
         onClose={onCloseModal}
@@ -157,13 +194,14 @@ function Sidebar() {
         </div>
       </Modal>
 
+
       <motion.div
         variants={sidebar_animation}
         animate={isOpen ? "open" : "closed"}
         className={`${
           !isTab ? "bg-customRed" : "bg-customGreen"
-        } text-gray shadow-xl z-[999]   w-[20rem] 
-            overflow-hidden fixed md:relative min-h-screen`}
+        } text-gray shadow-xl z-[999]   w-[20rem]  
+        overflow-hidden fixed md:relative min-h-screen`}
       >
         <div
           style={{
@@ -190,6 +228,7 @@ function Sidebar() {
             onClick={onOpenModal}
           ></div>
           <div className="flex flex-col mt-10">
+
             <text
               style={{
                 fontSize: "12px",
@@ -199,13 +238,18 @@ function Sidebar() {
             >
               aashisr0@gmail.com
             </text>
-            <text
+            {/* <text
               style={{
                 fontSize: "20px",
                 color: !isTab ? "white" : "black",
                 fontWeight: 600,
               }}
             >
+            <text style={{ fontSize: "12px", color: !isTab ? "white" : "black", fontWeight: 400 }}>
+              aashisr0@gmail.com
+            </text> */}
+            <text style={{ fontSize: "20px", color: !isTab ? "white" : "black", fontWeight: 600 }}>
+
               Arnab
             </text>
           </div>
@@ -223,10 +267,10 @@ function Sidebar() {
             }}
           >
             <li>
-              <NavLink to="/">Doctor's List</NavLink>
+              <NavLink to="/doctorlist">Doctor's List</NavLink>
             </li>
             <li>
-              <NavLink to="/">Patient’s List</NavLink>
+              <NavLink to="/patientlist">Patient’s List</NavLink>
             </li>
             <li>
               <NavLink to="/">Edit Profile</NavLink>
@@ -235,10 +279,10 @@ function Sidebar() {
               <NavLink to="/">Support</NavLink>
             </li>
             <li>
-              <NavLink to="/">Manage QR</NavLink>
+              <NavLink to="/qr">Manage QR</NavLink>
             </li>
             <li>
-              <NavLink to="/">Logout</NavLink>
+              <div onClick={handlelogout}>Logout</div>
             </li>
           </ul>
         </div>
@@ -249,6 +293,9 @@ function Sidebar() {
       </motion.div>
       {/* sidebar */}
     </>
+
+
+
   );
 }
 

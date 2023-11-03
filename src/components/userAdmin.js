@@ -46,7 +46,7 @@ export default function UserAdmin() {
           >
             <text style={{
               fontWeight:600,
-              fontSize:isTab?'54px':'64px',
+              fontSize:isTab?'40px':'64px',
               lineHeight:'55px',
               fontFamily: "Kanit, sans-serif",
               color:'white',

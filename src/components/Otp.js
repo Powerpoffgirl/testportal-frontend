@@ -3,29 +3,128 @@ import { useMediaQuery } from "react-responsive";
 import Header from "./header";
 
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-const OTP = () => {
+const OTP = () =>
+{
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const otpInputs = [];
+  const [mobileNo, setMobileNo] = useState();
+  const navigate = useNavigate()
   const MAX_LENGTH = 6;
-
+  const baseUrl = process.env.REACT_APP_BASE_URL
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
 
-  const handleInputChange = (e, index) => {
+  const handleChange = (e) =>
+  {
+    const { name, value } = e.target
+    setMobileNo(value)
+  }
+
+  const SendOTP = async () =>
+  {
+    // Retrieve the token from local storage
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("id")
+    // If there's no token, log an error and exit
+    if (!token)
+    {
+      console.error("No token found in local storage");
+      return;
+    }
+
+    // Define the request body and the API endpoint
+    const requestBody = {
+      "contactNumber": mobileNo
+    };
+    const apiUrl = `${baseUrl}/api/v1/admin/send_otp/${id}`;
+
+    try
+    {
+      // Send the POST request
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token
+        },
+        body: JSON.stringify(requestBody)
+      });
+
+      // Convert the response to JSON
+      const data = await response.json();
+
+      // Check the response status
+      if (response.ok)
+      {
+        console.log("OTP sent successfully", data);
+      } else
+      {
+        console.error("Error sending OTP:", data);
+      }
+
+    } catch (error)
+    {
+      console.error("Error during the API call:", error);
+    }
+  }
+
+
+  const verifyOTP = async () =>
+  {
+    try
+    {
+      const token = localStorage.getItem("token");
+      const id = localStorage.getItem("id")
+      if (!token)
+      {
+        console.error("No token found in local storage");
+        return;
+      }
+      const otpString = otp.join('');
+      const response = await fetch(`${baseUrl}/api/v1/admin/verify_otp/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token // Replace with your actual token from the previous session
+        },
+        body: JSON.stringify({ otp: otpString })
+      });
+
+      const data = await response.json();
+      if (data.success === true)
+      {
+        navigate("/qr")
+      }
+      console.log("DATA from response", data)
+    } catch (error)
+    {
+      console.error('There was an error verifying the OTP:', error);
+    }
+  };
+
+  const handleInputChange = (e, index) =>
+  {
     const value = e.target.value;
 
-    if (isNaN(value)) {
+    if (isNaN(value))
+    {
       return; // Allow only numeric input
     }
 
     otp[index] = value;
 
-    if (index < MAX_LENGTH - 1 && value) {
+    if (index < MAX_LENGTH - 1 && value)
+    {
       otpInputs[index + 1].focus();
     }
 
     setOtp([...otp]);
   };
+
+  console.log("OTP", otp)
+  console.log("INPUT OTP", otpInputs)
+  console.log("Mobile No", mobileNo)
 
   return (
     <>
@@ -51,7 +150,7 @@ const OTP = () => {
             }}
           >
             <label
-              htmlFor="username"
+              htmlFor="mobileNo"
               className="mx-2"
               style={{
                 fontWeight: 400,
@@ -63,11 +162,27 @@ const OTP = () => {
             </label>
             <input
               className="mx-2"
-              type="text"
-              id="username"
-              name="username"
+              type="number"
+              id="mobileNo"
+              name="mobileNo"
               style={{ border: "1px solid #08DA75", height: "45px" }}
+              onChange={handleChange}
             />
+            <button
+              className="mt-4 bg-customRed w-40"
+              style={{
+                display: "inline",
+                height: "45px",
+                borderRadius: "43px",
+                color: "white",
+                fontSize: "24px",
+                fontWeight: 600,
+                lineHeight: "28.8px",
+              }}
+              onClick={SendOTP}
+            >
+              Send OTP
+            </button>
             <text
               className="ml-[45%] md:ml-[49%]"
               style={{
@@ -101,8 +216,10 @@ const OTP = () => {
                   style={{ border: "1px solid #08DA75" }}
                   value={digit}
                   onChange={(e) => handleInputChange(e, index)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Backspace" && index > 0 && !digit) {
+                  onKeyDown={(e) =>
+                  {
+                    if (e.key === "Backspace" && index > 0 && !digit)
+                    {
                       otpInputs[index - 1].focus();
                     }
                   }}
@@ -138,6 +255,7 @@ const OTP = () => {
                   fontWeight: 600,
                   lineHeight: "28.8px",
                 }}
+                onClick={verifyOTP}
               >
                 Verify
               </button>
