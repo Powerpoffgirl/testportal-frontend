@@ -12,6 +12,7 @@ import PatientForm from './components/patientForm';
 import DoctorForm from './components/doctorForm';
 import PatientList from './components/patientList';
 import DoctorList from './components/doctorList';
+import DoctorLogin from './components/doctorLogin';
 
 function App()
 {
@@ -21,9 +22,9 @@ function App()
 
   return (
 
-
     <Routes>
       <Route path='/' element={<Login></Login>}></Route>
+      <Route path='/doctorlogin' element={<DoctorLogin></DoctorLogin>}></Route>
       <Route path='/admin' element={<Admin></Admin>}></Route>
       <Route path='/form' element={<Form></Form>}></Route>
       <Route path='/otp' element={<OTP></OTP>}></Route>
