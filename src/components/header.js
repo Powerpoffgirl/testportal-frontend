@@ -3,8 +3,10 @@ import { useMediaQuery } from "react-responsive";
 import { useDispatch } from "react-redux";
 // import { useState,useEffect } from "react";
 import { toggleSidebar } from "../slices/sidebar/toggleSlice";
+import { useNavigate } from "react-router-dom";
 
-export default function Header(props) {
+export default function Header(props)
+{
   const threeDots = `<svg width="25" height="14" viewBox="0 0 25 14" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M1 1L24 0.999998" stroke="black" stroke-width="2" stroke-linecap="round"/>
   <path d="M1 13L24 13" stroke="black" stroke-width="2" stroke-linecap="round"/>
@@ -18,8 +20,15 @@ export default function Header(props) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleToggleSidebar = () => {
+  const handleDoctorForm = () =>
+  {
+    navigate("/doctorform")
+  }
+
+  const handleToggleSidebar = () =>
+  {
     dispatch(toggleSidebar());
   };
 
@@ -52,43 +61,43 @@ export default function Header(props) {
           >
             <span>{props.line1}</span>
             <div
-            className="flex  justify-between"
-            style={{
-              width:isTab?'81px':'200px',
-              height:isTab?'26px':'45px',
-              border:'2px solid #FFFFFF',
-              backgroundColor:'#08DA75',
-              borderRadius:'43px',
-              display: 'inline-block',
-              overflow:'hidden',
-              alignContent:'center'
-            }}
+              className="flex  justify-between"
+              style={{
+                width: isTab ? '81px' : '200px',
+                height: isTab ? '26px' : '45px',
+                border: '2px solid #FFFFFF',
+                backgroundColor: '#08DA75',
+                borderRadius: '43px',
+                display: 'inline-block',
+                overflow: 'hidden',
+                alignContent: 'center'
+              }}
             >
               <span
                 style={{
-                  width: isTab?"25px":"14.58px",
-                  height: isTab?"25px":"14.58px",
+                  width: isTab ? "25px" : "14.58px",
+                  height: isTab ? "25px" : "14.58px",
                   display: 'inline-block',
-                  marginLeft:'4%',
-                  marginRight:'4%',
-                  marginBottom:isTab?'6%':'3%',
-                  alignContent:'center'
+                  marginLeft: '4%',
+                  marginRight: '4%',
+                  marginBottom: isTab ? '6%' : '3%',
+                  alignContent: 'center'
                   // flex: 1
                 }}
                 dangerouslySetInnerHTML={{ __html: svg1 }}
               ></span>
               <input
-                placeholder={`${isTab?'':'search'}`}
-                
+                placeholder={`${isTab ? '' : 'search'}`}
+
                 style={{
-                  width:'70%',
+                  width: '70%',
                   display: 'inline-block',
                   marginLeft: 'auto',
-                  backgroundColor:'#08DA75',
-                  fontSize:'24px',
-                  color:'white',
-                  fontWeight:600,
-                  outline:'none'
+                  backgroundColor: '#08DA75',
+                  fontSize: '24px',
+                  color: 'white',
+                  fontWeight: 600,
+                  outline: 'none'
                 }}
               />
             </div>
@@ -106,6 +115,7 @@ export default function Header(props) {
                   width: isTab ? "65px" : "132px",
                   borderRadius: "43px",
                 }}
+                onClick={handleDoctorForm}
               >
                 Add+
               </button>

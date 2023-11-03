@@ -1,10 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./sidebar";
 import Header from "./header";
 import { useMediaQuery } from "react-responsive";
 
-export default function Qr() {
+export default function Qr()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  const baseUrl = process.env.REACT_APP_BASE_URL
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [name, setName] = useState("")
+
+  useEffect(() =>
+  {
+    const getQRCode = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const id = localStorage.getItem("id")
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(`${baseUrl}/api/v1/admin/list_doctors`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': token // Replace with your actual token from the previous session
+          }
+        });
+
+        const data = await response.json();
+        console.log("DATA from response", data.data)
+        const doctorDetails = data.data.find(doctor => doctor._id === id);
+        console.log("DOCTOR DETAILS", doctorDetails.qrCodeUrl)
+        setQrCodeUrl(doctorDetails.qrCodeUrl)
+        setName(doctorDetails.name)
+      } catch (error)
+      {
+        console.error('There was an error verifying the OTP:', error);
+      }
+    }
+    getQRCode()
+  }, [])
+
+  const handleDownload = () =>
+  {
+    // Create a new anchor element
+    const element = document.createElement("a");
+    element.href = `${qrCodeUrl}`;
+    element.download = `${name}_QRCode`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
 
   return (
     <>
@@ -42,12 +92,11 @@ export default function Qr() {
             >
               Generate Personal QR
             </text>
-            <span
-              className="text-center"
-              style={{ width: "30%", backgroundColor: "red", height: "300px" }}
-            >
-              QR
-            </span>
+            <p>
+              {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
+            </p>
+            QR
+
             <div style={{ display: "flex", justifyContent: "center" }}>
               <button
                 className="mt-4 bg-customRed w-40"
@@ -60,13 +109,14 @@ export default function Qr() {
                   fontWeight: 600,
                   lineHeight: "28.8px",
                 }}
+                onClick={handleDownload}
               >
                 Download
               </button>
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }
