@@ -1,11 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import Sidebar from "./sidebar";
 import Header from "./header";
+import DoctorSidebar from "./doctorSidebar";
 
 export default function PatientList()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+    const baseUrl = process.env.REACT_APP_BASE_URL
+    const [patientsList, setPatientsList] = useState([])
+
+    useEffect(() =>
+    {
+        const fetchPatientDetails = async () =>
+        {
+            try
+            {
+                const token = localStorage.getItem("token");
+                if (!token)
+                {
+                    console.error("No token found in local storage");
+                    return;
+                }
+                const response = await fetch(`${baseUrl}/api/v1/doctor/get_patientsList`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token // Replace with your actual token from the previous session
+                    }
+                });
+
+                const data = await response.json();
+                console.log("DATA from response", data)
+                setPatientsList(data?.data)
+            } catch (error)
+            {
+                console.error('There was an error verifying the OTP:', error);
+            }
+        }
+        fetchPatientDetails()
+    }, [])
+
+    console.log("PATIENT LISTS", patientsList)
 
     return (
         <>
@@ -13,7 +48,7 @@ export default function PatientList()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <Sidebar></Sidebar>
+                <DoctorSidebar></DoctorSidebar>
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{

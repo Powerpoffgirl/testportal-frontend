@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Sidebar from "./sidebar";
+import DoctorSidebar from "./doctorSidebar";
 import Header from "./header";
 import { useMediaQuery } from "react-responsive";
 
@@ -69,7 +69,7 @@ export default function DoctorList()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <Sidebar></Sidebar>
+                <DoctorSidebar></DoctorSidebar>
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
