@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { NavLink } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
@@ -175,18 +175,18 @@ function Sidebar()
           >
             Aggarwa Motihari, East Champaran
           </text>
-              <button style={{
-                width:'103px',
+          <button style={{
+            width: '103px',
 
-                border:'1px solid white',
-                borderRadius:'37px',
-                padding:'1%',
-                fontSize:'16px',
-                fontWeight:600,
-                color:'white',
-                marginTop:'4%',
-                outline:'none'
-              }}>Edit Profile</button>
+            border: '1px solid white',
+            borderRadius: '37px',
+            padding: '1%',
+            fontSize: '16px',
+            fontWeight: 600,
+            color: 'white',
+            marginTop: '4%',
+            outline: 'none'
+          }}>Edit Profile</button>
 
 
 
@@ -198,9 +198,8 @@ function Sidebar()
       <motion.div
         variants={sidebar_animation}
         animate={isOpen ? "open" : "closed"}
-        className={`${
-          !isTab ? "bg-customRed" : "bg-customGreen"
-        } text-gray shadow-xl z-[999]   w-[20rem]  
+        className={`${!isTab ? "bg-customRed" : "bg-customGreen"
+          } text-gray shadow-xl z-[999]   w-[20rem]  
         overflow-hidden fixed md:relative min-h-screen`}
       >
         <div

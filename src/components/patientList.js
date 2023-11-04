@@ -79,7 +79,7 @@ export default function PatientList()
                             {/* item */}
                             <div>
                                 {
-                                    patientsList.map((patient) => (
+                                    patientsList?.map((patient) => (
                                         <div
                                             className="flex flex-row bg-white p-2 md:flex-row justify-between"
                                             style={{ borderRadius: "5px" }}

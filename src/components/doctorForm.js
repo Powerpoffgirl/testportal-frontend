@@ -11,6 +11,7 @@ export default function DoctorForm()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const navigate = useNavigate()
+    const baseUrl = process.env.REACT_APP_BASE_URL
     const [doctorDetails, setDoctorDetails] = useState({
         name: "",
         email: "",
@@ -122,7 +123,7 @@ export default function DoctorForm()
             return;
         }
         const response = await fetch(
-            "https://dr.nixonbit.com/api/v1/admin/register_doctor",
+            `${baseUrl}/api/v1/admin/register_doctor`,
             {
                 method: "post",
                 headers: {
