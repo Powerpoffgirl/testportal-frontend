@@ -2,14 +2,20 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Header from "./header";
 import DoctorSidebar from "./doctorSidebar";
+import { Modal } from 'react-responsive-modal';
+import { useNavigate } from "react-router-dom";
 
-export default function PatientList()
+export default function AppointmentList()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [patientsList, setPatientsList] = useState([])
     const [appointmentList, setAppointmentList] = useState([])
-
+    const [selectedPatient, setSelectedPatient] = useState();
+    const navigate = useNavigate()
+    const [open, setOpen] = useState(false);
+    const onOpenModal = () => setOpen(true);
+    const onCloseModal = () => setOpen(false);
     useEffect(() =>
     {
         const fetchPatientDetails = async () =>
@@ -68,6 +74,46 @@ export default function PatientList()
         fetchAppointmentDetails()
     }, [])
 
+    const handleAccepted = async (patientId) =>
+    {
+        try
+        {
+            const token = localStorage.getItem("token");
+            if (!token)
+            {
+                console.error("No token found in local storage");
+                return;
+            }
+            const appointmentStatus = "Confirm"
+            const response = await fetch(`${baseUrl}/api/v1/doctor/accept_appointment/${patientId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': token // Replace with your actual token from the previous session
+                },
+                body: JSON.stringify({ appointmentStatus })
+            });
+
+            const data = await response.json();
+            console.log("DATA from response", data)
+            if (data.status === 200)
+            {
+                onOpenModal()
+            }
+            // setPatientsList(data?.data)
+        } catch (error)
+        {
+            console.error('There was an error verifying the OTP:', error);
+        }
+
+    }
+
+    const handleConsult = (appointmentId) =>
+    {
+        localStorage.setItem("appointmentId", appointmentId)
+        navigate(`/patientdescription/${appointmentId}`)
+    }
+
     console.log("PATIENT LISTS", patientsList)
     console.log("APPOINTMENT LIST", appointmentList)
 
@@ -78,6 +124,52 @@ export default function PatientList()
     box-border"
             >
                 <DoctorSidebar></DoctorSidebar>
+                <Modal open={open}
+                    onClose={onCloseModal}
+                    center
+                    doctor={selectedPatient}
+                    styles={{
+                        modal: {
+                            // Set your custom width here (e.g., '70%')
+                            width: isTab ? '80%' : '70%',
+                            backgroundColor: '#08DA75',
+                            alignContent: 'center'
+                        },
+                    }}
+                >
+                    <div
+                        className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
+                        style={{ borderRadius: "5px" }}
+                    >
+
+                        <text
+                            className="ml-4 text-center mt-4"
+                            style={{
+                                fontSize: isTab ? "18px" : "26px",
+                                fontWeight: 600,
+                                lineHeight: "28.8px",
+                                fontFamily: "Lato, sans-serif",
+                                color: '#FFFFFF',
+                            }}
+                        >
+                            Accepted
+                            {selectedPatient}
+                        </text>
+                        <text
+                            className="ml-4 text-center mt-4"
+                            style={{
+                                fontSize: isTab ? "12px" : "20px",
+                                fontWeight: 400,
+                                lineHeight: "24px",
+                                fontFamily: "Lato, sans-serif",
+                                color: '#FFFFFF',
+                                marginBottom: "2%"
+                            }}
+                        >
+                            <svg1 />
+                        </text>
+                    </div>
+                </Modal>
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
@@ -108,10 +200,11 @@ export default function PatientList()
                             {/* item */}
                             <div >
                                 {
-                                    patientsList?.map((patient) => (
+                                    appointmentList?.map((appointment) => (
                                         <div
                                             className="flex flex-row bg-white p-2 md:flex-row justify-between"
                                             style={{ borderRadius: "5px", marginBottom: "10px" }}
+                                            key={appointment._id}
                                         >
                                             <span className="flex flex-row items-center">
                                                 <img
@@ -133,41 +226,87 @@ export default function PatientList()
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
                                                 >
-                                                    {patient.name}
+                                                    {appointment?.patientId?.name}<br />
+                                                    <span style={{
+                                                        fontSize: isTab ? "12px" : "20px",
+                                                        fontWeight: 400,
+                                                        color: "#A4A4A4",
+                                                        display: "flex",
+                                                        gap: "20px"
+                                                    }}>
+                                                        <span >   {appointment?.appointmentDate?.date}
+                                                        </span>
+                                                        <span >
+                                                            {appointment?.appointmentDate?.time}</span>
+                                                    </span>
+
+                                                </text>
+                                                <text
+                                                    className="ml-4"
+                                                    style={{
+                                                        fontSize: isTab ? "16px" : "24px",
+                                                        fontWeight: 400,
+                                                        lineHeight: "28.8px",
+                                                        fontFamily: "Lato, sans-serif",
+                                                    }}
+                                                >
+
                                                 </text>
                                             </span>
-                                            <span className="flex flex-row gap-2 items-center">
-                                                <button
-                                                    style={{
+                                            {
+                                                appointment.appointmentStatus === "Confirm" ? (
+                                                    <button style={{
                                                         width: !isTab ? "111px" : "73px",
                                                         height: "45px",
                                                         borderRadius: "35px",
-                                                        backgroundColor: "#EF5F5F",
-                                                        color: "white",
+                                                        backgroundColor: "white",
+                                                        border: "1px solid #08DA75",
+                                                        color: "#08DA75",
                                                         fontWeight: 400,
                                                         fontSize: isTab ? "11px" : "24px",
                                                         lineHeight: "28.8px",
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
-                                                >
-                                                    Decline
-                                                </button>
-                                                <button
-                                                    style={{
-                                                        width: !isTab ? "111px" : "73px",
-                                                        height: "45px",
-                                                        borderRadius: "35px",
-                                                        backgroundColor: "#08DA75",
-                                                        color: "white",
-                                                        fontWeight: 400,
-                                                        fontSize: isTab ? "11px" : "24px",
-                                                        lineHeight: "28.8px",
-                                                        fontFamily: "Lato, sans-serif",
-                                                    }}
-                                                >
-                                                    Accept
-                                                </button>
-                                            </span>
+                                                        onClick={() => handleConsult(appointment._id)}
+                                                    >Consult</button>
+                                                ) : (
+                                                    <span className="flex flex-row gap-2 items-center">
+                                                        <button
+                                                            style={{
+                                                                width: !isTab ? "111px" : "73px",
+                                                                height: "45px",
+                                                                borderRadius: "35px",
+                                                                backgroundColor: "#EF5F5F",
+                                                                color: "white",
+                                                                fontWeight: 400,
+                                                                fontSize: isTab ? "11px" : "24px",
+                                                                lineHeight: "28.8px",
+                                                                fontFamily: "Lato, sans-serif",
+                                                            }}
+                                                        >
+                                                            Decline
+                                                        </button>
+                                                        <button
+                                                            style={{
+                                                                width: !isTab ? "111px" : "73px",
+                                                                height: "45px",
+                                                                borderRadius: "35px",
+                                                                backgroundColor: "#08DA75",
+                                                                color: "white",
+                                                                fontWeight: 400,
+                                                                fontSize: isTab ? "11px" : "24px",
+                                                                lineHeight: "28.8px",
+                                                                fontFamily: "Lato, sans-serif",
+                                                            }}
+                                                            onClick={() => handleAccepted(appointment?._id)}
+                                                        >
+                                                            Accept
+                                                        </button>
+                                                    </span>
+                                                )
+                                            }
+
+
                                         </div>
                                     ))
                                 }

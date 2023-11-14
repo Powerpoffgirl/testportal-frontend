@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Header from "./header";
-import DoctorSidebar from "./doctorSidebar";
+import UserSidebar from "./userSidebar";
+import { useNavigate } from "react-router-dom";
 
-export default function PatientList()
+export default function AppointmentListUser()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const baseUrl = process.env.REACT_APP_BASE_URL
-    const [patientsList, setPatientsList] = useState([])
     const [appointmentList, setAppointmentList] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() =>
     {
@@ -22,34 +23,7 @@ export default function PatientList()
                     console.error("No token found in local storage");
                     return;
                 }
-                const response = await fetch(`${baseUrl}/api/v1/doctor/get_patientsList`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': token // Replace with your actual token from the previous session
-                    }
-                });
-
-                const data = await response.json();
-                console.log("DATA from response", data)
-                setPatientsList(data?.data)
-            } catch (error)
-            {
-                console.error('There was an error verifying the OTP:', error);
-            }
-        }
-        fetchPatientDetails()
-        const fetchAppointmentDetails = async () =>
-        {
-            try
-            {
-                const token = localStorage.getItem("token");
-                if (!token)
-                {
-                    console.error("No token found in local storage");
-                    return;
-                }
-                const response = await fetch(`${baseUrl}/api/v1/doctor/get_all_appointments`, {
+                const response = await fetch(`${baseUrl}/api/v1/user/get_all_appointments`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -65,11 +39,15 @@ export default function PatientList()
                 console.error('There was an error verifying the OTP:', error);
             }
         }
-        fetchAppointmentDetails()
+        fetchPatientDetails()
     }, [])
 
-    console.log("PATIENT LISTS", patientsList)
-    console.log("APPOINTMENT LIST", appointmentList)
+    const handleBookAppointment = (patientId) =>
+    {
+        localStorage.setItem("patientId", patientId)
+        navigate("/bookappointment")
+    }
+    console.log("APPOINTMENT LISTS", appointmentList)
 
     return (
         <>
@@ -77,14 +55,14 @@ export default function PatientList()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <DoctorSidebar></DoctorSidebar>
+                <UserSidebar></UserSidebar>
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Patient" line2="Lists"></Header>
+                    <Header line1="Appointment" line2="List"></Header>
 
                     <div
                         className="scrollable-content"
@@ -108,7 +86,7 @@ export default function PatientList()
                             {/* item */}
                             <div >
                                 {
-                                    patientsList?.map((patient) => (
+                                    appointmentList?.map((appointment) => (
                                         <div
                                             className="flex flex-row bg-white p-2 md:flex-row justify-between"
                                             style={{ borderRadius: "5px", marginBottom: "10px" }}
@@ -133,7 +111,40 @@ export default function PatientList()
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
                                                 >
-                                                    {patient.name}
+                                                    Dr. Name: {appointment?.doctorId?.name}
+                                                </text>
+                                                <text
+                                                    className="ml-4"
+                                                    style={{
+                                                        fontSize: isTab ? "16px" : "24px",
+                                                        fontWeight: 400,
+                                                        lineHeight: "28.8px",
+                                                        fontFamily: "Lato, sans-serif",
+                                                    }}
+                                                >
+                                                    Patient Name: {appointment?.patientId?.name}
+                                                </text>
+                                                <text
+                                                    className="ml-4"
+                                                    style={{
+                                                        fontSize: isTab ? "16px" : "24px",
+                                                        fontWeight: 400,
+                                                        lineHeight: "28.8px",
+                                                        fontFamily: "Lato, sans-serif",
+                                                    }}
+                                                >
+                                                    Date: {appointment?.appointmentDate?.date} at {appointment?.appointmentDate?.time}
+                                                </text>
+                                                <text
+                                                    className="ml-4"
+                                                    style={{
+                                                        fontSize: isTab ? "16px" : "24px",
+                                                        fontWeight: 400,
+                                                        lineHeight: "28.8px",
+                                                        fontFamily: "Lato, sans-serif",
+                                                    }}
+                                                >
+                                                    Appointment Status: {appointment?.appointmentStatus}
                                                 </text>
                                             </span>
                                             <span className="flex flex-row gap-2 items-center">
@@ -150,11 +161,11 @@ export default function PatientList()
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
                                                 >
-                                                    Decline
+                                                    Delete
                                                 </button>
                                                 <button
                                                     style={{
-                                                        width: !isTab ? "111px" : "73px",
+                                                        width: !isTab ? "80%" : "73px",
                                                         height: "45px",
                                                         borderRadius: "35px",
                                                         backgroundColor: "#08DA75",
@@ -164,8 +175,9 @@ export default function PatientList()
                                                         lineHeight: "28.8px",
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
+                                                    onClick={() => handleBookAppointment(appointment?._id)}
                                                 >
-                                                    Accept
+                                                    Edit Appointment
                                                 </button>
                                             </span>
                                         </div>

@@ -4,6 +4,7 @@ import Header from "./header";
 
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AdminSidebar from "./adminSidebar";
 
 const OTP = () =>
 {
@@ -132,7 +133,7 @@ const OTP = () =>
         className="flex min-h-screen relative overflow-auto 
     box-border"
       >
-        <Sidebar></Sidebar>
+        <AdminSidebar></AdminSidebar>
         <div
           className="flex flex-col bg-customGreen"
           style={{

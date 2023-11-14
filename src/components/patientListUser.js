@@ -2,13 +2,16 @@ import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Header from "./header";
 import DoctorSidebar from "./doctorSidebar";
+import { useNavigate } from "react-router-dom";
+import UserSidebar from "./userSidebar";
+import PatientHeader from "./patientHeader";
 
-export default function PatientList()
+export default function PatientListUser()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [patientsList, setPatientsList] = useState([])
-    const [appointmentList, setAppointmentList] = useState([])
+    const navigate = useNavigate()
 
     useEffect(() =>
     {
@@ -22,7 +25,7 @@ export default function PatientList()
                     console.error("No token found in local storage");
                     return;
                 }
-                const response = await fetch(`${baseUrl}/api/v1/doctor/get_patientsList`, {
+                const response = await fetch(`${baseUrl}/api/v1/user/get_patientsList`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -39,37 +42,14 @@ export default function PatientList()
             }
         }
         fetchPatientDetails()
-        const fetchAppointmentDetails = async () =>
-        {
-            try
-            {
-                const token = localStorage.getItem("token");
-                if (!token)
-                {
-                    console.error("No token found in local storage");
-                    return;
-                }
-                const response = await fetch(`${baseUrl}/api/v1/doctor/get_all_appointments`, {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-auth-token': token // Replace with your actual token from the previous session
-                    }
-                });
-
-                const data = await response.json();
-                console.log("DATA from response", data)
-                setAppointmentList(data?.data)
-            } catch (error)
-            {
-                console.error('There was an error verifying the OTP:', error);
-            }
-        }
-        fetchAppointmentDetails()
     }, [])
 
+    const handleBookAppointment = (patientId) =>
+    {
+        localStorage.setItem("patientId", patientId)
+        navigate("/bookappointment")
+    }
     console.log("PATIENT LISTS", patientsList)
-    console.log("APPOINTMENT LIST", appointmentList)
 
     return (
         <>
@@ -77,14 +57,14 @@ export default function PatientList()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <DoctorSidebar></DoctorSidebar>
+                <UserSidebar></UserSidebar>
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Patient" line2="Lists"></Header>
+                    <PatientHeader line1="Patient" line2="Lists" isAdd='true'></PatientHeader>
 
                     <div
                         className="scrollable-content"
@@ -154,7 +134,7 @@ export default function PatientList()
                                                 </button>
                                                 <button
                                                     style={{
-                                                        width: !isTab ? "111px" : "73px",
+                                                        width: !isTab ? "80%" : "73px",
                                                         height: "45px",
                                                         borderRadius: "35px",
                                                         backgroundColor: "#08DA75",
@@ -164,8 +144,9 @@ export default function PatientList()
                                                         lineHeight: "28.8px",
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
+                                                    onClick={() => handleBookAppointment(patient._id)}
                                                 >
-                                                    Accept
+                                                    Book Appointment
                                                 </button>
                                             </span>
                                         </div>

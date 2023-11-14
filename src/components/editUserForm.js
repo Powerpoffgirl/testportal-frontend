@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Sidebar from "./sidebar";
 import Header from "./header";
@@ -6,35 +6,77 @@ import { useNavigate } from "react-router-dom";
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import DoctorSidebar from "./doctorSidebar";
+import { Button } from "flowbite-react";
+import UserSidebar from "./userSidebar";
 
-export default function DoctorForm()
+export default function EditUserForm()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
-    const [doctorDetails, setDoctorDetails] = useState({
-        name: "",
-        email: "",
-        contactNumber: "",
-        workingDays: [],
-        workingHours: {
-            workHourFrom: "",
-            workHourTo: ""
-        },
-        totalExperience: "",
-        speciality: "",
-        degree: "",
-        address: {
-            houseNo: "",
-            floor: "",
-            block: "",
-            area: "",
-            pinCode: "",
-            district: "",
-            state: ""
+    const [selectedFile, setSelectedFile] = useState(null);
+
+    const handleFileSelect = (event) =>
+    {
+        const file = event.target.files[0];
+        if (file)
+        {
+            setSelectedFile(file);
         }
-    })
+    };
+
+    const handleNewProfilePictureClick = () =>
+    {
+        // This will trigger the hidden file input to open the file dialog
+        fileInputRef.current.click();
+        handleNewProfilePicture()
+    };
+
+    const handleNewProfilePicture = async () =>
+    {
+        const token = localStorage.getItem('token');
+        const doctorId = localStorage.getItem('doctorId');
+
+        if (!token || !doctorId)
+        {
+            console.error('Token or doctor ID not found in local storage');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('doctorPic', selectedFile);
+
+        try
+        {
+            const response = await fetch(`${baseUrl}/api/v1/admin/upload_image/${doctorId}`, {
+                method: 'POST',
+                headers: {
+                    'x-auth-token': token,
+                    // Content-Type should not be manually set for FormData; the browser will set it with the proper boundary.
+                },
+                body: formData,
+            });
+
+            if (!response.ok)
+            {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Image uploaded successfully:', data);
+            alert('Image uploaded successfully.');
+
+            // Reset the file input
+            setSelectedFile(null);
+            fileInputRef.current.value = '';
+        } catch (error)
+        {
+            console.error('Error uploading image:', error);
+            alert('Error uploading image. Please try again.');
+        }
+    };
+
+
 
     const Daysdropdown = [
         { label: "Select Days", value: "" },
@@ -46,10 +88,44 @@ export default function DoctorForm()
         { label: "Saturday", value: "Saturday" },
         { label: "Sunday", value: "Sunday" },
     ];
-
-
+    const [doctorDetails, setDoctorDetails] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
+    const fileInputRef = useRef(null);
+    const [isEditing, setIsEditing] = useState(false);
+
+    useEffect(() =>
+    {
+        const fetchDoctorDetails = async () =>
+        {
+            try
+            {
+                const token = localStorage.getItem("token");
+                const doctorId = localStorage.getItem("doctorId");
+                if (!token)
+                {
+                    console.error("No token found in local storage");
+                    return;
+                }
+                const response = await fetch(`${baseUrl}/api/v1/admin/get_doctor/${doctorId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token // Replace with your actual token from the previous session
+                    }
+                });
+
+                const data = await response.json();
+                console.log("DATA from response", data?.data)
+                setDoctorDetails(data?.data)
+
+            } catch (error)
+            {
+                console.error('There was an error verifying the OTP:', error);
+            }
+        }
+        fetchDoctorDetails()
+    }, [])
 
     const handleClick = (event) =>
     {
@@ -61,12 +137,11 @@ export default function DoctorForm()
         setAnchorEl(null);
     };
 
-    // Function to handle profile picture change
-    const handleNewProfilePicture = () =>
+
+    const handleToggleEdit = () =>
     {
-        // Logic to handle adding a new profile picture
-        handleClose();
-    };
+        setIsEditing(!isEditing)
+    }
 
     // Function to handle profile picture removal
     const handleRemoveProfilePicture = () =>
@@ -114,32 +189,57 @@ export default function DoctorForm()
 
 
 
-    const handleRegister = async (e) =>
+    const handleUpdate = async (e) =>
     {
         e.preventDefault();
         // Check if the token exists
+        const newDoctorDetails = {
+            name: doctorDetails?.name,
+            // email: doctorDetails.email,
+            // contactNumber: doctorDetails.contactNumber,
+            workingDays: doctorDetails?.workingDays,
+            workingHours: {
+                workHourFrom: doctorDetails?.workingHours?.workHourFrom,
+                workHourTo: doctorDetails?.workingHours?.workHourTo
+            },
+            totalExperience: doctorDetails?.totalExperience,
+            speciality: doctorDetails?.speciality,
+            degree: doctorDetails?.degree,
+            address: {
+                houseNo: doctorDetails?.address?.houseNo,
+                floor: doctorDetails?.address?.floor,
+                block: doctorDetails?.address?.block,
+                area: doctorDetails?.address?.area,
+                pinCode: doctorDetails?.address?.pinCode,
+                district: doctorDetails?.address?.district,
+                state: doctorDetails?.address?.state
+            }
+        }
+
         const token = localStorage.getItem("token");
+        const doctorId = localStorage.getItem('doctorId');
         if (!token)
         {
             console.error("No token found in local storage");
             return;
         }
         const response = await fetch(
-            `${baseUrl}/api/v1/admin/register_doctor`,
+            `${baseUrl}/api/v1/admin/update_doctor/${doctorId}`,
             {
-                method: "post",
+                method: "put",
                 headers: {
                     "Content-Type": "application/json",
                     "x-auth-token": token,
                 },
-                body: JSON.stringify(doctorDetails)
+                body: JSON.stringify(newDoctorDetails)
             }
         );
         const data = await response.json();
         if (data.success === true)
         {
-            navigate("/otp")
-            localStorage.setItem("id", data.data._id)
+            console.log("Doctor updated successfully.")
+            // navigate("/otp")
+            // localStorage.setItem("id", data.data._id)
         }
         console.log("DATA from response", data)
     }
@@ -152,14 +252,14 @@ export default function DoctorForm()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <DoctorSidebar></DoctorSidebar>
+                <UserSidebar></UserSidebar>
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Doctor’s" line2="Detail"></Header>
+                    <Header line1="User’s" line2="Detail"></Header>
 
                     <div
                         className="scrollable-content"
@@ -181,7 +281,15 @@ export default function DoctorForm()
                         >
                             <div>
                                 <div style={{ backgroundColor: "#FFFFFF", width: "90px", height: "90px", borderRadius: "50%", alignItems: "center", display: "flex", flexDirection: "row", justifyContent: "space-evenly", color: "#A4A4A4" }}>
-                                    <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
+                                    {doctorDetails && doctorDetails?.doctorPic ? (
+                                        <img
+                                            src={doctorDetails?.doctorPic}
+                                            alt="Doctor's Profile"
+                                            style={{ width: "70px", height: "70px" }}
+                                        />
+                                    ) : (
+                                        <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
+                                    )}
                                 </div>
                                 <p
                                     aria-controls="profile-pic-menu"
@@ -192,18 +300,34 @@ export default function DoctorForm()
                                 >
                                     Edit profile pic
                                 </p>
-                                <Menu
-                                    id="profile-pic-menu"
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                    MenuListProps={{
-                                        'aria-labelledby': 'edit-profile-pic-text',
-                                    }}
-                                >
-                                    <MenuItem onClick={handleNewProfilePicture}>New profile picture</MenuItem>
-                                    <MenuItem onClick={handleRemoveProfilePicture}>Remove current profile picture</MenuItem>
-                                </Menu>
+                                <>
+                                    <Menu
+                                        id="profile-pic-menu"
+                                        anchorEl={anchorEl}
+                                        open={open}
+                                        onClose={handleClose}
+                                        MenuListProps={{
+                                            'aria-labelledby': 'edit-profile-pic-text',
+                                        }}
+                                    >
+                                        <MenuItem onClick={handleNewProfilePictureClick}>
+                                            New profile picture
+                                        </MenuItem>
+                                        <MenuItem onClick={handleRemoveProfilePicture}>
+                                            Remove current profile picture
+                                        </MenuItem>
+                                    </Menu>
+
+                                    {/* Hidden file input */}
+                                    <input
+                                        id="imageInput"
+                                        type="file"
+                                        ref={fileInputRef}
+                                        style={{ display: 'none' }}
+                                        accept="image/*"
+                                        onChange={handleFileSelect}
+                                    />
+                                </>
                             </div>
 
                             {/* 1st Row */}
@@ -219,14 +343,22 @@ export default function DoctorForm()
                             >
                                 Dr. Name
                             </label>
-                            <input
-                                className="mx-2"
-                                type="text"
-                                id="name"
-                                name="name"
-                                onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
-                            />
+                            {
+                                isEditing ? (
+                                    <input
+                                        className="mx-2"
+                                        type="text"
+                                        id="name"
+                                        name="name"
+                                        value={doctorDetails?.name}
+                                        onChange={handleChange}
+                                        style={{ border: "1px solid #08DA75", height: "40px" }}
+                                    />
+                                ) : (
+                                    <p>{doctorDetails?.name}</p>
+                                )
+                            }
+
                             {/* 1st Row */}
 
                             {/* 1st Row */}
@@ -242,11 +374,13 @@ export default function DoctorForm()
                             >
                                 Email
                             </label>
+
                             <input
                                 className="mx-2"
                                 type="text"
                                 id="email"
                                 name="email"
+                                value={doctorDetails?.email}
                                 onChange={handleChange}
                                 style={{ border: "1px solid #08DA75", height: "40px" }}
                             />
@@ -270,6 +404,7 @@ export default function DoctorForm()
                                 type="text"
                                 id="contactNumber"
                                 name="contactNumber"
+                                value={doctorDetails?.contactNumber}
                                 onChange={handleChange}
                                 style={{ border: "1px solid #08DA75", height: "40px" }}
                             />
@@ -336,6 +471,7 @@ export default function DoctorForm()
                                             type="number"
                                             id="workingHours"
                                             name="workHourFrom"
+                                            value={doctorDetails?.workingHours?.workHourFrom}
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
@@ -349,6 +485,7 @@ export default function DoctorForm()
                                             type="number"
                                             id="workingHours"
                                             name="workHourTo"
+                                            value={doctorDetails?.workingHours?.workHourTo}
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
@@ -379,6 +516,7 @@ export default function DoctorForm()
                                         type="number"
                                         id="totalExperience"
                                         name="totalExperience"
+                                        value={doctorDetails?.totalExperience}
                                         onChange={handleChange}
                                         style={{ border: "1px solid #08DA75", height: "40px" }}
                                     />
@@ -400,6 +538,7 @@ export default function DoctorForm()
                                         type="text"
                                         id="speciality"
                                         name="speciality"
+                                        value={doctorDetails?.speciality}
                                         onChange={handleChange}
                                         style={{ border: "1px solid #08DA75", height: "40px" }}
                                     />
@@ -426,6 +565,7 @@ export default function DoctorForm()
                                 type="text"
                                 id="degree"
                                 name="degree"
+                                value={doctorDetails?.degree}
                                 onChange={handleChange}
                                 style={{ border: "1px solid #08DA75", height: "40px" }}
                             />
@@ -443,7 +583,7 @@ export default function DoctorForm()
                             >
                                 Address
                             </label>
-                            <div className="mx-2 p-5" style={{ border: "1px solid #08DA75", height: "20%" }}>
+                            <div className="mx-2 p-5" style={{ border: "1px solid #08DA75", height: "200px" }}>
                                 {/* Row1 */}
                                 <div className="display">
                                     <span>
@@ -463,6 +603,7 @@ export default function DoctorForm()
                                             type="number"
                                             id="houseNo"
                                             name="houseNo"
+                                            value={doctorDetails?.address?.houseNo}
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
@@ -482,6 +623,7 @@ export default function DoctorForm()
                                             type="text"
                                             id="floor"
                                             name="floor"
+                                            value={doctorDetails?.address?.floor}
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
@@ -501,6 +643,7 @@ export default function DoctorForm()
                                             type="text"
                                             id="block"
                                             name="block"
+                                            value={doctorDetails?.address?.block}
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
@@ -525,6 +668,7 @@ export default function DoctorForm()
                                             type="text"
                                             id="area"
                                             name="area"
+                                            value={doctorDetails?.address?.area}
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
@@ -544,6 +688,7 @@ export default function DoctorForm()
                                             type="number"
                                             id="pinCode"
                                             name="pinCode"
+                                            value={doctorDetails?.address?.pinCode}
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
@@ -567,6 +712,7 @@ export default function DoctorForm()
                                             type="text"
                                             id="district"
                                             name="district"
+                                            value={doctorDetails?.address?.district}
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
@@ -586,6 +732,7 @@ export default function DoctorForm()
                                             type="text"
                                             id="state"
                                             name="state"
+                                            value={doctorDetails?.address?.state}
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
@@ -609,10 +756,15 @@ export default function DoctorForm()
                                         lineHeight: "28.8px",
                                         fontFamily: "Lato, sans-serif",
                                     }}
-                                    onClick={handleRegister}
+                                    onClick={handleUpdate}
                                 >
                                     Process
                                 </button>
+                                {!isEditing && (
+                                    <Button variant="primary" onClick={handleToggleEdit}>
+                                        Edit
+                                    </Button>
+                                )}
                             </div>
                         </form>
                     </div>

@@ -94,6 +94,11 @@ function Sidebar()
     }
   }
 
+  const navigateToEditPage = () =>
+  {
+    navigate("/editadminform")
+  }
+
   return (
     <>
 
@@ -186,7 +191,9 @@ function Sidebar()
             color: 'white',
             marginTop: '4%',
             outline: 'none'
-          }}>Edit Profile</button>
+          }}
+            onClick={navigateToEditPage}
+          >Edit Profile</button>
 
 
 

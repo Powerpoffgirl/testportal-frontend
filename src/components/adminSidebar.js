@@ -96,10 +96,13 @@ function AdminSidebar()
         }
     }
 
+    const navigateToEditPage = () =>
+    {
+        navigate("/editadminform")
+    }
+
     return (
         <>
-
-
             <Modal
                 open={open}
                 onClose={onCloseModal}
@@ -189,11 +192,9 @@ function AdminSidebar()
                         color: 'white',
                         marginTop: '4%',
                         outline: 'none'
-                    }}>Edit Profile</button>
-
-
-
-
+                    }}
+                        onClick={navigateToEditPage}
+                    >Edit Profile</button>
                 </div>
             </Modal>
 

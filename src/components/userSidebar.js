@@ -149,13 +149,16 @@ function UserSidebar()
                     >
 
                         <li>
-                            <NavLink to="/patientlist">Patient’s List</NavLink>
+                            <NavLink to="/patientlistuser">Patient’s List</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/doctorlist">Doctor's List</NavLink>
+                            <NavLink to="/doctorlistuser">Doctor's List</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/doctorForm">Edit Profile</NavLink>
+                            <NavLink to="/appointmentlistuser">Appointment's List</NavLink>
+                        </li>
+                        <li>
+                            <NavLink to="/edituserform">Edit Profile</NavLink>
                         </li>
                         <li>
                             <NavLink to="/">Support</NavLink>

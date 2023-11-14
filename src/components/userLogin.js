@@ -84,7 +84,7 @@ export default function UserLogin()
                 if (data.token)
                 {
                     localStorage.setItem("token", data.token);
-                    navigate("/doctorlist");
+                    navigate("/doctorlistuser");
                 }
             }
             if (data.success === false)
