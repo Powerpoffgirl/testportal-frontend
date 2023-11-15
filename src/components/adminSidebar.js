@@ -251,13 +251,13 @@ function AdminSidebar()
                         }}
                     >
                         <li>
-                            <NavLink to="/patientlist">Patient’s List</NavLink>
+                            <NavLink to="/patientlistadmin">Patient’s List</NavLink>
                         </li>
                         <li>
                             <NavLink to="/doctorlistadmin">Doctor's List</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/userlist">User's List</NavLink>
+                            <NavLink to="/userlistadmin">User's List</NavLink>
                         </li>
                         <li>
                             <NavLink to="/adminForm">Edit Profile</NavLink>

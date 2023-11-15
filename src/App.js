@@ -27,6 +27,8 @@ import AppointmentListUser from './components/appointmentListUser';
 import EditUserForm from './components/editUserForm';
 import AppointmentList from './components/appointmentList';
 import PatientDescription from './components/patientDescription';
+import PatientListAdmin from './components/patientListAdmin';
+import UserList from './components/userList';
 
 function App()
 {
@@ -56,9 +58,11 @@ function App()
       <Route path='/editdoctorform' element={<EditDoctorForm></EditDoctorForm>}></Route>
       <Route path='/editadminform' element={<EditAdminForm></EditAdminForm>}></Route>
       <Route path='/edituserform' element={<EditUserForm></EditUserForm>}></Route>
+      <Route path='/patientlistadmin' element={<PatientListAdmin></PatientListAdmin>}></Route>
       <Route path='/patientlist' element={<PatientList></PatientList>}></Route>
       <Route path='/patientlistuser' element={<PatientListUser></PatientListUser>}></Route>
       <Route path='/doctorlist' element={<DoctorList></DoctorList>}></Route>
+      <Route path='/userlistadmin' element={<UserList></UserList>}></Route>
       <Route path='/doctorlistuser' element={<DoctorListUser></DoctorListUser>}></Route>
       <Route path='/doctorlistadmin' element={<DoctorListAdmin></DoctorListAdmin>}></Route>
       <Route path='/appointmentlist' element={<AppointmentList></AppointmentList>}></Route>
