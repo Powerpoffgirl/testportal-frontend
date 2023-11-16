@@ -25,14 +25,14 @@ const UserOTP = () =>
     const SendOTP = async () =>
     {
         // Retrieve the token from local storage
-        const token = localStorage.getItem("token");
+        // const token = localStorage.getItem("token");
         const id = localStorage.getItem("doctorId")
         // If there's no token, log an error and exit
-        if (!token)
-        {
-            console.error("No token found in local storage");
-            return;
-        }
+        // if (!token)
+        // {
+        //     console.error("No token found in local storage");
+        //     return;
+        // }
 
         // Define the request body and the API endpoint
         const requestBody = {
@@ -47,7 +47,7 @@ const UserOTP = () =>
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "x-auth-token": token
+                    // "x-auth-token": token
                 },
                 body: JSON.stringify(requestBody)
             });
@@ -75,13 +75,13 @@ const UserOTP = () =>
     {
         try
         {
-            const token = localStorage.getItem("token");
+            // const token = localStorage.getItem("token");
             const id = localStorage.getItem("userId")
-            if (!token)
-            {
-                console.error("No token found in local storage");
-                return;
-            }
+            // if (!token)
+            // {
+            //     console.error("No token found in local storage");
+            //     return;
+            // }
             const otpString = otp.join('');
             const response = await fetch(`${baseUrl}/api/v1/user/verify_otp/${id}`, {
                 method: 'POST',

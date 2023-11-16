@@ -54,7 +54,10 @@ export default function DoctorList()
 
                 const data = await response.json();
                 console.log("DATA from response", data)
-                setDoctorsList(data?.data)
+                const verifiedDoctors = data.data.filter(doctor => doctor.accountVerified.isVerified);
+                setDoctorsList(verifiedDoctors);
+
+
             } catch (error)
             {
                 console.error('There was an error verifying the OTP:', error);

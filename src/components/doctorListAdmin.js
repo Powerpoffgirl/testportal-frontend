@@ -71,7 +71,8 @@ export default function DoctorListAdmin()
 
                 const data = await response.json();
                 console.log("DATA from response", data?.data)
-                setDoctorsList(data?.data)
+                const verifiedDoctors = data.data.filter(doctor => doctor.accountVerified.isVerified);
+                setDoctorsList(verifiedDoctors);
 
             } catch (error)
             {
