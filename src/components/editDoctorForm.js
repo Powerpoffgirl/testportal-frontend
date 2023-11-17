@@ -7,6 +7,7 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from "flowbite-react";
+import AdminHeader from "./adminHeader";
 
 export default function EditDoctorForm()
 {
@@ -149,6 +150,16 @@ export default function EditDoctorForm()
         handleClose();
     };
 
+
+    const TimeDropdown = [
+        { label: "Select Time", value: "" },
+        ...Array.from({ length: 24 }, (v, i) =>
+        {
+            const hour = i.toString().padStart(2, '0');
+            return { label: `${hour}:00`, value: `${hour}:00` };
+        })
+    ];
+
     const handleChange = (e) =>
     {
         const { name, value } = e.target;
@@ -258,7 +269,7 @@ export default function EditDoctorForm()
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Doctor’s" line2="Detail"></Header>
+                    <AdminHeader line1="Doctor’s" line2="Detail"></AdminHeader>
 
                     <div
                         className="scrollable-content"
@@ -278,7 +289,7 @@ export default function EditDoctorForm()
                                 justifyContent: "center",
                             }}
                         >
-                            <div>
+                            <div style={{ display: "flex", flexDirection: "column", marginLeft: "40%" }}>
                                 <div style={{ backgroundColor: "#FFFFFF", width: "90px", height: "90px", borderRadius: "50%", alignItems: "center", display: "flex", flexDirection: "row", justifyContent: "space-evenly", color: "#A4A4A4" }}>
                                     {doctorDetails && doctorDetails?.doctorPic ? (
                                         <img
@@ -342,21 +353,17 @@ export default function EditDoctorForm()
                             >
                                 Dr. Name
                             </label>
-                            {
-                                isEditing ? (
-                                    <input
-                                        className="mx-2"
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        value={doctorDetails?.name}
-                                        onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                    />
-                                ) : (
-                                    <p>{doctorDetails?.name}</p>
-                                )
-                            }
+
+                            <input
+                                className="mx-2"
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={doctorDetails?.name}
+                                onChange={handleChange}
+                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                            />
+
 
                             {/* 1st Row */}
 
@@ -380,8 +387,8 @@ export default function EditDoctorForm()
                                 id="email"
                                 name="email"
                                 value={doctorDetails?.email}
-                                onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
+                                // onChange={handleChange}
+                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                             />
                             {/* 1st Row */}
 
@@ -405,7 +412,7 @@ export default function EditDoctorForm()
                                 name="contactNumber"
                                 value={doctorDetails?.contactNumber}
                                 onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
+                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                             />
                             {/* 1st Row */}
 
@@ -452,7 +459,7 @@ export default function EditDoctorForm()
                                     </span>
 
                                 </span>
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
+                                <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "8%" }}>
                                     <label
                                         className="mx-2"
                                         htmlFor="workingHours"
@@ -465,31 +472,32 @@ export default function EditDoctorForm()
                                         Working Hours
                                     </label>
                                     <span style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                        <input
-                                            className="mx-5"
-                                            type="number"
-                                            id="workingHours"
+                                        <select
+                                            className="mx-2"
                                             name="workHourFrom"
-                                            value={doctorDetails?.workingHours?.workHourFrom}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
-                                        />
-                                        <div div style={{
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                        >
+                                            {TimeDropdown.map(time => (
+                                                <option key={time.value} value={time.value}>{time.label}</option>
+                                            ))}
+                                        </select>
+                                        <div style={{
                                             fontWeight: 400,
                                             fontSize: "20px",
                                             fontFamily: "Lato, sans-serif",
                                         }}>To</div>
-                                        <input
-                                            className="mx-5"
-                                            type="number"
-                                            id="workingHours"
+                                        <select
+                                            className="mx-2"
                                             name="workHourTo"
-                                            value={doctorDetails?.workingHours?.workHourTo}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
-                                        />
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                        >
+                                            {TimeDropdown.map(time => (
+                                                <option key={time.value} value={time.value}>{time.label}</option>
+                                            ))}
+                                        </select>
                                     </span>
-
                                 </span>
                             </div>
 
@@ -517,7 +525,7 @@ export default function EditDoctorForm()
                                         name="totalExperience"
                                         value={doctorDetails?.totalExperience}
                                         onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
+                                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                     />
                                 </span>
                                 <span className="flex flex-col w-[100%] md:w-[50%]">
@@ -539,7 +547,7 @@ export default function EditDoctorForm()
                                         name="speciality"
                                         value={doctorDetails?.speciality}
                                         onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
+                                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                     />
                                 </span>
                             </div>
@@ -566,7 +574,7 @@ export default function EditDoctorForm()
                                 name="degree"
                                 value={doctorDetails?.degree}
                                 onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
+                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                             />
                             {/* 4th Row */}
                             {/* 5th Row */}
@@ -604,7 +612,7 @@ export default function EditDoctorForm()
                                             name="houseNo"
                                             value={doctorDetails?.address?.houseNo}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                         <label
                                             className="mx-2 mb-2"
@@ -624,7 +632,7 @@ export default function EditDoctorForm()
                                             name="floor"
                                             value={doctorDetails?.address?.floor}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                         <label
                                             className="mx-2"
@@ -644,7 +652,7 @@ export default function EditDoctorForm()
                                             name="block"
                                             value={doctorDetails?.address?.block}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                     </span>
                                 </div>
@@ -669,7 +677,7 @@ export default function EditDoctorForm()
                                             name="area"
                                             value={doctorDetails?.address?.area}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                         <label
                                             className="mx-2 mb-2"
@@ -689,7 +697,7 @@ export default function EditDoctorForm()
                                             name="pinCode"
                                             value={doctorDetails?.address?.pinCode}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                     </span>
                                 </div>
@@ -713,7 +721,7 @@ export default function EditDoctorForm()
                                             name="district"
                                             value={doctorDetails?.address?.district}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                         <label
                                             className="mx-2 mb-2"
@@ -733,7 +741,7 @@ export default function EditDoctorForm()
                                             name="state"
                                             value={doctorDetails?.address?.state}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                     </span>
                                 </div>

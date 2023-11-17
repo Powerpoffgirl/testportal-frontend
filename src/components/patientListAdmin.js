@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import UserSidebar from "./userSidebar";
 import PatientHeader from "./patientHeader";
 import AdminSidebar from "./adminSidebar";
+import AdminHeader from "./adminHeader";
 
 export default function PatientListAdmin()
 {
@@ -65,7 +66,7 @@ export default function PatientListAdmin()
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <PatientHeader line1="Patient" line2="Lists" isAdd='true'></PatientHeader>
+                    <AdminHeader line1="Patient" line2="Lists" isAdd='true'></AdminHeader>
 
                     <div
                         className="scrollable-content"

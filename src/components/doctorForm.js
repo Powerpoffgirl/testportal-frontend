@@ -48,6 +48,64 @@ export default function DoctorForm()
         { label: "Sunday", value: "Sunday" },
     ];
 
+    const IndianDoctorSpecialties = [
+        "General Medicine",
+        "Cardiology",
+        "Dermatology",
+        "Endocrinology",
+        "Gastroenterology",
+        "Nephrology",
+        "Neurology",
+        "Oncology",
+        "Pediatrics",
+        "Psychiatry",
+        "Pulmonology",
+        "Rheumatology",
+        "General Surgery",
+        "Orthopedic Surgery",
+        "Cardiothoracic Surgery",
+        "Neurosurgery",
+        "Plastic Surgery",
+        "Urology",
+        "Vascular Surgery",
+        "Gynecology",
+        "Obstetrics",
+        "Ophthalmology",
+        "ENT (Ear, Nose, and Throat)",
+        "Dental Surgery",
+        "Anesthesiology",
+        "Radiology",
+        "Pathology",
+        "Hematology",
+        "Ayurveda",
+        "Homeopathy",
+        "Physical Medicine and Rehabilitation",
+        "Sports Medicine",
+        "Diabetology",
+        "Infectious Disease",
+        "Geriatrics",
+        "Pain Management",
+        "Critical Care Medicine",
+        "Emergency Medicine",
+        "Occupational Medicine",
+        "Preventive Medicine",
+        "Family Medicine",
+        "Pediatric Surgery",
+        "Gastrointestinal Surgery",
+        "Laparoscopic Surgery",
+        "Transplant Surgery",
+        "Nuclear Medicine",
+        "Reproductive Medicine",
+        "Neonatology",
+        "Allergy and Immunology",
+        "Audiology and Speech Therapy"
+    ];
+
+    const SpecialtiesDropdown = IndianDoctorSpecialties.map(specialty => ({
+        label: specialty,
+        value: specialty
+    }));
+
 
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
@@ -75,6 +133,15 @@ export default function DoctorForm()
         // Logic to handle removing the current profile picture
         handleClose();
     };
+
+    const TimeDropdown = [
+        { label: "Select Time", value: "" },
+        ...Array.from({ length: 24 }, (v, i) =>
+        {
+            const hour = i.toString().padStart(2, '0');
+            return { label: `${hour}:00`, value: `${hour}:00` };
+        })
+    ];
 
     const handleChange = (e) =>
     {
@@ -139,7 +206,9 @@ export default function DoctorForm()
         const data = await response.json();
         if (data.success === true)
         {
-            navigate("/otp")
+            navigate("/otp", {
+                state: { contactNumber: doctorDetails.contactNumber }
+            })
             localStorage.setItem("id", data.data._id)
         }
         console.log("DATA from response", data)
@@ -156,6 +225,55 @@ export default function DoctorForm()
             workingDays: days
         });
     }
+
+    function formatWorkingDays(days)
+    {
+        const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        const shortDayNames = { Monday: "Mon", Tuesday: "Tue", Wednesday: "Wed", Thursday: "Thu", Friday: "Fri", Saturday: "Sat", Sunday: "Sun" };
+
+        // Remove duplicates and sort days based on the dayOrder
+        const uniqueSortedDays = Array.from(new Set(days)).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+
+        let formattedDays = [];
+        let tempGroup = [uniqueSortedDays[0]];
+
+        for (let i = 1; i < uniqueSortedDays.length; i++)
+        {
+            const currentDayIndex = dayOrder.indexOf(uniqueSortedDays[i]);
+            const previousDayIndex = dayOrder.indexOf(tempGroup[tempGroup.length - 1]);
+
+            if (currentDayIndex === previousDayIndex + 1)
+            {
+                tempGroup.push(uniqueSortedDays[i]);
+            } else
+            {
+                if (tempGroup.length > 1)
+                {
+                    formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
+                } else
+                {
+                    formattedDays.push(shortDayNames[tempGroup[0]]);
+                }
+                tempGroup = [uniqueSortedDays[i]];
+            }
+        }
+
+        // Handle the last group
+        if (tempGroup.length > 1)
+        {
+            formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
+        } else
+        {
+            formattedDays.push(shortDayNames[tempGroup[0]]);
+        }
+
+        return formattedDays.join(', ');
+    }
+
+
+    const formattedDays = formatWorkingDays(doctorDetails.workingDays);
+    console.log(formattedDays); // Output: "Tue, Thur - Sat"
+
 
     console.log("DOCTOR DETAILS", doctorDetails)
 
@@ -238,7 +356,7 @@ export default function DoctorForm()
                                 id="name"
                                 name="name"
                                 onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
+                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                             />
                             {/* 1st Row */}
 
@@ -261,7 +379,7 @@ export default function DoctorForm()
                                 id="email"
                                 name="email"
                                 onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
+                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                             />
                             {/* 1st Row */}
 
@@ -284,7 +402,7 @@ export default function DoctorForm()
                                 id="contactNumber"
                                 name="contactNumber"
                                 onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
+                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                             />
                             {/* 1st Row */}
 
@@ -303,15 +421,16 @@ export default function DoctorForm()
                                     >
                                         Working Days
                                     </label>
-                                    <div style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between", marginLeft: "1.5%", marginRight: "1.5%" }}>
-                                        <span style={{ display: "flex" }}>
-                                            {
+                                    <div style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between", marginLeft: "1.5%", marginRight: "1.5%", backgroundColor: "white" }}>
+                                        <span style={{ display: "flex", margin: "5px 2px 5px 10px", padding: "2px 5px 5px 5px" }}>
+                                            {/* {
                                                 doctorDetails?.workingDays.map((workingDay) => (
-                                                    <div className="breadcrumb-chip" key={workingDay} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }} onClick={() => handleDelete(workingDay)}>
+                                                    <div className="breadcrumb-chip" key={workingDay} style={{ , backgroundColor: "#E4FFF2", borderRadius: "5%",  }} onClick={() => handleDelete(workingDay)}>
                                                         {workingDay + " X"}
                                                     </div>
                                                 ))
-                                            }
+                                            } */}
+                                            {formattedDays}
                                         </span>
                                         <select
                                             className="mx-5"
@@ -319,7 +438,7 @@ export default function DoctorForm()
                                             id="workingDays"
                                             name="workingDays"
                                             onChange={handleChange}
-
+                                            style={{ backgroundColor: "#E4FFF2", height: "30px", alignItems: "center", marginTop: "1%", marginBottom: "1%" }}
                                         >
                                             {Daysdropdown.map((option) => (
                                                 <option key={option.value} value={option.value}>
@@ -330,6 +449,7 @@ export default function DoctorForm()
 
                                     </div>
                                 </span>
+
                                 <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "8%" }}>
                                     <label
                                         className="mx-2"
@@ -343,30 +463,34 @@ export default function DoctorForm()
                                         Working Hours
                                     </label>
                                     <span style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                        <input
+                                        <select
                                             className="mx-2"
-                                            type="number"
-                                            id="workingHours"
                                             name="workHourFrom"
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
-                                        />
-                                        <div div style={{
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                        >
+                                            {TimeDropdown.map(time => (
+                                                <option key={time.value} value={time.value}>{time.label}</option>
+                                            ))}
+                                        </select>
+                                        <div style={{
                                             fontWeight: 400,
                                             fontSize: "20px",
                                             fontFamily: "Lato, sans-serif",
                                         }}>To</div>
-                                        <input
+                                        <select
                                             className="mx-2"
-                                            type="number"
-                                            id="workingHours"
                                             name="workHourTo"
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
-                                        />
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                        >
+                                            {TimeDropdown.map(time => (
+                                                <option key={time.value} value={time.value}>{time.label}</option>
+                                            ))}
+                                        </select>
                                     </span>
-
                                 </span>
+
                             </div>
 
                             {/* 2nd Row */}
@@ -392,7 +516,7 @@ export default function DoctorForm()
                                         id="totalExperience"
                                         name="totalExperience"
                                         onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
+                                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                     />
                                 </span>
                                 <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "8%" }}>
@@ -405,17 +529,20 @@ export default function DoctorForm()
                                             fontFamily: "Lato, sans-serif",
                                         }}
                                     >
-                                        speciality
+                                        Specialty
                                     </label>
-                                    <input
-                                        className="mx-2"
-                                        type="text"
+                                    <select
                                         id="speciality"
                                         name="speciality"
                                         onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                    />
+                                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                    >
+                                        {SpecialtiesDropdown.map(({ label, value }) => (
+                                            <option key={value} value={value}>{label}</option>
+                                        ))}
+                                    </select>
                                 </span>
+
                             </div>
 
                             {/* 2nd Row */}
@@ -439,7 +566,7 @@ export default function DoctorForm()
                                 id="degree"
                                 name="degree"
                                 onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
+                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                             />
                             {/* 4th Row */}
                             {/* 5th Row */}
@@ -476,7 +603,7 @@ export default function DoctorForm()
                                             id="houseNo"
                                             name="houseNo"
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                         <label
                                             className="mx-2 mb-2"
@@ -495,7 +622,7 @@ export default function DoctorForm()
                                             id="floor"
                                             name="floor"
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                         <label
                                             className="mx-2"
@@ -514,7 +641,7 @@ export default function DoctorForm()
                                             id="block"
                                             name="block"
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                         <label
                                             className="mx-2"
@@ -533,7 +660,7 @@ export default function DoctorForm()
                                             id="area"
                                             name="area"
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                         <label
                                             className="mx-2 mb-2"
@@ -552,7 +679,7 @@ export default function DoctorForm()
                                             id="pinCode"
                                             name="pinCode"
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                     </span>
                                 </div>
@@ -581,7 +708,7 @@ export default function DoctorForm()
                                             id="district"
                                             name="district"
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                         <label
                                             className="mx-2 mb-2"
@@ -600,7 +727,7 @@ export default function DoctorForm()
                                             id="state"
                                             name="state"
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                         />
                                     </span>
                                 </div>

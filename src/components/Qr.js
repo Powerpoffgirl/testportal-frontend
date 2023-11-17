@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Sidebar from "./sidebar";
 import Header from "./header";
 import { useMediaQuery } from "react-responsive";
+import AdminSidebar from "./adminSidebar";
 
 export default function Qr()
 {
@@ -62,7 +63,7 @@ export default function Qr()
         className="flex min-h-screen relative overflow-auto 
     box-border"
       >
-        <Sidebar></Sidebar>
+        <AdminSidebar></AdminSidebar>
         <div
           className="flex flex-col bg-customGreen"
           style={{

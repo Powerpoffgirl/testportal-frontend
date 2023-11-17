@@ -2,9 +2,10 @@ import Sidebar from "./sidebar";
 import { useMediaQuery } from "react-responsive";
 import Header from "./header";
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "./adminSidebar";
+import AdminHeader from "./adminHeader";
 
 const OTP = () =>
 {
@@ -15,6 +16,13 @@ const OTP = () =>
   const MAX_LENGTH = 6;
   const baseUrl = process.env.REACT_APP_BASE_URL
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  const location = useLocation();
+
+  console.log(location.state);
+  useEffect(() =>
+  {
+    setMobileNo(location?.state)
+  }, [])
 
   const handleChange = (e) =>
   {
@@ -36,7 +44,7 @@ const OTP = () =>
 
     // Define the request body and the API endpoint
     const requestBody = {
-      "contactNumber": mobileNo
+      "contactNumber": mobileNo.contactNumber
     };
     const apiUrl = `${baseUrl}/api/v1/admin/send_otp/${id}`;
 
@@ -139,7 +147,7 @@ const OTP = () =>
           style={{
             width: isTab ? "100%" : "77%",
           }}>
-          <Header line1="Find" line2="Doctors"></Header>
+          <AdminHeader line1="Find" line2="Doctors"></AdminHeader>
           <div
             className="flex flex-col gap-2 px-3 w-full"
             style={{
@@ -166,8 +174,9 @@ const OTP = () =>
               type="number"
               id="mobileNo"
               name="mobileNo"
-              style={{ border: "1px solid #08DA75", height: "45px" }}
-              onChange={handleChange}
+              value={mobileNo?.contactNumber}
+              style={{ border: "1px solid #08DA75", height: "45px", paddingLeft: "1.5%" }}
+            // onChange={handleChange}
             />
             <button
               className="mt-4 bg-customRed w-40"
@@ -179,10 +188,11 @@ const OTP = () =>
                 fontSize: "24px",
                 fontWeight: 600,
                 lineHeight: "28.8px",
+                marginLeft: "44%"
               }}
               onClick={SendOTP}
             >
-              Send OTP
+              Resend OTP
             </button>
             <text
               className="ml-[45%] md:ml-[49%]"

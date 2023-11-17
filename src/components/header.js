@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useDispatch } from "react-redux";
 // import { useState,useEffect } from "react";
 import { toggleSidebar } from "../slices/sidebar/toggleSlice";
 import { useNavigate } from "react-router-dom";
 
-export default function Header(props)
+export default function Header({ searchTerm, setSearchTerm, line1, line2, isAdd })
 {
   const threeDots = `<svg width="25" height="14" viewBox="0 0 25 14" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M1 1L24 0.999998" stroke="black" stroke-width="2" stroke-linecap="round"/>
@@ -22,6 +22,7 @@ export default function Header(props)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+
   const handleDoctorForm = () =>
   {
     navigate("/doctorform")
@@ -31,6 +32,13 @@ export default function Header(props)
   {
     dispatch(toggleSidebar());
   };
+
+  const handleSearchTerm = (e) =>
+  {
+    setSearchTerm(e.target.value)
+  }
+
+  console.log("Search term", searchTerm)
 
   return (
     <div
@@ -59,18 +67,20 @@ export default function Header(props)
               lineHeight: "39px", // Adjust the line height as needed
             }}
           >
-            <span>{props.line1}</span>
+            <span>{line1}</span>
             <div
               className="flex  justify-between"
               style={{
                 width: isTab ? '81px' : '200px',
-                height: isTab ? '26px' : '45px',
+                height: isTab ? '25px' : '45px',
                 border: '2px solid #FFFFFF',
                 backgroundColor: '#08DA75',
                 borderRadius: '43px',
                 display: 'inline-block',
                 overflow: 'hidden',
-                alignContent: 'center'
+                paddingLeft: "1%",
+                marginLeft: "50%",
+                paddingBottom: "5%",
               }}
             >
               <span
@@ -92,17 +102,17 @@ export default function Header(props)
                 style={{
                   width: '70%',
                   display: 'inline-block',
-                  marginLeft: 'auto',
                   backgroundColor: '#08DA75',
                   fontSize: '24px',
                   color: 'white',
                   fontWeight: 600,
-                  outline: 'none'
+                  outline: 'none',
+                  marginLeft: '4%',
                 }}
-
+                onChange={(e) => handleSearchTerm(e)}
               />
             </div>
-            {props.isAdd ? (
+            {isAdd ? (
               <button
                 style={{
                   display: "inline",
@@ -138,7 +148,7 @@ export default function Header(props)
               lineHeight: "39px", // Adjust the line height as needed
             }}
           >
-            {props.line2}
+            {line2}
           </div>
         </span>
       </div>
@@ -158,3 +168,5 @@ export default function Header(props)
     </div>
   );
 }
+
+

@@ -36,6 +36,7 @@ export default function DoctorListAdmin()
     const navigate = useNavigate()
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
 
     const baseUrl = process.env.REACT_APP_BASE_URL
@@ -51,7 +52,7 @@ export default function DoctorListAdmin()
 
     useEffect(() =>
     {
-        const fetchDoctorDetails = async () =>
+        const fetchDoctors = async () =>
         {
             try
             {
@@ -79,8 +80,17 @@ export default function DoctorListAdmin()
                 console.error('There was an error verifying the OTP:', error);
             }
         }
-        fetchDoctorDetails()
+        fetchDoctors()
     }, [])
+
+    useEffect(() =>
+    {
+        const filteredDoctors = doctorsList.filter(doctor =>
+            doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        setDoctorsList(filteredDoctors);
+    }, [searchTerm,]);
 
     const handleEditDoctor = (doctorId) =>
     {
@@ -134,7 +144,8 @@ export default function DoctorListAdmin()
         onOpenModal()
     };
 
-    console.log("SELECTED DOCTOR", selectedDoctor)
+    console.log("SEARCH TERM IN PARENT COMPONENT", searchTerm)
+
     return (
         <>
             <div
@@ -158,12 +169,9 @@ export default function DoctorListAdmin()
                 >
                     <div
                         className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
-                        style={{ borderRadius: "5px" }}
                     >
                         <div className="flex flex-row w-[100%] justify-between"
-
                         >
-
                             <span className="flex flex-col justify-start">
                                 <text style={{
                                     fontWeight: 400,
@@ -302,6 +310,7 @@ export default function DoctorListAdmin()
                                     dangerouslySetInnerHTML={{ __html: svg2 }}
                                 ></span>
                             </span>
+
                             <span className="flex">
                                 <span
                                     className="mr-8"
@@ -332,7 +341,7 @@ export default function DoctorListAdmin()
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Find" line2="Doctors" isAdd='true'></Header>
+                    <Header line1="Find" line2="Doctors" isAdd='true' searchTerm={searchTerm} setSearchTerm={setSearchTerm}></Header>
 
                     <div
                         className="flex flex-col gap-2 px-3 w-full"
@@ -357,7 +366,7 @@ export default function DoctorListAdmin()
 
                             {categories.map((items) => (
                                 <span
-                                    className="bg-white cursor-pointer px-8 hover:bg-customRed"
+                                    className="bg-#E4FFF2; cursor-pointer px-8 hover:bg-customRed"
                                     style={{
                                         left: "2%",
                                         height: "29px",
@@ -370,6 +379,7 @@ export default function DoctorListAdmin()
                                         fontWeight: 400,
                                         fontSize: "20px",
                                         lineHeight: "28.8px",
+                                        color: "#595959"
                                     }}
                                     key={items.value}
                                 >
@@ -391,6 +401,7 @@ export default function DoctorListAdmin()
                                     >
                                         <div className="flex flex-row p-4 md:flex-row justify-between"
                                             onClick={() => { findSelectedDoctor(doctor?._id) }}
+
                                         >
                                             <span className="flex flex-row items-center">
                                                 <img
@@ -455,7 +466,7 @@ export default function DoctorListAdmin()
                                             <span className="flex">
                                                 <span
                                                     className="mr-8"
-                                                    style={{ width: "8px", height: "20px" }}
+                                                    style={{ width: "8px", height: "20px", }}
                                                     dangerouslySetInnerHTML={{ __html: svg3 }}
                                                 ></span>
                                                 <text
