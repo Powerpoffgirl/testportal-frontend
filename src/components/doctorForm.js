@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Sidebar from "./sidebar";
 import Header from "./header";
+import AdminHeader from "./adminHeader"
 import { useNavigate } from "react-router-dom";
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import Menu from '@mui/material/Menu';
@@ -144,6 +145,18 @@ export default function DoctorForm()
         console.log("DATA from response", data)
     }
 
+    const handleDelete = (workingDay) =>
+    {
+        console.log("delete", workingDay);
+        const days = doctorDetails.workingDays.filter(doctorDetail => doctorDetail !== workingDay);
+
+        // Assuming you want to update the doctorDetails state after filtering
+        setDoctorDetails({
+            ...doctorDetails,
+            workingDays: days
+        });
+    }
+
     console.log("DOCTOR DETAILS", doctorDetails)
 
     return (
@@ -159,7 +172,7 @@ export default function DoctorForm()
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Doctor’s" line2="Detail"></Header>
+                    <AdminHeader line1="Doctor’s" line2="Detail"></AdminHeader>
 
                     <div
                         className="scrollable-content"
@@ -179,7 +192,7 @@ export default function DoctorForm()
                                 justifyContent: "center",
                             }}
                         >
-                            <div>
+                            <div style={{ display: "flex", flexDirection: "column", marginLeft: "40%" }}>
                                 <div style={{ backgroundColor: "#FFFFFF", width: "90px", height: "90px", borderRadius: "50%", alignItems: "center", display: "flex", flexDirection: "row", justifyContent: "space-evenly", color: "#A4A4A4" }}>
                                     <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
                                 </div>
@@ -290,16 +303,16 @@ export default function DoctorForm()
                                     >
                                         Working Days
                                     </label>
-                                    <span style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                        <div className="mx-5" style={{ display: "flex" }}>
+                                    <div style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between", marginLeft: "1.5%", marginRight: "1.5%" }}>
+                                        <span style={{ display: "flex" }}>
                                             {
                                                 doctorDetails?.workingDays.map((workingDay) => (
-                                                    <div className="breadcrumb-chip" key={workingDay} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                                        {workingDay}
+                                                    <div className="breadcrumb-chip" key={workingDay} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }} onClick={() => handleDelete(workingDay)}>
+                                                        {workingDay + " X"}
                                                     </div>
                                                 ))
                                             }
-                                        </div>
+                                        </span>
                                         <select
                                             className="mx-5"
                                             type="text"
@@ -315,10 +328,9 @@ export default function DoctorForm()
                                             ))}
                                         </select>
 
-                                    </span>
-
+                                    </div>
                                 </span>
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
+                                <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "8%" }}>
                                     <label
                                         className="mx-2"
                                         htmlFor="workingHours"
@@ -332,7 +344,7 @@ export default function DoctorForm()
                                     </label>
                                     <span style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                                         <input
-                                            className="mx-5"
+                                            className="mx-2"
                                             type="number"
                                             id="workingHours"
                                             name="workHourFrom"
@@ -345,7 +357,7 @@ export default function DoctorForm()
                                             fontFamily: "Lato, sans-serif",
                                         }}>To</div>
                                         <input
-                                            className="mx-5"
+                                            className="mx-2"
                                             type="number"
                                             id="workingHours"
                                             name="workHourTo"
@@ -383,7 +395,7 @@ export default function DoctorForm()
                                         style={{ border: "1px solid #08DA75", height: "40px" }}
                                     />
                                 </span>
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
+                                <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "8%" }}>
                                     <label
                                         className="mx-2"
                                         htmlFor="speciality"
@@ -396,7 +408,7 @@ export default function DoctorForm()
                                         speciality
                                     </label>
                                     <input
-                                        className="mx-5"
+                                        className="mx-2"
                                         type="text"
                                         id="speciality"
                                         name="speciality"
@@ -497,18 +509,13 @@ export default function DoctorForm()
                                             Block
                                         </label>
                                         <input
-                                            className="mx-2"
+                                            className="mx-2 mb-2"
                                             type="text"
                                             id="block"
                                             name="block"
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
-                                    </span>
-                                </div>
-
-                                <div>
-                                    <span>
                                         <label
                                             className="mx-2"
                                             htmlFor="area"
@@ -521,7 +528,7 @@ export default function DoctorForm()
                                             Area
                                         </label>
                                         <input
-                                            className="mx-2"
+                                            className="mx-2 mb-2"
                                             type="text"
                                             id="area"
                                             name="area"
@@ -547,6 +554,12 @@ export default function DoctorForm()
                                             onChange={handleChange}
                                             style={{ border: "1px solid #08DA75", height: "40px" }}
                                         />
+                                    </span>
+                                </div>
+
+                                <div>
+                                    <span>
+
                                     </span>
                                 </div>
                                 <div>

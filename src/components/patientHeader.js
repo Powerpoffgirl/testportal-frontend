@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useDispatch } from "react-redux";
 // import { useState,useEffect } from "react";
@@ -21,6 +21,8 @@ export default function PatientHeader(props)
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [doctorsList, setDoctorsList] = useState([])
+    const baseUrl = process.env.REACT_APP_BASE_URL
 
     const handleDoctorForm = () =>
     {
@@ -31,6 +33,42 @@ export default function PatientHeader(props)
     {
         dispatch(toggleSidebar());
     };
+
+    // Find doctor API call
+    useEffect(() =>
+    {
+        const fetchDoctorDetails = async () =>
+        {
+            try
+            {
+
+                const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 'x-auth-token': token // Replace with your actual token from the previous session
+                    }
+                });
+
+                const data = await response.json();
+                console.log("DATA from response", data)
+                const verifiedDoctors = data.data.filter(doctor => doctor.accountVerified.isVerified);
+                setDoctorsList(verifiedDoctors);
+
+
+            } catch (error)
+            {
+                console.error('There was an error verifying the OTP:', error);
+            }
+        }
+        fetchDoctorDetails()
+    }, [])
+
+    const handleSearchDoctor = () =>
+    {
+        console.log("Searching...")
+        console.log("DOCTORS LIST", doctorsList)
+    }
 
     return (
         <div
@@ -61,7 +99,7 @@ export default function PatientHeader(props)
                     >
                         <span>{props.line1}</span>
                         <div
-                            className="flex  justify-between"
+                            className=""
                             style={{
                                 width: isTab ? '81px' : '200px',
                                 height: isTab ? '26px' : '45px',
@@ -70,7 +108,8 @@ export default function PatientHeader(props)
                                 borderRadius: '43px',
                                 display: 'inline-block',
                                 overflow: 'hidden',
-                                alignContent: 'center'
+                                paddingLeft: "2%",
+                                alignItems: "center"
                             }}
                         >
                             <span
@@ -86,20 +125,24 @@ export default function PatientHeader(props)
                                 }}
                                 dangerouslySetInnerHTML={{ __html: svg1 }}
                             ></span>
-                            <input
-                                placeholder={`${isTab ? '' : 'search'}`}
+                            <span>
+                                <input
+                                    placeholder={`${isTab ? '' : 'search'}`}
 
-                                style={{
-                                    width: '70%',
-                                    display: 'inline-block',
-                                    marginLeft: 'auto',
-                                    backgroundColor: '#08DA75',
-                                    fontSize: '24px',
-                                    color: 'white',
-                                    fontWeight: 600,
-                                    outline: 'none'
-                                }}
-                            />
+                                    style={{
+                                        width: '70%',
+                                        display: 'inline-block',
+                                        marginLeft: '3%',
+                                        backgroundColor: '#08DA75',
+                                        fontSize: '24px',
+                                        color: 'white',
+                                        fontWeight: 400,
+                                        outline: 'none',
+                                    }}
+                                    onChange={handleSearchDoctor}
+                                />
+                            </span>
+
                         </div>
                         {props.isAdd ? (
                             <button

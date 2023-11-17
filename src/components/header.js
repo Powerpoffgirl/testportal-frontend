@@ -99,6 +99,7 @@ export default function Header(props)
                   fontWeight: 600,
                   outline: 'none'
                 }}
+
               />
             </div>
             {props.isAdd ? (

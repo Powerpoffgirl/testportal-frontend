@@ -391,9 +391,6 @@ export default function DoctorListAdmin()
                                     >
                                         <div className="flex flex-row p-4 md:flex-row justify-between"
                                             onClick={() => { findSelectedDoctor(doctor?._id) }}
-                                        // onClick={() =>
-                                        //     onOpenModal
-                                        // }
                                         >
                                             <span className="flex flex-row items-center">
                                                 <img
