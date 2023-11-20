@@ -30,18 +30,12 @@ export default function DoctorDetail()
     {
       try
       {
-        const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem("doctorId");
-        if (!token)
-        {
-          console.error("No token found in local storage");
-          return;
-        }
-        const response = await fetch(`${baseUrl}/api/v1/get_doctor/654e0cc7c11e797c1801ad1f`, {
+
+        const response = await fetch(`${baseUrl}/api/v1/get_doctor/${doctorId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
-            'x-auth-token': token // Replace with your actual token from the previous session
           }
         });
 

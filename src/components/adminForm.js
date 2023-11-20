@@ -12,18 +12,10 @@ export default function AdminForm()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const navigate = useNavigate()
-    const [doctorDetails, setDoctorDetails] = useState({
+    const [adminDetails, setAdminDetails] = useState({
         name: "",
         email: "",
         contactNumber: "",
-        workingDays: [],
-        workingHours: {
-            workHourFrom: "",
-            workHourTo: ""
-        },
-        totalExperience: "",
-        speciality: "",
-        degree: "",
         address: {
             houseNo: "",
             floor: "",
@@ -77,34 +69,19 @@ export default function AdminForm()
     {
         const { name, value } = e.target;
 
-        if (name === "workingDays")
+        if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
         {
-            setDoctorDetails(prevDoctorDetails => ({
-                ...prevDoctorDetails,
-                workingDays: [...prevDoctorDetails.workingDays, value],
-            }));
-        } else if (name === "workHourFrom" || name === "workHourTo")
-        {
-            setDoctorDetails(prevDoctorDetails => ({
-                ...prevDoctorDetails,
-                workingHours: {
-                    ...prevDoctorDetails.workingHours,
-                    [name]: value,
-                }
-            }));
-        } else if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
-        {
-            setDoctorDetails(prevDoctorDetails => ({
-                ...prevDoctorDetails,
+            setAdminDetails(prevAdminDetails => ({
+                ...prevAdminDetails,
                 address: {
-                    ...prevDoctorDetails.address,
+                    ...prevAdminDetails.address,
                     [name]: value
                 }
             }));
         } else
         {
-            setDoctorDetails(prevDoctorDetails => ({
-                ...prevDoctorDetails,
+            setAdminDetails(prevAdminDetails => ({
+                ...prevAdminDetails,
                 [name]: value
             }));
         }
@@ -130,7 +107,7 @@ export default function AdminForm()
                     "Content-Type": "application/json",
                     "x-auth-token": token,
                 },
-                body: JSON.stringify(doctorDetails)
+                body: JSON.stringify(adminDetails)
             }
         );
         const data = await response.json();
@@ -142,7 +119,7 @@ export default function AdminForm()
         console.log("DATA from response", data)
     }
 
-    console.log("DOCTOR DETAILS", doctorDetails)
+    console.log("DOCTOR DETAILS", adminDetails)
 
     return (
         <>
@@ -272,163 +249,6 @@ export default function AdminForm()
                                 style={{ border: "1px solid #08DA75", height: "40px" }}
                             />
                             {/* 1st Row */}
-
-                            {/* 2nd Row */}
-
-                            <div className="flex flex-col md:flex-row justify-between">
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="workingDays"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Working Days
-                                    </label>
-                                    <span style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                        <div className="mx-5" style={{ display: "flex" }}>
-                                            {
-                                                doctorDetails?.workingDays.map((workingDay) => (
-                                                    <div className="breadcrumb-chip" key={workingDay} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                                        {workingDay}
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                        <select
-                                            className="mx-5"
-                                            type="text"
-                                            id="workingDays"
-                                            name="workingDays"
-                                            onChange={handleChange}
-
-                                        >
-                                            {Daysdropdown.map((option) => (
-                                                <option key={option.value} value={option.value}>
-                                                    {option.label}
-                                                </option>
-                                            ))}
-                                        </select>
-
-                                    </span>
-
-                                </span>
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="workingHours"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Working Hours
-                                    </label>
-                                    <span style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                        <input
-                                            className="mx-5"
-                                            type="number"
-                                            id="workingHours"
-                                            name="workHourFrom"
-                                            onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
-                                        />
-                                        <div div style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}>To</div>
-                                        <input
-                                            className="mx-5"
-                                            type="number"
-                                            id="workingHours"
-                                            name="workHourTo"
-                                            onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
-                                        />
-                                    </span>
-
-                                </span>
-                            </div>
-
-                            {/* 2nd Row */}
-
-                            {/* 2nd Row */}
-
-                            <div className="flex flex-col md:flex-row justify-between">
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="totalExperience"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Total Experience
-                                    </label>
-                                    <input
-                                        className="mx-2"
-                                        type="number"
-                                        id="totalExperience"
-                                        name="totalExperience"
-                                        onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                    />
-                                </span>
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="speciality"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        speciality
-                                    </label>
-                                    <input
-                                        className="mx-5"
-                                        type="text"
-                                        id="speciality"
-                                        name="speciality"
-                                        onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                    />
-                                </span>
-                            </div>
-
-                            {/* 2nd Row */}
-
-                            {/* 4th Row */}
-
-                            <label
-                                className="mx-2"
-                                htmlFor="degree"
-                                style={{
-                                    fontWeight: 400,
-                                    fontSize: "20px",
-                                    fontFamily: "Lato, sans-serif",
-                                }}
-                            >
-                                Degree
-                            </label>
-                            <input
-                                className="mx-2"
-                                type="text"
-                                id="degree"
-                                name="degree"
-                                onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
-                            />
-                            {/* 4th Row */}
-                            {/* 5th Row */}
 
                             <label
                                 className="mx-2"

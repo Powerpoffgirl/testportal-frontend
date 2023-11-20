@@ -49,7 +49,7 @@ export default function PatientListAdmin()
     const handleBookAppointment = (patientId) =>
     {
         localStorage.setItem("patientId", patientId)
-        navigate("/bookappointment")
+        navigate("/editappointment")
     }
     console.log("PATIENT LISTS", patientsList)
 
@@ -148,7 +148,7 @@ export default function PatientListAdmin()
                                                     }}
                                                     onClick={() => handleBookAppointment(patient._id)}
                                                 >
-                                                    Book Appointment
+                                                    Edit
                                                 </button>
                                             </span>
                                         </div>

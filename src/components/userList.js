@@ -238,7 +238,7 @@ export default function UserList()
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Find" line2="Doctors" isAdd='true'></Header>
+                    <Header line1="List" line2="Users"></Header>
 
                     <div
                         className="flex flex-col gap-2 px-3 w-full"
@@ -261,7 +261,7 @@ export default function UserList()
                             }}
                         >
 
-                            {categories.map((items) => (
+                            {/* {categories.map((items) => (
                                 <span
                                     className="bg-white cursor-pointer px-8 hover:bg-customRed"
                                     style={{
@@ -281,7 +281,7 @@ export default function UserList()
                                 >
                                     {items.name}
                                 </span>
-                            ))}
+                            ))} */}
                         </div>
 
                         {/* Doctors Array Start */}
@@ -316,7 +316,7 @@ export default function UserList()
                                                             fontFamily: "Lato, sans-serif",
                                                         }}
                                                     >
-                                                        {doctor.firstName + " " + doctor.lastName}
+                                                        {doctor.contactNumber}
                                                     </text>
 
                                                 </span>

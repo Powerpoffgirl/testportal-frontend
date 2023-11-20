@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import Sidebar from "./sidebar";
-import Header from "./header";
+import AdminSidebar from "./adminSidebar"
 import { useNavigate } from "react-router-dom";
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import Menu from '@mui/material/Menu';
@@ -168,7 +167,7 @@ export default function EditDoctorForm()
         {
             setDoctorDetails(prevDoctorDetails => ({
                 ...prevDoctorDetails,
-                workingDays: [...prevDoctorDetails.workingDays, value],
+                workingDays: [...prevDoctorDetails?.workingDays, value],
             }));
         } else if (name === "workHourFrom" || name === "workHourTo")
         {
@@ -254,7 +253,114 @@ export default function EditDoctorForm()
         console.log("DATA from response", data)
     }
 
+    const IndianDoctorSpecialties = [
+        "General Medicine",
+        "Cardiology",
+        "Dermatology",
+        "Endocrinology",
+        "Gastroenterology",
+        "Nephrology",
+        "Neurology",
+        "Oncology",
+        "Pediatrics",
+        "Psychiatry",
+        "Pulmonology",
+        "Rheumatology",
+        "General Surgery",
+        "Orthopedic Surgery",
+        "Cardiothoracic Surgery",
+        "Neurosurgery",
+        "Plastic Surgery",
+        "Urology",
+        "Vascular Surgery",
+        "Gynecology",
+        "Obstetrics",
+        "Ophthalmology",
+        "ENT (Ear, Nose, and Throat)",
+        "Dental Surgery",
+        "Anesthesiology",
+        "Radiology",
+        "Pathology",
+        "Hematology",
+        "Ayurveda",
+        "Homeopathy",
+        "Physical Medicine and Rehabilitation",
+        "Sports Medicine",
+        "Diabetology",
+        "Infectious Disease",
+        "Geriatrics",
+        "Pain Management",
+        "Critical Care Medicine",
+        "Emergency Medicine",
+        "Occupational Medicine",
+        "Preventive Medicine",
+        "Family Medicine",
+        "Pediatric Surgery",
+        "Gastrointestinal Surgery",
+        "Laparoscopic Surgery",
+        "Transplant Surgery",
+        "Nuclear Medicine",
+        "Reproductive Medicine",
+        "Neonatology",
+        "Allergy and Immunology",
+        "Audiology and Speech Therapy"
+    ];
+
+    const SpecialtiesDropdown = IndianDoctorSpecialties.map(specialty => ({
+        label: specialty,
+        value: specialty
+    }));
+
     console.log("DOCTOR DETAILS", doctorDetails)
+    function formatWorkingDays(days)
+    {
+        const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+        const shortDayNames = { Monday: "Mon", Tuesday: "Tue", Wednesday: "Wed", Thursday: "Thu", Friday: "Fri", Saturday: "Sat", Sunday: "Sun" };
+
+        // Remove duplicates and sort days based on the dayOrder
+        const uniqueSortedDays = Array.from(new Set(days)).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+
+        let formattedDays = [];
+        let tempGroup = [uniqueSortedDays[0]];
+
+        for (let i = 1; i < uniqueSortedDays.length; i++)
+        {
+            const currentDayIndex = dayOrder.indexOf(uniqueSortedDays[i]);
+            const previousDayIndex = dayOrder.indexOf(tempGroup[tempGroup.length - 1]);
+
+            if (currentDayIndex === previousDayIndex + 1)
+            {
+                tempGroup.push(uniqueSortedDays[i]);
+            } else
+            {
+                if (tempGroup.length > 1)
+                {
+                    formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
+                } else
+                {
+                    formattedDays.push(shortDayNames[tempGroup[0]]);
+                }
+                tempGroup = [uniqueSortedDays[i]];
+            }
+        }
+
+        // Handle the last group
+        if (tempGroup.length > 1)
+        {
+            formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
+        } else
+        {
+            formattedDays.push(shortDayNames[tempGroup[0]]);
+        }
+
+        return formattedDays.join(', ');
+    }
+
+
+    const formattedDays = formatWorkingDays(doctorDetails?.workingDays);
+    console.log(formattedDays); // Output: "Tue, Thur - Sat"
+
+
 
     return (
         <>
@@ -262,7 +368,7 @@ export default function EditDoctorForm()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <Sidebar></Sidebar>
+                <AdminSidebar></AdminSidebar>
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
@@ -431,23 +537,24 @@ export default function EditDoctorForm()
                                     >
                                         Working Days
                                     </label>
-                                    <span style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                        <div className="mx-5" style={{ display: "flex" }}>
-                                            {
+                                    <div style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between", marginLeft: "1.5%", marginRight: "1.5%", backgroundColor: "white" }}>
+                                        <span style={{ display: "flex", margin: "5px 2px 5px 10px", padding: "2px 5px 5px 5px" }}>
+                                            {/* {
                                                 doctorDetails?.workingDays.map((workingDay) => (
-                                                    <div className="breadcrumb-chip" key={workingDay} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                                        {workingDay}
+                                                    <div className="breadcrumb-chip" key={workingDay} style={{ , backgroundColor: "#E4FFF2", borderRadius: "5%",  }} onClick={() => handleDelete(workingDay)}>
+                                                        {workingDay + " X"}
                                                     </div>
                                                 ))
-                                            }
-                                        </div>
+                                            } */}
+                                            {formattedDays}
+                                        </span>
                                         <select
                                             className="mx-5"
                                             type="text"
                                             id="workingDays"
                                             name="workingDays"
                                             onChange={handleChange}
-
+                                            style={{ backgroundColor: "#E4FFF2", height: "30px", alignItems: "center", marginTop: "1%", marginBottom: "1%" }}
                                         >
                                             {Daysdropdown.map((option) => (
                                                 <option key={option.value} value={option.value}>
@@ -456,8 +563,7 @@ export default function EditDoctorForm()
                                             ))}
                                         </select>
 
-                                    </span>
-
+                                    </div>
                                 </span>
                                 <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "8%" }}>
                                     <label
@@ -528,7 +634,7 @@ export default function EditDoctorForm()
                                         style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
                                     />
                                 </span>
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
+                                <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "8%" }}>
                                     <label
                                         className="mx-2"
                                         htmlFor="speciality"
@@ -538,17 +644,18 @@ export default function EditDoctorForm()
                                             fontFamily: "Lato, sans-serif",
                                         }}
                                     >
-                                        speciality
+                                        Specialty
                                     </label>
-                                    <input
-                                        className="mx-5"
-                                        type="text"
+                                    <select
                                         id="speciality"
                                         name="speciality"
-                                        value={doctorDetails?.speciality}
                                         onChange={handleChange}
                                         style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-                                    />
+                                    >
+                                        {SpecialtiesDropdown.map(({ label, value }) => (
+                                            <option key={value} value={value}>{label}</option>
+                                        ))}
+                                    </select>
                                 </span>
                             </div>
 

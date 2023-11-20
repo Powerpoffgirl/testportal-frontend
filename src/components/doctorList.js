@@ -27,6 +27,7 @@ export default function DoctorList()
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
+    const [searchTerm, setSearchTerm] = useState('');
 
     const categories = [
         { name: "All", value: "1" },
@@ -65,6 +66,15 @@ export default function DoctorList()
         }
         fetchDoctorDetails()
     }, [])
+
+    useEffect(() =>
+    {
+        const filteredDoctors = doctorsList.filter(doctor =>
+            doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+
+        setDoctorsList(filteredDoctors);
+    }, [searchTerm,]);
 
     const handleQRCode = (doctorId) =>
     {
@@ -272,7 +282,7 @@ export default function DoctorList()
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <PatientHeader line1="Find" line2="Doctors" ></PatientHeader>
+                    <PatientHeader line1="Find" line2="Doctors" isAdd="false" searchTerm={searchTerm} setSearchTerm={setSearchTerm}></PatientHeader>
 
                     <div
                         className="flex flex-col gap-2 px-3 w-full"
@@ -297,7 +307,7 @@ export default function DoctorList()
 
                             {categories.map((items) => (
                                 <span
-                                    className="bg-white cursor-pointer px-8 hover:bg-customRed"
+                                    className="bg-#E4FFF2 cursor-pointer px-8 hover:bg-customRed"
                                     style={{
                                         left: "2%",
                                         height: "29px",

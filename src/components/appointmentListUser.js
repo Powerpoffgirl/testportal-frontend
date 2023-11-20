@@ -47,6 +47,12 @@ export default function AppointmentListUser()
         localStorage.setItem("patientId", patientId)
         navigate("/bookappointment")
     }
+
+    function formatDate(dateString)
+    {
+        const parts = dateString.split('-');
+        return `${parts[2]}.${parts[1]}.${parts[0]}`;
+    }
     console.log("APPOINTMENT LISTS", appointmentList)
 
     return (
@@ -105,46 +111,49 @@ export default function AppointmentListUser()
                                                 <text
                                                     className="ml-4"
                                                     style={{
-                                                        fontSize: isTab ? "16px" : "24px",
+                                                        fontSize: isTab ? "12px" : "18px",
                                                         fontWeight: 400,
                                                         lineHeight: "28.8px",
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
                                                 >
-                                                    Dr. Name: {appointment?.doctorId?.name}
+                                                    <p style={{ color: "#A4A4A4" }}>Doctor's Name:</p>
+                                                    {appointment?.doctorId?.name}
                                                 </text>
                                                 <text
                                                     className="ml-4"
                                                     style={{
-                                                        fontSize: isTab ? "16px" : "24px",
+                                                        fontSize: isTab ? "12px" : "18px",
                                                         fontWeight: 400,
                                                         lineHeight: "28.8px",
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
                                                 >
-                                                    Patient Name: {appointment?.patientId?.name}
+                                                    <p style={{ color: "#A4A4A4" }}>Patient's Name:</p>
+                                                    {appointment?.patientId?.name}
                                                 </text>
                                                 <text
                                                     className="ml-4"
                                                     style={{
-                                                        fontSize: isTab ? "16px" : "24px",
+                                                        fontSize: isTab ? "12px" : "18px",
                                                         fontWeight: 400,
                                                         lineHeight: "28.8px",
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
                                                 >
-                                                    Date: {appointment?.appointmentDate?.date} at {appointment?.appointmentDate?.time}
+                                                    <p style={{ color: "#A4A4A4" }}>Date:</p>
+                                                    {formatDate(appointment?.appointmentDate?.date)} at {appointment?.appointmentDate?.time}
                                                 </text>
                                                 <text
                                                     className="ml-4"
                                                     style={{
-                                                        fontSize: isTab ? "16px" : "24px",
+                                                        fontSize: isTab ? "12px" : "18px",
                                                         fontWeight: 400,
                                                         lineHeight: "28.8px",
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
                                                 >
-                                                    Appointment Status: {appointment?.appointmentStatus}
+                                                    <p style={{ color: "#A4A4A4" }}>Appointment Status:</p> {appointment?.appointmentStatus}
                                                 </text>
                                             </span>
                                             <span className="flex flex-row gap-2 items-center">
@@ -165,7 +174,7 @@ export default function AppointmentListUser()
                                                 </button>
                                                 <button
                                                     style={{
-                                                        width: !isTab ? "80%" : "73px",
+                                                        width: !isTab ? "111px" : "73px",
                                                         height: "45px",
                                                         borderRadius: "35px",
                                                         backgroundColor: "#08DA75",
@@ -177,7 +186,7 @@ export default function AppointmentListUser()
                                                     }}
                                                     onClick={() => handleBookAppointment(appointment?._id)}
                                                 >
-                                                    Edit Appointment
+                                                    Edit
                                                 </button>
                                             </span>
                                         </div>

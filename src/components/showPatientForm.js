@@ -17,7 +17,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 </svg>`;
 
 
-export default function PatientForm()
+export default function ShowPatientForm()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const baseUrl = process.env.REACT_APP_BASE_URL
@@ -770,7 +770,24 @@ export default function PatientForm()
                                     }}
                                     onClick={handleRegister}
                                 >
-                                    Process
+                                    Edit
+                                </button>
+                                <button
+                                    type="submit"
+                                    style={{
+                                        width: "159px",
+                                        height: "45px",
+                                        backgroundColor: "#08DA75",
+                                        borderRadius: "43px",
+                                        color: "white",
+                                        fontWeight: 600,
+                                        fontSize: "24px",
+                                        lineHeight: "28.8px",
+                                        fontFamily: "Lato, sans-serif",
+                                    }}
+                                    onClick={handleRegister}
+                                >
+                                    Save
                                 </button>
                             </div>
                         </form>

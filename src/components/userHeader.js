@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 import { toggleSidebar } from "../slices/sidebar/toggleSlice";
 import { useNavigate } from "react-router-dom";
 
-export default function PatientHeader({ searchTerm, setSearchTerm, line1, line2 })
+export default function UserHeader({ searchTerm, setSearchTerm, line1, line2, isAdd })
 {
     const threeDots = `<svg width="25" height="14" viewBox="0 0 25 14" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M1 1L24 0.999998" stroke="black" stroke-width="2" stroke-linecap="round"/>
@@ -146,6 +146,27 @@ export default function PatientHeader({ searchTerm, setSearchTerm, line1, line2 
                             </span>
 
                         </div>
+                        {isAdd ? (
+                            <button
+                                style={{
+                                    display: "inline",
+                                    fontSize: isTab ? "14px" : "29px",
+                                    fontWeight: 800,
+                                    fontFamily: "Lato, sans-serif",
+                                    lineHeight: isTab ? "16.8px" : "34.8px",
+                                    color: "#08DA75",
+                                    backgroundColor: "white",
+                                    height: isTab ? "25px" : "45px",
+                                    width: isTab ? "65px" : "132px",
+                                    borderRadius: "43px",
+                                }}
+                                onClick={handleDoctorForm}
+                            >
+                                Add+
+                            </button>
+                        ) : (
+                            ""
+                        )}
                     </div>
                     <div
                         style={{

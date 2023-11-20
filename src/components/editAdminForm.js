@@ -7,6 +7,8 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from "flowbite-react";
+import AdminSidebar from "./adminSidebar";
+import AdminHeader from "./adminHeader";
 
 export default function EditAdminForm()
 {
@@ -251,14 +253,14 @@ export default function EditAdminForm()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <Sidebar></Sidebar>
+                <AdminSidebar></AdminSidebar>
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Admin’s" line2="Detail"></Header>
+                    <AdminHeader line1="Admin’s" line2="Detail"></AdminHeader>
 
                     <div
                         className="scrollable-content"
@@ -278,17 +280,9 @@ export default function EditAdminForm()
                                 justifyContent: "center",
                             }}
                         >
-                            <div>
+                            <div style={{ display: "flex", flexDirection: "column", marginLeft: "40%" }}>
                                 <div style={{ backgroundColor: "#FFFFFF", width: "90px", height: "90px", borderRadius: "50%", alignItems: "center", display: "flex", flexDirection: "row", justifyContent: "space-evenly", color: "#A4A4A4" }}>
-                                    {doctorDetails && doctorDetails?.doctorPic ? (
-                                        <img
-                                            src={doctorDetails?.doctorPic}
-                                            alt="Doctor's Profile"
-                                            style={{ width: "70px", height: "70px" }}
-                                        />
-                                    ) : (
-                                        <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
-                                    )}
+                                    <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
                                 </div>
                                 <p
                                     aria-controls="profile-pic-menu"
@@ -299,34 +293,18 @@ export default function EditAdminForm()
                                 >
                                     Edit profile pic
                                 </p>
-                                <>
-                                    <Menu
-                                        id="profile-pic-menu"
-                                        anchorEl={anchorEl}
-                                        open={open}
-                                        onClose={handleClose}
-                                        MenuListProps={{
-                                            'aria-labelledby': 'edit-profile-pic-text',
-                                        }}
-                                    >
-                                        <MenuItem onClick={handleNewProfilePictureClick}>
-                                            New profile picture
-                                        </MenuItem>
-                                        <MenuItem onClick={handleRemoveProfilePicture}>
-                                            Remove current profile picture
-                                        </MenuItem>
-                                    </Menu>
-
-                                    {/* Hidden file input */}
-                                    <input
-                                        id="imageInput"
-                                        type="file"
-                                        ref={fileInputRef}
-                                        style={{ display: 'none' }}
-                                        accept="image/*"
-                                        onChange={handleFileSelect}
-                                    />
-                                </>
+                                <Menu
+                                    id="profile-pic-menu"
+                                    anchorEl={anchorEl}
+                                    open={open}
+                                    onClose={handleClose}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'edit-profile-pic-text',
+                                    }}
+                                >
+                                    <MenuItem onClick={handleNewProfilePicture}>New profile picture</MenuItem>
+                                    <MenuItem onClick={handleRemoveProfilePicture}>Remove current profile picture</MenuItem>
+                                </Menu>
                             </div>
 
                             {/* 1st Row */}
@@ -340,23 +318,19 @@ export default function EditAdminForm()
                                     fontFamily: "Lato, sans-serif",
                                 }}
                             >
-                                Dr. Name
+                                Name
                             </label>
-                            {
-                                isEditing ? (
-                                    <input
-                                        className="mx-2"
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        value={doctorDetails?.name}
-                                        onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                    />
-                                ) : (
-                                    <p>{doctorDetails?.name}</p>
-                                )
-                            }
+
+                            <input
+                                className="mx-2"
+                                type="text"
+                                id="name"
+                                name="name"
+                                value={doctorDetails?.name}
+                                onChange={handleChange}
+                                style={{ border: "1px solid #08DA75", height: "40px" }}
+                            />
+
 
                             {/* 1st Row */}
 

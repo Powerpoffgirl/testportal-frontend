@@ -439,7 +439,21 @@ export default function BookAppointment()
                                                 ))
                                             }
                                         </div>
-                                        <div className="autocomplete-container mx-5">
+                                        <select
+                                            className="mx-5"
+                                            type="text"
+                                            id="issues"
+                                            name="issues"
+                                            onChange={handleChange}
+
+                                        >
+                                            {SymptomsDropdown?.map((option) => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        {/* <div className="autocomplete-container mx-5">
                                             <input
                                                 type="text"
                                                 id="issues"
@@ -464,7 +478,7 @@ export default function BookAppointment()
                                                     ))}
                                                 </div>
                                             )}
-                                        </div>
+                                        </div> */}
                                     </span>
                                 </span>
 

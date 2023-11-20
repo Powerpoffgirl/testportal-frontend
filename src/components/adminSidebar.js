@@ -260,7 +260,7 @@ function AdminSidebar()
                             <NavLink to="/userlistadmin">User's List</NavLink>
                         </li>
                         <li>
-                            <NavLink to="/adminForm">Edit Profile</NavLink>
+                            <NavLink to="/editadminForm">Edit Profile</NavLink>
                         </li>
                         <li>
                             <NavLink to="/">Support</NavLink>
