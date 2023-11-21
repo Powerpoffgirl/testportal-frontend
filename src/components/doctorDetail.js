@@ -24,6 +24,11 @@ export default function DoctorDetail()
   const [contactNumber, setContactNumber] = useState("")
   const navigate = useNavigate()
 
+  console.log("Current URL", window.location.href)
+  const arr = window.location.href.split('/');
+  console.log("ARR 4", arr[4])
+  localStorage.setItem("doctorId", arr[4])
+
   useEffect(() =>
   {
     const fetchDoctorDetails = async () =>
