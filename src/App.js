@@ -31,6 +31,7 @@ import PatientListAdmin from './components/patientListAdmin';
 import UserList from './components/userList';
 import ShowPatientForm from './components/showPatientForm';
 import EditAppointment from './components/editAppointment';
+import ViewPatientDescription from './components/viewPatientDescription';
 
 function App()
 {
@@ -54,6 +55,7 @@ function App()
       <Route path='/useradmin' element={<UserAdmin></UserAdmin>}></Route>
       <Route path='/doctordetail/:id' element={<DoctorDetail></DoctorDetail>}></Route>
       <Route path='/patientdescription/:id' element={<PatientDescription></PatientDescription>}></Route>
+      <Route path='/viewpatientdescription/:id' element={<ViewPatientDescription></ViewPatientDescription>}></Route>
       <Route path='/patientform' element={<PatientForm></PatientForm>}></Route>
       <Route path='/showpatientform' element={<ShowPatientForm></ShowPatientForm>}></Route>
       <Route path='/bookappointment' element={<BookAppointment></BookAppointment>}></Route>

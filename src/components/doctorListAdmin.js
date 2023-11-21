@@ -217,7 +217,20 @@ export default function DoctorListAdmin()
                             Dr. {selectedDoctor?.name}
                         </text>
                         <text
-                            className="ml-4 text-center mt-4"
+                            className="ml-4 text-center mt-2"
+                            style={{
+                                fontSize: isTab ? "14px" : "20px",
+                                fontWeight: 400,
+                                lineHeight: "28.8px",
+                                fontFamily: "Lato, sans-serif",
+                                color: "#FFFFFF",
+                            }}
+                        >
+                            {selectedDoctor?.contactNumber}
+                        </text>
+
+                        <text
+                            className="ml-4 text-center mt-2"
                             style={{
                                 fontSize: isTab ? "12px" : "20px",
                                 fontWeight: 400,

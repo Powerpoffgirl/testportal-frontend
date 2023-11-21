@@ -100,7 +100,7 @@ export default function Header({ searchTerm, setSearchTerm, line1, line2, isAdd 
                 placeholder={`${isTab ? '' : 'search'}`}
 
                 style={{
-                  width: '70%',
+                  width: '100px',
                   display: 'inline-block',
                   backgroundColor: '#08DA75',
                   fontSize: '24px',

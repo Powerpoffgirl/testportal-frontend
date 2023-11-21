@@ -176,7 +176,7 @@ export default function AppointmentList()
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Patient" line2="Lists"></Header>
+                    <Header line1="Appointment" line2="Lists"></Header>
 
                     <div
                         className="scrollable-content"

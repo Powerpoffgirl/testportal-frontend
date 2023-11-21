@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Sidebar from "./sidebar";
 import Header from "./header";
@@ -8,7 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import DoctorSidebar from "./doctorSidebar";
 
-export default function PatientDescription()
+export default function ViewPatientDescription()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const navigate = useNavigate()
@@ -84,84 +84,83 @@ export default function PatientDescription()
     ];
 
     const medicineName = [
-        { "label": "Crocin", "value": "Crocin" },
-        { "label": "Combiflam", "value": "Combiflam" },
-        { "label": "Dolo", "value": "Dolo" },
-        { "label": "Pantocid", "value": "Pantocid" },
-        { "label": "Rantac", "value": "Rantac" },
-        { "label": "Zifi", "value": "Zifi" },
-        { "label": "Metformin", "value": "Metformin" },
-        { "label": "Metronidazole", "value": "Metronidazole" },
-        { "label": "Atorvastatin", "value": "Atorvastatin" },
-        { "label": "Loratadine", "value": "Loratadine" },
-        { "label": "Azithromycin", "value": "Azithromycin" },
-        { "label": "Diclofenac", "value": "Diclofenac" },
-        { "label": "Amoxicillin", "value": "Amoxicillin" },
-        { "label": "Ciprofloxacin", "value": "Ciprofloxacin" },
-        { "label": "Esomeprazole", "value": "Esomeprazole" },
-        { "label": "Sertraline", "value": "Sertraline" },
-        { "label": "Levofloxacin", "value": "Levofloxacin" },
-        { "label": "Amlodipine", "value": "Amlodipine" },
-        { "label": "Clopidogrel", "value": "Clopidogrel" },
-        { "label": "Diazepam", "value": "Diazepam" },
-        { "label": "Lisinopril", "value": "Lisinopril" },
-        { "label": "Hydrochlorothiazide", "value": "Hydrochlorothiazide" },
-        { "label": "Metoprolol", "value": "Metoprolol" },
-        { "label": "Omeprazole", "value": "Omeprazole" },
-        { "label": "Amitriptyline", "value": "Amitriptyline" },
-        { "label": "Furosemide", "value": "Furosemide" },
-        { "label": "Warfarin", "value": "Warfarin" },
-        { "label": "Ibuprofen", "value": "Ibuprofen" },
-        { "label": "Paracetamol", "value": "Paracetamol" },
-        { "label": "Folic Acid", "value": "Folic Acid" },
-        { "label": "Aspirin", "value": "Aspirin" },
-        { "label": "Simvastatin", "value": "Simvastatin" },
-        { "label": "Dexamethasone", "value": "Dexamethasone" },
-        { "label": "Alprazolam", "value": "Alprazolam" },
-        { "label": "Gliclazide", "value": "Gliclazide" },
-        { "label": "Cefixime", "value": "Cefixime" },
-        { "label": "Gabapentin", "value": "Gabapentin" },
-        { "label": "Pregabalin", "value": "Pregabalin" },
-        { "label": "Telmisartan", "value": "Telmisartan" },
-        { "label": "Candesartan", "value": "Candesartan" },
-        { "label": "Rosuvastatin", "value": "Rosuvastatin" },
-        { "label": "Fenofibrate", "value": "Fenofibrate" },
-        { "label": "Duloxetine", "value": "Duloxetine" },
-        { "label": "Levothyroxine", "value": "Levothyroxine" },
-        { "label": "Carbamazepine", "value": "Carbamazepine" },
-        { "label": "Sildenafil", "value": "Sildenafil" },
-        { "label": "Losartan", "value": "Losartan" },
-        { "label": "Glimipiride", "value": "Glimipiride" },
-        { "label": "Sitagliptin", "value": "Sitagliptin" },
-        { "label": "Rabeprazole", "value": "Rabeprazole" },
-        { "label": "Ezetimibe", "value": "Ezetimibe" },
-        { "label": "Cilnidipine", "value": "Cilnidipine" },
-        { "label": "Dexorange", "value": "Dexorange" },
-        { "label": "Loperamide", "value": "Loperamide" },
-        { "label": "Hydroxychloroquine", "value": "Hydroxychloroquine" },
-        { "label": "Montelukast", "value": "Montelukast" },
-        { "label": "Clotrimazole", "value": "Clotrimazole" },
-        { "label": "Naproxen", "value": "Naproxen" },
-        { "label": "Methotrexate", "value": "Methotrexate" },
-        { "label": "Metoclopramide", "value": "Metoclopramide" },
-        { "label": "Hyoscine Butylbromide", "value": "Hyoscine Butylbromide" },
-        { "label": "Nifedipine", "value": "Nifedipine" },
-        { "label": "Pheniramine Maleate", "value": "Pheniramine Maleate" },
-        { "label": "Methylprednisolone", "value": "Methylprednisolone" },
-        { "label": "Domperidone", "value": "Domperidone" },
-        { "label": "Ondansetron", "value": "Ondansetron" },
-        { "label": "Itraconazole", "value": "Itraconazole" },
-        { "label": "Moxifloxacin", "value": "Moxifloxacin" },
-        { "label": "Ampicillin", "value": "Ampicillin" },
-        { "label": "Cetirizine", "value": "Cetirizine" },
-        { "label": "Levocetirizine", "value": "Levocetirizine" },
-        { "label": "Budesonide", "value": "Budesonide" },
-        { "label": "Acyclovir", "value": "Acyclovir" },
-        { "label": "Cyclosporine", "value": "Cyclosporine" },
-        { "label": "Tacrolimus", "value": "Tacrolimus" },
-        { "label": "Ranitidine", "value": "Ranitidine" }
-    ]
-
+        { label: "Crocin", value: "Fever" },
+        { label: "Combiflam", value: "Pain and Inflammation" },
+        { label: "Dolo", value: "Fever and Pain" },
+        { label: "Pantocid", value: "Acid Reflux" },
+        { label: "Rantac", value: "Acid Reflux" },
+        { label: "Zifi", value: "Antibiotic" },
+        { label: "Metformin", value: "Diabetes" },
+        { label: "Metronidazole", value: "Infections" },
+        { label: "Atorvastatin", value: "Cholesterol" },
+        { label: "Loratadine", value: "Allergies" },
+        { label: "Azithromycin", value: "Antibiotic" },
+        { label: "Diclofenac", value: "Pain and Inflammation" },
+        { label: "Amoxicillin", value: "Antibiotic" },
+        { label: "Ciprofloxacin", value: "Antibiotic" },
+        { label: "Esomeprazole", value: "Acid Reflux" },
+        { label: "Sertraline", value: "Antidepressant" },
+        { label: "Levofloxacin", value: "Antibiotic" },
+        { label: "Amlodipine", value: "Hypertension" },
+        { label: "Clopidogrel", value: "Blood Thinner" },
+        { label: "Diazepam", value: "Anxiety" },
+        { label: "Lisinopril", value: "Hypertension" },
+        { label: "Hydrochlorothiazide", value: "Hypertension" },
+        { label: "Metoprolol", value: "Hypertension" },
+        { label: "Omeprazole", value: "Acid Reflux" },
+        { label: "Amitriptyline", value: "Antidepressant" },
+        { label: "Furosemide", value: "Diuretic" },
+        { label: "Warfarin", value: "Blood Thinner" },
+        { label: "Ibuprofen", value: "Pain and Inflammation" },
+        { label: "Paracetamol", value: "Fever and Pain" },
+        { label: "Folic Acid", value: "Vitamin Supplement" },
+        { label: "Aspirin", value: "Blood Thinner" },
+        { label: "Simvastatin", value: "Cholesterol" },
+        { label: "Dexamethasone", value: "Anti-Inflammatory" },
+        { label: "Alprazolam", value: "Anxiety" },
+        { label: "Gliclazide", value: "Diabetes" },
+        { label: "Cefixime", value: "Antibiotic" },
+        { label: "Gabapentin", value: "Neuropathic Pain" },
+        { label: "Pregabalin", value: "Neuropathic Pain" },
+        { label: "Telmisartan", value: "Hypertension" },
+        { label: "Candesartan", value: "Hypertension" },
+        { label: "Rosuvastatin", value: "Cholesterol" },
+        { label: "Fenofibrate", value: "Cholesterol" },
+        { label: "Duloxetine", value: "Depression" },
+        { label: "Levothyroxine", value: "Thyroid Disorder" },
+        { label: "Carbamazepine", value: "Seizures" },
+        { label: "Sildenafil", value: "Erectile Dysfunction" },
+        { label: "Losartan", value: "Hypertension" },
+        { label: "Glimipiride", value: "Diabetes" },
+        { label: "Sitagliptin", value: "Diabetes" },
+        { label: "Rabeprazole", value: "Acid Reflux" },
+        { label: "Ezetimibe", value: "Cholesterol" },
+        { label: "Cilnidipine", value: "Hypertension" },
+        { label: "Dexorange", value: "Iron Deficiency" },
+        { label: "Loperamide", value: "Diarrhea" },
+        { label: "Hydroxychloroquine", value: "Malaria and Rheumatoid Arthritis" },
+        { label: "Montelukast", value: "Asthma and Allergies" },
+        { label: "Clotrimazole", value: "Fungal Infections" },
+        { label: "Naproxen", value: "Pain and Inflammation" },
+        { label: "Methotrexate", value: "Rheumatoid Arthritis" },
+        { label: "Metoclopramide", value: "Nausea and Vomiting" },
+        { label: "Hyoscine Butylbromide", value: "Stomach Cramps" },
+        { label: "Nifedipine", value: "Hypertension" },
+        { label: "Pheniramine Maleate", value: "Allergies" },
+        { label: "Methylprednisolone", value: "Anti-Inflammatory" },
+        { label: "Domperidone", value: "Nausea and Vomiting" },
+        { label: "Ondansetron", value: "Nausea and Vomiting" },
+        { label: "Itraconazole", value: "Fungal Infections" },
+        { label: "Moxifloxacin", value: "Antibiotic" },
+        { label: "Ampicillin", value: "Antibiotic" },
+        { label: "Cetirizine", value: "Allergies" },
+        { label: "Levocetirizine", value: "Allergies" },
+        { label: "Budesonide", value: "Asthma and Allergies" },
+        { label: "Acyclovir", value: "Antiviral" },
+        { label: "Cyclosporine", value: "Immunosuppressant" },
+        { label: "Tacrolimus", value: "Immunosuppressant" },
+        { label: "Ranitidine", value: "Acid Reflux" },
+    ];
 
     const issues = [
         { label: "Fever", value: "Fever" },
@@ -349,11 +348,6 @@ export default function PatientDescription()
         { label: "Amylase Test", value: "Advanced Level" },
     ];
 
-    const updatedLabTests = labTests.map(test => ({
-        ...test,
-        value: test.label
-    }));
-
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
 
@@ -431,39 +425,55 @@ export default function PatientDescription()
         }
     }
 
-
-    console.log("PATIENT DETAILS", patientDetails)
-
-    const handleProcess = async (e) =>
+    useEffect(() =>
     {
-        e.preventDefault();
-        // Check if the token exists
-        const token = localStorage.getItem("token");
-        if (!token)
+        const fetchPatientDescriptions = async () =>
         {
-            console.error("No token found in local storage");
-            return;
-        }
-        const appointmentId = localStorage.getItem("appointmentId")
-        const response = await fetch(
-            `${baseUrl}/api/v1/doctor/doctor_diagnosis/${appointmentId}`,
+            const token = localStorage.getItem("token");
+            if (!token)
             {
-                method: "put",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-auth-token": token,
-                },
-                body: JSON.stringify(patientDetails)
+                console.error("No token found in local storage");
+                return;
             }
-        );
-        const data = await response.json();
-        if (data.success === true)
-        {
-            localStorage.setItem("appointmentId", appointmentId)
-            navigate(`/viewpatientdescription/${appointmentId}`)
-        }
-        console.log("DATA from response", data)
-    }
+            const appointmentId = localStorage.getItem("appointmentId");
+
+            try
+            {
+                const response = await fetch(
+                    `${baseUrl}/api/v1/doctor/get_appointement_details/${appointmentId}`,
+                    {
+                        method: "get",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-auth-token": token,
+                        },
+                    }
+                );
+
+                if (!response.ok)
+                {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                if (data.success === true)
+                {
+                    console.log("VIEW PATIENT DESCRIPTION", data);
+                } else
+                {
+                    console.log("Error in response", data);
+                }
+            } catch (error)
+            {
+                console.error("Fetch error:", error.message);
+            }
+        };
+
+        fetchPatientDescriptions();
+    }, []);
+
+
+
 
     console.log("PATIENT DETAILS", patientDetails)
 
@@ -682,7 +692,7 @@ export default function PatientDescription()
                                         onChange={handleChange}
                                         style={{ border: "1px solid #08DA75", height: "40px" }}
                                     >
-                                        {updatedLabTests?.map((option) => (
+                                        {labTests?.map((option) => (
                                             <option key={option.value} value={option.value}>
                                                 {option.label}
                                             </option>
@@ -699,7 +709,7 @@ export default function PatientDescription()
 
 
 
-                            <div className="flex justify-center my-5">
+                            {/* <div className="flex justify-center my-5">
                                 <button
                                     type="submit"
                                     style={{
@@ -713,11 +723,10 @@ export default function PatientDescription()
                                         lineHeight: "28.8px",
                                         fontFamily: "Lato, sans-serif",
                                     }}
-                                    onClick={handleProcess}
                                 >
                                     Process
                                 </button>
-                            </div>
+                            </div> */}
                         </form>
                     </div>
                 </div >

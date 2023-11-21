@@ -165,7 +165,7 @@ export default function PatientList()
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
                                                 >
-                                                    Accept
+                                                    View
                                                 </button>
                                             </span>
                                         </div>

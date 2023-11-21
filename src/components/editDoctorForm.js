@@ -7,6 +7,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Button } from "flowbite-react";
 import AdminHeader from "./adminHeader";
+import { Modal } from 'react-responsive-modal';
 
 export default function EditDoctorForm()
 {
@@ -14,6 +15,9 @@ export default function EditDoctorForm()
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [selectedFile, setSelectedFile] = useState(null);
+    const [open1, setOpen1] = useState(false);
+    const onOpenModal = () => setOpen1(true);
+    const onCloseModal = () => setOpen1(false);
 
     const handleFileSelect = (event) =>
     {
@@ -247,7 +251,9 @@ export default function EditDoctorForm()
         if (data.success === true)
         {
             console.log("Doctor updated successfully.")
-            // navigate("/otp")
+            // onOpenModal()
+            navigate("/doctorlistadmin")
+
             // localStorage.setItem("id", data.data._id)
         }
         console.log("DATA from response", data)
@@ -369,6 +375,41 @@ export default function EditDoctorForm()
     box-border"
             >
                 <AdminSidebar></AdminSidebar>
+
+                <Modal open={open1}
+                    onClose={onCloseModal}
+                    center
+                    doctor={doctorDetails}
+                    styles={{
+                        modal: {
+                            // Set your custom width here (e.g., '70%')
+                            width: isTab ? '80%' : '70%',
+                            backgroundColor: '#08DA75',
+                            alignContent: 'center'
+                        },
+                    }}
+                >
+                    <div
+                        className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
+                    >
+
+                        <text
+                            className="ml-4 text-center mt-4"
+                            style={{
+                                fontSize: isTab ? "18px" : "26px",
+                                fontWeight: 600,
+                                lineHeight: "28.8px",
+                                fontFamily: "Lato, sans-serif",
+                            }}
+                        >
+                            Congratulations! <br />
+                            Dr. {doctorDetails?.name} Profile is updated <br />
+                            successfully <br />
+                        </text>
+                    </div>
+                </Modal>
+
+
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
@@ -874,11 +915,7 @@ export default function EditDoctorForm()
                                 >
                                     Process
                                 </button>
-                                {!isEditing && (
-                                    <Button variant="primary" onClick={handleToggleEdit}>
-                                        Edit
-                                    </Button>
-                                )}
+
                             </div>
                         </form>
                     </div>
