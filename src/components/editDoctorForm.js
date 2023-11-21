@@ -18,6 +18,7 @@ export default function EditDoctorForm()
     const [open1, setOpen1] = useState(false);
     const onOpenModal = () => setOpen1(true);
     const onCloseModal = () => setOpen1(false);
+    const [doctorImage, setDoctorImage] = useState();
 
     const handleFileSelect = (event) =>
     {
@@ -28,10 +29,10 @@ export default function EditDoctorForm()
         }
     };
 
-    const handleNewProfilePictureClick = () =>
+    const handleNewProfilePictureClick = async () =>
     {
         // This will trigger the hidden file input to open the file dialog
-        fileInputRef.current.click();
+        await fileInputRef.current.click();
         handleNewProfilePicture()
     };
 
@@ -49,13 +50,13 @@ export default function EditDoctorForm()
         const formData = new FormData();
         formData.append('doctorPic', selectedFile);
 
+        console.log("FORM DATA", formData)
         try
         {
-            const response = await fetch(`${baseUrl}/api/v1/admin/upload_image/${doctorId}`, {
+            const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
                 method: 'POST',
                 headers: {
                     'x-auth-token': token,
-                    // Content-Type should not be manually set for FormData; the browser will set it with the proper boundary.
                 },
                 body: formData,
             });
@@ -67,6 +68,7 @@ export default function EditDoctorForm()
 
             const data = await response.json();
             console.log('Image uploaded successfully:', data);
+            setDoctorImage(data.profilePicImageUrl)
             alert('Image uploaded successfully.');
 
             // Reset the file input
@@ -119,7 +121,7 @@ export default function EditDoctorForm()
                 });
 
                 const data = await response.json();
-                console.log("DATA from response", data?.data)
+                console.log("DATA from USE EFFECT response", data?.data)
                 setDoctorDetails(data?.data)
 
             } catch (error)
@@ -139,12 +141,6 @@ export default function EditDoctorForm()
     {
         setAnchorEl(null);
     };
-
-
-    const handleToggleEdit = () =>
-    {
-        setIsEditing(!isEditing)
-    }
 
     // Function to handle profile picture removal
     const handleRemoveProfilePicture = () =>
@@ -201,7 +197,6 @@ export default function EditDoctorForm()
     }
 
 
-
     const handleUpdate = async (e) =>
     {
         e.preventDefault();
@@ -226,9 +221,11 @@ export default function EditDoctorForm()
                 pinCode: doctorDetails?.address?.pinCode,
                 district: doctorDetails?.address?.district,
                 state: doctorDetails?.address?.state
-            }
+            },
+            doctorPic: doctorImage
         }
 
+        console.log("New DOCTOR DETAILS", newDoctorDetails)
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem('doctorId');
         if (!token)
@@ -317,54 +314,67 @@ export default function EditDoctorForm()
         value: specialty
     }));
 
-    console.log("DOCTOR DETAILS", doctorDetails)
-    function formatWorkingDays(days)
+
+    const handleDelete = (workingDay) =>
     {
-        const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        const shortDayNames = { Monday: "Mon", Tuesday: "Tue", Wednesday: "Wed", Thursday: "Thu", Friday: "Fri", Saturday: "Sat", Sunday: "Sun" };
+        console.log("delete", workingDay);
+        const days = doctorDetails.workingDays.filter(doctorDetail => doctorDetail !== workingDay);
 
-        // Remove duplicates and sort days based on the dayOrder
-        const uniqueSortedDays = Array.from(new Set(days)).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
-
-        let formattedDays = [];
-        let tempGroup = [uniqueSortedDays[0]];
-
-        for (let i = 1; i < uniqueSortedDays.length; i++)
-        {
-            const currentDayIndex = dayOrder.indexOf(uniqueSortedDays[i]);
-            const previousDayIndex = dayOrder.indexOf(tempGroup[tempGroup.length - 1]);
-
-            if (currentDayIndex === previousDayIndex + 1)
-            {
-                tempGroup.push(uniqueSortedDays[i]);
-            } else
-            {
-                if (tempGroup.length > 1)
-                {
-                    formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
-                } else
-                {
-                    formattedDays.push(shortDayNames[tempGroup[0]]);
-                }
-                tempGroup = [uniqueSortedDays[i]];
-            }
-        }
-
-        // Handle the last group
-        if (tempGroup.length > 1)
-        {
-            formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
-        } else
-        {
-            formattedDays.push(shortDayNames[tempGroup[0]]);
-        }
-
-        return formattedDays.join(', ');
+        // Assuming you want to update the doctorDetails state after filtering
+        setDoctorDetails({
+            ...doctorDetails,
+            workingDays: days
+        });
     }
 
+    console.log("DOCTOR DETAILS", doctorDetails)
+    // function formatWorkingDays(days)
+    // {
+    //     const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    //     const shortDayNames = { Monday: "Mon", Tuesday: "Tue", Wednesday: "Wed", Thursday: "Thu", Friday: "Fri", Saturday: "Sat", Sunday: "Sun" };
 
-    const formattedDays = formatWorkingDays(doctorDetails?.workingDays);
-    console.log(formattedDays); // Output: "Tue, Thur - Sat"
+    //     // Remove duplicates and sort days based on the dayOrder
+    //     const uniqueSortedDays = Array.from(new Set(days)).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+
+    //     let formattedDays = [];
+    //     let tempGroup = [uniqueSortedDays[0]];
+
+    //     for (let i = 1; i < uniqueSortedDays.length; i++)
+    //     {
+    //         const currentDayIndex = dayOrder.indexOf(uniqueSortedDays[i]);
+    //         const previousDayIndex = dayOrder.indexOf(tempGroup[tempGroup.length - 1]);
+
+    //         if (currentDayIndex === previousDayIndex + 1)
+    //         {
+    //             tempGroup.push(uniqueSortedDays[i]);
+    //         } else
+    //         {
+    //             if (tempGroup.length > 1)
+    //             {
+    //                 formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
+    //             } else
+    //             {
+    //                 formattedDays.push(shortDayNames[tempGroup[0]]);
+    //             }
+    //             tempGroup = [uniqueSortedDays[i]];
+    //         }
+    //     }
+
+    //     // Handle the last group
+    //     if (tempGroup.length > 1)
+    //     {
+    //         formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
+    //     } else
+    //     {
+    //         formattedDays.push(shortDayNames[tempGroup[0]]);
+    //     }
+
+    //     return formattedDays.join(', ');
+    // }
+
+
+    // const formattedDays = formatWorkingDays(doctorDetails?.workingDays);
+    // console.log(formattedDays); // Output: "Tue, Thur - Sat"
 
 
 
@@ -580,14 +590,14 @@ export default function EditDoctorForm()
                                     </label>
                                     <div style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between", marginLeft: "1.5%", marginRight: "1.5%", backgroundColor: "white" }}>
                                         <span style={{ display: "flex", margin: "5px 2px 5px 10px", padding: "2px 5px 5px 5px" }}>
-                                            {/* {
+                                            {
                                                 doctorDetails?.workingDays.map((workingDay) => (
-                                                    <div className="breadcrumb-chip" key={workingDay} style={{ , backgroundColor: "#E4FFF2", borderRadius: "5%",  }} onClick={() => handleDelete(workingDay)}>
-                                                        {workingDay + " X"}
+                                                    <div className="breadcrumb-chip" key={workingDay} style={{ marginRight: "8px", height: "26px", padding: "0px 5px 0px 5px", backgroundColor: "#E4FFF2", borderRadius: "5%", }} onClick={() => handleDelete(workingDay)}>
+                                                        {workingDay.slice(0, 3) + " X "}
                                                     </div>
                                                 ))
-                                            } */}
-                                            {formattedDays}
+                                            }
+
                                         </span>
                                         <select
                                             className="mx-5"

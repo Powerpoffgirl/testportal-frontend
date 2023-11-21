@@ -17,21 +17,21 @@ export default function EditAdminForm()
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [selectedFile, setSelectedFile] = useState(null);
 
-    const handleFileSelect = (event) =>
-    {
-        const file = event.target.files[0];
-        if (file)
-        {
-            setSelectedFile(file);
-        }
-    };
+    // const handleFileSelect = (event) =>
+    // {
+    //     const file = event.target.files[0];
+    //     if (file)
+    //     {
+    //         setSelectedFile(file);
+    //     }
+    // };
 
-    const handleNewProfilePictureClick = () =>
-    {
-        // This will trigger the hidden file input to open the file dialog
-        fileInputRef.current.click();
-        handleNewProfilePicture()
-    };
+    // const handleNewProfilePictureClick = () =>
+    // {
+    //     // This will trigger the hidden file input to open the file dialog
+    //     fileInputRef.current.click();
+    //     handleNewProfilePicture()
+    // };
 
     const handleNewProfilePicture = async () =>
     {

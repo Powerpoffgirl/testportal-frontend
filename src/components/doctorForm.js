@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Sidebar from "./sidebar";
 import Header from "./header";
@@ -8,12 +8,16 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import DoctorSidebar from "./doctorSidebar";
+import AdminSidebar from "./adminSidebar";
 
 export default function DoctorForm()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
+    const [selectedFile, setSelectedFile] = useState(null);
+    const fileInputRef = useRef(null);
+    const submitRef = useRef(null)
     const [doctorDetails, setDoctorDetails] = useState({
         name: "",
         email: "",
@@ -34,8 +38,31 @@ export default function DoctorForm()
             pinCode: "",
             district: "",
             state: ""
-        }
+        },
+        doctorPic: ""
     })
+
+    // const handleFileSelect = async (event) =>
+    // {
+    //     const file = event.target.files[0];
+
+    //     console.log("FILE", file)
+    //     const response = await fetch(
+    //         `${baseUrl}/api/v1/upload_image`,
+    //         {
+    //             method: "post",
+    //             headers: {
+    //                 "Content-Type": "form-data",
+    //             },
+    //             body: file
+    //         }
+    //     );
+
+
+    //     const data = await response.json();
+    //     console.log("DATA", data)
+
+    // };
 
     const Daysdropdown = [
         { label: "Select Days", value: "" },
@@ -120,11 +147,69 @@ export default function DoctorForm()
         setAnchorEl(null);
     };
 
-    // Function to handle profile picture change
-    const handleNewProfilePicture = () =>
+    const handleFileSelect = (event) =>
     {
-        // Logic to handle adding a new profile picture
-        handleClose();
+        const file = event.target.files[0];
+        if (file)
+        {
+            setSelectedFile(file);
+        }
+    };
+
+    const handleNewProfilePictureClick = async () =>
+    {
+        // This will trigger the hidden file input to open the file dialog
+        await fileInputRef.current.click();
+        handleNewProfilePicture()
+    };
+
+    const handleNewProfilePicture = async () =>
+    {
+        const token = localStorage.getItem('token');
+        const doctorId = localStorage.getItem('doctorId');
+
+        if (!token || !doctorId)
+        {
+            console.error('Token or doctor ID not found in local storage');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('doctorPic', selectedFile);
+
+        console.log("FORM DATA", formData)
+        try
+        {
+            const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+                method: 'POST',
+                headers: {
+                    'x-auth-token': token,
+                },
+                body: formData,
+            });
+
+            if (!response.ok)
+            {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log('Image uploaded successfully:', data);
+            setDoctorDetails(prevDoctorDetails => ({
+                ...prevDoctorDetails,
+                doctorPic: data.profilePicImageUrl
+            }));
+
+            alert('Image uploaded successfully.');
+
+            // Reset the file input
+            setSelectedFile(null);
+            fileInputRef.current.value = '';
+        } catch (error)
+        {
+            console.error('Error uploading image:', error);
+            alert('Error uploading image. Please try again.');
+        }
     };
 
     // Function to handle profile picture removal
@@ -133,6 +218,7 @@ export default function DoctorForm()
         // Logic to handle removing the current profile picture
         handleClose();
     };
+
 
     const TimeDropdown = [
         { label: "Select Time", value: "" },
@@ -226,55 +312,6 @@ export default function DoctorForm()
         });
     }
 
-    function formatWorkingDays(days)
-    {
-        const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-        const shortDayNames = { Monday: "Mon", Tuesday: "Tue", Wednesday: "Wed", Thursday: "Thu", Friday: "Fri", Saturday: "Sat", Sunday: "Sun" };
-
-        // Remove duplicates and sort days based on the dayOrder
-        const uniqueSortedDays = Array.from(new Set(days)).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
-
-        let formattedDays = [];
-        let tempGroup = [uniqueSortedDays[0]];
-
-        for (let i = 1; i < uniqueSortedDays.length; i++)
-        {
-            const currentDayIndex = dayOrder.indexOf(uniqueSortedDays[i]);
-            const previousDayIndex = dayOrder.indexOf(tempGroup[tempGroup.length - 1]);
-
-            if (currentDayIndex === previousDayIndex + 1)
-            {
-                tempGroup.push(uniqueSortedDays[i]);
-            } else
-            {
-                if (tempGroup.length > 1)
-                {
-                    formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
-                } else
-                {
-                    formattedDays.push(shortDayNames[tempGroup[0]]);
-                }
-                tempGroup = [uniqueSortedDays[i]];
-            }
-        }
-
-        // Handle the last group
-        if (tempGroup.length > 1)
-        {
-            formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
-        } else
-        {
-            formattedDays.push(shortDayNames[tempGroup[0]]);
-        }
-
-        return formattedDays.join(', ');
-    }
-
-
-    const formattedDays = formatWorkingDays(doctorDetails.workingDays);
-    console.log(formattedDays); // Output: "Tue, Thur - Sat"
-
-
     console.log("DOCTOR DETAILS", doctorDetails)
 
     return (
@@ -283,7 +320,7 @@ export default function DoctorForm()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <DoctorSidebar></DoctorSidebar>
+                <AdminSidebar></AdminSidebar>
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
@@ -310,9 +347,25 @@ export default function DoctorForm()
                                 justifyContent: "center",
                             }}
                         >
+
                             <div style={{ display: "flex", flexDirection: "column", marginLeft: "40%" }}>
                                 <div style={{ backgroundColor: "#FFFFFF", width: "90px", height: "90px", borderRadius: "50%", alignItems: "center", display: "flex", flexDirection: "row", justifyContent: "space-evenly", color: "#A4A4A4" }}>
-                                    <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
+                                    {
+                                        doctorDetails?.doctorPic ? (
+                                            <img
+                                                src={doctorDetails.doctorPic}
+                                                alt="Avatar"
+                                                style={{
+                                                    borderRadius: "50%",
+                                                    height: isTab ? "40px" : "81px",
+                                                    width: isTab ? "40px" : "81px",
+                                                }}
+                                            />
+                                        ) : (
+                                            <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
+                                        )
+                                    }
+
                                 </div>
                                 <p
                                     aria-controls="profile-pic-menu"
@@ -332,10 +385,21 @@ export default function DoctorForm()
                                         'aria-labelledby': 'edit-profile-pic-text',
                                     }}
                                 >
-                                    <MenuItem onClick={handleNewProfilePicture}>New profile picture</MenuItem>
+                                    <MenuItem onClick={handleNewProfilePictureClick}>New profile picture</MenuItem>
                                     <MenuItem onClick={handleRemoveProfilePicture}>Remove current profile picture</MenuItem>
                                 </Menu>
+                                <input
+                                    id="imageInput"
+                                    type="file"
+                                    ref={fileInputRef}
+                                    style={{ display: 'none' }}
+                                    accept="image/*"
+                                    onChange={handleFileSelect}
+                                />
+
                             </div>
+
+
 
                             {/* 1st Row */}
 
@@ -423,14 +487,14 @@ export default function DoctorForm()
                                     </label>
                                     <div style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between", marginLeft: "1.5%", marginRight: "1.5%", backgroundColor: "white" }}>
                                         <span style={{ display: "flex", margin: "5px 2px 5px 10px", padding: "2px 5px 5px 5px" }}>
-                                            {/* {
+                                            {
                                                 doctorDetails?.workingDays.map((workingDay) => (
-                                                    <div className="breadcrumb-chip" key={workingDay} style={{ , backgroundColor: "#E4FFF2", borderRadius: "5%",  }} onClick={() => handleDelete(workingDay)}>
-                                                        {workingDay + " X"}
+                                                    <div className="breadcrumb-chip" key={workingDay} style={{ marginRight: "8px", height: "26px", padding: "0px 5px 0px 5px", backgroundColor: "#E4FFF2", borderRadius: "5%", }} onClick={() => handleDelete(workingDay)}>
+                                                        {workingDay.slice(0, 3) + " X "}
                                                     </div>
                                                 ))
-                                            } */}
-                                            {formattedDays}
+                                            }
+
                                         </span>
                                         <select
                                             className="mx-5"
