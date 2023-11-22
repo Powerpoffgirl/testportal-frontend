@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Sidebar from "./sidebar";
 import Header from "./header";
@@ -18,17 +18,7 @@ export default function EditAppointment()
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
     const navigate = useNavigate()
-    const [patientDetails, setPatientDetails] = useState({
-        doctorId: localStorage.getItem("doctorId"),
-        patientId: localStorage.getItem("patientId"),
-        appointmentDate: {
-            date: "",
-            time: ""
-        },
-        issues: [],
-        diseases: [],
-
-    })
+    const [appointmentDetails, setAppointmentDetails] = useState(null)
 
 
     const SymptomsDropdown = [
@@ -84,6 +74,39 @@ export default function EditAppointment()
         { label: "Snoring", value: "Snoring" }
     ];
 
+    useEffect(() =>
+    {
+        const fetchAppointmentDetails = async () =>
+        {
+            try
+            {
+                const token = localStorage.getItem("token");
+                const appointmentId = localStorage.getItem("appointmentId");
+                if (!token)
+                {
+                    console.error("No token found in local storage");
+                    return;
+                }
+                const response = await fetch(`${baseUrl}/api/v1/user/get_appointmentById/${appointmentId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token // Replace with your actual token from the previous session
+                    }
+                });
+
+                const data = await response.json();
+                console.log("DATA from USE EFFECT response", data?.data)
+                setAppointmentDetails(data?.data)
+
+            } catch (error)
+            {
+                console.error('There was an error verifying the OTP:', error);
+            }
+        }
+        fetchAppointmentDetails()
+    }, [])
+
     const [input, setInput] = useState('');
     const [filteredSymptoms, setFilteredSymptoms] = useState(SymptomsDropdown);
 
@@ -111,10 +134,10 @@ export default function EditAppointment()
     const handleOptionSelect = (selectedValue) =>
     {
         // Check if the selected issue is already in the list
-        if (!patientDetails.issues.includes(selectedValue))
+        if (!appointmentDetails.issues.includes(selectedValue))
         {
             // If not, add it to the list
-            setPatientDetails(prevDetails => ({
+            setAppointmentDetails(prevDetails => ({
                 ...prevDetails,
                 issues: [...prevDetails.issues, selectedValue]
             }));
@@ -196,7 +219,7 @@ export default function EditAppointment()
 
         if (name === "date" || name === "time")
         {
-            setPatientDetails(prevPatientDetails => ({
+            setAppointmentDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 appointmentDate: {
                     ...prevPatientDetails.appointmentDate,
@@ -207,32 +230,44 @@ export default function EditAppointment()
         if (["issues"].includes(name))
         {
             // Assuming the value is an array or a string to be added to the array
-            setPatientDetails(prevPatientDetails => ({
+            setAppointmentDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 [name]: Array.isArray(value) ? value : [...prevPatientDetails[name], value]
             }));
         } else if (["diseases"].includes(name))
         {
             // Assuming the value is an array or a string to be added to the array
-            setPatientDetails(prevPatientDetails => ({
+            setAppointmentDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 [name]: Array.isArray(value) ? value : [...prevPatientDetails[name], value]
             }));
         }
         else
         {
-            setPatientDetails(prevPatientDetails => ({
+            setAppointmentDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 [name]: value
             }));
         }
     };
 
+    console.log("APPOINTMENT DETAILS", appointmentDetails)
     const handleRegister = async (e) =>
     {
         e.preventDefault();
         // Check if the token exists
+        const newAppointmentDetails = {
+            doctorId: appointmentDetails?.doctorId,
+            patientId: appointmentDetails?.patientId,
+            appointmentDate: {
+                date: appointmentDetails?.appointmentDate.date,
+                time: appointmentDetails?.appointmentDate.time
+            },
+            issues: appointmentDetails?.issues,
+            diseases: appointmentDetails?.diseases,
+        }
         const token = localStorage.getItem("token");
+        const appointmentId = localStorage.getItem("appointmentId")
         if (!token)
         {
             console.error("No token found in local storage");
@@ -240,14 +275,14 @@ export default function EditAppointment()
         }
 
         const response = await fetch(
-            `${baseUrl}/api/v1/user/create_appointment`,
+            `${baseUrl}/api/v1/user/update_appointmentById/${appointmentId}`,
             {
-                method: "post",
+                method: "put",
                 headers: {
                     "Content-Type": "application/json",
                     "x-auth-token": token,
                 },
-                body: JSON.stringify(patientDetails)
+                body: JSON.stringify(newAppointmentDetails)
             }
         );
         const data = await response.json();
@@ -259,7 +294,6 @@ export default function EditAppointment()
         }
         console.log("DATA from response", data)
     }
-    console.log("PATIENT DETAILS", patientDetails)
 
 
     return (
@@ -268,7 +302,7 @@ export default function EditAppointment()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <AdminSidebar></AdminSidebar>
+                <UserSidebar></UserSidebar>
 
                 <Modal open={open}
                     onClose={onCloseModal}
@@ -433,7 +467,7 @@ export default function EditAppointment()
                                     <span style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                                         <div className="mx-5" style={{ display: "flex" }}>
                                             {
-                                                patientDetails?.issues?.map((issue) => (
+                                                appointmentDetails?.issues?.map((issue) => (
                                                     <div className="breadcrumb-chip" key={issue} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
                                                         {issue}
                                                     </div>
@@ -498,7 +532,7 @@ export default function EditAppointment()
                                     <span style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                                         <div className="mx-5" style={{ display: "flex" }}>
                                             {
-                                                patientDetails?.diseases?.map((disease) => (
+                                                appointmentDetails?.diseases?.map((disease) => (
                                                     <div className="breadcrumb-chip" key={disease} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
                                                         {disease}
                                                     </div>

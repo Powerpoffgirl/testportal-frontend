@@ -13,9 +13,14 @@ export default function AppointmentList()
     const [appointmentList, setAppointmentList] = useState([])
     const [selectedPatient, setSelectedPatient] = useState();
     const navigate = useNavigate()
-    const [open, setOpen] = useState(false);
-    const onOpenModal = () => setOpen(true);
-    const onCloseModal = () => setOpen(false);
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalContent, setModalContent] = useState('');
+
+    const onCloseModal = () =>
+    {
+        setModalOpen(false);
+        setModalContent('');
+    };
     useEffect(() =>
     {
         const fetchPatientDetails = async () =>
@@ -74,7 +79,7 @@ export default function AppointmentList()
         fetchAppointmentDetails()
     }, [])
 
-    const handleAccepted = async (patientId) =>
+    const handleAppointmentStatus = async (patientId, status) =>
     {
         try
         {
@@ -84,7 +89,8 @@ export default function AppointmentList()
                 console.error("No token found in local storage");
                 return;
             }
-            const appointmentStatus = "Confirm"
+            // Use the 'status' parameter to set the appointment status
+            const appointmentStatus = status === 'accept' ? "Confirm" : "Decline";
             const response = await fetch(`${baseUrl}/api/v1/doctor/accept_appointment/${patientId}`, {
                 method: 'PUT',
                 headers: {
@@ -95,18 +101,18 @@ export default function AppointmentList()
             });
 
             const data = await response.json();
-            console.log("DATA from response", data)
+            console.log("DATA from response", data);
             if (data.status === 200)
             {
-                onOpenModal()
+                setModalContent(status === 'accept' ? 'Accepted' : 'Declined');
+                setModalOpen(true);
             }
-            // setPatientsList(data?.data)
         } catch (error)
         {
-            console.error('There was an error verifying the OTP:', error);
+            console.error('There was an error:', error);
         }
+    };
 
-    }
 
     const handleConsult = (appointmentId) =>
     {
@@ -124,49 +130,13 @@ export default function AppointmentList()
     box-border"
             >
                 <DoctorSidebar></DoctorSidebar>
-                <Modal open={open}
-                    onClose={onCloseModal}
-                    center
-                    doctor={selectedPatient}
-                    styles={{
-                        modal: {
-                            // Set your custom width here (e.g., '70%')
-                            width: isTab ? '80%' : '70%',
-                            backgroundColor: '#08DA75',
-                            alignContent: 'center'
-                        },
-                    }}
-                >
-                    <div
-                        className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
-                        style={{ borderRadius: "5px" }}
-                    >
-
-                        <text
-                            className="ml-4 text-center mt-4"
-                            style={{
-                                fontSize: isTab ? "18px" : "26px",
-                                fontWeight: 600,
-                                lineHeight: "28.8px",
-                                fontFamily: "Lato, sans-serif",
-                                color: '#FFFFFF',
-                            }}
-                        >
-                            Accepted
-                            {selectedPatient}
+                <Modal open={modalOpen} onClose={onCloseModal} center>
+                    <div className="flex flex-col items-center w-[100%] md:w-[100%] mt-[2%]" style={{ borderRadius: "5px", backgroundColor: '#08DA75' }}>
+                        <text className="ml-4 text-center mt-4" style={{ fontSize: "18px", fontWeight: 600, lineHeight: "28.8px", fontFamily: "Lato, sans-serif", color: '#FFFFFF' }}>
+                            {modalContent} {selectedPatient}
                         </text>
-                        <text
-                            className="ml-4 text-center mt-4"
-                            style={{
-                                fontSize: isTab ? "12px" : "20px",
-                                fontWeight: 400,
-                                lineHeight: "24px",
-                                fontFamily: "Lato, sans-serif",
-                                color: '#FFFFFF',
-                                marginBottom: "2%"
-                            }}
-                        >
-                            <svg1 />
+                        <text className="ml-4 text-center mt-4" style={{ fontSize: "12px", fontWeight: 400, lineHeight: "24px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', marginBottom: "2%" }}>
+                            {/* Your SVG or other content */}
                         </text>
                     </div>
                 </Modal>
@@ -269,6 +239,16 @@ export default function AppointmentList()
                                                     }}
                                                         onClick={() => handleConsult(appointment._id)}
                                                     >Consult</button>
+                                                ) : appointment.appointmentStatus === "Decline" ? (
+                                                    <span style={{
+                                                        color: "#EF5F5F",
+                                                        fontWeight: 400,
+                                                        // borderRadius: "35px",
+                                                        // border: "1px solid #EF5F5F",
+                                                        fontSize: isTab ? "11px" : "24px",
+                                                        lineHeight: "28.8px",
+                                                        fontFamily: "Lato, sans-serif",
+                                                    }}>Declined</span>
                                                 ) : (
                                                     <span className="flex flex-row gap-2 items-center">
                                                         <button
@@ -283,6 +263,7 @@ export default function AppointmentList()
                                                                 lineHeight: "28.8px",
                                                                 fontFamily: "Lato, sans-serif",
                                                             }}
+                                                            onClick={() => handleAppointmentStatus(appointment?._id, 'decline')}
                                                         >
                                                             Decline
                                                         </button>
@@ -298,7 +279,7 @@ export default function AppointmentList()
                                                                 lineHeight: "28.8px",
                                                                 fontFamily: "Lato, sans-serif",
                                                             }}
-                                                            onClick={() => handleAccepted(appointment?._id)}
+                                                            onClick={() => handleAppointmentStatus(appointment?._id, 'accept')}
                                                         >
                                                             Accept
                                                         </button>

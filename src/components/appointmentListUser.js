@@ -42,10 +42,38 @@ export default function AppointmentListUser()
         fetchPatientDetails()
     }, [])
 
-    const handleBookAppointment = (patientId) =>
+    const handleBookAppointment = (appointmentId) =>
     {
-        localStorage.setItem("patientId", patientId)
-        navigate("/bookappointment")
+        localStorage.setItem("appointmentId", appointmentId)
+        navigate("/editappointment")
+    }
+
+    const handleDeleteAppointment = async (appointmentId) =>
+    {
+        localStorage.setItem("appointmentId", appointmentId)
+        // try
+        // {
+        //     const token = localStorage.getItem("token");
+        //     if (!token)
+        //     {
+        //         console.error("No token found in local storage");
+        //         return;
+        //     }
+        //     const response = await fetch(`${baseUrl}/api/v1/user/get_all_appointments`, {
+        //         method: 'DELETE',
+        //         headers: {
+        //             'Content-Type': 'application/json',
+        //             'x-auth-token': token // Replace with your actual token from the previous session
+        //         }
+        //     });
+
+        //     const data = await response.json();
+        //     console.log("DATA from response", data)
+        //     setAppointmentList(data?.data)
+        // } catch (error)
+        // {
+        //     console.error('There was an error verifying the OTP:', error);
+        // }
     }
 
     function formatDate(dateString)
@@ -169,6 +197,7 @@ export default function AppointmentListUser()
                                                         lineHeight: "28.8px",
                                                         fontFamily: "Lato, sans-serif",
                                                     }}
+                                                    onClick={() => handleDeleteAppointment(appointment?._id)}
                                                 >
                                                     Delete
                                                 </button>
