@@ -3,7 +3,8 @@ import { useMediaQuery } from "react-responsive";
 import Sidebar from "./sidebar";
 import Header from "./header";
 
-export default function UserForm() {
+export default function UserForm()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
 
   return (
@@ -23,7 +24,7 @@ export default function UserForm() {
           <div
             className="scrollable-content"
             style={{
-              overflow: isTab ? "auto" : "hidden",
+              overflow: isTab ? "auto" : "auto",
               maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
               padding: "10px",
             }}

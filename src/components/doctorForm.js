@@ -332,7 +332,7 @@ export default function DoctorForm()
                     <div
                         className="scrollable-content"
                         style={{
-                            overflow: isTab ? "auto" : "hidden",
+                            overflow: isTab ? "auto" : "auto",
                             maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
                             padding: "10px",
                         }}
