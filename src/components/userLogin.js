@@ -124,6 +124,7 @@ export default function UserLogin() {
           theme: "light",
         });
       }
+      console.log(data);
     }
   };
 
@@ -164,7 +165,7 @@ export default function UserLogin() {
           ) : (
             <div
               className="my-20"
-              dangerouslySetInnerHTML={{ __html: svgContent3 }}
+              dangerouslySetInnerHTML={{ __html: smallSvgContent3 }}
             ></div>
           )}
 
@@ -286,7 +287,7 @@ export default function UserLogin() {
                   style={{
                     fontFamily: "Lato, sans-serif",
                     fontWeight: 400,
-                    fontSize: "24px",
+                    fontSize: isTab ? "18px" : "20px",
                     lineHeight: "28.8px",
                   }}
                 >
@@ -325,7 +326,7 @@ export default function UserLogin() {
                 style={{
                   fontFamily: "Lato, sans-serif",
                   fontWeight: 900,
-                  fontSize: "20px",
+                  fontSize: isTab ? "14px" : "18px",
                   lineHeight: "24px",
                 }}
               >

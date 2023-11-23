@@ -333,7 +333,6 @@ export default function AdminLogin() {
             </div>
           </form>
         </div>
-        ;
       </div>
     </>
   );
