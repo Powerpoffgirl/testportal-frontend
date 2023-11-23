@@ -219,6 +219,7 @@ export default function DoctorLogin()
                 display: "flex",
                 justifyContent: "space-evenly",
                 alignItems: "center",
+                fontSize: "18px",
               }}
             >
               Doctor's Login
