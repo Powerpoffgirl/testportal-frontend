@@ -178,22 +178,24 @@ const OTP = () =>
               style={{ border: "1px solid #08DA75", height: "45px", paddingLeft: "1.5%" }}
             // onChange={handleChange}
             />
-            <button
-              className="mt-4 bg-customRed w-40"
-              style={{
-                display: "inline",
-                height: "45px",
-                borderRadius: "43px",
-                color: "white",
-                fontSize: "24px",
-                fontWeight: 600,
-                lineHeight: "28.8px",
-                marginLeft: "44%"
-              }}
-              onClick={SendOTP}
-            >
-              Resend OTP
-            </button>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button
+                className="mt-4 bg-customRed w-40"
+                style={{
+                  display: "inline",
+                  height: "45px",
+                  borderRadius: "43px",
+                  color: "white",
+                  fontSize: "24px",
+                  fontWeight: 600,
+                  lineHeight: "28.8px",
+                }}
+                onClick={SendOTP}
+              >
+                Resend OTP
+              </button>
+            </div>
+
             <text
               className="ml-[45%] md:ml-[49%]"
               style={{
@@ -256,10 +258,11 @@ const OTP = () =>
             </text>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <button
-                className="mt-4 bg-customRed w-40"
+                className="mt-4 bg-customRed"
                 style={{
                   display: "inline",
-                  height: "45px",
+                  width: isTab ? "150px" : "198px",
+                  height: isTab ? "35px" : "45px",
                   borderRadius: "43px",
                   color: "white",
                   fontSize: "24px",

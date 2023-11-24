@@ -44,3 +44,9 @@ input::placeholder {
       height: 100px;
     }
   }
+
+  .item{
+    background-color: aqua;
+    height: 122px;
+    width: 130px;
+  }
