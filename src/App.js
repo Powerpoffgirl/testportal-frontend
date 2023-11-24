@@ -32,12 +32,10 @@ import UserList from './components/userList';
 import ShowPatientForm from './components/showPatientForm';
 import EditAppointment from './components/editAppointment';
 import ViewPatientDescription from './components/viewPatientDescription';
+import UserSignup from './components/userSignup';
 
 function App()
 {
-
-
-
 
   return (
     <Routes>
@@ -45,6 +43,7 @@ function App()
       <Route path='/adminlogin' element={<AdminLogin></AdminLogin>}></Route>
       <Route path='/doctorlogin' element={<DoctorLogin></DoctorLogin>}></Route>
       <Route path='/userlogin' element={<UserLogin></UserLogin>}></Route>
+      <Route path='/usersignup' element={<UserSignup></UserSignup>}></Route>
       <Route path='/admin' element={<Admin></Admin>}></Route>
       <Route path='/form' element={<Form></Form>}></Route>
       <Route path='/otp' element={<OTP></OTP>}></Route>
