@@ -16,12 +16,14 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function DoctorDetail() {
+export default function DoctorDetail()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const [doctorDetails, setDoctorDetails] = useState({});
   const [contactNumber, setContactNumber] = useState("");
+  const [selectedDoctor, setSelectedDoctor] = useState();
   const navigate = useNavigate();
 
   console.log("Current URL", window.location.href);
@@ -29,9 +31,12 @@ export default function DoctorDetail() {
   console.log("ARR 4", arr[4]);
   localStorage.setItem("doctorId", arr[4]);
 
-  useEffect(() => {
-    const fetchDoctorDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchDoctorDetails = async () =>
+    {
+      try
+      {
         const doctorId = localStorage.getItem("doctorId");
 
         const response = await fetch(
@@ -47,25 +52,29 @@ export default function DoctorDetail() {
         const data = await response.json();
         console.log("DATA from response", data?.data);
         setDoctorDetails(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     setContactNumber(e.target.value);
   };
 
-  const handleSendOTP = async () => {
+  const handleSendOTP = async () =>
+  {
     // Define the request body and the API endpoint
     const requestBody = {
       contactNumber: contactNumber,
     };
     const apiUrl = `${baseUrl}/api/v1/user/register_user`;
 
-    try {
+    try
+    {
       // Send the POST request
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -79,18 +88,44 @@ export default function DoctorDetail() {
       const data = await response.json();
 
       // Check the response status
-      if (response.ok) {
+      if (response.ok)
+      {
         console.log("OTP sent successfully", data);
         localStorage.setItem("userId", data.data._id);
-        navigate("/userotp");
-      } else if (response.status === 403) {
+        navigate("/userotp", { state: { doctor: selectedDoctor } });
+      } else if (response.status === 403)
+      {
         console.log("User verified");
-        // localStorage.setItem("userId", data.data._id)
-        navigate("/patientform");
-      } else {
+
+        console.log("=========USER RESPONSE DATA========", data?.data)
+        const response1 = await fetch(`${baseUrl}/api/v1/user/login_user`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            contactNumber: data?.data?.contactNumber,
+            password: data?.data?.password,
+          }),
+        });
+        const data1 = await response1.json();
+
+        if (data1.success === true)
+        {
+
+          localStorage.setItem("token", data1.token);
+          // setSelectedDoctor(doctorDetails)
+          console.log("==============SELECTED DOCTOR=============", selectedDoctor)
+          navigate("/bookappointment", { state: { doctor: selectedDoctor } });
+
+        }
+
+      } else
+      {
         console.error("Error sending OTP:", data);
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("Error during the API call:", error);
     }
   };

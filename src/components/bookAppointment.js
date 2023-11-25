@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Sidebar from "./sidebar";
 import Header from "./header";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Modal } from 'react-responsive-modal';
 import UserSidebar from "./userSidebar";
-
+import UserHeader from "./userHeader";
 
 
 export default function BookAppointment()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const baseUrl = process.env.REACT_APP_BASE_URL
-    const [selectedDoctor, setselectedDoctor] = useState();
+    const [selectedDoctor, setSelectedDoctor] = useState();
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
     const navigate = useNavigate()
+    const location = useLocation();
     const [patientDetails, setPatientDetails] = useState({
         doctorId: localStorage.getItem("doctorId"),
         patientId: localStorage.getItem("patientId"),
@@ -29,6 +30,12 @@ export default function BookAppointment()
 
     })
 
+    useEffect(() =>
+    {
+        const doctor = location?.state
+        setSelectedDoctor(doctor?.doctor)
+        console.log("SELECTED DOCTOR", selectedDoctor)
+    }, [selectedDoctor])
 
     const SymptomsDropdown = [
         { label: "Select Symptom", value: "" },
@@ -346,10 +353,10 @@ export default function BookAppointment()
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
-                        width: isTab ? "100%" : "77%",
+                        width: isTab ? "100%" : "77%"
                     }}
                 >
-                    <Header line1="Patient’s" line2="Appointment Booking"></Header>
+                    <UserHeader line1="Patient’s Appointment Booking" line2=""></UserHeader>
                     <div
                         className="scrollable-content"
                         style={{

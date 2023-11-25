@@ -2,8 +2,8 @@ import Sidebar from "./sidebar";
 import { useMediaQuery } from "react-responsive";
 import Header from "./header";
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "./adminSidebar";
 
 const UserOTP = () =>
@@ -11,10 +11,20 @@ const UserOTP = () =>
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const otpInputs = [];
     const [mobileNo, setMobileNo] = useState();
+    const [selectedDoctor, setSelectedDoctor] = useState();
     const navigate = useNavigate()
+    const location = useLocation();
     const MAX_LENGTH = 6;
     const baseUrl = process.env.REACT_APP_BASE_URL
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+
+
+    useEffect(() =>
+    {
+        const doctor = location?.state
+        setSelectedDoctor(doctor?.doctor)
+        console.log("SELECTED DOCTOR", selectedDoctor)
+    }, [selectedDoctor])
 
     const handleChange = (e) =>
     {
@@ -95,7 +105,7 @@ const UserOTP = () =>
             const data = await response.json();
             if (data.success === true)
             {
-                navigate("/patientform")
+                navigate("/bookappointment", { state: { doctor: selectedDoctor } })
             }
             console.log("DATA from response", data)
         } catch (error)

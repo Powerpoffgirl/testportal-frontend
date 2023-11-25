@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import "../App.css";
 
 import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -77,10 +77,18 @@ export default function UserLogin()
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const [isDoctor, setIsDoctor] = useState(true);
-
   const [contactNumber, setContactNumber] = useState("");
-
+  const [selectedDoctor, setSelectedDoctor] = useState();
   const [password, setPassword] = useState("");
+  const location = useLocation();
+
+
+  useEffect(() =>
+  {
+    const doctor = location?.state
+    setSelectedDoctor(doctor?.doctor)
+    console.log("SELECTED DOCTOR", selectedDoctor)
+  }, [selectedDoctor])
 
   const handleSubmit = async (e) =>
   {
@@ -103,7 +111,16 @@ export default function UserLogin()
         if (data.token)
         {
           localStorage.setItem("token", data.token);
-          navigate("/doctorlistuser");
+          console.log("==============SELECTED DOCTOR=============", selectedDoctor)
+          if (selectedDoctor)
+          {
+            navigate("/bookappointment", { state: { doctor: selectedDoctor } });
+          }
+          else
+          {
+            navigate("/doctorlistuser");
+          }
+
         }
       }
       if (data.success === false)

@@ -9,6 +9,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import DoctorSidebar from "./doctorSidebar";
 import AdminSidebar from "./adminSidebar";
+import { HiOutlineUserAdd } from "react-icons/hi";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 export default function DoctorForm()
 {
@@ -134,6 +136,8 @@ export default function DoctorForm()
     value: specialty
   }));
 
+  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered1, setIsHovered1] = useState(false);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -377,18 +381,33 @@ export default function DoctorForm()
                 >
                   Edit profile pic
                 </p>
-                <Menu
-                  id="profile-pic-menu"
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  MenuListProps={{
-                    'aria-labelledby': 'edit-profile-pic-text',
-                  }}
-                >
-                  <MenuItem onClick={handleNewProfilePictureClick}>New profile picture</MenuItem>
-                  <MenuItem onClick={handleRemoveProfilePicture}>Remove current profile picture</MenuItem>
-                </Menu>
+                <div style={{ backgroundColor: '#08DA75' }} >
+                  <Menu
+                    id="profile-pic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      'aria-labelledby': 'edit-profile-pic-text',
+                      style: { backgroundColor: '#08DA75' } // Set background color for the whole menu
+                    }}
+
+                  >
+                    <MenuItem style={{
+                      backgroundColor: '#08DA75',
+                      color: isHovered ? 'red' : 'white'
+                    }} onClick={handleNewProfilePictureClick} onMouseEnter={() => setIsHovered(true)}
+                      onMouseLeave={() => setIsHovered(false)}>  <span style={{ marginRight: '8px' }}><HiOutlineUserAdd /></span>
+                      <span>New profile picture</span></MenuItem>
+
+                    <MenuItem style={{
+                      backgroundColor: '#08DA75',
+                      color: isHovered1 ? 'red' : 'white'
+                    }} onClick={handleRemoveProfilePicture} onMouseEnter={() => setIsHovered1(true)}
+                      onMouseLeave={() => setIsHovered1(false)}><span style={{ marginRight: '8px' }}><FaRegTrashAlt /></span>
+                      <span>Remove current picture</span></MenuItem>
+                  </Menu>
+                </div>
                 <input
                   id="imageInput"
                   type="file"
@@ -652,12 +671,12 @@ export default function DoctorForm()
               <div className="mx-2 p-5" style={{ border: "1px solid #08DA75", height: "20%" }}>
                 {/* Row1 */}
 
-                <div className="display">
+                <div className="display" >
 
-                  <div style={{ display: "flex", flexDirection: "row" }}>
+                  <div style={{ display: "flex", flexDirection: isTab ? 'column' : "row" }}>
 
 
-                    <span style={{ width: '35%', marginRight: 30 }}>
+                    <span style={{ display: "flex", flexDirection: isTab ? 'column' : "row", width: isTab ? '90%' : '35%', marginRight: 30 }}>
                       <label
                         className="mx-2 mb-2"
                         htmlFor="houseNo"
@@ -675,11 +694,11 @@ export default function DoctorForm()
                         id="houseNo"
                         name="houseNo"
                         onChange={handleChange}
-                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab2 ? '30%' : '60%' }}
+                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '100%' : '60%' }}
                       />
                     </span>
 
-                    <span style={{ width: '40%', marginRight: 10 }}>
+                    <span style={{ width: isTab ? '90%' : '35%', marginRight: 10 }}>
                       <label
                         className="mx-2 mb-2"
                         htmlFor="floor"
@@ -699,13 +718,13 @@ export default function DoctorForm()
                         name="floor"
                         onChange={handleChange}
                         style={{
-                          border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab2 ? '30%' : '70%'
+                          border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '100%' : '70%'
                         }}
                       />
                     </span>
 
 
-                    <span style={{ width: '35%' }}>
+                    <span style={{ width: isTab ? '90%' : '35%' }}>
                       <label
                         className="mx-2"
                         htmlFor="block"
@@ -724,7 +743,7 @@ export default function DoctorForm()
                         id="block"
                         name="block"
                         onChange={handleChange}
-                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab2 ? '30%' : '70%' }}
+                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '100%' : '70%' }}
                       />
 
                     </span>
@@ -733,7 +752,7 @@ export default function DoctorForm()
                   </div>
 
 
-                  <div style={{ display: "flex", flexDirection: "row" }}>
+                  <div style={{ display: "flex", flexDirection: isTab ? 'column' : "row" }}>
 
                     <span style={{ width: "100%" }}>
                       <label
@@ -754,7 +773,7 @@ export default function DoctorForm()
                         id="area"
                         name="area"
                         onChange={handleChange}
-                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1%", width: '35%' }}
+                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1%", width: isTab ? '90%' : '35%' }}
                       />
 
 
@@ -777,7 +796,7 @@ export default function DoctorForm()
                         id="pinCode"
                         name="pinCode"
                         onChange={handleChange}
-                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '22%' : '35%' }}
+                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '90%' : '35%' }}
                       />
 
                     </span>
@@ -788,7 +807,7 @@ export default function DoctorForm()
                 </div>
 
                 <div>
-                  <span style={{ width: '100%', display: "flex", flexDirection: "row" }}>
+                  <span style={{ width: '100%', display: "flex", flexDirection: isTab ? 'column' : "row" }}>
                     <label
                       className="mx-2 mb-2"
                       htmlFor="district"
@@ -807,7 +826,7 @@ export default function DoctorForm()
                       id="district"
                       name="district"
                       onChange={handleChange}
-                      style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab2 ? "31%" : "35%" }}
+                      style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? "90%" : "35%" }}
                     />
                     <label
                       className="mx-2 mb-2"
@@ -828,7 +847,7 @@ export default function DoctorForm()
                       id="state"
                       name="state"
                       onChange={handleChange}
-                      style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: '35%' }}
+                      style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '90%' : '35%' }}
                     />
                   </span>
                 </div>
