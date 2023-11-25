@@ -4,6 +4,9 @@ import Header from "./header";
 import DoctorSidebar from "./doctorSidebar";
 import { Modal } from 'react-responsive-modal';
 import { useNavigate } from "react-router-dom";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+import { ImCancelCircle } from "react-icons/im";
+
 
 export default function AppointmentList()
 {
@@ -130,13 +133,20 @@ export default function AppointmentList()
     box-border"
             >
                 <DoctorSidebar></DoctorSidebar>
-                <Modal open={modalOpen} onClose={onCloseModal} center>
-                    <div className="flex flex-col items-center w-[100%] md:w-[100%] mt-[2%]" style={{ borderRadius: "5px", backgroundColor: '#08DA75' }}>
-                        <text className="ml-4 text-center mt-4" style={{ fontSize: "18px", fontWeight: 600, lineHeight: "28.8px", fontFamily: "Lato, sans-serif", color: '#FFFFFF' }}>
+
+                <Modal open={modalOpen} onClose={onCloseModal} styles={{
+                    modal: {
+                        background: 'transparent', // Makes modal background transparent
+                        boxShadow: 'none',        // Removes shadow or border effects
+                        // Any other styles to override default modal styles
+                    }
+                }} center>
+                    <div className="flex flex-col items-center w-[100%] md:w-[100%]" style={{ border: 'none', borderRadius: "5px", backgroundColor: '#08DA75' }}>
+                        <text className="ml-4 text-center mt-4" style={{ marginBottom: -20, fontSize: "40px", fontWeight: 700, lineHeight: "28.8px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', height: '100px', width: '370px', display: "flex", alignItems: "center", justifyContent: "center" }}>
                             {modalContent} {selectedPatient}
                         </text>
-                        <text className="ml-4 text-center mt-4" style={{ fontSize: "12px", fontWeight: 400, lineHeight: "24px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', marginBottom: "2%" }}>
-                            {/* Your SVG or other content */}
+                        <text className="ml-4 text-center" style={{ fontSize: "60px", fontWeight: 800, lineHeight: "24px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', marginBottom: "7%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            {modalContent === 'Accepted' ? <IoIosCheckmarkCircleOutline /> : <ImCancelCircle />}
                         </text>
                     </div>
                 </Modal>
