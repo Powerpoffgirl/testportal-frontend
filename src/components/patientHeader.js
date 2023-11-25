@@ -11,7 +11,8 @@ export default function PatientHeader({
   line1,
   line2,
   isAdd,
-}) {
+})
+{
   const threeDots = `<svg width="25" height="14" viewBox="0 0 25 14" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M1 1L24 0.999998" stroke="black" stroke-width="2" stroke-linecap="round"/>
   <path d="M1 13L24 13" stroke="black" stroke-width="2" stroke-linecap="round"/>
@@ -33,18 +34,23 @@ export default function PatientHeader({
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
-  const handleDoctorForm = () => {
+  const handleDoctorForm = () =>
+  {
     navigate("/patientform");
   };
 
-  const handleToggleSidebar = () => {
+  const handleToggleSidebar = () =>
+  {
     dispatch(toggleSidebar());
   };
 
   // Find doctor API call
-  useEffect(() => {
-    const fetchDoctorDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchDoctorDetails = async () =>
+    {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
           method: "GET",
           headers: {
@@ -59,14 +65,16 @@ export default function PatientHeader({
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleSearchTerm = (e) => {
+  const handleSearchTerm = (e) =>
+  {
     setSearchTerm(e.target.value);
   };
 

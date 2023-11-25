@@ -140,7 +140,7 @@ export default function PatientList()
                                                 <button
                                                     style={{
                                                         width: !isTab ? "111px" : "73px",
-                                                        height: "45px",
+                                                        height: !isTab ? "45px" : '30px',
                                                         borderRadius: "35px",
                                                         backgroundColor: "#EF5F5F",
                                                         color: "white",
@@ -155,7 +155,7 @@ export default function PatientList()
                                                 <button
                                                     style={{
                                                         width: !isTab ? "111px" : "73px",
-                                                        height: "45px",
+                                                        height: !isTab ? "45px" : '30px',
                                                         borderRadius: "35px",
                                                         backgroundColor: "#08DA75",
                                                         color: "white",

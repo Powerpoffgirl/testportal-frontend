@@ -881,3 +881,95 @@ export default function DoctorForm()
     </>
   );
 }
+
+
+
+// import React from "react";
+// // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// // import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+// import AdminHeader from "./adminHeader";
+// import AdminSidebar from "./adminSidebar";
+
+// export default function DoctorForm()
+// {
+//   return (
+//     <>
+//       <div className="flex flex-row">
+//         <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
+
+//           <AdminSidebar />
+//         </div>
+//         <div className="md:ml-[337px] md:pl-3 w-full">
+//           <AdminHeader line1="Edit" line2="Profile" />
+//           <div className="mt-6 p-2">
+//             <div className="flex  flex-col items-center justify-center w-full">
+//               <img className="object-cover w-16 h-16 rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="" />
+//               <div className="relative group">
+//                 <div className="cursor-pointer">Edit Profile Picture</div>
+//                 <div className="absolute left-0 right-0 bg-[#08DA75] rounded-sm text-black cursor-pointer w-auto min-w-max drop-shadow-2xl py-2 hidden group-hover:block">
+//                   <div className="flex flex-col items-start">
+//                     <div className="hover:underline px-2 w-full text-white font-semibold">
+//                       {/* <FontAwesomeIcon className="mr-2" icon={faPlus} /> */}
+//                       New Profile Picture</div>
+//                     <div className="hover:underline px-2 w-full text-red-900 font-semibold">
+//                       {/* <FontAwesomeIcon className="mr-1" icon={faTrash} /> */}
+//                       Remove Current Picture</div>
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//             <div class="grid grid-cols-1 w-full gap-4">
+//               <div>
+//                 <label for="name" class="block text-black text-lg font-semibold">Name</label>
+//                 <input type="text" placeholder="Smita Singh" class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+//               </div>
+//               <div>
+//                 <label for="email" class="block text-black text-lg font-semibold">Email</label>
+//                 <input type="email" placeholder="smitasingh1234@gmail.com" class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+//               </div>
+//               <div>
+//                 <label for="contact" class="block text-black text-lg font-semibold">Contact Number</label>
+//                 <input type="number" placeholder="+91-8603678852" class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+//               </div>
+//               <div class="p-3 pb-5 border border-[#08DA75]">
+//                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
+//                   <div class="px-2 w-full sm:w-1/3">
+//                     <label for="houseNo" class="block text-black text-lg font-semibold">House No</label>
+//                     <input type="text" id="houseNo" placeholder="1234" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+//                   </div>
+//                   <div class="px-2 w-full sm:w-1/3">
+//                     <label for="floor" class="block text-black text-lg font-semibold">Floor</label>
+//                     <input type="text" id="floor" placeholder="2nd" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+//                   </div>
+//                   <div class="px-2 w-full sm:w-1/3">
+//                     <label for="block" class="block text-black text-lg font-semibold">Block</label>
+//                     <input type="text" id="block" placeholder="A" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+//                   </div>
+//                   <div class="px-2 w-full sm:w-1/2">
+//                     <label for="area" class="block text-black text-lg font-semibold">Area</label>
+//                     <input type="text" id="area" placeholder="Green Park" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+//                   </div>
+//                   <div class="px-2 w-full sm:w-1/2">
+//                     <label for="pincode" class="block text-black text-lg font-semibold">Pincode</label>
+//                     <input type="text" id="pincode" placeholder="110016" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+//                   </div>
+//                   <div class="px-2 w-full sm:w-1/2">
+//                     <label for="district" class="block text-black text-lg font-semibold">District</label>
+//                     <input type="text" id="district" placeholder="South Delhi" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+//                   </div>
+//                   <div class="px-2 w-full sm:w-1/2">
+//                     <label for="state" class="block text-black text-lg font-semibold">State</label>
+//                     <input type="text" id="state" placeholder="Delhi" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
+//                   </div>
+//                 </div>
+//               </div>
+//             </div>
+//             <div className="mt-10 w-100 items-center justify-center text-center">
+//               <button className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white">Process</button>
+//             </div>
+//           </div>
+//         </div>
+//       </div>
+//     </>
+//   );
+// }
