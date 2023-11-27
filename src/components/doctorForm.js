@@ -1,26 +1,23 @@
 import React, { useRef, useState } from "react";
-import { useMediaQuery } from "react-responsive";
-import Sidebar from "./sidebar";
-import Header from "./header";
-import AdminHeader from "./adminHeader"
-import { useNavigate } from "react-router-dom";
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import DoctorSidebar from "./doctorSidebar";
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import AdminHeader from "./adminHeader";
 import AdminSidebar from "./adminSidebar";
+import { useNavigate } from "react-router-dom";
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-export default function DoctorForm()
+export default function DoctorForm1()
 {
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-  let isTab2 = useMediaQuery({ query: "(max-width: 425px)" });
-  const navigate = useNavigate()
-  const baseUrl = process.env.REACT_APP_BASE_URL
+  const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
-  const submitRef = useRef(null)
+
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+
   const [doctorDetails, setDoctorDetails] = useState({
     name: "",
     email: "",
@@ -28,7 +25,7 @@ export default function DoctorForm()
     workingDays: [],
     workingHours: {
       workHourFrom: "",
-      workHourTo: ""
+      workHourTo: "",
     },
     totalExperience: "",
     speciality: "",
@@ -40,32 +37,96 @@ export default function DoctorForm()
       area: "",
       pinCode: "",
       district: "",
-      state: ""
+      state: "",
     },
-    doctorPic: ""
-  })
+    doctorPic: "",
+  });
+  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered1, setIsHovered1] = useState(false);
 
-  // const handleFileSelect = async (event) =>
-  // {
-  //     const file = event.target.files[0];
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
 
-  //     console.log("FILE", file)
-  //     const response = await fetch(
-  //         `${baseUrl}/api/v1/upload_image`,
-  //         {
-  //             method: "post",
-  //             headers: {
-  //                 "Content-Type": "form-data",
-  //             },
-  //             body: file
-  //         }
-  //     );
+  const handleClick = (event) =>
+  {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleClose = () =>
+  {
+    setAnchorEl(null);
+  };
 
-  //     const data = await response.json();
-  //     console.log("DATA", data)
+  const handleFileSelect = (event) =>
+  {
+    const file = event.target.files[0];
+    if (file)
+    {
+      setSelectedFile(file);
+    }
+  };
 
-  // };
+  const handleNewProfilePictureClick = async () =>
+  {
+    // This will trigger the hidden file input to open the file dialog
+    await fileInputRef.current.click();
+    handleNewProfilePicture();
+  };
+
+  const handleNewProfilePicture = async () =>
+  {
+    const token = localStorage.getItem("token");
+    const doctorId = localStorage.getItem("doctorId");
+
+    if (!token || !doctorId)
+    {
+      console.error("Token or doctor ID not found in local storage");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("doctorPic", selectedFile);
+
+    console.log("FORM DATA", formData);
+    try
+    {
+      const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+        method: "POST",
+        headers: {
+          "x-auth-token": token,
+        },
+        body: formData,
+      });
+
+      if (!response.ok)
+      {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Image uploaded successfully:", data);
+      setDoctorDetails((prevDoctorDetails) => ({
+        ...prevDoctorDetails,
+        doctorPic: data.profilePicImageUrl,
+      }));
+
+      alert("Image uploaded successfully.");
+
+      // Reset the file input
+      setSelectedFile(null);
+      fileInputRef.current.value = "";
+    } catch (error)
+    {
+      console.error("Error uploading image:", error);
+      alert("Error uploading image. Please try again.");
+    }
+  };
+
+  // Function to handle profile picture removal
+  const handleRemoveProfilePicture = () =>
+  {
+    handleClose();
+  };
 
   const Daysdropdown = [
     { label: "Select Days", value: "" },
@@ -77,7 +138,6 @@ export default function DoctorForm()
     { label: "Saturday", value: "Saturday" },
     { label: "Sunday", value: "Sunday" },
   ];
-
   const IndianDoctorSpecialties = [
     "General Medicine",
     "Cardiology",
@@ -128,110 +188,21 @@ export default function DoctorForm()
     "Reproductive Medicine",
     "Neonatology",
     "Allergy and Immunology",
-    "Audiology and Speech Therapy"
+    "Audiology and Speech Therapy",
   ];
 
-  const SpecialtiesDropdown = IndianDoctorSpecialties.map(specialty => ({
+  const SpecialtiesDropdown = IndianDoctorSpecialties.map((specialty) => ({
     label: specialty,
-    value: specialty
+    value: specialty,
   }));
-
-  const [isHovered, setIsHovered] = useState(false);
-  const [isHovered1, setIsHovered1] = useState(false);
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event) =>
-  {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () =>
-  {
-    setAnchorEl(null);
-  };
-
-  const handleFileSelect = (event) =>
-  {
-    const file = event.target.files[0];
-    if (file)
-    {
-      setSelectedFile(file);
-    }
-  };
-
-  const handleNewProfilePictureClick = async () =>
-  {
-    // This will trigger the hidden file input to open the file dialog
-    await fileInputRef.current.click();
-    handleNewProfilePicture()
-  };
-
-  const handleNewProfilePicture = async () =>
-  {
-    const token = localStorage.getItem('token');
-    const doctorId = localStorage.getItem('doctorId');
-
-    if (!token || !doctorId)
-    {
-      console.error('Token or doctor ID not found in local storage');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('doctorPic', selectedFile);
-
-    console.log("FORM DATA", formData)
-    try
-    {
-      const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
-        method: 'POST',
-        headers: {
-          'x-auth-token': token,
-        },
-        body: formData,
-      });
-
-      if (!response.ok)
-      {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('Image uploaded successfully:', data);
-      setDoctorDetails(prevDoctorDetails => ({
-        ...prevDoctorDetails,
-        doctorPic: data.profilePicImageUrl
-      }));
-
-      alert('Image uploaded successfully.');
-
-      // Reset the file input
-      setSelectedFile(null);
-      fileInputRef.current.value = '';
-    } catch (error)
-    {
-      console.error('Error uploading image:', error);
-      alert('Error uploading image. Please try again.');
-    }
-  };
-
-  // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
-    // Logic to handle removing the current profile picture
-    handleClose();
-  };
-
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
     ...Array.from({ length: 24 }, (v, i) =>
     {
-      const hour = i.toString().padStart(2, '0');
+      const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
-    })
+    }),
   ];
 
   const handleChange = (e) =>
@@ -240,39 +211,46 @@ export default function DoctorForm()
 
     if (name === "workingDays")
     {
-      setDoctorDetails(prevDoctorDetails => ({
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingDays: [...prevDoctorDetails.workingDays, value],
       }));
     } else if (name === "workHourFrom" || name === "workHourTo")
     {
-      setDoctorDetails(prevDoctorDetails => ({
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
           ...prevDoctorDetails.workingHours,
           [name]: value,
-        }
+        },
       }));
-    } else if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
+    } else if (
+      [
+        "houseNo",
+        "floor",
+        "block",
+        "area",
+        "pinCode",
+        "district",
+        "state",
+      ].includes(name)
+    )
     {
-      setDoctorDetails(prevDoctorDetails => ({
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
           ...prevDoctorDetails.address,
-          [name]: value
-        }
+          [name]: value,
+        },
       }));
     } else
     {
-      setDoctorDetails(prevDoctorDetails => ({
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
-        [name]: value
+        [name]: value,
       }));
     }
-  }
-
-
-
+  };
   const handleRegister = async (e) =>
   {
     e.preventDefault();
@@ -283,238 +261,225 @@ export default function DoctorForm()
       console.error("No token found in local storage");
       return;
     }
-    const response = await fetch(
-      `${baseUrl}/api/v1/admin/register_doctor`,
-      {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(doctorDetails)
-      }
-    );
+    const response = await fetch(`${baseUrl}/api/v1/admin/register_doctor`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+      body: JSON.stringify(doctorDetails),
+    });
     const data = await response.json();
     if (data.success === true)
     {
       navigate("/otp", {
-        state: { contactNumber: doctorDetails.contactNumber }
-      })
-      localStorage.setItem("id", data.data._id)
+        state: { contactNumber: doctorDetails.contactNumber },
+      });
+      localStorage.setItem("id", data.data._id);
     }
-    console.log("DATA from response", data)
-  }
+    console.log("DATA from response", data);
+  };
 
   const handleDelete = (workingDay) =>
   {
     console.log("delete", workingDay);
-    const days = doctorDetails.workingDays.filter(doctorDetail => doctorDetail !== workingDay);
+    const days = doctorDetails.workingDays.filter(
+      (doctorDetail) => doctorDetail !== workingDay
+    );
 
     // Assuming you want to update the doctorDetails state after filtering
     setDoctorDetails({
       ...doctorDetails,
-      workingDays: days
+      workingDays: days,
     });
-  }
+  };
 
-  console.log("DOCTOR DETAILS", doctorDetails)
+  console.log("DOCTOR DETAILS", doctorDetails);
 
   return (
     <>
-      <div
-        className="flex min-h-screen relative overflow-auto 
-    box-border"
-      >
-        <AdminSidebar></AdminSidebar>
-        <div
-          className="flex flex-col bg-customGreen"
-          style={{
-            width: isTab ? "100%" : "77%",
-          }}
-        >
-          <AdminHeader line1="Doctor’s" line2="Detail"></AdminHeader>
-
-          <div
-            className="scrollable-content"
-            style={{
-              overflow: isTab ? "auto" : "auto",
-              maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
-              padding: "10px",
-            }}
-          >
-            <form
-              className="flex flex-col gap-2 px-3 w-full"
-              style={{
-                top: "4%",
-                left: "2%",
-                position: "relative",
-                overflow: "hidden",
-                justifyContent: "center",
-              }}
-            >
-
-              <div style={{ display: "flex", flexDirection: "column", marginLeft: "40%" }}>
-                <div style={{ backgroundColor: "#FFFFFF", width: "90px", height: "90px", borderRadius: "50%", alignItems: "center", display: "flex", flexDirection: "row", justifyContent: "space-evenly", color: "#A4A4A4" }}>
-                  {
-                    doctorDetails?.doctorPic ? (
+      <div className="flex flex-row">
+        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
+          <AdminSidebar />
+        </div>
+        <div className="md:ml-[337px] md:pl-3 w-full">
+          <AdminHeader line1="Edit" line2="Profile" />
+          <div className="mt-6 p-2">
+            <div className="flex  flex-col items-center justify-center w-full">
+              <div className="cursor-pointer">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#FFFFFF",
+                      width: "90px",
+                      height: "90px",
+                      borderRadius: "50%",
+                      alignItems: "center",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                      color: "#A4A4A4",
+                    }}
+                  >
+                    {doctorDetails?.doctorPic ? (
                       <img
                         src={doctorDetails.doctorPic}
                         alt="Avatar"
                         style={{
                           borderRadius: "50%",
-                          height: isTab ? "40px" : "81px",
-                          width: isTab ? "40px" : "81px",
                         }}
                       />
                     ) : (
-                      <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
-                    )
-                  }
-
-                </div>
-                <p
-                  aria-controls="profile-pic-menu"
-                  aria-haspopup="true"
-                  aria-expanded={open ? 'true' : undefined}
-                  onClick={handleClick}
-                  style={{ cursor: 'pointer' }} // Add a pointer cursor to indicate clickable
-                >
-                  Edit profile pic
-                </p>
-                <div style={{ backgroundColor: '#08DA75' }} >
-                  <Menu
-                    id="profile-pic-menu"
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={handleClose}
-                    MenuListProps={{
-                      'aria-labelledby': 'edit-profile-pic-text',
-                      style: { backgroundColor: '#08DA75' } // Set background color for the whole menu
-                    }}
-
+                      <PermIdentityOutlinedIcon
+                        style={{ width: "70px", height: "70px" }}
+                      />
+                    )}
+                  </div>
+                  <p
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                    style={{ cursor: "pointer" }} // Add a pointer cursor to indicate clickable
                   >
-                    <MenuItem style={{
-                      backgroundColor: '#08DA75',
-                      color: isHovered ? 'red' : 'white'
-                    }} onClick={handleNewProfilePictureClick} onMouseEnter={() => setIsHovered(true)}
-                      onMouseLeave={() => setIsHovered(false)}>  <span style={{ marginRight: '8px' }}><HiOutlineUserAdd /></span>
-                      <span>New profile picture</span></MenuItem>
+                    Edit profile pic
+                  </p>
+                  <div style={{ backgroundColor: "#08DA75" }}>
+                    <Menu
+                      id="profile-pic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        "aria-labelledby": "edit-profile-pic-text",
+                        style: { backgroundColor: "#08DA75" }, // Set background color for the whole menu
+                      }}
+                    >
+                      <MenuItem
+                        style={{
+                          backgroundColor: "#08DA75",
+                          color: isHovered ? "red" : "white",
+                        }}
+                        onClick={handleNewProfilePictureClick}
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                      >
+                        {" "}
+                        <span style={{ marginRight: "8px" }}>
+                          <HiOutlineUserAdd />
+                        </span>
+                        <span>New profile picture</span>
+                      </MenuItem>
 
-                    <MenuItem style={{
-                      backgroundColor: '#08DA75',
-                      color: isHovered1 ? 'red' : 'white'
-                    }} onClick={handleRemoveProfilePicture} onMouseEnter={() => setIsHovered1(true)}
-                      onMouseLeave={() => setIsHovered1(false)}><span style={{ marginRight: '8px' }}><FaRegTrashAlt /></span>
-                      <span>Remove current picture</span></MenuItem>
-                  </Menu>
+                      <MenuItem
+                        style={{
+                          backgroundColor: "#08DA75",
+                          color: isHovered1 ? "red" : "white",
+                        }}
+                        onClick={handleRemoveProfilePicture}
+                        onMouseEnter={() => setIsHovered1(true)}
+                        onMouseLeave={() => setIsHovered1(false)}
+                      >
+                        <span style={{ marginRight: "8px" }}>
+                          <FaRegTrashAlt />
+                        </span>
+                        <span>Remove current picture</span>
+                      </MenuItem>
+                    </Menu>
+                  </div>
+                  <input
+                    id="imageInput"
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                  />
                 </div>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 w-full gap-4">
+              <div>
+                <label
+                  for="name"
+                  class="block text-black text-lg font-semibold"
+                >
+                  Dr. Name
+                </label>
                 <input
-                  id="imageInput"
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: 'none' }}
-                  accept="image/*"
-                  onChange={handleFileSelect}
+                  type="text"
+                  placeholder="Smita Singh"
+                  id="name"
+                  name="name"
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
-
+              </div>
+              <div>
+                <label
+                  for="email"
+                  class="block text-black text-lg font-semibold"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  placeholder="smitasingh1234@gmail.com"
+                  id="email"
+                  name="email"
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                />
+              </div>
+              <div>
+                <label
+                  for="contact"
+                  class="block text-black text-lg font-semibold"
+                >
+                  Contact Number
+                </label>
+                <input
+                  type="number"
+                  placeholder="+91-8603678852"
+                  id="contactNumber"
+                  name="contactNumber"
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                />
               </div>
 
-
-
-              {/* 1st Row */}
-
-              <label
-                className="mx-2"
-                htmlFor="name"
-                style={{
-                  fontWeight: 400,
-                  fontSize: "20px",
-                  fontFamily: "Lato, sans-serif",
-                }}
-              >
-                Dr. Name
-              </label>
-              <input
-                className="mx-2"
-                type="text"
-                id="name"
-                name="name"
-                onChange={handleChange}
-                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-              />
-              {/* 1st Row */}
-
-              {/* 1st Row */}
-
-              <label
-                className="mx-2"
-                htmlFor="email"
-                style={{
-                  fontWeight: 400,
-                  fontSize: "20px",
-                  fontFamily: "Lato, sans-serif",
-                }}
-              >
-                Email
-              </label>
-              <input
-                className="mx-2"
-                type="text"
-                id="email"
-                name="email"
-                onChange={handleChange}
-                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-              />
-              {/* 1st Row */}
-
-              {/* 1st Row */}
-
-              <label
-                className="mx-2"
-                htmlFor="contactNumber"
-                style={{
-                  fontWeight: 400,
-                  fontSize: "20px",
-                  fontFamily: "Lato, sans-serif",
-                }}
-              >
-                Contact Number
-              </label>
-              <input
-                className="mx-2"
-                type="text"
-                id="contactNumber"
-                name="contactNumber"
-                onChange={handleChange}
-                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-              />
-              {/* 1st Row */}
-
-              {/* 2nd Row */}
-
-              <div className="flex flex-col md:flex-row justify-between">
-                <span className="flex flex-col w-[100%] md:w-[50%]">
+              <div className="flex justify-between space-x-4">
+                <div className="flex-1">
                   <label
-                    className="mx-2"
                     htmlFor="workingDays"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: "20px",
-                      fontFamily: "Lato, sans-serif",
-                    }}
+                    className="block text-black text-lg font-semibold"
                   >
                     Working Days
                   </label>
-                  <div style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between", marginLeft: "1.5%", marginRight: "1.5%", backgroundColor: "white" }}>
-                    <span style={{ display: "flex", margin: "5px 2px 5px 10px", padding: "2px 5px 5px 5px" }}>
-                      {
-                        doctorDetails?.workingDays.map((workingDay) => (
-                          <div className="breadcrumb-chip" key={workingDay} style={{ marginRight: "8px", height: "26px", padding: "0px 5px 0px 5px", backgroundColor: "#E4FFF2", borderRadius: "5%", }} onClick={() => handleDelete(workingDay)}>
-                            {workingDay.slice(0, 3) + " X "}
-                          </div>
-                        ))
-                      }
-
+                  <div className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+                    <span className="flex">
+                      {doctorDetails?.workingDays.map((workingDay) => (
+                        <div
+                          className="breadcrumb-chip"
+                          key={workingDay}
+                          style={{
+                            marginRight: "8px",
+                            height: "26px",
+                            padding: "0px 5px 0px 5px",
+                            backgroundColor: "#E4FFF2",
+                            borderRadius: "5%",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => handleDelete(workingDay)}
+                        >
+                          {workingDay.slice(0, 3) + " X "}
+                        </div>
+                      ))}
                     </span>
                     <select
                       className="mx-5"
@@ -522,7 +487,6 @@ export default function DoctorForm()
                       id="workingDays"
                       name="workingDays"
                       onChange={handleChange}
-                      style={{ backgroundColor: "#E4FFF2", height: "30px", alignItems: "center", marginTop: "1%", marginBottom: "1%" }}
                     >
                       {Daysdropdown.map((option) => (
                         <option key={option.value} value={option.value}>
@@ -530,446 +494,226 @@ export default function DoctorForm()
                         </option>
                       ))}
                     </select>
-
                   </div>
-                </span>
+                </div>
 
-                <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "6%" }}>
-                  <label
-                    className="mx-2"
-                    htmlFor="workingHours"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: "20px",
-                      fontFamily: "Lato, sans-serif",
-                      marginLeft: isTab2 ? -10 : null
-                    }}
-                  >
+                <div className="flex-1" style={{ marginRight: "10px" }}>
+                  <label className="block text-black text-lg font-semibold">
                     Working Hours
                   </label>
-                  <span style={{ display: "flex", flexDirection: "row", alignItems: 'center', gap: "4%" }}>
-                    <select
-                      className="mx-2"
-                      name="workHourFrom"
-                      onChange={handleChange}
-                      style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: isTab2 ? "5.5%" : "10.5%", paddingRight: "10.5%", marginLeft: isTab2 ? -18 : null }}
-                    >
-                      {TimeDropdown.map(time => (
-                        <option key={time.value} value={time.value}>{time.label}</option>
-                      ))}
-                    </select>
-                    <div style={{
-                      fontWeight: 400,
-                      fontSize: "20px",
-                      fontFamily: "Lato, sans-serif",
-                    }}>To</div>
-                    <select
-                      className="mx-2"
-                      name="workHourTo"
-                      onChange={handleChange}
-                      style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: isTab2 ? "5.5%" : "10.5%", paddingRight: "10.5%", marginLeft: isTab2 ? -5 : null, width: isTab2 ? '35%' : null }}
-                    >
-                      {TimeDropdown.map(time => (
-                        <option key={time.value} value={time.value}>{time.label}</option>
-                      ))}
-                    </select>
-                  </span>
-                </span>
+                  <div className="flex space-x-2">
+                    <div className="flex-1">
+                      <select
+                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        name="workHourFrom"
+                        onChange={handleChange}
+                      >
+                        {TimeDropdown.map((time) => (
+                          <option key={time.value} value={time.value}>
+                            {time.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
 
+                    <div className="flex-1">
+                      <select
+                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        name="workHourTo"
+                        onChange={handleChange}
+                      >
+                        {TimeDropdown.map((time) => (
+                          <option key={time.value} value={time.value}>
+                            {time.label}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </div>
+                </div>
               </div>
-
-              {/* 2nd Row */}
-
-              {/* 2nd Row */}
-
-              <div className="flex flex-col md:flex-row justify-between">
-                <span className="flex flex-col w-[100%] md:w-[50%]">
+              <div class="flex justify-between space-x-4">
+                <div class="flex-1">
                   <label
-                    className="mx-2"
-                    htmlFor="totalExperience"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: "20px",
-                      fontFamily: "Lato, sans-serif",
-                    }}
+                    for="total-experience"
+                    class="block text-black text-lg font-semibold"
                   >
                     Total Experience
                   </label>
                   <input
-                    className="mx-2"
-                    type="number"
-                    id="totalExperience"
+                    type="text"
+                    id="total-experience"
                     name="totalExperience"
                     onChange={handleChange}
-                    style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", marginRight: 2 }}
+                    class="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
-                </span>
-                <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "7%" }}>
+                </div>
+                <div class="flex-1" style={{ marginRight: "10px" }}>
                   <label
-                    className="mx-2"
-                    htmlFor="speciality"
-                    style={{
-                      fontWeight: 400,
-                      fontSize: "20px",
-                      fontFamily: "Lato, sans-serif",
-                      marginLeft: isTab2 ? -13 : null
-                    }}
+                    for="specialist"
+                    class="block text-black text-lg font-semibold"
                   >
-                    Specialty
+                    Specialist
                   </label>
                   <select
+                    className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     id="speciality"
                     name="speciality"
                     onChange={handleChange}
-                    style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", marginRight: 5, marginLeft: isTab2 ? -16 : null, width: isTab2 ? '97%' : null }}
+
                   >
                     {SpecialtiesDropdown.map(({ label, value }) => (
-                      <option key={value} value={value}>{label}</option>
+                      <option key={value} value={value}>
+                        {label}
+                      </option>
                     ))}
                   </select>
-                </span>
-
+                </div>
               </div>
 
-              {/* 2nd Row */}
-
-              {/* 4th Row */}
-
-              <label
-                className="mx-2"
-                htmlFor="degree"
-                style={{
-                  fontWeight: 400,
-                  fontSize: "20px",
-                  fontFamily: "Lato, sans-serif",
-                }}
-              >
-                Degree
-              </label>
-              <input
-                className="mx-2"
-                type="text"
-                id="degree"
-                name="degree"
-                onChange={handleChange}
-                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-              />
-              {/* 4th Row */}
-              {/* 5th Row */}
-
-              <label
-                className="mx-2"
-                htmlFor="address"
-                style={{
-                  fontWeight: 400,
-                  fontSize: "20px",
-                  fontFamily: "Lato, sans-serif",
-                }}
-              >
-                Address
-              </label>
-              <div className="mx-2 p-5" style={{ border: "1px solid #08DA75", height: "20%" }}>
-                {/* Row1 */}
-
-                <div className="display" >
-
-                  <div style={{ display: "flex", flexDirection: isTab ? 'column' : "row" }}>
-
-
-                    <span style={{ display: "flex", flexDirection: isTab ? 'column' : "row", width: isTab ? '90%' : '35%', marginRight: 30 }}>
-                      <label
-                        className="mx-2 mb-2"
-                        htmlFor="houseNo"
-                        style={{
-                          fontWeight: 400,
-                          fontSize: isTab ? "15px" : "20px",
-                          fontFamily: "Lato, sans-serif",
-                        }}
-                      >
-                        House No.
-                      </label>
-                      <input
-                        className="mx-2 mb-2"
-                        type="number"
-                        id="houseNo"
-                        name="houseNo"
-                        onChange={handleChange}
-                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '100%' : '60%' }}
-                      />
-                    </span>
-
-                    <span style={{ width: isTab ? '90%' : '35%', marginRight: 10 }}>
-                      <label
-                        className="mx-2 mb-2"
-                        htmlFor="floor"
-                        style={{
-                          fontWeight: 400,
-                          fontSize: isTab ? "15px" : "20px",
-                          fontFamily: "Lato, sans-serif",
-                          marginRight: isTab2 ? 58 : null
-                        }}
-                      >
-                        Floor
-                      </label>
-                      <input
-                        className="mx-2 mb-2"
-                        type="text"
-                        id="floor"
-                        name="floor"
-                        onChange={handleChange}
-                        style={{
-                          border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '100%' : '70%'
-                        }}
-                      />
-                    </span>
-
-
-                    <span style={{ width: isTab ? '90%' : '35%' }}>
-                      <label
-                        className="mx-2"
-                        htmlFor="block"
-                        style={{
-                          fontWeight: 400,
-                          fontSize: isTab ? "15px" : "20px",
-                          fontFamily: "Lato, sans-serif",
-
-                        }}
-                      >
-                        Block
-                      </label>
-                      <input
-                        className="mx-2 mb-2"
-                        type="text"
-                        id="block"
-                        name="block"
-                        onChange={handleChange}
-                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '100%' : '70%' }}
-                      />
-
-                    </span>
-
-
-                  </div>
-
-
-                  <div style={{ display: "flex", flexDirection: isTab ? 'column' : "row" }}>
-
-                    <span style={{ width: "100%" }}>
-                      <label
-                        className="mx-2"
-                        htmlFor="area"
-                        style={{
-                          fontWeight: 400,
-                          fontSize: isTab ? "15px" : "20px",
-                          fontFamily: "Lato, sans-serif",
-                          marginRight: isTab ? 10 : 60
-                        }}
-                      >
-                        Area
-                      </label>
-                      <input
-                        className="mx-2 mb-2"
-                        type="text"
-                        id="area"
-                        name="area"
-                        onChange={handleChange}
-                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1%", width: isTab ? '90%' : '35%' }}
-                      />
-
-
-                      <label
-                        className="mx-2 mb-2"
-                        htmlFor="pinCode"
-                        style={{
-                          fontWeight: 400,
-                          fontSize: isTab ? "15px" : "20px",
-                          fontFamily: "Lato, sans-serif",
-                          marginRight: isTab ? 5 : 25,
-                          marginLeft: isTab ? 10 : 50,
-                        }}
-                      >
-                        Pin Code
-                      </label>
-                      <input
-                        className="mx-2 mb-2"
-                        type="number"
-                        id="pinCode"
-                        name="pinCode"
-                        onChange={handleChange}
-                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '90%' : '35%' }}
-                      />
-
-                    </span>
-
-                  </div>
-
-
-                </div>
-
-                <div>
-                  <span style={{ width: '100%', display: "flex", flexDirection: isTab ? 'column' : "row" }}>
+              <div>
+                <label
+                  for="degree"
+                  class="block text-black text-lg font-semibold"
+                >
+                  Degree
+                </label>
+                <input
+                  type="text"
+                  id="degree"
+                  name="degree"
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                />
+              </div>
+              <div class="p-3 pb-5 border border-[#08DA75]">
+                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
+                  <div class="px-2 w-full sm:w-1/3">
                     <label
-                      className="mx-2 mb-2"
-                      htmlFor="district"
-                      style={{
-                        fontWeight: 400,
-                        fontSize: isTab ? "15px" : "20px",
-                        fontFamily: "Lato, sans-serif",
-                        marginRight: isTab ? 10 : 42
-                      }}
+                      for="houseNo"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      House No
+                    </label>
+                    <input
+                      type="text"
+                      id="houseNo"
+                      name="houseNo"
+                      onChange={handleChange}
+                      placeholder="1234"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/3">
+                    <label
+                      for="floor"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      Floor
+                    </label>
+                    <input
+                      type="text"
+                      id="floor"
+                      name="floor"
+                      onChange={handleChange}
+                      placeholder="2nd"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/3">
+                    <label
+                      for="block"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      Block
+                    </label>
+                    <input
+                      type="text"
+                      id="block"
+                      name="block"
+                      onChange={handleChange}
+                      placeholder="A"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
+                    <label
+                      for="area"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      Area
+                    </label>
+                    <input
+                      type="text"
+                      id="area"
+                      name="area"
+                      onChange={handleChange}
+                      placeholder="Green Park"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
+                    <label
+                      for="pincode"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      Pincode
+                    </label>
+                    <input
+                      type="text"
+                      id="pinCode"
+                      name="pinCode"
+                      onChange={handleChange}
+                      placeholder="110016"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
+                    <label
+                      for="district"
+                      class="block text-black text-lg font-semibold"
                     >
                       District
                     </label>
                     <input
-                      className="mx-2 mb-2"
                       type="text"
                       id="district"
                       name="district"
                       onChange={handleChange}
-                      style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? "90%" : "35%" }}
+                      placeholder="South Delhi"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
                     <label
-                      className="mx-2 mb-2"
-                      htmlFor="state"
-                      style={{
-                        fontWeight: 400,
-                        fontSize: isTab ? "15px" : "20px",
-                        fontFamily: "Lato, sans-serif",
-                        marginRight: isTab ? 10 : 60,
-                        marginLeft: isTab2 ? 7 : 50,
-                      }}
+                      for="state"
+                      class="block text-black text-lg font-semibold"
                     >
                       State
                     </label>
                     <input
-                      className="mx-2 mb-2"
                       type="text"
                       id="state"
                       name="state"
                       onChange={handleChange}
-                      style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%", width: isTab ? '90%' : '35%' }}
+                      placeholder="Delhi"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                  </span>
+                  </div>
                 </div>
               </div>
-
-              {/* 5th Row */}
-
-              <div className="flex justify-center my-5">
-                <button
-                  type="submit"
-                  style={{
-                    width: "159px",
-                    height: "45px",
-                    backgroundColor: "#08DA75",
-                    borderRadius: "43px",
-                    color: "white",
-                    fontWeight: 600,
-                    fontSize: "24px",
-                    lineHeight: "28.8px",
-                    fontFamily: "Lato, sans-serif",
-                  }}
-                  onClick={handleRegister}
-                >
-                  Process
-                </button>
-              </div>
-            </form>
+            </div>
+            <div className="mt-10 w-100 items-center justify-center text-center">
+              <button
+                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
+                onClick={handleRegister}
+              >
+                Process
+              </button>
+            </div>
           </div>
-        </div >
-      </div >
+        </div>
+      </div>
     </>
   );
 }
-
-
-
-// import React from "react";
-// // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// // import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
-// import AdminHeader from "./adminHeader";
-// import AdminSidebar from "./adminSidebar";
-
-// export default function DoctorForm()
-// {
-//   return (
-//     <>
-//       <div className="flex flex-row">
-//         <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
-
-//           <AdminSidebar />
-//         </div>
-//         <div className="md:ml-[337px] md:pl-3 w-full">
-//           <AdminHeader line1="Edit" line2="Profile" />
-//           <div className="mt-6 p-2">
-//             <div className="flex  flex-col items-center justify-center w-full">
-//               <img className="object-cover w-16 h-16 rounded-full" src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=764&h=764&q=100" alt="" />
-//               <div className="relative group">
-//                 <div className="cursor-pointer">Edit Profile Picture</div>
-//                 <div className="absolute left-0 right-0 bg-[#08DA75] rounded-sm text-black cursor-pointer w-auto min-w-max drop-shadow-2xl py-2 hidden group-hover:block">
-//                   <div className="flex flex-col items-start">
-//                     <div className="hover:underline px-2 w-full text-white font-semibold">
-//                       {/* <FontAwesomeIcon className="mr-2" icon={faPlus} /> */}
-//                       New Profile Picture</div>
-//                     <div className="hover:underline px-2 w-full text-red-900 font-semibold">
-//                       {/* <FontAwesomeIcon className="mr-1" icon={faTrash} /> */}
-//                       Remove Current Picture</div>
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//             <div class="grid grid-cols-1 w-full gap-4">
-//               <div>
-//                 <label for="name" class="block text-black text-lg font-semibold">Name</label>
-//                 <input type="text" placeholder="Smita Singh" class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
-//               </div>
-//               <div>
-//                 <label for="email" class="block text-black text-lg font-semibold">Email</label>
-//                 <input type="email" placeholder="smitasingh1234@gmail.com" class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
-//               </div>
-//               <div>
-//                 <label for="contact" class="block text-black text-lg font-semibold">Contact Number</label>
-//                 <input type="number" placeholder="+91-8603678852" class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
-//               </div>
-//               <div class="p-3 pb-5 border border-[#08DA75]">
-//                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-//                   <div class="px-2 w-full sm:w-1/3">
-//                     <label for="houseNo" class="block text-black text-lg font-semibold">House No</label>
-//                     <input type="text" id="houseNo" placeholder="1234" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
-//                   </div>
-//                   <div class="px-2 w-full sm:w-1/3">
-//                     <label for="floor" class="block text-black text-lg font-semibold">Floor</label>
-//                     <input type="text" id="floor" placeholder="2nd" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
-//                   </div>
-//                   <div class="px-2 w-full sm:w-1/3">
-//                     <label for="block" class="block text-black text-lg font-semibold">Block</label>
-//                     <input type="text" id="block" placeholder="A" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
-//                   </div>
-//                   <div class="px-2 w-full sm:w-1/2">
-//                     <label for="area" class="block text-black text-lg font-semibold">Area</label>
-//                     <input type="text" id="area" placeholder="Green Park" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
-//                   </div>
-//                   <div class="px-2 w-full sm:w-1/2">
-//                     <label for="pincode" class="block text-black text-lg font-semibold">Pincode</label>
-//                     <input type="text" id="pincode" placeholder="110016" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
-//                   </div>
-//                   <div class="px-2 w-full sm:w-1/2">
-//                     <label for="district" class="block text-black text-lg font-semibold">District</label>
-//                     <input type="text" id="district" placeholder="South Delhi" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
-//                   </div>
-//                   <div class="px-2 w-full sm:w-1/2">
-//                     <label for="state" class="block text-black text-lg font-semibold">State</label>
-//                     <input type="text" id="state" placeholder="Delhi" class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40" />
-//                   </div>
-//                 </div>
-//               </div>
-//             </div>
-//             <div className="mt-10 w-100 items-center justify-center text-center">
-//               <button className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white">Process</button>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </>
-//   );
-// }

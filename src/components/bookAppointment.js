@@ -460,32 +460,6 @@ export default function BookAppointment()
                                                 </option>
                                             ))}
                                         </select>
-                                        {/* <div className="autocomplete-container mx-5">
-                                            <input
-                                                type="text"
-                                                id="issues"
-                                                name="issues"
-                                                placeholder="Search issues..."
-                                                value={input}
-                                                onChange={handleInputChange}
-                                                onKeyPress={handleKeyPress}
-                                                style={{ width: '100%', padding: '8px' }}
-                                            />
-                                            {input && (
-                                                <div className="autocomplete-results" style={{ position: 'absolute', zIndex: 1000, backgroundColor: '#fff', width: '100%', border: '1px solid #ddd', borderTop: 'none' }}>
-                                                    {filteredSymptoms?.map((option) => (
-                                                        <div
-                                                            key={option.value}
-                                                            className="autocomplete-option"
-                                                            onClick={() => handleOptionSelect(option.value)}
-                                                            style={{ padding: '8px', cursor: 'pointer' }}
-                                                        >
-                                                            {option.label}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div> */}
                                     </span>
                                 </span>
 

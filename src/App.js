@@ -33,6 +33,8 @@ import ShowPatientForm from './components/showPatientForm';
 import EditAppointment from './components/editAppointment';
 import ViewPatientDescription from './components/viewPatientDescription';
 import UserSignup from './components/userSignup';
+import Doc_appointment from './components/docAppointment';
+import DocAppointment from './components/docAppointment';
 
 function App()
 {
@@ -58,6 +60,7 @@ function App()
       <Route path='/patientform' element={<PatientForm></PatientForm>}></Route>
       <Route path='/showpatientform' element={<ShowPatientForm></ShowPatientForm>}></Route>
       <Route path='/bookappointment' element={<BookAppointment></BookAppointment>}></Route>
+      <Route path='/bookappointment1' element={<DocAppointment></DocAppointment>}></Route>
       <Route path='/editappointment' element={<EditAppointment></EditAppointment>}></Route>
       <Route path='/doctorform' element={<DoctorForm></DoctorForm>}></Route>
       <Route path='/editdoctorform' element={<EditDoctorForm></EditDoctorForm>}></Route>

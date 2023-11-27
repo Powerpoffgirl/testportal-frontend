@@ -102,7 +102,7 @@ export default function DoctorListUser()
 
     const handleBookAppointment = () =>
     {
-        navigate("/bookappointment", { state: { doctor: selectedDoctor } });
+        navigate("/bookappointment1", { state: { doctor: selectedDoctor } });
     }
 
 
