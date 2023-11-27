@@ -4,13 +4,14 @@ import Header from "./header";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "./adminSidebar";
+import UserSidebarWithoutLogin from "./UserSidebarWithoutLogin";
 
 const UserOTP = () =>
 {
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const otpInputs = [];
     const [mobileNo, setMobileNo] = useState();
-    const [selectedDoctor, setSelectedDoctor] = useState();
+    const [user, setUser] = useState();
     const navigate = useNavigate()
     const location = useLocation();
     const MAX_LENGTH = 6;
@@ -20,17 +21,13 @@ const UserOTP = () =>
 
     useEffect(() =>
     {
-        const doctor = location?.state
-        setSelectedDoctor(doctor?.doctor)
-        console.log("SELECTED DOCTOR", selectedDoctor)
-    }, [selectedDoctor])
+        const user1 = location?.state
+        setUser(user1?.user)
+        console.log("SELECTED DOCTOR", user)
+        setMobileNo(user?.contactNumber)
+    }, [user])
 
-    const handleChange = (e) =>
-    {
-        const { name, value } = e.target
-        setMobileNo(value)
-    }
-
+    console.log("USER", user)
     const SendOTP = async () =>
     {
         // Retrieve the token from local storage
@@ -104,7 +101,7 @@ const UserOTP = () =>
             const data = await response.json();
             if (data.success === true)
             {
-                navigate("/bookappointment", { state: { doctor: selectedDoctor } })
+                navigate("/doctorlistuser", { state: { user: user } })
             }
             console.log("DATA from response", data)
         } catch (error)
@@ -142,13 +139,13 @@ const UserOTP = () =>
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <AdminSidebar></AdminSidebar>
+                <UserSidebarWithoutLogin></UserSidebarWithoutLogin>
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
                         width: isTab ? "100%" : "77%",
                     }}>
-                    <Header line1="Find" line2="Doctors"></Header>
+                    <Header line1="Verify" line2="OTP"></Header>
                     <div
                         className="flex flex-col gap-2 px-3 w-full"
                         style={{
@@ -168,15 +165,15 @@ const UserOTP = () =>
                                 fontFamily: "Lato, sans-serif",
                             }}
                         >
-                            Mobile No
+                            Mobile No.
                         </label>
                         <input
                             className="mx-2"
                             type="number"
                             id="mobileNo"
                             name="mobileNo"
-                            value={mobileNo?.contactNumber}
-                            style={{ border: "1px solid #08DA75", height: "45px" }}
+                            value={mobileNo}
+                            style={{ border: "1px solid #08DA75", height: "45px", paddingLeft: "5px" }}
                         // onChange={handleChange}
                         />
                         <button

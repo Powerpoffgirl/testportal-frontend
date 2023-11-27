@@ -152,6 +152,12 @@ export default function UserLogin()
     }
   };
 
+  // function validateMobileNumber(number)
+  // {
+  //   const pattern = /^\d{10}$/; // Adjust the regex pattern to your requirements
+  //   return pattern.test(number);
+  // }
+
   return (
     <>
       <div className="bg-customRed min-h-screen relative overflow-hidden">
@@ -259,8 +265,27 @@ export default function UserLogin()
                 value={contactNumber}
                 onChange={(e) =>
                 {
-                  setContactNumber(e.target.value);
+                  const value = e.target.value;
+                  if (value === '' || (value.match(/^[0-9]+$/) && value.length <= 10))
+                  {
+                    setContactNumber(value);
+                  }
                 }}
+              // onBlur={() =>
+              // {
+              //   if (!validateMobileNumber(contactNumber))
+              //   {
+              //     toast.error("Please enter a valid 10-digit mobile number.", {
+              //       position: "top-center",
+              //       autoClose: 5000,
+              //       hideProgressBar: false,
+              //       closeOnClick: true,
+              //       pauseOnHover: true,
+              //       draggable: true,
+              //       progress: undefined,
+              //     });
+              //   }
+              // }}
               ></input>
               <input
                 className="outline-none border-b-2 m-4 text-white  placeholder-white md:w-413 sm:w-300"

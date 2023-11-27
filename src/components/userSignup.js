@@ -105,7 +105,7 @@ export default function UserSignup()
             // localStorage.setItem("token", data.token);
             console.log("DATA ID ", data.data._id)
             localStorage.setItem("userId", data.data._id)
-            navigate("/userOtp");
+            navigate("/userOtp", { state: { user: data.data } });
 
             // }
         }
