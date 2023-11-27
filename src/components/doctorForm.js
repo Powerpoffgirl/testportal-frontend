@@ -10,7 +10,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-export default function DoctorForm1()
+export default function DoctorForm()
 {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);

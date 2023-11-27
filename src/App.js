@@ -33,8 +33,8 @@ import ShowPatientForm from './components/showPatientForm';
 import EditAppointment from './components/editAppointment';
 import ViewPatientDescription from './components/viewPatientDescription';
 import UserSignup from './components/userSignup';
-import Doc_appointment from './components/docAppointment';
 import DocAppointment from './components/docAppointment';
+import Table from './components/tabel';
 
 function App()
 {
@@ -75,6 +75,7 @@ function App()
       <Route path='/doctorlistadmin' element={<DoctorListAdmin></DoctorListAdmin>}></Route>
       <Route path='/appointmentlist' element={<AppointmentList></AppointmentList>}></Route>
       <Route path='/appointmentlistuser' element={<AppointmentListUser></AppointmentListUser>}></Route>
+      <Route path='/tabel' element={<Table></Table>}></Route>
 
     </Routes>
 
