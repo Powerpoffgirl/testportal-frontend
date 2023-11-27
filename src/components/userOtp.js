@@ -1,4 +1,3 @@
-import Sidebar from "./sidebar";
 import { useMediaQuery } from "react-responsive";
 import Header from "./header";
 
@@ -176,8 +175,9 @@ const UserOTP = () =>
                             type="number"
                             id="mobileNo"
                             name="mobileNo"
+                            value={mobileNo?.contactNumber}
                             style={{ border: "1px solid #08DA75", height: "45px" }}
-                            onChange={handleChange}
+                        // onChange={handleChange}
                         />
                         <button
                             className="mt-4 bg-customRed w-40"
@@ -192,7 +192,7 @@ const UserOTP = () =>
                             }}
                             onClick={SendOTP}
                         >
-                            Send OTP
+                            Resend OTP
                         </button>
                         <text
                             className="ml-[45%] md:ml-[49%]"
