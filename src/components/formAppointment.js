@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-responsive-modal';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { Select, Space } from 'antd';
 const patientList = [
     { id: 1, name: 'John Doe' },
     { id: 2, name: 'Jane Smith' },
@@ -339,7 +340,7 @@ const FormAppoinment = () =>
                         name="name"
                         onChange={handleChange}
                     >
-                        {patientsList.map((patient) => (
+                        {patientsList?.map((patient) => (
                             <option key={patient._id} value={patient.name}>
                                 {patient.name}
                             </option>
@@ -404,7 +405,7 @@ const FormAppoinment = () =>
                                 ))
                             }
                         </div>
-                        <select
+                        <Select
                             className="mx-5"
                             type="text"
                             id="issues"
@@ -412,11 +413,11 @@ const FormAppoinment = () =>
                             onChange={handleChange}
                         >
                             {SymptomsDropdown?.map((option) => (
-                                <option key={option.value} value={option.value}>
+                                <Select.Option key={option.value} value={option.value}>
                                     {option.label}
-                                </option>
+                                </Select.Option>
                             ))}
-                        </select>
+                        </Select>
                     </span>
                 </div>
 
@@ -437,7 +438,7 @@ const FormAppoinment = () =>
                                 ))
                             }
                         </div>
-                        <select
+                        <Select
                             className="mx-5"
                             type="text"
                             id="diseases"
@@ -446,11 +447,11 @@ const FormAppoinment = () =>
 
                         >
                             {DiseasesDropdown?.map((option) => (
-                                <option key={option.value} value={option.value}>
+                                <Select.Option key={option.value} value={option.value}>
                                     {option.label}
-                                </option>
+                                </Select.Option>
                             ))}
-                        </select>
+                        </Select>
 
                     </span>
                     {/* <select

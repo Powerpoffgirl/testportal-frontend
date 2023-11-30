@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from 'react-responsive-modal';
 import UserSidebar from "./userSidebar";
 import AdminSidebar from "./adminSidebar";
+import FormAppoinment from "./formAppointment";
+import design from "../assets/design.svg";
 
 
 
@@ -252,338 +254,65 @@ export default function EditAppointment()
     };
 
     console.log("APPOINTMENT DETAILS", appointmentDetails)
-    const handleRegister = async (e) =>
-    {
-        e.preventDefault();
-        // Check if the token exists
-        const newAppointmentDetails = {
-            doctorId: appointmentDetails?.doctorId,
-            patientId: appointmentDetails?.patientId,
-            appointmentDate: {
-                date: appointmentDetails?.appointmentDate.date,
-                time: appointmentDetails?.appointmentDate.time
-            },
-            issues: appointmentDetails?.issues,
-            diseases: appointmentDetails?.diseases,
-        }
-        const token = localStorage.getItem("token");
-        const appointmentId = localStorage.getItem("appointmentId")
-        if (!token)
-        {
-            console.error("No token found in local storage");
-            return;
-        }
+    // const handleRegister = async (e) =>
+    // {
+    //     e.preventDefault();
+    //     // Check if the token exists
+    //     const newAppointmentDetails = {
+    //         doctorId: appointmentDetails?.doctorId,
+    //         patientId: appointmentDetails?.patientId,
+    //         appointmentDate: {
+    //             date: appointmentDetails?.appointmentDate.date,
+    //             time: appointmentDetails?.appointmentDate.time
+    //         },
+    //         issues: appointmentDetails?.issues,
+    //         diseases: appointmentDetails?.diseases,
+    //     }
+    //     const token = localStorage.getItem("token");
+    //     const appointmentId = localStorage.getItem("appointmentId")
+    //     if (!token)
+    //     {
+    //         console.error("No token found in local storage");
+    //         return;
+    //     }
 
-        const response = await fetch(
-            `${baseUrl}/api/v1/user/update_appointmentById/${appointmentId}`,
-            {
-                method: "put",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-auth-token": token,
-                },
-                body: JSON.stringify(newAppointmentDetails)
-            }
-        );
-        const data = await response.json();
-        if (data.success === true)
-        {
-            // navigate("/otp")
-            onOpenModal()
-            localStorage.setItem("id", data.data._id)
-        }
-        console.log("DATA from response", data)
-    }
+    //     const response = await fetch(
+    //         `${baseUrl}/api/v1/user/update_appointmentById/${appointmentId}`,
+    //         {
+    //             method: "put",
+    //             headers: {
+    //                 "Content-Type": "application/json",
+    //                 "x-auth-token": token,
+    //             },
+    //             body: JSON.stringify(newAppointmentDetails)
+    //         }
+    //     );
+    //     const data = await response.json();
+    //     if (data.success === true)
+    //     {
+    //         // navigate("/otp")
+    //         onOpenModal()
+    //         localStorage.setItem("id", data.data._id)
+    //     }
+    //     console.log("DATA from response", data)
+    // }
 
 
     return (
         <>
-            <div
-                className="flex min-h-screen relative overflow-auto 
-    box-border"
-            >
-                <UserSidebar></UserSidebar>
-
-                <Modal open={open}
-                    onClose={onCloseModal}
-                    center
-                    doctor={selectedDoctor}
-                    styles={{
-                        modal: {
-                            // Set your custom width here (e.g., '70%')
-                            width: isTab ? '80%' : '70%',
-                            backgroundColor: '#08DA75',
-                            alignContent: 'center'
-                        },
-                    }}
-                >
-                    <div
-                        className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
-                        style={{ borderRadius: "5px" }}
-                    >
-
-                        <text
-                            className="ml-4 text-center mt-4"
-                            style={{
-                                fontSize: isTab ? "18px" : "26px",
-                                fontWeight: 600,
-                                lineHeight: "28.8px",
-                                fontFamily: "Lato, sans-serif",
-                                color: '#FFFFFF',
-                            }}
-                        >
-                            Congratulations
-                        </text>
-                        <text
-                            className="ml-4 text-center mt-4"
-                            style={{
-                                fontSize: isTab ? "12px" : "20px",
-                                fontWeight: 400,
-                                lineHeight: "24px",
-                                fontFamily: "Lato, sans-serif",
-                                color: '#FFFFFF',
-                                marginBottom: "2%"
-                            }}
-                        >
-                            <svg1 />
-                        </text>
-
-                        <text
-                            className="ml-4 text-center mt-2"
-                            style={{
-                                fontSize: isTab ? "16px" : "24px",
-                                fontWeight: 400,
-                                lineHeight: "28.8px",
-                                fontFamily: "Lato, sans-serif",
-                                color: "white",
-                            }}
-                        >
-                            Your Appointment Has Been Booked.<br />
-                            Please wait for Confirmation.<br />
-
-                        </text>
-                        <text
-                            className="ml-4 text-center mt-2"
-                            style={{
-                                fontSize: isTab ? "16px" : "24px",
-                                fontWeight: 400,
-                                lineHeight: "28.8px",
-                                fontFamily: "Lato, sans-serif",
-                                color: "white",
-                            }}
-                        >
-                            <b> Thank You</b>
-
-                        </text>
+            <div className="p-3 h-32">
+                <div className="flex h-16 flex-row justify-between bg-[#08DA75] w-full rounded-full px-10 pr-0">
+                    <div class="flex items-center gap-x-2">
+                        <img class="object-cover w-12 h-12 rounded-full" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100" alt="" />
+                        <div>
+                            <h1 class="text-xl font-semibold text-white capitalize">Mia John</h1>
+                            <p class="text-base text-white">miajohn@gmail.com</p>
+                        </div>
                     </div>
-                </Modal>
-
-                <div
-                    className="flex flex-col bg-customGreen"
-                    style={{
-                        width: isTab ? "100%" : "77%",
-                    }}
-                >
-                    <Header line1="Patient’s" line2="Appointment Edit"></Header>
-                    <div
-                        className="scrollable-content"
-                        style={{
-                            overflow: isTab ? "auto" : "hidden",
-                            maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
-                            padding: "10px",
-                        }}
-                    >
-                        <form
-                            className="flex flex-col gap-2 px-3 w-full"
-                            style={{
-                                top: "4%",
-                                left: "2%",
-                                position: "relative",
-                                overflow: "hidden",
-                                justifyContent: "center",
-                            }}
-                            onSubmit={(e) => e.preventDefault()}
-                        >
-                            {/* 1st Row */}
-
-                            <div className="flex flex-col md:flex-row justify-between">
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="appointmentDate"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Appointment Date
-                                    </label>
-                                    <input
-                                        className="mx-2"
-                                        type="date"
-                                        id="appointmentDate"
-                                        name="date"
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                        onChange={handleChange}
-                                    />
-                                </span>
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="appointmentTime"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Appointment Time
-                                    </label>
-                                    <input
-                                        className="mx-2"
-                                        type="time"
-                                        id="appointmentTime"
-                                        name="time"
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                        onChange={handleChange}
-                                    />
-                                </span>
-                            </div>
-
-                            <div className="flex flex-col md:flex-row justify-between">
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="issues"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Issues
-                                    </label>
-                                    <span style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                        <div className="mx-5" style={{ display: "flex" }}>
-                                            {
-                                                appointmentDetails?.issues?.map((issue) => (
-                                                    <div className="breadcrumb-chip" key={issue} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                                        {issue}
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                        <select
-                                            className="mx-5"
-                                            type="text"
-                                            id="issues"
-                                            name="issues"
-                                            onChange={handleChange}
-
-                                        >
-                                            {SymptomsDropdown?.map((option) => (
-                                                <option key={option.value} value={option.value}>
-                                                    {option.label}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        {/* <div className="autocomplete-container mx-5">
-                                            <input
-                                                type="text"
-                                                id="issues"
-                                                name="issues"
-                                                placeholder="Search issues..."
-                                                value={input}
-                                                onChange={handleInputChange}
-                                                onKeyPress={handleKeyPress}
-                                                style={{ width: '100%', padding: '8px' }}
-                                            />
-                                            {input && (
-                                                <div className="autocomplete-results" style={{ position: 'absolute', zIndex: 1000, backgroundColor: '#fff', width: '100%', border: '1px solid #ddd', borderTop: 'none' }}>
-                                                    {filteredSymptoms?.map((option) => (
-                                                        <div
-                                                            key={option.value}
-                                                            className="autocomplete-option"
-                                                            onClick={() => handleOptionSelect(option.value)}
-                                                            style={{ padding: '8px', cursor: 'pointer' }}
-                                                        >
-                                                            {option.label}
-                                                        </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div> */}
-                                    </span>
-                                </span>
-
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="diseases"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Diseases
-                                    </label>
-                                    <span style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                        <div className="mx-5" style={{ display: "flex" }}>
-                                            {
-                                                appointmentDetails?.diseases?.map((disease) => (
-                                                    <div className="breadcrumb-chip" key={disease} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                                        {disease}
-                                                    </div>
-                                                ))
-                                            }
-                                        </div>
-                                        <select
-                                            className="mx-5"
-                                            type="text"
-                                            id="diseases"
-                                            name="diseases"
-                                            onChange={handleChange}
-
-                                        >
-                                            {DiseasesDropdown?.map((option) => (
-                                                <option key={option.value} value={option.value}>
-                                                    {option.label}
-                                                </option>
-                                            ))}
-                                        </select>
-
-                                    </span>
-                                </span>
-                            </div>
-
-
-
-
-                            <div className="flex justify-center my-5">
-                                <button
-                                    type="submit"
-                                    style={{
-                                        width: "159px",
-                                        height: "45px",
-                                        backgroundColor: "#08DA75",
-                                        borderRadius: "43px",
-                                        color: "white",
-                                        fontWeight: 600,
-                                        fontSize: "24px",
-                                        lineHeight: "28.8px",
-                                        fontFamily: "Lato, sans-serif",
-                                    }}
-                                    onClick={handleRegister}
-                                >
-                                    Process
-                                </button>
-                            </div>
-                        </form>
-                    </div>
+                    <img className="h-16 hidden sm:block md:hidden lg:block" src={design} alt="design" />
                 </div>
             </div>
+            <FormAppoinment />
         </>
     );
 }

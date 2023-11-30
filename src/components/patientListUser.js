@@ -94,7 +94,7 @@ export default function PatientListUser()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <UserSidebar></UserSidebar>
+
                 <Modal open={open}
                     onClose={onCloseModal}
                     center
@@ -286,7 +286,7 @@ export default function PatientListUser()
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <UserHeader line1="Patient" line2="Lists" isAdd='true'></UserHeader>
+
 
                     <div
                         className="scrollable-content"

@@ -77,14 +77,14 @@ export default function PatientList()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <DoctorSidebar></DoctorSidebar>
+
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Patient" line2="Lists"></Header>
+
 
                     <div
                         className="scrollable-content"

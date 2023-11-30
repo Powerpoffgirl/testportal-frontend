@@ -103,7 +103,7 @@ export default function DoctorList()
         className="flex min-h-screen relative overflow-auto 
     box-border"
       >
-        <UserSidebarWithoutLogin></UserSidebarWithoutLogin>
+
         <Modal open={open}
           onClose={onCloseModal}
           center
@@ -298,14 +298,6 @@ export default function DoctorList()
             width: isTab ? "100%" : "77%",
           }}
         >
-          <PatientHeader
-            line1="Find"
-            line2="Doctors"
-            isAdd="false"
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-          ></PatientHeader>
-
 
           <div className="flex flex-row gap-4 p-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
             <button className="px-8 border-[#08DA75] border-2 bg-[#08DA75] text-lg">All</button>

@@ -152,11 +152,7 @@ export default function UserLogin()
     }
   };
 
-  // function validateMobileNumber(number)
-  // {
-  //   const pattern = /^\d{10}$/; // Adjust the regex pattern to your requirements
-  //   return pattern.test(number);
-  // }
+
 
   return (
     <>

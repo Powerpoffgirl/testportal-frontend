@@ -318,29 +318,6 @@ export default function DoctorLogin()
                 Sign In
               </button>
             </div>
-            <div className="flex justify-center text-white font-bold gap-2 mt-4">
-              <p
-                style={{
-                  fontFamily: "Lato, sans-serif",
-                  fontWeight: 400,
-                  fontSize: isTab ? "14px" : "18px",
-                  lineHeight: "24px",
-                }}
-              >
-                Need An Account?
-              </p>
-              <button
-                type="submit"
-                style={{
-                  fontFamily: "Lato, sans-serif",
-                  fontWeight: 900,
-                  fontSize: isTab ? "14px" : "18px",
-                  lineHeight: "24px",
-                }}
-              >
-                Sign Up
-              </button>
-            </div>
           </form>
         </div>
       </div>

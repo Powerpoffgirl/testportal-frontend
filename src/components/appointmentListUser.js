@@ -89,14 +89,14 @@ export default function AppointmentListUser()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <UserSidebar></UserSidebar>
+
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Appointment" line2="List"></Header>
+
 
                     <div
                         className="scrollable-content"

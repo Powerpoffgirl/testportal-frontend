@@ -9,6 +9,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { Select } from "antd";
 
 export default function DoctorForm()
 {
@@ -205,17 +206,21 @@ export default function DoctorForm()
     }),
   ];
 
+  const handleChange1 = (e) =>
+  {
+    setDoctorDetails((prevDoctorDetails) => ({
+      ...prevDoctorDetails,
+      workingDays: [...prevDoctorDetails.workingDays, e],
+    }));
+
+  }
+
   const handleChange = (e) =>
   {
+    console.log("E value", e)
     const { name, value } = e.target;
 
-    if (name === "workingDays")
-    {
-      setDoctorDetails((prevDoctorDetails) => ({
-        ...prevDoctorDetails,
-        workingDays: [...prevDoctorDetails.workingDays, value],
-      }));
-    } else if (name === "workHourFrom" || name === "workHourTo")
+    if (name === "workHourFrom" || name === "workHourTo")
     {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
@@ -300,10 +305,10 @@ export default function DoctorForm()
     <>
       <div className="flex flex-row">
         <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
-          <AdminSidebar />
+
         </div>
-        <div className="md:ml-[337px] md:pl-3 w-full">
-          <AdminHeader line1="Edit" line2="Profile" />
+        <div className=" w-full">
+
           <div className="mt-6 p-2">
             <div className="flex  flex-col items-center justify-center w-full">
               <div className="cursor-pointer">
@@ -481,19 +486,20 @@ export default function DoctorForm()
                         </div>
                       ))}
                     </span>
-                    <select
-                      className="mx-5"
+                    <Select
+                      className="mx-5 w-full"
                       type="text"
                       id="workingDays"
                       name="workingDays"
-                      onChange={handleChange}
+                      onChange={handleChange1}
+
                     >
                       {Daysdropdown.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <Select.Option key={option.value} value={option.value}>
                           {option.label}
-                        </option>
+                        </Select.Option>
                       ))}
-                    </select>
+                    </Select>
                   </div>
                 </div>
 

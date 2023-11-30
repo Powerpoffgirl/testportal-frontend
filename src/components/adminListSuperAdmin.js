@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from "react";
-import DoctorSidebar from "./doctorSidebar";
 import Header from "./header";
 import { useMediaQuery } from "react-responsive";
+import AdminSidebar from "./adminSidebar";
 import { Modal } from 'react-responsive-modal';
-import UserSidebar from "./userSidebar";
-import UserHeader from "./userHeader";
 import { useNavigate } from "react-router-dom";
-import one from "../assets/one.svg";
-import two from "../assets/two.svg";
-import three from "../assets/three.svg";
+
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#08DA75"/>
@@ -29,18 +25,21 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`
 
-
-export default function DoctorListUser()
+export default function AdminListSuperAdmin()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const [doctorsList, setDoctorsList] = useState([])
-    const baseUrl = process.env.REACT_APP_BASE_URL
-    const [selectedDoctor, setSelectedDoctor] = useState();
+    const [selectedDoctor, setselectedDoctor] = useState();
+    const [isEditDoctorModalVisible, setEditDoctorModalVisible] = useState(false)
+    const [editDoctorId, setEditDoctorId] = useState(null)
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate()
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
     const [searchTerm, setSearchTerm] = useState('');
-    const navigate = useNavigate()
+
+
+    const baseUrl = process.env.REACT_APP_BASE_URL
 
     const categories = [
         { name: "All", value: "1" },
@@ -53,7 +52,7 @@ export default function DoctorListUser()
 
     useEffect(() =>
     {
-        const fetchDoctorDetails = async () =>
+        const fetchDoctors = async () =>
         {
             try
             {
@@ -63,16 +62,16 @@ export default function DoctorListUser()
                     console.error("No token found in local storage");
                     return;
                 }
-                const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
+                const response = await fetch(`${baseUrl}/api/v1/superAdmin/list_admin`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
-                        // 'x-auth-token': token // Replace with your actual token from the previous session
+                        'x-auth-token': token // Replace with your actual token from the previous session
                     }
                 });
 
                 const data = await response.json();
-                console.log("DATA from response", data)
+                console.log("DATA from response", data?.data)
                 const verifiedDoctors = data.data.filter(doctor => doctor.accountVerified.isVerified);
                 setDoctorsList(verifiedDoctors);
 
@@ -81,7 +80,7 @@ export default function DoctorListUser()
                 console.error('There was an error verifying the OTP:', error);
             }
         }
-        fetchDoctorDetails()
+        fetchDoctors()
     }, [])
 
     useEffect(() =>
@@ -93,21 +92,59 @@ export default function DoctorListUser()
         setDoctorsList(filteredDoctors);
     }, [searchTerm,]);
 
-
-    const handleQRCode = (doctorId) =>
+    const handleEditDoctor = (doctorId) =>
     {
-        console.log("HELLO")
-        localStorage.setItem("doctorId", doctorId)
+        localStorage.setItem("doctorId", doctorId);
+        navigate("/editdoctorform")
+        console.log("Edit function")
+    }
+
+    const handleDeleteDoctor = async (doctorId) =>
+    {
+        try
+        {
+            const token = localStorage.getItem("token");
+            if (!token)
+            {
+                console.error("No token found in local storage");
+                return;
+            }
+            const response = await fetch(`${baseUrl}/api/v1/superAdmin/delete_doctor/${doctorId}`, {
+                method: 'DELETE', // Use DELETE method
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-auth-token': token // Use the stored token
+                }
+            });
+
+            const data = await response.json();
+
+            if (response.ok)
+            {
+                console.log("Doctor deleted successfully", data);
+                // Update the list in the UI by removing the deleted doctor
+                setDoctorsList(prevDoctorsList => prevDoctorsList.filter(doctor => doctor._id !== doctorId));
+            } else
+            {
+                console.error("Failed to delete the doctor", data?.message);
+            }
+
+        } catch (error)
+        {
+            console.error('There was an error deleting the doctor:', error);
+        }
+    };
+
+    const findSelectedDoctor = async (doctorId) =>
+    {
+        console.log("DOCTOR ID", doctorId)
+        // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
         const doctor = doctorsList?.find((doc) => doc._id === doctorId);
-        setSelectedDoctor(doctor);
+        setselectedDoctor(doctor); // This will return the doctor object if found, otherwise undefined
         onOpenModal()
-    }
+    };
 
-    const handleBookAppointment = () =>
-    {
-        navigate("/bookappointment", { state: { doctor: selectedDoctor } });
-    }
-
+    console.log("SEARCH TERM IN PARENT COMPONENT", searchTerm)
 
     return (
         <>
@@ -115,7 +152,6 @@ export default function DoctorListUser()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-
                 <Modal open={open}
                     onClose={onCloseModal}
                     center
@@ -254,22 +290,25 @@ export default function DoctorListUser()
                             {selectedDoctor?.address?.houseNo + " " + selectedDoctor?.address?.block + " " + selectedDoctor?.address?.area + ", " + selectedDoctor?.address?.district + ", " + selectedDoctor?.address?.state + " " + selectedDoctor?.address?.pinCode}
                         </text>
 
-                        <div className="flex justify-center">
-                            <button
-                                className="rounded-full mt-4 text-customRed"
-                                type="submit"
+                        <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
+                            <span
                                 style={{
-                                    backgroundColor: "white",
-                                    width: isTab ? "150px" : "198px",
-                                    height: isTab ? "35px" : "45px",
-                                    boxShadow: " 0 10px 5px -3px rgb(0 0 0 / 0.3)",
+                                    width: '25px',
+                                    height: '25px',
                                 }}
-                                onClick={handleBookAppointment}
+                                onClick={() => handleEditDoctor(selectedDoctor?._id)}
+                                dangerouslySetInnerHTML={{ __html: svg4 }}
+                            ></span>
+                            <span
+                                style={{
+                                    width: '25px',
+                                    height: '25px',
+                                }}
+                                onClick={() => handleDeleteDoctor(selectedDoctor?._id)}
+                                dangerouslySetInnerHTML={{ __html: svg5 }}
                             >
-                                Book Appointment
-                            </button>
+                            </span>
                         </div>
-
                         <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
                             <span className="flex">
                                 <span
@@ -311,63 +350,157 @@ export default function DoctorListUser()
                     }}
                 >
 
-                    <div className="flex flex-row gap-4 p-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
-                        <button className="px-8 border-[#08DA75] border-2 bg-[#08DA75] text-lg">All</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Cardiologist</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Therapist</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Pediatrician</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Neurologist</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Physiotherapist</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Cardiologist</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Therapist</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Pediatrician</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Neurologist</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Physiotherapist</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Pediatrician</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Neurologist</button>
-                        <button className="px-8 border-[#08DA75] border-2  text-lg">Physiotherapist</button>
-                    </div>
+                    <div
+                        className="flex flex-col gap-2 px-3 w-full"
+                        style={{
+                            top: "4%",
+                            left: "2%",
+                            position: "relative",
 
-                    {/* Doctors Array Start */}
+                            // overflowY:"hidden",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <div
+                            className="divWithHiddenScrollbar flex flex-row gap-4 "
+                            style={{
+                                overflowX: 'auto',
+                                position: 'relative',
+                                msOverflowStyle: 'none',  // IE and Edge
+                                scrollbarWidth: 'none',  // Firefox
+                            }}
+                        >
 
-                    <div className="flex flex-col p-4">
-                        {doctorsList?.map((doctor) => (
-                            <div
-                                className="bg-white w-full p-4 mb-5"
-                                key={doctor._id}
-                                onClick={() => handleQRCode(doctor?._id)}
-                            >
-                                <div className="flex flex-row justify-between">
-                                    <div class="flex items-center gap-x-2">
-                                        <img class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full" src={doctor.doctorPic} alt={doctor.name} />
+                            {categories.map((items) => (
+                                <span
+                                    className="bg-#E4FFF2; cursor-pointer px-8 hover:bg-customRed"
+                                    style={{
+                                        left: "2%",
+                                        height: "29px",
+                                        border: "1px solid #08DA75",
+                                        borderRadius: "5px",
+                                        display: "flex",
+                                        justifyContent: "center",
+                                        alignItems: "center",
+                                        fontFamily: "Lato, sans-serif",
+                                        fontWeight: 400,
+                                        fontSize: "20px",
+                                        lineHeight: "28.8px",
+                                        color: "#595959"
+                                    }}
+                                    key={items.value}
+                                >
+                                    {items.name}
+                                </span>
+                            ))}
+                        </div>
 
-                                        <div>
-                                            <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">Dr. {doctor.name}</h1>
+                        {/* Doctors Array Start */}
 
-                                            <p class=" text-gray-500 sm:text-sm text-xs ">{doctor.speciality}</p>
-                                            <p class=" text-gray-500 sm:text-sm text-xs ">{doctor.totalExperience} Years Experience</p>
+                        <div style={{ marginTop: "10px" }}>
+                            {
+                                doctorsList?.map((doctor, index) =>
+                                (
+                                    <div
+                                        key={doctor._id ? doctor._id : index} // Using a combination of _id and index
+                                        className="flex flex-col bg-white"
+                                        style={{ borderRadius: "5px", marginBottom: "10px" }}
+                                    >
+                                        <div className="flex flex-row p-4 md:flex-row justify-between"
+                                            onClick={() => { findSelectedDoctor(doctor?._id) }}
+
+                                        >
+                                            <span className="flex flex-row items-center">
+                                                <img
+                                                    src={doctor.doctorPic}
+                                                    alt="Avatar"
+                                                    style={{
+                                                        borderRadius: "50%",
+                                                        height: isTab ? "40px" : "81px",
+                                                        width: isTab ? "40px" : "81px",
+                                                    }}
+                                                ></img>
+                                                <span className="flex flex-col ml-4">
+                                                    <text
+                                                        style={{
+                                                            fontSize: isTab ? "18px" : "22px",
+                                                            fontWeight: 400,
+                                                            lineHeight: "28.8px",
+                                                            fontFamily: "Lato, sans-serif",
+                                                        }}
+                                                    >
+                                                        Dr. {doctor.name}
+                                                    </text>
+                                                    <text
+                                                        style={{
+                                                            fontSize: isTab ? "15px" : "20px",
+                                                            fontWeight: 400,
+                                                            lineHeight: "28.8px",
+                                                            fontFamily: "Lato, sans-serif",
+                                                            color: '#A4A4A4'
+                                                        }}
+                                                    >
+                                                        {doctor.speciality
+                                                        }
+                                                    </text>
+                                                    <text
+                                                        style={{
+                                                            fontSize: isTab ? "14px" : "18px",
+                                                            fontWeight: 400,
+                                                            lineHeight: "28.8px",
+                                                            fontFamily: "Lato, sans-serif",
+                                                            color: '#A4A4A4'
+                                                        }}
+                                                    >
+                                                        {doctor.totalExperience} Years Experience
+                                                    </text>
+                                                </span>
+                                            </span>
+                                            <span className="flex flex-col pr-4">
+                                                <span className="flex gap-8">
+                                                    <span
+                                                        style={{ width: "8px", height: "20px" }}
+                                                        dangerouslySetInnerHTML={{ __html: svg1 }}
+                                                    ></span>
+                                                    <span
+                                                        style={{ width: "8px", height: "20px" }}
+                                                        dangerouslySetInnerHTML={{ __html: svg2 }}
+                                                    ></span>
+                                                </span>
+                                            </span>
                                         </div>
+                                        <div className="flex flex-row justify-end p-2 mt-[-3%]">
+                                            <span className="flex">
+                                                <span
+                                                    className="mr-8"
+                                                    style={{ width: "8px", height: "20px", }}
+                                                    dangerouslySetInnerHTML={{ __html: svg3 }}
+                                                ></span>
+                                                <text
+                                                    style={{
+                                                        fontWeight: 400,
+                                                        fontSize: "20px",
+                                                        fontFamily: "Lato, sans-serif",
+                                                        color: "#A4A4A4",
+                                                    }}
+                                                >
+                                                    (4.5 Ratings)
+                                                </text>
+                                            </span>
+                                        </div>
+
+
                                     </div>
-                                    <div className="flex flex-col justify-between items-end">
-                                        <div className="flex flex-row gap-5 ">
-                                            <img src={one} className="sm:w-5 sm:h-5 w-4 h-4" alt="img" />
-                                            <img src={two} className="sm:w-5 sm:h-5 w-4 h-4" alt="img" />
-                                        </div>
-                                        <div className="flex flex-row items-center">
-                                            <img src={three} alt="img" className="sm:w-5 sm:h-5 w-4 h-4" />
-                                            <img src={three} alt="img" className="sm:w-5 sm:h-5 w-4 h-4" />
-                                            <img src={three} alt="img" className="sm:w-5 sm:h-5 w-4 h-4" />
-                                            <img src={three} alt="img" className="sm:w-5 sm:h-5 w-4 h-4" />
-                                            <div className="text-xs sm:text-lg">(4.5 Ratings)</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
+                                ))
+                            }
+                        </div>
+
+
+
+
                     </div>
                 </div>
             </div>
-
         </>
     );
 }

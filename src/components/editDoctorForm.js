@@ -5,9 +5,9 @@ import { useNavigate } from "react-router-dom";
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Button } from "flowbite-react";
-import AdminHeader from "./adminHeader";
-import { Modal } from 'react-responsive-modal';
+import { HiOutlineUserAdd } from "react-icons/hi";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { Select } from "antd";
 
 export default function EditDoctorForm()
 {
@@ -19,6 +19,8 @@ export default function EditDoctorForm()
     const onOpenModal = () => setOpen1(true);
     const onCloseModal = () => setOpen1(false);
     const [doctorImage, setDoctorImage] = useState();
+    const [isHovered, setIsHovered] = useState(false);
+    const [isHovered1, setIsHovered1] = useState(false);
 
     const handleFileSelect = (event) =>
     {
@@ -174,7 +176,7 @@ export default function EditDoctorForm()
             setDoctorDetails(prevDoctorDetails => ({
                 ...prevDoctorDetails,
                 workingHours: {
-                    ...prevDoctorDetails.workingHours,
+                    ...prevDoctorDetails?.workingHours,
                     [name]: value,
                 }
             }));
@@ -183,7 +185,7 @@ export default function EditDoctorForm()
             setDoctorDetails(prevDoctorDetails => ({
                 ...prevDoctorDetails,
                 address: {
-                    ...prevDoctorDetails.address,
+                    ...prevDoctorDetails?.address,
                     [name]: value
                 }
             }));
@@ -203,8 +205,6 @@ export default function EditDoctorForm()
         // Check if the token exists
         const newDoctorDetails = {
             name: doctorDetails?.name,
-            // email: doctorDetails.email,
-            // contactNumber: doctorDetails.contactNumber,
             workingDays: doctorDetails?.workingDays,
             workingHours: {
                 workHourFrom: doctorDetails?.workingHours?.workHourFrom,
@@ -328,609 +328,425 @@ export default function EditDoctorForm()
     }
 
     console.log("DOCTOR DETAILS", doctorDetails)
-    // function formatWorkingDays(days)
-    // {
-    //     const dayOrder = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    //     const shortDayNames = { Monday: "Mon", Tuesday: "Tue", Wednesday: "Wed", Thursday: "Thu", Friday: "Fri", Saturday: "Sat", Sunday: "Sun" };
-
-    //     // Remove duplicates and sort days based on the dayOrder
-    //     const uniqueSortedDays = Array.from(new Set(days)).sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
-
-    //     let formattedDays = [];
-    //     let tempGroup = [uniqueSortedDays[0]];
-
-    //     for (let i = 1; i < uniqueSortedDays.length; i++)
-    //     {
-    //         const currentDayIndex = dayOrder.indexOf(uniqueSortedDays[i]);
-    //         const previousDayIndex = dayOrder.indexOf(tempGroup[tempGroup.length - 1]);
-
-    //         if (currentDayIndex === previousDayIndex + 1)
-    //         {
-    //             tempGroup.push(uniqueSortedDays[i]);
-    //         } else
-    //         {
-    //             if (tempGroup.length > 1)
-    //             {
-    //                 formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
-    //             } else
-    //             {
-    //                 formattedDays.push(shortDayNames[tempGroup[0]]);
-    //             }
-    //             tempGroup = [uniqueSortedDays[i]];
-    //         }
-    //     }
-
-    //     // Handle the last group
-    //     if (tempGroup.length > 1)
-    //     {
-    //         formattedDays.push(`${shortDayNames[tempGroup[0]]} - ${shortDayNames[tempGroup[tempGroup.length - 1]]}`);
-    //     } else
-    //     {
-    //         formattedDays.push(shortDayNames[tempGroup[0]]);
-    //     }
-
-    //     return formattedDays.join(', ');
-    // }
-
-
-    // const formattedDays = formatWorkingDays(doctorDetails?.workingDays);
-    // console.log(formattedDays); // Output: "Tue, Thur - Sat"
-
-
 
     return (
         <>
-            <div
-                className="flex min-h-screen relative overflow-auto 
-    box-border"
-            >
-                <AdminSidebar></AdminSidebar>
+            <div className="flex flex-row">
+                <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
 
-                <Modal open={open1}
-                    onClose={onCloseModal}
-                    center
-                    doctor={doctorDetails}
-                    styles={{
-                        modal: {
-                            // Set your custom width here (e.g., '70%')
-                            width: isTab ? '80%' : '70%',
-                            backgroundColor: '#08DA75',
-                            alignContent: 'center'
-                        },
-                    }}
-                >
-                    <div
-                        className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
-                    >
+                </div>
+                <div className=" w-full">
 
-                        <text
-                            className="ml-4 text-center mt-4"
-                            style={{
-                                fontSize: isTab ? "18px" : "26px",
-                                fontWeight: 600,
-                                lineHeight: "28.8px",
-                                fontFamily: "Lato, sans-serif",
-                            }}
-                        >
-                            Congratulations! <br />
-                            Dr. {doctorDetails?.name} Profile is updated <br />
-                            successfully <br />
-                        </text>
-                    </div>
-                </Modal>
-
-
-                <div
-                    className="flex flex-col bg-customGreen"
-                    style={{
-                        width: isTab ? "100%" : "77%",
-                    }}
-                >
-                    <AdminHeader line1="Doctor’s" line2="Detail"></AdminHeader>
-
-                    <div
-                        className="scrollable-content"
-                        style={{
-                            overflow: isTab ? "auto" : "hidden",
-                            maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
-                            padding: "10px",
-                        }}
-                    >
-                        <form
-                            className="flex flex-col gap-2 px-3 w-full"
-                            style={{
-                                top: "4%",
-                                left: "2%",
-                                position: "relative",
-                                overflow: "hidden",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <div style={{ display: "flex", flexDirection: "column", marginLeft: "40%" }}>
-                                <div style={{ backgroundColor: "#FFFFFF", width: "90px", height: "90px", borderRadius: "50%", alignItems: "center", display: "flex", flexDirection: "row", justifyContent: "space-evenly", color: "#A4A4A4" }}>
-                                    {doctorDetails && doctorDetails?.doctorPic ? (
-                                        <img
-                                            src={doctorDetails?.doctorPic}
-                                            alt="Doctor's Profile"
-                                            style={{ width: "70px", height: "70px" }}
-                                        />
-                                    ) : (
-                                        <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
-                                    )}
-                                </div>
-                                <p
-                                    aria-controls="profile-pic-menu"
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? 'true' : undefined}
-                                    onClick={handleClick}
-                                    style={{ cursor: 'pointer' }} // Add a pointer cursor to indicate clickable
+                    <div className="mt-6 p-2">
+                        <div className="flex  flex-col items-center justify-center w-full">
+                            <div className="cursor-pointer">
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
+                                    }}
                                 >
-                                    Edit profile pic
-                                </p>
-                                <>
-                                    <Menu
-                                        id="profile-pic-menu"
-                                        anchorEl={anchorEl}
-                                        open={open}
-                                        onClose={handleClose}
-                                        MenuListProps={{
-                                            'aria-labelledby': 'edit-profile-pic-text',
+                                    <div
+                                        style={{
+                                            backgroundColor: "#FFFFFF",
+                                            width: "90px",
+                                            height: "90px",
+                                            borderRadius: "50%",
+                                            alignItems: "center",
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            justifyContent: "space-evenly",
+                                            color: "#A4A4A4",
                                         }}
                                     >
-                                        <MenuItem onClick={handleNewProfilePictureClick}>
-                                            New profile picture
-                                        </MenuItem>
-                                        <MenuItem onClick={handleRemoveProfilePicture}>
-                                            Remove current profile picture
-                                        </MenuItem>
-                                    </Menu>
+                                        {doctorDetails?.doctorPic ? (
+                                            <img
+                                                src={doctorDetails.doctorPic}
+                                                alt="Avatar"
+                                                style={{
+                                                    borderRadius: "50%",
+                                                }}
+                                            />
+                                        ) : (
+                                            <PermIdentityOutlinedIcon
+                                                style={{ width: "70px", height: "70px" }}
+                                            />
+                                        )}
+                                    </div>
+                                    <p
+                                        aria-controls="profile-pic-menu"
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? "true" : undefined}
+                                        onClick={handleClick}
+                                        style={{ cursor: "pointer" }} // Add a pointer cursor to indicate clickable
+                                    >
+                                        Edit profile pic
+                                    </p>
+                                    <div style={{ backgroundColor: "#08DA75" }}>
+                                        <Menu
+                                            id="profile-pic-menu"
+                                            anchorEl={anchorEl}
+                                            open={open}
+                                            onClose={handleClose}
+                                            MenuListProps={{
+                                                "aria-labelledby": "edit-profile-pic-text",
+                                                style: { backgroundColor: "#08DA75" }, // Set background color for the whole menu
+                                            }}
+                                        >
+                                            <MenuItem
+                                                style={{
+                                                    backgroundColor: "#08DA75",
+                                                    color: isHovered ? "red" : "white",
+                                                }}
+                                                onClick={handleNewProfilePictureClick}
+                                                onMouseEnter={() => setIsHovered(true)}
+                                                onMouseLeave={() => setIsHovered(false)}
+                                            >
+                                                {" "}
+                                                <span style={{ marginRight: "8px" }}>
+                                                    <HiOutlineUserAdd />
+                                                </span>
+                                                <span>New profile picture</span>
+                                            </MenuItem>
 
-                                    {/* Hidden file input */}
+                                            <MenuItem
+                                                style={{
+                                                    backgroundColor: "#08DA75",
+                                                    color: isHovered1 ? "red" : "white",
+                                                }}
+                                                onClick={handleRemoveProfilePicture}
+                                                onMouseEnter={() => setIsHovered1(true)}
+                                                onMouseLeave={() => setIsHovered1(false)}
+                                            >
+                                                <span style={{ marginRight: "8px" }}>
+                                                    <FaRegTrashAlt />
+                                                </span>
+                                                <span>Remove current picture</span>
+                                            </MenuItem>
+                                        </Menu>
+                                    </div>
                                     <input
                                         id="imageInput"
                                         type="file"
                                         ref={fileInputRef}
-                                        style={{ display: 'none' }}
+                                        style={{ display: "none" }}
                                         accept="image/*"
                                         onChange={handleFileSelect}
                                     />
-                                </>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 w-full gap-4">
+                            <div>
+                                <label
+                                    for="name"
+                                    class="block text-black text-lg font-semibold"
+                                >
+                                    Dr. Name
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Smita Singh"
+                                    id="name"
+                                    name="name"
+                                    onChange={handleChange}
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    for="email"
+                                    class="block text-black text-lg font-semibold"
+                                >
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    placeholder="smitasingh1234@gmail.com"
+                                    id="email"
+                                    name="email"
+                                    onChange={handleChange}
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    for="contact"
+                                    class="block text-black text-lg font-semibold"
+                                >
+                                    Contact Number
+                                </label>
+                                <input
+                                    type="number"
+                                    placeholder="+91-8603678852"
+                                    id="contactNumber"
+                                    name="contactNumber"
+                                    onChange={handleChange}
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                />
                             </div>
 
-                            {/* 1st Row */}
-
-                            <label
-                                className="mx-2"
-                                htmlFor="name"
-                                style={{
-                                    fontWeight: 400,
-                                    fontSize: "20px",
-                                    fontFamily: "Lato, sans-serif",
-                                }}
-                            >
-                                Dr. Name
-                            </label>
-
-                            <input
-                                className="mx-2"
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={doctorDetails?.name}
-                                onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-                            />
-
-
-                            {/* 1st Row */}
-
-                            {/* 1st Row */}
-
-                            <label
-                                className="mx-2"
-                                htmlFor="email"
-                                style={{
-                                    fontWeight: 400,
-                                    fontSize: "20px",
-                                    fontFamily: "Lato, sans-serif",
-                                }}
-                            >
-                                Email
-                            </label>
-
-                            <input
-                                className="mx-2"
-                                type="text"
-                                id="email"
-                                name="email"
-                                value={doctorDetails?.email}
-                                // onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-                            />
-                            {/* 1st Row */}
-
-                            {/* 1st Row */}
-
-                            <label
-                                className="mx-2"
-                                htmlFor="contactNumber"
-                                style={{
-                                    fontWeight: 400,
-                                    fontSize: "20px",
-                                    fontFamily: "Lato, sans-serif",
-                                }}
-                            >
-                                Contact Number
-                            </label>
-                            <input
-                                className="mx-2"
-                                type="text"
-                                id="contactNumber"
-                                name="contactNumber"
-                                value={doctorDetails?.contactNumber}
-                                onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-                            />
-                            {/* 1st Row */}
-
-                            {/* 2nd Row */}
-
-                            <div className="flex flex-col md:flex-row justify-between">
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
+                            <div className="flex justify-between space-x-4">
+                                <div className="flex-1">
                                     <label
-                                        className="mx-2"
                                         htmlFor="workingDays"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
+                                        className="block text-black text-lg font-semibold"
                                     >
                                         Working Days
                                     </label>
-                                    <div style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between", marginLeft: "1.5%", marginRight: "1.5%", backgroundColor: "white" }}>
-                                        <span style={{ display: "flex", margin: "5px 2px 5px 10px", padding: "2px 5px 5px 5px" }}>
-                                            {
-                                                doctorDetails?.workingDays.map((workingDay) => (
-                                                    <div className="breadcrumb-chip" key={workingDay} style={{ marginRight: "8px", height: "26px", padding: "0px 5px 0px 5px", backgroundColor: "#E4FFF2", borderRadius: "5%", }} onClick={() => handleDelete(workingDay)}>
-                                                        {workingDay.slice(0, 3) + " X "}
-                                                    </div>
-                                                ))
-                                            }
-
+                                    <div className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+                                        <span className="flex">
+                                            {doctorDetails?.workingDays.map((workingDay) => (
+                                                <div
+                                                    className="breadcrumb-chip"
+                                                    key={workingDay}
+                                                    style={{
+                                                        marginRight: "8px",
+                                                        height: "26px",
+                                                        padding: "0px 5px 0px 5px",
+                                                        backgroundColor: "#E4FFF2",
+                                                        borderRadius: "5%",
+                                                        cursor: "pointer",
+                                                    }}
+                                                    onClick={() => handleDelete(workingDay)}
+                                                >
+                                                    {workingDay?.slice(0, 3) + " X "}
+                                                </div>
+                                            ))}
                                         </span>
-                                        <select
+                                        <Select
                                             className="mx-5"
                                             type="text"
                                             id="workingDays"
                                             name="workingDays"
                                             onChange={handleChange}
-                                            style={{ backgroundColor: "#E4FFF2", height: "30px", alignItems: "center", marginTop: "1%", marginBottom: "1%" }}
                                         >
                                             {Daysdropdown.map((option) => (
-                                                <option key={option.value} value={option.value}>
+                                                <Select.Option key={option.value} value={option.value}>
                                                     {option.label}
-                                                </option>
+                                                </Select.Option>
                                             ))}
-                                        </select>
-
+                                        </Select>
                                     </div>
-                                </span>
-                                <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "8%" }}>
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="workingHours"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
+                                </div>
+
+                                <div className="flex-1" style={{ marginRight: "10px" }}>
+                                    <label className="block text-black text-lg font-semibold">
                                         Working Hours
                                     </label>
-                                    <span style={{ display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                                        <select
-                                            className="mx-2"
-                                            name="workHourFrom"
-                                            onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-                                        >
-                                            {TimeDropdown.map(time => (
-                                                <option key={time.value} value={time.value}>{time.label}</option>
-                                            ))}
-                                        </select>
-                                        <div style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}>To</div>
-                                        <select
-                                            className="mx-2"
-                                            name="workHourTo"
-                                            onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-                                        >
-                                            {TimeDropdown.map(time => (
-                                                <option key={time.value} value={time.value}>{time.label}</option>
-                                            ))}
-                                        </select>
-                                    </span>
-                                </span>
+                                    <div className="flex space-x-2">
+                                        <div className="flex-1">
+                                            <select
+                                                className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                                name="workHourFrom"
+                                                onChange={handleChange}
+                                            >
+                                                {TimeDropdown.map((time) => (
+                                                    <option key={time.value} value={time.value}>
+                                                        {time.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+
+                                        <div className="flex-1">
+                                            <select
+                                                className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                                name="workHourTo"
+                                                onChange={handleChange}
+                                            >
+                                                {TimeDropdown.map((time) => (
+                                                    <option key={time.value} value={time.value}>
+                                                        {time.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
-                            {/* 2nd Row */}
-
-                            {/* 2nd Row */}
-
-                            <div className="flex flex-col md:flex-row justify-between">
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
+                            <div class="flex justify-between space-x-4">
+                                <div class="flex-1">
                                     <label
-                                        className="mx-2"
-                                        htmlFor="totalExperience"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
+                                        for="total-experience"
+                                        class="block text-black text-lg font-semibold"
                                     >
                                         Total Experience
                                     </label>
                                     <input
-                                        className="mx-2"
-                                        type="number"
-                                        id="totalExperience"
+                                        type="text"
+                                        id="total-experience"
                                         name="totalExperience"
-                                        value={doctorDetails?.totalExperience}
                                         onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                        class="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                     />
-                                </span>
-                                <span className="flex flex-col w-[100%] md:w-[50%]" style={{ marginLeft: "8%" }}>
+                                </div>
+                                <div class="flex-1" style={{ marginRight: "10px" }}>
                                     <label
-                                        className="mx-2"
-                                        htmlFor="speciality"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
+                                        for="specialist"
+                                        class="block text-black text-lg font-semibold"
                                     >
-                                        Specialty
+                                        Specialist
                                     </label>
                                     <select
+                                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         id="speciality"
                                         name="speciality"
                                         onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+
                                     >
                                         {SpecialtiesDropdown.map(({ label, value }) => (
-                                            <option key={value} value={value}>{label}</option>
+                                            <option key={value} value={value}>
+                                                {label}
+                                            </option>
                                         ))}
                                     </select>
-                                </span>
+                                </div>
                             </div>
 
-                            {/* 2nd Row */}
-
-                            {/* 4th Row */}
-
-                            <label
-                                className="mx-2"
-                                htmlFor="degree"
-                                style={{
-                                    fontWeight: 400,
-                                    fontSize: "20px",
-                                    fontFamily: "Lato, sans-serif",
-                                }}
-                            >
-                                Degree
-                            </label>
-                            <input
-                                className="mx-2"
-                                type="text"
-                                id="degree"
-                                name="degree"
-                                value={doctorDetails?.degree}
-                                onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
-                            />
-                            {/* 4th Row */}
-                            {/* 5th Row */}
-
-                            <label
-                                className="mx-2"
-                                htmlFor="address"
-                                style={{
-                                    fontWeight: 400,
-                                    fontSize: "20px",
-                                    fontFamily: "Lato, sans-serif",
-                                }}
-                            >
-                                Address
-                            </label>
-                            <div className="mx-2 p-5" style={{ border: "1px solid #08DA75", height: "200px" }}>
-                                {/* Row1 */}
-                                <div className="display">
-                                    <span>
+                            <div>
+                                <label
+                                    for="degree"
+                                    class="block text-black text-lg font-semibold"
+                                >
+                                    Degree
+                                </label>
+                                <input
+                                    type="text"
+                                    id="degree"
+                                    name="degree"
+                                    onChange={handleChange}
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                />
+                            </div>
+                            <div class="p-3 pb-5 border border-[#08DA75]">
+                                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
+                                    <div class="px-2 w-full sm:w-1/3">
                                         <label
-                                            className="mx-2 mb-2"
-                                            htmlFor="houseNo"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="houseNo"
+                                            class="block text-black text-lg font-semibold"
                                         >
-                                            House No.
+                                            House No
                                         </label>
                                         <input
-                                            className="mx-2 mb-2"
-                                            type="number"
+                                            type="text"
                                             id="houseNo"
                                             name="houseNo"
-                                            value={doctorDetails?.address?.houseNo}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                            placeholder="1234"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/3">
                                         <label
-                                            className="mx-2 mb-2"
-                                            htmlFor="floor"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="floor"
+                                            class="block text-black text-lg font-semibold"
                                         >
                                             Floor
                                         </label>
                                         <input
-                                            className="mx-2 mb-2"
                                             type="text"
                                             id="floor"
                                             name="floor"
-                                            value={doctorDetails?.address?.floor}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                            placeholder="2nd"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/3">
                                         <label
-                                            className="mx-2"
-                                            htmlFor="block"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="block"
+                                            class="block text-black text-lg font-semibold"
                                         >
                                             Block
                                         </label>
                                         <input
-                                            className="mx-2"
                                             type="text"
                                             id="block"
                                             name="block"
-                                            value={doctorDetails?.address?.block}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                            placeholder="A"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
-                                    </span>
-                                </div>
-
-                                <div>
-                                    <span>
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/2">
                                         <label
-                                            className="mx-2"
-                                            htmlFor="area"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="area"
+                                            class="block text-black text-lg font-semibold"
                                         >
                                             Area
                                         </label>
                                         <input
-                                            className="mx-2"
                                             type="text"
                                             id="area"
                                             name="area"
-                                            value={doctorDetails?.address?.area}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                            placeholder="Green Park"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/2">
                                         <label
-                                            className="mx-2 mb-2"
-                                            htmlFor="pinCode"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="pincode"
+                                            class="block text-black text-lg font-semibold"
                                         >
-                                            Pin Code
+                                            Pincode
                                         </label>
                                         <input
-                                            className="mx-2 mb-2"
-                                            type="number"
+                                            type="text"
                                             id="pinCode"
                                             name="pinCode"
-                                            value={doctorDetails?.address?.pinCode}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                            placeholder="110016"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
-                                    </span>
-                                </div>
-                                <div>
-                                    <span>
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/2">
                                         <label
-                                            className="mx-2 mb-2"
-                                            htmlFor="district"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="district"
+                                            class="block text-black text-lg font-semibold"
                                         >
                                             District
                                         </label>
                                         <input
-                                            className="mx-2 mb-2"
                                             type="text"
                                             id="district"
                                             name="district"
-                                            value={doctorDetails?.address?.district}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                            placeholder="South Delhi"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/2">
                                         <label
-                                            className="mx-2 mb-2"
-                                            htmlFor="state"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="state"
+                                            class="block text-black text-lg font-semibold"
                                         >
                                             State
                                         </label>
                                         <input
-                                            className="mx-2 mb-2"
                                             type="text"
                                             id="state"
                                             name="state"
-                                            value={doctorDetails?.address?.state}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px", paddingLeft: "1.5%" }}
+                                            placeholder="Delhi"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
-
-                            {/* 5th Row */}
-
-                            <div className="flex justify-center my-5">
-                                <button
-                                    type="submit"
-                                    style={{
-                                        width: "159px",
-                                        height: "45px",
-                                        backgroundColor: "#08DA75",
-                                        borderRadius: "43px",
-                                        color: "white",
-                                        fontWeight: 600,
-                                        fontSize: "24px",
-                                        lineHeight: "28.8px",
-                                        fontFamily: "Lato, sans-serif",
-                                    }}
-                                    onClick={handleUpdate}
-                                >
-                                    Process
-                                </button>
-
-                            </div>
-                        </form>
+                        </div>
+                        <div className="mt-10 w-100 items-center justify-center text-center">
+                            <button
+                                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
+                                onClick={handleUpdate}
+                            >
+                                Process
+                            </button>
+                        </div>
                     </div>
-                </div >
-            </div >
+                </div>
+            </div>
         </>
     );
 }

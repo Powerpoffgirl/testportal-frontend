@@ -21,7 +21,6 @@ import EditDoctorForm from './components/editDoctorForm';
 import EditAdminForm from './components/editAdminForm';
 import UserOTP from './components/userOtp';
 import PatientListUser from './components/patientListUser';
-import BookAppointment from './components/bookAppointment';
 import DoctorListUser from './components/doctorListUser';
 import AppointmentListUser from './components/appointmentListUser';
 import EditUserForm from './components/editUserForm';
@@ -35,51 +34,49 @@ import ViewPatientDescription from './components/viewPatientDescription';
 import UserSignup from './components/userSignup';
 import DocAppointment from './components/docAppointment';
 import Table from './components/tabel';
+// import Sidebar2 from './components/Sidebar2';
+import Layout from './components/Layout';
 
 function App()
 {
-
   return (
     <Routes>
-      <Route path='/' element={<DoctorList></DoctorList>}></Route>
-      <Route path='/adminlogin' element={<AdminLogin></AdminLogin>}></Route>
-      <Route path='/doctorlogin' element={<DoctorLogin></DoctorLogin>}></Route>
-      <Route path='/userlogin' element={<UserLogin></UserLogin>}></Route>
-      <Route path='/usersignup' element={<UserSignup></UserSignup>}></Route>
+      <Route path='/' element={<Layout Component={DoctorList} />}></Route>
+      <Route path='/adminlogin' element={<AdminLogin />}></Route>
+      <Route path='/doctorlogin' element={<DoctorLogin />}></Route>
+      <Route path='/userlogin' element={<UserLogin />}></Route>
+      <Route path='/usersignup' element={<UserSignup />}></Route>
       <Route path='/admin' element={<Admin></Admin>}></Route>
       <Route path='/form' element={<Form></Form>}></Route>
-      <Route path='/otp' element={<OTP></OTP>}></Route>
-      <Route path='/userotp' element={<UserOTP></UserOTP>}></Route>
-      <Route path='/qr' element={<Qr></Qr>}></Route>
-      <Route path='/userform' element={<UserForm></UserForm>}></Route>
-      <Route path='/adminform' element={<AdminForm></AdminForm>}></Route>
-      <Route path='/useradmin' element={<UserAdmin></UserAdmin>}></Route>
-      <Route path='/doctordetail/:id' element={<DoctorDetail></DoctorDetail>}></Route>
+      <Route path='/otp' element={<OTP />}></Route>
+      <Route path='/userotp' element={<Layout Component={UserOTP} type="admin" />}></Route>
+      <Route path='/qr' element={<Layout Component={Qr} type="admin" />}></Route>
+      <Route path='/userform' element={<Layout Component={UserForm} type="user" />}></Route>
+      <Route path='/adminform' element={<Layout Component={AdminForm} type="admin" />}></Route>
+      <Route path='/useradmin' element={<Layout Component={UserAdmin} type="admin" />}></Route>
+      <Route path='/doctordetail/:id' element={<Layout Component={DoctorDetail} type="doctor" />}></Route>
       <Route path='/patientdescription/:id' element={<PatientDescription></PatientDescription>}></Route>
       <Route path='/viewpatientdescription/:id' element={<ViewPatientDescription></ViewPatientDescription>}></Route>
       <Route path='/patientform' element={<PatientForm></PatientForm>}></Route>
       <Route path='/showpatientform' element={<ShowPatientForm></ShowPatientForm>}></Route>
-      <Route path='/bookappointment' element={<BookAppointment></BookAppointment>}></Route>
-      <Route path='/bookappointment1' element={<DocAppointment></DocAppointment>}></Route>
-      <Route path='/editappointment' element={<EditAppointment></EditAppointment>}></Route>
-      <Route path='/doctorform' element={<DoctorForm></DoctorForm>}></Route>
-      <Route path='/editdoctorform' element={<EditDoctorForm></EditDoctorForm>}></Route>
+      <Route path='/bookappointment' element={<Layout Component={DocAppointment} type="user" />}></Route>
+      <Route path='/editappointment' element={<Layout Component={EditAppointment} type="user" />}></Route>
+      <Route path='/doctorform' element={<Layout Component={DoctorForm} type="admin" />}></Route>
+      <Route path='/editdoctorform' element={<Layout Component={EditDoctorForm} type="doctor" />}></Route>
       <Route path='/editadminform' element={<EditAdminForm></EditAdminForm>}></Route>
-      <Route path='/edituserform' element={<EditUserForm></EditUserForm>}></Route>
-      <Route path='/patientlistadmin' element={<PatientListAdmin></PatientListAdmin>}></Route>
-      <Route path='/patientlist' element={<PatientList></PatientList>}></Route>
-      <Route path='/patientlistuser' element={<PatientListUser></PatientListUser>}></Route>
-      <Route path='/doctorlist' element={<DoctorList></DoctorList>}></Route>
+      <Route path='/edituserform' element={<Layout Component={EditUserForm} type="user" />}></Route>
+      <Route path='/patientlistadmin' element={<Layout Component={PatientListAdmin} type="admin" />}></Route>
+      <Route path='/patientlist' element={<Layout Component={PatientList} type="doctor" />}></Route>
+      <Route path='/patientlistuser' element={<Layout Component={PatientListUser} type="user" />}></Route>
+      <Route path='/doctorlist' element={<DoctorList />}></Route>
       <Route path='/userlistadmin' element={<UserList></UserList>}></Route>
-      <Route path='/doctorlistuser' element={<DoctorListUser></DoctorListUser>}></Route>
-      <Route path='/doctorlistadmin' element={<DoctorListAdmin></DoctorListAdmin>}></Route>
-      <Route path='/appointmentlist' element={<AppointmentList></AppointmentList>}></Route>
-      <Route path='/appointmentlistuser' element={<AppointmentListUser></AppointmentListUser>}></Route>
+      <Route path='/doctorlistuser' element={<Layout Component={DoctorListUser} type="user" />}> </Route>
+      <Route path='/doctorlistadmin' element={<Layout Component={DoctorListAdmin} type="admin" />}></Route>
+      <Route path='/appointmentlist' element={<Layout Component={AppointmentList} type="doctor" />}></Route>
+      <Route path='/appointmentlistuser' element={<Layout Component={AppointmentListUser} type="user" />}></Route>
       <Route path='/tabel' element={<Table></Table>}></Route>
 
-    </Routes>
-
-
+    </Routes >
   );
 }
 

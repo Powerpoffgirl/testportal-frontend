@@ -132,7 +132,7 @@ export default function AppointmentList()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <DoctorSidebar></DoctorSidebar>
+
 
                 <Modal open={modalOpen} onClose={onCloseModal} styles={{
                     modal: {
@@ -156,7 +156,7 @@ export default function AppointmentList()
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Appointment" line2="Lists"></Header>
+
 
                     <div
                         className="scrollable-content"

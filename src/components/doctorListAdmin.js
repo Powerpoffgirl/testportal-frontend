@@ -109,7 +109,7 @@ export default function DoctorListAdmin()
                 console.error("No token found in local storage");
                 return;
             }
-            const response = await fetch(`${baseUrl}/api/v1/admin/delete_doctor/${doctorId}`, {
+            const response = await fetch(`${baseUrl}/api/v1/superAdmin/delete_doctor/${doctorId}`, {
                 method: 'DELETE', // Use DELETE method
                 headers: {
                     'Content-Type': 'application/json',
@@ -152,8 +152,6 @@ export default function DoctorListAdmin()
                 className="flex min-h-screen relative overflow-auto 
     box-border"
             >
-                <AdminSidebar></AdminSidebar>
-
                 <Modal open={open}
                     onClose={onCloseModal}
                     center
@@ -351,7 +349,6 @@ export default function DoctorListAdmin()
                         width: isTab ? "100%" : "77%",
                     }}
                 >
-                    <Header line1="Find" line2="Doctors" isAdd='true' searchTerm={searchTerm} setSearchTerm={setSearchTerm}></Header>
 
                     <div
                         className="flex flex-col gap-2 px-3 w-full"
