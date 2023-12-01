@@ -346,7 +346,7 @@ export default function DoctorListAdmin()
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
-                        width: isTab ? "100%" : "77%",
+                        width: "100%",
                     }}
                 >
 
@@ -356,8 +356,7 @@ export default function DoctorListAdmin()
                             top: "4%",
                             left: "2%",
                             position: "relative",
-
-                            // overflowY:"hidden",
+                            overflowY: 'auto',
                             justifyContent: "center",
                         }}
                     >

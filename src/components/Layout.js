@@ -8,6 +8,7 @@ import toggle from "../assets/toogle.svg";
 // import Table_2 from "./Table_2";
 // import Table_delete from "./Table_delete";
 import NavigationLinks from "./NavigationLinks";
+import { IoIosSearch } from "react-icons/io";
 
 // -------------BASE URL SIDEBAR NAVIGATION--------------------------
 
@@ -63,7 +64,7 @@ const link5 = [
 ];
 
 
-export default function Layout({ Component, type, headerTextTop, headerTextBottom })
+export default function Layout({ Component, type, headerTextTop, headerTextBottom, search, AddButton, setSearchTerm })
 {
     const location = useLocation();
     console.log(location);
@@ -79,6 +80,17 @@ export default function Layout({ Component, type, headerTextTop, headerTextBotto
     {
         navigate("/edituserform")
     }
+
+    const handleDoctorForm = () =>
+    {
+        navigate("/doctorform")
+    }
+
+    const handleSearchTerm = (e) =>
+    {
+        setSearchTerm(e.target.value)
+    }
+
 
     return (
         <>
@@ -121,10 +133,88 @@ export default function Layout({ Component, type, headerTextTop, headerTextBotto
                             />
                         </div>
 
-                        <div className="flex flex-col mb-2">
+                        <div style={{ marginBottom: -10 }} className="flex flex-col">
                             <span className="text-4xl font-semibold w-full">{headerTextTop}</span>
-                            <span className="text-4xl font-semibold w-full">{headerTextBottom}</span>
                         </div>
+
+                        <div className="flex flex-row mb-2">
+                            <span className="text-4xl font-semibold w-full">{headerTextBottom}</span>
+                            {
+                                search === 'true' ? (
+                                    <div style={{ display: "flex", flexDirection: 'row', marginRight: 20 }}>
+
+                                        <div className="header-Right-top" >
+
+                                            <span style={{ display: "flex", flexDirection: 'row', border: '2px solid white', borderRadius: 50 }}>
+                                                <span
+                                                    style={{
+                                                        width: "25.58px",
+                                                        height: "14.58px",
+                                                        marginTop: 7,
+                                                        marginLeft: '3%',
+                                                        marginRight: '4%',
+                                                        marginBottom: '8%',
+                                                        alignContent: 'center'
+
+                                                    }}
+
+
+                                                ><IoIosSearch style={{ color: 'white', fontSize: 30, marginTop: -3 }} /></span> <span>  <input
+                                                    placeholder={`${'search'}`}
+
+                                                    style={{
+                                                        width: '100px',
+                                                        marginRight: '30px',
+
+                                                        backgroundColor: '#08DA75',
+                                                        fontSize: '24px',
+                                                        color: 'white',
+                                                        fontWeight: 600,
+                                                        outline: 'none',
+                                                        marginLeft: '4%',
+
+                                                    }}
+                                                    onChange={(e) => handleSearchTerm(e)}
+                                                /> </span>  </span>
+
+
+
+                                        </div>
+                                        {
+                                            AddButton === 'true' ? (
+                                                <div className="header-Right-bottom">
+
+                                                    <button
+                                                        style={{
+                                                            display: "inline",
+                                                            fontSize: "29px",
+                                                            fontWeight: 800,
+                                                            fontFamily: "Lato, sans-serif",
+                                                            lineHeight: "34.8px",
+                                                            color: "#08DA75",
+                                                            backgroundColor: "white",
+                                                            height: "38px",
+                                                            width: "122px",
+                                                            borderRadius: "43px",
+                                                            marginLeft: 5,
+
+                                                        }}
+                                                        onClick={handleDoctorForm}
+                                                    >
+                                                        Add +
+                                                    </button>
+                                                </div>
+                                            ) : null
+
+
+                                        }
+
+                                    </div>
+                                ) : null
+                            }
+
+                        </div>
+
 
                     </nav>
                     <div className="mt-36 md:ml-72 pl-2">

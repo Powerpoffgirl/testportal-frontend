@@ -63,17 +63,17 @@ function App()
       <Route path='/bookappointment' element={<Layout Component={DocAppointment} type="user" />}></Route>
       <Route path='/editappointment' element={<Layout Component={EditAppointment} type="user" />}></Route>
       <Route path='/doctorform' element={<Layout Component={DoctorForm} type="admin" />}></Route>
-      <Route path='/editdoctorform' element={<Layout Component={EditDoctorForm} type="doctor" />}></Route>
+      <Route path='/editdoctorform' element={<Layout Component={EditDoctorForm} type="doctor" headerTextTop={"Doctor's"} headerTextBottom={"Form"} />}></Route>
       <Route path='/editadminform' element={<EditAdminForm></EditAdminForm>}></Route>
       <Route path='/edituserform' element={<Layout Component={EditUserForm} type="user" />}></Route>
-      <Route path='/patientlistadmin' element={<Layout Component={PatientListAdmin} type="admin" headerTextTop={"Patient's"} headerTextBottom={"List"} />}></Route>
-      <Route path='/patientlist' element={<Layout Component={PatientList} type="doctor" />}></Route>
+      <Route path='/patientlistadmin' element={<Layout Component={PatientListAdmin} type="admin" headerTextTop={"Patient's"} headerTextBottom={"List"} search={"true"} AddButton={'true'} />}></Route>
+      <Route path='/patientlist' element={<Layout Component={PatientList} type="doctor" headerTextTop={"Patient's"} headerTextBottom={"List"} search={"true"} />}></Route>
       <Route path='/patientlistuser' element={<Layout Component={PatientListUser} type="user" />}></Route>
       <Route path='/doctorlist' element={<DoctorList />}></Route>
       <Route path='/userlistadmin' element={<UserList></UserList>}></Route>
       <Route path='/doctorlistuser' element={<Layout Component={DoctorListUser} type="user" headerTextTop={"Doctor's"} headerTextBottom={"List"} />}> </Route>
-      <Route path='/doctorlistadmin' element={<Layout Component={DoctorListAdmin} type="admin" />}></Route>
-      <Route path='/appointmentlist' element={<Layout Component={AppointmentList} type="doctor" />}></Route>
+      <Route path='/doctorlistadmin' element={<Layout Component={DoctorListAdmin} type="admin" headerTextTop={"Doctor's"} headerTextBottom={"List"} search={"true"} />}></Route>
+      <Route path='/appointmentlist' element={<Layout Component={AppointmentList} type="doctor" headerTextTop={"Appointment"} headerTextBottom={"List"} search={'true'} />}></Route>
       <Route path='/appointmentlistuser' element={<Layout Component={AppointmentListUser} type="user" />}></Route>
       <Route path='/tabel' element={<Table></Table>}></Route>
 

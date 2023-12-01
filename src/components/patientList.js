@@ -81,7 +81,7 @@ export default function PatientList()
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
-                        width: isTab ? "100%" : "77%",
+                        width: "100%",
                     }}
                 >
 
@@ -89,8 +89,8 @@ export default function PatientList()
                     <div
                         className="scrollable-content"
                         style={{
-                            overflow: isTab ? "auto" : "hidden",
-                            maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
+                            overflow: "auto",
+                            maxHeight: "calc(100vh - 10px)", // Adjust the value as needed
                             padding: "10px",
                         }}
                     >
@@ -111,7 +111,7 @@ export default function PatientList()
                                     patientsList?.map((patient) => (
                                         <div
                                             className="flex flex-row bg-white p-2 md:flex-row justify-between"
-                                            style={{ borderRadius: "5px", marginBottom: "10px" }}
+                                            style={{ borderRadius: "5px", marginBottom: "10px", }}
                                         >
                                             <span className="flex flex-row items-center">
                                                 <img

@@ -153,7 +153,7 @@ export default function AppointmentList()
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
-                        width: isTab ? "100%" : "77%",
+                        width: "100%",
                     }}
                 >
 
@@ -161,8 +161,8 @@ export default function AppointmentList()
                     <div
                         className="scrollable-content"
                         style={{
-                            overflow: isTab ? "auto" : "hidden",
-                            maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
+                            overflow: "auto",
+                            maxHeight: "calc(100vh - 10px)", // Adjust the value as needed
                             padding: "10px",
                         }}
                     >
