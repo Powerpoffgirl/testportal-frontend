@@ -36,6 +36,7 @@ import DocAppointment from './components/docAppointment';
 import Table from './components/tabel';
 // import Sidebar2 from './components/Sidebar2';
 import Layout from './components/Layout';
+import Table2 from './components/table2';
 
 function App()
 {
@@ -65,12 +66,12 @@ function App()
       <Route path='/editdoctorform' element={<Layout Component={EditDoctorForm} type="doctor" />}></Route>
       <Route path='/editadminform' element={<EditAdminForm></EditAdminForm>}></Route>
       <Route path='/edituserform' element={<Layout Component={EditUserForm} type="user" />}></Route>
-      <Route path='/patientlistadmin' element={<Layout Component={PatientListAdmin} type="admin" />}></Route>
+      <Route path='/patientlistadmin' element={<Layout Component={PatientListAdmin} type="admin" headerTextTop={"Patient's"} headerTextBottom={"List"} />}></Route>
       <Route path='/patientlist' element={<Layout Component={PatientList} type="doctor" />}></Route>
       <Route path='/patientlistuser' element={<Layout Component={PatientListUser} type="user" />}></Route>
       <Route path='/doctorlist' element={<DoctorList />}></Route>
       <Route path='/userlistadmin' element={<UserList></UserList>}></Route>
-      <Route path='/doctorlistuser' element={<Layout Component={DoctorListUser} type="user" />}> </Route>
+      <Route path='/doctorlistuser' element={<Layout Component={DoctorListUser} type="user" headerTextTop={"Doctor's"} headerTextBottom={"List"} />}> </Route>
       <Route path='/doctorlistadmin' element={<Layout Component={DoctorListAdmin} type="admin" />}></Route>
       <Route path='/appointmentlist' element={<Layout Component={AppointmentList} type="doctor" />}></Route>
       <Route path='/appointmentlistuser' element={<Layout Component={AppointmentListUser} type="user" />}></Route>

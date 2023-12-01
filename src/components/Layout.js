@@ -63,7 +63,7 @@ const link5 = [
 ];
 
 
-export default function Layout({ Component, type })
+export default function Layout({ Component, type, headerTextTop, headerTextBottom })
 {
     const location = useLocation();
     console.log(location);
@@ -114,9 +114,10 @@ export default function Layout({ Component, type })
                         </div>
 
                         <div className="flex flex-col mb-2">
-                            <span className="text-4xl font-semibold w-full">Doctor's</span>
-                            <span className="text-4xl font-semibold w-full">List</span>
+                            <span className="text-4xl font-semibold w-full">{headerTextTop}</span>
+                            <span className="text-4xl font-semibold w-full">{headerTextBottom}</span>
                         </div>
+
                     </nav>
                     <div className="mt-36 md:ml-72 pl-2">
                         <Component />
