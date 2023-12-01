@@ -111,6 +111,7 @@ export default function UserLogin()
         if (data.token)
         {
           localStorage.setItem("token", data.token);
+          localStorage.setItem("userContactNumber", contactNumber);
           console.log("==============SELECTED DOCTOR=============", selectedDoctor)
           if (selectedDoctor)
           {

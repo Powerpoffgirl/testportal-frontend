@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import toggle from "../assets/toogle.svg";
 // import Table from "./Table";
 // import DoctorForm_new from "./DoctorForm_new";
@@ -67,23 +67,31 @@ export default function Layout({ Component, type, headerTextTop, headerTextBotto
 {
     const location = useLocation();
     console.log(location);
+    const navigate = useNavigate()
+    const userContactNumber = localStorage.getItem("userContactNumber")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const toggleSidebar = () =>
     {
         setIsSidebarOpen(!isSidebarOpen);
     };
+
+    const handleEditProfile = () =>
+    {
+        navigate("/edituserform")
+    }
+
     return (
         <>
             <div className="flex min-h-screen">
                 <aside className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} ease-in-out transition-all duration-300 md:transform-none`}>
                     <h1 className="font-bold text-2xl">Welcome! {type}</h1>
-                    <div class="flex items-center gap-x-2 mt-3">
+                    <div class="flex items-center gap-x-2 mt-3" onClick={handleEditProfile}>
                         <img class="object-cover w-16 h-16" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100" alt="avatar" />
 
                         <div>
                             <h1 class="text-xl font-semibold text-white capitalize">Mia John</h1>
 
-                            <p class="text-base text-white">miajohn@merakiui.com</p>
+                            <p class="text-base text-white">{userContactNumber}</p>
                         </div>
                     </div>
                     <hr className="mt-3" />
