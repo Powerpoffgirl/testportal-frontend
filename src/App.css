@@ -50,3 +50,10 @@ input::placeholder {
     height: 122px;
     width: 130px;
   }
+
+/* Add this to your CSS file */
+.no-border-dropdown-menu {
+    .ant-select-dropdown-menu-item {
+        border: none !important; /* Use !important to override default styles */
+    }
+}
