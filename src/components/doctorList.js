@@ -22,6 +22,14 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
+const svg4 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M22.2237 22.2222V20.243L8.6473 6.66664L6.66813 8.6458L20.2445 22.2222H22.2237ZM25.0015 25H19.0987L0.800076 6.66664C0.545446 6.38886 0.348687 6.08214 0.209798 5.7465C0.0709093 5.41085 0.00146484 5.05784 0.00146484 4.68747C0.00146484 4.3171 0.0709093 3.9583 0.209798 3.61108C0.348687 3.26386 0.55702 2.96293 0.834798 2.7083L2.77924 0.798582C3.03387 0.520803 3.3348 0.318256 3.68202 0.190942C4.02924 0.0636268 4.37646 -3.09348e-05 4.72369 -3.09348e-05C5.09406 -3.09348e-05 5.44707 0.0636268 5.78271 0.190942C6.11836 0.318256 6.42508 0.520803 6.70285 0.798582L25.0015 19.0972V25ZM7.67508 7.67358L6.66813 8.6458L8.6473 6.66664L7.67508 7.67358Z" fill="white"/>
+</svg>`
+
+const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
+</svg>`
+
 export default function DoctorList()
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -97,234 +105,244 @@ export default function DoctorList()
   }
 
 
+
   return (
     <>
+      <Modal open={open}
+        onClose={onCloseModal}
+        center
+        doctor={selectedDoctor}
+        styles={{
+          modal: {
+            // Set your custom width here (e.g., '70%')
+            width: isTab ? '80%' : '70%',
+            backgroundColor: '#08DA75',
+            alignContent: 'center'
+          },
+        }}
+      >
+        <div
+          className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
+        >
+          <div className="flex flex-row w-[100%] justify-between"
+          >
+            <span className="flex flex-col justify-start">
+              <text style={{
+                fontWeight: 400,
+                fontSize: !isTab ? '20px' : '16px',
+                fontFamily: "Lato, sans-serif",
+                color: 'white'
+              }}>{selectedDoctor?.workingDays?.map((day) => (
+                <span key={day}>{day.slice(0, 3)} </span>
+              ))}</text>
+              <text style={{
+                fontWeight: 400,
+                fontSize: !isTab ? '20px' : '16px',
+                fontFamily: "Lato, sans-serif",
+                color: 'white'
+              }}>{selectedDoctor?.workingHours?.workHourFrom}:00 To {selectedDoctor?.workingHours?.workHourTo}:00</text>
+            </span>
+
+            <img
+              src="data:image/png;base64,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"
+              alt="Avatar"
+              style={{
+                borderRadius: "50%",
+                height: isTab ? "40px" : "123px",
+                width: isTab ? "40px" : "123px",
+              }}
+            ></img>
+
+
+            <span className="flex flex-col justify-start">
+              <text style={{ color: "#08DA75" }}>Mon-Fri</text>
+              <text style={{ color: "#08DA75" }}>10:00am-6:00pm</text>
+            </span>
+          </div>
+          <text
+            className="ml-4 text-center mt-4"
+            style={{
+              fontSize: isTab ? "18px" : "26px",
+              fontWeight: 600,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+            }}
+          >
+            Dr. {selectedDoctor?.name}
+          </text>
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              fontSize: isTab ? "14px" : "20px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "#FFFFFF",
+            }}
+          >
+            {selectedDoctor?.contactNumber}
+          </text>
+
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              fontSize: isTab ? "12px" : "20px",
+              fontWeight: 400,
+              lineHeight: "24px",
+              fontFamily: "Lato, sans-serif",
+              color: '#FFFFFF',
+              marginBottom: "2%"
+            }}
+          >
+            {selectedDoctor?.email}
+          </text>
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              fontSize: isTab ? "16px" : "24px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "white",
+            }}
+          >
+            {selectedDoctor?.speciality}
+          </text>
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              fontSize: isTab ? "14px" : "22px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "white",
+            }}
+          >
+            {selectedDoctor?.totalExperience
+            } Years Experience
+          </text>
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              fontSize: isTab ? "14px" : "20px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "white",
+            }}
+          >
+            {selectedDoctor?.degree}
+          </text>
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              fontSize: isTab ? "14px" : "20px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "#FFFFFF",
+            }}
+          >
+            {selectedDoctor?.address?.houseNo + " " + selectedDoctor?.address?.block + " " + selectedDoctor?.address?.area + ", " + selectedDoctor?.address?.district + ", " + selectedDoctor?.address?.state + " " + selectedDoctor?.address?.pinCode}
+          </text>
+
+          <div className="flex justify-center">
+            <button
+              className="rounded-full mt-4 text-customRed"
+              type="submit"
+              style={{
+                backgroundColor: "white",
+                width: isTab ? "150px" : "198px",
+                height: isTab ? "35px" : "45px",
+                boxShadow: " 0 10px 5px -3px rgb(0 0 0 / 0.3)",
+              }}
+              onClick={handleBookAppointment}
+            >
+              Book Appointment
+            </button>
+          </div>
+
+          <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
+            <span className="flex">
+              <span
+                className="mr-8"
+                style={{ width: "8px", height: "20px" }}
+                dangerouslySetInnerHTML={{ __html: svg1 }}
+              ></span>
+              <span
+                style={{ width: "8px", height: "20px" }}
+                dangerouslySetInnerHTML={{ __html: svg2 }}
+              ></span>
+            </span>
+
+            <span className="flex">
+              <span
+                className="mr-8"
+                style={{ width: "8px", height: "20px" }}
+                dangerouslySetInnerHTML={{ __html: svg3 }}
+              ></span>
+              <text
+                style={{
+                  fontWeight: 400,
+                  fontSize: isTab ? "14px" : "20px",
+                  fontFamily: "Lato, sans-serif",
+                  color: "white",
+                }}
+              >
+                (4.5 Ratings)
+              </text>
+            </span>
+          </div>
+        </div>
+      </Modal>
       <div
-        className="flex min-h-screen relative overflow-auto 
-    box-border"
+        className="flex flex-col bg-customGreen"
+        style={{
+          width: "100%",
+        }}
       >
 
-        <Modal open={open}
-          onClose={onCloseModal}
-          center
-          doctor={selectedDoctor}
-          styles={{
-            modal: {
-              // Set your custom width here (e.g., '70%')
-              width: isTab ? '80%' : '70%',
-              backgroundColor: '#08DA75',
-              alignContent: 'center'
-            },
-          }}
-        >
-          <div
-            className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
-          >
-            <div className="flex flex-row w-[100%] justify-between"
-            >
-              <span className="flex flex-col justify-start">
-                <text style={{
-                  fontWeight: 400,
-                  fontSize: !isTab ? '20px' : '16px',
-                  fontFamily: "Lato, sans-serif",
-                  color: 'white'
-                }}>{selectedDoctor?.workingDays?.map((day) => (
-                  <span key={day}>{day.slice(0, 3)} </span>
-                ))}</text>
-                <text style={{
-                  fontWeight: 400,
-                  fontSize: !isTab ? '20px' : '16px',
-                  fontFamily: "Lato, sans-serif",
-                  color: 'white'
-                }}>{selectedDoctor?.workingHours?.workHourFrom}:00 To {selectedDoctor?.workingHours?.workHourTo}:00</text>
-              </span>
-
-              <img
-                src="data:image/png;base64,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"
-                alt="Avatar"
-                style={{
-                  borderRadius: "50%",
-                  height: isTab ? "40px" : "123px",
-                  width: isTab ? "40px" : "123px",
-                }}
-              ></img>
-
-
-              <span className="flex flex-col justify-start">
-                <text style={{ color: "#08DA75" }}>Mon-Fri</text>
-                <text style={{ color: "#08DA75" }}>10:00am-6:00pm</text>
-              </span>
-            </div>
-            <text
-              className="ml-4 text-center mt-4"
-              style={{
-                fontSize: isTab ? "18px" : "26px",
-                fontWeight: 600,
-                lineHeight: "28.8px",
-                fontFamily: "Lato, sans-serif",
-              }}
-            >
-              Dr. {selectedDoctor?.name}
-            </text>
-            <text
-              className="ml-4 text-center mt-2"
-              style={{
-                fontSize: isTab ? "14px" : "20px",
-                fontWeight: 400,
-                lineHeight: "28.8px",
-                fontFamily: "Lato, sans-serif",
-                color: "#FFFFFF",
-              }}
-            >
-              {selectedDoctor?.contactNumber}
-            </text>
-
-            <text
-              className="ml-4 text-center mt-2"
-              style={{
-                fontSize: isTab ? "12px" : "20px",
-                fontWeight: 400,
-                lineHeight: "24px",
-                fontFamily: "Lato, sans-serif",
-                color: '#FFFFFF',
-                marginBottom: "2%"
-              }}
-            >
-              {selectedDoctor?.email}
-            </text>
-            <text
-              className="ml-4 text-center mt-2"
-              style={{
-                fontSize: isTab ? "16px" : "24px",
-                fontWeight: 400,
-                lineHeight: "28.8px",
-                fontFamily: "Lato, sans-serif",
-                color: "white",
-              }}
-            >
-              {selectedDoctor?.speciality}
-            </text>
-            <text
-              className="ml-4 text-center mt-2"
-              style={{
-                fontSize: isTab ? "14px" : "22px",
-                fontWeight: 400,
-                lineHeight: "28.8px",
-                fontFamily: "Lato, sans-serif",
-                color: "white",
-              }}
-            >
-              {selectedDoctor?.totalExperience
-              } Years Experience
-            </text>
-            <text
-              className="ml-4 text-center mt-2"
-              style={{
-                fontSize: isTab ? "14px" : "20px",
-                fontWeight: 400,
-                lineHeight: "28.8px",
-                fontFamily: "Lato, sans-serif",
-                color: "white",
-              }}
-            >
-              {selectedDoctor?.degree}
-            </text>
-            <text
-              className="ml-4 text-center mt-2"
-              style={{
-                fontSize: isTab ? "14px" : "20px",
-                fontWeight: 400,
-                lineHeight: "28.8px",
-                fontFamily: "Lato, sans-serif",
-                color: "#FFFFFF",
-              }}
-            >
-              {selectedDoctor?.address?.houseNo + " " + selectedDoctor?.address?.block + " " + selectedDoctor?.address?.area + ", " + selectedDoctor?.address?.district + ", " + selectedDoctor?.address?.state + " " + selectedDoctor?.address?.pinCode}
-            </text>
-
-            <div className="flex justify-center">
-              <button
-                className="rounded-full mt-4 text-customRed"
-                type="submit"
-                style={{
-                  backgroundColor: "white",
-                  width: isTab ? "150px" : "198px",
-                  height: isTab ? "35px" : "45px",
-                  boxShadow: " 0 10px 5px -3px rgb(0 0 0 / 0.3)",
-                }}
-                onClick={handleBookAppointment}
-              >
-                Book Appointment
-              </button>
-            </div>
-
-            <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
-              <span className="flex">
-                <span
-                  className="mr-8"
-                  style={{ width: "8px", height: "20px" }}
-                  dangerouslySetInnerHTML={{ __html: svg1 }}
-                ></span>
-                <span
-                  style={{ width: "8px", height: "20px" }}
-                  dangerouslySetInnerHTML={{ __html: svg2 }}
-                ></span>
-              </span>
-
-              <span className="flex">
-                <span
-                  className="mr-8"
-                  style={{ width: "8px", height: "20px" }}
-                  dangerouslySetInnerHTML={{ __html: svg3 }}
-                ></span>
-                <text
-                  style={{
-                    fontWeight: 400,
-                    fontSize: isTab ? "14px" : "20px",
-                    fontFamily: "Lato, sans-serif",
-                    color: "white",
-                  }}
-                >
-                  (4.5 Ratings)
-                </text>
-              </span>
-            </div>
-          </div>
-        </Modal>
-
         <div
-          className="flex flex-col bg-customGreen"
+          className="divWithHiddenScrollbar flex flex-row gap-4 "
           style={{
-            width: isTab ? "100%" : "77%",
+            overflowX: 'auto',
+            position: 'relative',
+            msOverflowStyle: 'none',  // IE and Edge
+            scrollbarWidth: 'none',  // Firefox
           }}
         >
 
-          <div className="flex flex-row gap-4 p-4 overflow-x-auto whitespace-nowrap hide-scrollbar">
-            <button className="px-8 border-[#08DA75] border-2 bg-[#08DA75] text-lg">All</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Cardiologist</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Therapist</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Pediatrician</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Neurologist</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Physiotherapist</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Cardiologist</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Therapist</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Pediatrician</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Neurologist</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Physiotherapist</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Pediatrician</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Neurologist</button>
-            <button className="px-8 border-[#08DA75] border-2  text-lg">Physiotherapist</button>
-          </div>
+          {categories.map((items) => (
+            <span
+              className="bg-#E4FFF2; cursor-pointer px-8 hover:bg-customRed"
+              style={{
+                left: "2%",
+                height: "29px",
+                border: "1px solid #08DA75",
+                borderRadius: "5px",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                fontFamily: "Lato, sans-serif",
+                fontWeight: 400,
+                fontSize: "20px",
+                lineHeight: "28.8px",
+                color: "#595959"
+              }}
+              key={items.value}
+            >
+              {items.name}
+            </span>
+          ))}
+        </div>
 
-          {/* Doctors Array Start */}
+        {/* Doctors Array Start */}
 
-          <div className="flex flex-col p-4">
-            {doctorsList?.map((doctor) => (
-              <div
-                className="bg-white w-full p-4 mb-5"
-                key={doctor._id}
-                onClick={() => handleQRCode(doctor?._id)}
-              >
+        <div style={{ marginTop: "10px" }}>
+          {
+            doctorsList?.map((doctor, index) =>
+            (
+              <div className="bg-white w-full p-4 mb-5" onClick={() => handleQRCode(doctor._id)}>
                 <div className="flex flex-row justify-between">
                   <div class="flex items-center gap-x-2">
                     <img class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full" src={doctor.doctorPic} alt={doctor.name} />
@@ -351,11 +369,10 @@ export default function DoctorList()
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            ))
+          }
         </div>
-      </div>
-
+      </div >
     </>
   );
 }

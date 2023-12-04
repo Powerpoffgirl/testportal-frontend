@@ -1,14 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import Sidebar from "./sidebar";
-import Header from "./header";
 import { useNavigate } from "react-router-dom";
 import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { Button } from "flowbite-react";
-import AdminSidebar from "./adminSidebar";
-import AdminHeader from "./adminHeader";
+import { HiOutlineUserAdd } from "react-icons/hi";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 export default function EditAdminForm()
 {
@@ -16,6 +13,26 @@ export default function EditAdminForm()
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [selectedFile, setSelectedFile] = useState(null);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isHovered1, setIsHovered1] = useState(false);
+
+    const handleNewProfilePictureClick = async () =>
+    {
+        // This will trigger the hidden file input to open the file dialog
+        await fileInputRef.current.click();
+        handleNewProfilePicture()
+    };
+
+
+    const handleFileSelect = (event) =>
+    {
+        const file = event.target.files[0];
+        if (file)
+        {
+            setSelectedFile(file);
+        }
+    };
+
 
     // const handleFileSelect = (event) =>
     // {
@@ -249,338 +266,292 @@ export default function EditAdminForm()
 
     return (
         <>
-            <div
-                className="flex min-h-screen relative overflow-auto 
-    box-border"
-            >
-                <AdminSidebar></AdminSidebar>
-                <div
-                    className="flex flex-col bg-customGreen"
-                    style={{
-                        width: isTab ? "100%" : "77%",
-                    }}
-                >
-                    <AdminHeader line1="Admin’s" line2="Detail"></AdminHeader>
+            <div className="flex flex-row">
+                <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
 
-                    <div
-                        className="scrollable-content"
-                        style={{
-                            overflow: isTab ? "auto" : "hidden",
-                            maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
-                            padding: "10px",
-                        }}
-                    >
-                        <form
-                            className="flex flex-col gap-2 px-3 w-full"
-                            style={{
-                                top: "4%",
-                                left: "2%",
-                                position: "relative",
-                                overflow: "hidden",
-                                justifyContent: "center",
-                            }}
-                        >
-                            <div style={{ display: "flex", flexDirection: "column", marginLeft: "40%" }}>
-                                <div style={{ backgroundColor: "#FFFFFF", width: "90px", height: "90px", borderRadius: "50%", alignItems: "center", display: "flex", flexDirection: "row", justifyContent: "space-evenly", color: "#A4A4A4" }}>
-                                    <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
-                                </div>
-                                <p
-                                    aria-controls="profile-pic-menu"
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? 'true' : undefined}
-                                    onClick={handleClick}
-                                    style={{ cursor: 'pointer' }} // Add a pointer cursor to indicate clickable
-                                >
-                                    Edit profile pic
-                                </p>
-                                <Menu
-                                    id="profile-pic-menu"
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                    MenuListProps={{
-                                        'aria-labelledby': 'edit-profile-pic-text',
+                </div>
+                <div className=" w-full">
+
+                    <div className="mt-6 p-2">
+                        <div className="flex  flex-col items-center justify-center w-full">
+                            <div className="cursor-pointer">
+                                <div
+                                    style={{
+                                        display: "flex",
+                                        flexDirection: "column",
                                     }}
                                 >
-                                    <MenuItem onClick={handleNewProfilePicture}>New profile picture</MenuItem>
-                                    <MenuItem onClick={handleRemoveProfilePicture}>Remove current profile picture</MenuItem>
-                                </Menu>
-                            </div>
-
-                            {/* 1st Row */}
-
-                            <label
-                                className="mx-2"
-                                htmlFor="name"
-                                style={{
-                                    fontWeight: 400,
-                                    fontSize: "20px",
-                                    fontFamily: "Lato, sans-serif",
-                                }}
-                            >
-                                Name
-                            </label>
-
-                            <input
-                                className="mx-2"
-                                type="text"
-                                id="name"
-                                name="name"
-                                value={doctorDetails?.name}
-                                onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
-                            />
-
-
-                            {/* 1st Row */}
-
-                            {/* 1st Row */}
-
-                            <label
-                                className="mx-2"
-                                htmlFor="email"
-                                style={{
-                                    fontWeight: 400,
-                                    fontSize: "20px",
-                                    fontFamily: "Lato, sans-serif",
-                                }}
-                            >
-                                Email
-                            </label>
-
-                            <input
-                                className="mx-2"
-                                type="text"
-                                id="email"
-                                name="email"
-                                value={doctorDetails?.email}
-                                onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
-                            />
-                            {/* 1st Row */}
-
-                            {/* 1st Row */}
-
-                            <label
-                                className="mx-2"
-                                htmlFor="contactNumber"
-                                style={{
-                                    fontWeight: 400,
-                                    fontSize: "20px",
-                                    fontFamily: "Lato, sans-serif",
-                                }}
-                            >
-                                Contact Number
-                            </label>
-                            <input
-                                className="mx-2"
-                                type="text"
-                                id="contactNumber"
-                                name="contactNumber"
-                                value={doctorDetails?.contactNumber}
-                                onChange={handleChange}
-                                style={{ border: "1px solid #08DA75", height: "40px" }}
-                            />
-
-
-                            <label
-                                className="mx-2"
-                                htmlFor="address"
-                                style={{
-                                    fontWeight: 400,
-                                    fontSize: "20px",
-                                    fontFamily: "Lato, sans-serif",
-                                }}
-                            >
-                                Address
-                            </label>
-                            <div className="mx-2 p-5" style={{ border: "1px solid #08DA75", height: "200px" }}>
-                                {/* Row1 */}
-                                <div className="display">
-                                    <span>
-                                        <label
-                                            className="mx-2 mb-2"
-                                            htmlFor="houseNo"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
+                                    <div
+                                        style={{
+                                            backgroundColor: "#FFFFFF",
+                                            width: "90px",
+                                            height: "90px",
+                                            borderRadius: "50%",
+                                            alignItems: "center",
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            justifyContent: "space-evenly",
+                                            color: "#A4A4A4",
+                                        }}
+                                    >
+                                        {doctorDetails?.doctorPic ? (
+                                            <img
+                                                src={doctorDetails.doctorPic}
+                                                alt="Avatar"
+                                                style={{
+                                                    borderRadius: "50%",
+                                                }}
+                                            />
+                                        ) : (
+                                            <PermIdentityOutlinedIcon
+                                                style={{ width: "70px", height: "70px" }}
+                                            />
+                                        )}
+                                    </div>
+                                    <p
+                                        aria-controls="profile-pic-menu"
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? "true" : undefined}
+                                        onClick={handleClick}
+                                        style={{ cursor: "pointer" }} // Add a pointer cursor to indicate clickable
+                                    >
+                                        Edit profile pic
+                                    </p>
+                                    <div style={{ backgroundColor: "#08DA75" }}>
+                                        <Menu
+                                            id="profile-pic-menu"
+                                            anchorEl={anchorEl}
+                                            open={open}
+                                            onClose={handleClose}
+                                            MenuListProps={{
+                                                "aria-labelledby": "edit-profile-pic-text",
+                                                style: { backgroundColor: "#08DA75" }, // Set background color for the whole menu
                                             }}
                                         >
-                                            House No.
+                                            <MenuItem
+                                                style={{
+                                                    backgroundColor: "#08DA75",
+                                                    color: isHovered ? "red" : "white",
+                                                }}
+                                                onClick={handleNewProfilePictureClick}
+                                                onMouseEnter={() => setIsHovered(true)}
+                                                onMouseLeave={() => setIsHovered(false)}
+                                            >
+                                                {" "}
+                                                <span style={{ marginRight: "8px" }}>
+                                                    <HiOutlineUserAdd />
+                                                </span>
+                                                <span>New profile picture</span>
+                                            </MenuItem>
+
+                                            <MenuItem
+                                                style={{
+                                                    backgroundColor: "#08DA75",
+                                                    color: isHovered1 ? "red" : "white",
+                                                }}
+                                                onClick={handleRemoveProfilePicture}
+                                                onMouseEnter={() => setIsHovered1(true)}
+                                                onMouseLeave={() => setIsHovered1(false)}
+                                            >
+                                                <span style={{ marginRight: "8px" }}>
+                                                    <FaRegTrashAlt />
+                                                </span>
+                                                <span>Remove current picture</span>
+                                            </MenuItem>
+                                        </Menu>
+                                    </div>
+                                    <input
+                                        id="imageInput"
+                                        type="file"
+                                        ref={fileInputRef}
+                                        style={{ display: "none" }}
+                                        accept="image/*"
+                                        onChange={handleFileSelect}
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 w-full gap-4">
+                            <div>
+                                <label
+                                    for="name"
+                                    class="block text-black text-lg font-semibold"
+                                >
+                                    Dr. Name
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Smita Singh"
+                                    id="name"
+                                    name="name"
+                                    onChange={handleChange}
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    for="email"
+                                    class="block text-black text-lg font-semibold"
+                                >
+                                    Email
+                                </label>
+                                <input
+                                    type="email"
+                                    placeholder="smitasingh1234@gmail.com"
+                                    id="email"
+                                    name="email"
+                                    onChange={handleChange}
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    for="contact"
+                                    class="block text-black text-lg font-semibold"
+                                >
+                                    Contact Number
+                                </label>
+                                <input
+                                    type="number"
+                                    placeholder="+91-8603678852"
+                                    id="contactNumber"
+                                    name="contactNumber"
+                                    onChange={handleChange}
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                />
+                            </div>
+
+
+
+
+                            <div class="p-3 pb-5 border border-[#08DA75]">
+                                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
+                                    <div class="px-2 w-full sm:w-1/3">
+                                        <label
+                                            for="houseNo"
+                                            class="block text-black text-lg font-semibold"
+                                        >
+                                            House No
                                         </label>
                                         <input
-                                            className="mx-2 mb-2"
-                                            type="number"
+                                            type="text"
                                             id="houseNo"
                                             name="houseNo"
-                                            value={doctorDetails?.address?.houseNo}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            placeholder="1234"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/3">
                                         <label
-                                            className="mx-2 mb-2"
-                                            htmlFor="floor"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="floor"
+                                            class="block text-black text-lg font-semibold"
                                         >
                                             Floor
                                         </label>
                                         <input
-                                            className="mx-2 mb-2"
                                             type="text"
                                             id="floor"
                                             name="floor"
-                                            value={doctorDetails?.address?.floor}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            placeholder="2nd"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/3">
                                         <label
-                                            className="mx-2"
-                                            htmlFor="block"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="block"
+                                            class="block text-black text-lg font-semibold"
                                         >
                                             Block
                                         </label>
                                         <input
-                                            className="mx-2"
                                             type="text"
                                             id="block"
                                             name="block"
-                                            value={doctorDetails?.address?.block}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            placeholder="A"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
-                                    </span>
-                                </div>
-
-                                <div>
-                                    <span>
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/2">
                                         <label
-                                            className="mx-2"
-                                            htmlFor="area"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="area"
+                                            class="block text-black text-lg font-semibold"
                                         >
                                             Area
                                         </label>
                                         <input
-                                            className="mx-2"
                                             type="text"
                                             id="area"
                                             name="area"
-                                            value={doctorDetails?.address?.area}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            placeholder="Green Park"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/2">
                                         <label
-                                            className="mx-2 mb-2"
-                                            htmlFor="pinCode"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="pincode"
+                                            class="block text-black text-lg font-semibold"
                                         >
-                                            Pin Code
+                                            Pincode
                                         </label>
                                         <input
-                                            className="mx-2 mb-2"
-                                            type="number"
+                                            type="text"
                                             id="pinCode"
                                             name="pinCode"
-                                            value={doctorDetails?.address?.pinCode}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            placeholder="110016"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
-                                    </span>
-                                </div>
-                                <div>
-                                    <span>
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/2">
                                         <label
-                                            className="mx-2 mb-2"
-                                            htmlFor="district"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="district"
+                                            class="block text-black text-lg font-semibold"
                                         >
                                             District
                                         </label>
                                         <input
-                                            className="mx-2 mb-2"
                                             type="text"
                                             id="district"
                                             name="district"
-                                            value={doctorDetails?.address?.district}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            placeholder="South Delhi"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
+                                    </div>
+                                    <div class="px-2 w-full sm:w-1/2">
                                         <label
-                                            className="mx-2 mb-2"
-                                            htmlFor="state"
-                                            style={{
-                                                fontWeight: 400,
-                                                fontSize: "20px",
-                                                fontFamily: "Lato, sans-serif",
-                                            }}
+                                            for="state"
+                                            class="block text-black text-lg font-semibold"
                                         >
                                             State
                                         </label>
                                         <input
-                                            className="mx-2 mb-2"
                                             type="text"
                                             id="state"
                                             name="state"
-                                            value={doctorDetails?.address?.state}
                                             onChange={handleChange}
-                                            style={{ border: "1px solid #08DA75", height: "40px" }}
+                                            placeholder="Delhi"
+                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
-                                    </span>
+                                    </div>
                                 </div>
                             </div>
-
-                            {/* 5th Row */}
-
-                            <div className="flex justify-center my-5">
-                                <button
-                                    type="submit"
-                                    style={{
-                                        width: "159px",
-                                        height: "45px",
-                                        backgroundColor: "#08DA75",
-                                        borderRadius: "43px",
-                                        color: "white",
-                                        fontWeight: 600,
-                                        fontSize: "24px",
-                                        lineHeight: "28.8px",
-                                        fontFamily: "Lato, sans-serif",
-                                    }}
-                                    onClick={handleUpdate}
-                                >
-                                    Process
-                                </button>
-                                {!isEditing && (
-                                    <Button variant="primary" onClick={handleToggleEdit}>
-                                        Edit
-                                    </Button>
-                                )}
-                            </div>
-                        </form>
+                        </div>
+                        <div className="mt-10 w-100 items-center justify-center text-center">
+                            <button
+                                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
+                                onClick={handleUpdate}
+                            >
+                                Process
+                            </button>
+                        </div>
                     </div>
-                </div >
-            </div >
+                </div>
+            </div>
         </>
     );
 }

@@ -51,14 +51,7 @@ function App() {
       <Route path="/otp" element={<OTP />}></Route>
       <Route
         path="/userotp"
-        element={
-          <Layout
-            Component={UserOTP}
-            type="admin"
-            headerTextTop={"Verify"}
-            headerTextBottom={"OTP"}
-          />
-        }
+        element={<Layout Component={UserOTP} type="admin" />}
       ></Route>
       <Route
         path="/qr"
@@ -107,22 +100,29 @@ function App() {
       ></Route>
       <Route
         path="/editdoctorform"
-        element={<Layout Component={EditDoctorForm} type="doctor" />}
-      ></Route>
-      <Route
-        path="/editadminform"
-        element={<EditAdminForm></EditAdminForm>}
-      ></Route>
-      <Route
-        path="/edituserform"
         element={
           <Layout
-            Component={EditUserForm}
-            type="user"
-            headerTextTop={"User's"}
+            Component={EditDoctorForm}
+            type="doctor"
+            headerTextTop={"Doctor's"}
             headerTextBottom={"Form"}
           />
         }
+      ></Route>
+      <Route
+        path="/editadminform"
+        element={
+          <Layout
+            Component={EditAdminForm}
+            type="admin"
+            headerTextTop={"Admin's"}
+            headerTextBottom={"Form"}
+          />
+        }
+      ></Route>
+      <Route
+        path="/edituserform"
+        element={<Layout Component={EditUserForm} type="user" />}
       ></Route>
       <Route
         path="/patientlistadmin"
@@ -132,23 +132,26 @@ function App() {
             type="admin"
             headerTextTop={"Patient's"}
             headerTextBottom={"List"}
+            search={"true"}
+            AddButton={"true"}
           />
         }
       ></Route>
       <Route
         path="/patientlist"
-        element={<Layout Component={PatientList} type="doctor" />}
+        element={
+          <Layout
+            Component={PatientList}
+            type="doctor"
+            headerTextTop={"Patient's"}
+            headerTextBottom={"List"}
+            search={"true"}
+          />
+        }
       ></Route>
       <Route
         path="/patientlistuser"
-        element={
-          <Layout
-            Component={PatientListUser}
-            type="user"
-            headerTextTop={"Patient's"}
-            headerTextBottom={"List"}
-          />
-        }
+        element={<Layout Component={PatientListUser} type="user" />}
       ></Route>
       <Route path="/doctorlist" element={<DoctorList />}></Route>
       <Route path="/userlistadmin" element={<UserList></UserList>}></Route>
@@ -167,22 +170,32 @@ function App() {
       </Route>
       <Route
         path="/doctorlistadmin"
-        element={<Layout Component={DoctorListAdmin} type="admin" />}
+        element={
+          <Layout
+            Component={DoctorListAdmin}
+            type="admin"
+            headerTextTop={"Doctor's"}
+            headerTextBottom={"List"}
+            search={"true"}
+            AddButton={"true"}
+          />
+        }
       ></Route>
       <Route
         path="/appointmentlist"
-        element={<Layout Component={AppointmentList} type="doctor" />}
+        element={
+          <Layout
+            Component={AppointmentList}
+            type="doctor"
+            headerTextTop={"Appointment"}
+            headerTextBottom={"List"}
+            search={"true"}
+          />
+        }
       ></Route>
       <Route
         path="/appointmentlistuser"
-        element={
-          <Layout
-            Component={AppointmentListUser}
-            type="user"
-            headerTextTop={"Appointment's"}
-            headerTextBottom={"List"}
-          />
-        }
+        element={<Layout Component={AppointmentListUser} type="user" />}
       ></Route>
       <Route path="/tabel" element={<Table></Table>}></Route>
     </Routes>
