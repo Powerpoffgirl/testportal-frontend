@@ -184,6 +184,7 @@ function App()
             type="user"
             headerTextTop={"Doctor's"}
             headerTextBottom={"List"}
+            search={"true"}
           />
         }
       >
@@ -216,7 +217,9 @@ function App()
       ></Route>
       <Route
         path="/appointmentlistuser"
-        element={<Layout Component={AppointmentListUser} type="user" />}
+        element={<Layout Component={AppointmentListUser} type="user" headerTextTop={"Appointment"}
+          headerTextBottom={"List"}
+          search={"true"} />}
       ></Route>
       <Route path="/tabel" element={<Table></Table>}></Route>
     </Routes>
