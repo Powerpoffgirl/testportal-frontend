@@ -447,6 +447,7 @@ export default function EditDoctorForm()
                                     placeholder="Smita Singh"
                                     id="name"
                                     name="name"
+                                    value={doctorDetails?.name}
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
@@ -575,6 +576,7 @@ export default function EditDoctorForm()
                                         type="text"
                                         id="total-experience"
                                         name="totalExperience"
+                                        value={doctorDetails?.totalExperience}
                                         onChange={handleChange}
                                         class="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                     />
@@ -613,6 +615,7 @@ export default function EditDoctorForm()
                                     type="text"
                                     id="degree"
                                     name="degree"
+                                    value={doctorDetails?.degree}
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
@@ -630,6 +633,7 @@ export default function EditDoctorForm()
                                             type="text"
                                             id="houseNo"
                                             name="houseNo"
+                                            value={doctorDetails?.address?.houseNo}
                                             onChange={handleChange}
                                             placeholder="1234"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -646,6 +650,7 @@ export default function EditDoctorForm()
                                             type="text"
                                             id="floor"
                                             name="floor"
+                                            value={doctorDetails?.address?.floor}
                                             onChange={handleChange}
                                             placeholder="2nd"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -662,6 +667,7 @@ export default function EditDoctorForm()
                                             type="text"
                                             id="block"
                                             name="block"
+                                            value={doctorDetails?.address?.block}
                                             onChange={handleChange}
                                             placeholder="A"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -678,6 +684,7 @@ export default function EditDoctorForm()
                                             type="text"
                                             id="area"
                                             name="area"
+                                            value={doctorDetails?.address?.area}
                                             onChange={handleChange}
                                             placeholder="Green Park"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -695,6 +702,7 @@ export default function EditDoctorForm()
                                             id="pinCode"
                                             name="pinCode"
                                             onChange={handleChange}
+                                            value={doctorDetails?.address?.pinCode}
                                             placeholder="110016"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
@@ -710,6 +718,7 @@ export default function EditDoctorForm()
                                             type="text"
                                             id="district"
                                             name="district"
+                                            value={doctorDetails?.address?.district}
                                             onChange={handleChange}
                                             placeholder="South Delhi"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -726,6 +735,7 @@ export default function EditDoctorForm()
                                             type="text"
                                             id="state"
                                             name="state"
+                                            value={doctorDetails?.address?.state}
                                             onChange={handleChange}
                                             placeholder="Delhi"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"

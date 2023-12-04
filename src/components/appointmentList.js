@@ -146,29 +146,127 @@ export default function AppointmentList()
             </Modal>
             <div className="flex flex-col">
                 {
-                    patientsList?.map((patient) => (
-                        <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
-                            <div className="flex flex-row justify-start items-center">
-                                <div class="flex items-center gap-x-2">
-                                    <img class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100" alt="" />
+                    appointmentList?.map((appointment) => (
+                        <div
+                            className="flex flex-row bg-white p-2 md:flex-row justify-between"
+                            style={{ borderRadius: "5px", marginBottom: "10px" }}
+                            key={appointment._id}
+                        >
+                            <span className="flex flex-row items-center">
+                                <img
+                                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
+                                    alt="Avatar"
+                                    style={{
+                                        borderRadius: "50%",
+                                        height: isTab ? "40px" : "81px",
+                                        width: isTab ? "40px" : "81px",
+                                    }}
+                                ></img>
 
-                                    <div>
-                                        <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">{patient.name}</h1>
-                                        {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}
-                                    </div>
-                                </div>
-                                <div class="flex flex-row ms-auto gap-1 sm:gap-4">
-                                    <button class="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm">Decline</button>
-                                    <button class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm" >Accept</button>
-                                </div>
+                                <text
+                                    className="ml-4"
+                                    style={{
+                                        fontSize: isTab ? "16px" : "24px",
+                                        fontWeight: 400,
+                                        lineHeight: "28.8px",
+                                        fontFamily: "Lato, sans-serif",
+                                    }}
+                                >
+                                    {appointment?.patientId?.name}<br />
+                                    <span style={{
+                                        fontSize: isTab ? "12px" : "20px",
+                                        fontWeight: 400,
+                                        color: "#A4A4A4",
+                                        display: "flex",
+                                        gap: "20px"
+                                    }}>
+                                        <span >   {appointment?.appointmentDate?.date}
+                                        </span>
+                                        <span >
+                                            {appointment?.appointmentDate?.time}</span>
+                                    </span>
 
-                            </div>
+                                </text>
+                                <text
+                                    className="ml-4"
+                                    style={{
+                                        fontSize: isTab ? "16px" : "24px",
+                                        fontWeight: 400,
+                                        lineHeight: "28.8px",
+                                        fontFamily: "Lato, sans-serif",
+                                    }}
+                                >
+
+                                </text>
+                            </span>
+                            {
+                                appointment.appointmentStatus === "Confirm" ? (
+                                    <button style={{
+                                        width: !isTab ? "111px" : "73px",
+                                        height: "45px",
+                                        borderRadius: "35px",
+                                        backgroundColor: "white",
+                                        border: "1px solid #08DA75",
+                                        color: "#08DA75",
+                                        fontWeight: 400,
+                                        fontSize: isTab ? "11px" : "24px",
+                                        lineHeight: "28.8px",
+                                        fontFamily: "Lato, sans-serif",
+                                    }}
+                                        onClick={() => handleConsult(appointment._id)}
+                                    >Consult</button>
+                                ) : appointment.appointmentStatus === "Decline" ? (
+                                    <span style={{
+                                        color: "#EF5F5F",
+                                        fontWeight: 400,
+                                        // borderRadius: "35px",
+                                        // border: "1px solid #EF5F5F",
+                                        fontSize: isTab ? "11px" : "24px",
+                                        lineHeight: "28.8px",
+                                        fontFamily: "Lato, sans-serif",
+                                    }}>Declined</span>
+                                ) : (
+                                    <span className="flex flex-row gap-2 items-center">
+                                        <button
+                                            style={{
+                                                width: !isTab ? "111px" : "73px",
+                                                height: "45px",
+                                                borderRadius: "35px",
+                                                backgroundColor: "#EF5F5F",
+                                                color: "white",
+                                                fontWeight: 400,
+                                                fontSize: isTab ? "11px" : "24px",
+                                                lineHeight: "28.8px",
+                                                fontFamily: "Lato, sans-serif",
+                                            }}
+                                            onClick={() => handleAppointmentStatus(appointment?._id, 'decline')}
+                                        >
+                                            Decline
+                                        </button>
+                                        <button
+                                            style={{
+                                                width: !isTab ? "111px" : "73px",
+                                                height: "45px",
+                                                borderRadius: "35px",
+                                                backgroundColor: "#08DA75",
+                                                color: "white",
+                                                fontWeight: 400,
+                                                fontSize: isTab ? "11px" : "24px",
+                                                lineHeight: "28.8px",
+                                                fontFamily: "Lato, sans-serif",
+                                            }}
+                                            onClick={() => handleAppointmentStatus(appointment?._id, 'accept')}
+                                        >
+                                            Accept
+                                        </button>
+                                    </span>
+                                )
+                            }
+
 
                         </div>
                     ))
                 }
-
-
             </div>
         </>
     );
