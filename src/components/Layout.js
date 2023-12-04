@@ -15,8 +15,8 @@ import { IoIosSearch } from "react-icons/io";
 // const navigate = useNavigate()
 const handleLogout = () =>
 {
-  console.log("HELLO")
-  localStorage.clear(); // or localStorage.removeItem('yourKey');
+    console.log("HELLO")
+    localStorage.clear(); // or localStorage.removeItem('yourKey');
 
 };
 
@@ -33,12 +33,12 @@ const link1 = [
 
 const link2 = [
 <<<<<<< HEAD
-  { text: "Patient’s List", to: "/patientlistuser" },
-  { text: "Doctor’s List", to: "/doctorlistuser" },
-  { text: "Appointment’s List", to: "/appointmentlistuser" },
-  { text: "Edit Profile", to: "/edituserform" },
-  { text: "Support", to: "#" },
-  { text: "Logout User", to: "/userlogin", onClick: handleLogout },
+    { text: "Patient’s List", to: "/patientlistuser" },
+    { text: "Doctor’s List", to: "/doctorlistuser" },
+    { text: "Appointment’s List", to: "/appointmentlistuser" },
+    { text: "Edit Profile", to: "/edituserform" },
+    { text: "Support", to: "#" },
+    { text: "Logout User", to: "/userlogin", onClick: handleLogout },
 =======
     { text: "Patient’s List", to: "/patientlistuser" },
     { text: "Doctor’s List", to: "/doctorlistuser" },
@@ -53,12 +53,12 @@ const link2 = [
 
 const link3 = [
 <<<<<<< HEAD
-  { text: "Patient’s List", to: "/patientlist" },
-  { text: "Appointment List", to: "/appointmentlist" },
-  { text: "Edit Profile", to: "/editdoctorform" },
-  { text: "Support", to: "#" },
-  { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
+    { text: "Patient’s List", to: "/patientlist" },
+    { text: "Appointment List", to: "/appointmentlist" },
+    { text: "Edit Profile", to: "/editdoctorform" },
+    { text: "Support", to: "#" },
+    { text: "Manage QR", to: "#" },
+    { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
 =======
     { text: "Patient’s List", to: "/patientlist" },
     { text: "Appointment List", to: "/appointmentlist" },
@@ -73,16 +73,16 @@ const link3 = [
 
 const link4 = [
 <<<<<<< HEAD
-  { text: "Doctor’s List", to: "/doctorlistadmin" },
-  { text: "Patient’s List", to: "/patientlistadmin" },
-  { text: "Appointment List", to: "/appointmentlist" },
-  {
-    text: "Edit Profile",
-    to: "/editadminform",
-  },
-  { text: "Support", to: "#" },
-  { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "/adminlogin", onClick: handleLogout },
+    { text: "Doctor’s List", to: "/doctorlistadmin" },
+    { text: "Patient’s List", to: "/patientlistadmin" },
+    { text: "Appointment List", to: "/appointmentlist" },
+    {
+        text: "Edit Profile",
+        to: "/editadminform",
+    },
+    { text: "Support", to: "#" },
+    { text: "Manage QR", to: "#" },
+    { text: "Logout", to: "/adminlogin", onClick: handleLogout },
 =======
     { text: "Doctor’s List", to: "/doctorlistadmin" },
     { text: "Patient’s List", to: "/patientlistadmin" },
@@ -100,13 +100,13 @@ const link4 = [
 // -------------SUPER ADMIN SIDEBAR NAVIGATION--------------------------
 const link5 = [
 <<<<<<< HEAD
-  { text: "Admin’s List", to: "/adminlist" },
-  { text: "Patient’s List", to: "/patientlistadmin" },
-  { text: "Appointment List", to: "" },
-  { text: "Edit Profile", to: "#" },
-  { text: "Support", to: "#" },
-  { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "#", onClick: handleLogout },
+    { text: "Admin’s List", to: "/adminlist" },
+    { text: "Patient’s List", to: "/patientlistadmin" },
+    { text: "Appointment List", to: "" },
+    { text: "Edit Profile", to: "#" },
+    { text: "Support", to: "#" },
+    { text: "Manage QR", to: "#" },
+    { text: "Logout", to: "#", onClick: handleLogout },
 =======
     { text: "Admin’s List", to: "/adminlist" },
     { text: "Patient’s List", to: "/patientlistadmin" },
@@ -129,26 +129,13 @@ export default function Layout({
 })
 {
 <<<<<<< HEAD
-  const location = useLocation();
-  console.log(location);
-  const navigate = useNavigate();
-  const userContactNumber = localStorage.getItem("userContactNumber");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
-
-  const toggleSidebar = () =>
-  {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-=======
->>>>>>> adbe3f7039722e4b1b28c2d7bcd04f64aed1fb1a
-
-    let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const location = useLocation();
     console.log(location);
     const navigate = useNavigate();
     const userContactNumber = localStorage.getItem("userContactNumber");
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+
     const toggleSidebar = () =>
     {
         setIsSidebarOpen(!isSidebarOpen);
