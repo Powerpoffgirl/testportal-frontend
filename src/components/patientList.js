@@ -276,7 +276,7 @@ export default function PatientList()
                                 </div>
                                 <div class="flex flex-row ms-auto gap-1 sm:gap-4">
                                     <button class="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm" onClick={() => handleDeletePatient(patient._id)}>Delete</button>
-                                    <button class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm" onClick={() => handleBookAppointment(patient._id)}>Edit</button>
+                                    {/* <button class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm" onClick={() => handleBookAppointment(patient._id)}>Edit</button> */}
                                 </div>
 
                             </div>
