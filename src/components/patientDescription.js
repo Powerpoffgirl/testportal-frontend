@@ -477,7 +477,7 @@ export default function PatientDescription()
                 <div
                     className="flex flex-col bg-customGreen"
                     style={{
-                        width: isTab ? "100%" : "77%",
+                        width: "100%"
                     }}
                 >
                     <Header line1="Patient’s" line2="Description"></Header>
@@ -495,13 +495,14 @@ export default function PatientDescription()
                             className="flex flex-col gap-2 px-3 w-full"
                             style={{
                                 top: "4%",
-                                left: "2%",
+                                left: "25%",
                                 position: "relative",
                                 overflow: "hidden",
                                 justifyContent: "center",
+
                             }}
                         >
-                            <div>
+                            <div style={{ marginLeft: '250px' }}>
                                 <div style={{ backgroundColor: "#FFFFFF", width: "90px", height: "90px", borderRadius: "50%", alignItems: "center", display: "flex", flexDirection: "row", justifyContent: "space-evenly", color: "#A4A4A4" }}>
                                     <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
                                 </div>
@@ -713,6 +714,7 @@ export default function PatientDescription()
                                         fontSize: "24px",
                                         lineHeight: "28.8px",
                                         fontFamily: "Lato, sans-serif",
+                                        marginLeft: '-630px'
                                     }}
                                     onClick={handleProcess}
                                 >
