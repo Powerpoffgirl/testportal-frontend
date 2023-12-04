@@ -101,7 +101,8 @@ function App()
       ></Route>
       <Route
         path="/bookappointment"
-        element={<Layout Component={DocAppointment} type="user" />}
+        element={<Layout Component={DocAppointment} type="user" headerTextTop={"Book"}
+          headerTextBottom={"Appointment"} />}
       ></Route>
       <Route
         path="/editappointment"

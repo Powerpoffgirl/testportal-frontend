@@ -120,7 +120,7 @@ const FormAppoinment = () =>
     const navigate = useNavigate()
     const location = useLocation();
     const [patientsList, setPatientsList] = useState([])
-
+    const [doctorsList, setDoctorsList] = useState([])
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
@@ -144,7 +144,7 @@ const FormAppoinment = () =>
 
     useEffect(() =>
     {
-        const fetchPatientDetails = async () =>
+        const fetchPatientList = async () =>
         {
             try
             {
@@ -170,7 +170,36 @@ const FormAppoinment = () =>
                 console.error('There was an error verifying the OTP:', error);
             }
         }
-        fetchPatientDetails()
+
+        const fetchDoctorList = async () =>
+        {
+            try
+            {
+                const token = localStorage.getItem("token");
+                if (!token)
+                {
+                    console.error("No token found in local storage");
+                    return;
+                }
+                const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 'x-auth-token': token // Replace with your actual token from the previous session
+                    }
+                });
+
+                const data = await response.json();
+                console.log("DATA from response", data)
+                setDoctorsList(data?.data)
+            } catch (error)
+            {
+                console.error('There was an error verifying the OTP:', error);
+            }
+        }
+
+        fetchPatientList()
+        fetchDoctorList()
     }, [])
 
     const handleChange = (e) =>
@@ -179,15 +208,25 @@ const FormAppoinment = () =>
 
         // Assuming 'patientsList' is an array of patient objects with '_id' and 'name'
         const selectedPatient = patientsList.find(patient => patient.name === value);
+        const selectedDoctor = doctorsList.find(doctor => doctor.name === value);
 
-        if (name === "name")
+        if (name === "patientName")
         {
             setPatientDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 patientId: selectedPatient?._id,
                 [name]: value,
             }));
-        } else if (name === "date" || name === "time")
+        }
+        else if (name === "doctorName")
+        {
+            setPatientDetails(prevPatientDetails => ({
+                ...prevPatientDetails,
+                doctorId: selectedDoctor?._id,
+                [name]: value,
+            }));
+        }
+        else if (name === "date" || name === "time")
         {
             setPatientDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
@@ -256,7 +295,7 @@ const FormAppoinment = () =>
 
     console.log("PATIENT DETAILS", patientDetails)
     console.log("PATIENT LIST", patientsList)
-
+    console.log("DOCTORS LIST", doctorsList)
     return (
         <form
             className="flex flex-col gap-2 px-3 w-full relative overflow-hidden justify-center"
@@ -335,24 +374,43 @@ const FormAppoinment = () =>
                 </div>
             </Modal>
 
-            <div className="grid grid-cols-1 w-full gap-4">
-
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                 <div className="flex flex-col">
                     <label
                         className="mx-2 text-lg font-normal text-black font-lato"
-                        htmlFor="name"
+                        htmlFor="patientName"
                     >
                         Patient Name
                     </label>
                     <select
                         className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
-                        name="name"
+                        name="patientName"
                         onChange={handleChange}
                     >
                         {patientsList?.map((patient) => (
                             <option key={patient._id} value={patient.name}>
                                 {patient.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="flex flex-col">
+                    <label
+                        className="mx-2 text-lg font-normal text-black font-lato"
+                        htmlFor="doctorName"
+                    >
+                        Doctor Name
+                    </label>
+                    <select
+                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                        name="doctorName"
+                        onChange={handleChange}
+                    >
+                        {doctorsList?.map((doctor) => (
+                            <option key={doctor._id} value={doctor.name}>
+                                {doctor.name}
                             </option>
                         ))}
                     </select>
