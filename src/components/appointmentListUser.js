@@ -326,7 +326,7 @@ export default function AppointmentListUser()
                 <div style={{ textAlign: "center" }}>
                   <h1
                     class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                    style={{ marginLeft: "8px", marginRight: "8px" }}
+                    style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
                   >
                     <p class="text-gray-500 sm:text-sm text-xs">
                       Patient's Name:<span className="ms-2"></span>
@@ -338,7 +338,7 @@ export default function AppointmentListUser()
                 <div style={{ textAlign: "center" }}>
                   <h1
                     class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                    style={{ marginLeft: "8px", marginRight: "8px" }}
+                    style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
                   >
                     <p class="text-gray-500 sm:text-sm text-xs">
                       Date & Time:<span className="ms-2"></span>
@@ -358,11 +358,12 @@ export default function AppointmentListUser()
                     position: "relative",
                     left: "29px",
                     top: "12px",
+                    gap: '1px'
                   }}
                 >
                   <h1
-                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                    style={{ marginLeft: "8px", marginRight: "8px" }}
+                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize "
+                    style={{ marginLeft: isTab ? "-30px" : "8px", marginRight: isTab ? "4px" : "8px", zIndex: 1 }}
                   >
                     <p class="text-gray-500 sm:text-sm text-xs">
                       Appointment status:<span className="ms-2"></span>
@@ -371,7 +372,7 @@ export default function AppointmentListUser()
                   </h1>
                 </div>
               </div>
-              <div class="flex flex-row ms-auto gap-1 sm:gap-4">
+              <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: !isTab ? 'row' : 'column', zIndex: 10 }}>
                 <button
                   class="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                 //   onClick={() => handleDeletePatient(patient._id)}
