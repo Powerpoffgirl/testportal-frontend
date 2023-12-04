@@ -166,23 +166,23 @@ export default function AppointmentList()
                                 <text
                                     className="ml-4"
                                     style={{
-                                        fontSize: isTab ? "16px" : "24px",
-                                        fontWeight: 400,
+                                        fontSize: isTab ? "16px" : "20px",
+                                        fontWeight: 600,
                                         lineHeight: "28.8px",
                                         fontFamily: "Lato, sans-serif",
                                     }}
                                 >
                                     {appointment?.patientId?.name}<br />
                                     <span style={{
-                                        fontSize: isTab ? "12px" : "20px",
-                                        fontWeight: 400,
+                                        fontSize: isTab ? "12px" : "18px",
+                                        fontWeight: 500,
                                         color: "#A4A4A4",
                                         display: "flex",
                                         gap: "20px"
                                     }}>
-                                        <span >   {appointment?.appointmentDate?.date}
+                                        <span  >   {appointment?.appointmentDate?.date}
                                         </span>
-                                        <span >
+                                        <span   >
                                             {appointment?.appointmentDate?.time}</span>
                                     </span>
 
@@ -190,7 +190,7 @@ export default function AppointmentList()
                                 <text
                                     className="ml-4"
                                     style={{
-                                        fontSize: isTab ? "16px" : "24px",
+                                        fontSize: isTab ? "16px" : "20px",
                                         fontWeight: 400,
                                         lineHeight: "28.8px",
                                         fontFamily: "Lato, sans-serif",
@@ -202,16 +202,18 @@ export default function AppointmentList()
                             {
                                 appointment.appointmentStatus === "Confirm" ? (
                                     <button style={{
-                                        width: !isTab ? "111px" : "73px",
-                                        height: "45px",
+                                        width: !isTab ? "111px" : "43px",
+                                        height: "35px",
                                         borderRadius: "35px",
                                         backgroundColor: "white",
                                         border: "1px solid #08DA75",
                                         color: "#08DA75",
                                         fontWeight: 400,
-                                        fontSize: isTab ? "11px" : "24px",
+                                        fontSize: isTab ? "11px" : "22px",
                                         lineHeight: "28.8px",
                                         fontFamily: "Lato, sans-serif",
+                                        marginTop: '23px'
+
                                     }}
                                         onClick={() => handleConsult(appointment._id)}
                                     >Consult</button>
@@ -221,9 +223,11 @@ export default function AppointmentList()
                                         fontWeight: 400,
                                         // borderRadius: "35px",
                                         // border: "1px solid #EF5F5F",
-                                        fontSize: isTab ? "11px" : "24px",
+                                        fontSize: isTab ? "11px" : "22px",
                                         lineHeight: "28.8px",
                                         fontFamily: "Lato, sans-serif",
+                                        marginTop: '23px',
+                                        marginRight: '10px'
                                     }}>Declined</span>
                                 ) : (
                                     <span className="flex flex-row gap-2 items-center">

@@ -488,6 +488,7 @@ export default function PatientDescription()
                             overflow: isTab ? "auto" : "hidden",
                             maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
                             padding: "10px",
+                            alignItems: 'center'
                         }}
                     >
                         <form
