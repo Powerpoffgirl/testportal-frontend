@@ -101,6 +101,8 @@ export default function AdminLogin()
         if (data.token)
         {
           localStorage.setItem("token", data.token);
+          localStorage.setItem("userContactNumber", email)
+          localStorage.setItem("name", data?.data?.name)
           navigate("/doctorlistadmin");
         }
       }

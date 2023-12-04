@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toggle from "../assets/toogle.svg";
 import { useMediaQuery } from "react-responsive";
@@ -93,6 +93,7 @@ export default function Layout({
     console.log(location);
     const navigate = useNavigate();
     const userContactNumber = localStorage.getItem("userContactNumber");
+    const userName = localStorage.getItem("name")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 
@@ -100,6 +101,8 @@ export default function Layout({
     {
         setIsSidebarOpen(!isSidebarOpen);
     };
+
+
 
     const handleEditProfile = () =>
     {
@@ -162,10 +165,10 @@ export default function Layout({
 
                         <div>
                             <h1 class="text-xl font-semibold text-white capitalize">
-                                Mia John
+                                {userName}
                             </h1>
 
-                            <p class="text-base text-white">{userContactNumber}</p>
+                            <p class="text-base text-white">{userContactNumber ? userContactNumber : ""}</p>
                         </div>
                     </div>
                     <hr className="mt-3" />

@@ -105,7 +105,8 @@ function App()
       ></Route>
       <Route
         path="/editappointment"
-        element={<Layout Component={EditAppointment} type="user" />}
+        element={<Layout Component={EditAppointment} type="user" headerTextTop={"Edit"}
+          headerTextBottom={"Appointment"} />}
       ></Route>
       <Route
         path="/doctorform"

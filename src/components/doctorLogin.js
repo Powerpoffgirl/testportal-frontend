@@ -102,6 +102,8 @@ export default function DoctorLogin()
         if (data.token)
         {
           localStorage.setItem("token", data.token);
+          localStorage.setItem("userContactNumber", contactNumber)
+          localStorage.setItem("name", data?.data?.name)
           navigate("/patientlist");
         }
       }

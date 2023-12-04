@@ -113,7 +113,7 @@ const SymptomsDropdown = [
     { label: "Snoring", value: "Snoring" }
 ];
 
-const FormAppoinment = () =>
+const EditFormAppoinment = ({ appointmentDetails }) =>
 {
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [selectedDoctor, setSelectedDoctor] = useState();
@@ -141,6 +141,42 @@ const FormAppoinment = () =>
         setSelectedDoctor(doctor?.doctor)
         console.log("SELECTED DOCTOR", selectedDoctor)
     }, [selectedDoctor])
+
+
+    const handleUpdateAppointment = async () =>
+    {
+        // Get the token from localStorage
+        const token = localStorage.getItem("token");
+        if (!token)
+        {
+            console.error("No token found in local storage");
+            return;
+        }
+
+        // Determine the appointmentId
+        const appointmentId = appointmentDetails ? appointmentDetails.id : localStorage.getItem("appointmentId");
+        if (!appointmentId)
+        {
+            console.error("No appointmentId found");
+            return;
+        }
+
+        const response = await fetch(
+            `${baseUrl}/api/v1/user/update_appointmentById/${appointmentId}`,
+            {
+                method: "put", // assuming the method is PUT for update
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-auth-token": token,
+                },
+                body: JSON.stringify(appointmentDetails) // or whatever data you need to send
+            }
+        );
+
+        const data = await response.json();
+        console.log("DATA from update response", data);
+        // Add any additional handling here
+    };
 
     useEffect(() =>
     {
@@ -192,7 +228,7 @@ const FormAppoinment = () =>
             setPatientDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 appointmentDate: {
-                    ...prevPatientDetails.appointmentDate,
+                    ...prevPatientDetails?.appointmentDate,
                     [name]: value,
                 }
             }));
@@ -211,6 +247,10 @@ const FormAppoinment = () =>
             ...prevPatientDetails,
             issues: [...prevPatientDetails.issues, value]
         }));
+        setPatientDetails(prevPatientDetails => ({
+            ...prevPatientDetails,
+            diseases: [...prevPatientDetails.diseases, value]
+        }));
     }
 
     const handleChange2 = (value) =>
@@ -220,7 +260,6 @@ const FormAppoinment = () =>
             diseases: [...prevPatientDetails.diseases, value]
         }));
     }
-
 
     const handleRegister = async (e) =>
     {
@@ -349,10 +388,11 @@ const FormAppoinment = () =>
                         className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
                         name="name"
                         onChange={handleChange}
+                        value={appointmentDetails?.patientId?.name}
                     >
                         {patientsList?.map((patient) => (
-                            <option key={patient._id} value={patient.name}>
-                                {patient.name}
+                            <option key={patient?._id} value={patient?.name}>
+                                {patient?.name}
                             </option>
                         ))}
                     </select>
@@ -374,6 +414,7 @@ const FormAppoinment = () =>
                         id="appointmentDate"
                         name="date"
                         onChange={handleChange}
+                        value={appointmentDetails?.appointmentDate?.date}
                     />
                 </div>
 
@@ -390,6 +431,7 @@ const FormAppoinment = () =>
                         id="appointmentTime"
                         name="time"
                         onChange={handleChange}
+                        value={appointmentDetails?.appointmentDate?.time}
                     />
                 </div>
             </div>
@@ -408,12 +450,13 @@ const FormAppoinment = () =>
                     <span className="mx-2 px-2 border border-green-500 h-10 rounded-lg" style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                         <div className="mx-5" style={{ display: "flex" }}>
                             {
-                                patientDetails?.issues?.map((issue) => (
+                                (appointmentDetails ? appointmentDetails.issues : patientDetails?.issues)?.map((issue) => (
                                     <div className="breadcrumb-chip" key={issue} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
                                         {issue}
                                     </div>
                                 ))
                             }
+
                         </div>
                         <Select
                             className="mx-5"
@@ -440,13 +483,15 @@ const FormAppoinment = () =>
                     </label>
                     <span style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
                         <div className="mx-5" style={{ display: "flex" }}>
+
                             {
-                                patientDetails?.diseases?.map((disease) => (
+                                (appointmentDetails ? appointmentDetails.diseases : patientDetails?.diseases)?.map((disease) => (
                                     <div className="breadcrumb-chip" key={disease} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
                                         {disease}
                                     </div>
                                 ))
                             }
+
                         </div>
                         <Select
                             className="mx-5"
@@ -472,14 +517,15 @@ const FormAppoinment = () =>
                 <button
                     type="submit"
                     className="w-40 h-11 bg-green-500 rounded-full text-white font-semibold text-xl leading-9 font-lato"
-                    onClick={handleRegister}
+                    onClick={() => appointmentDetails ? handleUpdateAppointment() : handleRegister()}
                 >
                     Process
                 </button>
+
             </div>
         </form>
 
     );
 };
 
-export default FormAppoinment;
+export default EditFormAppoinment;

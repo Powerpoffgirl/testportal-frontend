@@ -70,7 +70,8 @@ const smallSvgContent4 = `<svg width="237" height="28" viewBox="0 0 237 28" fill
  27.4ZM78.2697 27.4C75.923 27.4 74.1897 26.8 73.0697 25.6C71.9764 24.4 71.4297 22.7467 71.4297 20.64V12.92H68.8697V8.04H71.4297V4.08L77.8697 2.36V8.04H82.4697L82.1897 12.92H77.8697V20.2C77.8697 21.1067 78.0964 21.7467 78.5497 22.12C79.003 22.4667 79.683 22.64 80.5897 22.64C81.363 22.64 82.1497 22.5067 82.9497 22.24V26.6C81.6964 27.1333 80.1364 27.4 78.2697 27.4ZM95.3106 27.4C91.6573 27.4 88.964 26.56 87.2306 24.88C85.4973 23.1733 84.6306 20.72 84.6306 17.52C84.6306 14.3467 85.4973 11.9067 87.2306 10.2C88.9906 8.49333 91.684 7.64 95.3106 7.64C98.964 7.64 101.657 8.49333 103.391 10.2C105.151 11.9067 106.031 14.3467 106.031 17.52C106.031 20.72 105.164 23.1733 103.431 24.88C101.697 26.56 98.9906 27.4 95.3106 27.4ZM95.3106 22.36C96.804 22.36 97.8706 21.9867 98.5106 21.24C99.1506 20.4933 99.4706 19.2533 99.4706 17.52C99.4706 15.7867 99.1506 14.5467 98.5106 13.8C97.8706 13.0533 96.804 12.68 95.3106 12.68C93.844 12.68 92.7906 13.0533 92.1506 13.8C91.5106 14.5467 91.1906 15.7867 91.1906 17.52C91.1906 19.2533 91.5106 20.4933 92.1506 21.24C92.7906 21.9867 93.844 22.36 95.3106 22.36ZM109.298 27V8.04H115.418L115.618 9.8C116.444 9.29333 117.471 8.84 118.698 8.44C119.924 8.01333 121.151 7.74667 122.378 7.64V12.48C121.684 12.56 120.911 12.6933 120.058 12.88C119.231 13.04 118.431 13.24 117.658 13.48C116.911 13.72 116.271 13.9733 115.738 14.24V27H109.298ZM124.006 9.56L126.366 0.839998H131.806L128.846 9.56H124.006ZM140.322 27.4C138.802 27.4 137.362 27.2933 136.002 27.08C134.642 26.8667 133.562 26.6 132.762 26.28V21.36C133.696 21.76 134.776 22.0667 136.002 22.28C137.229 22.4933 138.322 22.6 139.282 22.6C140.429 22.6 141.256 22.5467 141.762 22.44C142.296 22.3333 142.562 22.04 142.562 21.56C142.562 21.0267 142.136 20.6267 141.282 20.36C140.429 20.0933 139.256 19.7067 137.762 19.2C136.029 18.5867 134.709 17.88 133.802 17.08C132.922 16.2533 132.482 15.04 132.482 13.44C132.482 11.5733 133.176 10.1467 134.562 9.16C135.976 8.14667 138.216 7.64 141.282 7.64C142.482 7.64 143.669 7.73333 144.842 7.92C146.016 8.10667 146.976 8.32 147.722 8.56V13.4C146.976 13.0533 146.122 12.8 145.162 12.64C144.202 12.48 143.336 12.4 142.562 12.4C141.576 12.4 140.736 12.4667 140.042 12.6C139.376 12.7067 139.042 12.9867 139.042 13.44C139.042 13.9467 139.416 14.3067 140.162 14.52C140.909 14.7067 141.989 15.0267 143.402 15.48C144.896 15.9333 146.056 16.4267 146.882 16.96C147.709 17.4667 148.296 18.08 148.642 18.8C148.989 19.52 149.162 20.4267 149.162 21.52C149.162 23.4133 148.416 24.8667 146.922 25.88C145.429 26.8933 143.229 27.4 140.322 27.4ZM166.977 27V6.2H159.417V1.24H180.977V6.2H173.417V27H166.977ZM187.171 27.4C185.971 27.4 184.851 27.1867 183.811 26.76C182.798 26.3333 181.984 25.68 181.371 24.8C180.758 23.8933 180.451 22.7733 180.451 21.44C180.451 19.4933 181.104 17.9733 182.411 16.88C183.744 15.76 185.731 15.2 188.371 15.2H193.651V14.76C193.651 13.8 193.331 13.12 192.691 12.72C192.051 12.2933 190.851 12.08 189.091 12.08C186.931 12.08 184.811 12.4133 182.731 13.08V8.92C183.664 8.54667 184.798 8.24 186.131 8C187.491 7.76 188.918 7.64 190.411 7.64C193.344 7.64 195.638 8.24 197.291 9.44C198.971 10.64 199.811 12.5467 199.811 15.16V27H194.171L193.851 25.4C193.158 26.04 192.264 26.5333 191.171 26.88C190.104 27.2267 188.771 27.4 187.171 27.4ZM189.211 23.44C190.224 23.44 191.104 23.2667 191.851 22.92C192.598 22.5733 193.198 22.1333 193.651 21.6V18.92H189.091C187.198 18.92 186.251 19.68 186.251 21.2C186.251 21.8933 186.491 22.44 186.971 22.84C187.451 23.24 188.198 23.44 189.211 23.44ZM209.513 27.4C207.433 27.4 205.939 26.9467 205.033 26.04C204.126 25.1333 203.673 23.68 203.673 21.68V0.039999H210.113V21.04C210.113 21.6533 210.233 22.08 210.473 22.32C210.739 22.5333 211.126 22.64 211.633 22.64C212.353 22.64 212.993 22.5467 213.553 22.36V26.72C212.939 26.96 212.326 27.1333 211.713 27.24C211.126 27.3467 210.393 27.4 209.513 27.4ZM215.978 27V0.039999H222.418V14.12L228.618 8.04H235.938L228.338 15.92L236.378 27H229.538L224.298 19.32L222.418 21.16V27H215.978Z" fill="white"/>
 </svg>`;
 
-export default function UserLogin() {
+export default function UserLogin()
+{
   let isTab = useMediaQuery({ query: "(max-width: 640px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -81,15 +82,18 @@ export default function UserLogin() {
   const [password, setPassword] = useState("");
   const location = useLocation();
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     const doctor = location?.state;
     setSelectedDoctor(doctor?.doctor);
     console.log("SELECTED DOCTOR", selectedDoctor);
   }, [selectedDoctor]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) =>
+  {
     e.preventDefault();
-    if (isDoctor) {
+    if (isDoctor)
+    {
       const response = await fetch(`${baseUrl}/api/v1/user/login_user`, {
         method: "post",
         headers: {
@@ -101,22 +105,39 @@ export default function UserLogin() {
         }),
       });
       const data = await response.json();
-      if (data.success === true) {
-        if (data.token) {
+      console.log("DATA FROM RESPONSE", data)
+      if (data.success === true)
+      {
+        if (data.token)
+        {
           localStorage.setItem("token", data.token);
           localStorage.setItem("userContactNumber", contactNumber);
+
+          if (data?.data?.name)
+          {
+            localStorage.setItem("name", data?.data?.name)
+          } else
+          {
+            localStorage.setItem("name", "Guest")
+          }
+
+          console.log("DATA=======>>>>>>>", data?.data.name)
+
           console.log(
             "==============SELECTED DOCTOR=============",
             selectedDoctor
           );
-          if (selectedDoctor) {
+          if (selectedDoctor)
+          {
             navigate("/bookappointment", { state: { doctor: selectedDoctor } });
-          } else {
+          } else
+          {
             navigate("/doctorlistuser");
           }
         }
       }
-      if (data.success === false) {
+      if (data.success === false)
+      {
         toast.error("Wrong Credentials", {
           position: "top-center",
           autoClose: 5000,
@@ -127,7 +148,8 @@ export default function UserLogin() {
           progress: undefined,
           theme: "light",
         });
-      } else {
+      } else
+      {
         toast.error("Validation failed", {
           position: "top-center",
           autoClose: 5000,
@@ -248,30 +270,32 @@ export default function UserLogin() {
                 }}
                 placeholder={"Mobile No."}
                 value={contactNumber}
-                onChange={(e) => {
+                onChange={(e) =>
+                {
                   const value = e.target.value;
                   if (
                     value === "" ||
                     (value.match(/^[0-9]+$/) && value.length <= 10)
-                  ) {
+                  )
+                  {
                     setContactNumber(value);
                   }
                 }}
-                // onBlur={() =>
-                // {
-                //   if (!validateMobileNumber(contactNumber))
-                //   {
-                //     toast.error("Please enter a valid 10-digit mobile number.", {
-                //       position: "top-center",
-                //       autoClose: 5000,
-                //       hideProgressBar: false,
-                //       closeOnClick: true,
-                //       pauseOnHover: true,
-                //       draggable: true,
-                //       progress: undefined,
-                //     });
-                //   }
-                // }}
+              // onBlur={() =>
+              // {
+              //   if (!validateMobileNumber(contactNumber))
+              //   {
+              //     toast.error("Please enter a valid 10-digit mobile number.", {
+              //       position: "top-center",
+              //       autoClose: 5000,
+              //       hideProgressBar: false,
+              //       closeOnClick: true,
+              //       pauseOnHover: true,
+              //       draggable: true,
+              //       progress: undefined,
+              //     });
+              //   }
+              // }}
               ></input>
               <input
                 className="outline-none border-b-2 m-4 text-white  placeholder-white md:w-413 sm:w-300"
@@ -285,7 +309,8 @@ export default function UserLogin() {
                 }}
                 placeholder="Password"
                 value={password}
-                onChange={(e) => {
+                onChange={(e) =>
+                {
                   setPassword(e.target.value);
                 }}
               ></input>
