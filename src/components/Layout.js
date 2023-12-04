@@ -46,7 +46,9 @@ const link4 = [
     { text: 'Doctor’s List', to: '/doctorlistadmin' },
     { text: 'Patient’s List', to: '/patientlistadmin' },
     { text: 'Appointment List', to: '/appointmentlist' },
-    { text: 'Edit Profile', to: '#' },
+    {
+        text: 'Edit Profile', to: '/editadminform'
+    },
     { text: 'Support', to: '#' },
     { text: 'Manage QR', to: '#' },
     { text: 'Logout', to: '/adminlogin' },

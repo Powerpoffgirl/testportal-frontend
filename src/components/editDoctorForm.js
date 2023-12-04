@@ -52,13 +52,13 @@ export default function EditDoctorForm()
         const formData = new FormData();
         formData.append('doctorPic', selectedFile);
 
-        console.log("FORM DATA", formData)
         try
         {
-            const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+            const response = await fetch(`${baseUrl}/api/v1/admin/upload_image/${doctorId}`, {
                 method: 'POST',
                 headers: {
                     'x-auth-token': token,
+                    // Content-Type should not be manually set for FormData; the browser will set it with the proper boundary.
                 },
                 body: formData,
             });
@@ -70,7 +70,6 @@ export default function EditDoctorForm()
 
             const data = await response.json();
             console.log('Image uploaded successfully:', data);
-            setDoctorImage(data.profilePicImageUrl)
             alert('Image uploaded successfully.');
 
             // Reset the file input
@@ -82,7 +81,6 @@ export default function EditDoctorForm()
             alert('Error uploading image. Please try again.');
         }
     };
-
 
 
     const Daysdropdown = [
