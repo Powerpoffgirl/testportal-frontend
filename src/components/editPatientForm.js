@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
@@ -15,7 +15,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 </svg>`;
 
 
-export default function PatientForm()
+export default function EditPatientForm()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const baseUrl = process.env.REACT_APP_BASE_URL
@@ -40,6 +40,39 @@ export default function PatientForm()
             state: ""
         }
     })
+
+    useEffect(() =>
+    {
+        const fetchPatientDetails = async () =>
+        {
+            try
+            {
+                const token = localStorage.getItem("token");
+                const patientId = localStorage.getItem("patientId")
+                if (!token)
+                {
+                    console.error("No token found in local storage");
+                    return;
+                }
+                const response = await fetch(`${baseUrl}/api/v1/user/get_patientDetails/${patientId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token // Replace with your actual token from the previous session
+                    }
+                });
+
+                const data = await response.json();
+                console.log("DATA from response", data)
+                setPatientDetails(data?.data)
+            } catch (error)
+            {
+                console.error('There was an error verifying the OTP:', error);
+            }
+        }
+        fetchPatientDetails()
+    }, [])
+
 
     const handleChange = (e) =>
     {
@@ -168,6 +201,7 @@ export default function PatientForm()
                                     id="name"
                                     name="name"
                                     onChange={handleChange}
+                                    value={patientDetails.name}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
                             </div>
@@ -187,6 +221,7 @@ export default function PatientForm()
                                         id="age"
                                         name="age"
                                         onChange={handleChange}
+                                        value={patientDetails.age}
                                     />
                                 </div>
 
@@ -203,6 +238,7 @@ export default function PatientForm()
                                         id="bodyWeight"
                                         name="bodyWeight"
                                         onChange={handleChange}
+                                        value={patientDetails.bodyWeight}
                                     />
                                 </div>
                             </div>
@@ -225,6 +261,7 @@ export default function PatientForm()
                                             onChange={handleChange}
                                             placeholder="1234"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={patientDetails.address.houseNo}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/3">
@@ -241,6 +278,7 @@ export default function PatientForm()
                                             onChange={handleChange}
                                             placeholder="2nd"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={patientDetails.address.floor}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/3">
@@ -257,6 +295,7 @@ export default function PatientForm()
                                             onChange={handleChange}
                                             placeholder="A"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={patientDetails.address.block}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -273,6 +312,7 @@ export default function PatientForm()
                                             onChange={handleChange}
                                             placeholder="Green Park"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={patientDetails.address.area}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -289,6 +329,7 @@ export default function PatientForm()
                                             onChange={handleChange}
                                             placeholder="110016"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={patientDetails.address.pinCode}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -305,6 +346,7 @@ export default function PatientForm()
                                             onChange={handleChange}
                                             placeholder="South Delhi"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={patientDetails.address.district}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -321,6 +363,7 @@ export default function PatientForm()
                                             onChange={handleChange}
                                             placeholder="Delhi"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={patientDetails.address.state}
                                         />
                                     </div>
                                 </div>

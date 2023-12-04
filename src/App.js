@@ -37,6 +37,7 @@ import Table from "./components/tabel";
 // import Sidebar2 from './components/Sidebar2';
 import Layout from "./components/Layout";
 import Table2 from "./components/table2";
+import EditPatientForm from "./components/editPatientForm";
 
 function App()
 {
@@ -134,7 +135,13 @@ function App()
       ></Route>
       <Route
         path="/edituserform"
-        element={<Layout Component={EditUserForm} type="user" />}
+        element={<Layout Component={EditUserForm} type="user" headerTextTop={"User's"}
+          headerTextBottom={"Form"} />}
+      ></Route>
+      <Route
+        path="/editpatientform"
+        element={<Layout Component={EditPatientForm} type="user" headerTextTop={"Patient's"}
+          headerTextBottom={"Form"} />}
       ></Route>
       <Route
         path="/patientlistadmin"

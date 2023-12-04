@@ -54,7 +54,7 @@ export default function EditDoctorForm()
 
         try
         {
-            const response = await fetch(`${baseUrl}/api/v1/admin/upload_image/${doctorId}`, {
+            const response = await fetch(`${baseUrl}/api/v1/doctor/upload_image/${doctorId}`, {
                 method: 'POST',
                 headers: {
                     'x-auth-token': token,
@@ -112,7 +112,7 @@ export default function EditDoctorForm()
                     console.error("No token found in local storage");
                     return;
                 }
-                const response = await fetch(`${baseUrl}/api/v1/admin/get_doctor/${doctorId}`, {
+                const response = await fetch(`${baseUrl}/api/v1/doctor/get_doctorDetails`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',

@@ -9,7 +9,6 @@ import { FaRegTrashAlt } from "react-icons/fa";
 
 export default function EditUserForm()
 {
-    let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [selectedFile, setSelectedFile] = useState(null);
@@ -77,18 +76,7 @@ export default function EditUserForm()
     };
 
 
-
-    const Daysdropdown = [
-        { label: "Select Days", value: "" },
-        { label: "Monday", value: "Monday" },
-        { label: "Tuesday", value: "Tuesday" },
-        { label: "Wednesday", value: "Wednesday" },
-        { label: "Thursday", value: "Thursday" },
-        { label: "Friday", value: "Friday" },
-        { label: "Saturday", value: "Saturday" },
-        { label: "Sunday", value: "Sunday" },
-    ];
-    const [doctorDetails, setDoctorDetails] = useState(null)
+    const [userDetails, setUserDetails] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const fileInputRef = useRef(null);
@@ -96,18 +84,18 @@ export default function EditUserForm()
 
     useEffect(() =>
     {
-        const fetchDoctorDetails = async () =>
+        const fetchUserDetails = async () =>
         {
             try
             {
                 const token = localStorage.getItem("token");
-                const doctorId = localStorage.getItem("doctorId");
+                const patientId = localStorage.getItem("patientId")
                 if (!token)
                 {
                     console.error("No token found in local storage");
                     return;
                 }
-                const response = await fetch(`${baseUrl}/api/v1/admin/get_doctor/${doctorId}`, {
+                const response = await fetch(`${baseUrl}/api/v1/user/get_userDetails`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -116,16 +104,16 @@ export default function EditUserForm()
                 });
 
                 const data = await response.json();
-                console.log("DATA from response", data?.data)
-                setDoctorDetails(data?.data)
-
+                console.log("DATA from response", data)
+                setUserDetails(data?.data)
             } catch (error)
             {
                 console.error('There was an error verifying the OTP:', error);
             }
         }
-        fetchDoctorDetails()
+        fetchUserDetails()
     }, [])
+
 
     const handleClick = (event) =>
     {
@@ -154,65 +142,41 @@ export default function EditUserForm()
     {
         const { name, value } = e.target;
 
-        if (name === "workingDays")
+        if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
         {
-            setDoctorDetails(prevDoctorDetails => ({
-                ...prevDoctorDetails,
-                workingDays: [...prevDoctorDetails.workingDays, value],
-            }));
-        } else if (name === "workHourFrom" || name === "workHourTo")
-        {
-            setDoctorDetails(prevDoctorDetails => ({
-                ...prevDoctorDetails,
-                workingHours: {
-                    ...prevDoctorDetails.workingHours,
-                    [name]: value,
-                }
-            }));
-        } else if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
-        {
-            setDoctorDetails(prevDoctorDetails => ({
-                ...prevDoctorDetails,
+            setUserDetails(prevUserDetails => ({
+                ...prevUserDetails,
                 address: {
-                    ...prevDoctorDetails.address,
+                    ...prevUserDetails.address,
                     [name]: value
                 }
             }));
-        } else
+        }
+        else
         {
-            setDoctorDetails(prevDoctorDetails => ({
-                ...prevDoctorDetails,
+            setUserDetails(prevUserDetails => ({
+                ...prevUserDetails,
                 [name]: value
             }));
         }
-    }
-
+    };
 
 
     const handleUpdate = async (e) =>
     {
         e.preventDefault();
         // Check if the token exists
-        const newDoctorDetails = {
-            name: doctorDetails?.name,
-            // email: doctorDetails.email,
-            // contactNumber: doctorDetails.contactNumber,
-            workingDays: doctorDetails?.workingDays,
-            workingHours: {
-                workHourFrom: doctorDetails?.workingHours?.workHourFrom,
-                workHourTo: doctorDetails?.workingHours?.workHourTo
-            },
-            totalExperience: doctorDetails?.totalExperience,
-            speciality: doctorDetails?.speciality,
-            degree: doctorDetails?.degree,
+        const newUserDetails = {
+            name: userDetails?.name,
+            contactNumber: userDetails.contactNumber,
             address: {
-                houseNo: doctorDetails?.address?.houseNo,
-                floor: doctorDetails?.address?.floor,
-                block: doctorDetails?.address?.block,
-                area: doctorDetails?.address?.area,
-                pinCode: doctorDetails?.address?.pinCode,
-                district: doctorDetails?.address?.district,
-                state: doctorDetails?.address?.state
+                houseNo: userDetails?.address?.houseNo,
+                floor: userDetails?.address?.floor,
+                block: userDetails?.address?.block,
+                area: userDetails?.address?.area,
+                pinCode: userDetails?.address?.pinCode,
+                district: userDetails?.address?.district,
+                state: userDetails?.address?.state
             }
         }
 
@@ -224,14 +188,14 @@ export default function EditUserForm()
             return;
         }
         const response = await fetch(
-            `${baseUrl}/api/v1/admin/update_doctor/${doctorId}`,
+            `${baseUrl}/api/v1/user/update_user`,
             {
                 method: "put",
                 headers: {
                     "Content-Type": "application/json",
                     "x-auth-token": token,
                 },
-                body: JSON.stringify(newDoctorDetails)
+                body: JSON.stringify(newUserDetails)
             }
         );
         const data = await response.json();
@@ -244,7 +208,7 @@ export default function EditUserForm()
         console.log("DATA from response", data)
     }
 
-    console.log("DOCTOR DETAILS", doctorDetails)
+    console.log("User DETAILS", userDetails)
 
     return (
         <>
@@ -276,7 +240,7 @@ export default function EditUserForm()
                                             color: "#A4A4A4",
                                         }}
                                     >
-                                        {doctorDetails?.doctorPic ? (
+                                        {/* {doctorDetails?.doctorPic ? (
                                             <img
                                                 src={doctorDetails.doctorPic}
                                                 alt="Avatar"
@@ -288,7 +252,7 @@ export default function EditUserForm()
                                             <PermIdentityOutlinedIcon
                                                 style={{ width: "70px", height: "70px" }}
                                             />
-                                        )}
+                                        )} */}
                                     </div>
                                     <p
                                         aria-controls="profile-pic-menu"
@@ -359,7 +323,7 @@ export default function EditUserForm()
                                     for="name"
                                     class="block text-black text-lg font-semibold"
                                 >
-                                    Dr. Name
+                                    Name
                                 </label>
                                 <input
                                     type="text"
@@ -368,24 +332,10 @@ export default function EditUserForm()
                                     name="name"
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                    value={userDetails?.name}
                                 />
                             </div>
-                            <div>
-                                <label
-                                    for="email"
-                                    class="block text-black text-lg font-semibold"
-                                >
-                                    Email
-                                </label>
-                                <input
-                                    type="email"
-                                    placeholder="smitasingh1234@gmail.com"
-                                    id="email"
-                                    name="email"
-                                    onChange={handleChange}
-                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                />
-                            </div>
+
                             <div>
                                 <label
                                     for="contact"
@@ -400,6 +350,7 @@ export default function EditUserForm()
                                     name="contactNumber"
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                    value={userDetails.contactNumber}
                                 />
                             </div>
 
@@ -420,6 +371,7 @@ export default function EditUserForm()
                                             onChange={handleChange}
                                             placeholder="1234"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={userDetails?.address?.houseNo}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/3">
@@ -436,6 +388,7 @@ export default function EditUserForm()
                                             onChange={handleChange}
                                             placeholder="2nd"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={userDetails?.address?.floor}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/3">
@@ -452,6 +405,7 @@ export default function EditUserForm()
                                             onChange={handleChange}
                                             placeholder="A"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={userDetails?.address?.block}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -468,6 +422,7 @@ export default function EditUserForm()
                                             onChange={handleChange}
                                             placeholder="Green Park"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={userDetails?.address?.area}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -484,6 +439,7 @@ export default function EditUserForm()
                                             onChange={handleChange}
                                             placeholder="110016"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={userDetails?.address?.pinCode}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -500,6 +456,7 @@ export default function EditUserForm()
                                             onChange={handleChange}
                                             placeholder="South Delhi"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={userDetails?.address?.district}
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -516,6 +473,7 @@ export default function EditUserForm()
                                             onChange={handleChange}
                                             placeholder="Delhi"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            value={userDetails?.address?.state}
                                         />
                                     </div>
                                 </div>
