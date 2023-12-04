@@ -116,31 +116,40 @@ export default function EditPatientForm()
         e.preventDefault();
         // Check if the token exists
         const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("patientId");
         if (!token)
         {
             console.error("No token found in local storage");
             return;
         }
+
+
+
         const response = await fetch(
-            `${baseUrl}/api/v1/user/register_patient`,
+            `${baseUrl}/api/v1/user/update_patient/${patientId}`,
             {
-                method: "post",
+                method: "put",
                 headers: {
                     "Content-Type": "application/json",
                     "x-auth-token": token,
                 },
-                body: JSON.stringify(patientDetails)
+                body: JSON.stringify({
+                    age: patientDetails.age,
+                    bodyWeight: patientDetails.bodyWeight,
+                    name: patientDetails.name,
+                    address: patientDetails.address
+                })
             }
         );
         const data = await response.json();
         if (data.success === true)
         {
-            // navigate("/otp")
-            onOpenModal()
-            localStorage.setItem("id", data.data._id)
+            onOpenModal();
+            localStorage.setItem("id", data.data._id);
         }
-        console.log("DATA from response", data)
+        console.log("DATA from response", data);
     }
+
     console.log("PATIENT DETAILS", patientDetails)
 
 

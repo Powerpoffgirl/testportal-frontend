@@ -350,7 +350,7 @@ export default function EditUserForm()
                                     name="contactNumber"
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                    value={userDetails.contactNumber}
+                                    value={userDetails?.contactNumber}
                                 />
                             </div>
 

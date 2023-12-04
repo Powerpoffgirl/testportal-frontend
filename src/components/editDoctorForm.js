@@ -232,7 +232,7 @@ export default function EditDoctorForm()
             return;
         }
         const response = await fetch(
-            `${baseUrl}/api/v1/admin/update_doctor/${doctorId}`,
+            `${baseUrl}/api/v1/doctor/update_doctor`,
             {
                 method: "put",
                 headers: {
@@ -466,6 +466,7 @@ export default function EditDoctorForm()
                                     name="email"
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                    value={doctorDetails?.email}
                                 />
                             </div>
                             <div>
@@ -482,6 +483,7 @@ export default function EditDoctorForm()
                                     name="contactNumber"
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                    value={doctorDetails?.contactNumber}
                                 />
                             </div>
 
