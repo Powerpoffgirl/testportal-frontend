@@ -10,6 +10,16 @@ import toggle from "../assets/toogle.svg";
 import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
 
+
+// const navigate = useNavigate()
+const handleLogout = () =>
+{
+  console.log("HELLO")
+  localStorage.clear(); // or localStorage.removeItem('yourKey');
+
+};
+
+
 // -------------BASE URL SIDEBAR NAVIGATION--------------------------
 
 const link1 = [
@@ -26,7 +36,7 @@ const link2 = [
   { text: "Appointment’s List", to: "/appointmentlistuser" },
   { text: "Edit Profile", to: "/edituserform" },
   { text: "Support", to: "#" },
-  { text: "Logout", to: "/userlogin" },
+  { text: "Logout User", to: "/userlogin", onClick: handleLogout },
 ];
 
 // -------------DOCTOR SIDEBAR NAVIGATION--------------------------
@@ -37,7 +47,7 @@ const link3 = [
   { text: "Edit Profile", to: "/editdoctorform" },
   { text: "Support", to: "#" },
   { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "/doctorlogin" },
+  { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
 ];
 
 // ------------- ADMIN SIDEBAR NAVIGATION--------------------------
@@ -52,7 +62,7 @@ const link4 = [
   },
   { text: "Support", to: "#" },
   { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "/adminlogin" },
+  { text: "Logout", to: "/adminlogin", onClick: handleLogout },
 ];
 
 // -------------SUPER ADMIN SIDEBAR NAVIGATION--------------------------
@@ -63,7 +73,7 @@ const link5 = [
   { text: "Edit Profile", to: "#" },
   { text: "Support", to: "#" },
   { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "#" },
+  { text: "Logout", to: "#", onClick: handleLogout },
 ];
 
 export default function Layout({
@@ -81,6 +91,8 @@ export default function Layout({
   const navigate = useNavigate();
   const userContactNumber = localStorage.getItem("userContactNumber");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+
   const toggleSidebar = () =>
   {
     setIsSidebarOpen(!isSidebarOpen);

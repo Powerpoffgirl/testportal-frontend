@@ -196,12 +196,6 @@ const FormAppoinment = () =>
                     [name]: value,
                 }
             }));
-        } else if (["issues", "diseases"].includes(name))
-        {
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                [name]: Array.isArray(value) ? value : [...prevPatientDetails[name], value]
-            }));
         } else
         {
             setPatientDetails(prevPatientDetails => ({
@@ -210,6 +204,18 @@ const FormAppoinment = () =>
             }));
         }
     };
+
+    const handleChange1 = (value) =>
+    {
+        setPatientDetails(prevPatientDetails => ({
+            ...prevPatientDetails,
+            issues: [...prevPatientDetails.issues, value]
+        }));
+        setPatientDetails(prevPatientDetails => ({
+            ...prevPatientDetails,
+            diseases: [...prevPatientDetails.diseases, value]
+        }));
+    }
 
 
     const handleRegister = async (e) =>
@@ -410,7 +416,7 @@ const FormAppoinment = () =>
                             type="text"
                             id="issues"
                             name="issues"
-                            onChange={handleChange}
+                            onChange={handleChange1}
                         >
                             {SymptomsDropdown?.map((option) => (
                                 <Select.Option key={option.value} value={option.value}>
@@ -443,7 +449,7 @@ const FormAppoinment = () =>
                             type="text"
                             id="diseases"
                             name="diseases"
-                            onChange={handleChange}
+                            onChange={handleChange1}
 
                         >
                             {DiseasesDropdown?.map((option) => (
@@ -454,17 +460,6 @@ const FormAppoinment = () =>
                         </Select>
 
                     </span>
-                    {/* <select
-                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
-                        name="diseases"
-                        onChange={handleChange}
-                    >
-                        {DiseasesDropdown.map((option) => (
-                            <option key={option.value} value={option.value}>
-                                {option.label}
-                            </option>
-                        ))}
-                    </select> */}
                 </div>
             </div>
 

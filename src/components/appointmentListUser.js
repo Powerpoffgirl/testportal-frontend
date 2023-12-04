@@ -80,29 +80,6 @@ export default function AppointmentListUser()
   const handleDeleteAppointment = async (appointmentId) =>
   {
     localStorage.setItem("appointmentId", appointmentId);
-    // try
-    // {
-    //     const token = localStorage.getItem("token");
-    //     if (!token)
-    //     {
-    //         console.error("No token found in local storage");
-    //         return;
-    //     }
-    //     const response = await fetch(`${baseUrl}/api/v1/user/get_all_appointments`, {
-    //         method: 'DELETE',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //             'x-auth-token': token // Replace with your actual token from the previous session
-    //         }
-    //     });
-
-    //     const data = await response.json();
-    //     console.log("DATA from response", data)
-    //     setAppointmentList(data?.data)
-    // } catch (error)
-    // {
-    //     console.error('There was an error verifying the OTP:', error);
-    // }
   };
 
   function formatDate(dateString)
@@ -317,7 +294,7 @@ export default function AppointmentListUser()
 
       <div className="flex flex-col">
         {appointmentList?.map((appointment) => (
-          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
+          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" onClick={() => findSelectedDoctor(appointment?._id)}>
             <div className="flex flex-row justify-start items-center">
               <div class="flex items-center gap-x-2">
                 <img

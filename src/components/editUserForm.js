@@ -34,11 +34,11 @@ export default function EditUserForm()
     const handleNewProfilePicture = async () =>
     {
         const token = localStorage.getItem('token');
-        const doctorId = localStorage.getItem('doctorId');
+        const userId = localStorage.getItem('userId');
 
-        if (!token || !doctorId)
+        if (!token || !userId)
         {
-            console.error('Token or doctor ID not found in local storage');
+            console.error('Token or user ID not found in local storage');
             return;
         }
 
@@ -47,7 +47,7 @@ export default function EditUserForm()
 
         try
         {
-            const response = await fetch(`${baseUrl}/api/v1/admin/upload_image/${doctorId}`, {
+            const response = await fetch(`${baseUrl}/api/v1/user/upload_image/${userId}`, {
                 method: 'POST',
                 headers: {
                     'x-auth-token': token,
@@ -169,6 +169,7 @@ export default function EditUserForm()
         const newUserDetails = {
             name: userDetails?.name,
             contactNumber: userDetails.contactNumber,
+            email: userDetails.email,
             address: {
                 houseNo: userDetails?.address?.houseNo,
                 floor: userDetails?.address?.floor,
@@ -240,9 +241,9 @@ export default function EditUserForm()
                                             color: "#A4A4A4",
                                         }}
                                     >
-                                        {/* {doctorDetails?.doctorPic ? (
+                                        {userDetails?.userPic ? (
                                             <img
-                                                src={doctorDetails.doctorPic}
+                                                src={userDetails.userPic}
                                                 alt="Avatar"
                                                 style={{
                                                     borderRadius: "50%",
@@ -252,7 +253,7 @@ export default function EditUserForm()
                                             <PermIdentityOutlinedIcon
                                                 style={{ width: "70px", height: "70px" }}
                                             />
-                                        )} */}
+                                        )}
                                     </div>
                                     <p
                                         aria-controls="profile-pic-menu"
@@ -333,6 +334,23 @@ export default function EditUserForm()
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                     value={userDetails?.name}
+                                />
+                            </div>
+                            <div>
+                                <label
+                                    for="email"
+                                    class="block text-black text-lg font-semibold"
+                                >
+                                    Email
+                                </label>
+                                <input
+                                    type="text"
+                                    placeholder="Email"
+                                    id="email"
+                                    name="email"
+                                    onChange={handleChange}
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                    value={userDetails?.email}
                                 />
                             </div>
 
