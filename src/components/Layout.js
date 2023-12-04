@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toggle from "../assets/toogle.svg";
 import { useMediaQuery } from "react-responsive";
@@ -32,47 +32,28 @@ const link1 = [
 // -------------USER SIDEBAR NAVIGATION--------------------------
 
 const link2 = [
-<<<<<<< HEAD
     { text: "Patient’s List", to: "/patientlistuser" },
     { text: "Doctor’s List", to: "/doctorlistuser" },
     { text: "Appointment’s List", to: "/appointmentlistuser" },
     { text: "Edit Profile", to: "/edituserform" },
     { text: "Support", to: "#" },
     { text: "Logout User", to: "/userlogin", onClick: handleLogout },
-=======
-    { text: "Patient’s List", to: "/patientlistuser" },
-    { text: "Doctor’s List", to: "/doctorlistuser" },
-    { text: "Appointment’s List", to: "/appointmentlistuser" },
-    { text: "Edit Profile", to: "/edituserform" },
-    { text: "Support", to: "#" },
-    { text: "Logout", to: "/userlogin" },
->>>>>>> adbe3f7039722e4b1b28c2d7bcd04f64aed1fb1a
 ];
 
 // -------------DOCTOR SIDEBAR NAVIGATION--------------------------
 
 const link3 = [
-<<<<<<< HEAD
     { text: "Patient’s List", to: "/patientlist" },
     { text: "Appointment List", to: "/appointmentlist" },
     { text: "Edit Profile", to: "/editdoctorform" },
     { text: "Support", to: "#" },
     { text: "Manage QR", to: "#" },
     { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
-=======
-    { text: "Patient’s List", to: "/patientlist" },
-    { text: "Appointment List", to: "/appointmentlist" },
-    { text: "Edit Profile", to: "/editdoctorform" },
-    { text: "Support", to: "#" },
-    { text: "Manage QR", to: "#" },
-    { text: "Logout", to: "/doctorlogin" },
->>>>>>> adbe3f7039722e4b1b28c2d7bcd04f64aed1fb1a
 ];
 
 // ------------- ADMIN SIDEBAR NAVIGATION--------------------------
 
 const link4 = [
-<<<<<<< HEAD
     { text: "Doctor’s List", to: "/doctorlistadmin" },
     { text: "Patient’s List", to: "/patientlistadmin" },
     { text: "Appointment List", to: "/appointmentlist" },
@@ -83,23 +64,10 @@ const link4 = [
     { text: "Support", to: "#" },
     { text: "Manage QR", to: "#" },
     { text: "Logout", to: "/adminlogin", onClick: handleLogout },
-=======
-    { text: "Doctor’s List", to: "/doctorlistadmin" },
-    { text: "Patient’s List", to: "/patientlistadmin" },
-    { text: "Appointment List", to: "/appointmentlist" },
-    {
-        text: "Edit Profile",
-        to: "/editadminform",
-    },
-    { text: "Support", to: "#" },
-    { text: "Manage QR", to: "#" },
-    { text: "Logout", to: "/adminlogin" },
->>>>>>> adbe3f7039722e4b1b28c2d7bcd04f64aed1fb1a
 ];
 
 // -------------SUPER ADMIN SIDEBAR NAVIGATION--------------------------
 const link5 = [
-<<<<<<< HEAD
     { text: "Admin’s List", to: "/adminlist" },
     { text: "Patient’s List", to: "/patientlistadmin" },
     { text: "Appointment List", to: "" },
@@ -107,15 +75,6 @@ const link5 = [
     { text: "Support", to: "#" },
     { text: "Manage QR", to: "#" },
     { text: "Logout", to: "#", onClick: handleLogout },
-=======
-    { text: "Admin’s List", to: "/adminlist" },
-    { text: "Patient’s List", to: "/patientlistadmin" },
-    { text: "Appointment List", to: "" },
-    { text: "Edit Profile", to: "#" },
-    { text: "Support", to: "#" },
-    { text: "Manage QR", to: "#" },
-    { text: "Logout", to: "#" },
->>>>>>> adbe3f7039722e4b1b28c2d7bcd04f64aed1fb1a
 ];
 
 export default function Layout({
@@ -128,11 +87,13 @@ export default function Layout({
     setSearchTerm,
 })
 {
-<<<<<<< HEAD
+
+    let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const location = useLocation();
     console.log(location);
     const navigate = useNavigate();
     const userContactNumber = localStorage.getItem("userContactNumber");
+    const userName = localStorage.getItem("name")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
 
@@ -141,9 +102,26 @@ export default function Layout({
         setIsSidebarOpen(!isSidebarOpen);
     };
 
+
+
     const handleEditProfile = () =>
     {
-        navigate("/edituserform");
+        if (type === "user")
+        {
+            navigate("/edituserform");
+        }
+        else if (type === "admin")
+        {
+            navigate("/edituserform");
+        }
+        else if (type === "superAdmin")
+        {
+            navigate("/edituserform");
+        }
+        else
+        {
+            navigate("/editdoctorform");
+        }
     };
 
     const handleDoctorForm = () =>
@@ -187,7 +165,7 @@ export default function Layout({
 
                         <div>
                             <h1 class="text-xl font-semibold text-white capitalize">
-                                Mia John
+                                {userName ? userName : "Guest"}
                             </h1>
 
                             <p class="text-base text-white">{userContactNumber}</p>

@@ -15,7 +15,10 @@ export default function EditAppointment()
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const baseUrl = process.env.REACT_APP_BASE_URL
-    const [selectedDoctor, setselectedDoctor] = useState();
+    const [selectedDoctor, setSelectedDoctor] = useState({
+        name: "",
+        email: ""
+    });
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
@@ -99,6 +102,10 @@ export default function EditAppointment()
 
                 const data = await response.json();
                 console.log("DATA from USE EFFECT response", data?.data)
+                setSelectedDoctor({
+                    name: data?.data?.doctorId?.name,
+                    email: data?.data?.doctorId?.email
+                })
                 setAppointmentDetails(data?.data)
 
             } catch (error)
@@ -305,14 +312,14 @@ export default function EditAppointment()
                     <div class="flex items-center gap-x-2">
                         <img class="object-cover w-12 h-12 rounded-full" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100" alt="" />
                         <div>
-                            <h1 class="text-xl font-semibold text-white capitalize">Mia John</h1>
-                            <p class="text-base text-white">miajohn@gmail.com</p>
+                            <h1 class="text-xl font-semibold text-white capitalize">{selectedDoctor.name}</h1>
+                            <p class="text-base text-white">{selectedDoctor.email}</p>
                         </div>
                     </div>
                     <img className="h-16 hidden sm:block md:hidden lg:block" src={design} alt="design" />
                 </div>
             </div>
-            <FormAppoinment />
+            <FormAppoinment appointmentDetails={appointmentDetails} />
         </>
     );
 }
