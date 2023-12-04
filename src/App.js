@@ -38,10 +38,12 @@ import Table from "./components/tabel";
 import Layout from "./components/Layout";
 import Table2 from "./components/table2";
 
-function App() {
+function App()
+{
   return (
     <Routes>
-      <Route path="/" element={<Layout Component={DoctorList} />}></Route>
+      <Route path="/" element={<Layout Component={DoctorList} headerTextTop={"Doctor's"}
+        headerTextBottom={"List"} search={"true"} />}></Route>
       <Route path="/adminlogin" element={<AdminLogin />}></Route>
       <Route path="/doctorlogin" element={<DoctorLogin />}></Route>
       <Route path="/userlogin" element={<UserLogin />}></Route>
