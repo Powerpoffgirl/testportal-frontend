@@ -38,7 +38,8 @@ import Table from "./components/tabel";
 import Layout from "./components/Layout";
 import Table2 from "./components/table2";
 
-function App() {
+function App()
+{
   return (
     <Routes>
       <Route
@@ -91,7 +92,8 @@ function App() {
         path="/viewpatientdescription/:id"
         element={<ViewPatientDescription></ViewPatientDescription>}
       ></Route>
-      <Route path="/patientform" element={<PatientForm></PatientForm>}></Route>
+      <Route path="/patientform" element={<Layout Component={PatientForm} type="user" headerTextTop={"Patients's"}
+        headerTextBottom={"Form"} />}></Route>
       <Route
         path="/showpatientform"
         element={<ShowPatientForm></ShowPatientForm>}
@@ -182,6 +184,7 @@ function App() {
             type="user"
             headerTextTop={"Doctor's"}
             headerTextBottom={"List"}
+            search={"true"}
           />
         }
       >
@@ -214,7 +217,9 @@ function App() {
       ></Route>
       <Route
         path="/appointmentlistuser"
-        element={<Layout Component={AppointmentListUser} type="user" />}
+        element={<Layout Component={AppointmentListUser} type="user" headerTextTop={"Appointment"}
+          headerTextBottom={"List"}
+          search={"true"} />}
       ></Route>
       <Route path="/tabel" element={<Table></Table>}></Route>
     </Routes>
