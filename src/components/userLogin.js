@@ -105,13 +105,24 @@ export default function UserLogin()
         }),
       });
       const data = await response.json();
+      console.log("DATA FROM RESPONSE", data)
       if (data.success === true)
       {
         if (data.token)
         {
           localStorage.setItem("token", data.token);
           localStorage.setItem("userContactNumber", contactNumber);
-          localStorage.setItem("name", data?.data?.name)
+
+          if (data?.data?.name)
+          {
+            localStorage.setItem("name", data?.data?.name)
+          } else
+          {
+            localStorage.setItem("name", "Guest")
+          }
+
+          console.log("DATA=======>>>>>>>", data?.data.name)
+
           console.log(
             "==============SELECTED DOCTOR=============",
             selectedDoctor

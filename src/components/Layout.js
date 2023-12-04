@@ -165,10 +165,10 @@ export default function Layout({
 
                         <div>
                             <h1 class="text-xl font-semibold text-white capitalize">
-                                {userName ? userName : "Guest"}
+                                {userName}
                             </h1>
 
-                            <p class="text-base text-white">{userContactNumber}</p>
+                            <p class="text-base text-white">{userContactNumber ? userContactNumber : ""}</p>
                         </div>
                     </div>
                     <hr className="mt-3" />
