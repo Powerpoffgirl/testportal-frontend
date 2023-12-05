@@ -27,7 +27,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`
 
-export default function AppointmentListUser()
+export default function AppointmentListUser({ searchTerm })
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -61,7 +61,6 @@ export default function AppointmentListUser()
             },
           }
         );
-
         const data = await response.json();
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
@@ -72,6 +71,15 @@ export default function AppointmentListUser()
     };
     fetchPatientDetails();
   }, []);
+
+  useEffect(() =>
+  {
+    const filteredDoctors = appointmentList.filter((appointment) =>
+      appointment?.patientId?.name.toLowerCase().includes(searchTerm.toLowerCase()) || appointment?.doctorId?.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setAppointmentList(filteredDoctors);
+  }, [searchTerm]);
 
   const handleEditAppointment = (appointmentId) =>
   {
@@ -90,6 +98,7 @@ export default function AppointmentListUser()
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
   }
   console.log("APPOINTMENT LISTS", appointmentList, selectedAppointment);
+
   const findSelectedDoctor = async (appointmentId) =>
   {
     console.log("appointmentId########################", appointmentId);

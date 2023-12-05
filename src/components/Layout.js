@@ -2,12 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toggle from "../assets/toogle.svg";
 import { useMediaQuery } from "react-responsive";
-// import Table from "./Table";
-// import DoctorForm_new from "./DoctorForm_new";
-// import Doc_appointment from "./Doc_appointment";
-// import Form_appoinment from "./Form_appoinment";
-// import Table_2 from "./Table_2";
-// import Table_delete from "./Table_delete";
 import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
 
@@ -84,7 +78,7 @@ export default function Layout({
     headerTextBottom,
     search,
     AddButton,
-    setSearchTerm,
+    // setSearchTerm,
 })
 {
 
@@ -95,7 +89,7 @@ export default function Layout({
     const userContactNumber = localStorage.getItem("userContactNumber");
     const userName = localStorage.getItem("name")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-
+    const [searchTerm, setSearchTerm] = useState("")
 
     const toggleSidebar = () =>
     {
@@ -144,6 +138,8 @@ export default function Layout({
     {
         setSearchTerm(e.target.value);
     };
+
+    console.log("SEARCH TERM", searchTerm)
 
     return (
         <>
@@ -282,7 +278,7 @@ export default function Layout({
                         </div>
                     </nav>
                     <div className="mt-36 md:ml-72 pl-2">
-                        <Component />
+                        <Component searchTerm={searchTerm} />
                     </div>
                 </div>
             </div>

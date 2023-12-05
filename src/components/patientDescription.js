@@ -418,7 +418,7 @@ export default function PatientDescription()
 
     console.log("PATIENT DETAILS", patientDetails)
 
-    const handleProcess = async (e) =>
+    const handleRegister = async (e) =>
     {
         e.preventDefault();
         // Check if the token exists
@@ -623,7 +623,7 @@ export default function PatientDescription()
                 <button
                     type="submit"
                     className="w-40 h-11 bg-green-500 rounded-full text-white font-semibold text-xl leading-9 font-lato"
-                // onClick={handleRegister}
+                    onClick={handleRegister}
                 >
                     Process
                 </button>
