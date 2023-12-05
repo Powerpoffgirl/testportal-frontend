@@ -270,7 +270,15 @@ export default function PatientList()
                                     <img class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100" alt="" />
 
                                     <div>
-                                        <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">{patient.name}</h1>
+                                        <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
+                                            {patient.name}
+                                        </h1>
+                                        <p>
+                                            {patient.age} yrs , {patient.bodyWeight} kg
+                                        </p>
+                                        <p>
+                                            {patient.address?.houseNo} , {patient.address?.block}, {patient.address?.area}, {patient.address?.district},{patient.address?.state}, {patient.address?.pinCode}
+                                        </p>
                                         {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}
                                     </div>
                                 </div>

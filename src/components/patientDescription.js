@@ -542,6 +542,7 @@ export default function PatientDescription()
                     onChange={handleChangeIssues}
                     value={patientDetails.issues}
                     placeholder="Select Issues"
+                    style={{ overflowY: 'auto' }}
                 >
                     {issues.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -564,6 +565,7 @@ export default function PatientDescription()
                     onChange={handleChangeDiseases}
                     value={patientDetails.diseases}
                     placeholder="Select Diesease"
+                    style={{ overflowY: 'auto' }}
                 >
                     {diseases.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -587,6 +589,7 @@ export default function PatientDescription()
                     onChange={handleChangeMedicine}
                     value={patientDetails.medicineName}
                     placeholder="Select Medicine"
+                    style={{ overflowY: 'auto' }}
                 >
                     {medicineName.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -610,6 +613,7 @@ export default function PatientDescription()
                     onChange={handleChangeLabTests}
                     value={patientDetails.labTests}
                     placeholder="Select Lab Tests"
+                    style={{ overflowY: 'auto' }}
                 >
                     {labTests.map((option) => (
                         <Select.Option key={option.value} value={option.value}>

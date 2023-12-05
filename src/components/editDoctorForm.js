@@ -7,6 +7,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Select } from "antd";
 
 export default function EditDoctorForm()
@@ -21,6 +23,7 @@ export default function EditDoctorForm()
     const [doctorImage, setDoctorImage] = useState();
     const [isHovered, setIsHovered] = useState(false);
     const [isHovered1, setIsHovered1] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleFileSelect = (event) =>
     {
@@ -97,7 +100,6 @@ export default function EditDoctorForm()
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const fileInputRef = useRef(null);
-    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() =>
     {
@@ -159,8 +161,10 @@ export default function EditDoctorForm()
         })
     ];
 
+
     const handleChange = (e) =>
     {
+        setIsEditing(!isEditing);
         const { name, value } = e.target;
 
         if (name === "workingDays")
@@ -223,9 +227,28 @@ export default function EditDoctorForm()
             doctorPic: doctorImage
         }
 
+
+
         console.log("New DOCTOR DETAILS", newDoctorDetails)
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem('doctorId');
+
+        const isEmpty = Object.values(newDoctorDetails).some(value => value === '');
+
+        if (isEmpty || isEditing === false)
+        {
+            toast.error('Please fill the fields or Update');
+            setIsEditing(false);
+            return;
+        }
+
+        if (!isEmpty || isEditing === true)
+        {
+
+            toast.success('Form submitted successfully!');
+
+        }
+
         if (!token)
         {
             console.error("No token found in local storage");
@@ -749,6 +772,7 @@ export default function EditDoctorForm()
                             </button>
                         </div>
                     </div>
+                    <ToastContainer />
                 </div>
             </div>
         </>

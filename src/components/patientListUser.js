@@ -267,6 +267,12 @@ export default function PatientListUser({ searchTerm })
                   <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
                     {patient.name}
                   </h1>
+                  <p>
+                    {patient.age} yrs , {patient.bodyWeight} kg
+                  </p>
+                  <p>
+                    {patient.address?.houseNo} , {patient.address?.block}, {patient.address?.area}, {patient.address?.district},{patient.address?.state}, {patient.address?.pinCode}
+                  </p>
                   {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}
                 </div>
               </div>

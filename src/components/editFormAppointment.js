@@ -482,6 +482,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                     onChange={handleChangeIssues}
                     value={newAppointmentDetails.issues}
                     placeholder="Select Issues"
+                    style={{ overflowY: 'auto' }}
                 >
                     {SymptomsDropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -503,6 +504,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                     onChange={handleChangeDiseases}
                     value={newAppointmentDetails.diseases}
                     placeholder="Select Diseases"
+                    style={{ overflowY: 'auto' }}
                 >
                     {DiseasesDropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
