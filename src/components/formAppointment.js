@@ -111,7 +111,7 @@ const SymptomsDropdown = [
 
 
 
-const FormAppoinment = () =>
+const FormAppoinment = ({ onDataFromChild }) =>
 {
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [selectedDoctor, setSelectedDoctor] = useState();
@@ -119,6 +119,7 @@ const FormAppoinment = () =>
     const location = useLocation();
     const [patientsList, setPatientsList] = useState([])
     const [doctorsList, setDoctorsList] = useState([])
+    const [dataToSend, setDataToSend] = useState('');
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
@@ -204,9 +205,12 @@ const FormAppoinment = () =>
     {
         const { name, value } = e.target;
 
+        onDataFromChild(value);
+
         // Assuming 'patientsList' is an array of patient objects with '_id' and 'name'
         const selectedPatient = patientsList.find(patient => patient.name === value);
         const selectedDoctor = doctorsList.find(doctor => doctor.name === value);
+
 
         if (name === "patientName")
         {
@@ -407,6 +411,7 @@ const FormAppoinment = () =>
                         onChange={handleChange}
                     >
                         {doctorsList?.map((doctor) => (
+
                             <option key={doctor._id} value={doctor.name}>
                                 {doctor.name}
                             </option>
@@ -464,6 +469,7 @@ const FormAppoinment = () =>
                     onChange={handleChangeIssues}
                     value={patientDetails.issues}
                     placeholder="Select Issues"
+                    style={{ overflowY: 'auto' }}
                 >
                     {SymptomsDropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -486,6 +492,7 @@ const FormAppoinment = () =>
                     onChange={handleChangeDiseases}
                     value={patientDetails.diseases}
                     placeholder="Select Diseases"
+                    style={{ overflowY: 'auto' }}
                 >
                     {DiseasesDropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
