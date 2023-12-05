@@ -190,7 +190,7 @@ export default function Layout({
                         </div>
 
                         <div style={{ marginBottom: -10 }} className="flex flex-col">
-                            <span className="text-4xl font-semibold w-full">
+                            <span className="text-4xl font-extrabold w-full">
                                 {headerTextTop}
                             </span>
                         </div>
@@ -239,7 +239,7 @@ export default function Layout({
                                             <span>
                                                 {" "}
                                                 <input
-                                                    placeholder={`${"search"}`}
+                                                    placeholder={`${isTab ? '' : "search"}`}
                                                     style={{
                                                         width: isTab ? '40px' : "100px",
                                                         marginRight: "30px",

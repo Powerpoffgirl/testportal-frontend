@@ -319,16 +319,18 @@ export default function AppointmentListUser()
                   </h1>
                 </div>
               </div>
-              <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: !isTab ? 'row' : 'column', zIndex: 10 }}>
+              <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: 'row', zIndex: 10 }}>
                 <button
-                  class="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                //   onClick={() => handleDeletePatient(patient._id)}
+                  class="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                  //   onClick={() => handleDeletePatient(patient._id)}
+                  style={{ marginTop: isTab ? 90 : null, paddingLeft: isTab ? 20 : null, paddingRight: isTab ? 20 : null }}
                 >
                   {isTab ? <FaTrashAlt /> : 'Delete'}
                 </button>
                 <button
-                  class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
-                //   onClick={() => handleBookAppointment(patient._id)}
+                  class="rounded-full px-6 sm:px-6 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
+                  //   onClick={() => handleBookAppointment(patient._id)}
+                  style={{ height: isTab ? 25 : null, marginTop: isTab ? 90 : null, }}
                 >
                   {isTab ? <FaEdit /> : 'Edit'}
                 </button>
