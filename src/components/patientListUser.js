@@ -95,9 +95,40 @@ export default function PatientListUser({ searchTerm })
     navigate("/editpatientform");
   }
 
-  const handleDeletePatient = (patientId) =>
+  const handleDeletePatient = async (patientId) =>
   {
+    try
+    {
+      const token = localStorage.getItem("token");
+      if (!token)
+      {
+        console.error("No token found in local storage");
+        return;
+      }
+      const response = await fetch(`${baseUrl}/api/v1/user/delete_patient/${patientId}`, {
+        method: 'DELETE', // Use DELETE method
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token // Use the stored token
+        }
+      });
 
+      const data = await response.json();
+
+      if (response.ok)
+      {
+        console.log("Patient deleted successfully", data);
+        // Update the list in the UI by removing the deleted doctor
+        setPatientsList(prevPatientsList => prevPatientsList.filter(patient => patient._id !== patientId));
+      } else
+      {
+        console.error("Failed to delete the doctor", data?.message);
+      }
+
+    } catch (error)
+    {
+      console.error('There was an error deleting the doctor:', error);
+    }
   }
 
   const handleBookAppointment = (patientId) =>
@@ -242,7 +273,7 @@ export default function PatientListUser({ searchTerm })
               <div class="flex flex-row ms-auto gap-1 sm:gap-4">
                 <button
                   class="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                //   onClick={() => handleDeletePatient(patient._id)}
+                  onClick={() => handleDeletePatient(patient._id)}
                 >
                   {isTab ? <FaTrashAlt /> : 'Delete'}
                 </button>

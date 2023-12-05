@@ -265,7 +265,7 @@ export default function EditUserForm()
 
     if (!isEmpty || isEditing === true)
     {
-      // Show a success toast for successful submission
+
       toast.success('Form submitted successfully!');
 
     }
