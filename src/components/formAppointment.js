@@ -495,7 +495,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
                     placeholder="Select Diseases"
                     style={{ overflowY: 'auto' }}
                 >
-                    {SymptomsDropdown.map((option) => (
+                    {DiseasesDropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
                             {option.label}
                         </Select.Option>

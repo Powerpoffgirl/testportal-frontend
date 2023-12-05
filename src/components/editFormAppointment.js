@@ -111,7 +111,7 @@ const SymptomsDropdown = [
 
 
 
-const EditFormAppoinment = () =>
+const EditFormAppoinment = ({ appointmentDetails }) =>
 {
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [selectedDoctor, setSelectedDoctor] = useState();
@@ -122,15 +122,15 @@ const EditFormAppoinment = () =>
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
-    const [patientDetails, setPatientDetails] = useState({
-        doctorId: localStorage.getItem("doctorId"),
-        patientId: localStorage.getItem("patientId"),
+    const [newAppointmentDetails, setNewAppointmentDetails] = useState({
+        doctorId: appointmentDetails?.doctorId?._id,
+        patientId: appointmentDetails?.patientId?._id,
         appointmentDate: {
-            date: "",
-            time: ""
+            date: appointmentDetails?.appointmentDate?.date,
+            time: appointmentDetails?.appointmentDate?.time
         },
-        issues: [],
-        diseases: [],
+        issues: appointmentDetails?.issues,
+        diseases: appointmentDetails?.diseases,
 
     })
     useEffect(() =>
@@ -210,7 +210,7 @@ const EditFormAppoinment = () =>
 
         if (name === "patientName")
         {
-            setPatientDetails(prevPatientDetails => ({
+            setNewAppointmentDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 patientId: selectedPatient?._id,
                 [name]: value,
@@ -218,7 +218,7 @@ const EditFormAppoinment = () =>
         }
         else if (name === "doctorName")
         {
-            setPatientDetails(prevPatientDetails => ({
+            setNewAppointmentDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 doctorId: selectedDoctor?._id,
                 [name]: value,
@@ -226,7 +226,7 @@ const EditFormAppoinment = () =>
         }
         else if (name === "date" || name === "time")
         {
-            setPatientDetails(prevPatientDetails => ({
+            setNewAppointmentDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 appointmentDate: {
                     ...prevPatientDetails.appointmentDate,
@@ -235,31 +235,45 @@ const EditFormAppoinment = () =>
             }));
         } else
         {
-            setPatientDetails(prevPatientDetails => ({
+            setNewAppointmentDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 [name]: value
             }));
         }
     };
-
-    const handleChangeIssues = (values) =>
+    useEffect(() =>
     {
-        setPatientDetails(prevPatientDetails => ({
-            ...prevPatientDetails,
-            issues: values
+        setNewAppointmentDetails({
+            ...newAppointmentDetails,
+            issues: appointmentDetails?.issues || [],
+            diseases: appointmentDetails?.diseases || [],
+            appointmentDate: {
+                date: appointmentDetails?.appointmentDate?.date || '',
+                time: appointmentDetails?.appointmentDate?.time || ''
+            }
+        });
+    }, [appointmentDetails]);
+
+    // Handle changes in issues
+    const handleChangeIssues = (selectedIssues) =>
+    {
+        setNewAppointmentDetails(prevAppointmentDetails => ({
+            ...prevAppointmentDetails,
+            issues: selectedIssues
         }));
     };
 
-    const handleChangeDiseases = (values) =>
+    // Handle changes in diseases
+    const handleChangeDiseases = (selectedDiseases) =>
     {
-        setPatientDetails(prevPatientDetails => ({
-            ...prevPatientDetails,
-            diseases: values
+        setNewAppointmentDetails(prevAppointmentDetails => ({
+            ...prevAppointmentDetails,
+            diseases: selectedDiseases
         }));
     };
 
 
-    const handleRegister = async (e) =>
+    const handleUpdate = async (e) =>
     {
         e.preventDefault();
         // Check if the token exists
@@ -269,16 +283,17 @@ const EditFormAppoinment = () =>
             console.error("No token found in local storage");
             return;
         }
+        const appointmentId = appointmentDetails?._id
 
         const response = await fetch(
-            `${baseUrl}/api/v1/user/create_appointment`,
+            `${baseUrl}/api/v1/user/update_appointmentById/${appointmentId}`,
             {
-                method: "post",
+                method: "put",
                 headers: {
                     "Content-Type": "application/json",
                     "x-auth-token": token,
                 },
-                body: JSON.stringify(patientDetails)
+                body: JSON.stringify(newAppointmentDetails)
             }
         );
         const data = await response.json();
@@ -291,9 +306,9 @@ const EditFormAppoinment = () =>
         console.log("DATA from response", data)
     };
 
-    console.log("PATIENT DETAILS", patientDetails)
     console.log("PATIENT LIST", patientsList)
     console.log("DOCTORS LIST", doctorsList)
+    console.log("APPOINTMENT DETAILS", appointmentDetails)
     return (
         <form
             className="flex flex-col gap-2 px-3 w-full relative overflow-hidden justify-center"
@@ -352,7 +367,7 @@ const EditFormAppoinment = () =>
                             color: "white",
                         }}
                     >
-                        Your Appointment Has Been Booked.<br />
+                        Your Appointment Has Been Updated.<br />
                         Please wait for Confirmation.<br />
 
                     </text>
@@ -385,6 +400,7 @@ const EditFormAppoinment = () =>
                         className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
                         name="patientName"
                         onChange={handleChange}
+                        value={appointmentDetails?.patientId?.name}
                     >
                         {patientsList?.map((patient) => (
                             <option key={patient._id} value={patient.name}>
@@ -405,6 +421,7 @@ const EditFormAppoinment = () =>
                         className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
                         name="doctorName"
                         onChange={handleChange}
+                        value={appointmentDetails?.doctorId?.name}
                     >
                         {doctorsList?.map((doctor) => (
                             <option key={doctor._id} value={doctor.name}>
@@ -430,6 +447,7 @@ const EditFormAppoinment = () =>
                         id="appointmentDate"
                         name="date"
                         onChange={handleChange}
+                        value={newAppointmentDetails?.appointmentDate?.date}
                     />
                 </div>
 
@@ -446,6 +464,7 @@ const EditFormAppoinment = () =>
                         id="appointmentTime"
                         name="time"
                         onChange={handleChange}
+                        value={newAppointmentDetails?.appointmentDate?.time}
                     />
                 </div>
             </div>
@@ -458,11 +477,10 @@ const EditFormAppoinment = () =>
                 <Select
                     mode="multiple"
                     className="mx-2 border border-green-500 h-10 rounded-lg"
-                    popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="issues"
                     name="issues"
                     onChange={handleChangeIssues}
-                    value={patientDetails.issues}
+                    value={newAppointmentDetails.issues}
                     placeholder="Select Issues"
                 >
                     {SymptomsDropdown.map((option) => (
@@ -474,17 +492,16 @@ const EditFormAppoinment = () =>
             </div>
 
             <div className="flex flex-col">
-                <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="diseases">
-                    Diseases
+                <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
+                    Disease
                 </label>
                 <Select
                     mode="multiple"
                     className="mx-2 border border-green-500 h-10 rounded-lg"
-                    dropdownStyle={{ width: '100%' }} // Ensure dropdown matches the width of the Select
                     id="diseases"
                     name="diseases"
                     onChange={handleChangeDiseases}
-                    value={patientDetails.diseases}
+                    value={newAppointmentDetails.diseases}
                     placeholder="Select Diseases"
                 >
                     {DiseasesDropdown.map((option) => (
@@ -500,7 +517,7 @@ const EditFormAppoinment = () =>
                 <button
                     type="submit"
                     className="w-40 h-11 bg-green-500 rounded-full text-white font-semibold text-xl leading-9 font-lato"
-                    onClick={handleRegister}
+                    onClick={handleUpdate}
                 >
                     Process
                 </button>
