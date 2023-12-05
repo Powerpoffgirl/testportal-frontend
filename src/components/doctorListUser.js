@@ -86,7 +86,7 @@ export default function DoctorListUser({ searchTerm })
   useEffect(() =>
   {
     const filteredDoctors = doctorsList.filter((doctor) =>
-      doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
+      doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) || doctor.speciality.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     setDoctorsList(filteredDoctors);
