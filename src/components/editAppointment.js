@@ -8,6 +8,7 @@ import UserSidebar from "./userSidebar";
 import AdminSidebar from "./adminSidebar";
 import FormAppoinment from "./formAppointment";
 import design from "../assets/design.svg";
+import EditFormAppoinment from "./editFormAppointment";
 
 
 
@@ -319,7 +320,7 @@ export default function EditAppointment()
                     <img className="h-16 hidden sm:block md:hidden lg:block" src={design} alt="design" />
                 </div>
             </div>
-            <FormAppoinment appointmentDetails={appointmentDetails} />
+            <EditFormAppoinment appointmentDetails={appointmentDetails} />
         </>
     );
 }
