@@ -30,7 +30,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`
 
-export default function DoctorList()
+export default function DoctorList({ searchTerm })
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [doctorsList, setDoctorsList] = useState([]);
@@ -39,17 +39,63 @@ export default function DoctorList()
   const [open, setOpen] = useState(false);
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  // const [searchTerm, setSearchTerm] = useState("");
+  const [doctorsList1, setDoctorsList1] = useState([])
   const navigate = useNavigate()
 
 
   const categories = [
-    { name: "All", value: "1" },
-    { name: "Cardiologist", value: "2" },
-    { name: "Therapist", value: "3" },
-    { name: "Pediatrician", value: "4" },
-    { name: "Neurologist", value: "5" },
-    { name: "Physiotherapist", value: "6" },
+    "All",
+    "General Medicine",
+    "Cardiology",
+    "Dermatology",
+    "Endocrinology",
+    "Gastroenterology",
+    "Nephrology",
+    "Neurology",
+    "Oncology",
+    "Pediatrics",
+    "Psychiatry",
+    "Pulmonology",
+    "Rheumatology",
+    "General Surgery",
+    "Orthopedic Surgery",
+    "Cardiothoracic Surgery",
+    "Neurosurgery",
+    "Plastic Surgery",
+    "Urology",
+    "Vascular Surgery",
+    "Gynecology",
+    "Obstetrics",
+    "Ophthalmology",
+    "ENT (Ear, Nose, and Throat)",
+    "Dental Surgery",
+    "Anesthesiology",
+    "Radiology",
+    "Pathology",
+    "Hematology",
+    "Ayurveda",
+    "Homeopathy",
+    "Physical Medicine and Rehabilitation",
+    "Sports Medicine",
+    "Diabetology",
+    "Infectious Disease",
+    "Geriatrics",
+    "Pain Management",
+    "Critical Care Medicine",
+    "Emergency Medicine",
+    "Occupational Medicine",
+    "Preventive Medicine",
+    "Family Medicine",
+    "Pediatric Surgery",
+    "Gastrointestinal Surgery",
+    "Laparoscopic Surgery",
+    "Transplant Surgery",
+    "Nuclear Medicine",
+    "Reproductive Medicine",
+    "Neonatology",
+    "Allergy and Immunology",
+    "Audiology and Speech Therapy",
   ];
 
   useEffect(() =>
@@ -72,6 +118,7 @@ export default function DoctorList()
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
+        setDoctorsList1(verifiedDoctors)
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);
@@ -83,7 +130,8 @@ export default function DoctorList()
   useEffect(() =>
   {
     const filteredDoctors = doctorsList.filter((doctor) =>
-      doctor.name.toLowerCase().includes(searchTerm.toLowerCase())
+      doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      doctor.speciality.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     setDoctorsList(filteredDoctors);
@@ -104,6 +152,20 @@ export default function DoctorList()
     navigate("/userlogin", { state: { doctor: selectedDoctor } });
   }
 
+  const handleFilterDocotors = (item) =>
+  {
+    console.log("ITEM NAME IS================>", item)
+    if (item.toLowerCase() === "all")
+    {
+      setDoctorsList(doctorsList1)
+    }
+    else
+    {
+      const filteredDoctors = doctorsList.filter((doc) => doc.speciality === item)
+      setDoctorsList(filteredDoctors)
+    }
+
+  }
 
 
   return (
@@ -303,20 +365,25 @@ export default function DoctorList()
       >
 
         <div
-          className="divWithHiddenScrollbar flex flex-row gap-4 "
+          className="divWithHiddenScrollbar flex flex-row gap-4"
           style={{
             overflowX: 'auto',
+            whiteSpace: 'nowrap',  // Ensures items are in a single line
             position: 'relative',
-            msOverflowStyle: 'none',  // IE and Edge
-            scrollbarWidth: 'none',  // Firefox
+            maxWidth: '100%',  // Set a max-width to ensure scrolling
+            msOverflowStyle: 'none',  // Hides scrollbar in IE and Edge
+            scrollbarWidth: 'none',  // Hides scrollbar in Firefox
+
+            // Additional styles for Webkit browsers like Chrome and Safari
+            '&::-webkit-scrollbar': {
+              display: 'none',  // Hides scrollbar
+            },
           }}
         >
-
-          {categories.map((items) => (
+          {categories.map((item, index) => (
             <span
               className="bg-#E4FFF2; cursor-pointer px-8 hover:bg-customRed"
               style={{
-                left: "2%",
                 height: "29px",
                 border: "1px solid #08DA75",
                 borderRadius: "5px",
@@ -329,12 +396,15 @@ export default function DoctorList()
                 lineHeight: "28.8px",
                 color: "#595959"
               }}
-              key={items.value}
+              key={index} // It's better to use a unique identifier if available
+              onClick={() => handleFilterDocotors(item)}
             >
-              {items.name}
+              {item}
             </span>
           ))}
         </div>
+
+
 
         {/* Doctors Array Start */}
 

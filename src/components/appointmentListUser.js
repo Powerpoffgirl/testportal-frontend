@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -89,7 +90,40 @@ export default function AppointmentListUser({ searchTerm })
 
   const handleDeleteAppointment = async (appointmentId) =>
   {
-    localStorage.setItem("appointmentId", appointmentId);
+    try
+    {
+      const token = localStorage.getItem("token");
+      if (!token)
+      {
+        console.error("No token found in local storage");
+        return;
+      }
+      const response = await fetch(`${baseUrl}/api/v1/user/delete_appointmentById/${appointmentId}`, {
+        method: 'DELETE', // Use DELETE method
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token // Use the stored token
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok)
+      {
+        console.log("Appointment deleted successfully", data);
+        // toast.success("Appointment Deleted")
+        // Update the list in the UI by removing the deleted doctor
+        setAppointmentList(prevAppointmentList => prevAppointmentList.filter(appointment => appointment._id !== appointmentId));
+      } else
+      {
+        console.error("Failed to delete the doctor", data?.message);
+      }
+
+    } catch (error)
+    {
+      console.error('There was an error deleting the Appointment:', error);
+    }
+
   };
 
   function formatDate(dateString)
@@ -250,9 +284,9 @@ export default function AppointmentListUser({ searchTerm })
 
       <div className="flex flex-col">
         {appointmentList?.map((appointment) => (
-          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" onClick={() => findSelectedDoctor(appointment?._id)}>
+          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" >
             <div className="flex flex-row justify-start items-center">
-              <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(appointment?._id)}>
                 <img
                   class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
                   src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
@@ -331,14 +365,14 @@ export default function AppointmentListUser({ searchTerm })
               <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: 'row' }}>
                 <button
                   class="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                  //   onClick={() => handleDeletePatient(patient._id)}
+                  onClick={() => handleDeleteAppointment(appointment._id)}
                   style={{ marginTop: isTab ? 90 : null, paddingLeft: isTab ? 20 : null, paddingRight: isTab ? 20 : null }}
                 >
                   {isTab ? <FaTrashAlt /> : 'Delete'}
                 </button>
                 <button
                   class="rounded-full px-6 sm:px-6 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
-                  //   onClick={() => handleBookAppointment(patient._id)}
+                  onClick={() => handleEditAppointment(appointment._id)}
                   style={{ height: isTab ? 25 : null, marginTop: isTab ? 90 : null, }}
                 >
                   {isTab ? <FaEdit /> : 'Edit'}
