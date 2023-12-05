@@ -254,6 +254,15 @@ export default function EditDoctorForm()
         console.log("DATA from response", data)
     }
 
+    const handleChange1 = (e) =>
+    {
+        setDoctorDetails((prevDoctorDetails) => ({
+            ...prevDoctorDetails,
+            workingDays: [...prevDoctorDetails.workingDays, e],
+        }));
+
+    }
+
     const IndianDoctorSpecialties = [
         "General Medicine",
         "Cardiology",
@@ -496,31 +505,16 @@ export default function EditDoctorForm()
                                         Working Days
                                     </label>
                                     <div className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
-                                        <span className="flex">
-                                            {doctorDetails?.workingDays.map((workingDay) => (
-                                                <div
-                                                    className="breadcrumb-chip"
-                                                    key={workingDay}
-                                                    style={{
-                                                        marginRight: "8px",
-                                                        height: "26px",
-                                                        padding: "0px 5px 0px 5px",
-                                                        backgroundColor: "#E4FFF2",
-                                                        borderRadius: "5%",
-                                                        cursor: "pointer",
-                                                    }}
-                                                    onClick={() => handleDelete(workingDay)}
-                                                >
-                                                    {workingDay?.slice(0, 3) + " X "}
-                                                </div>
-                                            ))}
-                                        </span>
+
+
                                         <Select
-                                            className="mx-5"
-                                            type="text"
+                                            className="w-full border-none h-10"
+                                            mode="multiple"
                                             id="workingDays"
                                             name="workingDays"
-                                            onChange={handleChange}
+                                            onChange={handleChange1}
+                                            placeholder="Select Working Days"
+                                        // Add other props as needed
                                         >
                                             {Daysdropdown.map((option) => (
                                                 <Select.Option key={option.value} value={option.value}>

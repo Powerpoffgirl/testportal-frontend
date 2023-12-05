@@ -2,12 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Modal from 'react-responsive-modal';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Select, Space } from 'antd';
-const patientList = [
-    { id: 1, name: 'John Doe' },
-    { id: 2, name: 'Jane Smith' },
-    { id: 3, name: 'Emily Johnson' },
+import "../App.css"
 
-];
 
 const DiseasesDropdown = [
     { label: "Select Disease", value: "" },
@@ -113,6 +109,8 @@ const SymptomsDropdown = [
     { label: "Snoring", value: "Snoring" }
 ];
 
+
+
 const FormAppoinment = () =>
 {
     const baseUrl = process.env.REACT_APP_BASE_URL
@@ -120,7 +118,7 @@ const FormAppoinment = () =>
     const navigate = useNavigate()
     const location = useLocation();
     const [patientsList, setPatientsList] = useState([])
-
+    const [doctorsList, setDoctorsList] = useState([])
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
@@ -144,7 +142,7 @@ const FormAppoinment = () =>
 
     useEffect(() =>
     {
-        const fetchPatientDetails = async () =>
+        const fetchPatientList = async () =>
         {
             try
             {
@@ -170,7 +168,36 @@ const FormAppoinment = () =>
                 console.error('There was an error verifying the OTP:', error);
             }
         }
-        fetchPatientDetails()
+
+        const fetchDoctorList = async () =>
+        {
+            try
+            {
+                const token = localStorage.getItem("token");
+                if (!token)
+                {
+                    console.error("No token found in local storage");
+                    return;
+                }
+                const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 'x-auth-token': token // Replace with your actual token from the previous session
+                    }
+                });
+
+                const data = await response.json();
+                console.log("DATA from response", data)
+                setDoctorsList(data?.data)
+            } catch (error)
+            {
+                console.error('There was an error verifying the OTP:', error);
+            }
+        }
+
+        fetchPatientList()
+        fetchDoctorList()
     }, [])
 
     const handleChange = (e) =>
@@ -179,15 +206,25 @@ const FormAppoinment = () =>
 
         // Assuming 'patientsList' is an array of patient objects with '_id' and 'name'
         const selectedPatient = patientsList.find(patient => patient.name === value);
+        const selectedDoctor = doctorsList.find(doctor => doctor.name === value);
 
-        if (name === "name")
+        if (name === "patientName")
         {
             setPatientDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
                 patientId: selectedPatient?._id,
                 [name]: value,
             }));
-        } else if (name === "date" || name === "time")
+        }
+        else if (name === "doctorName")
+        {
+            setPatientDetails(prevPatientDetails => ({
+                ...prevPatientDetails,
+                doctorId: selectedDoctor?._id,
+                [name]: value,
+            }));
+        }
+        else if (name === "date" || name === "time")
         {
             setPatientDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
@@ -205,21 +242,21 @@ const FormAppoinment = () =>
         }
     };
 
-    const handleChange1 = (value) =>
+    const handleChangeIssues = (values) =>
     {
         setPatientDetails(prevPatientDetails => ({
             ...prevPatientDetails,
-            issues: [...prevPatientDetails.issues, value]
+            issues: values
         }));
-    }
+    };
 
-    const handleChange2 = (value) =>
+    const handleChangeDiseases = (values) =>
     {
         setPatientDetails(prevPatientDetails => ({
             ...prevPatientDetails,
-            diseases: [...prevPatientDetails.diseases, value]
+            diseases: values
         }));
-    }
+    };
 
 
     const handleRegister = async (e) =>
@@ -256,7 +293,7 @@ const FormAppoinment = () =>
 
     console.log("PATIENT DETAILS", patientDetails)
     console.log("PATIENT LIST", patientsList)
-
+    console.log("DOCTORS LIST", doctorsList)
     return (
         <form
             className="flex flex-col gap-2 px-3 w-full relative overflow-hidden justify-center"
@@ -335,24 +372,43 @@ const FormAppoinment = () =>
                 </div>
             </Modal>
 
-            <div className="grid grid-cols-1 w-full gap-4">
-
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                 <div className="flex flex-col">
                     <label
                         className="mx-2 text-lg font-normal text-black font-lato"
-                        htmlFor="name"
+                        htmlFor="patientName"
                     >
                         Patient Name
                     </label>
                     <select
                         className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
-                        name="name"
+                        name="patientName"
                         onChange={handleChange}
                     >
                         {patientsList?.map((patient) => (
                             <option key={patient._id} value={patient.name}>
                                 {patient.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
+                <div className="flex flex-col">
+                    <label
+                        className="mx-2 text-lg font-normal text-black font-lato"
+                        htmlFor="doctorName"
+                    >
+                        Doctor Name
+                    </label>
+                    <select
+                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                        name="doctorName"
+                        onChange={handleChange}
+                    >
+                        {doctorsList?.map((doctor) => (
+                            <option key={doctor._id} value={doctor.name}>
+                                {doctor.name}
                             </option>
                         ))}
                     </select>
@@ -394,79 +450,51 @@ const FormAppoinment = () =>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 w-full gap-4">
-
-
-                <div className="flex flex-col">
-                    <label
-                        className="mx-2 text-lg font-normal text-black font-lato"
-                        htmlFor="issues"
-                    >
-                        Issues
-                    </label>
-
-                    <span className="mx-2 px-2 border border-green-500 h-10 rounded-lg" style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                        <div className="mx-5" style={{ display: "flex" }}>
-                            {
-                                patientDetails?.issues?.map((issue) => (
-                                    <div className="breadcrumb-chip" key={issue} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                        {issue}
-                                    </div>
-                                ))
-                            }
-                        </div>
-                        <Select
-                            className="mx-5"
-                            type="text"
-                            id="issues"
-                            name="issues"
-                            onChange={handleChange1}
-                        >
-                            {SymptomsDropdown?.map((option) => (
-                                <Select.Option key={option.value} value={option.value}>
-                                    {option.label}
-                                </Select.Option>
-                            ))}
-                        </Select>
-                    </span>
-                </div>
-
-                <div className="flex flex-col">
-                    <label
-                        className="mx-2 text-lg font-normal text-black font-lato"
-                        htmlFor="diseases"
-                    >
-                        Diseases
-                    </label>
-                    <span style={{ border: "1px solid #08DA75", height: "40px", display: "flex", flexDirection: "row", justifyContent: "space-between" }}>
-                        <div className="mx-5" style={{ display: "flex" }}>
-                            {
-                                patientDetails?.diseases?.map((disease) => (
-                                    <div className="breadcrumb-chip" key={disease} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                        {disease}
-                                    </div>
-                                ))
-                            }
-                        </div>
-                        <Select
-                            className="mx-5"
-                            type="text"
-                            id="diseases"
-                            name="diseases"
-                            onChange={handleChange2}
-
-                        >
-                            {DiseasesDropdown?.map((option) => (
-                                <Select.Option key={option.value} value={option.value}>
-                                    {option.label}
-                                </Select.Option>
-                            ))}
-                        </Select>
-
-                    </span>
-                </div>
+            {/* <div className="grid grid-cols-1 w-full gap-4"> */}
+            <div className="flex flex-col">
+                <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
+                    Issues
+                </label>
+                <Select
+                    mode="multiple"
+                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    popupClassName="no-border-dropdown-menu" // Apply the custom class here
+                    id="issues"
+                    name="issues"
+                    onChange={handleChangeIssues}
+                    value={patientDetails.issues}
+                    placeholder="Select Issues"
+                >
+                    {SymptomsDropdown.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                            {option.label}
+                        </Select.Option>
+                    ))}
+                </Select>
             </div>
 
+            <div className="flex flex-col">
+                <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="diseases">
+                    Diseases
+                </label>
+                <Select
+                    mode="multiple"
+                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    dropdownStyle={{ width: '100%' }} // Ensure dropdown matches the width of the Select
+                    id="diseases"
+                    name="diseases"
+                    onChange={handleChangeDiseases}
+                    value={patientDetails.diseases}
+                    placeholder="Select Diseases"
+                >
+                    {DiseasesDropdown.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                            {option.label}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </div>
+            {/* </div> */}
 
             <div className="flex justify-center my-5">
                 <button

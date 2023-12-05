@@ -460,39 +460,19 @@ export default function DoctorForm()
 
               <div className="flex justify-between space-x-4">
                 <div className="flex-1">
-                  <label
-                    htmlFor="workingDays"
-                    className="block text-black text-lg font-semibold"
-                  >
+                  <label htmlFor="workingDays" className="block text-black text-lg font-semibold">
                     Working Days
                   </label>
-                  <div className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
-                    <span className="flex">
-                      {doctorDetails?.workingDays.map((workingDay) => (
-                        <div
-                          className="breadcrumb-chip"
-                          key={workingDay}
-                          style={{
-                            marginRight: "8px",
-                            height: "26px",
-                            padding: "0px 5px 0px 5px",
-                            backgroundColor: "#E4FFF2",
-                            borderRadius: "5%",
-                            cursor: "pointer",
-                          }}
-                          onClick={() => handleDelete(workingDay)}
-                        >
-                          {workingDay.slice(0, 3) + " X "}
-                        </div>
-                      ))}
-                    </span>
+                  <div className="block w-full mt-0 rounded-lg border border-[#08DA75] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+
                     <Select
-                      className="mx-5 w-full"
-                      type="text"
+                      className="w-full border-none h-10"
+                      mode="multiple"
                       id="workingDays"
                       name="workingDays"
                       onChange={handleChange1}
-
+                      placeholder="Select Working Days"
+                    // Add other props as needed
                     >
                       {Daysdropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -502,6 +482,8 @@ export default function DoctorForm()
                     </Select>
                   </div>
                 </div>
+
+
 
                 <div className="flex-1" style={{ marginRight: "10px" }}>
                   <label className="block text-black text-lg font-semibold">
