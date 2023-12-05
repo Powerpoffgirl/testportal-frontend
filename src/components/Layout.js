@@ -205,6 +205,7 @@ export default function Layout({
                                         display: "flex",
                                         flexDirection: "row",
                                         marginRight: 20,
+                                        marginTop: isTab ? 9 : null,
                                     }}
                                 >
                                     <div className="header-Right-top">
@@ -219,7 +220,7 @@ export default function Layout({
                                             <span
                                                 style={{
                                                     width: isTab ? '20px' : "25.58px",
-                                                    height: isTab ? '10px' : "14.58px",
+                                                    height: isTab ? '8px' : "14.58px",
                                                     marginTop: 7,
                                                     marginLeft: "3%",
                                                     marginRight: "4%",
@@ -242,9 +243,8 @@ export default function Layout({
                                                     style={{
                                                         width: isTab ? '40px' : "100px",
                                                         marginRight: "30px",
-
                                                         backgroundColor: "#08DA75",
-                                                        fontSize: isTab ? '10px' : "24px",
+                                                        fontSize: isTab ? '13px' : "24px",
                                                         color: "white",
                                                         fontWeight: 600,
                                                         outline: "none",
@@ -260,14 +260,14 @@ export default function Layout({
                                             <button
                                                 style={{
                                                     display: "inline",
-                                                    fontSize: "29px",
+                                                    fontSize: isTab ? '17px' : "29px",
                                                     fontWeight: 800,
                                                     fontFamily: "Lato, sans-serif",
-                                                    lineHeight: "34.8px",
+                                                    lineHeight: isTab ? '30px' : "34.8px",
                                                     color: "#08DA75",
                                                     backgroundColor: "white",
-                                                    height: "38px",
-                                                    width: "122px",
+                                                    height: isTab ? '27px' : "38px",
+                                                    width: isTab ? '90px' : "122px",
                                                     borderRadius: "43px",
                                                     marginLeft: 5,
                                                 }}
