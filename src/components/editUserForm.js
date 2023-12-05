@@ -148,25 +148,16 @@ export default function EditUserForm()
   {
     setIsEditing(!isEditing);
     const { name, value } = e.target;
-    setUserDetails({
-      ...userDetails,
-      address: {
-        [name]: value,
-      },
-    });
-    if (name === "name")
+
+
+    let isValid = true;
+    let errorMessage = '';
+
+    // Validations
+    if (name === "name" && value.length < 3)
     {
-      if (value.length < 3)
-      {
-        setErrors({
-          ...errors,
-          [name]: "Name should be at least 3 characters.",
-        });
-      } else
-      {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
+      errorMessage = "Name should be at least 3 characters.";
+      isValid = false;
     }
 
     if (name === "email")
@@ -174,131 +165,72 @@ export default function EditUserForm()
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(value))
       {
-        setErrors({ ...errors, [name]: "Please enter a valid email address." });
-      } else
-      {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
+        errorMessage = "Please enter a valid email address.";
+        isValid = false;
       }
     }
 
-    if (name === "houseNo")
+    if (["houseNo", "floor", "block", "area"].includes(name) && (!value || value.trim() === ""))
     {
-      if (!value || value.trim() === "")
-      {
-        setErrors({ ...errors, [name]: "House No is required." });
-      } else
-      {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
+      errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} is required.`;
+      isValid = false;
     }
 
-    if (name === "floor")
+    if (name === "pinCode" && !/^\d{6}$/.test(value))
     {
-      if (!value || value.trim() === "")
-      {
-        setErrors({ ...errors, [name]: "Floor No is required." });
-      } else
-      {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
+      errorMessage = "Pincode must be 6 digits.";
+      isValid = false;
     }
 
-    if (name === "block")
+    if (["district", "state"].includes(name) && !/^[a-zA-Z\s]*$/.test(value))
     {
-      if (!value || value.trim() === "")
-      {
-        setErrors({ ...errors, [name]: "Block is required." });
-      } else
-      {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
+      errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} must contain only letters and spaces.`;
+      isValid = false;
     }
 
-    if (name === "area")
+    // Update errors and userDetails
+    if (!isValid)
     {
-      if (!value || value.trim() === "")
-      {
-        setErrors({ ...errors, [name]: "Area is required." });
-      } else
-      {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
-    }
-
-    if (name === "pinCode")
-    {
-      if (!/^\d{6}$/.test(value))
-      {
-        setErrors({ ...errors, [name]: "Pincode must be 6 digits." });
-      } else
-      {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
-    }
-
-    if (name === "district")
-    {
-      if (!/^[a-zA-Z\s]*$/.test(value))
-      {
-        setErrors({
-          ...errors,
-          [name]: "District must contain only letters and spaces.",
-        });
-      } else
-      {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
-    }
-
-    if (name === "state")
-    {
-      if (!/^[a-zA-Z\s]*$/.test(value))
-      {
-        setErrors({
-          ...errors,
-          [name]: "State must contain only letters and spaces.",
-        });
-      } else
-      {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
-    }
-
-    if (
-      [
-        "houseNo",
-        "floor",
-        "block",
-        "area",
-        "pinCode",
-        "district",
-        "state",
-      ].includes(name)
-    )
-    {
-      setUserDetails((prevUserDetails) => ({
-        ...prevUserDetails,
-        address: {
-          ...prevUserDetails.address,
-          [name]: value,
-        },
-      }));
+      setErrors({ ...errors, [name]: errorMessage });
     } else
     {
-      setUserDetails((prevUserDetails) => ({
-        ...prevUserDetails,
-        [name]: value,
-      }));
+      const { [name]: omit, ...rest } = errors;
+      setErrors(rest);
+
+      if (name === "workingDays")
+      {
+        setUserDetails(prevDoctorDetails => ({
+          ...prevDoctorDetails,
+          workingDays: [...prevDoctorDetails?.workingDays, value],
+        }));
+      } else if (name === "workHourFrom" || name === "workHourTo")
+      {
+        setUserDetails(prevDoctorDetails => ({
+          ...prevDoctorDetails,
+          workingHours: {
+            ...prevDoctorDetails?.workingHours,
+            [name]: value,
+          }
+        }));
+      } else if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
+      {
+        setUserDetails(prevDoctorDetails => ({
+          ...prevDoctorDetails,
+          address: {
+            ...prevDoctorDetails?.address,
+            [name]: value
+          }
+        }));
+      } else
+      {
+        setUserDetails(prevDoctorDetails => ({
+          ...prevDoctorDetails,
+          [name]: value
+        }));
+      }
     }
   };
+
 
   const handleUpdate = async (e) =>
   {
