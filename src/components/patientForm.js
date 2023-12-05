@@ -22,8 +22,6 @@ export default function PatientForm() {
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [error, setError] = useState("");
 
   const [patientDetails, setPatientDetails] = useState({
     name: "",
@@ -39,19 +37,9 @@ export default function PatientForm() {
       state: "",
     },
   });
-  const handleChange = (event) => {
-    const newName = event.target.value;
-    const { name, value } = event.target;
-    setName(newName);
-    if (name.trim() === "") {
-      setError("Name is required");
-    } else {
-      setError("");
-    }
 
-    // const handleChange = (e) =>
-    // {
-    // const { name, value } = e.target;
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
     if (
       [
@@ -162,8 +150,8 @@ export default function PatientForm() {
             <div class="grid grid-cols-1 w-full gap-4">
               <div>
                 <label
-                  htmlFor="name"
-                  className="block text-black text-lg font-semibold"
+                  for="name"
+                  class="block text-black text-lg font-semibold"
                 >
                   Name
                 </label>
@@ -172,13 +160,11 @@ export default function PatientForm() {
                   placeholder="Smita Singh"
                   id="name"
                   name="name"
-                  value={name}
                   onChange={handleChange}
-                  //   onBlur={handleBlur}
-                  className="block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
-                {error && <p className="text-red-500">{error}</p>}
               </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <label
