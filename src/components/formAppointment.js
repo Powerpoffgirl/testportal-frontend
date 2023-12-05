@@ -482,17 +482,17 @@ const FormAppoinment = ({ onDataFromChild }) =>
             {/* <div className="grid grid-cols-1 w-full gap-4"> */}
             <div className="flex flex-col">
                 <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
-                    Issues
+                    Diseases
                 </label>
                 <Select
                     mode="multiple"
                     className="mx-2 border border-green-500 h-10 rounded-lg"
-                    popupClassName="no-border-dropdown-menu" // Apply the custom class here
-                    id="issues"
-                    name="issues"
-                    onChange={handleChangeIssues}
-                    value={patientDetails.issues}
-                    placeholder="Select Issues"
+                    dropdownStyle={{ width: '100%' }} // Ensure dropdown matches the width of the Select
+                    id="diseases"
+                    name="diseases"
+                    onChange={handleChangeDiseases}
+                    value={patientDetails.diseases}
+                    placeholder="Select Diseases"
                     style={{ overflowY: 'auto' }}
                 >
                     {SymptomsDropdown.map((option) => (
