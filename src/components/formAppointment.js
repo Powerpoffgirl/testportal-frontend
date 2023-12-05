@@ -487,22 +487,13 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 <Select
                     mode="multiple"
                     className="mx-2 border border-green-500 h-10 rounded-lg"
-<<<<<<< HEAD
-                    dropdownStyle={{ width: '100%' }} // Ensure dropdown matches the width of the Select
-                    id="diseases"
-                    name="diseases"
-                    onChange={handleChangeDiseases}
-                    value={patientDetails.diseases}
-                    placeholder="Select Diseases"
-                    style={{ overflowY: 'auto' }}
-=======
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="issues"
                     name="issues"
                     onChange={handleChangeIssues}
                     value={patientDetails.issues}
                     placeholder="Select Issues"
->>>>>>> 37599be7768f0a712b5ec07256a09da51734a07f
+                    style={{ overflowY: 'auto' }}
                 >
                     {SymptomsDropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
