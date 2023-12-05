@@ -14,329 +14,333 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
+export default function PatientForm() {
+  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const [selectedDoctor, setselectedDoctor] = useState();
+  const [open, setOpen] = useState(false);
+  const onOpenModal = () => setOpen(true);
+  const onCloseModal = () => setOpen(false);
+  const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [error, setError] = useState("");
 
-export default function PatientForm()
-{
-    let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-    const baseUrl = process.env.REACT_APP_BASE_URL
-    const [selectedDoctor, setselectedDoctor] = useState();
-    const [open, setOpen] = useState(false);
-    const onOpenModal = () => setOpen(true);
-    const onCloseModal = () => setOpen(false);
-    const navigate = useNavigate()
-
-
-    const [patientDetails, setPatientDetails] = useState({
-        name: "",
-        age: "",
-        bodyWeight: "",
-        address: {
-            houseNo: "",
-            floor: "",
-            block: "",
-            area: "",
-            pinCode: "",
-            district: "",
-            state: ""
-        }
-    })
-
-    const handleChange = (e) =>
-    {
-        const { name, value } = e.target;
-
-        if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
-        {
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                address: {
-                    ...prevPatientDetails.address,
-                    [name]: value
-                }
-            }));
-        } else if (["issues"].includes(name))
-        {
-            // Assuming the value is an array or a string to be added to the array
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                [name]: Array.isArray(value) ? value : [...prevPatientDetails[name], value]
-            }));
-        } else if (["diseases"].includes(name))
-        {
-            // Assuming the value is an array or a string to be added to the array
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                [name]: Array.isArray(value) ? value : [...prevPatientDetails[name], value]
-            }));
-        }
-        else
-        {
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                [name]: value
-            }));
-        }
-    };
-
-    const handleRegister = async (e) =>
-    {
-        e.preventDefault();
-        // Check if the token exists
-        const token = localStorage.getItem("token");
-        if (!token)
-        {
-            console.error("No token found in local storage");
-            return;
-        }
-        const response = await fetch(
-            `${baseUrl}/api/v1/user/register_patient`,
-            {
-                method: "post",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-auth-token": token,
-                },
-                body: JSON.stringify(patientDetails)
-            }
-        );
-        const data = await response.json();
-        if (data.success === true)
-        {
-            // navigate("/otp")
-            onOpenModal()
-            localStorage.setItem("id", data.data._id)
-        }
-        console.log("DATA from response", data)
+  const [patientDetails, setPatientDetails] = useState({
+    name: "",
+    age: "",
+    bodyWeight: "",
+    address: {
+      houseNo: "",
+      floor: "",
+      block: "",
+      area: "",
+      pinCode: "",
+      district: "",
+      state: "",
+    },
+  });
+  const handleChange = (event) => {
+    const newName = event.target.value;
+    const { name, value } = event.target;
+    setName(newName);
+    if (name.trim() === "") {
+      setError("Name is required");
+    } else {
+      setError("");
     }
-    console.log("PATIENT DETAILS", patientDetails)
 
+    // const handleChange = (e) =>
+    // {
+    // const { name, value } = e.target;
 
-    return (
-        <>
-            <Modal open={open}
-                onClose={onCloseModal}
-                center
-                doctor={selectedDoctor}
-                styles={{
-                    modal: {
-                        // Set your custom width here (e.g., '70%')
-                        width: isTab ? '80%' : '70%',
-                        backgroundColor: '#08DA75',
-                        alignContent: 'center'
-                    },
-                }}
-            >
-                <div
-                    className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
+    if (
+      [
+        "houseNo",
+        "floor",
+        "block",
+        "area",
+        "pinCode",
+        "district",
+        "state",
+      ].includes(name)
+    ) {
+      setPatientDetails((prevPatientDetails) => ({
+        ...prevPatientDetails,
+        address: {
+          ...prevPatientDetails.address,
+          [name]: value,
+        },
+      }));
+    } else if (["issues"].includes(name)) {
+      // Assuming the value is an array or a string to be added to the array
+      setPatientDetails((prevPatientDetails) => ({
+        ...prevPatientDetails,
+        [name]: Array.isArray(value)
+          ? value
+          : [...prevPatientDetails[name], value],
+      }));
+    } else if (["diseases"].includes(name)) {
+      // Assuming the value is an array or a string to be added to the array
+      setPatientDetails((prevPatientDetails) => ({
+        ...prevPatientDetails,
+        [name]: Array.isArray(value)
+          ? value
+          : [...prevPatientDetails[name], value],
+      }));
+    } else {
+      setPatientDetails((prevPatientDetails) => ({
+        ...prevPatientDetails,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    // Check if the token exists
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No token found in local storage");
+      return;
+    }
+    const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+      body: JSON.stringify(patientDetails),
+    });
+    const data = await response.json();
+    if (data.success === true) {
+      // navigate("/otp")
+      onOpenModal();
+      localStorage.setItem("id", data.data._id);
+    }
+    console.log("DATA from response", data);
+  };
+  console.log("PATIENT DETAILS", patientDetails);
+
+  return (
+    <>
+      <Modal
+        open={open}
+        onClose={onCloseModal}
+        center
+        doctor={selectedDoctor}
+        styles={{
+          modal: {
+            // Set your custom width here (e.g., '70%')
+            width: isTab ? "80%" : "70%",
+            backgroundColor: "#08DA75",
+            alignContent: "center",
+          },
+        }}
+      >
+        <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
+          <text
+            className="text-center mt-4 mb-4"
+            style={{
+              fontSize: isTab ? "14px" : "20px",
+              fontWeight: 600,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "#FFFFFF",
+            }}
+          >
+            Patient's Details is Saved.
+            <br />
+            Go to Patient's list to book an Appointment.
+          </text>
+        </div>
+      </Modal>
+
+      <div className="flex flex-row">
+        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
+        <div className=" w-full">
+          <div className="mt-6 p-2">
+            <div class="grid grid-cols-1 w-full gap-4">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-black text-lg font-semibold"
                 >
+                  Name
+                </label>
+                <input
+                  type="text"
+                  placeholder="Smita Singh"
+                  id="name"
+                  name="name"
+                  value={name}
+                  onChange={handleChange}
+                  //   onBlur={handleBlur}
+                  className="block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                />
+                {error && <p className="text-red-500">{error}</p>}
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="flex flex-col">
+                  <label
+                    className="mx-2 text-lg font-normal text-black font-lato"
+                    htmlFor="age"
+                  >
+                    Age
+                  </label>
+                  <input
+                    className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                    type="text"
+                    id="age"
+                    name="age"
+                    onChange={handleChange}
+                  />
+                </div>
 
-                    <text
-                        className="text-center mt-4 mb-4"
-                        style={{
-                            fontSize: isTab ? "14px" : "20px",
-                            fontWeight: 600,
-                            lineHeight: "28.8px",
-                            fontFamily: "Lato, sans-serif",
-                            color: "#FFFFFF"
-                        }}
+                <div className="flex flex-col">
+                  <label
+                    className="mx-2 text-lg font-normal text-black font-lato"
+                    htmlFor="bodyWeight"
+                  >
+                    Body Weight
+                  </label>
+                  <input
+                    className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                    type="text"
+                    id="bodyWeight"
+                    name="bodyWeight"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+
+              <div class="p-3 pb-5 border border-[#08DA75]">
+                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
+                  <div class="px-2 w-full sm:w-1/3">
+                    <label
+                      for="houseNo"
+                      class="block text-black text-lg font-semibold"
                     >
-                        Patient's Details is Saved.<br />
-                        Go to Patient's list to book an Appointment.
-                    </text>
+                      House No
+                    </label>
+                    <input
+                      type="text"
+                      id="houseNo"
+                      name="houseNo"
+                      onChange={handleChange}
+                      placeholder="1234"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/3">
+                    <label
+                      for="floor"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      Floor
+                    </label>
+                    <input
+                      type="text"
+                      id="floor"
+                      name="floor"
+                      onChange={handleChange}
+                      placeholder="2nd"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/3">
+                    <label
+                      for="block"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      Block
+                    </label>
+                    <input
+                      type="text"
+                      id="block"
+                      name="block"
+                      onChange={handleChange}
+                      placeholder="A"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
+                    <label
+                      for="area"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      Area
+                    </label>
+                    <input
+                      type="text"
+                      id="area"
+                      name="area"
+                      onChange={handleChange}
+                      placeholder="Green Park"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
+                    <label
+                      for="pincode"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      Pincode
+                    </label>
+                    <input
+                      type="text"
+                      id="pinCode"
+                      name="pinCode"
+                      onChange={handleChange}
+                      placeholder="110016"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
+                    <label
+                      for="district"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      District
+                    </label>
+                    <input
+                      type="text"
+                      id="district"
+                      name="district"
+                      onChange={handleChange}
+                      placeholder="South Delhi"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
+                    <label
+                      for="state"
+                      class="block text-black text-lg font-semibold"
+                    >
+                      State
+                    </label>
+                    <input
+                      type="text"
+                      id="state"
+                      name="state"
+                      onChange={handleChange}
+                      placeholder="Delhi"
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
                 </div>
-            </Modal>
-
-            <div className="flex flex-row">
-                <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
-
-                </div>
-                <div className=" w-full">
-
-                    <div className="mt-6 p-2">
-
-                        <div class="grid grid-cols-1 w-full gap-4">
-                            <div>
-                                <label
-                                    for="name"
-                                    class="block text-black text-lg font-semibold"
-                                >
-                                    Name
-                                </label>
-                                <input
-                                    type="text"
-                                    placeholder="Smita Singh"
-                                    id="name"
-                                    name="name"
-                                    onChange={handleChange}
-                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                />
-                            </div>
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                                <div className="flex flex-col">
-                                    <label
-                                        className="mx-2 text-lg font-normal text-black font-lato"
-                                        htmlFor="age"
-                                    >
-                                        Age
-                                    </label>
-                                    <input
-                                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
-                                        type="text"
-                                        id="age"
-                                        name="age"
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div className="flex flex-col">
-                                    <label
-                                        className="mx-2 text-lg font-normal text-black font-lato"
-                                        htmlFor="bodyWeight"
-                                    >
-                                        Body Weight
-                                    </label>
-                                    <input
-                                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
-                                        type="text"
-                                        id="bodyWeight"
-                                        name="bodyWeight"
-                                        onChange={handleChange}
-                                    />
-                                </div>
-                            </div>
-
-
-
-                            <div class="p-3 pb-5 border border-[#08DA75]">
-                                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-                                    <div class="px-2 w-full sm:w-1/3">
-                                        <label
-                                            for="houseNo"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            House No
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="houseNo"
-                                            name="houseNo"
-                                            onChange={handleChange}
-                                            placeholder="1234"
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/3">
-                                        <label
-                                            for="floor"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            Floor
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="floor"
-                                            name="floor"
-                                            onChange={handleChange}
-                                            placeholder="2nd"
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/3">
-                                        <label
-                                            for="block"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            Block
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="block"
-                                            name="block"
-                                            onChange={handleChange}
-                                            placeholder="A"
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/2">
-                                        <label
-                                            for="area"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            Area
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="area"
-                                            name="area"
-                                            onChange={handleChange}
-                                            placeholder="Green Park"
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/2">
-                                        <label
-                                            for="pincode"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            Pincode
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="pinCode"
-                                            name="pinCode"
-                                            onChange={handleChange}
-                                            placeholder="110016"
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/2">
-                                        <label
-                                            for="district"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            District
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="district"
-                                            name="district"
-                                            onChange={handleChange}
-                                            placeholder="South Delhi"
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/2">
-                                        <label
-                                            for="state"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            State
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="state"
-                                            name="state"
-                                            onChange={handleChange}
-                                            placeholder="Delhi"
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="mt-10 w-100 items-center justify-center text-center">
-                            <button
-                                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
-                                onClick={handleRegister}
-                            >
-                                Process
-                            </button>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
-        </>
-    );
+            <div className="mt-10 w-100 items-center justify-center text-center">
+              <button
+                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
+                onClick={handleRegister}
+              >
+                Process
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
