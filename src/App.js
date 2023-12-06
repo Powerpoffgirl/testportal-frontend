@@ -40,7 +40,8 @@ import Table2 from "./components/table2";
 import EditPatientForm from "./components/editPatientForm";
 import ForgetPassword from "./components/forgetpassword";
 import OtpVerify from "./components/otpverify";
-function App() {
+function App()
+{
   return (
     <Routes>
       <Route
@@ -65,7 +66,8 @@ function App() {
       <Route path="/otpverify" element={<OtpVerify />} />
       <Route
         path="/userotp"
-        element={<Layout Component={UserOTP} type="admin" />}
+        element={<Layout Component={UserOTP} headerTextTop={"Verify"}
+          headerTextBottom={"OTP"} />}
       ></Route>
       <Route
         path="/qr"

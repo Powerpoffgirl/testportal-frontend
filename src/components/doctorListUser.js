@@ -39,6 +39,7 @@ export default function DoctorListUser({ searchTerm })
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
   const navigate = useNavigate();
+  const [filteredDoctors, setFilteredDoctors] = useState([doctorsList])
 
   const categories = [
     { name: "All", value: "1" },
@@ -85,13 +86,22 @@ export default function DoctorListUser({ searchTerm })
 
   useEffect(() =>
   {
-    const filteredDoctors = doctorsList.filter((doctor) =>
-      doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doctor.speciality.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Check if there is a searchTerm and the doctorsList is not empty.
+    if (doctorsList.length > 0 && searchTerm)
+    {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+      const matchedDoctors = doctorsList.filter(doctor =>
+        doctor.name.toLowerCase().includes(lowerCaseSearchTerm) ||
+        doctor.speciality.toLowerCase().includes(lowerCaseSearchTerm)
+      )
+      setFilteredDoctors(matchedDoctors)
+    } else
+    {
+      // If no searchTerm or doctorsList is empty, use the original list.
+      setFilteredDoctors(doctorsList);
+    }
+  }, [doctorsList, searchTerm]); // Include all dependencies in the dependency array
 
-    setDoctorsList(filteredDoctors);
-  }, [searchTerm]);
 
   const handleQRCode = (doctorId) =>
   {
@@ -106,6 +116,21 @@ export default function DoctorListUser({ searchTerm })
   {
     navigate("/bookappointment", { state: { doctor: selectedDoctor } });
   };
+
+  const handleFilterDocotors = (item) =>
+  {
+    console.log("ITEM NAME IS================>", item)
+    if (item.toLowerCase() === "all")
+    {
+      setFilteredDoctors(doctorsList)
+    }
+    else
+    {
+      const filteredDoctors = doctorsList.filter((doc) => doc.speciality === item)
+      setFilteredDoctors(filteredDoctors)
+    }
+
+  }
 
   return (
     <>
@@ -326,7 +351,7 @@ export default function DoctorListUser({ searchTerm })
             scrollbarWidth: "none", // Firefox
           }}
         >
-          {categories.map((items) => (
+          {categories.map((item) => (
             <span
               className="bg-#E4FFF2; cursor-pointer px-8 hover:bg-customRed"
               style={{
@@ -343,9 +368,10 @@ export default function DoctorListUser({ searchTerm })
                 lineHeight: "28.8px",
                 color: "#595959",
               }}
-              key={items.value}
+              key={item.name}
+              onClick={() => handleFilterDocotors(item.name)}
             >
-              {items.name}
+              {item.name}
             </span>
           ))}
         </div>
@@ -353,7 +379,7 @@ export default function DoctorListUser({ searchTerm })
         {/* Doctors Array Start */}
 
         <div style={{ marginTop: "10px" }}>
-          {doctorsList?.map((doctor, index) => (
+          {filteredDoctors?.map((doctor, index) => (
             <div
               className="bg-white w-full p-4 mb-5"
               onClick={() => handleQRCode(doctor._id)}
