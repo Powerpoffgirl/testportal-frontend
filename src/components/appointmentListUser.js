@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -27,7 +29,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`
 
-export default function AppointmentListUser()
+export default function AppointmentListUser({ searchTerm })
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -61,7 +63,6 @@ export default function AppointmentListUser()
             },
           }
         );
-
         const data = await response.json();
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
@@ -73,6 +74,15 @@ export default function AppointmentListUser()
     fetchPatientDetails();
   }, []);
 
+  useEffect(() =>
+  {
+    const filteredDoctors = appointmentList.filter((appointment) =>
+      appointment?.patientId?.name.toLowerCase().includes(searchTerm.toLowerCase()) || appointment?.doctorId?.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setAppointmentList(filteredDoctors);
+  }, [searchTerm]);
+
   const handleEditAppointment = (appointmentId) =>
   {
     localStorage.setItem("appointmentId", appointmentId);
@@ -81,7 +91,42 @@ export default function AppointmentListUser()
 
   const handleDeleteAppointment = async (appointmentId) =>
   {
-    localStorage.setItem("appointmentId", appointmentId);
+    try
+    {
+      const token = localStorage.getItem("token");
+      if (!token)
+      {
+        console.error("No token found in local storage");
+        return;
+      }
+      const response = await fetch(`${baseUrl}/api/v1/user/delete_appointmentById/${appointmentId}`, {
+        method: 'DELETE', // Use DELETE method
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token // Use the stored token
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok)
+      {
+        console.log("Appointment deleted successfully", data);
+        toast.success('Appointment Deleted!');
+        // toast.success("Appointment Deleted")
+        // Update the list in the UI by removing the deleted doctor
+
+        setAppointmentList(prevAppointmentList => prevAppointmentList.filter(appointment => appointment._id !== appointmentId));
+      } else
+      {
+        console.error("Failed to delete the doctor", data?.message);
+      }
+
+    } catch (error)
+    {
+      console.error('There was an error deleting the Appointment:', error);
+    }
+
   };
 
   function formatDate(dateString)
@@ -90,6 +135,7 @@ export default function AppointmentListUser()
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
   }
   console.log("APPOINTMENT LISTS", appointmentList, selectedAppointment);
+
   const findSelectedDoctor = async (appointmentId) =>
   {
     console.log("appointmentId########################", appointmentId);
@@ -133,6 +179,7 @@ export default function AppointmentListUser()
           >
             {selectedAppointment?.patientId?.name}
           </text>
+
           <text
             className="ml-4 text-center mt-4"
             style={{
@@ -241,9 +288,9 @@ export default function AppointmentListUser()
 
       <div className="flex flex-col">
         {appointmentList?.map((appointment) => (
-          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" onClick={() => findSelectedDoctor(appointment?._id)}>
+          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" >
             <div className="flex flex-row justify-start items-center">
-              <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(appointment?._id)}>
                 <img
                   class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
                   src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
@@ -290,7 +337,7 @@ export default function AppointmentListUser()
                     <p class="text-gray-500 sm:text-sm text-xs">
                       Date & Time:<span className="ms-2"></span>
                     </p>
-                    {appointment?.appointmentDate?.date}
+                    {appointment?.appointmentDate?.date.split('-').reverse().join('-')}
                     <br />
                     {appointment?.appointmentDate?.time}
                   </h1>
@@ -310,7 +357,7 @@ export default function AppointmentListUser()
                 >
                   <h1
                     class="font-semibold text-gray-700 sm:text-lg text-sm capitalize "
-                    style={{ marginLeft: isTab ? "-30px" : "8px", marginRight: isTab ? "4px" : "8px", zIndex: 1 }}
+                    style={{ marginLeft: isTab ? "-30px" : "8px", marginRight: isTab ? "4px" : "8px" }}
                   >
                     <p class="text-gray-500 sm:text-sm text-xs">
                       Appointment status:<span className="ms-2"></span>
@@ -319,23 +366,24 @@ export default function AppointmentListUser()
                   </h1>
                 </div>
               </div>
-              <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: 'row', zIndex: 10 }}>
+              <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: 'row' }}>
                 <button
                   class="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                  //   onClick={() => handleDeletePatient(patient._id)}
+                  onClick={() => handleDeleteAppointment(appointment._id)}
                   style={{ marginTop: isTab ? 90 : null, paddingLeft: isTab ? 20 : null, paddingRight: isTab ? 20 : null }}
                 >
                   {isTab ? <FaTrashAlt /> : 'Delete'}
                 </button>
                 <button
                   class="rounded-full px-6 sm:px-6 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
-                  //   onClick={() => handleBookAppointment(patient._id)}
+                  onClick={() => handleEditAppointment(appointment._id)}
                   style={{ height: isTab ? 25 : null, marginTop: isTab ? 90 : null, }}
                 >
                   {isTab ? <FaEdit /> : 'Edit'}
                 </button>
               </div>
             </div>
+            <ToastContainer />
           </div>
         ))}
       </div>

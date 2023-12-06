@@ -10,7 +10,14 @@ export default function DocAppointment()
         name: location?.state?.doctor?.name,
         email: location?.state?.doctor?.email,
     }
-    console.log(selectedDoctor)
+    console.log("my selected doctor", selectedDoctor)
+    const [dataFromChild, setDataFromChild] = React.useState(null);
+
+
+    const handleChildData = (data) =>
+    {
+        setDataFromChild(data);
+    };
 
     return (
         <>
@@ -19,14 +26,14 @@ export default function DocAppointment()
                     <div class="flex items-center gap-x-2">
                         <img class="object-cover w-12 h-12 rounded-full" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100" alt="" />
                         <div>
-                            <h1 class="text-xl font-semibold text-white capitalize">Dr. {selectedDoctor.name}</h1>
+                            <h1 class="text-xl font-semibold text-white capitalize">Dr. {dataFromChild}{selectedDoctor.name}</h1>
                             <p class="text-base text-white">{selectedDoctor.email}</p>
                         </div>
                     </div>
                     <img className="h-16 hidden sm:block md:hidden lg:block" src={design} alt="design" />
                 </div>
             </div>
-            <FormAppoinment />
+            <FormAppoinment onDataFromChild={handleChildData} />
         </>
     );
 }

@@ -89,7 +89,8 @@ function App() {
       ></Route>
       <Route
         path="/patientdescription/:id"
-        element={<PatientDescription></PatientDescription>}
+        element={<Layout Component={PatientDescription} type="doctor" headerTextTop={"Patients's"}
+          headerTextBottom={"Description"} />}
       ></Route>
       <Route
         path="/viewpatientdescription/:id"

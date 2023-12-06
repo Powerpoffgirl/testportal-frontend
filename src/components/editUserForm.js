@@ -6,8 +6,11 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export default function EditUserForm() {
+export default function EditUserForm()
+{
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
@@ -18,24 +21,29 @@ export default function EditUserForm() {
   //     const [userDetails, setUserDetails] = useState({ name: '' });
   //   const [errors, setErrors] = useState({});
 
-  const handleFileSelect = (event) => {
+  const handleFileSelect = (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       setSelectedFile(file);
     }
   };
 
-  const handleNewProfilePictureClick = () => {
+  const handleNewProfilePictureClick = () =>
+  {
     // This will trigger the hidden file input to open the file dialog
     fileInputRef.current.click();
     handleNewProfilePicture();
   };
 
-  const handleNewProfilePicture = async () => {
+  const handleNewProfilePicture = async () =>
+  {
     const token = localStorage.getItem("token");
     const userId = localStorage.getItem("userId");
 
-    if (!token || !userId) {
+    if (!token || !userId)
+    {
       console.error("Token or user ID not found in local storage");
       return;
     }
@@ -43,7 +51,8 @@ export default function EditUserForm() {
     const formData = new FormData();
     formData.append("doctorPic", selectedFile);
 
-    try {
+    try
+    {
       const response = await fetch(
         `${baseUrl}/api/v1/user/upload_image/${userId}`,
         {
@@ -56,7 +65,8 @@ export default function EditUserForm() {
         }
       );
 
-      if (!response.ok) {
+      if (!response.ok)
+      {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -67,7 +77,8 @@ export default function EditUserForm() {
       // Reset the file input
       setSelectedFile(null);
       fileInputRef.current.value = "";
-    } catch (error) {
+    } catch (error)
+    {
       console.error("Error uploading image:", error);
       alert("Error uploading image. Please try again.");
     }
@@ -79,12 +90,16 @@ export default function EditUserForm() {
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -99,157 +114,126 @@ export default function EditUserForm() {
         const data = await response.json();
         console.log("DATA from response", data);
         setUserDetails(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
-  const handleToggleEdit = () => {
+  const handleToggleEdit = () =>
+  {
     setIsEditing(!isEditing);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = () =>
+  {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
+    setIsEditing(!isEditing);
     const { name, value } = e.target;
-    setUserDetails({
-      ...userDetails,
-      address: {
-        [name]: value,
-      },
-    });
-    if (name === "name") {
-      if (value.length < 3) {
-        setErrors({
-          ...errors,
-          [name]: "Name should be at least 3 characters.",
-        });
-      } else {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
+
+
+    let isValid = true;
+    let errorMessage = '';
+
+    // Validations
+    if (name === "name" && value.length < 3)
+    {
+      errorMessage = "Name should be at least 3 characters.";
+      isValid = false;
     }
 
-    if (name === "email") {
+    if (name === "email")
+    {
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value)) {
-        setErrors({ ...errors, [name]: "Please enter a valid email address." });
-      } else {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
+      if (!emailRegex.test(value))
+      {
+        errorMessage = "Please enter a valid email address.";
+        isValid = false;
       }
     }
 
-    if (name === "houseNo") {
-      if (!value || value.trim() === "") {
-        setErrors({ ...errors, [name]: "House No is required." });
-      } else {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
+    if (["houseNo", "floor", "block", "area"].includes(name) && (!value || value.trim() === ""))
+    {
+      errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} is required.`;
+      isValid = false;
     }
 
-    if (name === "floor") {
-      if (!value || value.trim() === "") {
-        setErrors({ ...errors, [name]: "Floor No is required." });
-      } else {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
+    if (name === "pinCode" && !/^\d{6}$/.test(value))
+    {
+      errorMessage = "Pincode must be 6 digits.";
+      isValid = false;
     }
 
-    if (name === "block") {
-      if (!value || value.trim() === "") {
-        setErrors({ ...errors, [name]: "Block is required." });
-      } else {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
+    if (["district", "state"].includes(name) && !/^[a-zA-Z\s]*$/.test(value))
+    {
+      errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} must contain only letters and spaces.`;
+      isValid = false;
     }
 
-    if (name === "area") {
-      if (!value || value.trim() === "") {
-        setErrors({ ...errors, [name]: "Area is required." });
-      } else {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
-    }
+    // Update errors and userDetails
+    if (!isValid)
+    {
+      setErrors({ ...errors, [name]: errorMessage });
+    } else
+    {
+      const { [name]: omit, ...rest } = errors;
+      setErrors(rest);
 
-    if (name === "pinCode") {
-      if (!/^\d{6}$/.test(value)) {
-        setErrors({ ...errors, [name]: "Pincode must be 6 digits." });
-      } else {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
+      if (name === "workingDays")
+      {
+        setUserDetails(prevDoctorDetails => ({
+          ...prevDoctorDetails,
+          workingDays: [...prevDoctorDetails?.workingDays, value],
+        }));
+      } else if (name === "workHourFrom" || name === "workHourTo")
+      {
+        setUserDetails(prevDoctorDetails => ({
+          ...prevDoctorDetails,
+          workingHours: {
+            ...prevDoctorDetails?.workingHours,
+            [name]: value,
+          }
+        }));
+      } else if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
+      {
+        setUserDetails(prevDoctorDetails => ({
+          ...prevDoctorDetails,
+          address: {
+            ...prevDoctorDetails?.address,
+            [name]: value
+          }
+        }));
+      } else
+      {
+        setUserDetails(prevDoctorDetails => ({
+          ...prevDoctorDetails,
+          [name]: value
+        }));
       }
-    }
-
-    if (name === "district") {
-      if (!/^[a-zA-Z\s]*$/.test(value)) {
-        setErrors({
-          ...errors,
-          [name]: "District must contain only letters and spaces.",
-        });
-      } else {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
-    }
-
-    if (name === "state") {
-      if (!/^[a-zA-Z\s]*$/.test(value)) {
-        setErrors({
-          ...errors,
-          [name]: "State must contain only letters and spaces.",
-        });
-      } else {
-        const { [name]: omit, ...rest } = errors;
-        setErrors(rest);
-      }
-    }
-
-    if (
-      [
-        "houseNo",
-        "floor",
-        "block",
-        "area",
-        "pinCode",
-        "district",
-        "state",
-      ].includes(name)
-    ) {
-      setUserDetails((prevUserDetails) => ({
-        ...prevUserDetails,
-        address: {
-          ...prevUserDetails.address,
-          [name]: value,
-        },
-      }));
-    } else {
-      setUserDetails((prevUserDetails) => ({
-        ...prevUserDetails,
-        [name]: value,
-      }));
     }
   };
 
-  const handleUpdate = async (e) => {
+
+  const handleUpdate = async (e) =>
+  {
     e.preventDefault();
     // Check if the token exists
     const newUserDetails = {
@@ -269,7 +253,25 @@ export default function EditUserForm() {
 
     const token = localStorage.getItem("token");
     const doctorId = localStorage.getItem("doctorId");
-    if (!token) {
+
+    const isEmpty = Object.values(userDetails).some(value => value === '');
+
+    if (isEmpty || isEditing === false)
+    {
+      toast.error('Please fill the fields or Update');
+      setIsEditing(false);
+      return;
+    }
+
+    if (!isEmpty || isEditing === true)
+    {
+
+      toast.success('Form submitted successfully!');
+
+    }
+
+    if (!token)
+    {
       console.error("No token found in local storage");
       return;
     }
@@ -282,7 +284,8 @@ export default function EditUserForm() {
       body: JSON.stringify(newUserDetails),
     });
     const data = await response.json();
-    if (data.success === true) {
+    if (data.success === true)
+    {
       console.log("Doctor updated successfully.");
       // navigate("/otp")
       // localStorage.setItem("id", data.data._id)
@@ -604,6 +607,7 @@ export default function EditUserForm() {
               </button>
             </div>
           </div>
+          <ToastContainer />
         </div>
       </div>
     </>

@@ -7,6 +7,8 @@ import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import DoctorSidebar from "./doctorSidebar";
+import { Select } from "antd";
+import Modal from "react-responsive-modal";
 
 export default function PatientDescription()
 {
@@ -381,60 +383,42 @@ export default function PatientDescription()
         handleClose();
     };
 
-    const handleChange = (e) =>
+    const handleChangeIssues = (values) =>
     {
-        const { name, value } = e.target;
+        setPatientDetails(prevPatientDetails => ({
+            ...prevPatientDetails,
+            issues: values
+        }));
+    };
 
-        if (name === "issues")
-        {
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                issues: [...prevPatientDetails.issues, value],
-            }));
-        }
+    const handleChangeDiseases = (values) =>
+    {
+        setPatientDetails(prevPatientDetails => ({
+            ...prevPatientDetails,
+            diseases: values
+        }));
+    };
 
-        else if (name === "diseases")
-        {
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                diseases: [
-                    ...prevPatientDetails.diseases, value
-                ]
-            }));
-        }
-        else if (name === "medicineName")
-        {
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                medicineName: [
-                    ...prevPatientDetails.medicineName, value
-                ]
-            }));
-        }
+    const handleChangeMedicine = (values) =>
+    {
+        setPatientDetails(prevPatientDetails => ({
+            ...prevPatientDetails,
+            medicineName: values
+        }));
+    };
 
-        else if (name === "labTests")
-        {
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                labTests: [
-                    ...prevPatientDetails.labTests, value
-                ]
-            }));
-        }
-
-        else
-        {
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                [name]: value
-            }));
-        }
-    }
+    const handleChangeLabTests = (values) =>
+    {
+        setPatientDetails(prevPatientDetails => ({
+            ...prevPatientDetails,
+            labTests: values
+        }));
+    };
 
 
     console.log("PATIENT DETAILS", patientDetails)
 
-    const handleProcess = async (e) =>
+    const handleRegister = async (e) =>
     {
         e.preventDefault();
         // Check if the token exists
@@ -468,263 +452,186 @@ export default function PatientDescription()
     console.log("PATIENT DETAILS", patientDetails)
 
     return (
-        <>
-            <div
-                className="flex min-h-screen relative overflow-auto 
-    box-border"
-            >
-                <DoctorSidebar></DoctorSidebar>
-                <div
-                    className="flex flex-col bg-customGreen"
-                    style={{
-                        width: "100%"
-                    }}
-                >
-                    <Header line1="Patient’s" line2="Description"></Header>
+        <form
+            className="flex flex-col gap-2 px-3 w-full relative overflow-hidden justify-center"
+            onSubmit={(e) => e.preventDefault()}
+        >
 
-                    <div
-                        className="scrollable-content"
+            <Modal open={open}
+                // onClose={onCloseModal}
+                center
+                // doctor={selectedDoctor}
+                styles={{
+                    modal: {
+                        backgroundColor: '#08DA75',
+                        alignContent: 'center'
+                    },
+                }}
+            >
+                <div
+                    className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
+                    style={{ borderRadius: "5px" }}
+                >
+
+                    <text
+                        className="ml-4 text-center mt-4"
                         style={{
-                            overflow: isTab ? "auto" : "hidden",
-                            maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
-                            padding: "10px",
-                            alignItems: 'center'
+                            // fontSize: isTab ? "18px" : "26px",
+                            fontWeight: 600,
+                            lineHeight: "28.8px",
+                            fontFamily: "Lato, sans-serif",
+                            color: '#FFFFFF',
                         }}
                     >
-                        <form
-                            className="flex flex-col gap-2 px-3 w-full"
-                            style={{
-                                top: "4%",
-                                left: "25%",
-                                position: "relative",
-                                overflow: "hidden",
-                                justifyContent: "center",
+                        Congratulations
+                    </text>
+                    <text
+                        className="ml-4 text-center mt-4"
+                        style={{
+                            // fontSize: isTab ? "12px" : "20px",
+                            fontWeight: 400,
+                            lineHeight: "24px",
+                            fontFamily: "Lato, sans-serif",
+                            color: '#FFFFFF',
+                            marginBottom: "2%"
+                        }}
+                    >
+                        <svg1 />
+                    </text>
 
-                            }}
-                        >
-                            <div style={{ marginLeft: '250px' }}>
-                                <div style={{ backgroundColor: "#FFFFFF", width: "90px", height: "90px", borderRadius: "50%", alignItems: "center", display: "flex", flexDirection: "row", justifyContent: "space-evenly", color: "#A4A4A4" }}>
-                                    <PermIdentityOutlinedIcon style={{ width: "70px", height: "70px" }} />
-                                </div>
-                                <p
-                                    aria-controls="profile-pic-menu"
-                                    aria-haspopup="true"
-                                    aria-expanded={open ? 'true' : undefined}
-                                    onClick={handleClick}
-                                    style={{ cursor: 'pointer' }} // Add a pointer cursor to indicate clickable
-                                >
-                                    Edit profile pic
-                                </p>
-                                <Menu
-                                    id="profile-pic-menu"
-                                    anchorEl={anchorEl}
-                                    open={open}
-                                    onClose={handleClose}
-                                    MenuListProps={{
-                                        'aria-labelledby': 'edit-profile-pic-text',
-                                    }}
-                                >
-                                    <MenuItem onClick={handleNewProfilePicture}>New profile picture</MenuItem>
-                                    <MenuItem onClick={handleRemoveProfilePicture}>Remove current profile picture</MenuItem>
-                                </Menu>
-                            </div>
+                    <text
+                        className="ml-4 text-center mt-2"
+                        style={{
+                            // fontSize: isTab ? "16px" : "24px",
+                            fontWeight: 400,
+                            lineHeight: "28.8px",
+                            fontFamily: "Lato, sans-serif",
+                            color: "white",
+                        }}
+                    >
+                        Your Appointment Has Been Booked.<br />
+                        Please wait for Confirmation.<br />
 
+                    </text>
+                    <text
+                        className="ml-4 text-center mt-2"
+                        style={{
+                            // fontSize: isTab ? "16px" : "24px",
+                            fontWeight: 400,
+                            lineHeight: "28.8px",
+                            fontFamily: "Lato, sans-serif",
+                            color: "white",
+                        }}
+                    >
+                        <b> Thank You</b>
 
-                            {/* 1st Row */}
-                            <div className="flex flex-col md:flex-row justify-between">
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="issues"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Patient's Description:
-                                    </label>
-                                    <div className="mx-5" style={{ display: "flex" }}>
-                                        {
-                                            patientDetails?.issues?.map((issue) => (
-                                                <div className="breadcrumb-chip" key={issue} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                                    {issue}
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    <select
-                                        className="mx-2"
-                                        type="text"
-                                        id="issues"
-                                        name="issues"
-                                        onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                    >
-                                        {issues?.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </span>
-                            </div>
+                    </text>
+                </div>
+            </Modal>
+            {/* <div className="grid grid-cols-1 w-full gap-4"> */}
+            <div className="flex flex-col">
+                <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
+                    Issues
+                </label>
+                <Select
+                    mode="multiple"
+                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    popupClassName="no-border-dropdown-menu" // Apply the custom class here
+                    id="issues"
+                    name="issues"
+                    onChange={handleChangeIssues}
+                    value={patientDetails.issues}
+                    placeholder="Select Issues"
+                    style={{ overflowY: 'auto' }}
+                >
+                    {issues.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                            {option.label}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </div>
 
+            <div className="flex flex-col">
+                <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
+                    Disease
+                </label>
+                <Select
+                    mode="multiple"
+                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    popupClassName="no-border-dropdown-menu" // Apply the custom class here
+                    id="diesease"
+                    name="diesease"
+                    onChange={handleChangeDiseases}
+                    value={patientDetails.diseases}
+                    placeholder="Select Diesease"
+                    style={{ overflowY: 'auto' }}
+                >
+                    {diseases.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                            {option.label}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </div>
 
-                            {/* 1st Row */}
-                            <div className="flex flex-col md:flex-row justify-between">
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="diseases"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Diseases:
-                                    </label>
-                                    <div className="mx-5" style={{ display: "flex" }}>
-                                        {
-                                            patientDetails?.diseases?.map((disease) => (
-                                                <div className="breadcrumb-chip" key={disease} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                                    {disease}
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    <select
-                                        className="mx-2"
-                                        type="text"
-                                        id="diseases"
-                                        name="diseases"
-                                        onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                    >
-                                        {diseases?.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </span>
-                            </div>
-                            {/* 1st Row */}
+            {/* <div className="grid grid-cols-1 w-full gap-4"> */}
+            <div className="flex flex-col">
+                <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
+                    Medicine Name
+                </label>
+                <Select
+                    mode="multiple"
+                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    popupClassName="no-border-dropdown-menu" // Apply the custom class here
+                    id="medicineName"
+                    name="medicineName"
+                    onChange={handleChangeMedicine}
+                    value={patientDetails.medicineName}
+                    placeholder="Select Medicine"
+                    style={{ overflowY: 'auto' }}
+                >
+                    {medicineName.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                            {option.label}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </div>
 
-                            {/* 1st Row */}
-                            <div className="flex flex-col md:flex-row justify-between">
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="medicineName"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Medicine Names:
-                                    </label>
-                                    <div className="mx-5" style={{ display: "flex" }}>
-                                        {
-                                            patientDetails?.medicineName?.map((medicineName) => (
-                                                <div className="breadcrumb-chip" key={medicineName} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                                    {medicineName}
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    <select
-                                        className="mx-2"
-                                        type="text"
-                                        id="medicineName"
-                                        name="medicineName"
-                                        onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                    >
-                                        {medicineName?.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </span>
-                            </div>
-                            {/* 1st Row */}
+            {/* <div className="grid grid-cols-1 w-full gap-4"> */}
+            <div className="flex flex-col">
+                <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
+                    Lab Tests
+                </label>
+                <Select
+                    mode="multiple"
+                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    popupClassName="no-border-dropdown-menu" // Apply the custom class here
+                    id="labTests"
+                    name="labTests"
+                    onChange={handleChangeLabTests}
+                    value={patientDetails.labTests}
+                    placeholder="Select Lab Tests"
+                    style={{ overflowY: 'auto' }}
+                >
+                    {labTests.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                            {option.label}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </div>
 
-                            {/* 1st Row */}
-                            <div className="flex flex-col md:flex-row justify-between">
-                                <span className="flex flex-col w-[100%] md:w-[50%]">
-                                    <label
-                                        className="mx-2"
-                                        htmlFor="labTests"
-                                        style={{
-                                            fontWeight: 400,
-                                            fontSize: "20px",
-                                            fontFamily: "Lato, sans-serif",
-                                        }}
-                                    >
-                                        Lab Tests:
-                                    </label>
-                                    <div className="mx-5" style={{ display: "flex" }}>
-                                        {
-                                            patientDetails?.labTests?.map((labTest) => (
-                                                <div className="breadcrumb-chip" key={labTest} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
-                                                    {labTest}
-                                                </div>
-                                            ))
-                                        }
-                                    </div>
-                                    <select
-                                        className="mx-2"
-                                        type="text"
-                                        id="labTests"
-                                        name="labTests"
-                                        onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
-                                    >
-                                        {updatedLabTests?.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </span>
-                            </div>
-                            {/* 1st Row */}
-
-
-
-
-
-
-
-
-                            <div className="flex justify-center my-5">
-                                <button
-                                    type="submit"
-                                    style={{
-                                        width: "159px",
-                                        height: "45px",
-                                        backgroundColor: "#08DA75",
-                                        borderRadius: "43px",
-                                        color: "white",
-                                        fontWeight: 600,
-                                        fontSize: "24px",
-                                        lineHeight: "28.8px",
-                                        fontFamily: "Lato, sans-serif",
-                                        marginLeft: '-630px'
-                                    }}
-                                    onClick={handleProcess}
-                                >
-                                    Process
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div >
-            </div >
-        </>
+            <div className="flex justify-center my-5">
+                <button
+                    type="submit"
+                    className="w-40 h-11 bg-green-500 rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                    onClick={handleRegister}
+                >
+                    Process
+                </button>
+            </div>
+        </form>
     );
 }
