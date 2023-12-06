@@ -77,7 +77,7 @@ export default function PatientListUser({ searchTerm })
 
   useEffect(() =>
   {
-    if (patientsList.length > 0 && searchTerm)
+    if (patientsList?.length > 0 && searchTerm)
     {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedPatients = patientsList.filter(p =>

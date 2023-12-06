@@ -275,6 +275,11 @@ export default function PatientForm()
   const handleChange = (e) =>
   {
 
+
+
+
+
+
     const { name, value } = e.target;
 
     if (
@@ -295,24 +300,6 @@ export default function PatientForm()
           ...prevPatientDetails.address,
           [name]: value,
         },
-      }));
-    } else if (["issues"].includes(name))
-    {
-      // Assuming the value is an array or a string to be added to the array
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
-        [name]: Array.isArray(value)
-          ? value
-          : [...prevPatientDetails[name], value],
-      }));
-    } else if (["diseases"].includes(name))
-    {
-      // Assuming the value is an array or a string to be added to the array
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
-        [name]: Array.isArray(value)
-          ? value
-          : [...prevPatientDetails[name], value],
       }));
     } else
     {
@@ -419,8 +406,8 @@ export default function PatientForm()
                   placeholder="Smita Singh"
                   id="name"
                   name="name"
-                  value={name}
-                  onChange={handleNameChange}
+                  value={patientDetails.name}
+                  onChange={handleChange}
                   className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${nameError ? "border-red-500" : ""
                     }`}
                 />
@@ -442,8 +429,8 @@ export default function PatientForm()
                     type="text"
                     id="age"
                     name="age"
-                    value={age}
-                    onChange={handleAgeChange}
+                    value={patientDetails.age}
+                    onChange={handleChange}
                     style={{ marginLeft: -1 }}
                   />
                   {ageError && (
@@ -464,6 +451,7 @@ export default function PatientForm()
                     id="bodyWeight"
                     name="bodyWeight"
                     onChange={handleChange}
+                    value={patientDetails.bodyWeight}
                   />
                   {bodyWeightError && (
                     <p className="text-red-500 text-sm mt-1">
@@ -486,8 +474,8 @@ export default function PatientForm()
                       type="text"
                       id="houseNo"
                       name="houseNo"
-                      value={houseNo}
-                      onChange={handleHouseNoChange}
+                      value={patientDetails.houseNo}
+                      onChange={handleChange}
                       placeholder="1234"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${houseNoError ? "border-red-500" : ""
                         }`}
@@ -509,8 +497,8 @@ export default function PatientForm()
                       type="text"
                       id="floor"
                       name="floor"
-                      value={floor}
-                      onChange={handleFloorChange}
+                      value={patientDetails.floor}
+                      onChange={handleChange}
                       placeholder="First Floor or 2nd"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${floorError ? "border-red-500" : ""
                         }`}
@@ -530,8 +518,8 @@ export default function PatientForm()
                       type="text"
                       id="block"
                       name="block"
-                      value={block}
-                      onChange={handleBlockChange}
+                      value={patientDetails.block}
+                      onChange={handleChange}
                       placeholder="A"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${blockError ? "border-red-500" : ""
                         }`}
@@ -551,8 +539,8 @@ export default function PatientForm()
                       type="text"
                       id="area"
                       name="area"
-                      value={area}
-                      onChange={handleAreaChange}
+                      value={patientDetails.area}
+                      onChange={handleChange}
                       placeholder="Green Park"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${areaError ? "border-red-500" : ""
                         }`}
@@ -572,8 +560,8 @@ export default function PatientForm()
                       type="text"
                       id="pinCode"
                       name="pinCode"
-                      value={pinCode}
-                      onChange={handlePincodeChange}
+                      value={patientDetails?.address?.pinCode}
+                      onChange={handleChange}
                       placeholder="110016"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${pinCodeError ? "border-red-500" : ""
                         }`}
@@ -595,8 +583,8 @@ export default function PatientForm()
                       type="text"
                       id="district"
                       name="district"
-                      value={district}
-                      onChange={handleDistrictChange}
+                      value={patientDetails?.address?.district}
+                      onChange={handleChange}
                       placeholder="South Delhi"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${districtError ? "border-red-500" : ""
                         }`}
@@ -618,8 +606,8 @@ export default function PatientForm()
                       type="text"
                       id="state"
                       name="state"
-                      value={state}
-                      onChange={handleStateChange}
+                      value={patientDetails?.address?.state}
+                      onChange={handleChange}
                       placeholder="Delhi"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${stateError ? "border-red-500" : ""
                         }`}

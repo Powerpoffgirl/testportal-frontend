@@ -91,7 +91,15 @@ const UserOTP = () =>
       {
         localStorage.setItem("token", data?.data?.token)
         console.log("token", data?.data?.token)
-        navigate("/doctorlistuser", { state: { user: user } });
+        console.log("======NEW USER=======", data?.data?.data?.newUser)
+        if (data?.data?.data?.newUser)
+        {
+          navigate("/edituserform", { state: { user: user } })
+        } else
+        {
+          navigate("/doctorlistuser", { state: { user: user } });
+        }
+
       }
       console.log("DATA from response", data);
     } catch (error)
