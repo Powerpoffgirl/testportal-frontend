@@ -81,7 +81,7 @@ export default function AppointmentListUser({ searchTerm })
   {
     let matchedDoctors = [];
 
-    if (appointmentList.length > 0 && searchTerm)
+    if (appointmentList?.length > 0 && searchTerm)
     {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
 

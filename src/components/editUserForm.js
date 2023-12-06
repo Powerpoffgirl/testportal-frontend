@@ -293,7 +293,7 @@ export default function EditUserForm()
     if (data.success === true)
     {
       console.log("Doctor updated successfully.");
-      // navigate("/otp")
+      navigate("/doctorlistuser")
       // localStorage.setItem("id", data.data._id)
     }
     console.log("DATA from response", data);
