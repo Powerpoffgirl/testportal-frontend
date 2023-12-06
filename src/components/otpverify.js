@@ -77,7 +77,7 @@ export default function OtpVerify()
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const [isDoctor, setIsDoctor] = useState(true);
-  const [contactNumber, setContactNumber] = useState("");
+  // const [contactNumber, setContactNumber] = useState("");
   const [selectedDoctor, setSelectedDoctor] = useState();
   //   const [password, setPassword] = useState("");
   const [contactError, setContactError] = useState("");
@@ -87,11 +87,9 @@ export default function OtpVerify()
   const otpInputs = [];
   const MAX_LENGTH = 6;
 
-  const [mobileNo, setMobileNo] = useState();
-  const handleNavigate = () =>
-  {
-    navigate("/password");
-  };
+  // const [mobileNo, setMobileNo] = useState();
+
+  const contactNumber = localStorage.getItem("contactNumber")
 
   useEffect(() =>
   {
@@ -105,19 +103,7 @@ export default function OtpVerify()
     e.preventDefault();
     e.preventDefault();
   };
-  const handleChange = (e) =>
-  {
-    console.log("target value", e.target.value);
-    const { name, value } = e.target;
-    console.log("mobileno----", contactNumber);
-    if (name === "contactNumber")
-    {
-      setContactNumber(value);
-    } else if (name == "password")
-    {
-      //   setPassword(value);
-    }
-  };
+
 
   const SendOTP = async () =>
   {
@@ -133,7 +119,7 @@ export default function OtpVerify()
 
     // Define the request body and the API endpoint
     const requestBody = {
-      contactNumber: mobileNo.contactNumber,
+      contactNumber: contactNumber,
     };
     const apiUrl = `${baseUrl}/api/v1/admin/send_otp/${id}`;
 
@@ -177,11 +163,11 @@ export default function OtpVerify()
         return;
       }
       const otpString = otp.join("");
-      const response = await fetch(`${baseUrl}/api/v1/admin/verify_otp/${id}`, {
+      const response = await fetch(`${baseUrl}/api/v1/user/verify_otp/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-auth-token": token, // Replace with your actual token from the previous session
+          // "x-auth-token": token, // Replace with your actual token from the previous session
         },
         body: JSON.stringify({ otp: otpString }),
       });
@@ -189,7 +175,7 @@ export default function OtpVerify()
       const data = await response.json();
       if (data.success === true)
       {
-        navigate("/userlogin");
+        navigate("/forgetpassword");
       }
       console.log("DATA from response", data);
     } catch (error)
@@ -218,7 +204,6 @@ export default function OtpVerify()
   };
   console.log("OTP", otp);
   console.log("INPUT OTP", otpInputs);
-  console.log("Mobile No", mobileNo);
 
   return (
     <>
@@ -326,7 +311,7 @@ export default function OtpVerify()
                 placeholder={"Mobile No"}
                 value={contactNumber}
                 name="contactNumber"
-                onChange={handleChange}
+              // onChange={handleChange}
               ></input>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <button
@@ -396,7 +381,7 @@ export default function OtpVerify()
             </div>
             <div className="flex justify-center">
               <button
-                onClick={handleNavigate}
+                // onClick={handleNavigate}
                 className="rounded-full mt-4 text-customRed"
                 type="submit"
                 style={{
@@ -405,7 +390,7 @@ export default function OtpVerify()
                   height: isTab ? "35px" : "45px",
                   boxShadow: " 0 10px 5px -3px rgb(0 0 0 / 0.3)",
                 }}
-              // onClick={handleSubmit}
+                onClick={verifyOTP}
               >
                 Verify
               </button>

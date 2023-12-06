@@ -18,28 +18,16 @@ const UserOTP = () =>
   const baseUrl = process.env.REACT_APP_BASE_URL;
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
 
+
   useEffect(() =>
   {
-    const user1 = location?.state;
-    setUser(user1?.user);
-    console.log("SELECTED DOCTOR", user);
-    setMobileNo(user?.contactNumber);
-  }, [user]);
+    const contactNumber = localStorage.getItem("contactNumber")
+    setMobileNo(contactNumber)
+  }, [])
 
-  console.log("USER", user);
   const SendOTP = async () =>
   {
-    // Retrieve the token from local storage
-    // const token = localStorage.getItem("token");
-    const id = localStorage.getItem("userId");
-    // If there's no token, log an error and exit
-    // if (!token)
-    // {
-    //     console.error("No token found in local storage");
-    //     return;
-    // }
 
-    // Define the request body and the API endpoint
     const requestBody = {
       contactNumber: mobileNo,
     };
@@ -78,19 +66,14 @@ const UserOTP = () =>
   {
     try
     {
-      // const token = localStorage.getItem("token");
+
       const id = localStorage.getItem("userId");
-      // if (!token)
-      // {
-      //     console.error("No token found in local storage");
-      //     return;
-      // }
+
       const otpString = otp.join("");
       const response = await fetch(`${baseUrl}/api/v1/user/verify_otp/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // 'x-auth-token': token // Replace with your actual token from the previous session
         },
         body: JSON.stringify({ otp: otpString }),
       });
@@ -98,7 +81,9 @@ const UserOTP = () =>
       const data = await response.json();
       if (data.success === true)
       {
-        navigate("/userlogin", { state: { user: user } });
+        localStorage.setItem("token", data?.data?.token)
+        console.log("token", data?.data?.token)
+        navigate("/doctorlistuser", { state: { user: user } });
       }
       console.log("DATA from response", data);
     } catch (error)
@@ -175,7 +160,6 @@ const UserOTP = () =>
                 height: "45px",
                 paddingLeft: "5px",
               }}
-            // onChange={handleChange}
             />
             <button
               className="mt-4 bg-customRed w-40"
