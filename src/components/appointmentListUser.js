@@ -8,6 +8,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Popconfirm } from 'antd';
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -383,13 +384,20 @@ export default function AppointmentListUser({ searchTerm })
                 </div>
               </div>
               <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: 'row' }}>
-                <button
-                  class="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                  onClick={() => handleDeleteAppointment(appointment._id)}
-                  style={{ marginTop: isTab ? 90 : null, paddingLeft: isTab ? 20 : null, paddingRight: isTab ? 20 : null }}
-                >
-                  {isTab ? <FaTrashAlt /> : 'Delete'}
-                </button>
+                <Popconfirm title="Delete the Appointment"
+                  description="Are you sure to delete this Appointment?"
+                  okText="Delete"
+                  cancelText="No"
+                  className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                  onConfirm={() => handleDeleteAppointment(appointment._id)}>
+                  <button
+                    class="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                    // onClick={() => handleDeleteAppointment(appointment._id)}
+                    style={{ marginTop: isTab ? 90 : null, paddingLeft: isTab ? 20 : null, paddingRight: isTab ? 20 : null }}
+                  >
+                    {isTab ? <FaTrashAlt /> : 'Delete'}
+                  </button>
+                </Popconfirm>
                 <button
                   class="rounded-full px-6 sm:px-6 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
                   onClick={() => handleEditAppointment(appointment._id)}
