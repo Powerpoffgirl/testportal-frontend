@@ -29,7 +29,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 
 
 
-export default function AppointmentList()
+export default function AppointmentList({ searchTerm })
 {
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const baseUrl = process.env.REACT_APP_BASE_URL
@@ -42,6 +42,7 @@ export default function AppointmentList()
     const onCloseModall = () => setOpen(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
+    const [filteredAppointmentList, setFilteredAppointmentList] = useState([appointmentList])
 
     const onCloseModal = () =>
     {
@@ -105,6 +106,29 @@ export default function AppointmentList()
         }
         fetchAppointmentDetails()
     }, [])
+
+    useEffect(() =>
+    {
+        let matchedDoctors = [];
+
+        if (appointmentList?.length > 0 && searchTerm)
+        {
+            const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+
+            matchedDoctors = appointmentList.filter(appointment =>
+                appointment?.patientId?.name.toLowerCase().includes(lowerCaseSearchTerm)
+                ||
+                appointment?.doctorId?.name.toLowerCase().includes(lowerCaseSearchTerm)
+
+            );
+        } else
+        {
+            matchedDoctors = appointmentList;
+        }
+
+        setFilteredAppointmentList(matchedDoctors);
+    }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
+
 
     const handleAppointmentStatus = async (patientId, status) =>
     {
@@ -281,7 +305,7 @@ export default function AppointmentList()
 
             <div className="flex flex-col">
                 {
-                    appointmentList?.map((appointment) => (
+                    filteredAppointmentList?.map((appointment) => (
                         <div
                             className="flex flex-row bg-white p-2 md:flex-row justify-between"
                             style={{ borderRadius: "5px", marginBottom: "10px" }}
