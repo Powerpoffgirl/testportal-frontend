@@ -164,7 +164,7 @@ export default function EditDoctorForm()
 
     const handleChange = (e) =>
     {
-        setIsEditing(!isEditing);
+
         const { name, value } = e.target;
 
         if (name === "workingDays")
@@ -198,6 +198,7 @@ export default function EditDoctorForm()
                 [name]: value
             }));
         }
+        setIsEditing(true);
     }
 
 
