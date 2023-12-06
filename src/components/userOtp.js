@@ -12,11 +12,17 @@ const UserOTP = () =>
   const otpInputs = [];
   const [mobileNo, setMobileNo] = useState();
   const [user, setUser] = useState();
+  const [seconds, setSeconds] = useState(90);
+  const [resendClicked, setResendClicked] = useState(false);
+  const [firstTime, setFirstTime] = useState(true);
   const navigate = useNavigate();
   const location = useLocation();
   const MAX_LENGTH = 6;
   const baseUrl = process.env.REACT_APP_BASE_URL;
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+
+
+
 
 
   useEffect(() =>
@@ -52,6 +58,8 @@ const UserOTP = () =>
       if (response.ok)
       {
         console.log("OTP sent successfully", data);
+        setResendClicked(true);
+        setSeconds(90);
       } else
       {
         console.error("Error sending OTP:", data);
@@ -122,6 +130,33 @@ const UserOTP = () =>
   console.log("OTP", otp);
   console.log("INPUT OTP", otpInputs);
   console.log("Mobile No", mobileNo);
+
+  useEffect(() =>
+  {
+    if (resendClicked || firstTime)
+    {
+      const intervalId = setInterval(() =>
+      {
+        if (seconds > 0)
+        {
+          setSeconds((prevSeconds) => prevSeconds - 1);
+        } else
+        {
+          setFirstTime(false);
+          setSeconds(90);
+          setResendClicked(false);
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [seconds, resendClicked, firstTime]);
+
+  const formatTime = (time) =>
+  {
+    const minutes = Math.floor(time / 60);
+    const remainingSeconds = time % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
 
   return (
     <>
@@ -238,9 +273,9 @@ const UserOTP = () =>
                 justifyContent: "center",
               }}
             >
-              Resnd OTP in
+              Resend OTP in
               <text className="mx-2" style={{ color: "#000000" }}>
-                0.90
+                {formatTime(seconds)}
               </text>{" "}
               Sec
             </text>

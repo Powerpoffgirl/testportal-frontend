@@ -11,8 +11,7 @@ import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Select } from "antd";
 
-export default function DoctorForm()
-{
+export default function DoctorForm() {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
@@ -48,39 +47,32 @@ export default function DoctorForm()
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleFileSelect = (event) =>
-  {
+  const handleFileSelect = (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       setSelectedFile(file);
     }
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
     handleNewProfilePicture();
   };
 
-  const handleNewProfilePicture = async () =>
-  {
+  const handleNewProfilePicture = async () => {
     const token = localStorage.getItem("token");
     const doctorId = localStorage.getItem("doctorId");
 
-    if (!token || !doctorId)
-    {
+    if (!token || !doctorId) {
       console.error("Token or doctor ID not found in local storage");
       return;
     }
@@ -89,8 +81,7 @@ export default function DoctorForm()
     formData.append("doctorPic", selectedFile);
 
     console.log("FORM DATA", formData);
-    try
-    {
+    try {
       const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
         method: "POST",
         headers: {
@@ -99,8 +90,7 @@ export default function DoctorForm()
         body: formData,
       });
 
-      if (!response.ok)
-      {
+      if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -116,16 +106,14 @@ export default function DoctorForm()
       // Reset the file input
       setSelectedFile(null);
       fileInputRef.current.value = "";
-    } catch (error)
-    {
+    } catch (error) {
       console.error("Error uploading image:", error);
       alert("Error uploading image. Please try again.");
     }
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     handleClose();
   };
 
@@ -199,29 +187,24 @@ export default function DoctorForm()
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) =>
-    {
+    ...Array.from({ length: 24 }, (v, i) => {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange1 = (e) =>
-  {
+  const handleChange1 = (e) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: [...prevDoctorDetails.workingDays, e],
     }));
+  };
 
-  }
-
-  const handleChange = (e) =>
-  {
-    console.log("E value", e)
+  const handleChange = (e) => {
+    console.log("E value", e);
     const { name, value } = e.target;
 
-    if (name === "workHourFrom" || name === "workHourTo")
-    {
+    if (name === "workHourFrom" || name === "workHourTo") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -239,8 +222,7 @@ export default function DoctorForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -248,21 +230,18 @@ export default function DoctorForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
       }));
     }
   };
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
       return;
     }
@@ -275,8 +254,7 @@ export default function DoctorForm()
       body: JSON.stringify(doctorDetails),
     });
     const data = await response.json();
-    if (data.success === true)
-    {
+    if (data.success === true) {
       navigate("/otp", {
         state: { contactNumber: doctorDetails.contactNumber },
       });
@@ -285,8 +263,7 @@ export default function DoctorForm()
     console.log("DATA from response", data);
   };
 
-  const handleDelete = (workingDay) =>
-  {
+  const handleDelete = (workingDay) => {
     console.log("delete", workingDay);
     const days = doctorDetails.workingDays.filter(
       (doctorDetail) => doctorDetail !== workingDay
@@ -304,11 +281,8 @@ export default function DoctorForm()
   return (
     <>
       <div className="flex flex-row">
-        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
-
-        </div>
+        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
         <div className=" w-full">
-
           <div className="mt-6 p-2">
             <div className="flex  flex-col items-center justify-center w-full">
               <div className="cursor-pointer">
@@ -460,11 +434,13 @@ export default function DoctorForm()
 
               <div className="flex justify-between space-x-4">
                 <div className="flex-1">
-                  <label htmlFor="workingDays" className="block text-black text-lg font-semibold">
+                  <label
+                    htmlFor="workingDays"
+                    className="block text-black text-lg font-semibold"
+                  >
                     Working Days
                   </label>
                   <div className="block w-full mt-0 rounded-lg border border-[#08DA75] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
-
                     <Select
                       className="w-full border-none h-10"
                       mode="multiple"
@@ -472,7 +448,7 @@ export default function DoctorForm()
                       name="workingDays"
                       onChange={handleChange1}
                       placeholder="Select Working Days"
-                    // Add other props as needed
+                      // Add other props as needed
                     >
                       {Daysdropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -482,8 +458,6 @@ export default function DoctorForm()
                     </Select>
                   </div>
                 </div>
-
-
 
                 <div className="flex-1" style={{ marginRight: "10px" }}>
                   <label className="block text-black text-lg font-semibold">
@@ -548,7 +522,6 @@ export default function DoctorForm()
                     id="speciality"
                     name="speciality"
                     onChange={handleChange}
-
                   >
                     {SpecialtiesDropdown.map(({ label, value }) => (
                       <option key={value} value={value}>
