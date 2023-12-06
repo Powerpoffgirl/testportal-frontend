@@ -274,7 +274,9 @@ export default function UserSignup() {
                 value={name}
                 onChange={handleInputChange}
               />
-              {nameError && <p style={{ color: "red" }}>{nameError}</p>}
+              {nameError && (
+                <p style={{ color: "red", fontSize: "14px" }}>{nameError}</p>
+              )}
               <input
                 className="outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300"
                 style={{
@@ -290,7 +292,9 @@ export default function UserSignup() {
                 onChange={handleContactNumberChange}
               />
               {contactNumberError && (
-                <p style={{ color: "red" }}>{contactNumberError}</p>
+                <p style={{ color: "red", fontSize: "14px" }}>
+                  {contactNumberError}
+                </p>
               )}{" "}
             </div>
 
