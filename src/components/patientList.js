@@ -4,6 +4,8 @@ import Header from "./header";
 import DoctorSidebar from "./doctorSidebar";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-responsive-modal";
+import { Popconfirm } from 'antd';
+import { FaTrashAlt } from "react-icons/fa";
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -283,7 +285,17 @@ export default function PatientList()
                                     </div>
                                 </div>
                                 <div class="flex flex-row ms-auto gap-1 sm:gap-4">
-                                    <button class="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm" onClick={() => handleDeletePatient(patient._id)}>Delete</button>
+                                    <Popconfirm title="Delete the Patient"
+                                        description="Are you sure to delete this Patient?"
+
+                                        okText={<FaTrashAlt />}
+                                        cancelText="No"
+                                        okTextcolor='blue'
+                                        onConfirm={() => handleDeletePatient(patient._id)}
+                                        className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm">
+
+                                        <button class="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm" >Delete</button>
+                                    </Popconfirm>
                                     {/* <button class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm" onClick={() => handleBookAppointment(patient._id)}>Edit</button> */}
                                 </div>
 
