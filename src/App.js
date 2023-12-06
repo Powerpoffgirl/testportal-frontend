@@ -145,7 +145,7 @@ function App()
           <Layout
             Component={EditDoctorForm}
             type="doctor"
-            headerTextTop={"Doctor's"}
+            headerTextTop={"Edit Doctor's"}
             headerTextBottom={"Form"}
           />
         }
