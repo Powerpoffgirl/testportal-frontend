@@ -76,7 +76,7 @@ export default function AdminLogin()
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [isAdmin, setIsAdmin] = useState(true);
-  // const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("");
   // const [emailError, setEmailError] = useState("");
 
   const [emailOrUsername, setEmailOrUsername] = useState("");
@@ -85,35 +85,22 @@ export default function AdminLogin()
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
-<<<<<<< HEAD
-  const handleUsernameChange = (e) =>
-  {
-    const enteredUsername = e.target.value;
-    setUsername(enteredUsername);
+  // const handleUsernameChange = (e) =>
+  // {
+  //   const enteredUsername = e.target.value;
+  //   setUsername(enteredUsername);
 
-    // Regular expression pattern for username/email validation
-    const usernamePattern = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
+  //   // Regular expression pattern for username/email validation
+  //   const usernamePattern = /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$/;
 
-    if (!usernamePattern.test(enteredUsername))
-    {
-      setUsernameError("Please enter a valid username or email");
-    } else
-    {
-      setUsernameError("");
-=======
-  const handleEmailOrUsernameChange = (e) => {
-    const enteredValue = e.target.value;
-    setEmailOrUsername(enteredValue);
-    const emailOrUsernamePattern =
-      /^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-
-    if (!emailOrUsernamePattern.test(enteredValue)) {
-      setEmailOrUsernameError("Please enter a valid email");
-    } else {
-      setEmailOrUsernameError("");
->>>>>>> 3029cfa370257f9bc1c6c2b45f3fc3ffa124c12a
-    }
-  };
+  //   if (!usernamePattern.test(enteredUsername))
+  //   {
+  //     setUsernameError("Please enter a valid username or email");
+  //   } else
+  //   {
+  //     setUsernameError("");
+  //   }
+  // };
 
   const handlePasswordChange = (e) =>
   {
@@ -129,18 +116,12 @@ export default function AdminLogin()
       setPasswordError("");
     }
   };
-<<<<<<< HEAD
   const handleSubmit = async (e) =>
   {
-    if (username === "")
-    {
-      setUsernameError("Username/Email should not be empty");
-=======
-  const handleSubmit = async (e) => {
-    if (emailOrUsername === "") {
-      setEmailOrUsernameError("Username/Email should not be empty");
->>>>>>> 3029cfa370257f9bc1c6c2b45f3fc3ffa124c12a
-    }
+    // if (username === "")
+    // {
+    //   setUsernameError("Username/Email should not be empty");
+    // }
 
     if (password === "")
     {
@@ -156,7 +137,7 @@ export default function AdminLogin()
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: emailOrUsername,
+          email: email,
           password: password,
         }),
       });
@@ -303,16 +284,11 @@ export default function AdminLogin()
                 }}
                 type="text"
                 placeholder="Username/Email"
-<<<<<<< HEAD
                 value={email}
                 onChange={(e) =>
                 {
                   setEmail(e.target.value);
                 }}
-=======
-                value={emailOrUsername}
-                onChange={handleEmailOrUsernameChange}
->>>>>>> 3029cfa370257f9bc1c6c2b45f3fc3ffa124c12a
               />
               {emailOrUsernameError && (
                 <span style={{ color: "red", fontSize: "14px" }}>
