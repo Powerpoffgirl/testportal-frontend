@@ -205,12 +205,13 @@ const FormAppoinment = ({ onDataFromChild }) =>
     {
         const { name, value } = e.target;
 
-        onDataFromChild(value);
+
 
         // Assuming 'patientsList' is an array of patient objects with '_id' and 'name'
         const selectedPatient = patientsList.find(patient => patient.name === value);
         const selectedDoctor = doctorsList.find(doctor => doctor.name === value);
 
+        onDataFromChild(selectedDoctor);
 
         if (name === "patientName")
         {
@@ -227,6 +228,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 doctorId: selectedDoctor?._id,
                 [name]: value,
             }));
+            setDataToSend(value);
         }
         else if (name === "date" || name === "time")
         {
@@ -244,6 +246,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 [name]: value
             }));
         }
+        onDataFromChild(dataToSend);
     };
 
     const handleChangeIssues = (values) =>

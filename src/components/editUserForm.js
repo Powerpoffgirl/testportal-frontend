@@ -114,6 +114,7 @@ export default function EditUserForm()
         const data = await response.json();
         console.log("DATA from response", data);
         setUserDetails(data?.data);
+
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);
@@ -146,7 +147,7 @@ export default function EditUserForm()
 
   const handleChange = (e) =>
   {
-    setIsEditing(!isEditing);
+
     const { name, value } = e.target;
 
 
@@ -158,6 +159,7 @@ export default function EditUserForm()
     {
       errorMessage = "Name should be at least 3 characters.";
       isValid = false;
+
     }
 
     if (name === "email")
@@ -192,6 +194,7 @@ export default function EditUserForm()
     if (!isValid)
     {
       setErrors({ ...errors, [name]: errorMessage });
+
     } else
     {
       const { [name]: omit, ...rest } = errors;
@@ -229,6 +232,7 @@ export default function EditUserForm()
         }));
       }
     }
+    setIsEditing(true);
   };
 
 
