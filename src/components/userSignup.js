@@ -80,9 +80,44 @@ export default function UserSignup() {
   const [contactNumber, setContactNumber] = useState("");
 
   const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [contactNumberError, setContactNumberError] = useState("");
+
+  const handleInputChange = (e) => {
+    const enteredName = e.target.value;
+    setName(enteredName);
+
+    // Validation logic - check if name is empty
+    if (enteredName.trim() === "") {
+      setNameError("Name is required");
+    } else {
+      setNameError("");
+    }
+  };
+
+  const handleContactNumberChange = (e) => {
+    const enteredContactNumber = e.target.value;
+    setContactNumber(enteredContactNumber);
+
+    // Basic validation - checking for a valid mobile number pattern
+    const isValidMobile = /^[0-9]{10}$/.test(enteredContactNumber);
+
+    if (!isValidMobile) {
+      setContactNumberError("Enter a valid 10-digit mobile number");
+    } else {
+      setContactNumberError("");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (name.trim() === "") {
+      setNameError("Name is required");
+    }
+
+    if (!/^[0-9]{10}$/.test(contactNumber)) {
+      setContactNumberError("Enter a valid 10-digit mobile number");
+    }
 
     const response = await fetch(`${baseUrl}/api/v1/user/register_user`, {
       method: "post",
@@ -226,7 +261,7 @@ export default function UserSignup() {
           <form className="flex flex-col ">
             <div className="flex flex-col items-center">
               <input
-                className="outline-none border-b-2 m-4 text-white  placeholder-white md:w-413 sm:w-300"
+                className="outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300"
                 style={{
                   height: "29px",
                   backgroundColor: "transparent",
@@ -235,14 +270,13 @@ export default function UserSignup() {
                   fontSize: isTab ? "20px" : "24px",
                   lineHeight: "31.2px",
                 }}
-                placeholder={"Name"}
+                placeholder="Name"
                 value={name}
-                onChange={(e) => {
-                  setName(e.target.value);
-                }}
-              ></input>
+                onChange={handleInputChange}
+              />
+              {nameError && <p style={{ color: "red" }}>{nameError}</p>}
               <input
-                className="outline-none border-b-2 m-4 text-white  placeholder-white md:w-413 sm:w-300"
+                className="outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300"
                 style={{
                   height: "29px",
                   backgroundColor: "transparent",
@@ -253,10 +287,11 @@ export default function UserSignup() {
                 }}
                 placeholder="Mobile No."
                 value={contactNumber}
-                onChange={(e) => {
-                  setContactNumber(e.target.value);
-                }}
-              ></input>
+                onChange={handleContactNumberChange}
+              />
+              {contactNumberError && (
+                <p style={{ color: "red" }}>{contactNumberError}</p>
+              )}{" "}
             </div>
 
             <div className="flex justify-center">

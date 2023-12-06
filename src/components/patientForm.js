@@ -22,7 +22,178 @@ export default function PatientForm() {
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
   const navigate = useNavigate();
+  const [name, setName] = useState("");
+  const [nameError, setNameError] = useState("");
+  const [age, setAge] = useState("");
+  const [ageError, setAgeError] = useState("");
+  const [bodyWeight, setBodyWeight] = useState("");
+  const [bodyWeightError, setBodyWeightError] = useState("");
+  const [houseNo, setHouseNo] = useState("");
+  const [houseNoError, setHouseNoError] = useState("");
+  const [floor, setFloor] = useState("");
+  const [floorError, setFloorError] = useState("");
+  const [block, setBlock] = useState("");
+  const [blockError, setBlockError] = useState("");
+  const [area, setArea] = useState("");
+  const [areaError, setAreaError] = useState("");
+  const [pinCode, setPinCode] = useState("");
+  const [pinCodeError, setPinCodeError] = useState("");
+  const [district, setDistrict] = useState("");
+  const [districtError, setDistrictError] = useState("");
+  const [state, setState] = useState("");
+  const [stateError, setStateError] = useState("");
 
+  const handleNameChange = (e) => {
+    const enteredName = e.target.value;
+    setName(enteredName);
+
+    // Validation logic
+    if (!enteredName.trim()) {
+      setNameError("Name is required");
+    } else if (!/^[a-zA-Z\s-]+$/.test(enteredName)) {
+      setNameError("Invalid name format");
+    } else if (enteredName.length < 2 || enteredName.length > 50) {
+      setNameError("Name length should be between 2 and 50 characters");
+    } else {
+      setNameError("");
+    }
+  };
+
+  const handleAgeChange = (e) => {
+    const enteredAge = e.target.value;
+    setAge(enteredAge);
+
+    // Validation logic
+    const ageRegex = /^\d+$/;
+    if (!enteredAge.trim()) {
+      setAgeError("Age is required");
+    } else if (!ageRegex.test(enteredAge)) {
+      setAgeError("Age should be a number");
+    } else if (enteredAge < 0 || enteredAge > 120) {
+      setAgeError("Age should be between 0 and 120");
+    } else {
+      setAgeError("");
+    }
+  };
+
+  const handleBodyWeightChange = (e) => {
+    const enteredBodyWeight = e.target.value;
+    setBodyWeight(enteredBodyWeight);
+
+    // Validation logic
+    const bodyWeightRegex = /^\d+(\.\d{1,2})?$/; // Allows positive numbers with up to 2 decimal places
+
+    if (!enteredBodyWeight.trim()) {
+      setBodyWeightError("Body weight is required");
+    } else if (!bodyWeightRegex.test(enteredBodyWeight)) {
+      setBodyWeightError("Invalid body weight format");
+    } else if (enteredBodyWeight <= 0) {
+      setBodyWeightError("Body weight should be greater than 0");
+    } else {
+      setBodyWeightError("");
+    }
+  };
+
+  const handleHouseNoChange = (e) => {
+    const enteredHouseNo = e.target.value;
+    setHouseNo(enteredHouseNo);
+
+    // Validation logic
+    const houseNoRegex = /^\d+$/; // Allows only positive whole numbers
+
+    if (!enteredHouseNo.trim()) {
+      setHouseNoError("");
+    } else if (!houseNoRegex.test(enteredHouseNo)) {
+      setHouseNoError("");
+    } else {
+      setHouseNoError("");
+    }
+  };
+
+  const handleFloorChange = (e) => {
+    const enteredFloor = e.target.value;
+    setFloor(enteredFloor);
+
+    // Validation logic
+    const alphabeticRegex = /^[a-zA-Z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+    const formatRegex =
+      /^(?=.*\b\d{1,3}(st|nd|rd|th)\b)\b\d{1,3}(st|nd|rd|th)?\b$/i; // Allows 1st, 2nd, 3rd, etc.
+
+    if (!enteredFloor.trim()) {
+      setFloorError("");
+    } else if (
+      !alphabeticRegex.test(enteredFloor) &&
+      !formatRegex.test(enteredFloor)
+    ) {
+      setFloorError("");
+    } else {
+      setFloorError("");
+    }
+  };
+
+  const handleBlockChange = (e) => {
+    const enteredBlock = e.target.value;
+    setBlock(enteredBlock);
+
+    // Validation logic
+    const blockRegex = /^[A-Za-z0-9]+$/; // Allows alphanumeric characters
+
+    if (!enteredBlock.trim()) {
+      setBlockError("Block is required");
+    } else if (!blockRegex.test(enteredBlock)) {
+      setBlockError("Invalid block format");
+    } else {
+      setBlockError("");
+    }
+  };
+
+  const handleAreaChange = (e) => {
+    const enteredArea = e.target.value;
+    setArea(enteredArea);
+
+    // Validation logic
+    const areaRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+
+    if (!enteredArea.trim()) {
+      setAreaError("Area is required");
+    } else if (!areaRegex.test(enteredArea)) {
+      setAreaError("Invalid area format");
+    } else {
+      setAreaError("");
+    }
+  };
+
+  const handleDistrictChange = (e) => {
+    const enteredDistrict = e.target.value;
+    setDistrict(enteredDistrict);
+
+    // Validation logic
+    const districtRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+
+    if (!enteredDistrict.trim()) {
+      setDistrictError("District is required");
+    } else if (!districtRegex.test(enteredDistrict)) {
+      setDistrictError("Invalid district format");
+    } else {
+      setDistrictError("");
+    }
+  };
+
+  const handleStateChange = (e) => {
+    const enteredState = e.target.value;
+    setState(enteredState);
+
+    // Validation logic
+    const stateRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+
+    if (!enteredState.trim()) {
+      setStateError("State is required");
+    } else if (!stateRegex.test(enteredState)) {
+      setStateError("Invalid state format");
+    } else {
+      setStateError("");
+    }
+  };
   const [patientDetails, setPatientDetails] = useState({
     name: "",
     age: "",
@@ -37,6 +208,22 @@ export default function PatientForm() {
       state: "",
     },
   });
+
+  const handlePincodeChange = (e) => {
+    const enteredPinCode = e.target.value;
+    setPinCode(enteredPinCode);
+
+    // Validation logic
+    const pinCodeRegex = /^\d{6}$/; // Allows exactly 6 digits
+
+    if (!enteredPinCode.trim()) {
+      setPinCodeError("Pincode is required");
+    } else if (!pinCodeRegex.test(enteredPinCode)) {
+      setPinCodeError("Invalid pincode format (should be 6 digits)");
+    } else {
+      setPinCodeError("");
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -150,8 +337,8 @@ export default function PatientForm() {
             <div class="grid grid-cols-1 w-full gap-4">
               <div>
                 <label
-                  for="name"
-                  class="block text-black text-lg font-semibold"
+                  htmlFor="name"
+                  className="block text-black text-lg font-semibold"
                 >
                   Name
                 </label>
@@ -160,11 +347,16 @@ export default function PatientForm() {
                   placeholder="Smita Singh"
                   id="name"
                   name="name"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  value={name}
+                  onChange={handleNameChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                    nameError ? "border-red-500" : ""
+                  }`}
                 />
+                {nameError && (
+                  <p className="text-red-500 text-sm mt-1">{nameError}</p>
+                )}
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <label
@@ -174,14 +366,19 @@ export default function PatientForm() {
                     Age
                   </label>
                   <input
-                    className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${
+                      ageError ? "border-red-500" : ""
+                    }`}
                     type="text"
                     id="age"
                     name="age"
-                    onChange={handleChange}
+                    value={age}
+                    onChange={handleAgeChange}
                   />
+                  {ageError && (
+                    <p className="text-red-500 text-sm mt-1">{ageError}</p>
+                  )}
                 </div>
-
                 <div className="flex flex-col">
                   <label
                     className="mx-2 text-lg font-normal text-black font-lato"
@@ -190,21 +387,29 @@ export default function PatientForm() {
                     Body Weight
                   </label>
                   <input
-                    className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${
+                      bodyWeightError ? "border-red-500" : ""
+                    }`}
                     type="text"
                     id="bodyWeight"
                     name="bodyWeight"
-                    onChange={handleChange}
+                    value={bodyWeight}
+                    onChange={handleBodyWeightChange}
                   />
-                </div>
+                  {bodyWeightError && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {bodyWeightError}
+                    </p>
+                  )}
+                </div>{" "}
               </div>
 
               <div class="p-3 pb-5 border border-[#08DA75]">
                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-                  <div class="px-2 w-full sm:w-1/3">
+                  <div className="px-2 w-full sm:w-1/3">
                     <label
-                      for="houseNo"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="houseNo"
+                      className="block text-black text-lg font-semibold"
                     >
                       House No
                     </label>
@@ -212,15 +417,23 @@ export default function PatientForm() {
                       type="text"
                       id="houseNo"
                       name="houseNo"
-                      onChange={handleChange}
+                      value={houseNo}
+                      onChange={handleHouseNoChange}
                       placeholder="1234"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        houseNoError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/3">
+                    {houseNoError && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {houseNoError}
+                      </p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/3">
                     <label
-                      for="floor"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="floor"
+                      className="block text-black text-lg font-semibold"
                     >
                       Floor
                     </label>
@@ -228,15 +441,21 @@ export default function PatientForm() {
                       type="text"
                       id="floor"
                       name="floor"
-                      onChange={handleChange}
-                      placeholder="2nd"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      value={floor}
+                      onChange={handleFloorChange}
+                      placeholder="First Floor or 2nd"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        floorError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/3">
+                    {floorError && (
+                      <p className="text-red-500 text-sm mt-1">{floorError}</p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/3">
                     <label
-                      for="block"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="block"
+                      className="block text-black text-lg font-semibold"
                     >
                       Block
                     </label>
@@ -244,15 +463,21 @@ export default function PatientForm() {
                       type="text"
                       id="block"
                       name="block"
-                      onChange={handleChange}
+                      value={block}
+                      onChange={handleBlockChange}
                       placeholder="A"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        blockError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {blockError && (
+                      <p className="text-red-500 text-sm mt-1">{blockError}</p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="area"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="area"
+                      className="block text-black text-lg font-semibold"
                     >
                       Area
                     </label>
@@ -260,15 +485,21 @@ export default function PatientForm() {
                       type="text"
                       id="area"
                       name="area"
-                      onChange={handleChange}
+                      value={area}
+                      onChange={handleAreaChange}
                       placeholder="Green Park"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        areaError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {areaError && (
+                      <p className="text-red-500 text-sm mt-1">{areaError}</p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="pincode"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="pinCode"
+                      className="block text-black text-lg font-semibold"
                     >
                       Pincode
                     </label>
@@ -276,15 +507,23 @@ export default function PatientForm() {
                       type="text"
                       id="pinCode"
                       name="pinCode"
-                      onChange={handleChange}
+                      value={pinCode}
+                      onChange={handlePincodeChange}
                       placeholder="110016"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        pinCodeError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {pinCodeError && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {pinCodeError}
+                      </p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="district"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="district"
+                      className="block text-black text-lg font-semibold"
                     >
                       District
                     </label>
@@ -292,15 +531,23 @@ export default function PatientForm() {
                       type="text"
                       id="district"
                       name="district"
-                      onChange={handleChange}
+                      value={district}
+                      onChange={handleDistrictChange}
                       placeholder="South Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        districtError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {districtError && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {districtError}
+                      </p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="state"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="state"
+                      className="block text-black text-lg font-semibold"
                     >
                       State
                     </label>
@@ -308,11 +555,17 @@ export default function PatientForm() {
                       type="text"
                       id="state"
                       name="state"
-                      onChange={handleChange}
+                      value={state}
+                      onChange={handleStateChange}
                       placeholder="Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        stateError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
+                    {stateError && (
+                      <p className="text-red-500 text-sm mt-1">{stateError}</p>
+                    )}
+                  </div>{" "}
                 </div>
               </div>
             </div>

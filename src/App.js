@@ -38,9 +38,9 @@ import Table from "./components/tabel";
 import Layout from "./components/Layout";
 import Table2 from "./components/table2";
 import EditPatientForm from "./components/editPatientForm";
-
-function App()
-{
+import ForgetPassword from "./components/forgetpassword";
+import OtpVerify from "./components/otpverify";
+function App() {
   return (
     <Routes>
       <Route
@@ -61,6 +61,8 @@ function App()
       <Route path="/admin" element={<Admin></Admin>}></Route>
       <Route path="/form" element={<Form></Form>}></Route>
       <Route path="/otp" element={<OTP />}></Route>
+      <Route path="/forgetpassword" element={<ForgetPassword />} />
+      <Route path="/otpverify" element={<OtpVerify />} />
       <Route
         path="/userotp"
         element={<Layout Component={UserOTP} type="admin" />}
@@ -93,21 +95,42 @@ function App()
         path="/viewpatientdescription/:id"
         element={<ViewPatientDescription></ViewPatientDescription>}
       ></Route>
-      <Route path="/patientform" element={<Layout Component={PatientForm} type="user" headerTextTop={"Patients's"}
-        headerTextBottom={"Form"} />}></Route>
+      <Route
+        path="/patientform"
+        element={
+          <Layout
+            Component={PatientForm}
+            type="user"
+            headerTextTop={"Patients's"}
+            headerTextBottom={"Form"}
+          />
+        }
+      ></Route>
       <Route
         path="/showpatientform"
         element={<ShowPatientForm></ShowPatientForm>}
       ></Route>
       <Route
         path="/bookappointment"
-        element={<Layout Component={DocAppointment} type="user" headerTextTop={"Book"}
-          headerTextBottom={"Appointment"} />}
+        element={
+          <Layout
+            Component={DocAppointment}
+            type="user"
+            headerTextTop={"Book"}
+            headerTextBottom={"Appointment"}
+          />
+        }
       ></Route>
       <Route
         path="/editappointment"
-        element={<Layout Component={EditAppointment} type="user" headerTextTop={"Edit"}
-          headerTextBottom={"Appointment"} />}
+        element={
+          <Layout
+            Component={EditAppointment}
+            type="user"
+            headerTextTop={"Edit"}
+            headerTextBottom={"Appointment"}
+          />
+        }
       ></Route>
       <Route
         path="/doctorform"
@@ -137,13 +160,25 @@ function App()
       ></Route>
       <Route
         path="/edituserform"
-        element={<Layout Component={EditUserForm} type="user" headerTextTop={"User's"}
-          headerTextBottom={"Form"} />}
+        element={
+          <Layout
+            Component={EditUserForm}
+            type="user"
+            headerTextTop={"User's"}
+            headerTextBottom={"Form"}
+          />
+        }
       ></Route>
       <Route
         path="/editpatientform"
-        element={<Layout Component={EditPatientForm} type="user" headerTextTop={"Patient's"}
-          headerTextBottom={"Form"} />}
+        element={
+          <Layout
+            Component={EditPatientForm}
+            type="user"
+            headerTextTop={"Patient's"}
+            headerTextBottom={"Form"}
+          />
+        }
       ></Route>
       <Route
         path="/patientlistadmin"
@@ -226,9 +261,15 @@ function App()
       ></Route>
       <Route
         path="/appointmentlistuser"
-        element={<Layout Component={AppointmentListUser} type="user" headerTextTop={"Appointment"}
-          headerTextBottom={"List"}
-          search={"true"} />}
+        element={
+          <Layout
+            Component={AppointmentListUser}
+            type="user"
+            headerTextTop={"Appointment"}
+            headerTextBottom={"List"}
+            search={"true"}
+          />
+        }
       ></Route>
       <Route path="/tabel" element={<Table></Table>}></Route>
     </Routes>
