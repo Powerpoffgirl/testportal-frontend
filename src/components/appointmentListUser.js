@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
-import { toast } from "react-toastify";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -111,8 +112,10 @@ export default function AppointmentListUser({ searchTerm })
       if (response.ok)
       {
         console.log("Appointment deleted successfully", data);
+        toast.success('Appointment Deleted!');
         // toast.success("Appointment Deleted")
         // Update the list in the UI by removing the deleted doctor
+
         setAppointmentList(prevAppointmentList => prevAppointmentList.filter(appointment => appointment._id !== appointmentId));
       } else
       {
@@ -176,6 +179,7 @@ export default function AppointmentListUser({ searchTerm })
           >
             {selectedAppointment?.patientId?.name}
           </text>
+
           <text
             className="ml-4 text-center mt-4"
             style={{
@@ -333,7 +337,7 @@ export default function AppointmentListUser({ searchTerm })
                     <p class="text-gray-500 sm:text-sm text-xs">
                       Date & Time:<span className="ms-2"></span>
                     </p>
-                    {appointment?.appointmentDate?.date}
+                    {appointment?.appointmentDate?.date.split('-').reverse().join('-')}
                     <br />
                     {appointment?.appointmentDate?.time}
                   </h1>
@@ -379,6 +383,7 @@ export default function AppointmentListUser({ searchTerm })
                 </button>
               </div>
             </div>
+            <ToastContainer />
           </div>
         ))}
       </div>
