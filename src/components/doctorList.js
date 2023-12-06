@@ -39,8 +39,7 @@ export default function DoctorList({ searchTerm })
   const [open, setOpen] = useState(false);
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
-  // const [searchTerm, setSearchTerm] = useState("");
-  const [doctorsList1, setDoctorsList1] = useState([])
+  const [filteredDoctors, setFilteredDoctors] = useState([doctorsList])
   const navigate = useNavigate()
 
 
@@ -73,24 +72,32 @@ export default function DoctorList({ searchTerm })
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-        setDoctorsList1(verifiedDoctors)
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
-  }, []);
+  }, [searchTerm]);
 
   useEffect(() =>
   {
-    const filteredDoctors = doctorsList.filter((doctor) =>
-      doctor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      doctor.speciality.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    // Check if there is a searchTerm and the doctorsList is not empty.
+    if (doctorsList.length > 0 && searchTerm)
+    {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+      const matchedDoctors = doctorsList.filter(doctor =>
+        doctor.name.toLowerCase().includes(lowerCaseSearchTerm) ||
+        doctor.speciality.toLowerCase().includes(lowerCaseSearchTerm)
+      )
+      setFilteredDoctors(matchedDoctors)
+    } else
+    {
+      // If no searchTerm or doctorsList is empty, use the original list.
+      setFilteredDoctors(doctorsList);
+    }
+  }, [doctorsList, searchTerm]); // Include all dependencies in the dependency array
 
-    setDoctorsList(filteredDoctors);
-  }, [searchTerm]);
 
   const handleQRCode = (doctorId) =>
   {
@@ -112,12 +119,12 @@ export default function DoctorList({ searchTerm })
     console.log("ITEM NAME IS================>", item)
     if (item.toLowerCase() === "all")
     {
-      setDoctorsList(doctorsList1)
+      setFilteredDoctors(doctorsList)
     }
     else
     {
       const filteredDoctors = doctorsList.filter((doc) => doc.speciality === item)
-      setDoctorsList(filteredDoctors)
+      setFilteredDoctors(filteredDoctors)
     }
 
   }
@@ -365,7 +372,7 @@ export default function DoctorList({ searchTerm })
 
         <div style={{ marginTop: "10px" }}>
           {
-            doctorsList?.map((doctor, index) =>
+            filteredDoctors?.map((doctor, index) =>
             (
               <div className="bg-white w-full p-4 mb-5" onClick={() => handleQRCode(doctor._id)}>
                 <div className="flex flex-row justify-between">

@@ -16,7 +16,9 @@ export default function EditUserForm()
   const [selectedFile, setSelectedFile] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
-  const [userDetails, setUserDetails] = useState({ name: "" });
+  const [userDetails, setUserDetails] = useState(
+    { name: "", }
+  );
   const [errors, setErrors] = useState({});
   //     const [userDetails, setUserDetails] = useState({ name: '' });
   //   const [errors, setErrors] = useState({});
