@@ -40,6 +40,8 @@ export default function AppointmentListUser({ searchTerm })
   const onOpenModal = () => setOpen(true);
   const [patientsList, setPatientsList] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState();
+  const [filteredAppointmentList, setFilteredAppointmentList] = useState([appointmentList])
+
 
   useEffect(() =>
   {
@@ -76,12 +78,26 @@ export default function AppointmentListUser({ searchTerm })
 
   useEffect(() =>
   {
-    const filteredDoctors = appointmentList.filter((appointment) =>
-      appointment?.patientId?.name.toLowerCase().includes(searchTerm.toLowerCase()) || appointment?.doctorId?.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+    let matchedDoctors = [];
 
-    setAppointmentList(filteredDoctors);
-  }, [searchTerm]);
+    if (appointmentList.length > 0 && searchTerm)
+    {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+
+      matchedDoctors = appointmentList.filter(appointment =>
+        appointment?.patientId?.name.toLowerCase().includes(lowerCaseSearchTerm)
+        ||
+        appointment?.doctorId?.name.toLowerCase().includes(lowerCaseSearchTerm)
+
+      );
+    } else
+    {
+      matchedDoctors = appointmentList;
+    }
+
+    setFilteredAppointmentList(matchedDoctors);
+  }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
+
 
   const handleEditAppointment = (appointmentId) =>
   {
@@ -287,7 +303,7 @@ export default function AppointmentListUser({ searchTerm })
       </Modal>
 
       <div className="flex flex-col">
-        {appointmentList?.map((appointment) => (
+        {filteredAppointmentList?.map((appointment) => (
           <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" >
             <div className="flex flex-row justify-start items-center">
               <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(appointment?._id)}>

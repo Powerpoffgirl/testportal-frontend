@@ -115,6 +115,13 @@ export default function UserLogin() {
   }, [selectedDoctor]);
 
   const handleSubmit = async (e) => {
+    if (contactNumber === "") {
+      setError("Contact number should not be empty");
+    }
+
+    if (password === "") {
+      setPasswordError("Password should not be empty");
+    }
     e.preventDefault();
     if (isDoctor) {
       const response = await fetch(`${baseUrl}/api/v1/user/login_user`, {
@@ -275,7 +282,7 @@ export default function UserLogin() {
             <div className="flex flex-col items-center">
               <input
                 className={`outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300 ${
-                  error ? "border-red-500" : ""
+                  error ? "" : ""
                 }`}
                 style={{
                   height: "29px",
@@ -290,9 +297,7 @@ export default function UserLogin() {
                 onChange={handleMobileNumberChange}
               />
               {error && (
-                <span style={{ color: "red", marginLeft: "10px" }}>
-                  {error}
-                </span>
+                <span style={{ color: "red", fontSize: "14px" }}>{error}</span>
               )}{" "}
               <input
                 className="outline-none border-b-2 m-4 text-white  placeholder-white md:w-413 sm:w-300"

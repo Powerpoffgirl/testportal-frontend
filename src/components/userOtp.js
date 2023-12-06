@@ -6,7 +6,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "./adminSidebar";
 import UserSidebarWithoutLogin from "./UserSidebarWithoutLogin";
 
-const UserOTP = () => {
+const UserOTP = () =>
+{
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const otpInputs = [];
   const [mobileNo, setMobileNo] = useState();
@@ -17,7 +18,8 @@ const UserOTP = () => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     const user1 = location?.state;
     setUser(user1?.user);
     console.log("SELECTED DOCTOR", user);
@@ -25,10 +27,11 @@ const UserOTP = () => {
   }, [user]);
 
   console.log("USER", user);
-  const SendOTP = async () => {
+  const SendOTP = async () =>
+  {
     // Retrieve the token from local storage
     // const token = localStorage.getItem("token");
-    const id = localStorage.getItem("doctorId");
+    const id = localStorage.getItem("userId");
     // If there's no token, log an error and exit
     // if (!token)
     // {
@@ -40,9 +43,10 @@ const UserOTP = () => {
     const requestBody = {
       contactNumber: mobileNo,
     };
-    const apiUrl = `${baseUrl}/api/v1/user/send_otp/${id}`;
+    const apiUrl = `${baseUrl}/api/v1/user/send_otp`;
 
-    try {
+    try
+    {
       // Send the POST request
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -57,18 +61,23 @@ const UserOTP = () => {
       const data = await response.json();
 
       // Check the response status
-      if (response.ok) {
+      if (response.ok)
+      {
         console.log("OTP sent successfully", data);
-      } else {
+      } else
+      {
         console.error("Error sending OTP:", data);
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("Error during the API call:", error);
     }
   };
 
-  const verifyOTP = async () => {
-    try {
+  const verifyOTP = async () =>
+  {
+    try
+    {
       // const token = localStorage.getItem("token");
       const id = localStorage.getItem("userId");
       // if (!token)
@@ -87,25 +96,30 @@ const UserOTP = () => {
       });
 
       const data = await response.json();
-      if (data.success === true) {
-        navigate("/doctorlistuser", { state: { user: user } });
+      if (data.success === true)
+      {
+        navigate("/userlogin", { state: { user: user } });
       }
       console.log("DATA from response", data);
-    } catch (error) {
+    } catch (error)
+    {
       console.error("There was an error verifying the OTP:", error);
     }
   };
 
-  const handleInputChange = (e, index) => {
+  const handleInputChange = (e, index) =>
+  {
     const value = e.target.value;
 
-    if (isNaN(value)) {
+    if (isNaN(value))
+    {
       return; // Allow only numeric input
     }
 
     otp[index] = value;
 
-    if (index < MAX_LENGTH - 1 && value) {
+    if (index < MAX_LENGTH - 1 && value)
+    {
       otpInputs[index + 1].focus();
     }
 
@@ -161,7 +175,7 @@ const UserOTP = () => {
                 height: "45px",
                 paddingLeft: "5px",
               }}
-              // onChange={handleChange}
+            // onChange={handleChange}
             />
             <button
               className="mt-4 bg-customRed w-40"
@@ -211,8 +225,10 @@ const UserOTP = () => {
                   style={{ border: "1px solid #08DA75" }}
                   value={digit}
                   onChange={(e) => handleInputChange(e, index)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Backspace" && index > 0 && !digit) {
+                  onKeyDown={(e) =>
+                  {
+                    if (e.key === "Backspace" && index > 0 && !digit)
+                    {
                       otpInputs[index - 1].focus();
                     }
                   }}
