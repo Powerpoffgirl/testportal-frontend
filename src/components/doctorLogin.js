@@ -113,20 +113,8 @@ export default function DoctorLogin()
       setPasswordError("");
     }
   };
-<<<<<<< HEAD
   const handleSubmit = async (e) =>
   {
-=======
-  const handleSubmit = async (e) => {
-    if (contactNumber === "") {
-      setError("Mobile number should not be empty");
-    }
-
-    if (password === "") {
-      setPassword("Password should not be empty");
-    }
-
->>>>>>> aacfbdb94e4940b91a5328ddaacc5cdb771d7f83
     e.preventDefault();
     if (isDoctor)
     {
@@ -312,14 +300,8 @@ export default function DoctorLogin()
           <form className="flex flex-col ">
             <div className="flex flex-col items-center">
               <input
-<<<<<<< HEAD
                 className={`outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300 ${error ? "border-red-500" : ""
                   }`}
-=======
-                className={`outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300 ${
-                  error ? "" : ""
-                }`}
->>>>>>> aacfbdb94e4940b91a5328ddaacc5cdb771d7f83
                 style={{
                   height: "29px",
                   backgroundColor: "transparent",
