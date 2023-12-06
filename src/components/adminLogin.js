@@ -108,6 +108,14 @@ export default function AdminLogin() {
     }
   };
   const handleSubmit = async (e) => {
+    if (username === "") {
+      setUsernameError("Username/Email should not be empty");
+    }
+
+    if (password === "") {
+      setPasswordError("Password should not be empty");
+    }
+
     e.preventDefault();
     if (isAdmin) {
       const response = await fetch(`${baseUrl}/api/v1/admin/login`, {
@@ -263,7 +271,9 @@ export default function AdminLogin() {
                 onChange={handleUsernameChange}
               />
               {usernameError && (
-                <span style={{ color: "red" }}>{usernameError}</span>
+                <span style={{ color: "red", fontSize: "14px" }}>
+                  {usernameError}
+                </span>
               )}
               <input
                 className="outline-none border-b-2 m-4 text-white  placeholder-white md:w-413 sm:w-300"
