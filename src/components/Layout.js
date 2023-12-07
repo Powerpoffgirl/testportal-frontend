@@ -26,7 +26,7 @@ const link1 = [
 // -------------USER SIDEBAR NAVIGATION--------------------------
 
 const link2 = [
-    { text: "Patient’s List", to: "/patientlistuser" },
+    { text: "Member’s List", to: "/patientlistuser" },
     { text: "Doctor’s List", to: "/doctorlistuser" },
     { text: "Appointment’s List", to: "/appointmentlistuser" },
     { text: "Edit Profile", to: "/edituserform" },
