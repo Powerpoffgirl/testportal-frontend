@@ -1,10 +1,7 @@
 import { useMediaQuery } from "react-responsive";
-import Header from "./header";
-
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import AdminSidebar from "./adminSidebar";
-import UserSidebarWithoutLogin from "./UserSidebarWithoutLogin";
+
 
 const UserOTP = () =>
 {
@@ -20,14 +17,14 @@ const UserOTP = () =>
   const MAX_LENGTH = 6;
   const baseUrl = process.env.REACT_APP_BASE_URL;
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  const [doctorName, setDoctorName] = useState()
 
-
-
-
+  console.log("LOCATION STATE", location.state)
 
   useEffect(() =>
   {
     const contactNumber = localStorage.getItem("contactNumber")
+    setDoctorName(localStorage.getItem("doctorName"))
     setMobileNo(contactNumber)
   }, [])
 
@@ -74,7 +71,6 @@ const UserOTP = () =>
   {
     try
     {
-
       const id = localStorage.getItem("userId");
 
       const otpString = otp.join("");
@@ -95,11 +91,14 @@ const UserOTP = () =>
         if (data?.data?.data?.newUser)
         {
           navigate("/edituserform", { state: { user: user } })
-        } else
+        } else if (doctorName)
+        {
+          navigate("/bookappointment", { state: { user: user } });
+        }
+        else
         {
           navigate("/doctorlistuser", { state: { user: user } });
         }
-
       }
       console.log("DATA from response", data);
     } catch (error)

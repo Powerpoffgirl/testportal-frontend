@@ -134,6 +134,11 @@ const FormAppoinment = ({ onDataFromChild }) =>
         diseases: [],
 
     })
+    const [doctorId, setDoctorId] = useState()
+    const [doctorName, setDoctorName] = useState()
+    const [doctorEmail, setDoctorEmail] = useState()
+    const [patientId, setPatientId] = useState()
+    const [patientName, setPatientName] = useState()
     useEffect(() =>
     {
         const doctor = location?.state
@@ -199,6 +204,11 @@ const FormAppoinment = ({ onDataFromChild }) =>
 
         fetchPatientList()
         fetchDoctorList()
+        setDoctorId(localStorage.getItem("doctorId"))
+        setDoctorName(localStorage.getItem("doctorName"))
+        setDoctorEmail(localStorage.getItem("doctorEmail"))
+        setPatientId(localStorage.getItem("patientId"))
+        setPatientName(localStorage.getItem("patientName"))
     }, [])
 
     const handleChange = (e) =>
@@ -393,11 +403,19 @@ const FormAppoinment = ({ onDataFromChild }) =>
                         name="patientName"
                         onChange={handleChange}
                     >
-                        {patientsList?.map((patient) => (
-                            <option key={patient._id} value={patient.name}>
-                                {patient.name}
-                            </option>
-                        ))}
+                        {
+                            patientName ? (
+                                <option value={patientName}>{patientName}</option>
+                            ) : (
+                                patientsList?.map((patient) => (
+                                    <option key={patient._id} value={patient.name}>
+                                        {patient.name}
+                                    </option>
+                                ))
+                            )
+                        }
+
+
                     </select>
                 </div>
 
@@ -413,13 +431,17 @@ const FormAppoinment = ({ onDataFromChild }) =>
                         name="doctorName"
                         onChange={handleChange}
                     >
-                        {doctorsList?.map((doctor) => (
-
-                            <option key={doctor._id} value={doctor.name}>
-                                {doctor.name}
-                            </option>
-                        ))}
+                        {doctorName ? (
+                            <option value={doctorName}>{doctorName}</option>
+                        ) : (
+                            doctorsList?.map((doctor) => (
+                                <option key={doctor._id} value={doctor.name}>
+                                    {doctor.name}
+                                </option>
+                            ))
+                        )}
                     </select>
+
                 </div>
             </div>
             {/* 1st Row */}

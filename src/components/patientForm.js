@@ -381,16 +381,16 @@ export default function PatientForm()
               color: "#FFFFFF",
             }}
           >
-            Patient's Details is Saved.
+            Member's Details is Saved.
             <br />
-            Go to Patient's list to book an Appointment.
+            Go to Member's list to book an Appointment.
           </text>
         </div>
       </Modal>
 
       <div className="flex flex-row">
         <ToastContainer />
-        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
+        {/* <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div> */}
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div class="grid grid-cols-1 w-full gap-4">

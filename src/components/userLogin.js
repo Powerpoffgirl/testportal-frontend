@@ -160,7 +160,7 @@ export default function UserLogin()
     const doctor = location?.state;
     setSelectedDoctor(doctor?.doctor);
     console.log("SELECTED DOCTOR", selectedDoctor);
-  }, [selectedDoctor]);
+  }, []);
 
   const handleSubmit = async (e) =>
   {
@@ -189,7 +189,7 @@ export default function UserLogin()
         localStorage.setItem("userId", data?.data?._id)
       }
       localStorage.setItem("contactNumber", contactNumber);
-      navigate("/userotp")
+      navigate("/userotp", { state: { name: selectedDoctor?.name, id: selectedDoctor?._id } })
 
       console.log(data);
     }

@@ -135,9 +135,10 @@ export default function PatientListUser({ searchTerm })
     }
   }
 
-  const handleBookAppointment = (patientId) =>
+  const handleBookAppointment = (patient) =>
   {
-    localStorage.setItem("patientId", patientId);
+    localStorage.setItem("patientId", patient?._id);
+    localStorage.setItem("patientName", patient?.name)
     navigate("/bookappointment");
   };
   console.log("PATIENT LISTS", patientsList);
@@ -296,7 +297,7 @@ export default function PatientListUser({ searchTerm })
                 </Popconfirm>
                 <button
                   class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
-                  onClick={() => handleBookAppointment(patient._id)}
+                  onClick={() => handleBookAppointment(patient)}
                 >
                   Book Appointment
                 </button>
