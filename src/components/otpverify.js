@@ -4,8 +4,8 @@ import "../App.css";
 import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg" width="836" height="579" viewBox="0 0 786 679" fill="none">
@@ -82,6 +82,9 @@ export default function OtpVerify()
   //   const [password, setPassword] = useState("");
   const [contactError, setContactError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [firstTime, setFirstTime] = useState(true);
+  const [seconds, setSeconds] = useState(90);
+  const [resendClicked, setResendClicked] = useState(false);
   const location = useLocation();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const otpInputs = [];
@@ -108,8 +111,13 @@ export default function OtpVerify()
   const SendOTP = async () =>
   {
     // Retrieve the token from local storage
+    setResendClicked(true)
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("id");
+    if (resendClicked)
+    {
+      toast.success('Otp Sended successfully!');
+    }
     // If there's no token, log an error and exit
     if (!token)
     {
@@ -137,14 +145,16 @@ export default function OtpVerify()
 
       // Convert the response to JSON
       const data = await response.json();
-
       // Check the response status
       if (response.ok)
       {
         console.log("OTP sent successfully", data);
+        setResendClicked(true);
+        setSeconds(90);
       } else
       {
         console.error("Error sending OTP:", data);
+        toast.error('Error sending OTP');
       }
     } catch (error)
     {
@@ -200,6 +210,33 @@ export default function OtpVerify()
   };
   console.log("OTP", otp);
   console.log("INPUT OTP", otpInputs);
+
+  useEffect(() =>
+  {
+    if (resendClicked || firstTime)
+    {
+      const intervalId = setInterval(() =>
+      {
+        if (seconds > 0)
+        {
+          setSeconds((prevSeconds) => prevSeconds - 1);
+        } else
+        {
+          setFirstTime(false);
+          setSeconds(90);
+          setResendClicked(false);
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [seconds, resendClicked, firstTime]);
+
+  const formatTime = (time) =>
+  {
+    const minutes = Math.floor(time / 60);
+    const remainingSeconds = time % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
 
   return (
     <>
@@ -320,6 +357,8 @@ export default function OtpVerify()
                     fontSize: "24px",
                     fontWeight: 600,
                     lineHeight: "28.8px",
+                    border: '2px solid white',
+                    marginBottom: '20px'
                   }}
                   onClick={SendOTP}
                 >
@@ -370,7 +409,7 @@ export default function OtpVerify()
               >
                 Resend OTP in
                 <text className="mx-2" style={{ color: "#000000" }}>
-                  0.90
+                  {formatTime(seconds)}
                 </text>{" "}
                 Sec
               </text>
@@ -390,9 +429,11 @@ export default function OtpVerify()
               >
                 Verify
               </button>
+
             </div>
           </form>
         </div>
+        <ToastContainer />
       </div>
     </>
   );

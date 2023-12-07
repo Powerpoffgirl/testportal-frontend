@@ -179,6 +179,12 @@ export default function DoctorLogin()
   };
   const handleForgetPassword = async (e) =>
   {
+
+    if (contactNumber === "")
+    {
+      setError("Mobile number should not be empty");
+    }
+
     e.preventDefault()
     const requestBody = {
       contactNumber: contactNumber,
@@ -325,6 +331,7 @@ export default function DoctorLogin()
                 placeholder={"Mobile No."}
                 value={contactNumber}
                 onChange={handleMobileNumberChange}
+                maxLength={10}
               />
               {error && (
                 <span style={{ color: "red", fontSize: "14px" }}>{error}</span>
