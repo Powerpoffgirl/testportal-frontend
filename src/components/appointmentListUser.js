@@ -388,18 +388,18 @@ export default function AppointmentListUser({ searchTerm })
                   description="Are you sure to delete this Appointment?"
                   okText="Delete"
                   cancelText="No"
-                  className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                  className="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                   onConfirm={() => handleDeleteAppointment(appointment._id)}>
                   <button danger
-                    class="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-black bg-[#EF5F5F] text-xs sm:text-sm"
+                    class="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-black bg-[#EF5F5F] text-xs sm:text-sm"
                     // onClick={() => handleDeleteAppointment(appointment._id)}
-                    style={{ marginTop: isTab ? 90 : null, paddingLeft: isTab ? 20 : null, paddingRight: isTab ? 20 : null }}
+                    style={{ marginTop: isTab ? 90 : null, paddingLeft: isTab ? 10 : null, paddingRight: isTab ? 10 : null, marginRight: 10 }}
                   >
                     {isTab ? <FaTrashAlt /> : 'Delete'}
                   </button>
                 </Popconfirm>
                 <button
-                  class="rounded-full px-6 sm:px-6 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
+                  class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
                   onClick={() => handleEditAppointment(appointment._id)}
                   style={{ height: isTab ? 25 : null, marginTop: isTab ? 90 : null, }}
                 >

@@ -286,17 +286,17 @@ export default function PatientListUser({ searchTerm })
                   description="Are you sure to delete this Patient?"
                   okText="Delete"
                   cancelText="No"
-                  className="rounded-full px-4 sm:px-4 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                  className="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                   onConfirm={() => handleDeletePatient(patient._id)}>
                   <button danger
-                    class="rounded-full px-4 sm:px-4 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                    class="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                   // onClick={() => handleDeletePatient(patient._id)}
                   >
                     {isTab ? <FaTrashAlt /> : 'Delete'}
                   </button>
                 </Popconfirm>
                 <button
-                  class="rounded-full px-6 sm:px-4 py-1 sm:py-1 text-white bg-[#08DA75] text-xs sm:text-sm"
+                  class="rounded-full px-6 sm:px-4 py-2 sm:py-1 text-white bg-[#08DA75] text-xs sm:text-sm"
                   onClick={() => handleBookAppointment(patient._id)}
                 >
                   Book Appointment

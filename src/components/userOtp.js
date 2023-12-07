@@ -246,7 +246,7 @@ const UserOTP = () =>
                   key={index}
                   ref={(input) => (otpInputs[index] = input)}
                   type="text"
-                  className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-4xl md:text-5xl lg:text-6xl border rounded-md text-center"
+                  className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-4xl md:text-5xl lg:text-4xl border rounded-md text-center"
                   maxLength={1}
                   style={{ border: "1px solid #08DA75" }}
                   value={digit}
