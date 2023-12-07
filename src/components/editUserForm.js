@@ -174,23 +174,24 @@ export default function EditUserForm()
       }
     }
 
-    if (["houseNo", "floor", "block", "area"].includes(name) && (!value || value.trim() === ""))
+    if (["district", "state", "pinCode"].includes(name) && (!value || value.trim() === ""))
     {
       errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} is required.`;
       isValid = false;
     }
 
-    if (name === "pinCode" && !/^\d{6}$/.test(value))
-    {
-      errorMessage = "Pincode must be 6 digits.";
-      isValid = false;
-    }
+    // if (name === "pinCode" && !/^\d{6}$/.test(value))
+    // {
+    //   errorMessage = "Pincode must be 6 digits.";
+    //   isValid = false;
+    // }
 
-    if (["district", "state"].includes(name) && !/^[a-zA-Z\s]*$/.test(value))
-    {
-      errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} must contain only letters and spaces.`;
-      isValid = false;
-    }
+
+    // if (["district", "state"].includes(name) && !/^[a-zA-Z\s]*$/.test(value))
+    // {
+    //   errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} must contain only letters and spaces.`;
+    //   isValid = false;
+    // }
 
     // Update errors and userDetails
     if (!isValid)

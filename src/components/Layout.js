@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toggle from "../assets/toogle.svg";
 import { useMediaQuery } from "react-responsive";
@@ -90,11 +90,31 @@ export default function Layout({
     const userName = localStorage.getItem("name")
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("")
+    const sidebarRef = useRef(null);
 
     const toggleSidebar = () =>
     {
         setIsSidebarOpen(!isSidebarOpen);
     };
+
+    const closeSidebarOnOutsideClick = (e) =>
+    {
+        if (sidebarRef.current && !sidebarRef.current.contains(e.target))
+        {
+            setIsSidebarOpen(false);
+        }
+    };
+
+    useEffect(() =>
+    {
+        document.addEventListener('click', closeSidebarOnOutsideClick);
+
+        return () =>
+        {
+            document.removeEventListener('click', closeSidebarOnOutsideClick);
+        };
+    }, []);
+
 
 
 
@@ -175,7 +195,7 @@ export default function Layout({
                     {type === "superAdmin" && <NavigationLinks links={link5} />}
                 </aside>
                 <div className="flex flex-col flex-grow md:pl-4 pr-2">
-                    <nav className="fixed top-0 right-0 left-0 md:left-72 z-10 md:ml-4 bg-[#08DA75] flex flex-col h-32 justify-evenly px-4 rounded-br-[80px]">
+                    <nav ref={sidebarRef} className="fixed top-0 right-0 left-0 md:left-72 z-10 md:ml-4 bg-[#08DA75] flex flex-col h-32 justify-evenly px-4 rounded-br-[80px]">
                         <div className="flex justify-end">
                             <img
                                 src={toggle}
