@@ -169,7 +169,7 @@ function App()
           <Layout
             Component={EditUserForm}
             type="user"
-            headerTextTop={"User's"}
+            headerTextTop={"Edit User's"}
             headerTextBottom={"Form"}
           />
         }
