@@ -4,8 +4,8 @@ import "../App.css";
 import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg" width="836" height="579" viewBox="0 0 786 679" fill="none">
@@ -82,6 +82,9 @@ export default function OtpVerify()
   //   const [password, setPassword] = useState("");
   const [contactError, setContactError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [firstTime, setFirstTime] = useState(true);
+  const [seconds, setSeconds] = useState(90);
+  const [resendClicked, setResendClicked] = useState(false);
   const location = useLocation();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const otpInputs = [];
@@ -108,8 +111,13 @@ export default function OtpVerify()
   const SendOTP = async () =>
   {
     // Retrieve the token from local storage
+    setResendClicked(true)
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("id");
+    if (resendClicked)
+    {
+      toast.success('Otp Sended successfully!');
+    }
     // If there's no token, log an error and exit
     if (!token)
     {
@@ -137,33 +145,31 @@ export default function OtpVerify()
 
       // Convert the response to JSON
       const data = await response.json();
-
       // Check the response status
       if (response.ok)
       {
         console.log("OTP sent successfully", data);
+        setResendClicked(true);
+        setSeconds(90);
       } else
       {
         console.error("Error sending OTP:", data);
+        toast.error('Error sending OTP');
       }
     } catch (error)
     {
       console.error("Error during the API call:", error);
     }
   };
-  const verifyOTP = async () =>
+  const verifyOTP = async (e) =>
   {
+    e.preventDefault()
     try
     {
-      const token = localStorage.getItem("token");
-      const id = localStorage.getItem("id");
-      if (!token)
-      {
-        console.error("No token found in local storage");
-        return;
-      }
+      // const token = localStorage.getItem("token");
+      const id = localStorage.getItem("doctorId");
       const otpString = otp.join("");
-      const response = await fetch(`${baseUrl}/api/v1/user/verify_otp/${id}`, {
+      const response = await fetch(`${baseUrl}/api/v1/doctor/verify_otp/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -204,6 +210,33 @@ export default function OtpVerify()
   };
   console.log("OTP", otp);
   console.log("INPUT OTP", otpInputs);
+
+  useEffect(() =>
+  {
+    if (resendClicked || firstTime)
+    {
+      const intervalId = setInterval(() =>
+      {
+        if (seconds > 0)
+        {
+          setSeconds((prevSeconds) => prevSeconds - 1);
+        } else
+        {
+          setFirstTime(false);
+          setSeconds(90);
+          setResendClicked(false);
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [seconds, resendClicked, firstTime]);
+
+  const formatTime = (time) =>
+  {
+    const minutes = Math.floor(time / 60);
+    const remainingSeconds = time % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
 
   return (
     <>
@@ -311,7 +344,6 @@ export default function OtpVerify()
                 placeholder={"Mobile No"}
                 value={contactNumber}
                 name="contactNumber"
-              // onChange={handleChange}
               ></input>
               <div style={{ display: "flex", justifyContent: "center" }}>
                 <button
@@ -324,6 +356,8 @@ export default function OtpVerify()
                     fontSize: "24px",
                     fontWeight: 600,
                     lineHeight: "28.8px",
+                    border: '2px solid white',
+                    marginBottom: '20px'
                   }}
                   onClick={SendOTP}
                 >
@@ -344,7 +378,7 @@ export default function OtpVerify()
                   <input
                     key={index}
                     ref={(input) => (otpInputs[index] = input)}
-                    type="text"
+                    type="number"
                     className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-4xl md:text-5xl lg:text-6xl border rounded-md text-center"
                     maxLength={1}
                     style={{ border: "1px solid #08DA75" }}
@@ -374,7 +408,7 @@ export default function OtpVerify()
               >
                 Resend OTP in
                 <text className="mx-2" style={{ color: "#000000" }}>
-                  0.90
+                  {formatTime(seconds)}
                 </text>{" "}
                 Sec
               </text>
@@ -394,9 +428,11 @@ export default function OtpVerify()
               >
                 Verify
               </button>
+
             </div>
           </form>
         </div>
+        <ToastContainer />
       </div>
     </>
   );

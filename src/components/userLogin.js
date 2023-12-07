@@ -160,7 +160,7 @@ export default function UserLogin()
     const doctor = location?.state;
     setSelectedDoctor(doctor?.doctor);
     console.log("SELECTED DOCTOR", selectedDoctor);
-  }, [selectedDoctor]);
+  }, []);
 
   const handleSubmit = async (e) =>
   {
@@ -178,41 +178,19 @@ export default function UserLogin()
       });
       const data = await response.json();
       console.log("DATA FROM RESPONSE", data);
-      if (data.success === true)
+      if (data?.user?._id)
       {
-
-
-        // localStorage.setItem("token", data.token);
-        localStorage.setItem("contactNumber", contactNumber);
         localStorage.setItem("userId", data?.user?._id)
-        navigate("/userotp")
-
+        localStorage.setItem("name", data?.user?.name)
+        localStorage.setItem("userContactNumber", data?.user?.email)
       }
-      // if (data.success === false)
-      // {
-      //   toast.error("Wrong Credentials", {
-      //     position: "top-center",
-      //     autoClose: 5000,
-      //     hideProgressBar: false,
-      //     closeOnClick: true,
-      //     pauseOnHover: true,
-      //     draggable: true,
-      //     progress: undefined,
-      //     theme: "light",
-      //   });
-      // } else
-      // {
-      //   toast.error("Validation failed", {
-      //     position: "top-center",
-      //     autoClose: 5000,
-      //     hideProgressBar: false,
-      //     closeOnClick: true,
-      //     pauseOnHover: true,
-      //     draggable: true,
-      //     progress: undefined,
-      //     theme: "light",
-      //   });
-      // }
+      else
+      {
+        localStorage.setItem("userId", data?.data?._id)
+      }
+      localStorage.setItem("contactNumber", contactNumber);
+      navigate("/userotp", { state: { name: selectedDoctor?.name, id: selectedDoctor?._id } })
+
       console.log(data);
     }
   };
@@ -309,7 +287,7 @@ export default function UserLogin()
             </span>
           </div>
           <form className="flex flex-col ">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center mb-5">
               <input
                 className={`outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300 ${error ? "border-red-500" : ""
                   }`}
@@ -328,43 +306,9 @@ export default function UserLogin()
               {error && (
                 <span style={{ color: "red", fontSize: "14px" }}>{error}</span>
               )}{" "}
-              {/* <input
-                className="outline-none border-b-2 m-4 text-white  placeholder-white md:w-413 sm:w-300"
-                style={{
-                  height: "29px",
-                  backgroundColor: "transparent",
-                  fontFamily: "Lato, sans-serif",
-                  fontWeight: 400,
-                  fontSize: isTab ? "20px" : "24px",
-                  lineHeight: "31.2px",
-                }}
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={handlePasswordChange}
-              />
-              {passwordError && (
-                <span style={{ color: "red", fontSize: "14px" }}>
-                  {passwordError}
-                </span>
-              )}{" "} */}
+
             </div>
-            {/* <div className="flex justify-end md:w-413 sm:w-300">
-              <button
-                className="text-white cursor-pointer text-right font-light"
-                style={{
-                  width: "180px",
-                  fontFamily: "Lato, sans-serif",
-                  //   fontWeight: 400,
-                  fontSize: isTab ? "18px" : "20px",
-                  lineHeight: "26.4px",
-                  marginRight: isTab ? 10 : -20,
-                }}
-                onClick={handleForgetPassword}
-              >
-                Forget Password?
-              </button>
-            </div> */}
+
             <div className="flex overflow-hidden md:w-413 sm:w-300">
               <input
                 type="checkbox"
@@ -406,7 +350,7 @@ export default function UserLogin()
                 Sign In
               </button>
             </div>
-            <div className="flex justify-center text-white font-bold gap-2 mt-4">
+            {/* <div className="flex justify-center text-white font-bold gap-2 mt-4">
               <p
                 style={{
                   fontFamily: "Lato, sans-serif",
@@ -429,7 +373,7 @@ export default function UserLogin()
               >
                 Sign Up
               </button>
-            </div>
+            </div> */}
           </form>
         </div>
       </div>

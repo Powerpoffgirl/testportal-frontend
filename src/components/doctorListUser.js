@@ -114,7 +114,10 @@ export default function DoctorListUser({ searchTerm })
 
   const handleBookAppointment = () =>
   {
-    navigate("/bookappointment", { state: { doctor: selectedDoctor } });
+    localStorage.setItem("doctorId", selectedDoctor._id)
+    localStorage.setItem("doctorName", selectedDoctor.name)
+    localStorage.setItem("doctorEmail", selectedDoctor.email)
+    navigate("/bookappointment");
   };
 
   const handleFilterDocotors = (item) =>

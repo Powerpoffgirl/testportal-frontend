@@ -174,23 +174,24 @@ export default function EditUserForm()
       }
     }
 
-    if (["houseNo", "floor", "block", "area"].includes(name) && (!value || value.trim() === ""))
+    if (["district", "state", "pinCode"].includes(name) && (!value || value.trim() === ""))
     {
       errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} is required.`;
       isValid = false;
     }
 
-    if (name === "pinCode" && !/^\d{6}$/.test(value))
-    {
-      errorMessage = "Pincode must be 6 digits.";
-      isValid = false;
-    }
+    // if (name === "pinCode" && !/^\d{6}$/.test(value))
+    // {
+    //   errorMessage = "Pincode must be 6 digits.";
+    //   isValid = false;
+    // }
 
-    if (["district", "state"].includes(name) && !/^[a-zA-Z\s]*$/.test(value))
-    {
-      errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} must contain only letters and spaces.`;
-      isValid = false;
-    }
+
+    // if (["district", "state"].includes(name) && !/^[a-zA-Z\s]*$/.test(value))
+    // {
+    //   errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} must contain only letters and spaces.`;
+    //   isValid = false;
+    // }
 
     // Update errors and userDetails
     if (!isValid)
@@ -293,7 +294,7 @@ export default function EditUserForm()
     if (data.success === true)
     {
       console.log("Doctor updated successfully.");
-      // navigate("/otp")
+      navigate("/doctorlistuser")
       // localStorage.setItem("id", data.data._id)
     }
     console.log("DATA from response", data);
@@ -304,7 +305,7 @@ export default function EditUserForm()
   return (
     <>
       <div className="flex flex-row">
-        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
+        <div ></div>
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div className="flex  flex-col items-center justify-center w-full">
@@ -415,7 +416,6 @@ export default function EditUserForm()
                 </label>
                 <input
                   type="text"
-                  placeholder="Smita Singh"
                   id="name"
                   name="name"
                   onChange={handleChange}
@@ -433,7 +433,6 @@ export default function EditUserForm()
                 </label>
                 <input
                   type="text"
-                  placeholder="Email"
                   id="email"
                   name="email"
                   onChange={handleChange}
@@ -451,158 +450,166 @@ export default function EditUserForm()
                 </label>
                 <input
                   type="number"
-                  placeholder="+91-8603678852"
                   id="contactNumber"
                   name="contactNumber"
-                  onChange={handleChange}
                   class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   value={userDetails?.contactNumber}
                 />
               </div>
-              <div class="p-3 pb-5 border border-[#08DA75]">
-                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-                  <div className="px-2 w-full sm:w-1/3">
-                    <label
-                      htmlFor="houseNo"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      House No
-                    </label>
-                    <input
-                      type="text"
-                      id="houseNo"
-                      name="houseNo"
-                      onChange={handleChange}
-                      placeholder="1234"
-                      className="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      value={userDetails?.address?.houseNo}
-                    />
-                    {errors.houseNo && (
-                      <p className="text-red-500">{errors.houseNo}</p>
-                    )}
-                  </div>{" "}
-                  <div class="px-2 w-full sm:w-1/3">
-                    <label
-                      htmlFor="floor"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      Floor
-                    </label>
-                    <input
-                      type="text"
-                      id="floor"
-                      name="floor"
-                      onChange={handleChange}
-                      placeholder="2nd"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      value={userDetails?.address?.floor}
-                    />
-                    {errors.floor && (
-                      <p className="text-red-500">{errors.floor}</p>
-                    )}
-                  </div>{" "}
-                  <div class="px-2 w-full sm:w-1/3">
-                    <label
-                      htmlFor="block"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      Block
-                    </label>
-                    <input
-                      type="text"
-                      id="block"
-                      name="block"
-                      onChange={handleChange}
-                      placeholder="A"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      value={userDetails?.address?.block}
-                    />
-                    {errors.block && (
-                      <p className="text-red-500">{errors.block}</p>
-                    )}
-                  </div>{" "}
-                  <div class="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="area"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      Area
-                    </label>
-                    <input
-                      type="text"
-                      id="area"
-                      name="area"
-                      onChange={handleChange}
-                      placeholder="Green Park"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      value={userDetails?.address?.area}
-                    />
-                    {errors.area && (
-                      <p className="text-red-500">{errors.area}</p>
-                    )}
-                  </div>{" "}
-                  <div class="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="pincode"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      Pincode
-                    </label>
-                    <input
-                      type="text"
-                      id="pinCode"
-                      name="pinCode"
-                      onChange={handleChange}
-                      placeholder="110016"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      value={userDetails?.address?.pinCode}
-                    />
-                    {errors.pinCode && (
-                      <p className="text-red-500">{errors.pinCode}</p>
-                    )}
-                  </div>{" "}
-                  <div class="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="district"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      District
-                    </label>
-                    <input
-                      type="text"
-                      id="district"
-                      name="district"
-                      onChange={handleChange}
-                      placeholder="South Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      value={userDetails?.address?.district}
-                    />
-                    {errors.district && (
-                      <p className="text-red-500">{errors.district}</p>
-                    )}
-                  </div>{" "}
-                  <div class="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="state"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      State
-                    </label>
-                    <input
-                      type="text"
-                      id="state"
-                      name="state"
-                      onChange={handleChange}
-                      placeholder="Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      value={userDetails?.address?.state}
-                    />
-                    {errors.state && (
-                      <p className="text-red-500">{errors.state}</p>
-                    )}
-                  </div>{" "}
+              <div>
+                <label
+                  htmlFor="houseNo"
+                  className="block text-black text-lg font-semibold mb-0"
+                >
+                  Address
+                </label>
+                <div class="p-3 pb-5 border border-[#08DA75]">
+
+                  <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
+                    <div className="px-2 w-full sm:w-1/3">
+                      <label
+                        htmlFor="houseNo"
+                        className="block text-black text-lg font-semibold"
+                      >
+                        House No
+                      </label>
+                      <input
+                        type="text"
+                        id="houseNo"
+                        name="houseNo"
+                        onChange={handleChange}
+                        placeholder="1234"
+                        className="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        value={userDetails?.address?.houseNo}
+                      />
+                      {errors.houseNo && (
+                        <p className="text-red-500">{errors.houseNo}</p>
+                      )}
+                    </div>{" "}
+                    <div class="px-2 w-full sm:w-1/3">
+                      <label
+                        htmlFor="floor"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        Floor
+                      </label>
+                      <input
+                        type="text"
+                        id="floor"
+                        name="floor"
+                        onChange={handleChange}
+                        placeholder="2nd"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        value={userDetails?.address?.floor}
+                      />
+                      {errors.floor && (
+                        <p className="text-red-500">{errors.floor}</p>
+                      )}
+                    </div>{" "}
+                    <div class="px-2 w-full sm:w-1/3">
+                      <label
+                        htmlFor="block"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        Block
+                      </label>
+                      <input
+                        type="text"
+                        id="block"
+                        name="block"
+                        onChange={handleChange}
+                        placeholder="A"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        value={userDetails?.address?.block}
+                      />
+                      {errors.block && (
+                        <p className="text-red-500">{errors.block}</p>
+                      )}
+                    </div>{" "}
+                    <div class="px-2 w-full sm:w-1/2">
+                      <label
+                        htmlFor="area"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        Area
+                      </label>
+                      <input
+                        type="text"
+                        id="area"
+                        name="area"
+                        onChange={handleChange}
+                        placeholder="Green Park"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        value={userDetails?.address?.area}
+                      />
+                      {errors.area && (
+                        <p className="text-red-500">{errors.area}</p>
+                      )}
+                    </div>{" "}
+                    <div class="px-2 w-full sm:w-1/2">
+                      <label
+                        htmlFor="pincode"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        Pincode
+                      </label>
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        onChange={handleChange}
+                        placeholder="110016"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        value={userDetails?.address?.pinCode}
+                      />
+                      {errors.pinCode && (
+                        <p className="text-red-500">{errors.pinCode}</p>
+                      )}
+                    </div>{" "}
+                    <div class="px-2 w-full sm:w-1/2">
+                      <label
+                        htmlFor="district"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        District
+                      </label>
+                      <input
+                        type="text"
+                        id="district"
+                        name="district"
+                        onChange={handleChange}
+                        placeholder="South Delhi"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        value={userDetails?.address?.district}
+                      />
+                      {errors.district && (
+                        <p className="text-red-500">{errors.district}</p>
+                      )}
+                    </div>{" "}
+                    <div class="px-2 w-full sm:w-1/2">
+                      <label
+                        htmlFor="state"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        State
+                      </label>
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        onChange={handleChange}
+                        placeholder="Delhi"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        value={userDetails?.address?.state}
+                      />
+                      {errors.state && (
+                        <p className="text-red-500">{errors.state}</p>
+                      )}
+                    </div>{" "}
+                  </div>
                 </div>
               </div>
+
             </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button

@@ -1,10 +1,7 @@
 import { useMediaQuery } from "react-responsive";
-import Header from "./header";
-
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import AdminSidebar from "./adminSidebar";
-import UserSidebarWithoutLogin from "./UserSidebarWithoutLogin";
+
 
 const UserOTP = () =>
 {
@@ -20,14 +17,14 @@ const UserOTP = () =>
   const MAX_LENGTH = 6;
   const baseUrl = process.env.REACT_APP_BASE_URL;
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  const [doctorName, setDoctorName] = useState()
 
-
-
-
+  console.log("LOCATION STATE", location.state)
 
   useEffect(() =>
   {
     const contactNumber = localStorage.getItem("contactNumber")
+    setDoctorName(localStorage.getItem("doctorName"))
     setMobileNo(contactNumber)
   }, [])
 
@@ -74,7 +71,6 @@ const UserOTP = () =>
   {
     try
     {
-
       const id = localStorage.getItem("userId");
 
       const otpString = otp.join("");
@@ -91,7 +87,18 @@ const UserOTP = () =>
       {
         localStorage.setItem("token", data?.data?.token)
         console.log("token", data?.data?.token)
-        navigate("/doctorlistuser", { state: { user: user } });
+        console.log("======NEW USER=======", data?.data?.data?.newUser)
+        if (data?.data?.data?.newUser)
+        {
+          navigate("/edituserform", { state: { user: user } })
+        } else if (doctorName)
+        {
+          navigate("/bookappointment", { state: { user: user } });
+        }
+        else
+        {
+          navigate("/doctorlistuser", { state: { user: user } });
+        }
       }
       console.log("DATA from response", data);
     } catch (error)
@@ -239,7 +246,7 @@ const UserOTP = () =>
                   key={index}
                   ref={(input) => (otpInputs[index] = input)}
                   type="text"
-                  className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-4xl md:text-5xl lg:text-6xl border rounded-md text-center"
+                  className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-4xl md:text-5xl lg:text-4xl border rounded-md text-center"
                   maxLength={1}
                   style={{ border: "1px solid #08DA75" }}
                   value={digit}

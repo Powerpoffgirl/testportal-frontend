@@ -55,7 +55,6 @@ export default function DoctorList({ searchTerm }) {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            // 'x-auth-token': token // Replace with your actual token from the previous session
           },
         });
 
@@ -96,9 +95,20 @@ export default function DoctorList({ searchTerm }) {
     onOpenModal();
   };
 
+<<<<<<< HEAD
   const handleBookAppointment = () => {
     navigate("/userlogin", { state: { doctor: selectedDoctor } });
   };
+=======
+
+  const handleBookAppointment = () =>
+  {
+    localStorage.setItem("doctorId", selectedDoctor._id)
+    localStorage.setItem("doctorName", selectedDoctor.name)
+    localStorage.setItem("doctorEmail", selectedDoctor.email)
+    navigate("/userlogin");
+  }
+>>>>>>> a84c32944c8a47a69da174abda55d096ccbc4a79
 
   const handleFilterDocotors = (item) => {
     console.log("ITEM NAME IS================>", item);

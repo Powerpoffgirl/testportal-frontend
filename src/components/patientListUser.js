@@ -77,7 +77,7 @@ export default function PatientListUser({ searchTerm })
 
   useEffect(() =>
   {
-    if (patientsList.length > 0 && searchTerm)
+    if (patientsList?.length > 0 && searchTerm)
     {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedPatients = patientsList.filter(p =>
@@ -135,9 +135,10 @@ export default function PatientListUser({ searchTerm })
     }
   }
 
-  const handleBookAppointment = (patientId) =>
+  const handleBookAppointment = (patient) =>
   {
-    localStorage.setItem("patientId", patientId);
+    localStorage.setItem("patientId", patient?._id);
+    localStorage.setItem("patientName", patient?.name)
     navigate("/bookappointment");
   };
   console.log("PATIENT LISTS", patientsList);
@@ -272,10 +273,10 @@ export default function PatientListUser({ searchTerm })
                     {patient.name}
                   </h1>
                   <p class=" text-gray-500 text-sm capitalize ml-2">
-                    {patient.age} yrs , {patient.bodyWeight} kg
+                    {patient.age} yrs, {patient.bodyWeight} kg
                   </p>
                   <p class=" text-gray-500 text-sm capitalize ml-2">
-                    {patient.address?.houseNo} , {patient.address?.block}, {patient.address?.area}, {patient.address?.district},{patient.address?.state}, {patient.address?.pinCode}
+                    {patient.address?.houseNo} {patient.address?.block} {patient.address?.area}, {patient.address?.district}, {patient.address?.state}, {patient.address?.pinCode}
                   </p>
                   {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}
                 </div>
@@ -285,17 +286,17 @@ export default function PatientListUser({ searchTerm })
                   description="Are you sure to delete this Patient?"
                   okText="Delete"
                   cancelText="No"
-                  className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                  className="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                   onConfirm={() => handleDeletePatient(patient._id)}>
                   <button danger
-                    class="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                    class="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                   // onClick={() => handleDeletePatient(patient._id)}
                   >
                     {isTab ? <FaTrashAlt /> : 'Delete'}
                   </button>
                 </Popconfirm>
                 <button
-                  class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
+                  class="rounded-full px-6 sm:px-4 py-2 sm:py-1 text-white bg-[#08DA75] text-xs sm:text-sm"
                   onClick={() => handleBookAppointment(patient._id)}
                 >
                   Book Appointment

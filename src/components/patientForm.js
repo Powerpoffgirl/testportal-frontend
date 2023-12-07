@@ -228,7 +228,18 @@ export default function PatientForm() {
     }
   };
 
+<<<<<<< HEAD
   const handleChange = (e) => {
+=======
+  const handleChange = (e) =>
+  {
+
+
+
+
+
+
+>>>>>>> a84c32944c8a47a69da174abda55d096ccbc4a79
     const { name, value } = e.target;
 
     if (
@@ -249,6 +260,7 @@ export default function PatientForm() {
           [name]: value,
         },
       }));
+<<<<<<< HEAD
     } else if (["issues"].includes(name)) {
       // Assuming the value is an array or a string to be added to the array
       setPatientDetails((prevPatientDetails) => ({
@@ -266,6 +278,10 @@ export default function PatientForm() {
           : [...prevPatientDetails[name], value],
       }));
     } else {
+=======
+    } else
+    {
+>>>>>>> a84c32944c8a47a69da174abda55d096ccbc4a79
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -339,16 +355,16 @@ export default function PatientForm() {
               color: "#FFFFFF",
             }}
           >
-            Patient's Details is Saved.
+            Member's Details is Saved.
             <br />
-            Go to Patient's list to book an Appointment.
+            Go to Member's list to book an Appointment.
           </text>
         </div>
       </Modal>
 
       <div className="flex flex-row">
         <ToastContainer />
-        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
+        <div></div>
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div class="grid grid-cols-1 w-full gap-4">
@@ -364,11 +380,18 @@ export default function PatientForm() {
                   placeholder="Smita Singh"
                   id="name"
                   name="name"
+<<<<<<< HEAD
                   value={name}
                   onChange={handleNameChange}
                   className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
                     nameError ? "border-red-500" : ""
                   }`}
+=======
+                  value={patientDetails.name}
+                  onChange={handleChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${nameError ? "border-red-500" : ""
+                    }`}
+>>>>>>> a84c32944c8a47a69da174abda55d096ccbc4a79
                 />
                 {nameError && (
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
@@ -389,8 +412,8 @@ export default function PatientForm() {
                     type="text"
                     id="age"
                     name="age"
-                    value={age}
-                    onChange={handleAgeChange}
+                    value={patientDetails.age}
+                    onChange={handleChange}
                     style={{ marginLeft: -1 }}
                   />
                   {ageError && (
@@ -412,6 +435,7 @@ export default function PatientForm() {
                     id="bodyWeight"
                     name="bodyWeight"
                     onChange={handleChange}
+                    value={patientDetails.bodyWeight}
                   />
                   {bodyWeightError && (
                     <p className="text-red-500 text-sm mt-1">
@@ -434,8 +458,8 @@ export default function PatientForm() {
                       type="text"
                       id="houseNo"
                       name="houseNo"
-                      value={houseNo}
-                      onChange={handleHouseNoChange}
+                      value={patientDetails.houseNo}
+                      onChange={handleChange}
                       placeholder="1234"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
                         houseNoError ? "border-red-500" : ""
@@ -458,8 +482,8 @@ export default function PatientForm() {
                       type="text"
                       id="floor"
                       name="floor"
-                      value={floor}
-                      onChange={handleFloorChange}
+                      value={patientDetails.floor}
+                      onChange={handleChange}
                       placeholder="First Floor or 2nd"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
                         floorError ? "border-red-500" : ""
@@ -480,8 +504,8 @@ export default function PatientForm() {
                       type="text"
                       id="block"
                       name="block"
-                      value={block}
-                      onChange={handleBlockChange}
+                      value={patientDetails.block}
+                      onChange={handleChange}
                       placeholder="A"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
                         blockError ? "border-red-500" : ""
@@ -502,8 +526,8 @@ export default function PatientForm() {
                       type="text"
                       id="area"
                       name="area"
-                      value={area}
-                      onChange={handleAreaChange}
+                      value={patientDetails.area}
+                      onChange={handleChange}
                       placeholder="Green Park"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
                         areaError ? "border-red-500" : ""
@@ -524,8 +548,8 @@ export default function PatientForm() {
                       type="text"
                       id="pinCode"
                       name="pinCode"
-                      value={pinCode}
-                      onChange={handlePincodeChange}
+                      value={patientDetails?.address?.pinCode}
+                      onChange={handleChange}
                       placeholder="110016"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
                         pinCodeError ? "border-red-500" : ""
@@ -548,8 +572,8 @@ export default function PatientForm() {
                       type="text"
                       id="district"
                       name="district"
-                      value={district}
-                      onChange={handleDistrictChange}
+                      value={patientDetails?.address?.district}
+                      onChange={handleChange}
                       placeholder="South Delhi"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
                         districtError ? "border-red-500" : ""
@@ -572,8 +596,8 @@ export default function PatientForm() {
                       type="text"
                       id="state"
                       name="state"
-                      value={state}
-                      onChange={handleStateChange}
+                      value={patientDetails?.address?.state}
+                      onChange={handleChange}
                       placeholder="Delhi"
                       className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
                         stateError ? "border-red-500" : ""

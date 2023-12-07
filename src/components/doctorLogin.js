@@ -115,6 +115,16 @@ export default function DoctorLogin()
   };
   const handleSubmit = async (e) =>
   {
+    if (contactNumber === "")
+    {
+      setError("Mobile number should not be empty");
+    }
+
+    if (password === "")
+    {
+      setPassword("Password should not be empty");
+    }
+
     e.preventDefault();
     if (isDoctor)
     {
@@ -169,11 +179,17 @@ export default function DoctorLogin()
   };
   const handleForgetPassword = async (e) =>
   {
+
+    if (contactNumber === "")
+    {
+      setError("Mobile number should not be empty");
+    }
+
     e.preventDefault()
     const requestBody = {
       contactNumber: contactNumber,
     };
-    const apiUrl = `${baseUrl}/api/v1/user/send_otp`;
+    const apiUrl = `${baseUrl}/api/v1/doctor/forget_password`;
 
     try
     {
@@ -195,6 +211,8 @@ export default function DoctorLogin()
       {
         console.log("OTP sent successfully", data);
         localStorage.setItem("contactNumber", contactNumber)
+        localStorage.setItem("doctorId", data?.data._id)
+        console.log("DOCTOR ID", data?.data._id)
         navigate("/otpverify")
       } else
       {
@@ -300,7 +318,7 @@ export default function DoctorLogin()
           <form className="flex flex-col ">
             <div className="flex flex-col items-center">
               <input
-                className={`outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300 ${error ? "border-red-500" : ""
+                className={`outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300 ${error ? "" : ""
                   }`}
                 style={{
                   height: "29px",
@@ -313,6 +331,7 @@ export default function DoctorLogin()
                 placeholder={"Mobile No."}
                 value={contactNumber}
                 onChange={handleMobileNumberChange}
+                maxLength={10}
               />
               {error && (
                 <span style={{ color: "red", fontSize: "14px" }}>{error}</span>

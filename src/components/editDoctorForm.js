@@ -271,21 +271,21 @@ export default function EditDoctorForm()
         {
             console.log("Doctor updated successfully.")
             // onOpenModal()
-            navigate("/doctorlistadmin")
+            // navigate("/doctorlistadmin")
 
             // localStorage.setItem("id", data.data._id)
         }
         console.log("DATA from response", data)
     }
 
-    const handleChange1 = (e) =>
+    const handleChange1 = (value) =>
     {
         setDoctorDetails((prevDoctorDetails) => ({
             ...prevDoctorDetails,
-            workingDays: [...prevDoctorDetails.workingDays, e],
+            workingDays: value, // directly set the value, which is the updated array of working days
         }));
-
     }
+
 
     const IndianDoctorSpecialties = [
         "General Medicine",
@@ -363,7 +363,7 @@ export default function EditDoctorForm()
     return (
         <>
             <div className="flex flex-row">
-                <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
+                <div >
 
                 </div>
                 <div className=" w-full">
@@ -528,16 +528,17 @@ export default function EditDoctorForm()
                                     >
                                         Working Days
                                     </label>
-                                    <div className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+                                    <div className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
 
 
                                         <Select
-                                            className="w-full border-none h-10"
+                                            className="w-full border-none h-11"
                                             mode="multiple"
                                             id="workingDays"
                                             name="workingDays"
                                             onChange={handleChange1}
                                             placeholder="Select Working Days"
+                                            value={doctorDetails?.workingDays}
                                         // Add other props as needed
                                         >
                                             {Daysdropdown.map((option) => (
@@ -559,6 +560,7 @@ export default function EditDoctorForm()
                                                 className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                                 name="workHourFrom"
                                                 onChange={handleChange}
+                                                value={doctorDetails?.workingHours?.workHourFrom}
                                             >
                                                 {TimeDropdown.map((time) => (
                                                     <option key={time.value} value={time.value}>
@@ -573,6 +575,7 @@ export default function EditDoctorForm()
                                                 className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                                 name="workHourTo"
                                                 onChange={handleChange}
+                                                value={doctorDetails?.workingHours?.workHourTo}
                                             >
                                                 {TimeDropdown.map((time) => (
                                                     <option key={time.value} value={time.value}>
