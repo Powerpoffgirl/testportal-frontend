@@ -50,7 +50,7 @@ const link3 = [
 const link4 = [
     { text: "Doctor’s List", to: "/doctorlistadmin" },
     { text: "Patient’s List", to: "/patientlistadmin" },
-    { text: "Appointment List", to: "/appointmentlist" },
+    { text: "Appointment List", to: "/appointmentlistadmin" },
     {
         text: "Edit Profile",
         to: "/editadminform",

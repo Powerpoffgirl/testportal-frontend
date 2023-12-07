@@ -23,6 +23,7 @@ import UserOTP from "./components/userOtp";
 import PatientListUser from "./components/patientListUser";
 import DoctorListUser from "./components/doctorListUser";
 import AppointmentListUser from "./components/appointmentListUser";
+import AppointmentListAdmin from "./components/AppointmentListAdmin";
 import EditUserForm from "./components/editUserForm";
 import AppointmentList from "./components/appointmentList";
 import PatientDescription from "./components/patientDescription";
@@ -137,7 +138,8 @@ function App()
       ></Route>
       <Route
         path="/doctorform"
-        element={<Layout Component={DoctorForm} type="admin" />}
+        element={<Layout Component={DoctorForm} type="admin" headerTextTop={"Doctor's"}
+          headerTextBottom={"Form"} />}
       ></Route>
       <Route
         path="/editdoctorform"
@@ -268,6 +270,18 @@ function App()
           <Layout
             Component={AppointmentListUser}
             type="user"
+            headerTextTop={"Appointment"}
+            headerTextBottom={"List"}
+            search={"true"}
+          />
+        }
+      ></Route>
+      <Route
+        path="/appointmentlistadmin"
+        element={
+          <Layout
+            Component={AppointmentListAdmin}
+            type="admin"
             headerTextTop={"Appointment"}
             headerTextBottom={"List"}
             search={"true"}
