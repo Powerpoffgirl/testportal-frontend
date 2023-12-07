@@ -390,11 +390,7 @@ export default function PatientForm()
 
       <div className="flex flex-row">
         <ToastContainer />
-<<<<<<< HEAD
-        {/* <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div> */}
-=======
         <div></div>
->>>>>>> a3320f6a34059bb930ea59b8467f928e3bf11220
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div class="grid grid-cols-1 w-full gap-4">

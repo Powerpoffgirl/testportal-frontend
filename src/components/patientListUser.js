@@ -296,13 +296,8 @@ export default function PatientListUser({ searchTerm })
                   </button>
                 </Popconfirm>
                 <button
-<<<<<<< HEAD
-                  class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
-                  onClick={() => handleBookAppointment(patient)}
-=======
                   class="rounded-full px-6 sm:px-4 py-1 sm:py-1 text-white bg-[#08DA75] text-xs sm:text-sm"
                   onClick={() => handleBookAppointment(patient._id)}
->>>>>>> a3320f6a34059bb930ea59b8467f928e3bf11220
                 >
                   Book Appointment
                 </button>
