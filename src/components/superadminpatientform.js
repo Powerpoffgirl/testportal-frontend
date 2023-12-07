@@ -361,7 +361,7 @@ export default function PatientForm() {
                 </label>
                 <input
                   type="text"
-                  placeholder="Smita Singh"
+                  // placeholder="Smita Singh"
                   id="name"
                   name="name"
                   value={name}
@@ -374,6 +374,40 @@ export default function PatientForm() {
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
                 )}
               </div>
+
+              <div>
+                <label
+                  for="email"
+                  class="block text-black text-lg font-semibold"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  // placeholder="smitasingh1234@gmail.com"
+                  id="email"
+                  name="email"
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                />
+              </div>
+              <div>
+                <label
+                  for="contact"
+                  class="block text-black text-lg font-semibold"
+                >
+                  Contact Number
+                </label>
+                <input
+                  type="number"
+                  // placeholder="+91-8603678852"
+                  id="contactNumber"
+                  name="contactNumber"
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <label

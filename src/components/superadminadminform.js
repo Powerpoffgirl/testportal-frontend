@@ -16,7 +16,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm() {
+export default function SuperAdminAdminForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -361,7 +361,7 @@ export default function PatientForm() {
                 </label>
                 <input
                   type="text"
-                  placeholder="Smita Singh"
+                  // placeholder="Smita Singh"
                   id="name"
                   name="name"
                   value={name}
@@ -374,6 +374,40 @@ export default function PatientForm() {
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
                 )}
               </div>
+
+              <div>
+                <label
+                  for="email"
+                  class="block text-black text-lg font-semibold"
+                >
+                  Email
+                </label>
+                <input
+                  type="email"
+                  // placeholder="smitasingh1234@gmail.com"
+                  id="email"
+                  name="email"
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                />
+              </div>
+              <div>
+                <label
+                  for="contact"
+                  class="block text-black text-lg font-semibold"
+                >
+                  Contact Number
+                </label>
+                <input
+                  type="number"
+                  // placeholder="+91-8603678852"
+                  id="contactNumber"
+                  name="contactNumber"
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                />
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <label
