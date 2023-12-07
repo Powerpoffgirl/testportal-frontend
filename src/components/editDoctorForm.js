@@ -363,7 +363,7 @@ export default function EditDoctorForm()
     return (
         <>
             <div className="flex flex-row">
-                <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
+                <div >
 
                 </div>
                 <div className=" w-full">
