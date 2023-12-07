@@ -148,7 +148,7 @@ export default function Layout({
                     className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
                         } ease-in-out transition-all duration-300 md:transform-none`}
                 >
-                    <h1 className="font-bold text-2xl">Welcome! {type}</h1>
+                    <h1 className="font-bold text-2xl">Welcome! {type ? type : "Guest"}</h1>
                     <div
                         class="flex items-center gap-x-2 mt-3"
                         onClick={handleEditProfile}
