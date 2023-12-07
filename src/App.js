@@ -105,7 +105,7 @@ function App()
           <Layout
             Component={PatientForm}
             type="user"
-            headerTextTop={"Patients's"}
+            headerTextTop={"Member's"}
             headerTextBottom={"Form"}
           />
         }
@@ -180,7 +180,7 @@ function App()
           <Layout
             Component={EditPatientForm}
             type="user"
-            headerTextTop={"Patient's"}
+            headerTextTop={"Edit Member's"}
             headerTextBottom={"Form"}
           />
         }
@@ -216,7 +216,7 @@ function App()
           <Layout
             Component={PatientListUser}
             type="user"
-            headerTextTop={"Patient's"}
+            headerTextTop={"Member's"}
             headerTextBottom={"List"}
             search={"true"}
             AddButton={"true"}
