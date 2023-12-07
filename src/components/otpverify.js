@@ -151,19 +151,15 @@ export default function OtpVerify()
       console.error("Error during the API call:", error);
     }
   };
-  const verifyOTP = async () =>
+  const verifyOTP = async (e) =>
   {
+    e.preventDefault()
     try
     {
-      const token = localStorage.getItem("token");
-      const id = localStorage.getItem("id");
-      if (!token)
-      {
-        console.error("No token found in local storage");
-        return;
-      }
+      // const token = localStorage.getItem("token");
+      const id = localStorage.getItem("doctorId");
       const otpString = otp.join("");
-      const response = await fetch(`${baseUrl}/api/v1/user/verify_otp/${id}`, {
+      const response = await fetch(`${baseUrl}/api/v1/doctor/verify_otp/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
