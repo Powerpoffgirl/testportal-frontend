@@ -33,7 +33,7 @@ export default function DoctorList({ searchTerm })
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const [selectedDoctor, setselectedDoctor] = useState();
+  const [selectedDoctor, setselectedDoctor] = useState("");
   const [open, setOpen] = useState(false);
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
@@ -106,7 +106,10 @@ export default function DoctorList({ searchTerm })
 
   const handleBookAppointment = () =>
   {
-    navigate("/userlogin", { state: { doctor: selectedDoctor } });
+    localStorage.setItem("doctorId", selectedDoctor._id)
+    localStorage.setItem("doctorName", selectedDoctor.name)
+    localStorage.setItem("doctorEmail", selectedDoctor.email)
+    navigate("/userlogin");
   };
 
   const handleFilterDocotors = (item) =>
