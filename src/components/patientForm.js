@@ -403,7 +403,6 @@ export default function PatientForm()
                 </label>
                 <input
                   type="text"
-                  placeholder="Smita Singh"
                   id="name"
                   name="name"
                   value={patientDetails.name}
@@ -424,14 +423,14 @@ export default function PatientForm()
                     Age
                   </label>
                   <input
-                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${ageError ? "border-red-500" : ""
+                    className={`mx-2 px-3 pl-1 border border-green-500 h-10 rounded-lg ${ageError ? "border-red-500" : ""
                       }`}
                     type="text"
                     id="age"
                     name="age"
                     value={patientDetails.age}
                     onChange={handleChange}
-                    style={{ marginLeft: -1 }}
+                    style={{ marginLeft: -0.5 }}
                   />
                   {ageError && (
                     <p className="text-red-500 text-sm mt-1">{ageError}</p>
@@ -452,6 +451,7 @@ export default function PatientForm()
                     name="bodyWeight"
                     onChange={handleChange}
                     value={patientDetails.bodyWeight}
+                    style={{ marginRight: -2 }}
                   />
                   {bodyWeightError && (
                     <p className="text-red-500 text-sm mt-1">

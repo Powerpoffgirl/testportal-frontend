@@ -11,7 +11,7 @@ export default function DocAppointment()
         email: location?.state?.doctor?.email,
     }
     console.log("my selected doctor", selectedDoctor)
-    const [dataFromChild, setDataFromChild] = React.useState(null);
+    const [dataFromChild, setDataFromChild] = useState("");
     const [doctorId, setDoctorId] = useState()
     const [doctorName, setDoctorName] = useState()
     const [doctorEmail, setDoctorEmail] = useState()
@@ -21,11 +21,13 @@ export default function DocAppointment()
         setDataFromChild(data);
     };
 
-    useEffect(() =>
+    useEffect((data) =>
     {
         setDoctorId(localStorage.getItem("doctorId"))
         setDoctorName(localStorage.getItem("doctorName"))
         setDoctorEmail(localStorage.getItem("doctorEmail"))
+
+
     }, [])
 
     return (
@@ -36,7 +38,7 @@ export default function DocAppointment()
                         <img class="object-cover w-12 h-12 rounded-full" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100" alt="" />
                         <div>
                             <h1 class="text-xl font-semibold text-white capitalize">
-                                Dr. {doctorName ? doctorName : dataFromChild ? dataFromChild : selectedDoctor.name}
+                                Dr. {doctorName ? doctorName : dataFromChild}
                             </h1>
                             <p class="text-base text-white">
                                 {doctorEmail ? doctorEmail : selectedDoctor.email}

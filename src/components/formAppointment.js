@@ -221,7 +221,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
         const selectedPatient = patientsList.find(patient => patient.name === value);
         const selectedDoctor = doctorsList.find(doctor => doctor.name === value);
 
-        onDataFromChild(selectedDoctor);
+        // onDataFromChild(selectedDoctor);
 
         if (name === "patientName")
         {
@@ -239,6 +239,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 [name]: value,
             }));
             setDataToSend(value);
+            onDataFromChild(value);
         }
         else if (name === "date" || name === "time")
         {
@@ -256,7 +257,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 [name]: value
             }));
         }
-        onDataFromChild(dataToSend);
+
     };
 
     const handleChangeIssues = (values) =>
