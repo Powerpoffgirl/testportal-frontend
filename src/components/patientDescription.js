@@ -8,6 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import DoctorSidebar from "./doctorSidebar";
 import { Select } from "antd";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import Modal from "react-responsive-modal";
 
 export default function PatientDescription()
@@ -15,12 +16,24 @@ export default function PatientDescription()
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalContent, setModalContent] = useState('');
+    const onOpenModal = () => setOpen(true);
+    const onCloseModall = () => setOpen(false);
+    const [open, setOpen] = useState(false);
     const [patientDetails, setPatientDetails] = useState({
         medicineName: [],
         issues: [],
         diseases: [],
         labTests: []
     })
+
+    const onCloseModal = () =>
+    {
+        setModalOpen(false);
+        setModalContent('');
+        navigate(`/appointmentlist`)
+    };
 
 
     const diseases = [
@@ -222,133 +235,47 @@ export default function PatientDescription()
 
 
     const labTests = [
-        { label: "Complete Blood Count (CBC)", value: "Entry Level" },
-        { label: "Basic Metabolic Panel (BMP)", value: "Intermediate Level" },
-        {
-            label: "Comprehensive Metabolic Panel (CMP)",
-            value: "Intermediate Level",
-        },
-        { label: "Lipid Panel", value: "Intermediate Level" },
-        { label: "Liver Function Tests (LFTs)", value: "Intermediate Level" },
-        { label: "Renal Function Panel", value: "Intermediate Level" },
-        { label: "Thyroid Function Tests (TFTs)", value: "Intermediate Level" },
-        { label: "Urinalysis", value: "Intermediate Level" },
-        { label: "Electrolyte Panel", value: "Advanced Level" },
-        { label: "Blood Glucose Tests", value: "Advanced Level" },
-        { label: "Serum Iron Tests", value: "Advanced Level" },
-        { label: "Coagulation Panel", value: "Advanced Level" },
-        { label: "C-reactive Protein (CRP) Test", value: "Advanced Level" },
-        {
-            label: "Erythrocyte Sedimentation Rate (ESR) Test",
-            value: "Advanced Level",
-        },
-        { label: "HbA1c Test", value: "Advanced Level" },
-        { label: "Arterial Blood Gas (ABG) Test", value: "Advanced Level" },
-        { label: "Rheumatoid Factor (RF) Test", value: "Advanced Level" },
-        { label: "Prothrombin Time (PT) Test", value: "Advanced Level" },
-        {
-            label: "Partial Thromboplastin Time (PTT) Test",
-            value: "Advanced Level",
-        },
-        { label: "D-dimer Test", value: "Advanced Level" },
-        { label: "Troponin Test", value: "Advanced Level" },
-        { label: "Brain Natriuretic Peptide (BNP) Test", value: "Advanced Level" },
-        { label: "Blood Culture Test", value: "Advanced Level" },
-        { label: "Procalcitonin Test", value: "Advanced Level" },
-        { label: "Immunoglobulin E (IgE) Test", value: "Advanced Level" },
-        { label: "Antinuclear Antibody (ANA) Test", value: "Advanced Level" },
-        { label: "Anti-DNA Antibody Test", value: "Advanced Level" },
-        {
-            label: "Serum Protein Electrophoresis (SPEP) Test",
-            value: "Advanced Level",
-        },
-        {
-            label: "Serum Immunofixation Electrophoresis (IFE) Test",
-            value: "Advanced Level",
-        },
-        { label: "Ferritin Test", value: "Advanced Level" },
-        { label: "Serum B12 Test", value: "Advanced Level" },
-        { label: "Folate Test", value: "Advanced Level" },
-        { label: "Vitamin D Test", value: "Advanced Level" },
-        { label: "H. pylori Test", value: "Advanced Level" },
-        { label: "Stool Culture Test", value: "Advanced Level" },
-        { label: "Stool Ova and Parasites (O&P) Test", value: "Advanced Level" },
-        { label: "Fecal Occult Blood Test (FOBT)", value: "Advanced Level" },
-        { label: "Hepatitis Panel", value: "Advanced Level" },
-        { label: "HIV Test", value: "Advanced Level" },
-        { label: "Tuberculosis (TB) Test", value: "Advanced Level" },
-        { label: "Malaria Test", value: "Advanced Level" },
-        { label: "Dengue Test", value: "Advanced Level" },
-        { label: "Chikungunya Test", value: "Advanced Level" },
-        { label: "Leptospirosis Test", value: "Advanced Level" },
-        { label: "Typhoid Test", value: "Advanced Level" },
-        { label: "Dengue NS1 Antigen Test", value: "Advanced Level" },
-        { label: "Dengue IgM Antibody Test", value: "Advanced Level" },
-        { label: "Dengue IgG Antibody Test", value: "Advanced Level" },
-        { label: "Chikungunya IgM Antibody Test", value: "Advanced Level" },
-        { label: "Chikungunya IgG Antibody Test", value: "Advanced Level" },
-        { label: "Leptospira IgM Antibody Test", value: "Advanced Level" },
-        { label: "Leptospira IgG Antibody Test", value: "Advanced Level" },
-        { label: "Typhoid IgM Antibody Test", value: "Advanced Level" },
-        { label: "Typhoid IgG Antibody Test", value: "Advanced Level" },
-        { label: "Blood Type Test", value: "Advanced Level" },
-        { label: "Rh Factor Test", value: "Advanced Level" },
-        { label: "Crossmatch Test", value: "Advanced Level" },
-        { label: "ECG (Electrocardiogram)", value: "Advanced Level" },
-        { label: "Echocardiogram", value: "Advanced Level" },
-        { label: "Stress Test", value: "Advanced Level" },
-        { label: "Holter Monitor Test", value: "Advanced Level" },
-        { label: "Sleep Study Test", value: "Advanced Level" },
-        { label: "Pulmonary Function Tests (PFTs)", value: "Advanced Level" },
-        { label: "Spirometry Test", value: "Advanced Level" },
-        { label: "Peak Flow Test", value: "Advanced Level" },
-        { label: "Allergy Tests", value: "Advanced Level" },
-        { label: "Skin Prick Test", value: "Advanced Level" },
-        { label: "Patch Test", value: "Advanced Level" },
-        {
-            label: "Imaging Tests (X-rays, Ultrasounds, CT Scans, MRI)",
-            value: "Advanced Level",
-        },
-        { label: "Bone Density Test", value: "Advanced Level" },
-        { label: "Endoscopy", value: "Advanced Level" },
-        { label: "Colonoscopy", value: "Advanced Level" },
-        { label: "Cystoscopy", value: "Advanced Level" },
-        { label: "Biopsy Tests", value: "Advanced Level" },
-        { label: "Pap Smear Test", value: "Advanced Level" },
-        { label: "Mammogram", value: "Advanced Level" },
-        { label: "PSA (Prostate-Specific Antigen) Test", value: "Advanced Level" },
-        { label: "Semen Analysis", value: "Advanced Level" },
-        { label: "Hormone Tests", value: "Advanced Level" },
-        {
-            label: "Thyroid Stimulating Hormone (TSH) Test",
-            value: "Advanced Level",
-        },
-        {
-            label: "Follicle-Stimulating Hormone (FSH) Test",
-            value: "Advanced Level",
-        },
-        { label: "Luteinizing Hormone (LH) Test", value: "Advanced Level" },
-        { label: "Testosterone Test", value: "Advanced Level" },
-        { label: "Progesterone Test", value: "Advanced Level" },
-        { label: "Estradiol Test", value: "Advanced Level" },
-        { label: "Prolactin Test", value: "Advanced Level" },
-        { label: "Anti-Mullerian Hormone (AMH) Test", value: "Advanced Level" },
-        { label: "Aldosterone Test", value: "Advanced Level" },
-        { label: "Cortisol Test", value: "Advanced Level" },
-        {
-            label: "ACTH (Adrenocorticotropic Hormone) Test",
-            value: "Advanced Level",
-        },
-        { label: "Insulin Test", value: "Advanced Level" },
-        { label: "Growth Hormone Test", value: "Advanced Level" },
-        { label: "Catecholamines Test", value: "Advanced Level" },
-        { label: "Serotonin Test", value: "Advanced Level" },
-        { label: "Dopamine Test", value: "Advanced Level" },
-        { label: "Bile Acid Test", value: "Advanced Level" },
-        { label: "Gastrin Test", value: "Advanced Level" },
-        { label: "Secretin Test", value: "Advanced Level" },
-        { label: "Trypsin Test", value: "Advanced Level" },
-        { label: "Amylase Test", value: "Advanced Level" },
+        { label: "Complete Blood Count (CBC)", value: "Complete Blood Count (CBC)" },
+        { label: "Basic Metabolic Panel (BMP)", value: "Basic Metabolic Panel (BMP)" },
+        { label: "Comprehensive Metabolic Panel (CMP)", value: "Comprehensive Metabolic Panel (CMP)" },
+        { label: "Lipid Panel", value: "Lipid Panel" },
+        { label: "Liver Function Tests (LFTs)", value: "Liver Function Tests (LFTs)" },
+        { label: "Renal Function Panel", value: "Renal Function Panel" },
+        { label: "Thyroid Function Tests (TFTs)", value: "Thyroid Function Tests (TFTs)" },
+        { label: "Urinalysis", value: "Urinalysis" },
+        { label: "Electrolyte Panel", value: "Electrolyte Panel" },
+        { label: "Blood Glucose Tests", value: "Blood Glucose Tests" },
+        { label: "Serum Iron Tests", value: "Serum Iron Tests" },
+        { label: "Coagulation Panel", value: "Coagulation Panel" },
+        { label: "C-reactive Protein (CRP) Test", value: "C-reactive Protein (CRP) Test" },
+        { label: "Erythrocyte Sedimentation Rate (ESR) Test", value: "Erythrocyte Sedimentation Rate (ESR) Test" },
+        { label: "HbA1c Test", value: "HbA1c Test" },
+        { label: "Arterial Blood Gas (ABG) Test", value: "Arterial Blood Gas (ABG) Test" },
+        { label: "Rheumatoid Factor (RF) Test", value: "Rheumatoid Factor (RF) Test" },
+        { label: "Prothrombin Time (PT) Test", value: "Prothrombin Time (PT) Test" },
+        { label: "Partial Thromboplastin Time (PTT) Test", value: "Partial Thromboplastin Time (PTT) Test" },
+        { label: "D-dimer Test", value: "D-dimer Test" },
+        { label: "Troponin Test", value: "Troponin Test" },
+        { label: "Brain Natriuretic Peptide (BNP) Test", value: "Brain Natriuretic Peptide (BNP) Test" },
+        { label: "Blood Culture Test", value: "Blood Culture Test" },
+        { label: "Procalcitonin Test", value: "Procalcitonin Test" },
+        { label: "Immunoglobulin E (IgE) Test", value: "Immunoglobulin E (IgE) Test" },
+        { label: "Antinuclear Antibody (ANA) Test", value: "Antinuclear Antibody (ANA) Test" },
+        { label: "Anti-DNA Antibody Test", value: "Anti-DNA Antibody Test" },
+        { label: "Serum Protein Electrophoresis (SPEP) Test", value: "Serum Protein Electrophoresis (SPEP) Test" },
+        { label: "Serum Immunofixation Electrophoresis (IFE) Test", value: "Serum Immunofixation Electrophoresis (IFE) Test" },
+        { label: "Ferritin Test", value: "Ferritin Test" },
+        { label: "Serum B12 Test", value: "Serum B12 Test" },
+        { label: "Folate Test", value: "Folate Test" },
+        { label: "Vitamin D Test", value: "Vitamin D Test" },
+        { label: "H. pylori Test", value: "H. pylori Test" },
+        { label: "Stool Culture Test", value: "Stool Culture Test" },
+        { label: "Stool Ova and Parasites (O&P) Test", value: "Stool Ova and Parasites (O&P) Test" },
+        { label: "Fecal Occult Blood Test (FOBT)", value: "Fecal Occult Blood Test (FOBT)" },
+        { label: "Hepatitis Panel", value: "Hepatitis Panel" },
+        { label: "HIV Test", value: "HIV Test" },
+        { label: "Tuberculosis (TB) Test", value: "Tuberculosis (TB) Test" },
+        { label: "Malaria Test", value: "Malaria Test" },
     ];
 
     const updatedLabTests = labTests.map(test => ({
@@ -357,7 +284,7 @@ export default function PatientDescription()
     }));
 
     const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
+    // const open = Boolean(anchorEl);
 
     const handleClick = (event) =>
     {
@@ -444,7 +371,8 @@ export default function PatientDescription()
         if (data.success === true)
         {
             localStorage.setItem("appointmentId", appointmentId)
-            navigate(`/viewpatientdescription/${appointmentId}`)
+            setModalOpen(true);
+            // navigate(`/appointmentlist`)
         }
         console.log("DATA from response", data)
     }
@@ -457,7 +385,39 @@ export default function PatientDescription()
             onSubmit={(e) => e.preventDefault()}
         >
 
-            <Modal open={open}
+            <Modal open={modalOpen} onClose={onCloseModal} styles={{
+                modal: {
+                    background: 'transparent', // Makes modal background transparent
+                    boxShadow: 'none',        // Removes shadow or border effects
+                    // Any other styles to override default modal styles
+                }
+            }} center>
+                <div className="flex flex-col items-center w-[100%] md:w-[100%]" style={{ border: 'none', borderRadius: "5px", backgroundColor: '#08DA75' }}>
+                    <text className="ml-4 text-center mt-4" style={{ marginBottom: -20, fontSize: "40px", fontWeight: 700, lineHeight: "28.8px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', height: '100px', width: '370px', display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        Confirmed !
+                    </text>
+                    <text className="ml-4 text-center" style={{ fontSize: "60px", fontWeight: 800, lineHeight: "24px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', marginBottom: "7%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {<IoIosCheckmarkCircleOutline />}
+                    </text>
+                    {/* <div className="flex justify-center">
+                        <button
+                            className="rounded-full mt-4 text-customRed"
+                            type="submit"
+                            style={{
+                                backgroundColor: "white",
+                                width: isTab ? "150px" : "198px",
+                                height: isTab ? "35px" : "45px",
+                                boxShadow: " 0 10px 5px -3px rgb(0 0 0 / 0.3)",
+                            }}
+                        // onClick={navigate(`/appointmentlist`)}
+                        >
+                            Appointment List
+                        </button>
+                    </div> */}
+                </div>
+            </Modal>
+
+            {/* <Modal open={open}
                 // onClose={onCloseModal}
                 center
                 // doctor={selectedDoctor}
@@ -527,7 +487,7 @@ export default function PatientDescription()
 
                     </text>
                 </div>
-            </Modal>
+            </Modal> */}
             {/* <div className="grid grid-cols-1 w-full gap-4"> */}
             <div className="flex flex-col">
                 <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
@@ -535,7 +495,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-green-500 rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="issues"
                     name="issues"
@@ -543,6 +503,7 @@ export default function PatientDescription()
                     value={patientDetails.issues}
                     placeholder="Select Issues"
                     style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
                 >
                     {issues.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -558,7 +519,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-green-500 rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="diesease"
                     name="diesease"
@@ -566,6 +527,7 @@ export default function PatientDescription()
                     value={patientDetails.diseases}
                     placeholder="Select Diesease"
                     style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
                 >
                     {diseases.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -582,7 +544,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-green-500 rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="medicineName"
                     name="medicineName"
@@ -590,6 +552,7 @@ export default function PatientDescription()
                     value={patientDetails.medicineName}
                     placeholder="Select Medicine"
                     style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
                 >
                     {medicineName.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -606,7 +569,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-green-500 rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="labTests"
                     name="labTests"
@@ -614,6 +577,7 @@ export default function PatientDescription()
                     value={patientDetails.labTests}
                     placeholder="Select Lab Tests"
                     style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
                 >
                     {labTests.map((option) => (
                         <Select.Option key={option.value} value={option.value}>

@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import AdminHeader from "./adminHeader";
 import AdminSidebar from "./adminSidebar";
 import { useNavigate } from "react-router-dom";
@@ -212,7 +210,7 @@ export default function DoctorForm()
   {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
-      workingDays: [...prevDoctorDetails.workingDays, e],
+      workingDays: e,
     }));
   };
 
@@ -257,6 +255,8 @@ export default function DoctorForm()
       }));
     }
   };
+
+
   const handleRegister = async (e) =>
   {
     e.preventDefault();
