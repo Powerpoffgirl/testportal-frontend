@@ -274,12 +274,6 @@ export default function PatientForm()
 
   const handleChange = (e) =>
   {
-
-
-
-
-
-
     const { name, value } = e.target;
 
     if (
@@ -423,7 +417,7 @@ export default function PatientForm()
                     Age
                   </label>
                   <input
-                    className={`mx-2 px-3 pl-1 border border-green-500 h-10 rounded-lg ${ageError ? "border-red-500" : ""
+                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${ageError ? "border-red-500" : ""
                       }`}
                     type="text"
                     id="age"
