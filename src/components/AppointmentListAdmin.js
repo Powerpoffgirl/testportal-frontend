@@ -57,7 +57,7 @@ export default function AppointmentListAdmin({ searchTerm })
                     return;
                 }
                 const response = await fetch(
-                    `${baseUrl}/api/api/v1/admin/list_appointments`,
+                    `${baseUrl}/api/v1/admin/list_appointments`,
                     {
                         method: "GET",
                         headers: {
@@ -116,7 +116,7 @@ export default function AppointmentListAdmin({ searchTerm })
                 console.error("No token found in local storage");
                 return;
             }
-            const response = await fetch(`${baseUrl}/api/v1/user/delete_appointmentById/${appointmentId}`, {
+            const response = await fetch(`${baseUrl}/api/v1/admin/delete_appointment/${appointmentId}`, {
                 method: 'DELETE', // Use DELETE method
                 headers: {
                     'Content-Type': 'application/json',

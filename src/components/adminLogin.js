@@ -81,7 +81,7 @@ export default function AdminLogin()
 
   const [emailOrUsername, setEmailOrUsername] = useState("");
   const [emailOrUsernameError, setEmailOrUsernameError] = useState("");
-
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
@@ -102,20 +102,20 @@ export default function AdminLogin()
   //   }
   // };
 
-  const handlePasswordChange = (e) =>
-  {
-    const enteredPassword = e.target.value;
-    setPassword(enteredPassword);
+  // const handlePasswordChange = (e) =>
+  // {
+  //   const enteredPassword = e.target.value;
+  //   setPassword(enteredPassword);
 
-    // Password validation
-    if (enteredPassword.trim().length < 6)
-    {
-      setPasswordError("Password should be at least 6 characters");
-    } else
-    {
-      setPasswordError("");
-    }
-  };
+  //   // Password validation
+  //   if (enteredPassword.trim().length < 6)
+  //   {
+  //     setPasswordError("Password should be at least 6 characters");
+  //   } else
+  //   {
+  //     setPasswordError("");
+  //   }
+  // };
   const handleSubmit = async (e) =>
   {
     // if (username === "")
@@ -179,6 +179,54 @@ export default function AdminLogin()
       console.log(data);
     }
   };
+
+  const handleForgetPassword = async (e) =>
+  {
+
+    if (password === "")
+    {
+      passwordError("password should not be empty");
+    }
+
+    e.preventDefault()
+    const requestBody = {
+      password: password,
+    };
+    const apiUrl = `${baseUrl}/api/v1/admin/forget_password`;
+
+    try
+    {
+      // Send the POST request
+      const response = await fetch(apiUrl, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // "x-auth-token": token
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      // Convert the response to JSON
+      const data = await response.json();
+
+      // Check the response status
+      if (response.ok)
+      {
+        console.log("OTP sent successfully", data);
+        localStorage.setItem("password", password)
+        localStorage.setItem("adminId", data?.data._id)
+        console.log("Admin ID", data?.data._id)
+        navigate("/otpverify")
+      } else
+      {
+        console.error("Error sending OTP:", data);
+      }
+    } catch (error)
+    {
+      console.error("Error during the API call:", error);
+    }
+
+  }
 
   return (
     <>
@@ -329,7 +377,9 @@ export default function AdminLogin()
                   fontSize: isTab ? "18px" : "20px",
                   lineHeight: "26.4px",
                   marginRight: isTab ? 10 : -20,
+
                 }}
+                onClick={handleForgetPassword}
               >
                 Forget Password?
               </button>

@@ -274,12 +274,6 @@ export default function PatientForm()
 
   const handleChange = (e) =>
   {
-
-
-
-
-
-
     const { name, value } = e.target;
 
     if (
@@ -403,7 +397,6 @@ export default function PatientForm()
                 </label>
                 <input
                   type="text"
-                  placeholder="Smita Singh"
                   id="name"
                   name="name"
                   value={patientDetails.name}
@@ -431,7 +424,7 @@ export default function PatientForm()
                     name="age"
                     value={patientDetails.age}
                     onChange={handleChange}
-                    style={{ marginLeft: -1 }}
+                    style={{ marginLeft: -0.5 }}
                   />
                   {ageError && (
                     <p className="text-red-500 text-sm mt-1">{ageError}</p>
@@ -452,6 +445,7 @@ export default function PatientForm()
                     name="bodyWeight"
                     onChange={handleChange}
                     value={patientDetails.bodyWeight}
+                    style={{ marginRight: -2 }}
                   />
                   {bodyWeightError && (
                     <p className="text-red-500 text-sm mt-1">
