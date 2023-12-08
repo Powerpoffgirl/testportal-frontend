@@ -8,6 +8,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import DoctorSidebar from "./doctorSidebar";
 import { Select } from "antd";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import Modal from "react-responsive-modal";
 
 export default function PatientDescription()
@@ -15,12 +16,24 @@ export default function PatientDescription()
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalContent, setModalContent] = useState('');
+    const onOpenModal = () => setOpen(true);
+    const onCloseModall = () => setOpen(false);
+    const [open, setOpen] = useState(false);
     const [patientDetails, setPatientDetails] = useState({
         medicineName: [],
         issues: [],
         diseases: [],
         labTests: []
     })
+
+    const onCloseModal = () =>
+    {
+        setModalOpen(false);
+        setModalContent('');
+        navigate(`/appointmentlist`)
+    };
 
 
     const diseases = [
@@ -357,7 +370,7 @@ export default function PatientDescription()
     }));
 
     const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
+    // const open = Boolean(anchorEl);
 
     const handleClick = (event) =>
     {
@@ -444,7 +457,8 @@ export default function PatientDescription()
         if (data.success === true)
         {
             localStorage.setItem("appointmentId", appointmentId)
-            navigate(`/viewpatientdescription/${appointmentId}`)
+            setModalOpen(true);
+            // navigate(`/appointmentlist`)
         }
         console.log("DATA from response", data)
     }
@@ -457,7 +471,39 @@ export default function PatientDescription()
             onSubmit={(e) => e.preventDefault()}
         >
 
-            <Modal open={open}
+            <Modal open={modalOpen} onClose={onCloseModal} styles={{
+                modal: {
+                    background: 'transparent', // Makes modal background transparent
+                    boxShadow: 'none',        // Removes shadow or border effects
+                    // Any other styles to override default modal styles
+                }
+            }} center>
+                <div className="flex flex-col items-center w-[100%] md:w-[100%]" style={{ border: 'none', borderRadius: "5px", backgroundColor: '#08DA75' }}>
+                    <text className="ml-4 text-center mt-4" style={{ marginBottom: -20, fontSize: "40px", fontWeight: 700, lineHeight: "28.8px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', height: '100px', width: '370px', display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        Confirmed !
+                    </text>
+                    <text className="ml-4 text-center" style={{ fontSize: "60px", fontWeight: 800, lineHeight: "24px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', marginBottom: "7%", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                        {<IoIosCheckmarkCircleOutline />}
+                    </text>
+                    {/* <div className="flex justify-center">
+                        <button
+                            className="rounded-full mt-4 text-customRed"
+                            type="submit"
+                            style={{
+                                backgroundColor: "white",
+                                width: isTab ? "150px" : "198px",
+                                height: isTab ? "35px" : "45px",
+                                boxShadow: " 0 10px 5px -3px rgb(0 0 0 / 0.3)",
+                            }}
+                        // onClick={navigate(`/appointmentlist`)}
+                        >
+                            Appointment List
+                        </button>
+                    </div> */}
+                </div>
+            </Modal>
+
+            {/* <Modal open={open}
                 // onClose={onCloseModal}
                 center
                 // doctor={selectedDoctor}
@@ -527,7 +573,7 @@ export default function PatientDescription()
 
                     </text>
                 </div>
-            </Modal>
+            </Modal> */}
             {/* <div className="grid grid-cols-1 w-full gap-4"> */}
             <div className="flex flex-col">
                 <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
@@ -535,7 +581,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-green-500 rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="issues"
                     name="issues"
@@ -543,6 +589,7 @@ export default function PatientDescription()
                     value={patientDetails.issues}
                     placeholder="Select Issues"
                     style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
                 >
                     {issues.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -558,7 +605,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-green-500 rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="diesease"
                     name="diesease"
@@ -566,6 +613,7 @@ export default function PatientDescription()
                     value={patientDetails.diseases}
                     placeholder="Select Diesease"
                     style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
                 >
                     {diseases.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -582,7 +630,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-green-500 rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="medicineName"
                     name="medicineName"
@@ -590,6 +638,7 @@ export default function PatientDescription()
                     value={patientDetails.medicineName}
                     placeholder="Select Medicine"
                     style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
                 >
                     {medicineName.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -606,7 +655,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-green-500 rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="labTests"
                     name="labTests"
@@ -614,6 +663,7 @@ export default function PatientDescription()
                     value={patientDetails.labTests}
                     placeholder="Select Lab Tests"
                     style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
                 >
                     {labTests.map((option) => (
                         <Select.Option key={option.value} value={option.value}>

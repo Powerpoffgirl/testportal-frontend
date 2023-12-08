@@ -488,14 +488,15 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
-                    popupClassName="no-border-dropdown-menu" // Apply the custom class here
+                    className="mx-2 border border-green-500 rounded-lg"
+                    popupClassName="no-border-dropdown-menu"
                     id="issues"
                     name="issues"
                     onChange={handleChangeIssues}
                     value={patientDetails.issues}
                     placeholder="Select Issues"
                     style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }} // Set a maximum height for the dropdown
                 >
                     {SymptomsDropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -511,7 +512,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-green-500 rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="diseases"
                     name="diseases"
@@ -519,6 +520,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
                     value={patientDetails.diseases}
                     placeholder="Select Disease"
                     style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
                 >
                     {DiseasesDropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>

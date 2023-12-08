@@ -35,6 +35,7 @@ export default function AppointmentList({ searchTerm })
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [patientsList, setPatientsList] = useState([])
     const [appointmentList, setAppointmentList] = useState([])
+    const [selectedAppointment, setSelectedAppointment] = useState();
     const [selectedPatient, setSelectedPatient] = useState();
     const navigate = useNavigate()
     const [open, setOpen] = useState(false);
@@ -42,6 +43,9 @@ export default function AppointmentList({ searchTerm })
     const onCloseModall = () => setOpen(false);
     const [modalOpen, setModalOpen] = useState(false);
     const [modalContent, setModalContent] = useState('');
+    const [diseasesinfo, setDiseasesinfo] = useState('');
+    const [Issuesinfo, setIssuessinfo] = useState('');
+    const [Medicineinfo, setMedicineinfo] = useState('');
     const [filteredAppointmentList, setFilteredAppointmentList] = useState([appointmentList])
 
     const onCloseModal = () =>
@@ -164,13 +168,16 @@ export default function AppointmentList({ searchTerm })
         }
     };
 
-    const findSelectedDoctor = async (patientId) =>
+    const findSelectedDoctor = async (appointmentId) =>
     {
-        console.log("DOCTOR ID", patientId);
-        // // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
-        const patient = patientsList?.find((doc) => doc._id === patientId);
-        setSelectedPatient(patient); // This will return the doctor object if found, otherwise undefined
+        console.log("appointmentId########################", appointmentId);
+        // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
+        const appointment = appointmentList?.find((appointment) => appointment._id === appointmentId);
+        setSelectedAppointment(appointment); // This will return the doctor object if found, otherwise undefined
         onOpenModal();
+        setDiseasesinfo(appointment.diseases);
+        setIssuessinfo(appointment.issues)
+        setMedicineinfo(appointment.medicineName)
     };
 
 
@@ -208,7 +215,7 @@ export default function AppointmentList({ searchTerm })
                 open={open}
                 onClose={onCloseModall}
                 center
-                patient={selectedPatient}
+                patient={selectedAppointment}
                 styles={{
                     modal: {
                         width: isTab ? "80%" : "70%",
@@ -229,7 +236,7 @@ export default function AppointmentList({ searchTerm })
                             fontFamily: "Lato, sans-serif",
                         }}
                     >
-                        {selectedPatient?.name}
+                        {selectedAppointment?.patientId?.name}
                     </text>
                     <text
                         className="ml-4 text-center mt-4"
@@ -242,7 +249,7 @@ export default function AppointmentList({ searchTerm })
                             marginBottom: "2%",
                         }}
                     >
-                        {selectedPatient?.age} yr, {selectedPatient?.bodyWeight} kg
+                        Age: {selectedAppointment?.patientId?.age} yrs, bodyWeight: {selectedAppointment?.patientId?.bodyWeight} kg
                     </text>
 
                     <text
@@ -255,17 +262,62 @@ export default function AppointmentList({ searchTerm })
                             color: "#FFFFFF",
                         }}
                     >
-                        {selectedPatient?.address?.houseNo +
+                        {selectedAppointment?.patientId?.address?.houseNo +
                             " " +
-                            selectedPatient?.address?.block +
+                            selectedAppointment?.patientId?.address?.block +
                             " " +
-                            selectedPatient?.address?.area +
+                            selectedAppointment?.patientId?.address?.area +
                             ", " +
-                            selectedPatient?.address?.district +
+                            selectedAppointment?.patientId?.address?.district +
                             ", " +
-                            selectedPatient?.address?.state +
+                            selectedAppointment?.patientId?.address?.state +
                             " " +
-                            selectedPatient?.address?.pinCode}
+                            selectedAppointment?.patientId?.address?.pinCode}
+                    </text>
+
+                    <text
+                        className="ml-4 text-center mt-4"
+                        style={{
+                            fontSize: isTab ? "12px" : "20px",
+                            fontWeight: 400,
+                            lineHeight: "24px",
+                            fontFamily: "Lato, sans-serif",
+                            color: "#FFFFFF",
+                            marginBottom: "2%",
+                        }}
+                    >
+                        {/* {appointment?.diseases} yrs, {appointment?.issues} kg */}
+                        Diseases: {diseasesinfo}
+                    </text>
+
+                    <text
+                        className="ml-4 text-center mt-4"
+                        style={{
+                            fontSize: isTab ? "12px" : "20px",
+                            fontWeight: 400,
+                            lineHeight: "24px",
+                            fontFamily: "Lato, sans-serif",
+                            color: "#FFFFFF",
+                            marginBottom: "2%",
+                        }}
+                    >
+                        {/* {appointment?.diseases} yrs, {appointment?.issues} kg */}
+                        Issues: {Issuesinfo}
+                    </text>
+
+                    <text
+                        className="ml-4 text-center mt-4"
+                        style={{
+                            fontSize: isTab ? "12px" : "20px",
+                            fontWeight: 400,
+                            lineHeight: "24px",
+                            fontFamily: "Lato, sans-serif",
+                            color: "#FFFFFF",
+                            marginBottom: "2%",
+                        }}
+                    >
+                        {/* {appointment?.diseases} yrs, {appointment?.issues} kg */}
+                        Medicine info: {Medicineinfo}
                     </text>
 
                     <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
@@ -310,7 +362,7 @@ export default function AppointmentList({ searchTerm })
                             className="flex flex-row bg-white p-2 md:flex-row justify-between"
                             style={{ borderRadius: "5px", marginBottom: "10px" }}
                             key={appointment._id}
-                            onClick={() => findSelectedDoctor(appointment._id)}
+                            onClick={() => findSelectedDoctor(appointment?._id, appointment?.diseases)}
                         >
                             <span className="flex flex-row items-center">
                                 <img
@@ -339,12 +391,15 @@ export default function AppointmentList({ searchTerm })
                                         color: "#A4A4A4",
                                         display: "flex",
                                         gap: "20px"
+
                                     }}>
-                                        <span  >   {appointment?.appointmentDate?.date}
+                                        <span  >   {appointment?.appointmentDate?.date.split('-').reverse().join('-')}
                                         </span>
                                         <span   >
                                             {appointment?.appointmentDate?.time}</span>
                                     </span>
+
+
 
                                 </text>
                                 <text
