@@ -26,7 +26,11 @@ export default function SuperAdminAdminForm() {
   const onCloseModal = () => setOpen(false);
   const navigate = useNavigate();
   const [name, setName] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [email, setEmail] = useState("");
   const [nameError, setNameError] = useState("");
+  const [contact, setContact] = useState("");
+  const [contactError, setContactError] = useState("");
   const [age, setAge] = useState("");
   const [ageError, setAgeError] = useState("");
   const [bodyWeight, setBodyWeight] = useState("");
@@ -59,6 +63,36 @@ export default function SuperAdminAdminForm() {
       setNameError("Name length should be between 2 and 50 characters");
     } else {
       setNameError("");
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    const enteredEmail = e.target.value;
+    setEmail(enteredEmail);
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!enteredEmail.trim()) {
+      setEmailError("Email is required");
+    } else if (!emailPattern.test(enteredEmail)) {
+      setEmailError("Invalid email format");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handleContactChange = (e) => {
+    const enteredContact = e.target.value;
+    setContact(enteredContact);
+
+    const contactPattern = /^\d{10}$/;
+
+    if (!enteredContact.trim()) {
+      setContactError("Contact number is required");
+    } else if (!contactPattern.test(enteredContact)) {
+      setContactError("Invalid contact format. Please enter a 10-digit number");
+    } else {
+      setContactError("");
     }
   };
 
@@ -348,7 +382,6 @@ export default function SuperAdminAdminForm() {
 
       <div className="flex flex-row">
         <ToastContainer />
-        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div class="grid grid-cols-1 w-full gap-4">
@@ -361,7 +394,6 @@ export default function SuperAdminAdminForm() {
                 </label>
                 <input
                   type="text"
-                  // placeholder="Smita Singh"
                   id="name"
                   name="name"
                   value={name}
@@ -377,37 +409,44 @@ export default function SuperAdminAdminForm() {
 
               <div>
                 <label
-                  for="email"
-                  class="block text-black text-lg font-semibold"
+                  htmlFor="email"
+                  className="block text-black text-lg font-semibold"
                 >
                   Email
                 </label>
                 <input
                   type="email"
-                  // placeholder="smitasingh1234@gmail.com"
                   id="email"
                   name="email"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  onChange={handleEmailChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                    emailError ? "border-red-500" : "border-[#08DA75]"
+                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
+                {emailError && (
+                  <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                )}
               </div>
               <div>
                 <label
-                  for="contact"
-                  class="block text-black text-lg font-semibold"
+                  htmlFor="contact"
+                  className="block text-black text-lg font-semibold"
                 >
                   Contact Number
                 </label>
                 <input
-                  type="number"
-                  // placeholder="+91-8603678852"
-                  id="contactNumber"
-                  name="contactNumber"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  type="text"
+                  id="contact"
+                  name="contact"
+                  onChange={handleContactChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                    contactError ? "border-red-500" : "border-[#08DA75]"
+                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
+                {contactError && (
+                  <p className="text-red-500 text-sm mt-1">{contactError}</p>
+                )}
               </div>
-
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <label
@@ -431,21 +470,21 @@ export default function SuperAdminAdminForm() {
                     <p className="text-red-500 text-sm mt-1">{ageError}</p>
                   )}
                 </div>
-                <div className="flex flex-col">
+                <div>
                   <label
-                    className="mx-2 text-lg font-normal text-black font-lato"
                     htmlFor="bodyWeight"
+                    className="block text-black text-lg font-semibold"
                   >
                     Body Weight
                   </label>
                   <input
-                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${
-                      bodyWeightError ? "border-red-500" : ""
-                    }`}
                     type="text"
                     id="bodyWeight"
                     name="bodyWeight"
-                    onChange={handleChange}
+                    onChange={handleBodyWeightChange}
+                    className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                      bodyWeightError ? "border-red-500" : "border-[#08DA75]"
+                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                   />
                   {bodyWeightError && (
                     <p className="text-red-500 text-sm mt-1">

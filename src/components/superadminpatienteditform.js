@@ -16,7 +16,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function SuperAdminEditForm() {
+export default function SuperAdminPatientEditForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -25,8 +25,12 @@ export default function SuperAdminEditForm() {
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [nameError, setNameError] = useState("");
+  const [drName, setDrName] = useState("");
+  const [drNameError, setDrNameError] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [contact, setContact] = useState("");
+  const [contactError, setContactError] = useState("");
   const [houseNo, setHouseNo] = useState("");
   const [houseNoError, setHouseNoError] = useState("");
   const [floor, setFloor] = useState("");
@@ -42,19 +46,50 @@ export default function SuperAdminEditForm() {
   const [state, setState] = useState("");
   const [stateError, setStateError] = useState("");
 
-  const handleNameChange = (e) => {
-    const enteredName = e.target.value;
-    setName(enteredName);
+  const handleDrNameChange = (e) => {
+    const enteredDrName = e.target.value;
+    setDrName(enteredDrName);
 
-    // Validation logic
-    if (!enteredName.trim()) {
-      setNameError("Name is required");
-    } else if (!/^[a-zA-Z\s-]+$/.test(enteredName)) {
-      setNameError("Invalid name format");
-    } else if (enteredName.length < 2 || enteredName.length > 50) {
-      setNameError("Name length should be between 2 and 50 characters");
+    // Validation logic for Dr. Name
+    const drNameRegex = /^Dr\. [a-zA-Z\s-]+$/;
+
+    if (!enteredDrName.trim()) {
+      setDrNameError("Dr. Name is required");
+    } else if (!drNameRegex.test(enteredDrName)) {
+      setDrNameError("Invalid Dr. Name format. It should start with 'Dr. '");
     } else {
-      setNameError("");
+      setDrNameError("");
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    const enteredEmail = e.target.value;
+    setEmail(enteredEmail);
+
+    // Validation logic for email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!enteredEmail.trim()) {
+      setEmailError("Email is required");
+    } else if (!emailPattern.test(enteredEmail)) {
+      setEmailError("Invalid email format");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handleContactChange = (e) => {
+    const enteredContact = e.target.value;
+    setContact(enteredContact);
+
+    const contactPattern = /^\d{10}$/;
+
+    if (!enteredContact.trim()) {
+      setContactError("Contact number is required");
+    } else if (!contactPattern.test(enteredContact)) {
+      setContactError("Invalid contact format. Please enter a 10-digit number");
+    } else {
+      setContactError("");
     }
   };
 
@@ -315,8 +350,8 @@ export default function SuperAdminEditForm() {
             <div class="grid grid-cols-1 w-full gap-4">
               <div>
                 <label
-                  for="name"
-                  class="block text-black text-lg font-semibold"
+                  htmlFor="name"
+                  className="block text-black text-lg font-semibold"
                 >
                   Dr. Name
                 </label>
@@ -324,14 +359,19 @@ export default function SuperAdminEditForm() {
                   type="text"
                   id="name"
                   name="name"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  onChange={handleDrNameChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                    drNameError ? "border-red-500" : "border-[#08DA75]"
+                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
-              </div>
+                {drNameError && (
+                  <p className="text-red-500 text-sm mt-1">{drNameError}</p>
+                )}
+              </div>{" "}
               <div>
                 <label
-                  for="email"
-                  class="block text-black text-lg font-semibold"
+                  htmlFor="email"
+                  className="block text-black text-lg font-semibold"
                 >
                   Email
                 </label>
@@ -339,11 +379,36 @@ export default function SuperAdminEditForm() {
                   type="email"
                   id="email"
                   name="email"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  onChange={handleEmailChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                    emailError ? "border-red-500" : "border-[#08DA75]"
+                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
+                {emailError && (
+                  <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                )}
               </div>
               <div>
+                <label
+                  htmlFor="contact"
+                  className="block text-black text-lg font-semibold"
+                >
+                  Contact Number
+                </label>
+                <input
+                  type="text"
+                  id="contact"
+                  name="contact"
+                  onChange={handleContactChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                    contactError ? "border-red-500" : "border-[#08DA75]"
+                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                />
+                {contactError && (
+                  <p className="text-red-500 text-sm mt-1">{contactError}</p>
+                )}
+              </div>
+              {/* <div>
                 <label
                   for="contact"
                   class="block text-black text-lg font-semibold"
@@ -357,8 +422,7 @@ export default function SuperAdminEditForm() {
                   onChange={handleChange}
                   class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
-              </div>
-
+              </div> */}
               <div class="p-3 pb-5 border border-[#08DA75]">
                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                   <div class="px-2 w-full sm:w-1/3">
@@ -393,10 +457,10 @@ export default function SuperAdminEditForm() {
                       class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
-                  <div class="px-2 w-full sm:w-1/3">
+                  <div className="px-2 w-full sm:w-1/3">
                     <label
-                      for="block"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="block"
+                      className="block text-black text-lg font-semibold"
                     >
                       Block
                     </label>
@@ -404,15 +468,21 @@ export default function SuperAdminEditForm() {
                       type="text"
                       id="block"
                       name="block"
-                      onChange={handleChange}
+                      value={block}
+                      onChange={handleBlockChange}
                       placeholder="A"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        blockError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {blockError && (
+                      <p className="text-red-500 text-sm mt-1">{blockError}</p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="area"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="area"
+                      className="block text-black text-lg font-semibold"
                     >
                       Area
                     </label>
@@ -420,15 +490,21 @@ export default function SuperAdminEditForm() {
                       type="text"
                       id="area"
                       name="area"
-                      onChange={handleChange}
+                      value={area}
+                      onChange={handleAreaChange}
                       placeholder="Green Park"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        areaError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {areaError && (
+                      <p className="text-red-500 text-sm mt-1">{areaError}</p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="pincode"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="pinCode"
+                      className="block text-black text-lg font-semibold"
                     >
                       Pincode
                     </label>
@@ -436,15 +512,23 @@ export default function SuperAdminEditForm() {
                       type="text"
                       id="pinCode"
                       name="pinCode"
-                      onChange={handleChange}
+                      value={pinCode}
+                      onChange={handlePincodeChange}
                       placeholder="110016"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        pinCodeError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {pinCodeError && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {pinCodeError}
+                      </p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="district"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="district"
+                      className="block text-black text-lg font-semibold"
                     >
                       District
                     </label>
@@ -452,15 +536,23 @@ export default function SuperAdminEditForm() {
                       type="text"
                       id="district"
                       name="district"
-                      onChange={handleChange}
+                      value={district}
+                      onChange={handleDistrictChange}
                       placeholder="South Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        districtError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {districtError && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {districtError}
+                      </p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="state"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="state"
+                      className="block text-black text-lg font-semibold"
                     >
                       State
                     </label>
@@ -468,11 +560,17 @@ export default function SuperAdminEditForm() {
                       type="text"
                       id="state"
                       name="state"
-                      onChange={handleChange}
+                      value={state}
+                      onChange={handleStateChange}
                       placeholder="Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        stateError ? "border-red-500" : ""
+                      }`}
                     />
-                  </div>
+                    {stateError && (
+                      <p className="text-red-500 text-sm mt-1">{stateError}</p>
+                    )}
+                  </div>{" "}
                 </div>
               </div>
             </div>

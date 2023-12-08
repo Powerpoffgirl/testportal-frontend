@@ -281,7 +281,7 @@ export default function SuperAdminDoctorForm() {
   return (
     <>
       <div className="flex flex-row">
-        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
+        {/* <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div> */}
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div className="flex  flex-col items-center justify-center w-full">
@@ -392,7 +392,6 @@ export default function SuperAdminDoctorForm() {
                 </label>
                 <input
                   type="text"
-                  placeholder="Smita Singh"
                   id="name"
                   name="name"
                   onChange={handleChange}
@@ -408,7 +407,6 @@ export default function SuperAdminDoctorForm() {
                 </label>
                 <input
                   type="email"
-                  placeholder="smitasingh1234@gmail.com"
                   id="email"
                   name="email"
                   onChange={handleChange}
@@ -424,7 +422,6 @@ export default function SuperAdminDoctorForm() {
                 </label>
                 <input
                   type="number"
-                  placeholder="+91-8603678852"
                   id="contactNumber"
                   name="contactNumber"
                   onChange={handleChange}

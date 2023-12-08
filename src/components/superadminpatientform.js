@@ -348,7 +348,7 @@ export default function SuperAdminPatientForm() {
 
       <div className="flex flex-row">
         <ToastContainer />
-        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
+        {/* <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div> */}
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div class="grid grid-cols-1 w-full gap-4">

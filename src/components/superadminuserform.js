@@ -309,7 +309,6 @@ export default function SuperAdminUserForm() {
 
       <div className="flex flex-row">
         <ToastContainer />
-        <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div class="grid grid-cols-1 w-full gap-4">
@@ -322,7 +321,6 @@ export default function SuperAdminUserForm() {
                 </label>
                 <input
                   type="text"
-                  placeholder="Smita Singh"
                   id="name"
                   name="name"
                   onChange={handleChange}
@@ -338,7 +336,6 @@ export default function SuperAdminUserForm() {
                 </label>
                 <input
                   type="email"
-                  placeholder="smitasingh1234@gmail.com"
                   id="email"
                   name="email"
                   onChange={handleChange}
@@ -354,7 +351,6 @@ export default function SuperAdminUserForm() {
                 </label>
                 <input
                   type="number"
-                  placeholder="+91-8603678852"
                   id="contactNumber"
                   name="contactNumber"
                   onChange={handleChange}
