@@ -5,11 +5,15 @@ import { useMediaQuery } from "react-responsive";
 import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
 
+
 // const navigate = useNavigate()
-const handleLogout = () => {
-  console.log("HELLO");
+const handleLogout = () =>
+{
+  console.log("HELLO")
   localStorage.clear(); // or localStorage.removeItem('yourKey');
+
 };
+
 
 // -------------BASE URL SIDEBAR NAVIGATION--------------------------
 
@@ -75,14 +79,17 @@ export default function Layout({
   search,
   AddButton,
   // setSearchTerm,
-}) {
+})
+{
+
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const location = useLocation();
   console.log(location);
   const navigate = useNavigate();
   const userContactNumber = localStorage.getItem("userContactNumber");
-  const userName = localStorage.getItem("name");
+  const userName = localStorage.getItem("name")
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+<<<<<<< HEAD
   const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
 
@@ -103,46 +110,103 @@ export default function Layout({
       document.removeEventListener("click", closeSidebarOnOutsideClick);
     };
   }, []);
+=======
+  const [searchTerm, setSearchTerm] = useState("")
+  const sidebarRef = useRef(null);
 
-  const handleEditProfile = () => {
-    if (type === "user") {
+  const toggleSidebar = () =>
+  {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+>>>>>>> 18f6bcd0ec59dc1815967d824d3d467f5a0e1692
+
+  const closeSidebarOnOutsideClick = (e) =>
+  {
+    if (sidebarRef.current && !sidebarRef.current.contains(e.target))
+    {
+      setIsSidebarOpen(false);
+    }
+  };
+
+  useEffect(() =>
+  {
+    document.addEventListener('click', closeSidebarOnOutsideClick);
+
+    return () =>
+    {
+      document.removeEventListener('click', closeSidebarOnOutsideClick);
+    };
+  }, []);
+
+
+
+
+  const handleEditProfile = () =>
+  {
+    if (type === "user")
+    {
       navigate("/edituserform");
-    } else if (type === "admin") {
+    }
+    else if (type === "admin")
+    {
       navigate("/edituserform");
-    } else if (type === "superAdmin") {
+    }
+    else if (type === "superAdmin")
+    {
       navigate("/edituserform");
-    } else {
+    }
+    else
+    {
       navigate("/editdoctorform");
     }
   };
 
+<<<<<<< HEAD
   const handleDoctorForm = () => {
     if (type === "user") {
+=======
+  const handleDoctorForm = () =>
+  {
+    if (type === "user")
+    {
+>>>>>>> 18f6bcd0ec59dc1815967d824d3d467f5a0e1692
       navigate("/patientform");
-    } else if (type === "admin") {
+    }
+    else if (type === "admin")
+    {
       navigate("/doctorform");
-    } else if (type === "superAdmin") {
+    }
+    else if (type === "superAdmin")
+    {
       navigate("/adminform");
     }
   };
 
+<<<<<<< HEAD
   const handleSearchTerm = (e) => {
+=======
+  const handleSearchTerm = (e) =>
+  {
+>>>>>>> 18f6bcd0ec59dc1815967d824d3d467f5a0e1692
     setSearchTerm(e.target.value);
   };
 
-  console.log("SEARCH TERM", searchTerm);
+  console.log("SEARCH TERM", searchTerm)
 
   return (
     <>
       <div className="flex min-h-screen">
         <aside
-          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } ease-in-out transition-all duration-300 md:transform-none`}
+          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } ease-in-out transition-all duration-300 md:transform-none`}
         >
+<<<<<<< HEAD
           <h1 className="font-bold text-2xl">
             Welcome! {type ? type : "Guest"}
           </h1>
+=======
+          <h1 className="font-bold text-2xl">Welcome! {type ? type : "Guest"}</h1>
+>>>>>>> 18f6bcd0ec59dc1815967d824d3d467f5a0e1692
           <div
             class="flex items-center gap-x-2 mt-3"
             onClick={handleEditProfile}
@@ -158,9 +222,7 @@ export default function Layout({
                 {userName}
               </h1>
 
-              <p class="text-base text-white">
-                {userContactNumber ? userContactNumber : ""}
-              </p>
+              <p class="text-base text-white">{userContactNumber ? userContactNumber : ""}</p>
             </div>
           </div>
           <hr className="mt-3" />
@@ -171,10 +233,14 @@ export default function Layout({
           {type === "superAdmin" && <NavigationLinks links={link5} />}
         </aside>
         <div className="flex flex-col flex-grow md:pl-4 pr-2">
+<<<<<<< HEAD
           <nav
             ref={sidebarRef}
             className="fixed top-0 right-0 left-0 md:left-72 z-10 md:ml-4 bg-[#08DA75] flex flex-col h-32 justify-evenly px-4 rounded-br-[80px]"
           >
+=======
+          <nav ref={sidebarRef} className="fixed top-0 right-0 left-0 md:left-72 z-10 md:ml-4 bg-[#08DA75] flex flex-col h-32 justify-evenly px-4 rounded-br-[80px]">
+>>>>>>> 18f6bcd0ec59dc1815967d824d3d467f5a0e1692
             <div className="flex justify-end">
               <img
                 src={toggle}
@@ -214,8 +280,8 @@ export default function Layout({
                     >
                       <span
                         style={{
-                          width: isTab ? "20px" : "25.58px",
-                          height: isTab ? "8px" : "14.58px",
+                          width: isTab ? '20px' : "25.58px",
+                          height: isTab ? '8px' : "14.58px",
                           marginTop: 7,
                           marginLeft: "3%",
                           marginRight: "4%",
@@ -234,12 +300,12 @@ export default function Layout({
                       <span>
                         {" "}
                         <input
-                          placeholder={`${isTab ? "" : "search"}`}
+                          placeholder={`${isTab ? '' : "search"}`}
                           style={{
-                            width: isTab ? "40px" : "100px",
+                            width: isTab ? '40px' : "100px",
                             marginRight: "30px",
                             backgroundColor: "#08DA75",
-                            fontSize: isTab ? "13px" : "24px",
+                            fontSize: isTab ? '13px' : "24px",
                             color: "white",
                             fontWeight: 600,
                             outline: "none",
@@ -255,14 +321,14 @@ export default function Layout({
                       <button
                         style={{
                           display: "inline",
-                          fontSize: isTab ? "17px" : "29px",
+                          fontSize: isTab ? '17px' : "29px",
                           fontWeight: 800,
                           fontFamily: "Lato, sans-serif",
-                          lineHeight: isTab ? "30px" : "34.8px",
+                          lineHeight: isTab ? '30px' : "34.8px",
                           color: "#08DA75",
                           backgroundColor: "white",
-                          height: isTab ? "27px" : "38px",
-                          width: isTab ? "90px" : "122px",
+                          height: isTab ? '27px' : "38px",
+                          width: isTab ? '90px' : "122px",
                           borderRadius: "43px",
                           marginLeft: 5,
                         }}
