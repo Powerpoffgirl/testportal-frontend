@@ -49,13 +49,17 @@ import SuperAdminUserForm from "./components/superadminuserform";
 import SuperAdminUserList from "./components/superadminuserlist";
 import SuperAdminPatientForm from "./components/superadminpatientform";
 import SuperAdminAppointmentList from "./components/superadminappointmentlist";
-import SuperAdminAppointmentForm from "./components/superadminappointmentform";
 import SuperAdminDoctorForm from "./components/superadmindoctorform";
 import SuperAdminDoctorList from "./components/superadmindoctorlist";
 import SuperAdminPatientList from "./components/superadminpatientlist";
 import SuperAdminAdminForm from "./components/superadminadminform";
+import SuperAdminDoctorEditForm from "./components/superadmindoctoreditform";
+import SuperAdminAdminEditForm from "./components/superadminadmineditform";
+import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
+import SuperAdminUserEditForm from "./components/superadminusereditform";
 
-function App() {
+function App()
+{
   return (
     <Routes>
       <Route
@@ -128,6 +132,50 @@ function App() {
       />
 
       <Route
+        path="/superadminadmineditform"
+        element={
+          <Layout
+            Component={SuperAdminAdminEditForm}
+            headerTextTop={"Super Admin Admin"}
+            headerTextBottom={"Edit Form"}
+          />
+        }
+      />
+
+      <Route
+        path="/superadmindoctoreditform"
+        element={
+          <Layout
+            Component={SuperAdminDoctorEditForm}
+            headerTextTop={"Super Admin Doctor"}
+            headerTextBottom={"Edit Form"}
+          />
+        }
+      />
+
+      <Route
+        path="/superadminpatienteditform"
+        element={
+          <Layout
+            Component={SuperAdminPatientEditForm}
+            headerTextTop={"Super Admin Patient"}
+            headerTextBottom={"Edit Form"}
+          />
+        }
+      />
+
+      <Route
+        path="/superadminusereditform"
+        element={
+          <Layout
+            Component={SuperAdminUserEditForm}
+            headerTextTop={"Super Admin User"}
+            headerTextBottom={"Edit Form"}
+          />
+        }
+      />
+
+      <Route
         path="/superadminuserform"
         element={
           <Layout
@@ -189,17 +237,6 @@ function App() {
       />
 
       <Route
-        path="/superadminappointmentform"
-        element={
-          <Layout
-            Component={SuperAdminAppointmentList}
-            headerTextTop={"Super Admin"}
-            headerTextBottom={"Appointment form"}
-          />
-        }
-      />
-
-      <Route
         path="/superadmindoctorform"
         element={
           <Layout
@@ -235,7 +272,8 @@ function App() {
       ></Route>
       <Route
         path="/qr"
-        element={<Layout Component={Qr} type="admin" />}
+        element={<Layout Component={Qr} type="admin" headerTextTop={"Doctor's"}
+          headerTextBottom={"QR Code"} />}
       ></Route>
       <Route
         path="/userform"
@@ -307,8 +345,14 @@ function App() {
       ></Route>
       <Route
         path="/doctorform"
-        element={<Layout Component={DoctorForm} type="admin" headerTextTop={"Doctor's"}
-          headerTextBottom={"Form"} />}
+        element={
+          <Layout
+            Component={DoctorForm}
+            type="admin"
+            headerTextTop={"Doctor's"}
+            headerTextBottom={"Form"}
+          />
+        }
       ></Route>
       <Route
         path="/editdoctorform"
