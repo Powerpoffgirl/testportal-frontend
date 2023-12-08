@@ -63,14 +63,14 @@ export default function Qr()
         className="flex min-h-screen relative overflow-auto 
     box-border"
       >
-        <AdminSidebar></AdminSidebar>
+
         <div
           className="flex flex-col bg-customGreen"
           style={{
             width: isTab ? "100%" : "77%",
           }}
         >
-          <Header line1="Find" line2="Doctors"></Header>
+
           <div
             className="flex flex-col gap-2 px-3 w-full"
             style={{

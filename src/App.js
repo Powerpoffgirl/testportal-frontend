@@ -55,7 +55,8 @@ import SuperAdminDoctorList from "./components/superadmindoctorlist";
 import SuperAdminPatientList from "./components/superadminpatientlist";
 import SuperAdminAdminForm from "./components/superadminadminform";
 
-function App() {
+function App()
+{
   return (
     <Routes>
       <Route
@@ -235,7 +236,8 @@ function App() {
       ></Route>
       <Route
         path="/qr"
-        element={<Layout Component={Qr} type="admin" />}
+        element={<Layout Component={Qr} type="admin" headerTextTop={"Doctor's"}
+          headerTextBottom={"QR Code"} />}
       ></Route>
       <Route
         path="/userform"
