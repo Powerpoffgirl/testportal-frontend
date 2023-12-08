@@ -10,6 +10,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Select } from "antd";
+import { MdEdit } from "react-icons/md";
 
 export default function EditDoctorForm()
 {
@@ -38,7 +39,7 @@ export default function EditDoctorForm()
     {
         // This will trigger the hidden file input to open the file dialog
         await fileInputRef.current.click();
-        handleNewProfilePicture()
+
     };
 
     const handleNewProfilePicture = async () =>
@@ -46,22 +47,22 @@ export default function EditDoctorForm()
         const token = localStorage.getItem('token');
         const doctorId = localStorage.getItem('doctorId');
 
-        if (!token || !doctorId)
-        {
-            console.error('Token or doctor ID not found in local storage');
-            return;
-        }
+        // if (!token || !doctorId)
+        // {
+        //     console.error('Token or doctor ID not found in local storage');
+        //     return;
+        // }
 
         const formData = new FormData();
         formData.append('doctorPic', selectedFile);
 
+        console.log("FORM DATA", formData)
         try
         {
-            const response = await fetch(`${baseUrl}/api/v1/doctor/upload_image/${doctorId}`, {
+            const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
                 method: 'POST',
                 headers: {
                     'x-auth-token': token,
-                    // Content-Type should not be manually set for FormData; the browser will set it with the proper boundary.
                 },
                 body: formData,
             });
@@ -73,6 +74,7 @@ export default function EditDoctorForm()
 
             const data = await response.json();
             console.log('Image uploaded successfully:', data);
+            setDoctorImage(data.profilePicImageUrl)
             alert('Image uploaded successfully.');
 
             // Reset the file input
@@ -84,8 +86,6 @@ export default function EditDoctorForm()
             alert('Error uploading image. Please try again.');
         }
     };
-
-
     const Daysdropdown = [
         { label: "Select Days", value: "" },
         { label: "Monday", value: "Monday" },
@@ -198,8 +198,14 @@ export default function EditDoctorForm()
                 [name]: value
             }));
         }
-        setIsEditing(true);
+        // setIsEditing(true);
     }
+
+    useEffect(() =>
+    {
+        setIsEditing(true);
+
+    }, [doctorDetails])
 
 
     const handleUpdate = async (e) =>
@@ -227,6 +233,7 @@ export default function EditDoctorForm()
             },
             doctorPic: doctorImage
         }
+
 
 
 
@@ -390,18 +397,20 @@ export default function EditDoctorForm()
                                             color: "#A4A4A4",
                                         }}
                                     >
-                                        {doctorDetails?.doctorPic ? (
+                                        {doctorImage || doctorDetails?.doctorPic ? (
                                             <img
-                                                src={doctorDetails.doctorPic}
+                                                src={doctorImage || doctorDetails?.doctorPic}
                                                 alt="Avatar"
                                                 style={{
                                                     borderRadius: "50%",
                                                 }}
                                             />
                                         ) : (
+
                                             <PermIdentityOutlinedIcon
                                                 style={{ width: "70px", height: "70px" }}
                                             />
+
                                         )}
                                     </div>
                                     <p
@@ -409,9 +418,9 @@ export default function EditDoctorForm()
                                         aria-haspopup="true"
                                         aria-expanded={open ? "true" : undefined}
                                         onClick={handleClick}
-                                        style={{ cursor: "pointer" }} // Add a pointer cursor to indicate clickable
+                                        style={{ cursor: "pointer", marginLeft: 37, marginTop: -20 }}
                                     >
-                                        Edit profile pic
+                                        <MdEdit />
                                     </p>
                                     <div style={{ backgroundColor: "#08DA75" }}>
                                         <Menu
@@ -445,7 +454,7 @@ export default function EditDoctorForm()
                                                     backgroundColor: "#08DA75",
                                                     color: isHovered1 ? "red" : "white",
                                                 }}
-                                                onClick={handleRemoveProfilePicture}
+                                                // onClick={handleRemoveProfilePicture}
                                                 onMouseEnter={() => setIsHovered1(true)}
                                                 onMouseLeave={() => setIsHovered1(false)}
                                             >
@@ -460,13 +469,17 @@ export default function EditDoctorForm()
                                         id="imageInput"
                                         type="file"
                                         ref={fileInputRef}
-                                        style={{ display: "none" }}
+                                        style={{ display: 'none' }}
                                         accept="image/*"
                                         onChange={handleFileSelect}
                                     />
                                 </div>
+                                <button onClick={handleNewProfilePicture} style={{ marginLeft: 20, marginTop: 5 }}>Upload</button>
                             </div>
                         </div>
+                        {/* <div>
+                            <button onClick={handleNewProfilePicture}>Upload</button>
+                        </div> */}
                         <div class="grid grid-cols-1 w-full gap-4">
                             <div>
                                 <label
