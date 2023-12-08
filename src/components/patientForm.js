@@ -228,18 +228,7 @@ export default function PatientForm() {
     }
   };
 
-<<<<<<< HEAD
   const handleChange = (e) => {
-=======
-  const handleChange = (e) =>
-  {
-
-
-
-
-
-
->>>>>>> a84c32944c8a47a69da174abda55d096ccbc4a79
     const { name, value } = e.target;
 
     if (
@@ -260,28 +249,7 @@ export default function PatientForm() {
           [name]: value,
         },
       }));
-<<<<<<< HEAD
-    } else if (["issues"].includes(name)) {
-      // Assuming the value is an array or a string to be added to the array
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
-        [name]: Array.isArray(value)
-          ? value
-          : [...prevPatientDetails[name], value],
-      }));
-    } else if (["diseases"].includes(name)) {
-      // Assuming the value is an array or a string to be added to the array
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
-        [name]: Array.isArray(value)
-          ? value
-          : [...prevPatientDetails[name], value],
-      }));
     } else {
-=======
-    } else
-    {
->>>>>>> a84c32944c8a47a69da174abda55d096ccbc4a79
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -380,18 +348,11 @@ export default function PatientForm() {
                   placeholder="Smita Singh"
                   id="name"
                   name="name"
-<<<<<<< HEAD
-                  value={name}
-                  onChange={handleNameChange}
+                  value={patientDetails.name}
+                  onChange={handleChange}
                   className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
                     nameError ? "border-red-500" : ""
                   }`}
-=======
-                  value={patientDetails.name}
-                  onChange={handleChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${nameError ? "border-red-500" : ""
-                    }`}
->>>>>>> a84c32944c8a47a69da174abda55d096ccbc4a79
                 />
                 {nameError && (
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
