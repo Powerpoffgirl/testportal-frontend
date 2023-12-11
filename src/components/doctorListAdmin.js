@@ -99,7 +99,7 @@ export default function DoctorListAdmin()
     const handleEditDoctor = (doctorId) =>
     {
         localStorage.setItem("doctorId", doctorId);
-        navigate("/editdoctorform")
+        navigate("/editdoctorformadmin")
         console.log("Edit function")
     }
 

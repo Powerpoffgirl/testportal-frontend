@@ -19,6 +19,7 @@ import UserLogin from "./components/userLogin";
 import DoctorListAdmin from "./components/doctorListAdmin";
 import AdminForm from "./components/adminForm";
 import EditDoctorForm from "./components/editDoctorForm";
+import EditDoctorFormAdmin from "./components/editDoctorFormAdmin";
 import EditAdminForm from "./components/editAdminForm";
 import UserOTP from "./components/userOtp";
 import PatientListUser from "./components/patientListUser";
@@ -385,6 +386,17 @@ function App()
           <Layout
             Component={EditDoctorForm}
             type="doctor"
+            headerTextTop={"Edit Doctor's"}
+            headerTextBottom={"Form"}
+          />
+        }
+      ></Route>
+      <Route
+        path="/editdoctorformadmin"
+        element={
+          <Layout
+            Component={EditDoctorFormAdmin}
+            type="admin"
             headerTextTop={"Edit Doctor's"}
             headerTextBottom={"Form"}
           />

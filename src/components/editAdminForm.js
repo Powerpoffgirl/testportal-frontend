@@ -8,6 +8,7 @@ import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { MdEdit } from "react-icons/md";
 
 export default function EditAdminForm()
 {
@@ -17,14 +18,7 @@ export default function EditAdminForm()
     const [selectedFile, setSelectedFile] = useState(null);
     const [isHovered, setIsHovered] = useState(false);
     const [isHovered1, setIsHovered1] = useState(false);
-
-
-    const handleNewProfilePictureClick = async () =>
-    {
-        // This will trigger the hidden file input to open the file dialog
-        await fileInputRef.current.click();
-        handleNewProfilePicture()
-    };
+    const [adminImage, setAdminImage] = useState();
 
 
     const handleFileSelect = (event) =>
@@ -36,22 +30,12 @@ export default function EditAdminForm()
         }
     };
 
+    const handleNewProfilePictureClick = async () =>
+    {
+        // This will trigger the hidden file input to open the file dialog
+        await fileInputRef.current.click();
 
-    // const handleFileSelect = (event) =>
-    // {
-    //     const file = event.target.files[0];
-    //     if (file)
-    //     {
-    //         setSelectedFile(file);
-    //     }
-    // };
-
-    // const handleNewProfilePictureClick = () =>
-    // {
-    //     // This will trigger the hidden file input to open the file dialog
-    //     fileInputRef.current.click();
-    //     handleNewProfilePicture()
-    // };
+    };
 
     const handleNewProfilePicture = async () =>
     {
@@ -65,15 +49,15 @@ export default function EditAdminForm()
         }
 
         const formData = new FormData();
-        formData.append('doctorPic', selectedFile);
+        formData.append('adminPic', selectedFile);
 
+        console.log("FORM DATA", formData)
         try
         {
-            const response = await fetch(`${baseUrl}/api/v1/admin/upload_image/${doctorId}`, {
+            const response = await fetch(`${baseUrl}/api/v1/admin/upload_image${doctorId}`, {
                 method: 'POST',
                 headers: {
                     'x-auth-token': token,
-                    // Content-Type should not be manually set for FormData; the browser will set it with the proper boundary.
                 },
                 body: formData,
             });
@@ -85,6 +69,7 @@ export default function EditAdminForm()
 
             const data = await response.json();
             console.log('Image uploaded successfully:', data);
+            setAdminImage(data.profilePicImageUrl)
             alert('Image uploaded successfully.');
 
             // Reset the file input
@@ -96,9 +81,6 @@ export default function EditAdminForm()
             alert('Error uploading image. Please try again.');
         }
     };
-
-
-
     const Daysdropdown = [
         { label: "Select Days", value: "" },
         { label: "Monday", value: "Monday" },
@@ -235,7 +217,8 @@ export default function EditAdminForm()
                 pinCode: doctorDetails?.address?.pinCode,
                 district: doctorDetails?.address?.district,
                 state: doctorDetails?.address?.state
-            }
+            },
+            adminPic: adminImage
         }
 
         const token = localStorage.getItem("token");
@@ -314,18 +297,20 @@ export default function EditAdminForm()
                                             color: "#A4A4A4",
                                         }}
                                     >
-                                        {doctorDetails?.doctorPic ? (
+                                        {adminImage || doctorDetails?.adminPic ? (
                                             <img
-                                                src={doctorDetails.doctorPic}
+                                                src={adminImage || doctorDetails?.adminPic}
                                                 alt="Avatar"
                                                 style={{
                                                     borderRadius: "50%",
                                                 }}
                                             />
                                         ) : (
+
                                             <PermIdentityOutlinedIcon
                                                 style={{ width: "70px", height: "70px" }}
                                             />
+
                                         )}
                                     </div>
                                     <p
@@ -333,9 +318,9 @@ export default function EditAdminForm()
                                         aria-haspopup="true"
                                         aria-expanded={open ? "true" : undefined}
                                         onClick={handleClick}
-                                        style={{ cursor: "pointer" }} // Add a pointer cursor to indicate clickable
+                                        style={{ cursor: "pointer", marginLeft: 37, marginTop: -20 }}
                                     >
-                                        Edit profile pic
+                                        <MdEdit />
                                     </p>
                                     <div style={{ backgroundColor: "#08DA75" }}>
                                         <Menu
@@ -369,7 +354,7 @@ export default function EditAdminForm()
                                                     backgroundColor: "#08DA75",
                                                     color: isHovered1 ? "red" : "white",
                                                 }}
-                                                onClick={handleRemoveProfilePicture}
+                                                // onClick={handleRemoveProfilePicture}
                                                 onMouseEnter={() => setIsHovered1(true)}
                                                 onMouseLeave={() => setIsHovered1(false)}
                                             >
@@ -384,11 +369,12 @@ export default function EditAdminForm()
                                         id="imageInput"
                                         type="file"
                                         ref={fileInputRef}
-                                        style={{ display: "none" }}
+                                        style={{ display: 'none' }}
                                         accept="image/*"
                                         onChange={handleFileSelect}
                                     />
                                 </div>
+                                <button onClick={handleNewProfilePicture} style={{ marginLeft: 20, marginTop: 5 }}>Upload</button>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 w-full gap-4">

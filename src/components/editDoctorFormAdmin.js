@@ -1,64 +1,30 @@
-import React, { useRef, useState } from "react";
-import AdminHeader from "./adminHeader";
-import AdminSidebar from "./adminSidebar";
+import React, { useEffect, useRef, useState } from "react";
+import { useMediaQuery } from "react-responsive";
+import AdminSidebar from "./adminSidebar"
 import { useNavigate } from "react-router-dom";
-import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { Select } from "antd";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { Select } from "antd";
 import { MdEdit } from "react-icons/md";
 
-export default function DoctorFormAdmin() 
+export default function EditDoctorFormAdmin()
 {
-    const navigate = useNavigate();
+    let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+    const navigate = useNavigate()
+    const baseUrl = process.env.REACT_APP_BASE_URL
     const [selectedFile, setSelectedFile] = useState(null);
+    const [open1, setOpen1] = useState(false);
+    const onOpenModal = () => setOpen1(true);
+    const onCloseModal = () => setOpen1(false);
     const [doctorImage, setDoctorImage] = useState();
-    const fileInputRef = useRef(null);
-
-    const baseUrl = process.env.REACT_APP_BASE_URL;
-
-    const [doctorDetails, setDoctorDetails] = useState({
-        name: "",
-        email: "",
-        contactNumber: "",
-        workingDays: [],
-        workingHours: {
-            workHourFrom: "",
-            workHourTo: "",
-        },
-        totalExperience: "",
-        speciality: "",
-        degree: "",
-        address: {
-            houseNo: "",
-            floor: "",
-            block: "",
-            area: "",
-            pinCode: "",
-            district: "",
-            state: "",
-        },
-        doctorPic: "",
-    });
     const [isHovered, setIsHovered] = useState(false);
     const [isHovered1, setIsHovered1] = useState(false);
-
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-
-    const handleClick = (event) =>
-    {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () =>
-    {
-        setAnchorEl(null);
-    };
+    const [isEditing, setIsEditing] = useState(false);
 
     const handleFileSelect = (event) =>
     {
@@ -119,12 +85,7 @@ export default function DoctorFormAdmin()
             console.error('Error uploading image:', error);
             alert('Error uploading image. Please try again.');
         }
-    };    // Function to handle profile picture removal
-    const handleRemoveProfilePicture = () =>
-    {
-        handleClose();
     };
-
     const Daysdropdown = [
         { label: "Select Days", value: "" },
         { label: "Monday", value: "Monday" },
@@ -135,6 +96,204 @@ export default function DoctorFormAdmin()
         { label: "Saturday", value: "Saturday" },
         { label: "Sunday", value: "Sunday" },
     ];
+    const [doctorDetails, setDoctorDetails] = useState(null)
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open = Boolean(anchorEl);
+    const fileInputRef = useRef(null);
+
+    useEffect(() =>
+    {
+        const fetchDoctorDetails = async () =>
+        {
+            try
+            {
+                const token = localStorage.getItem("token");
+                const doctorId = localStorage.getItem("doctorId");
+                if (!token)
+                {
+                    console.error("No token found in local storage");
+                    return;
+                }
+                const response = await fetch(`${baseUrl}/api/v1/doctor/get_doctorDetails`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-auth-token': token // Replace with your actual token from the previous session
+                    }
+                });
+
+                const data = await response.json();
+                console.log("DATA from USE EFFECT response", data?.data)
+                setDoctorDetails(data?.data)
+
+            } catch (error)
+            {
+                console.error('There was an error verifying the OTP:', error);
+            }
+        }
+        fetchDoctorDetails()
+    }, [])
+
+    const handleClick = (event) =>
+    {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () =>
+    {
+        setAnchorEl(null);
+    };
+
+    // Function to handle profile picture removal
+    const handleRemoveProfilePicture = () =>
+    {
+        // Logic to handle removing the current profile picture
+        handleClose();
+    };
+
+
+    const TimeDropdown = [
+        { label: "Select Time", value: "" },
+        ...Array.from({ length: 24 }, (v, i) =>
+        {
+            const hour = i.toString().padStart(2, '0');
+            return { label: `${hour}:00`, value: `${hour}:00` };
+        })
+    ];
+
+
+    const handleChange = (e) =>
+    {
+
+        const { name, value } = e.target;
+
+        if (name === "workingDays")
+        {
+            setDoctorDetails(prevDoctorDetails => ({
+                ...prevDoctorDetails,
+                workingDays: [...prevDoctorDetails?.workingDays, value],
+            }));
+        } else if (name === "workHourFrom" || name === "workHourTo")
+        {
+            setDoctorDetails(prevDoctorDetails => ({
+                ...prevDoctorDetails,
+                workingHours: {
+                    ...prevDoctorDetails?.workingHours,
+                    [name]: value,
+                }
+            }));
+        } else if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
+        {
+            setDoctorDetails(prevDoctorDetails => ({
+                ...prevDoctorDetails,
+                address: {
+                    ...prevDoctorDetails?.address,
+                    [name]: value
+                }
+            }));
+        } else
+        {
+            setDoctorDetails(prevDoctorDetails => ({
+                ...prevDoctorDetails,
+                [name]: value
+            }));
+        }
+        // setIsEditing(true);
+    }
+
+    useEffect(() =>
+    {
+        setIsEditing(true);
+
+    }, [doctorDetails])
+
+
+    const handleUpdate = async (e) =>
+    {
+        e.preventDefault();
+        // Check if the token exists
+        const newDoctorDetails = {
+            name: doctorDetails?.name,
+            workingDays: doctorDetails?.workingDays,
+            workingHours: {
+                workHourFrom: doctorDetails?.workingHours?.workHourFrom,
+                workHourTo: doctorDetails?.workingHours?.workHourTo
+            },
+            totalExperience: doctorDetails?.totalExperience,
+            speciality: doctorDetails?.speciality,
+            degree: doctorDetails?.degree,
+            address: {
+                houseNo: doctorDetails?.address?.houseNo,
+                floor: doctorDetails?.address?.floor,
+                block: doctorDetails?.address?.block,
+                area: doctorDetails?.address?.area,
+                pinCode: doctorDetails?.address?.pinCode,
+                district: doctorDetails?.address?.district,
+                state: doctorDetails?.address?.state
+            },
+            doctorPic: doctorImage
+        }
+
+
+
+
+        console.log("New DOCTOR DETAILS", newDoctorDetails)
+        const token = localStorage.getItem("token");
+        const doctorId = localStorage.getItem('doctorId');
+
+        const isEmpty = Object.values(newDoctorDetails).some(value => value === '');
+
+        if (isEmpty || isEditing === false)
+        {
+            toast.error('Please fill the fields or Update');
+            setIsEditing(false);
+            return;
+        }
+
+        if (!isEmpty || isEditing === true)
+        {
+
+            toast.success('Form submitted successfully!');
+
+        }
+
+        if (!token)
+        {
+            console.error("No token found in local storage");
+            return;
+        }
+        const response = await fetch(
+            `${baseUrl}/api/v1/doctor/update_doctor`,
+            {
+                method: "put",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-auth-token": token,
+                },
+                body: JSON.stringify(newDoctorDetails)
+            }
+        );
+        const data = await response.json();
+        if (data.success === true)
+        {
+            console.log("Doctor updated successfully.")
+            // onOpenModal()
+            // navigate("/doctorlistadmin")
+
+            // localStorage.setItem("id", data.data._id)
+        }
+        console.log("DATA from response", data)
+    }
+
+    const handleChange1 = (value) =>
+    {
+        setDoctorDetails((prevDoctorDetails) => ({
+            ...prevDoctorDetails,
+            workingDays: value, // directly set the value, which is the updated array of working days
+        }));
+    }
+
+
     const IndianDoctorSpecialties = [
         "General Medicine",
         "Cardiology",
@@ -185,125 +344,37 @@ export default function DoctorFormAdmin()
         "Reproductive Medicine",
         "Neonatology",
         "Allergy and Immunology",
-        "Audiology and Speech Therapy",
+        "Audiology and Speech Therapy"
     ];
 
-    const SpecialtiesDropdown = IndianDoctorSpecialties.map((specialty) => ({
+    const SpecialtiesDropdown = IndianDoctorSpecialties.map(specialty => ({
         label: specialty,
-        value: specialty,
+        value: specialty
     }));
 
-    const TimeDropdown = [
-        { label: "Select Time", value: "" },
-        ...Array.from({ length: 24 }, (v, i) =>
-        {
-            const hour = i.toString().padStart(2, "0");
-            return { label: `${hour}:00`, value: `${hour}:00` };
-        }),
-    ];
-
-    const handleChange1 = (e) =>
-    {
-        setDoctorDetails((prevDoctorDetails) => ({
-            ...prevDoctorDetails,
-            workingDays: e,
-        }));
-    };
-
-    const handleChange = (e) =>
-    {
-        console.log("E value", e);
-        const { name, value } = e.target;
-
-        if (name === "workHourFrom" || name === "workHourTo")
-        {
-            setDoctorDetails((prevDoctorDetails) => ({
-                ...prevDoctorDetails,
-                workingHours: {
-                    ...prevDoctorDetails.workingHours,
-                    [name]: value,
-                },
-            }));
-        } else if (
-            [
-                "houseNo",
-                "floor",
-                "block",
-                "area",
-                "pinCode",
-                "district",
-                "state",
-            ].includes(name)
-        )
-        {
-            setDoctorDetails((prevDoctorDetails) => ({
-                ...prevDoctorDetails,
-                address: {
-                    ...prevDoctorDetails.address,
-                    [name]: value,
-                },
-            }));
-        } else
-        {
-            setDoctorDetails((prevDoctorDetails) => ({
-                ...prevDoctorDetails,
-                [name]: value,
-            }));
-        }
-    };
-
-
-    const handleRegister = async (e) =>
-    {
-        e.preventDefault();
-        // Check if the token exists
-
-        const token = localStorage.getItem("token");
-        if (!token)
-        {
-            console.error("No token found in local storage");
-            return;
-        }
-        const response = await fetch(`${baseUrl}/api/v1/admin/register_doctor`, {
-            method: "post",
-            headers: {
-                "Content-Type": "application/json",
-                "x-auth-token": token,
-            },
-            body: JSON.stringify(doctorDetails),
-        });
-        const data = await response.json();
-        if (data.success === true)
-        {
-            navigate("/otp", {
-                state: { contactNumber: doctorDetails.contactNumber },
-            });
-            localStorage.setItem("id", data.data._id);
-        }
-        console.log("DATA from response", data);
-    };
 
     const handleDelete = (workingDay) =>
     {
         console.log("delete", workingDay);
-        const days = doctorDetails.workingDays.filter(
-            (doctorDetail) => doctorDetail !== workingDay
-        );
+        const days = doctorDetails.workingDays.filter(doctorDetail => doctorDetail !== workingDay);
 
         // Assuming you want to update the doctorDetails state after filtering
         setDoctorDetails({
             ...doctorDetails,
-            workingDays: days,
+            workingDays: days
         });
-    };
+    }
 
-    console.log("DOCTOR DETAILS", doctorDetails);
+    console.log("DOCTOR DETAILS", doctorDetails)
 
     return (
         <>
             <div className="flex flex-row">
-                <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
+                <div >
+
+                </div>
                 <div className=" w-full">
+
                     <div className="mt-6 p-2">
                         <div className="flex  flex-col items-center justify-center w-full">
                             <div className="cursor-pointer">
@@ -406,6 +477,9 @@ export default function DoctorFormAdmin()
                                 <button onClick={handleNewProfilePicture} style={{ marginLeft: 20, marginTop: 5 }}>Upload</button>
                             </div>
                         </div>
+                        {/* <div>
+                            <button onClick={handleNewProfilePicture}>Upload</button>
+                        </div> */}
                         <div class="grid grid-cols-1 w-full gap-4">
                             <div>
                                 <label
@@ -419,6 +493,7 @@ export default function DoctorFormAdmin()
                                     placeholder="Smita Singh"
                                     id="name"
                                     name="name"
+                                    value={doctorDetails?.name}
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
@@ -437,6 +512,7 @@ export default function DoctorFormAdmin()
                                     name="email"
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                    value={doctorDetails?.email}
                                 />
                             </div>
                             <div>
@@ -453,6 +529,7 @@ export default function DoctorFormAdmin()
                                     name="contactNumber"
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                    value={doctorDetails?.contactNumber}
                                 />
                             </div>
 
@@ -464,14 +541,17 @@ export default function DoctorFormAdmin()
                                     >
                                         Working Days
                                     </label>
-                                    <div className="block w-full mt-0 rounded-lg border border-[#08DA75] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+                                    <div className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+
+
                                         <Select
-                                            className="w-full border-none h-10"
+                                            className="w-full border-none h-11"
                                             mode="multiple"
                                             id="workingDays"
                                             name="workingDays"
                                             onChange={handleChange1}
                                             placeholder="Select Working Days"
+                                            value={doctorDetails?.workingDays}
                                         // Add other props as needed
                                         >
                                             {Daysdropdown.map((option) => (
@@ -493,6 +573,7 @@ export default function DoctorFormAdmin()
                                                 className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                                 name="workHourFrom"
                                                 onChange={handleChange}
+                                                value={doctorDetails?.workingHours?.workHourFrom}
                                             >
                                                 {TimeDropdown.map((time) => (
                                                     <option key={time.value} value={time.value}>
@@ -507,6 +588,7 @@ export default function DoctorFormAdmin()
                                                 className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                                 name="workHourTo"
                                                 onChange={handleChange}
+                                                value={doctorDetails?.workingHours?.workHourTo}
                                             >
                                                 {TimeDropdown.map((time) => (
                                                     <option key={time.value} value={time.value}>
@@ -530,6 +612,7 @@ export default function DoctorFormAdmin()
                                         type="text"
                                         id="total-experience"
                                         name="totalExperience"
+                                        value={doctorDetails?.totalExperience}
                                         onChange={handleChange}
                                         class="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                     />
@@ -546,6 +629,7 @@ export default function DoctorFormAdmin()
                                         id="speciality"
                                         name="speciality"
                                         onChange={handleChange}
+
                                     >
                                         {SpecialtiesDropdown.map(({ label, value }) => (
                                             <option key={value} value={value}>
@@ -567,6 +651,7 @@ export default function DoctorFormAdmin()
                                     type="text"
                                     id="degree"
                                     name="degree"
+                                    value={doctorDetails?.degree}
                                     onChange={handleChange}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
@@ -584,6 +669,7 @@ export default function DoctorFormAdmin()
                                             type="text"
                                             id="houseNo"
                                             name="houseNo"
+                                            value={doctorDetails?.address?.houseNo}
                                             onChange={handleChange}
                                             placeholder="1234"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -600,6 +686,7 @@ export default function DoctorFormAdmin()
                                             type="text"
                                             id="floor"
                                             name="floor"
+                                            value={doctorDetails?.address?.floor}
                                             onChange={handleChange}
                                             placeholder="2nd"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -616,6 +703,7 @@ export default function DoctorFormAdmin()
                                             type="text"
                                             id="block"
                                             name="block"
+                                            value={doctorDetails?.address?.block}
                                             onChange={handleChange}
                                             placeholder="A"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -632,6 +720,7 @@ export default function DoctorFormAdmin()
                                             type="text"
                                             id="area"
                                             name="area"
+                                            value={doctorDetails?.address?.area}
                                             onChange={handleChange}
                                             placeholder="Green Park"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -649,6 +738,7 @@ export default function DoctorFormAdmin()
                                             id="pinCode"
                                             name="pinCode"
                                             onChange={handleChange}
+                                            value={doctorDetails?.address?.pinCode}
                                             placeholder="110016"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
@@ -664,6 +754,7 @@ export default function DoctorFormAdmin()
                                             type="text"
                                             id="district"
                                             name="district"
+                                            value={doctorDetails?.address?.district}
                                             onChange={handleChange}
                                             placeholder="South Delhi"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -680,6 +771,7 @@ export default function DoctorFormAdmin()
                                             type="text"
                                             id="state"
                                             name="state"
+                                            value={doctorDetails?.address?.state}
                                             onChange={handleChange}
                                             placeholder="Delhi"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -691,12 +783,13 @@ export default function DoctorFormAdmin()
                         <div className="mt-10 w-100 items-center justify-center text-center">
                             <button
                                 className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
-                                onClick={handleRegister}
+                                onClick={handleUpdate}
                             >
                                 Process
                             </button>
                         </div>
                     </div>
+                    <ToastContainer />
                 </div>
             </div>
         </>
