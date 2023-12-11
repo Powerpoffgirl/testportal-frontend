@@ -25,8 +25,8 @@ export default function SuperAdminUserForm() {
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
   const navigate = useNavigate();
-  const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
+  const [name, setName] = useState("");
   const [houseNo, setHouseNo] = useState("");
   const [houseNoError, setHouseNoError] = useState("");
   const [floor, setFloor] = useState("");
@@ -314,19 +314,24 @@ export default function SuperAdminUserForm() {
             <div class="grid grid-cols-1 w-full gap-4">
               <div>
                 <label
-                  for="name"
-                  class="block text-black text-lg font-semibold"
+                  htmlFor="name"
+                  className="block text-black text-lg font-semibold"
                 >
-                  Dr. Name
+                  Name
                 </label>
                 <input
                   type="text"
                   id="name"
                   name="name"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  onChange={handleNameChange}
+                  className={`block mt-0 w-full rounded-lg border ${
+                    nameError ? "border-red-500" : "border-[#08DA75]"
+                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
-              </div>
+                {nameError && (
+                  <p className="text-red-500 text-sm mt-1">{nameError}</p>
+                )}
+              </div>{" "}
               <div>
                 <label
                   for="email"
@@ -357,7 +362,6 @@ export default function SuperAdminUserForm() {
                   class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
               </div>
-
               <div class="p-3 pb-5 border border-[#08DA75]">
                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                   <div class="px-2 w-full sm:w-1/3">
