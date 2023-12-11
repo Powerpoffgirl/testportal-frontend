@@ -6,7 +6,8 @@ import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
 
 // const navigate = useNavigate()
-const handleLogout = () => {
+const handleLogout = () =>
+{
   console.log("HELLO");
   localStorage.clear(); // or localStorage.removeItem('yourKey');
 };
@@ -75,7 +76,8 @@ export default function Layout({
   search,
   AddButton,
   // setSearchTerm,
-}) {
+})
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const location = useLocation();
   console.log(location);
@@ -86,47 +88,62 @@ export default function Layout({
   const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
 
-  const toggleSidebar = () => {
+  const toggleSidebar = () =>
+  {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const closeSidebarOnOutsideClick = (e) => {
-    if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+  const closeSidebarOnOutsideClick = (e) =>
+  {
+    if (sidebarRef.current && !sidebarRef.current.contains(e.target))
+    {
       setIsSidebarOpen(false);
     }
   };
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     document.addEventListener("click", closeSidebarOnOutsideClick);
 
-    return () => {
+    return () =>
+    {
       document.removeEventListener("click", closeSidebarOnOutsideClick);
     };
   }, []);
 
-  const handleEditProfile = () => {
-    if (type === "user") {
+  const handleEditProfile = () =>
+  {
+    if (type === "user")
+    {
       navigate("/edituserform");
-    } else if (type === "admin") {
+    } else if (type === "admin")
+    {
       navigate("/edituserform");
-    } else if (type === "superAdmin") {
+    } else if (type === "superAdmin")
+    {
       navigate("/edituserform");
-    } else {
+    } else
+    {
       navigate("/editdoctorform");
     }
   };
 
-  const handleDoctorForm = () => {
-    if (type === "user") {
+  const handleDoctorForm = () =>
+  {
+    if (type === "user")
+    {
       navigate("/patientform");
-    } else if (type === "admin") {
-      navigate("/doctorform");
-    } else if (type === "superAdmin") {
+    } else if (type === "admin")
+    {
+      navigate("/doctorformadmin");
+    } else if (type === "superAdmin")
+    {
       navigate("/adminform");
     }
   };
 
-  const handleSearchTerm = (e) => {
+  const handleSearchTerm = (e) =>
+  {
     setSearchTerm(e.target.value);
   };
 
@@ -136,9 +153,8 @@ export default function Layout({
     <>
       <div className="flex min-h-screen">
         <aside
-          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } ease-in-out transition-all duration-300 md:transform-none`}
+          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } ease-in-out transition-all duration-300 md:transform-none`}
         >
           <h1 className="font-bold text-2xl">
             Welcome! {type ? type : "Guest"}

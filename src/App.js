@@ -10,6 +10,7 @@ import UserAdmin from "./components/userAdmin";
 import DoctorDetail from "./components/doctorDetail";
 import PatientForm from "./components/patientForm";
 import DoctorForm from "./components/doctorForm";
+import DoctorFormAdmin from "./components/doctorFormAdmin";
 import PatientList from "./components/patientList";
 import DoctorList from "./components/doctorList";
 import DoctorLogin from "./components/doctorLogin";
@@ -31,6 +32,7 @@ import PatientListAdmin from "./components/patientListAdmin";
 import UserList from "./components/userList";
 import ShowPatientForm from "./components/showPatientForm";
 import EditAppointment from "./components/editAppointment";
+import EditAppointmentAdmin from "./components/editAppointmentAdmin";
 import ViewPatientDescription from "./components/viewPatientDescription";
 import UserSignup from "./components/userSignup";
 import DocAppointment from "./components/docAppointment";
@@ -344,10 +346,33 @@ function App()
         }
       ></Route>
       <Route
+        path="/editappointmentadmin"
+        element={
+          <Layout
+            Component={EditAppointmentAdmin}
+            type="admin"
+            headerTextTop={"Edit"}
+            headerTextBottom={"Appointment"}
+          />
+        }
+      ></Route>
+      <Route
         path="/doctorform"
         element={
           <Layout
             Component={DoctorForm}
+            type="admin"
+            headerTextTop={"Doctor's"}
+            headerTextBottom={"Form"}
+          />
+        }
+      ></Route>
+
+      <Route
+        path="/doctorformadmin"
+        element={
+          <Layout
+            Component={DoctorFormAdmin}
             type="admin"
             headerTextTop={"Doctor's"}
             headerTextBottom={"Form"}

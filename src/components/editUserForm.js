@@ -257,7 +257,7 @@ export default function EditUserForm()
         district: userDetails?.address?.district,
         state: userDetails?.address?.state,
       },
-      UserPic: userImage
+      userPic: userImage
     };
 
     const token = localStorage.getItem("token");

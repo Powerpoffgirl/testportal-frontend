@@ -103,7 +103,7 @@ export default function AppointmentListAdmin({ searchTerm })
     const handleEditAppointment = (appointmentId) =>
     {
         localStorage.setItem("appointmentId", appointmentId);
-        navigate("/editappointment");
+        navigate("/editappointmentadmin");
     };
 
     const handleDeleteAppointment = async (appointmentId) =>

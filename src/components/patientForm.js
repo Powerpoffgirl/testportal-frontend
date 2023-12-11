@@ -56,7 +56,7 @@ export default function PatientForm()
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const [doctorImage, setDoctorImage] = useState();
+  const [patientImage, setPatientImage] = useState();
   const fileInputRef = useRef(null);
   const [doctorDetails, setDoctorDetails] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null);
@@ -92,7 +92,7 @@ export default function PatientForm()
     // }
 
     const formData = new FormData();
-    formData.append('doctorPic', selectedFile);
+    formData.append('patientPic', selectedFile);
 
     console.log("FORM DATA", formData)
     try
@@ -112,8 +112,9 @@ export default function PatientForm()
 
       const data = await response.json();
       console.log('Image uploaded successfully:', data);
-      setDoctorImage(data.profilePicImageUrl)
+      setPatientImage(data.profilePicImageUrl)
       alert('Image uploaded successfully.');
+
 
       // Reset the file input
       setSelectedFile(null);
@@ -328,6 +329,7 @@ export default function PatientForm()
       district: "",
       state: "",
     },
+    patientPic: "",
   });
 
   const handlePincodeChange = (e) =>
@@ -362,6 +364,11 @@ export default function PatientForm()
   {
     const { name, value } = e.target;
 
+    setPatientDetails((prevPatientDetails) => ({
+      ...prevPatientDetails,
+      patientPic: patientImage,
+    }));
+
     if (
       [
         "houseNo",
@@ -395,19 +402,19 @@ export default function PatientForm()
   {
     e.preventDefault();
 
-    const isEmpty = Object.values(patientDetails).some((value) => value === "");
+    // const isEmpty = Object.values(patientDetails).some((value) => value === "");
 
-    if (isEmpty || isEditing === false)
-    {
-      toast.error("Please fill the fields");
-      setIsEditing(false);
-      return;
-    }
+    // if (isEmpty || isEditing === false)
+    // {
+    //   toast.error("Please fill the fields");
+    //   setIsEditing(false);
+    //   return;
+    // }
 
-    if (!isEmpty || isEditing === true)
-    {
-      toast.success("Form submitted successfully!");
-    }
+    // if (!isEmpty || isEditing === true)
+    // {
+    //   toast.success("Form submitted successfully!");
+    // }
     // Check if the token exists
     const token = localStorage.getItem("token");
     if (!token)
@@ -494,9 +501,9 @@ export default function PatientForm()
                       color: "#A4A4A4",
                     }}
                   >
-                    {doctorImage || doctorDetails?.doctorPic ? (
+                    {patientImage || patientDetails?.patientPic ? (
                       <img
-                        src={doctorImage || doctorDetails?.doctorPic}
+                        src={patientImage || patientDetails?.patientPic}
                         alt="Avatar"
                         style={{
                           borderRadius: "50%",
