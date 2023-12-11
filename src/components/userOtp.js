@@ -86,6 +86,7 @@ const UserOTP = () =>
       if (data.success === true)
       {
         localStorage.setItem("token", data?.data?.token)
+        localStorage.setItem("pic", data?.data?.data?.userPic)
         console.log("token", data?.data?.token)
         console.log("======NEW USER=======", data?.data?.data?.newUser)
         if (data?.data?.data?.newUser)

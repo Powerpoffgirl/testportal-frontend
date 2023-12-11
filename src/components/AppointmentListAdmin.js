@@ -9,6 +9,7 @@ import { FaEdit } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Button, Popconfirm } from 'antd';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -103,7 +104,7 @@ export default function AppointmentListAdmin({ searchTerm })
     const handleEditAppointment = (appointmentId) =>
     {
         localStorage.setItem("appointmentId", appointmentId);
-        navigate("/editappointment");
+        navigate("/editappointmentadmin");
     };
 
     const handleDeleteAppointment = async (appointmentId) =>
@@ -308,11 +309,15 @@ export default function AppointmentListAdmin({ searchTerm })
                     <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" >
                         <div className="flex flex-row justify-start items-center">
                             <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(appointment?._id)}>
-                                <img
-                                    class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
-                                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
-                                    alt=""
-                                />
+                                {
+                                    appointment?.doctorId?.doctorPic ? <img
+                                        class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                                        src={appointment?.doctorId?.doctorPic}
+                                        alt={appointment?.doctorId?.doctorPic.name}
+                                    />
+                                        :
+                                        <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
+                                }
 
                                 <div
                                     class="flex flex-row bg-white p-2 md:flex-row justify-between"

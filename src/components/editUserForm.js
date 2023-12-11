@@ -8,6 +8,7 @@ import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { MdEdit } from "react-icons/md";
 
 export default function EditUserForm()
 {
@@ -16,6 +17,7 @@ export default function EditUserForm()
   const [selectedFile, setSelectedFile] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
+  const [userImage, setUserImage] = useState();
   const [userDetails, setUserDetails] = useState(
     { name: "", }
   );
@@ -32,40 +34,37 @@ export default function EditUserForm()
     }
   };
 
-  const handleNewProfilePictureClick = () =>
+  const handleNewProfilePictureClick = async () =>
   {
     // This will trigger the hidden file input to open the file dialog
-    fileInputRef.current.click();
-    handleNewProfilePicture();
+    await fileInputRef.current.click();
+
   };
 
   const handleNewProfilePicture = async () =>
   {
-    const token = localStorage.getItem("token");
-    const userId = localStorage.getItem("userId");
+    const token = localStorage.getItem('token');
+    const doctorId = localStorage.getItem('doctorId');
 
-    if (!token || !userId)
-    {
-      console.error("Token or user ID not found in local storage");
-      return;
-    }
+    // if (!token || !doctorId)
+    // {
+    //     console.error('Token or doctor ID not found in local storage');
+    //     return;
+    // }
 
     const formData = new FormData();
-    formData.append("doctorPic", selectedFile);
+    formData.append('doctorPic', selectedFile);
 
+    console.log("FORM DATA", formData)
     try
     {
-      const response = await fetch(
-        `${baseUrl}/api/v1/user/upload_image/${userId}`,
-        {
-          method: "POST",
-          headers: {
-            "x-auth-token": token,
-            // Content-Type should not be manually set for FormData; the browser will set it with the proper boundary.
-          },
-          body: formData,
-        }
-      );
+      const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+        method: 'POST',
+        headers: {
+          'x-auth-token': token,
+        },
+        body: formData,
+      });
 
       if (!response.ok)
       {
@@ -73,18 +72,20 @@ export default function EditUserForm()
       }
 
       const data = await response.json();
-      console.log("Image uploaded successfully:", data);
-      alert("Image uploaded successfully.");
+      console.log('Image uploaded successfully:', data);
+      setUserImage(data.profilePicImageUrl)
+      alert('Image uploaded successfully.');
 
       // Reset the file input
       setSelectedFile(null);
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     } catch (error)
     {
-      console.error("Error uploading image:", error);
-      alert("Error uploading image. Please try again.");
+      console.error('Error uploading image:', error);
+      alert('Error uploading image. Please try again.');
     }
   };
+
 
   // const [userDetails, setUserDetails] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null);
@@ -256,6 +257,7 @@ export default function EditUserForm()
         district: userDetails?.address?.district,
         state: userDetails?.address?.state,
       },
+      userPic: userImage
     };
 
     const token = localStorage.getItem("token");
@@ -329,18 +331,20 @@ export default function EditUserForm()
                       color: "#A4A4A4",
                     }}
                   >
-                    {userDetails?.userPic ? (
+                    {userImage || userDetails?.userPic ? (
                       <img
-                        src={userDetails.userPic}
+                        src={userImage || userDetails?.userPic}
                         alt="Avatar"
                         style={{
                           borderRadius: "50%",
                         }}
                       />
                     ) : (
+
                       <PermIdentityOutlinedIcon
                         style={{ width: "70px", height: "70px" }}
                       />
+
                     )}
                   </div>
                   <p
@@ -348,9 +352,9 @@ export default function EditUserForm()
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                     onClick={handleClick}
-                    style={{ cursor: "pointer" }} // Add a pointer cursor to indicate clickable
+                    style={{ cursor: "pointer", marginLeft: 37, marginTop: -20 }}
                   >
-                    Edit profile pic
+                    <MdEdit />
                   </p>
                   <div style={{ backgroundColor: "#08DA75" }}>
                     <Menu
@@ -384,7 +388,7 @@ export default function EditUserForm()
                           backgroundColor: "#08DA75",
                           color: isHovered1 ? "red" : "white",
                         }}
-                        onClick={handleRemoveProfilePicture}
+                        // onClick={handleRemoveProfilePicture}
                         onMouseEnter={() => setIsHovered1(true)}
                         onMouseLeave={() => setIsHovered1(false)}
                       >
@@ -399,11 +403,12 @@ export default function EditUserForm()
                     id="imageInput"
                     type="file"
                     ref={fileInputRef}
-                    style={{ display: "none" }}
+                    style={{ display: 'none' }}
                     accept="image/*"
                     onChange={handleFileSelect}
                   />
                 </div>
+                <button onClick={handleNewProfilePicture} style={{ marginLeft: 20, marginTop: 5 }}>Upload</button>
               </div>
             </div>
             <div class="grid grid-cols-1 w-full gap-4">

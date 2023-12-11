@@ -4,9 +4,11 @@ import toggle from "../assets/toogle.svg";
 import { useMediaQuery } from "react-responsive";
 import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // const navigate = useNavigate()
-const handleLogout = () => {
+const handleLogout = () =>
+{
   console.log("HELLO");
   localStorage.clear(); // or localStorage.removeItem('yourKey');
 };
@@ -75,7 +77,8 @@ export default function Layout({
   search,
   AddButton,
   // setSearchTerm,
-}) {
+})
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const location = useLocation();
   console.log(location);
@@ -85,48 +88,65 @@ export default function Layout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
+  const [pic, setPic] = useState()
 
-  const toggleSidebar = () => {
+  const toggleSidebar = () =>
+  {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const closeSidebarOnOutsideClick = (e) => {
-    if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+  const closeSidebarOnOutsideClick = (e) =>
+  {
+    if (sidebarRef.current && !sidebarRef.current.contains(e.target))
+    {
       setIsSidebarOpen(false);
     }
   };
 
-  useEffect(() => {
+  useEffect(() =>
+  {
+    setPic(localStorage.getItem("pic"))
     document.addEventListener("click", closeSidebarOnOutsideClick);
 
-    return () => {
+    return () =>
+    {
       document.removeEventListener("click", closeSidebarOnOutsideClick);
     };
   }, []);
 
-  const handleEditProfile = () => {
-    if (type === "user") {
+  const handleEditProfile = () =>
+  {
+    if (type === "user")
+    {
       navigate("/edituserform");
-    } else if (type === "admin") {
+    } else if (type === "admin")
+    {
       navigate("/edituserform");
-    } else if (type === "superAdmin") {
+    } else if (type === "superAdmin")
+    {
       navigate("/edituserform");
-    } else {
+    } else
+    {
       navigate("/editdoctorform");
     }
   };
 
-  const handleDoctorForm = () => {
-    if (type === "user") {
+  const handleDoctorForm = () =>
+  {
+    if (type === "user")
+    {
       navigate("/patientform");
-    } else if (type === "admin") {
-      navigate("/doctorform");
-    } else if (type === "superAdmin") {
+    } else if (type === "admin")
+    {
+      navigate("/doctorformadmin");
+    } else if (type === "superAdmin")
+    {
       navigate("/adminform");
     }
   };
 
-  const handleSearchTerm = (e) => {
+  const handleSearchTerm = (e) =>
+  {
     setSearchTerm(e.target.value);
   };
 
@@ -136,9 +156,8 @@ export default function Layout({
     <>
       <div className="flex min-h-screen">
         <aside
-          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } ease-in-out transition-all duration-300 md:transform-none`}
+          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } ease-in-out transition-all duration-300 md:transform-none`}
         >
           <h1 className="font-bold text-2xl">
             Welcome! {type ? type : "Guest"}
@@ -147,11 +166,15 @@ export default function Layout({
             class="flex items-center gap-x-2 mt-3"
             onClick={handleEditProfile}
           >
-            <img
-              class="object-cover w-16 h-16"
-              src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
-              alt="avatar"
-            />
+            {
+              pic ? <img
+                class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                src={pic}
+                alt={userName}
+              />
+                :
+                <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
+            }
 
             <div>
               <h1 class="text-xl font-semibold text-white capitalize">

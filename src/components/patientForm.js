@@ -2,8 +2,15 @@ import React, { useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
 import { ToastContainer, toast } from "react-toastify";
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import "react-toastify/dist/ReactToastify.css";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
+import { HiOutlineUserAdd } from "react-icons/hi";
+
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#08DA75"/>
@@ -22,9 +29,9 @@ export default function PatientForm()
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
   const [isEditing, setIsEditing] = useState(false);
-  const [open, setOpen] = useState(false);
-  const onOpenModal = () => setOpen(true);
-  const onCloseModal = () => setOpen(false);
+  const [open1, setOpen1] = useState(false);
+  const onOpenModal = () => setOpen1(true);
+  const onCloseModal = () => setOpen1(false);
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
@@ -46,6 +53,78 @@ export default function PatientForm()
   const [districtError, setDistrictError] = useState("");
   const [state, setState] = useState("");
   const [stateError, setStateError] = useState("");
+  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered1, setIsHovered1] = useState(false);
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [patientImage, setPatientImage] = useState();
+  const fileInputRef = useRef(null);
+  const [doctorDetails, setDoctorDetails] = useState(null)
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+
+
+
+  const handleFileSelect = (event) =>
+  {
+    const file = event.target.files[0];
+    if (file)
+    {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleNewProfilePictureClick = async () =>
+  {
+    // This will trigger the hidden file input to open the file dialog
+    await fileInputRef.current.click();
+
+  };
+
+  const handleNewProfilePicture = async () =>
+  {
+    const token = localStorage.getItem('token');
+    const doctorId = localStorage.getItem('doctorId');
+
+    // if (!token || !doctorId)
+    // {
+    //     console.error('Token or doctor ID not found in local storage');
+    //     return;
+    // }
+
+    const formData = new FormData();
+    formData.append('patientPic', selectedFile);
+
+    console.log("FORM DATA", formData)
+    try
+    {
+      const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+        method: 'POST',
+        headers: {
+          'x-auth-token': token,
+        },
+        body: formData,
+      });
+
+      if (!response.ok)
+      {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log('Image uploaded successfully:', data);
+      setPatientImage(data.profilePicImageUrl)
+      alert('Image uploaded successfully.');
+
+
+      // Reset the file input
+      setSelectedFile(null);
+      fileInputRef.current.value = '';
+    } catch (error)
+    {
+      console.error('Error uploading image:', error);
+      alert('Error uploading image. Please try again.');
+    }
+  };
 
   const handleNameChange = (e) =>
   {
@@ -250,6 +329,7 @@ export default function PatientForm()
       district: "",
       state: "",
     },
+    patientPic: "",
   });
 
   const handlePincodeChange = (e) =>
@@ -271,10 +351,23 @@ export default function PatientForm()
       setPinCodeError("");
     }
   };
+  const handleClick = (event) =>
+  {
+    setAnchorEl(event.currentTarget);
+  };
 
+  const handleClose = () =>
+  {
+    setAnchorEl(null);
+  };
   const handleChange = (e) =>
   {
     const { name, value } = e.target;
+
+    setPatientDetails((prevPatientDetails) => ({
+      ...prevPatientDetails,
+      patientPic: patientImage,
+    }));
 
     if (
       [
@@ -309,19 +402,19 @@ export default function PatientForm()
   {
     e.preventDefault();
 
-    const isEmpty = Object.values(patientDetails).some((value) => value === "");
+    // const isEmpty = Object.values(patientDetails).some((value) => value === "");
 
-    if (isEmpty || isEditing === false)
-    {
-      toast.error("Please fill the fields");
-      setIsEditing(false);
-      return;
-    }
+    // if (isEmpty || isEditing === false)
+    // {
+    //   toast.error("Please fill the fields");
+    //   setIsEditing(false);
+    //   return;
+    // }
 
-    if (!isEmpty || isEditing === true)
-    {
-      toast.success("Form submitted successfully!");
-    }
+    // if (!isEmpty || isEditing === true)
+    // {
+    //   toast.success("Form submitted successfully!");
+    // }
     // Check if the token exists
     const token = localStorage.getItem("token");
     if (!token)
@@ -351,7 +444,7 @@ export default function PatientForm()
   return (
     <>
       <Modal
-        open={open}
+        open={open1}
         onClose={onCloseModal}
         center
         doctor={selectedDoctor}
@@ -387,6 +480,108 @@ export default function PatientForm()
         <div></div>
         <div className=" w-full">
           <div className="mt-6 p-2">
+            <div className="flex  flex-col items-center justify-center w-full">
+              <div className="cursor-pointer">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#FFFFFF",
+                      width: "90px",
+                      height: "90px",
+                      borderRadius: "50%",
+                      alignItems: "center",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                      color: "#A4A4A4",
+                    }}
+                  >
+                    {patientImage || patientDetails?.patientPic ? (
+                      <img
+                        src={patientImage || patientDetails?.patientPic}
+                        alt="Avatar"
+                        style={{
+                          borderRadius: "50%",
+                        }}
+                      />
+                    ) : (
+
+                      <PermIdentityOutlinedIcon
+                        style={{ width: "70px", height: "70px" }}
+                      />
+
+                    )}
+                  </div>
+                  <p
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                    style={{ cursor: "pointer", marginLeft: 37, marginTop: -20 }}
+                  >
+                    <MdEdit />
+                  </p>
+                  <div style={{ backgroundColor: "#08DA75" }}>
+                    <Menu
+                      id="profile-pic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        "aria-labelledby": "edit-profile-pic-text",
+                        style: { backgroundColor: "#08DA75" }, // Set background color for the whole menu
+                      }}
+                    >
+                      <MenuItem
+                        style={{
+                          backgroundColor: "#08DA75",
+                          color: isHovered ? "red" : "white",
+                        }}
+                        onClick={handleNewProfilePictureClick}
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                      >
+                        {" "}
+                        <span style={{ marginRight: "8px" }}>
+                          <HiOutlineUserAdd />
+                        </span>
+                        <span>New profile picture</span>
+                      </MenuItem>
+
+                      <MenuItem
+                        style={{
+                          backgroundColor: "#08DA75",
+                          color: isHovered1 ? "red" : "white",
+                        }}
+                        // onClick={handleRemoveProfilePicture}
+                        onMouseEnter={() => setIsHovered1(true)}
+                        onMouseLeave={() => setIsHovered1(false)}
+                      >
+                        <span style={{ marginRight: "8px" }}>
+                          <FaRegTrashAlt />
+                        </span>
+                        <span>Remove current picture</span>
+                      </MenuItem>
+                    </Menu>
+                  </div>
+                  <input
+                    id="imageInput"
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: 'none' }}
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                  />
+                </div>
+                <button onClick={handleNewProfilePicture} style={{ marginLeft: 20, marginTop: 5 }}>Upload</button>
+              </div>
+            </div>
+
             <div class="grid grid-cols-1 w-full gap-4">
               <div>
                 <label
