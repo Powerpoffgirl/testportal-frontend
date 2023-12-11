@@ -4,6 +4,7 @@ import toggle from "../assets/toogle.svg";
 import { useMediaQuery } from "react-responsive";
 import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 // const navigate = useNavigate()
 const handleLogout = () =>
@@ -87,6 +88,7 @@ export default function Layout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
+  const [pic, setPic] = useState()
 
   const toggleSidebar = () =>
   {
@@ -103,6 +105,7 @@ export default function Layout({
 
   useEffect(() =>
   {
+    setPic(localStorage.getItem("pic"))
     document.addEventListener("click", closeSidebarOnOutsideClick);
 
     return () =>
@@ -163,11 +166,15 @@ export default function Layout({
             class="flex items-center gap-x-2 mt-3"
             onClick={handleEditProfile}
           >
-            <img
-              class="object-cover w-16 h-16"
-              src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
-              alt="avatar"
-            />
+            {
+              pic ? <img
+                class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                src={pic}
+                alt={userName}
+              />
+                :
+                <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
+            }
 
             <div>
               <h1 class="text-xl font-semibold text-white capitalize">

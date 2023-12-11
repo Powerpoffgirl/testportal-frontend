@@ -27,6 +27,12 @@ export default function SuperAdminPatientForm() {
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
+
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [contactError, setContactError] = useState("");
+
   const [age, setAge] = useState("");
   const [ageError, setAgeError] = useState("");
   const [bodyWeight, setBodyWeight] = useState("");
@@ -62,6 +68,37 @@ export default function SuperAdminPatientForm() {
     }
   };
 
+  const handleEmailChange = (e) => {
+    const enteredEmail = e.target.value;
+    setEmail(enteredEmail);
+
+    // Validation logic for email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!enteredEmail.trim()) {
+      setEmailError("Email is required");
+    } else if (!emailPattern.test(enteredEmail)) {
+      setEmailError("Invalid email format");
+    } else {
+      setEmailError("");
+    }
+  };
+
+  const handleContactChange = (e) => {
+    const enteredContact = e.target.value;
+    setContactNumber(enteredContact);
+
+    const contactRegex = /^\d{10}$/; // Validates a 10-digit number
+
+    if (!enteredContact.trim()) {
+      setContactError("Contact number is required");
+    } else if (!contactRegex.test(enteredContact)) {
+      setContactError("Invalid contact number format (should be 10 digits)");
+    } else {
+      setContactError("");
+    }
+  };
+
   const handleAgeChange = (e) => {
     const enteredAge = e.target.value;
     setAge(enteredAge);
@@ -79,24 +116,19 @@ export default function SuperAdminPatientForm() {
     }
   };
 
-  const handleBodyWeightChange = (e) => {
-    const enteredBodyWeight = e.target.value;
-    setBodyWeight(enteredBodyWeight);
+  const handleBodyWightChange = (e) => {
+    const { value } = e.target;
+    setBodyWeight(value);
 
-    // Validation logic
-    const bodyWeightRegex = /^\d+(\.\d{1,2})?$/; // Allows positive numbers with up to 2 decimal places
-
-    if (!enteredBodyWeight.trim()) {
+    // Perform validation here
+    if (!value || value.trim() === "") {
       setBodyWeightError("Body weight is required");
-    } else if (!bodyWeightRegex.test(enteredBodyWeight)) {
-      setBodyWeightError("Invalid body weight format");
-    } else if (enteredBodyWeight <= 0) {
-      setBodyWeightError("Body weight should be greater than 0");
+    } else if (isNaN(value) || parseFloat(value) <= 0) {
+      setBodyWeightError("Please enter a valid body weight");
     } else {
-      setBodyWeightError("");
+      setBodyWeightError(""); // No error if input is valid
     }
   };
-
   const handleHouseNoChange = (e) => {
     const enteredHouseNo = e.target.value;
     setHouseNo(enteredHouseNo);
@@ -374,40 +406,46 @@ export default function SuperAdminPatientForm() {
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
                 )}
               </div>
-
               <div>
                 <label
-                  for="email"
-                  class="block text-black text-lg font-semibold"
+                  htmlFor="email"
+                  className="block text-black text-lg font-semibold"
                 >
                   Email
                 </label>
                 <input
                   type="email"
-                  // placeholder="smitasingh1234@gmail.com"
                   id="email"
                   name="email"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  onChange={handleEmailChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                    emailError ? "border-red-500" : "border-[#08DA75]"
+                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
+                {emailError && (
+                  <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                )}{" "}
               </div>
               <div>
                 <label
-                  for="contact"
-                  class="block text-black text-lg font-semibold"
+                  htmlFor="contact"
+                  className="block text-black text-lg font-semibold"
                 >
                   Contact Number
                 </label>
                 <input
-                  type="number"
-                  // placeholder="+91-8603678852"
-                  id="contactNumber"
-                  name="contactNumber"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  type="text"
+                  id="contact"
+                  name="contact"
+                  onChange={handleContactChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                    contactError ? "border-red-500" : "border-[#08DA75]"
+                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
-              </div>
-
+                {contactError && (
+                  <p className="text-red-500 text-sm mt-1">{contactError}</p>
+                )}
+              </div>{" "}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
                   <label
@@ -445,16 +483,16 @@ export default function SuperAdminPatientForm() {
                     type="text"
                     id="bodyWeight"
                     name="bodyWeight"
-                    onChange={handleChange}
+                    value={bodyWeight}
+                    onChange={handleBodyWightChange}
                   />
                   {bodyWeightError && (
                     <p className="text-red-500 text-sm mt-1">
                       {bodyWeightError}
                     </p>
                   )}
-                </div>{" "}
+                </div>
               </div>
-
               <div class="p-3 pb-5 border border-[#08DA75]">
                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                   <div className="px-2 w-full sm:w-1/3">

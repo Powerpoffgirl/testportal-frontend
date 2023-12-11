@@ -49,6 +49,11 @@ export default function SuperAdminAdminForm() {
   const [districtError, setDistrictError] = useState("");
   const [state, setState] = useState("");
   const [stateError, setStateError] = useState("");
+  const [action, setAction] = useState("");
+
+  const handleActionChange = (e) => {
+    setAction(e.target.value);
+  };
 
   const handleNameChange = (e) => {
     const enteredName = e.target.value;
@@ -406,7 +411,6 @@ export default function SuperAdminAdminForm() {
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
                 )}
               </div>
-
               <div>
                 <label
                   htmlFor="email"
@@ -447,51 +451,75 @@ export default function SuperAdminAdminForm() {
                   <p className="text-red-500 text-sm mt-1">{contactError}</p>
                 )}
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col">
+
+              <div className="flex flex-row items-start pt-4 gap-4">
+                <div className="flex flex-col mr-2 ">
                   <label
-                    className="mx-2 text-lg font-normal text-black font-lato"
-                    htmlFor="age"
+                    className="mx-2 text-lg font-normal text-black font-lato font-semibold"
+                    htmlFor="Permission"
                   >
-                    Age
+                    Permission
                   </label>
-                  <input
-                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${
-                      ageError ? "border-red-500" : ""
-                    }`}
-                    type="text"
-                    id="age"
-                    name="age"
-                    value={age}
-                    onChange={handleAgeChange}
-                    style={{ marginLeft: -1 }}
-                  />
-                  {ageError && (
-                    <p className="text-red-500 text-sm mt-1">{ageError}</p>
-                  )}
+                  {/* Input for Age */}
+                  {/* ... */}
                 </div>
-                <div>
-                  <label
-                    htmlFor="bodyWeight"
-                    className="block text-black text-lg font-semibold"
-                  >
-                    Body Weight
+
+                <div
+                  className="flex flex-row  flex-grow "
+                  style={{ justifyContent: "space-around" }}
+                >
+                  {/* Radio buttons for Create, Edit, Delete, Read */}
+                  <label htmlFor="create" className="mr-4">
+                    <input
+                      type="radio"
+                      id="create"
+                      name="action"
+                      value="create"
+                      checked={action === "create"}
+                      onChange={handleActionChange}
+                      style={{ margin: 5 }}
+                    />
+                    Create
                   </label>
-                  <input
-                    type="text"
-                    id="bodyWeight"
-                    name="bodyWeight"
-                    onChange={handleBodyWeightChange}
-                    className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                      bodyWeightError ? "border-red-500" : "border-[#08DA75]"
-                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
-                  />
-                  {bodyWeightError && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {bodyWeightError}
-                    </p>
-                  )}
-                </div>{" "}
+                  <label htmlFor="edit" className="mr-4">
+                    <input
+                      type="radio"
+                      id="edit"
+                      name="action"
+                      value="edit"
+                      checked={action === "edit"}
+                      onChange={handleActionChange}
+                      style={{ margin: 5 }}
+                    />
+                    Edit
+                  </label>
+                  <label htmlFor="delete" className="mr-4">
+                    <input
+                      type="radio"
+                      id="delete"
+                      name="action"
+                      value="delete"
+                      checked={action === "delete"}
+                      onChange={handleActionChange}
+                      style={{ margin: 5 }}
+                    />
+                    Delete
+                  </label>
+                  <label htmlFor="read">
+                    <input
+                      type="radio"
+                      id="read"
+                      name="action"
+                      value="read"
+                      checked={action === "read"}
+                      onChange={handleActionChange}
+                      style={{ margin: 5 }}
+                    />
+                    Read
+                  </label>
+                  {/* Error handling or displaying selected action */}
+                  {/* {action && <p>Selected Action: {action}</p>} */}
+                </div>
               </div>
 
               <div class="p-3 pb-5 border border-[#08DA75]">
