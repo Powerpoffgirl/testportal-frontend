@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "react-responsive-modal";
 import { Popconfirm } from 'antd';
 import { FaTrashAlt } from "react-icons/fa";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -287,8 +288,15 @@ export default function PatientList({ searchTerm })
                             onClick={() => findSelectedDoctor(patient._id)}>
                             <div className="flex flex-row justify-start items-center">
                                 <div class="flex items-center gap-x-2">
-                                    <img class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100" alt="" />
-
+                                    {
+                                        patient.patientPic ? <img
+                                            class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                                            src={patient.patientPic}
+                                            alt={patient.name}
+                                        />
+                                            :
+                                            <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
+                                    }
                                     <div>
                                         <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
                                             {patient.name}

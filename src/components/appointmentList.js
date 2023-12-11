@@ -6,6 +6,7 @@ import { Modal } from 'react-responsive-modal';
 import { useNavigate } from "react-router-dom";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { ImCancelCircle } from "react-icons/im";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -365,15 +366,15 @@ export default function AppointmentList({ searchTerm })
                             onClick={() => findSelectedDoctor(appointment?._id, appointment?.diseases)}
                         >
                             <span className="flex flex-row items-center">
-                                <img
-                                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
-                                    alt="Avatar"
-                                    style={{
-                                        borderRadius: "50%",
-                                        height: isTab ? "40px" : "81px",
-                                        width: isTab ? "40px" : "81px",
-                                    }}
-                                ></img>
+                                {
+                                    appointment?.patientId?.patientPic ? <img
+                                        class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                                        src={appointment?.patientId?.patientPic}
+                                        alt={appointment?.patientId?.name}
+                                    />
+                                        :
+                                        <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
+                                }
 
                                 <text
                                     className="ml-4"
