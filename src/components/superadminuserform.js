@@ -27,10 +27,10 @@ export default function SuperAdminUserForm() {
   const navigate = useNavigate();
   const [nameError, setNameError] = useState("");
   const [name, setName] = useState("");
-  const [houseNo, setHouseNo] = useState("");
-  const [houseNoError, setHouseNoError] = useState("");
-  const [floor, setFloor] = useState("");
-  const [floorError, setFloorError] = useState("");
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [contactNumber, setContactNumber] = useState("");
+  const [contactError, setContactError] = useState("");
   const [block, setBlock] = useState("");
   const [blockError, setBlockError] = useState("");
   const [area, setArea] = useState("");
@@ -58,40 +58,34 @@ export default function SuperAdminUserForm() {
     }
   };
 
-  const handleHouseNoChange = (e) => {
-    const enteredHouseNo = e.target.value;
-    setHouseNo(enteredHouseNo);
+  const handleEmailChange = (e) => {
+    const enteredEmail = e.target.value;
+    setEmail(enteredEmail);
 
-    // Validation logic
-    const houseNoRegex = /^\d+$/; // Allows only positive whole numbers
+    // Validation logic for email
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!enteredHouseNo.trim()) {
-      setHouseNoError("");
-    } else if (!houseNoRegex.test(enteredHouseNo)) {
-      setHouseNoError("");
+    if (!enteredEmail.trim()) {
+      setEmailError("Email is required");
+    } else if (!emailPattern.test(enteredEmail)) {
+      setEmailError("Invalid email format");
     } else {
-      setHouseNoError("");
+      setEmailError("");
     }
   };
 
-  const handleFloorChange = (e) => {
-    const enteredFloor = e.target.value;
-    setFloor(enteredFloor);
+  const handleContactChange = (e) => {
+    const enteredContact = e.target.value;
+    setContactNumber(enteredContact);
 
-    // Validation logic
-    const alphabeticRegex = /^[a-zA-Z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-    const formatRegex =
-      /^(?=.*\b\d{1,3}(st|nd|rd|th)\b)\b\d{1,3}(st|nd|rd|th)?\b$/i; // Allows 1st, 2nd, 3rd, etc.
+    const contactRegex = /^\d{10}$/; // Validates a 10-digit number
 
-    if (!enteredFloor.trim()) {
-      setFloorError("");
-    } else if (
-      !alphabeticRegex.test(enteredFloor) &&
-      !formatRegex.test(enteredFloor)
-    ) {
-      setFloorError("");
+    if (!enteredContact.trim()) {
+      setContactError("Contact number is required");
+    } else if (!contactRegex.test(enteredContact)) {
+      setContactError("Invalid contact number format (should be 10 digits)");
     } else {
-      setFloorError("");
+      setContactError("");
     }
   };
 
@@ -124,6 +118,21 @@ export default function SuperAdminUserForm() {
       setAreaError("Invalid area format");
     } else {
       setAreaError("");
+    }
+  };
+
+  const handlePinCodeChange = (e) => {
+    const enteredPinCode = e.target.value;
+
+    // Validation logic for Pincode
+    const pinCodeRegex = /^\d{6}$/; // Assumes Pincode is a 6-digit number
+
+    if (!enteredPinCode.trim()) {
+      setPinCodeError("Pincode is required");
+    } else if (!pinCodeRegex.test(enteredPinCode)) {
+      setPinCodeError("Invalid Pincode format. Should be a 6-digit number.");
+    } else {
+      setPinCodeError("");
     }
   };
 
@@ -334,8 +343,8 @@ export default function SuperAdminUserForm() {
               </div>{" "}
               <div>
                 <label
-                  for="email"
-                  class="block text-black text-lg font-semibold"
+                  htmlFor="email"
+                  className="block text-black text-lg font-semibold"
                 >
                   Email
                 </label>
@@ -343,25 +352,35 @@ export default function SuperAdminUserForm() {
                   type="email"
                   id="email"
                   name="email"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  onChange={handleEmailChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                    emailError ? "border-red-500" : "border-[#08DA75]"
+                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
+                {emailError && (
+                  <p className="text-red-500 text-sm mt-1">{emailError}</p>
+                )}{" "}
               </div>
               <div>
                 <label
-                  for="contact"
-                  class="block text-black text-lg font-semibold"
+                  htmlFor="contact"
+                  className="block text-black text-lg font-semibold"
                 >
                   Contact Number
                 </label>
                 <input
-                  type="number"
-                  id="contactNumber"
-                  name="contactNumber"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  type="text"
+                  id="contact"
+                  name="contact"
+                  onChange={handleContactChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                    contactError ? "border-red-500" : "border-[#08DA75]"
+                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
-              </div>
+                {contactError && (
+                  <p className="text-red-500 text-sm mt-1">{contactError}</p>
+                )}
+              </div>{" "}
               <div class="p-3 pb-5 border border-[#08DA75]">
                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                   <div class="px-2 w-full sm:w-1/3">
@@ -396,10 +415,10 @@ export default function SuperAdminUserForm() {
                       class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
-                  <div class="px-2 w-full sm:w-1/3">
+                  <div className="px-2 w-full sm:w-1/3">
                     <label
-                      for="block"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="block"
+                      className="block text-black text-lg font-semibold"
                     >
                       Block
                     </label>
@@ -407,15 +426,20 @@ export default function SuperAdminUserForm() {
                       type="text"
                       id="block"
                       name="block"
-                      onChange={handleChange}
+                      onChange={handleBlockChange}
                       placeholder="A"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
+                        blockError ? "border-red-500" : "border-[#08DA75]"
+                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
+                    {blockError && (
+                      <p className="text-red-500 text-sm mt-1">{blockError}</p>
+                    )}
                   </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="area"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="area"
+                      className="block text-black text-lg font-semibold"
                     >
                       Area
                     </label>
@@ -423,15 +447,20 @@ export default function SuperAdminUserForm() {
                       type="text"
                       id="area"
                       name="area"
-                      onChange={handleChange}
+                      onChange={handleAreaChange}
                       placeholder="Green Park"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border ${
+                        areaError ? "border-red-500" : "border-[#08DA75]"
+                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {areaError && (
+                      <p className="text-red-500 text-sm mt-1">{areaError}</p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="pincode"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="pinCode"
+                      className="block text-black text-lg font-semibold"
                     >
                       Pincode
                     </label>
@@ -439,15 +468,22 @@ export default function SuperAdminUserForm() {
                       type="text"
                       id="pinCode"
                       name="pinCode"
-                      onChange={handleChange}
+                      onChange={handlePinCodeChange}
                       placeholder="110016"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border ${
+                        pinCodeError ? "border-red-500" : "border-[#08DA75]"
+                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {pinCodeError && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {pinCodeError}
+                      </p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="district"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="district"
+                      className="block text-black text-lg font-semibold"
                     >
                       District
                     </label>
@@ -455,15 +491,22 @@ export default function SuperAdminUserForm() {
                       type="text"
                       id="district"
                       name="district"
-                      onChange={handleChange}
+                      onChange={handleDistrictChange}
                       placeholder="South Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border ${
+                        districtError ? "border-red-500" : "border-[#08DA75]"
+                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
+                    {districtError && (
+                      <p className="text-red-500 text-sm mt-1">
+                        {districtError}
+                      </p>
+                    )}
+                  </div>{" "}
+                  <div className="px-2 w-full sm:w-1/2">
                     <label
-                      for="state"
-                      class="block text-black text-lg font-semibold"
+                      htmlFor="state"
+                      className="block text-black text-lg font-semibold"
                     >
                       State
                     </label>
@@ -471,11 +514,16 @@ export default function SuperAdminUserForm() {
                       type="text"
                       id="state"
                       name="state"
-                      onChange={handleChange}
+                      onChange={handleStateChange}
                       placeholder="Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className={`block w-full rounded-lg border ${
+                        stateError ? "border-red-500" : "border-[#08DA75]"
+                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
-                  </div>
+                    {stateError && (
+                      <p className="text-red-500 text-sm mt-1">{stateError}</p>
+                    )}
+                  </div>{" "}
                 </div>
               </div>
             </div>
