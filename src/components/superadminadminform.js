@@ -33,30 +33,30 @@ export default function SuperAdminAdminForm()
   const onOpenModal = () => setOpen1(true);
   const onCloseModal = () => setOpen1(false);
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [email, setEmail] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [contact, setContact] = useState("");
-  const [contactError, setContactError] = useState("");
-  const [age, setAge] = useState("");
-  const [ageError, setAgeError] = useState("");
-  const [bodyWeight, setBodyWeight] = useState("");
-  const [bodyWeightError, setBodyWeightError] = useState("");
-  const [houseNo, setHouseNo] = useState("");
-  const [houseNoError, setHouseNoError] = useState("");
-  const [floor, setFloor] = useState("");
-  const [floorError, setFloorError] = useState("");
-  const [block, setBlock] = useState("");
-  const [blockError, setBlockError] = useState("");
-  const [area, setArea] = useState("");
-  const [areaError, setAreaError] = useState("");
-  const [pinCode, setPinCode] = useState("");
-  const [pinCodeError, setPinCodeError] = useState("");
-  const [district, setDistrict] = useState("");
-  const [districtError, setDistrictError] = useState("");
-  const [state, setState] = useState("");
-  const [stateError, setStateError] = useState("");
+  // // const [name, setName] = useState("");
+  // const [emailError, setEmailError] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [nameError, setNameError] = useState("");
+  // const [contact, setContact] = useState("");
+  // const [contactError, setContactError] = useState("");
+  // const [age, setAge] = useState("");
+  // const [ageError, setAgeError] = useState("");
+  // const [bodyWeight, setBodyWeight] = useState("");
+  // const [bodyWeightError, setBodyWeightError] = useState("");
+  // const [houseNo, setHouseNo] = useState("");
+  // const [houseNoError, setHouseNoError] = useState("");
+  // const [floor, setFloor] = useState("");
+  // const [floorError, setFloorError] = useState("");
+  // const [block, setBlock] = useState("");
+  // const [blockError, setBlockError] = useState("");
+  // const [area, setArea] = useState("");
+  // const [areaError, setAreaError] = useState("");
+  // const [pinCode, setPinCode] = useState("");
+  // const [pinCodeError, setPinCodeError] = useState("");
+  // const [district, setDistrict] = useState("");
+  // const [districtError, setDistrictError] = useState("");
+  // const [state, setState] = useState("");
+  // const [stateError, setStateError] = useState("");
   const [action, setAction] = useState("");
   const [adminImage, setAdminImage] = useState();
   const [selectedFile, setSelectedFile] = useState(null);
@@ -133,238 +133,244 @@ export default function SuperAdminAdminForm()
     setAction(e.target.value);
   };
 
-  const handleNameChange = (e) =>
-  {
-    const enteredName = e.target.value;
-    setName(enteredName);
+  // const handleNameChange = (e) =>
+  // {
+  //   const enteredName = e.target.value;
+  //   setName(enteredName);
 
-    // Validation logic
-    if (!enteredName.trim())
-    {
-      setNameError("Name is required");
-    } else if (!/^[a-zA-Z\s-]+$/.test(enteredName))
-    {
-      setNameError("Invalid name format");
-    } else if (enteredName.length < 2 || enteredName.length > 50)
-    {
-      setNameError("Name length should be between 2 and 50 characters");
-    } else
-    {
-      setNameError("");
-    }
-  };
+  //   // Validation logic
+  //   if (!enteredName.trim())
+  //   {
+  //     setNameError("Name is required");
+  //   } else if (!/^[a-zA-Z\s-]+$/.test(enteredName))
+  //   {
+  //     setNameError("Invalid name format");
+  //   } else if (enteredName.length < 2 || enteredName.length > 50)
+  //   {
+  //     setNameError("Name length should be between 2 and 50 characters");
+  //   } else
+  //   {
+  //     setNameError("");
+  //   }
+  // };
 
-  const handleEmailChange = (e) =>
-  {
-    const enteredEmail = e.target.value;
-    setEmail(enteredEmail);
+  // const handleEmailChange = (e) =>
+  // {
+  //   const enteredEmail = e.target.value;
+  //   setEmail(enteredEmail);
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!enteredEmail.trim())
-    {
-      setEmailError("Email is required");
-    } else if (!emailPattern.test(enteredEmail))
-    {
-      setEmailError("Invalid email format");
-    } else
-    {
-      setEmailError("");
-    }
-  };
+  //   if (!enteredEmail.trim())
+  //   {
+  //     setEmailError("Email is required");
+  //   } else if (!emailPattern.test(enteredEmail))
+  //   {
+  //     setEmailError("Invalid email format");
+  //   } else
+  //   {
+  //     setEmailError("");
+  //   }
+  // };
 
-  const handleContactChange = (e) =>
-  {
-    const enteredContact = e.target.value;
-    setContact(enteredContact);
+  // const handleContactChange = (e) =>
+  // {
+  //   const enteredContact = e.target.value;
+  //   setContact(enteredContact);
 
-    const contactPattern = /^\d{10}$/;
+  //   const contactPattern = /^\d{10}$/;
 
-    if (!enteredContact.trim())
-    {
-      setContactError("Contact number is required");
-    } else if (!contactPattern.test(enteredContact))
-    {
-      setContactError("Invalid contact format. Please enter a 10-digit number");
-    } else
-    {
-      setContactError("");
-    }
-  };
+  //   if (!enteredContact.trim())
+  //   {
+  //     setContactError("Contact number is required");
+  //   } else if (!contactPattern.test(enteredContact))
+  //   {
+  //     setContactError("Invalid contact format. Please enter a 10-digit number");
+  //   } else
+  //   {
+  //     setContactError("");
+  //   }
+  // };
 
-  const handleAgeChange = (e) =>
-  {
-    const enteredAge = e.target.value;
-    setAge(enteredAge);
+  // const handleAgeChange = (e) =>
+  // {
+  //   const enteredAge = e.target.value;
+  //   setAge(enteredAge);
 
-    // Validation logic
-    const ageRegex = /^\d+$/;
-    if (!enteredAge.trim())
-    {
-      setAgeError("Age is required");
-    } else if (!ageRegex.test(enteredAge))
-    {
-      setAgeError("Age should be a number");
-    } else if (enteredAge < 0 || enteredAge > 120)
-    {
-      setAgeError("Age should be between 0 and 120");
-    } else
-    {
-      setAgeError("");
-    }
-  };
+  //   // Validation logic
+  //   const ageRegex = /^\d+$/;
+  //   if (!enteredAge.trim())
+  //   {
+  //     setAgeError("Age is required");
+  //   } else if (!ageRegex.test(enteredAge))
+  //   {
+  //     setAgeError("Age should be a number");
+  //   } else if (enteredAge < 0 || enteredAge > 120)
+  //   {
+  //     setAgeError("Age should be between 0 and 120");
+  //   } else
+  //   {
+  //     setAgeError("");
+  //   }
+  // };
 
-  const handleBodyWeightChange = (e) =>
-  {
-    const enteredBodyWeight = e.target.value;
-    setBodyWeight(enteredBodyWeight);
+  // const handleBodyWeightChange = (e) =>
+  // {
+  //   const enteredBodyWeight = e.target.value;
+  //   setBodyWeight(enteredBodyWeight);
 
-    // Validation logic
-    const bodyWeightRegex = /^\d+(\.\d{1,2})?$/; // Allows positive numbers with up to 2 decimal places
+  //   // Validation logic
+  //   const bodyWeightRegex = /^\d+(\.\d{1,2})?$/; // Allows positive numbers with up to 2 decimal places
 
-    if (!enteredBodyWeight.trim())
-    {
-      setBodyWeightError("Body weight is required");
-    } else if (!bodyWeightRegex.test(enteredBodyWeight))
-    {
-      setBodyWeightError("Invalid body weight format");
-    } else if (enteredBodyWeight <= 0)
-    {
-      setBodyWeightError("Body weight should be greater than 0");
-    } else
-    {
-      setBodyWeightError("");
-    }
-  };
+  //   if (!enteredBodyWeight.trim())
+  //   {
+  //     setBodyWeightError("Body weight is required");
+  //   } else if (!bodyWeightRegex.test(enteredBodyWeight))
+  //   {
+  //     setBodyWeightError("Invalid body weight format");
+  //   } else if (enteredBodyWeight <= 0)
+  //   {
+  //     setBodyWeightError("Body weight should be greater than 0");
+  //   } else
+  //   {
+  //     setBodyWeightError("");
+  //   }
+  // };
 
-  const handleHouseNoChange = (e) =>
-  {
-    const enteredHouseNo = e.target.value;
-    setHouseNo(enteredHouseNo);
+  // const handleHouseNoChange = (e) =>
+  // {
+  //   const enteredHouseNo = e.target.value;
+  //   setHouseNo(enteredHouseNo);
 
-    // Validation logic
-    const houseNoRegex = /^\d+$/; // Allows only positive whole numbers
+  //   // Validation logic
+  //   const houseNoRegex = /^\d+$/; // Allows only positive whole numbers
 
-    if (!enteredHouseNo.trim())
-    {
-      setHouseNoError("");
-    } else if (!houseNoRegex.test(enteredHouseNo))
-    {
-      setHouseNoError("");
-    } else
-    {
-      setHouseNoError("");
-    }
-  };
+  //   if (!enteredHouseNo.trim())
+  //   {
+  //     setHouseNoError("");
+  //   } else if (!houseNoRegex.test(enteredHouseNo))
+  //   {
+  //     setHouseNoError("");
+  //   } else
+  //   {
+  //     setHouseNoError("");
+  //   }
+  // };
 
-  const handleFloorChange = (e) =>
-  {
-    const enteredFloor = e.target.value;
-    setFloor(enteredFloor);
+  // const handleFloorChange = (e) =>
+  // {
+  //   const enteredFloor = e.target.value;
+  //   setFloor(enteredFloor);
 
-    // Validation logic
-    const alphabeticRegex = /^[a-zA-Z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-    const formatRegex =
-      /^(?=.*\b\d{1,3}(st|nd|rd|th)\b)\b\d{1,3}(st|nd|rd|th)?\b$/i; // Allows 1st, 2nd, 3rd, etc.
+  //   // Validation logic
+  //   const alphabeticRegex = /^[a-zA-Z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+  //   const formatRegex =
+  //     /^(?=.*\b\d{1,3}(st|nd|rd|th)\b)\b\d{1,3}(st|nd|rd|th)?\b$/i; // Allows 1st, 2nd, 3rd, etc.
 
-    if (!enteredFloor.trim())
-    {
-      setFloorError("");
-    } else if (
-      !alphabeticRegex.test(enteredFloor) &&
-      !formatRegex.test(enteredFloor)
-    )
-    {
-      setFloorError("");
-    } else
-    {
-      setFloorError("");
-    }
-  };
+  //   if (!enteredFloor.trim())
+  //   {
+  //     setFloorError("");
+  //   } else if (
+  //     !alphabeticRegex.test(enteredFloor) &&
+  //     !formatRegex.test(enteredFloor)
+  //   )
+  //   {
+  //     setFloorError("");
+  //   } else
+  //   {
+  //     setFloorError("");
+  //   }
+  // };
 
-  const handleBlockChange = (e) =>
-  {
-    const enteredBlock = e.target.value;
-    setBlock(enteredBlock);
+  // const handleBlockChange = (e) =>
+  // {
+  //   const enteredBlock = e.target.value;
+  //   setBlock(enteredBlock);
 
-    // Validation logic
-    const blockRegex = /^[A-Za-z0-9]+$/; // Allows alphanumeric characters
+  //   // Validation logic
+  //   const blockRegex = /^[A-Za-z0-9]+$/; // Allows alphanumeric characters
 
-    if (!enteredBlock.trim())
-    {
-      setBlockError("Block is required");
-    } else if (!blockRegex.test(enteredBlock))
-    {
-      setBlockError("Invalid block format");
-    } else
-    {
-      setBlockError("");
-    }
-  };
+  //   if (!enteredBlock.trim())
+  //   {
+  //     setBlockError("Block is required");
+  //   } else if (!blockRegex.test(enteredBlock))
+  //   {
+  //     setBlockError("Invalid block format");
+  //   } else
+  //   {
+  //     setBlockError("");
+  //   }
+  // };
 
-  const handleAreaChange = (e) =>
-  {
-    const enteredArea = e.target.value;
-    setArea(enteredArea);
+  // const handleAreaChange = (e) =>
+  // {
+  //   const enteredArea = e.target.value;
+  //   setArea(enteredArea);
 
-    // Validation logic
-    const areaRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+  //   // Validation logic
+  //   const areaRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
 
-    if (!enteredArea.trim())
-    {
-      setAreaError("Area is required");
-    } else if (!areaRegex.test(enteredArea))
-    {
-      setAreaError("Invalid area format");
-    } else
-    {
-      setAreaError("");
-    }
-  };
+  //   if (!enteredArea.trim())
+  //   {
+  //     setAreaError("Area is required");
+  //   } else if (!areaRegex.test(enteredArea))
+  //   {
+  //     setAreaError("Invalid area format");
+  //   } else
+  //   {
+  //     setAreaError("");
+  //   }
+  // };
 
-  const handleDistrictChange = (e) =>
-  {
-    const enteredDistrict = e.target.value;
-    setDistrict(enteredDistrict);
+  // const handleDistrictChange = (e) =>
+  // {
+  //   const enteredDistrict = e.target.value;
+  //   setDistrict(enteredDistrict);
 
-    // Validation logic
-    const districtRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+  //   // Validation logic
+  //   const districtRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
 
-    if (!enteredDistrict.trim())
-    {
-      setDistrictError("District is required");
-    } else if (!districtRegex.test(enteredDistrict))
-    {
-      setDistrictError("Invalid district format");
-    } else
-    {
-      setDistrictError("");
-    }
-  };
+  //   if (!enteredDistrict.trim())
+  //   {
+  //     setDistrictError("District is required");
+  //   } else if (!districtRegex.test(enteredDistrict))
+  //   {
+  //     setDistrictError("Invalid district format");
+  //   } else
+  //   {
+  //     setDistrictError("");
+  //   }
+  // };
 
-  const handleStateChange = (e) =>
-  {
-    const enteredState = e.target.value;
-    setState(enteredState);
+  // const handleStateChange = (e) =>
+  // {
+  //   const enteredState = e.target.value;
+  //   setState(enteredState);
 
-    // Validation logic
-    const stateRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+  //   // Validation logic
+  //   const stateRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
 
-    if (!enteredState.trim())
-    {
-      setStateError("State is required");
-    } else if (!stateRegex.test(enteredState))
-    {
-      setStateError("Invalid state format");
-    } else
-    {
-      setStateError("");
-    }
-  };
-  const [patientDetails, setPatientDetails] = useState({
+  //   if (!enteredState.trim())
+  //   {
+  //     setStateError("State is required");
+  //   } else if (!stateRegex.test(enteredState))
+  //   {
+  //     setStateError("Invalid state format");
+  //   } else
+  //   {
+  //     setStateError("");
+  //   }
+  // };
+  const [adminDetails, setAdminDetails] = useState({
     name: "",
-    age: "",
-    bodyWeight: "",
+    email: "",
+    contactNumber: "",
+    permissions: {
+      view: true,
+      create: true,
+      remove: true,
+      edit: true,
+    },
     address: {
       houseNo: "",
       floor: "",
@@ -374,6 +380,7 @@ export default function SuperAdminAdminForm()
       district: "",
       state: "",
     },
+    adminPic: "",
   });
 
   const handleClick = (event) =>
@@ -388,29 +395,35 @@ export default function SuperAdminAdminForm()
 
 
 
-  const handlePincodeChange = (e) =>
-  {
-    const enteredPinCode = e.target.value;
-    setPinCode(enteredPinCode);
+  // const handlePincodeChange = (e) =>
+  // {
+  //   const enteredPinCode = e.target.value;
+  //   setPinCode(enteredPinCode);
 
-    // Validation logic
-    const pinCodeRegex = /^\d{6}$/; // Allows exactly 6 digits
+  //   // Validation logic
+  //   const pinCodeRegex = /^\d{6}$/; // Allows exactly 6 digits
 
-    if (!enteredPinCode.trim())
-    {
-      setPinCodeError("Pincode is required");
-    } else if (!pinCodeRegex.test(enteredPinCode))
-    {
-      setPinCodeError("Invalid pincode format (should be 6 digits)");
-    } else
-    {
-      setPinCodeError("");
-    }
-  };
+  //   if (!enteredPinCode.trim())
+  //   {
+  //     setPinCodeError("Pincode is required");
+  //   } else if (!pinCodeRegex.test(enteredPinCode))
+  //   {
+  //     setPinCodeError("Invalid pincode format (should be 6 digits)");
+  //   } else
+  //   {
+  //     setPinCodeError("");
+  //   }
+  // };
 
   const handleChange = (e) =>
   {
+    console.log("E value", e);
     const { name, value } = e.target;
+    setAdminDetails((prevAdminDetails) => ({
+      ...prevAdminDetails,
+      adminPic: adminImage
+    }))
+
 
     if (
       [
@@ -424,58 +437,39 @@ export default function SuperAdminAdminForm()
       ].includes(name)
     )
     {
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
+      setAdminDetails((prevAdminDetails) => ({
+        ...prevAdminDetails,
         address: {
-          ...prevPatientDetails.address,
+          ...prevAdminDetails.address,
           [name]: value,
         },
       }));
-    } else if (["issues"].includes(name))
-    {
-      // Assuming the value is an array or a string to be added to the array
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
-        [name]: Array.isArray(value)
-          ? value
-          : [...prevPatientDetails[name], value],
-      }));
-    } else if (["diseases"].includes(name))
-    {
-      // Assuming the value is an array or a string to be added to the array
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
-        [name]: Array.isArray(value)
-          ? value
-          : [...prevPatientDetails[name], value],
-      }));
     } else
     {
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
+      setAdminDetails((prevAdminDetails) => ({
+        ...prevAdminDetails,
         [name]: value,
       }));
     }
-    setIsEditing(true);
   };
 
   const handleRegister = async (e) =>
   {
     e.preventDefault();
 
-    const isEmpty = Object.values(patientDetails).some((value) => value === "");
+    const isEmpty = Object.values(adminDetails).some((value) => value === "");
 
-    if (isEmpty || isEditing === false)
-    {
-      toast.error("Please fill the fields");
-      setIsEditing(false);
-      return;
-    }
+    // if (isEmpty || isEditing === false)
+    // {
+    //   toast.error("Please fill the fields");
+    //   setIsEditing(false);
+    //   return;
+    // }
 
-    if (!isEmpty || isEditing === true)
-    {
-      toast.success("Form submitted successfully!");
-    }
+    // if (!isEmpty || isEditing === true)
+    // {
+    //   toast.success("Form submitted successfully!");
+    // }
     // Check if the token exists
     const token = localStorage.getItem("token");
     if (!token)
@@ -483,13 +477,13 @@ export default function SuperAdminAdminForm()
       console.error("No token found in local storage");
       return;
     }
-    const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
+    const response = await fetch(`${baseUrl}/api/v1/superAdmin/create_admin`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
         "x-auth-token": token,
       },
-      body: JSON.stringify(patientDetails),
+      body: JSON.stringify(adminDetails),
     });
     const data = await response.json();
     if (data.success === true)
@@ -500,7 +494,7 @@ export default function SuperAdminAdminForm()
     }
     console.log("DATA from response", data);
   };
-  console.log("PATIENT DETAILS", patientDetails);
+  console.log("PATIENT DETAILS", adminDetails);
 
   return (
     <>
@@ -529,9 +523,10 @@ export default function SuperAdminAdminForm()
               color: "#FFFFFF",
             }}
           >
-            Patient's Details is Saved.
+
+            Admin is Created.
             <br />
-            Go to Patient's list to book an Appointment.
+            Go to Admin's list and Check.
           </text>
         </div>
       </Modal>
@@ -561,9 +556,9 @@ export default function SuperAdminAdminForm()
                       color: "#A4A4A4",
                     }}
                   >
-                    {adminImage || patientDetails?.adminPic ? (
+                    {adminImage || adminDetails?.adminPic ? (
                       <img
-                        src={adminImage || patientDetails?.adminPic}
+                        src={adminImage || adminDetails?.adminPic}
                         alt="Avatar"
                         style={{
                           borderRadius: "50%",
@@ -653,14 +648,13 @@ export default function SuperAdminAdminForm()
                   type="text"
                   id="name"
                   name="name"
-                  value={name}
-                  onChange={handleNameChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${nameError ? "border-red-500" : ""
-                    }`}
+                  value={adminDetails.name}
+                  onChange={handleChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                 />
-                {nameError && (
+                {/* {nameError && (
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
-                )}
+                )} */}
               </div>
               <div>
                 <label
@@ -673,13 +667,13 @@ export default function SuperAdminAdminForm()
                   type="email"
                   id="email"
                   name="email"
-                  onChange={handleEmailChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${emailError ? "border-red-500" : "border-[#08DA75]"
-                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  value={adminDetails.email}
+                  onChange={handleChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
-                {emailError && (
+                {/* {emailError && (
                   <p className="text-red-500 text-sm mt-1">{emailError}</p>
-                )}
+                )} */}
               </div>
               <div>
                 <label
@@ -689,16 +683,16 @@ export default function SuperAdminAdminForm()
                   Contact Number
                 </label>
                 <input
-                  type="text"
-                  id="contact"
-                  name="contact"
-                  onChange={handleContactChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${contactError ? "border-red-500" : "border-[#08DA75]"
-                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  type="number"
+                  id="contactNumber"
+                  name="contactNumber"
+                  value={adminDetails.contactNumber}
+                  onChange={handleChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
-                {contactError && (
+                {/* {contactError && (
                   <p className="text-red-500 text-sm mt-1">{contactError}</p>
-                )}
+                )} */}
               </div>
 
               <div className="flex flex-row items-start pt-4 gap-4">
@@ -784,17 +778,16 @@ export default function SuperAdminAdminForm()
                       type="text"
                       id="houseNo"
                       name="houseNo"
-                      value={houseNo}
-                      onChange={handleHouseNoChange}
+                      value={adminDetails.address.houseNo}
+                      onChange={handleChange}
                       placeholder="1234"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${houseNoError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {houseNoError && (
+                    {/* {houseNoError && (
                       <p className="text-red-500 text-sm mt-1">
                         {houseNoError}
                       </p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/3">
                     <label
@@ -807,15 +800,14 @@ export default function SuperAdminAdminForm()
                       type="text"
                       id="floor"
                       name="floor"
-                      value={floor}
-                      onChange={handleFloorChange}
+                      value={adminDetails.address.floor}
+                      onChange={handleChange}
                       placeholder="First Floor or 2nd"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${floorError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {floorError && (
+                    {/* {floorError && (
                       <p className="text-red-500 text-sm mt-1">{floorError}</p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/3">
                     <label
@@ -828,15 +820,14 @@ export default function SuperAdminAdminForm()
                       type="text"
                       id="block"
                       name="block"
-                      value={block}
-                      onChange={handleBlockChange}
+                      value={adminDetails.address.block}
+                      onChange={handleChange}
                       placeholder="A"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${blockError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {blockError && (
+                    {/* {blockError && (
                       <p className="text-red-500 text-sm mt-1">{blockError}</p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
                     <label
@@ -849,15 +840,14 @@ export default function SuperAdminAdminForm()
                       type="text"
                       id="area"
                       name="area"
-                      value={area}
-                      onChange={handleAreaChange}
+                      value={adminDetails.address.area}
+                      onChange={handleChange}
                       placeholder="Green Park"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${areaError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
-                    {areaError && (
+                    {/* {areaError && (
                       <p className="text-red-500 text-sm mt-1">{areaError}</p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
                     <label
@@ -870,17 +860,16 @@ export default function SuperAdminAdminForm()
                       type="text"
                       id="pinCode"
                       name="pinCode"
-                      value={pinCode}
-                      onChange={handlePincodeChange}
+                      value={adminDetails.address.pinCode}
+                      onChange={handleChange}
                       placeholder="110016"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${pinCodeError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {pinCodeError && (
+                    {/* {pinCodeError && (
                       <p className="text-red-500 text-sm mt-1">
                         {pinCodeError}
                       </p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
                     <label
@@ -893,17 +882,16 @@ export default function SuperAdminAdminForm()
                       type="text"
                       id="district"
                       name="district"
-                      value={district}
-                      onChange={handleDistrictChange}
+                      value={adminDetails.address.district}
+                      onChange={handleChange}
                       placeholder="South Delhi"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${districtError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {districtError && (
+                    {/* {districtError && (
                       <p className="text-red-500 text-sm mt-1">
                         {districtError}
                       </p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
                     <label
@@ -916,15 +904,14 @@ export default function SuperAdminAdminForm()
                       type="text"
                       id="state"
                       name="state"
-                      value={state}
-                      onChange={handleStateChange}
+                      value={adminDetails.address.state}
+                      onChange={handleChange}
                       placeholder="Delhi"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${stateError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {stateError && (
+                    {/* {stateError && (
                       <p className="text-red-500 text-sm mt-1">{stateError}</p>
-                    )}
+                    )} */}
                   </div>{" "}
                 </div>
               </div>
