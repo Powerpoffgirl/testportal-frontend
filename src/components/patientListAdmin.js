@@ -138,7 +138,7 @@ export default function PatientListAdmin({ searchTerm })
     const handleBookAppointment = (patientId) =>
     {
         localStorage.setItem("patientId", patientId)
-        navigate("/editappointment")
+        navigate("/editappointmentadmin")
     }
     console.log("PATIENT LISTS", patientsList)
 

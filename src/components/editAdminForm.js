@@ -42,11 +42,11 @@ export default function EditAdminForm()
         const token = localStorage.getItem('token');
         const doctorId = localStorage.getItem('doctorId');
 
-        if (!token || !doctorId)
-        {
-            console.error('Token or doctor ID not found in local storage');
-            return;
-        }
+        // if (!token || !doctorId)
+        // {
+        //     console.error('Token or doctor ID not found in local storage');
+        //     return;
+        // }
 
         const formData = new FormData();
         formData.append('adminPic', selectedFile);
@@ -54,11 +54,11 @@ export default function EditAdminForm()
         console.log("FORM DATA", formData)
         try
         {
-            const response = await fetch(`${baseUrl}/api/v1/admin/upload_image${doctorId}`, {
+            const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
                 method: 'POST',
-                headers: {
-                    'x-auth-token': token,
-                },
+                // headers: {
+                //     'x-auth-token': token,
+                // },
                 body: formData,
             });
 
@@ -201,11 +201,6 @@ export default function EditAdminForm()
             name: doctorDetails?.name,
             // email: doctorDetails.email,
             // contactNumber: doctorDetails.contactNumber,
-            workingDays: doctorDetails?.workingDays,
-            workingHours: {
-                workHourFrom: doctorDetails?.workingHours?.workHourFrom,
-                workHourTo: doctorDetails?.workingHours?.workHourTo
-            },
             totalExperience: doctorDetails?.totalExperience,
             speciality: doctorDetails?.speciality,
             degree: doctorDetails?.degree,
@@ -245,7 +240,7 @@ export default function EditAdminForm()
             return;
         }
         const response = await fetch(
-            `${baseUrl}/api/v1/admin/update_doctor/${doctorId}`,
+            `${baseUrl}/api/v1/admin/update_profile`,
             {
                 method: "put",
                 headers: {
@@ -270,9 +265,9 @@ export default function EditAdminForm()
     return (
         <>
             <div className="flex flex-row">
-                <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
+                {/* <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
 
-                </div>
+                </div> */}
                 <div className=" w-full">
 
                     <div className="mt-6 p-2">

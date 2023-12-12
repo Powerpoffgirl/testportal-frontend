@@ -444,7 +444,6 @@ function App()
             headerTextTop={"Patient's"}
             headerTextBottom={"List"}
             search={"true"}
-            AddButton={"true"}
           />
         }
       ></Route>
