@@ -61,7 +61,7 @@ import SuperAdminDoctorEditForm from "./components/superadmindoctoreditform";
 import SuperAdminAdminEditForm from "./components/superadminadmineditform";
 import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
-
+import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
 function App() {
   return (
     <Routes>
@@ -272,6 +272,17 @@ function App() {
       />
 
       <Route
+        path="/superadmindoctorotppage"
+        element={
+          <Layout
+            Component={SuperAdminDoctorOtpPage}
+            headerTextTop={"Super Admin"}
+            headerTextBottom={"Doctor Otp"}
+          />
+        }
+      />
+
+      <Route
         path="/userotp"
         element={
           <Layout
@@ -296,10 +307,6 @@ function App() {
         path="/userform"
         element={<Layout Component={UserForm} type="user" />}
       ></Route>
-      {/* <Route
-        path="/adminform"
-        element={<Layout Component={AdminForm} type="admin" />}
-      ></Route> */}
       <Route
         path="/useradmin"
         element={<Layout Component={UserAdmin} type="admin" />}
