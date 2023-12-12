@@ -402,11 +402,13 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                         onChange={handleChange}
                         value={appointmentDetails?.patientId?.name}
                     >
-                        {patientsList?.map((patient) => (
-                            <option key={patient._id} value={patient.name}>
+                        {appointmentDetails?.patientId?.name ? (
+                            <option value={appointmentDetails?.patientId?.name}>{appointmentDetails?.patientId?.name}</option>
+                        ) : (patientsList?.map((patient) => (
+                            <option key={patient._id} value={patient?.name}>
                                 {patient.name}
                             </option>
-                        ))}
+                        )))}
                     </select>
                 </div>
 
@@ -421,13 +423,16 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                         className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
                         name="doctorName"
                         onChange={handleChange}
-                        value={appointmentDetails?.doctorId?.name}
                     >
-                        {doctorsList?.map((doctor) => (
-                            <option key={doctor._id} value={doctor.name}>
-                                {doctor.name}
-                            </option>
-                        ))}
+                        {appointmentDetails?.doctorId?.name ? (
+                            <option value={appointmentDetails?.doctorId?.name}>{appointmentDetails?.doctorId?.name}</option>
+                        ) : (
+                            doctorsList?.map((doctor) => (
+                                <option key={doctor._id} value={doctor.name}>
+                                    {doctor.name}
+                                </option>
+                            ))
+                        )}
                     </select>
                 </div>
             </div>

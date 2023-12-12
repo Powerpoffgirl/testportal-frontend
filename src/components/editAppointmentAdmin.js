@@ -93,7 +93,7 @@ export default function EditAppointmentAdmin()
                     console.error("No token found in local storage");
                     return;
                 }
-                const response = await fetch(`${baseUrl}/api/v1/user/get_appointmentById/${appointmentId}`, {
+                const response = await fetch(`${baseUrl}/api/v1/admin/get_appointment/${appointmentId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
