@@ -127,7 +127,8 @@ export default function Layout({
     } else if (type === "admin") {
       navigate("/doctorformadmin");
     } else if (type === "superAdmin") {
-      navigate("/adminform");
+      console.log("hello");
+      navigate("/superadminadminform");
     }
   };
 

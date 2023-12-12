@@ -17,7 +17,7 @@ import DoctorLogin from "./components/doctorLogin";
 import AdminLogin from "./components/adminLogin";
 import UserLogin from "./components/userLogin";
 import DoctorListAdmin from "./components/doctorListAdmin";
-import AdminForm from "./components/adminForm";
+// import AdminForm from "./components/adminForm";
 import EditDoctorForm from "./components/editDoctorForm";
 import EditDoctorFormAdmin from "./components/editDoctorFormAdmin";
 import EditAdminForm from "./components/editAdminForm";
@@ -129,6 +129,7 @@ function App() {
         element={
           <Layout
             Component={SuperAdminAdminForm}
+            type="superAdmin"
             headerTextTop={"Super Admin"}
             headerTextBottom={"Admin Form"}
           />
@@ -248,6 +249,7 @@ function App() {
         element={
           <Layout
             Component={SuperAdminDoctorForm}
+            type="superAdmin"
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor Form"}
           />
@@ -293,10 +295,10 @@ function App() {
         path="/userform"
         element={<Layout Component={UserForm} type="user" />}
       ></Route>
-      <Route
+      {/* <Route
         path="/adminform"
         element={<Layout Component={AdminForm} type="admin" />}
-      ></Route>
+      ></Route> */}
       <Route
         path="/useradmin"
         element={<Layout Component={UserAdmin} type="admin" />}
