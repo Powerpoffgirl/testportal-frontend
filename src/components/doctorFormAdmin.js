@@ -79,13 +79,7 @@ export default function DoctorFormAdmin()
     const handleNewProfilePicture = async () =>
     {
         const token = localStorage.getItem('token');
-        const doctorId = localStorage.getItem('doctorId');
 
-        // if (!token || !doctorId)
-        // {
-        //     console.error('Token or doctor ID not found in local storage');
-        //     return;
-        // }
 
         const formData = new FormData();
         formData.append('doctorPic', selectedFile);
@@ -214,6 +208,10 @@ export default function DoctorFormAdmin()
     {
         console.log("E value", e);
         const { name, value } = e.target;
+        setDoctorDetails((prevDoctorDetails) => ({
+            ...prevDoctorDetails,
+            doctorPic: doctorImage
+        }))
 
         if (name === "workHourFrom" || name === "workHourTo")
         {
