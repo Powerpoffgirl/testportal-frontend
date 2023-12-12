@@ -31,13 +31,16 @@ export default function SuperAdminUserList() {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(`${baseUrl}/api/v1/admin/list_users`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token, // Replace with your actual token from the previous session
-          },
-        });
+        const response = await fetch(
+          `${baseUrl}/api/v1/superAdmin/list_users`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
+          }
+        );
 
         const data = await response.json();
         console.log("DATA from response", data);
