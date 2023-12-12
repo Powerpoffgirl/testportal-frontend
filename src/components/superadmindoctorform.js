@@ -1,6 +1,4 @@
 import React, { useRef, useState } from "react";
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import AdminHeader from "./adminHeader";
 import AdminSidebar from "./adminSidebar";
 import { useNavigate } from "react-router-dom";
@@ -10,160 +8,15 @@ import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Select } from "antd";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { MdEdit } from "react-icons/md";
 
 export default function SuperAdminDoctorForm() {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
+  const [doctorImage, setDoctorImage] = useState();
   const fileInputRef = useRef(null);
-  const [drName, setDrName] = useState("");
-  const [drNameError, setDrNameError] = useState("");
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [contactNumber, setContactNumber] = useState("");
-  const [contactError, setContactError] = useState("");
-  const [totalExperience, setTotalExperience] = useState("");
-  const [totalExperienceError, setTotalExperienceError] = useState("");
-  const [degree, setDegree] = useState("");
-  const [degreeError, setDegreeError] = useState("");
-  const [blockError, setBlockError] = useState("");
-  const [areaError, setAreaError] = useState("");
-  const [pinCodeError, setPinCodeError] = useState("");
-  const [districtError, setDistrictError] = useState("");
-  const [stateError, setStateError] = useState("");
-
-  const handleDrNameChange = (e) => {
-    const enteredDrName = e.target.value;
-    setDrName(enteredDrName);
-
-    // Validation logic for Dr. Name
-    const drNameRegex = /^Dr\. [a-zA-Z\s-]+$/;
-
-    if (!enteredDrName.trim()) {
-      setDrNameError("Dr. Name is required");
-    } else if (!drNameRegex.test(enteredDrName)) {
-      setDrNameError("Invalid Dr. Name format. It should start with 'Dr. '");
-    } else {
-      setDrNameError("");
-    }
-  };
-
-  const handleEmailChange = (e) => {
-    const enteredEmail = e.target.value;
-    setEmail(enteredEmail);
-
-    // Validation logic for email
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!enteredEmail.trim()) {
-      setEmailError("Email is required");
-    } else if (!emailPattern.test(enteredEmail)) {
-      setEmailError("Invalid email format");
-    } else {
-      setEmailError("");
-    }
-  };
-
-  const handleContactChange = (e) => {
-    const enteredContact = e.target.value;
-    setContactNumber(enteredContact);
-
-    const contactRegex = /^\d{10}$/; // Validates a 10-digit number
-
-    if (!enteredContact.trim()) {
-      setContactError("Contact number is required");
-    } else if (!contactRegex.test(enteredContact)) {
-      setContactError("Invalid contact number format (should be 10 digits)");
-    } else {
-      setContactError("");
-    }
-  };
-
-  const handleTotalExperienceChange = (e) => {
-    const enteredTotalExperience = e.target.value;
-    setTotalExperience(enteredTotalExperience);
-
-    // Total Experience validation logic
-    const experienceRegex = /^\d+$/; // Assumes Total Experience is a positive number
-
-    if (!enteredTotalExperience.trim()) {
-      setTotalExperienceError("Total Experience is required");
-    } else if (!experienceRegex.test(enteredTotalExperience)) {
-      setTotalExperienceError("Invalid Total Experience format");
-    } else {
-      setTotalExperienceError("");
-    }
-  };
-
-  const handleDegreeChange = (e) => {
-    const enteredDegree = e.target.value;
-    setDegree(enteredDegree);
-
-    // Validation logic for Degree
-    if (!enteredDegree.trim()) {
-      setDegreeError("Degree is required");
-    } else {
-      setDegreeError("");
-    }
-  };
-
-  const handleBlockChange = (e) => {
-    // Your validation logic here
-    // Example validation:
-    const enteredBlock = e.target.value;
-
-    if (enteredBlock.trim() === "") {
-      setBlockError("Block is required");
-    } else {
-      setBlockError("");
-    }
-  };
-
-  const handleAreaChange = (e) => {
-    const enteredArea = e.target.value;
-
-    // Your validation logic here
-    if (enteredArea.trim() === "") {
-      setAreaError("Area is required");
-    } else {
-      setAreaError("");
-    }
-  };
-
-  const handlePinCodeChange = (e) => {
-    const enteredPinCode = e.target.value;
-
-    // Validation logic for Pincode
-    const pinCodeRegex = /^\d{6}$/; // Assumes Pincode is a 6-digit number
-
-    if (!enteredPinCode.trim()) {
-      setPinCodeError("Pincode is required");
-    } else if (!pinCodeRegex.test(enteredPinCode)) {
-      setPinCodeError("Invalid Pincode format. Should be a 6-digit number.");
-    } else {
-      setPinCodeError("");
-    }
-  };
-
-  const handleDistrictChange = (e) => {
-    const enteredDistrict = e.target.value;
-
-    // Validation logic for District
-    if (!enteredDistrict.trim()) {
-      setDistrictError("District is required");
-    } else {
-      setDistrictError("");
-    }
-  };
-  const handleStateChange = (e) => {
-    const enteredState = e.target.value;
-
-    // Validation logic for State
-    if (!enteredState.trim()) {
-      setStateError("State is required");
-    } else {
-      setStateError("");
-    }
-  };
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -214,17 +67,10 @@ export default function SuperAdminDoctorForm() {
   const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
-    handleNewProfilePicture();
   };
 
   const handleNewProfilePicture = async () => {
     const token = localStorage.getItem("token");
-    const doctorId = localStorage.getItem("doctorId");
-
-    if (!token || !doctorId) {
-      console.error("Token or doctor ID not found in local storage");
-      return;
-    }
 
     const formData = new FormData();
     formData.append("doctorPic", selectedFile);
@@ -245,11 +91,7 @@ export default function SuperAdminDoctorForm() {
 
       const data = await response.json();
       console.log("Image uploaded successfully:", data);
-      setDoctorDetails((prevDoctorDetails) => ({
-        ...prevDoctorDetails,
-        doctorPic: data.profilePicImageUrl,
-      }));
-
+      setDoctorImage(data.profilePicImageUrl);
       alert("Image uploaded successfully.");
 
       // Reset the file input
@@ -259,9 +101,7 @@ export default function SuperAdminDoctorForm() {
       console.error("Error uploading image:", error);
       alert("Error uploading image. Please try again.");
     }
-  };
-
-  // Function to handle profile picture removal
+  }; // Function to handle profile picture removal
   const handleRemoveProfilePicture = () => {
     handleClose();
   };
@@ -345,13 +185,17 @@ export default function SuperAdminDoctorForm() {
   const handleChange1 = (e) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
-      workingDays: [...prevDoctorDetails.workingDays, e],
+      workingDays: e,
     }));
   };
 
   const handleChange = (e) => {
     console.log("E value", e);
     const { name, value } = e.target;
+    setDoctorDetails((prevDoctorDetails) => ({
+      ...prevDoctorDetails,
+      doctorPic: doctorImage,
+    }));
 
     if (name === "workHourFrom" || name === "workHourTo") {
       setDoctorDetails((prevDoctorDetails) => ({
@@ -386,22 +230,27 @@ export default function SuperAdminDoctorForm() {
       }));
     }
   };
+
   const handleRegister = async (e) => {
     e.preventDefault();
     // Check if the token exists
+
     const token = localStorage.getItem("token");
     if (!token) {
       console.error("No token found in local storage");
       return;
     }
-    const response = await fetch(`${baseUrl}/api/v1/admin/register_doctor`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify(doctorDetails),
-    });
+    const response = await fetch(
+      `${baseUrl}/api/v1/superAdmin/register_doctor `,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(doctorDetails),
+      }
+    );
     const data = await response.json();
     if (data.success === true) {
       navigate("/otp", {
@@ -454,9 +303,9 @@ export default function SuperAdminDoctorForm() {
                       color: "#A4A4A4",
                     }}
                   >
-                    {doctorDetails?.doctorPic ? (
+                    {doctorImage || doctorDetails?.doctorPic ? (
                       <img
-                        src={doctorDetails.doctorPic}
+                        src={doctorImage || doctorDetails?.doctorPic}
                         alt="Avatar"
                         style={{
                           borderRadius: "50%",
@@ -473,9 +322,13 @@ export default function SuperAdminDoctorForm() {
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                     onClick={handleClick}
-                    style={{ cursor: "pointer" }} // Add a pointer cursor to indicate clickable
+                    style={{
+                      cursor: "pointer",
+                      marginLeft: 37,
+                      marginTop: -20,
+                    }}
                   >
-                    Edit profile pic
+                    <MdEdit />
                   </p>
                   <div style={{ backgroundColor: "#08DA75" }}>
                     <Menu
@@ -509,7 +362,7 @@ export default function SuperAdminDoctorForm() {
                           backgroundColor: "#08DA75",
                           color: isHovered1 ? "red" : "white",
                         }}
-                        onClick={handleRemoveProfilePicture}
+                        // onClick={handleRemoveProfilePicture}
                         onMouseEnter={() => setIsHovered1(true)}
                         onMouseLeave={() => setIsHovered1(false)}
                       >
@@ -529,69 +382,64 @@ export default function SuperAdminDoctorForm() {
                     onChange={handleFileSelect}
                   />
                 </div>
+                <button
+                  onClick={handleNewProfilePicture}
+                  style={{ marginLeft: 20, marginTop: 5 }}
+                >
+                  Upload
+                </button>
               </div>
             </div>
             <div class="grid grid-cols-1 w-full gap-4">
               <div>
                 <label
-                  htmlFor="name"
-                  className="block text-black text-lg font-semibold"
+                  for="name"
+                  class="block text-black text-lg font-semibold"
                 >
                   Dr. Name
                 </label>
                 <input
                   type="text"
+                  placeholder="Smita Singh"
                   id="name"
                   name="name"
-                  onChange={handleDrNameChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                    drNameError ? "border-red-500" : "border-[#08DA75]"
-                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
-                {drNameError && (
-                  <p className="text-red-500 text-sm mt-1">{drNameError}</p>
-                )}
               </div>
               <div>
                 <label
-                  htmlFor="email"
-                  className="block text-black text-lg font-semibold"
+                  for="email"
+                  class="block text-black text-lg font-semibold"
                 >
                   Email
                 </label>
                 <input
                   type="email"
+                  placeholder="smitasingh1234@gmail.com"
                   id="email"
                   name="email"
-                  onChange={handleEmailChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                    emailError ? "border-red-500" : "border-[#08DA75]"
-                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
-                {emailError && (
-                  <p className="text-red-500 text-sm mt-1">{emailError}</p>
-                )}{" "}
               </div>
               <div>
                 <label
-                  htmlFor="contact"
-                  className="block text-black text-lg font-semibold"
+                  for="contact"
+                  class="block text-black text-lg font-semibold"
                 >
                   Contact Number
                 </label>
                 <input
-                  type="text"
-                  id="contact"
-                  name="contact"
-                  onChange={handleContactChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                    contactError ? "border-red-500" : "border-[#08DA75]"
-                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  type="number"
+                  placeholder="+91-8603678852"
+                  id="contactNumber"
+                  name="contactNumber"
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
-                {contactError && (
-                  <p className="text-red-500 text-sm mt-1">{contactError}</p>
-                )}
-              </div>{" "}
+              </div>
+
               <div className="flex justify-between space-x-4">
                 <div className="flex-1">
                   <label
@@ -666,19 +514,10 @@ export default function SuperAdminDoctorForm() {
                     type="text"
                     id="total-experience"
                     name="totalExperience"
-                    onChange={handleTotalExperienceChange}
-                    className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                      totalExperienceError
-                        ? "border-red-500"
-                        : "border-[#08DA75]"
-                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                    onChange={handleChange}
+                    class="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
-                  {totalExperienceError && (
-                    <p className="text-red-500 text-sm mt-1">
-                      {totalExperienceError}
-                    </p>
-                  )}
-                </div>{" "}
+                </div>
                 <div class="flex-1" style={{ marginRight: "10px" }}>
                   <label
                     for="specialist"
@@ -700,10 +539,11 @@ export default function SuperAdminDoctorForm() {
                   </select>
                 </div>
               </div>
+
               <div>
                 <label
-                  htmlFor="degree"
-                  className="block text-black text-lg font-semibold"
+                  for="degree"
+                  class="block text-black text-lg font-semibold"
                 >
                   Degree
                 </label>
@@ -711,15 +551,10 @@ export default function SuperAdminDoctorForm() {
                   type="text"
                   id="degree"
                   name="degree"
-                  onChange={handleDegreeChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                    degreeError ? "border-red-500" : "border-[#08DA75]"
-                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
-                {degreeError && (
-                  <p className="text-red-500 text-sm mt-1">{degreeError}</p>
-                )}
-              </div>{" "}
+              </div>
               <div class="p-3 pb-5 border border-[#08DA75]">
                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                   <div class="px-2 w-full sm:w-1/3">
@@ -754,10 +589,10 @@ export default function SuperAdminDoctorForm() {
                       class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
-                  <div className="px-2 w-full sm:w-1/3">
+                  <div class="px-2 w-full sm:w-1/3">
                     <label
-                      htmlFor="block"
-                      className="block text-black text-lg font-semibold"
+                      for="block"
+                      class="block text-black text-lg font-semibold"
                     >
                       Block
                     </label>
@@ -765,20 +600,15 @@ export default function SuperAdminDoctorForm() {
                       type="text"
                       id="block"
                       name="block"
-                      onChange={handleBlockChange}
+                      onChange={handleChange}
                       placeholder="A"
-                      className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                        blockError ? "border-red-500" : "border-[#08DA75]"
-                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {blockError && (
-                      <p className="text-red-500 text-sm mt-1">{blockError}</p>
-                    )}
                   </div>
-                  <div className="px-2 w-full sm:w-1/2">
+                  <div class="px-2 w-full sm:w-1/2">
                     <label
-                      htmlFor="area"
-                      className="block text-black text-lg font-semibold"
+                      for="area"
+                      class="block text-black text-lg font-semibold"
                     >
                       Area
                     </label>
@@ -786,20 +616,15 @@ export default function SuperAdminDoctorForm() {
                       type="text"
                       id="area"
                       name="area"
-                      onChange={handleAreaChange}
+                      onChange={handleChange}
                       placeholder="Green Park"
-                      className={`block w-full rounded-lg border ${
-                        areaError ? "border-red-500" : "border-[#08DA75]"
-                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {areaError && (
-                      <p className="text-red-500 text-sm mt-1">{areaError}</p>
-                    )}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/2">
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
                     <label
-                      htmlFor="pinCode"
-                      className="block text-black text-lg font-semibold"
+                      for="pincode"
+                      class="block text-black text-lg font-semibold"
                     >
                       Pincode
                     </label>
@@ -807,22 +632,15 @@ export default function SuperAdminDoctorForm() {
                       type="text"
                       id="pinCode"
                       name="pinCode"
-                      onChange={handlePinCodeChange}
+                      onChange={handleChange}
                       placeholder="110016"
-                      className={`block w-full rounded-lg border ${
-                        pinCodeError ? "border-red-500" : "border-[#08DA75]"
-                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {pinCodeError && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {pinCodeError}
-                      </p>
-                    )}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/2">
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
                     <label
-                      htmlFor="district"
-                      className="block text-black text-lg font-semibold"
+                      for="district"
+                      class="block text-black text-lg font-semibold"
                     >
                       District
                     </label>
@@ -830,22 +648,15 @@ export default function SuperAdminDoctorForm() {
                       type="text"
                       id="district"
                       name="district"
-                      onChange={handleDistrictChange}
+                      onChange={handleChange}
                       placeholder="South Delhi"
-                      className={`block w-full rounded-lg border ${
-                        districtError ? "border-red-500" : "border-[#08DA75]"
-                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {districtError && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {districtError}
-                      </p>
-                    )}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/2">
+                  </div>
+                  <div class="px-2 w-full sm:w-1/2">
                     <label
-                      htmlFor="state"
-                      className="block text-black text-lg font-semibold"
+                      for="state"
+                      class="block text-black text-lg font-semibold"
                     >
                       State
                     </label>
@@ -853,16 +664,11 @@ export default function SuperAdminDoctorForm() {
                       type="text"
                       id="state"
                       name="state"
-                      onChange={handleStateChange}
+                      onChange={handleChange}
                       placeholder="Delhi"
-                      className={`block w-full rounded-lg border ${
-                        stateError ? "border-red-500" : "border-[#08DA75]"
-                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {stateError && (
-                      <p className="text-red-500 text-sm mt-1">{stateError}</p>
-                    )}
-                  </div>{" "}
+                  </div>
                 </div>
               </div>
             </div>

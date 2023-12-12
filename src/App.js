@@ -17,7 +17,7 @@ import DoctorLogin from "./components/doctorLogin";
 import AdminLogin from "./components/adminLogin";
 import UserLogin from "./components/userLogin";
 import DoctorListAdmin from "./components/doctorListAdmin";
-import AdminForm from "./components/adminForm";
+// import AdminForm from "./components/adminForm";
 import EditDoctorForm from "./components/editDoctorForm";
 import EditDoctorFormAdmin from "./components/editDoctorFormAdmin";
 import EditAdminForm from "./components/editAdminForm";
@@ -61,7 +61,7 @@ import SuperAdminDoctorEditForm from "./components/superadmindoctoreditform";
 import SuperAdminAdminEditForm from "./components/superadminadmineditform";
 import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
-
+import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
 function App() {
   return (
     <Routes>
@@ -130,6 +130,7 @@ function App() {
         element={
           <Layout
             Component={SuperAdminAdminForm}
+            type="superAdmin"
             headerTextTop={"Super Admin"}
             headerTextBottom={"Admin Form"}
           />
@@ -249,6 +250,7 @@ function App() {
         element={
           <Layout
             Component={SuperAdminDoctorForm}
+            type="superAdmin"
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor Form"}
           />
@@ -265,6 +267,17 @@ function App() {
             headerTextBottom={"Doctor List"}
             search={"true"}
             AddButton={"true"}
+          />
+        }
+      />
+
+      <Route
+        path="/superadmindoctorotppage"
+        element={
+          <Layout
+            Component={SuperAdminDoctorOtpPage}
+            headerTextTop={"Super Admin"}
+            headerTextBottom={"Doctor Otp"}
           />
         }
       />
@@ -293,10 +306,6 @@ function App() {
       <Route
         path="/userform"
         element={<Layout Component={UserForm} type="user" />}
-      ></Route>
-      <Route
-        path="/adminform"
-        element={<Layout Component={AdminForm} type="admin" />}
       ></Route>
       <Route
         path="/useradmin"

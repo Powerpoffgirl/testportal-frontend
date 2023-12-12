@@ -68,7 +68,7 @@ const link5 = [
   { text: "Edit Profile", to: "/superadmineditform" },
   { text: "Support", to: "#" },
   { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "#", onClick: handleLogout },
+  { text: "Logout", to: "/superadminlogin", onClick: handleLogout },
 ];
 
 export default function Layout({
@@ -143,6 +143,10 @@ export default function Layout({
       navigate("/doctorformadmin");
     } else if (type === "superAdmin")
     {
+<<<<<<< HEAD
+=======
+      console.log("hello");
+>>>>>>> be950d3f5f42cc81adc19bdcdcc1d181cc923e2f
       navigate("/superadminadminform");
     }
   };
