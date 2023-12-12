@@ -51,13 +51,16 @@ export default function SuperAdminDoctorList({ searchTerm }) {
   useEffect(() => {
     const fetchDoctorDetails = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            // 'x-auth-token': token // Replace with your actual token from the previous session
-          },
-        });
+        const response = await fetch(
+          `${baseUrl}/api/v1/superAdmin/list_doctors`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              // 'x-auth-token': token // Replace with your actual token from the previous session
+            },
+          }
+        );
 
         const data = await response.json();
         console.log("DATA from response", data);
