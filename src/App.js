@@ -61,8 +61,7 @@ import SuperAdminAdminEditForm from "./components/superadminadmineditform";
 import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
 
-function App()
-{
+function App() {
   return (
     <Routes>
       <Route
@@ -91,6 +90,7 @@ function App()
         element={
           <Layout
             Component={SuperAdminEditForm}
+            type="superAdmin"
             headerTextTop={"Super Admin"}
             headerTextBottom={"Edit Form"}
           />
@@ -115,6 +115,7 @@ function App()
         element={
           <Layout
             Component={SuperAdminAdminList}
+            type="superAdmin"
             headerTextTop={"Super Admin"}
             headerTextBottom={"Admin List"}
             search={"true"}
@@ -194,6 +195,7 @@ function App()
         element={
           <Layout
             Component={SuperAdminUserList}
+            type="superAdmin"
             headerTextTop={"Super Admin"}
             headerTextBottom={"User List"}
             search={"true"}
@@ -218,6 +220,7 @@ function App()
         element={
           <Layout
             Component={SuperAdminPatientList}
+            type="superAdmin"
             headerTextTop={"Super Admin"}
             headerTextBottom={"Patient List"}
             search={"true"}
@@ -231,6 +234,7 @@ function App()
         element={
           <Layout
             Component={SuperAdminAppointmentList}
+            type="superAdmin"
             headerTextTop={"Super Admin"}
             headerTextBottom={"Appointment List"}
             search={"true"}
@@ -255,6 +259,7 @@ function App()
         element={
           <Layout
             Component={SuperAdminDoctorList}
+            type="superAdmin"
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor List"}
             search={"true"}
@@ -275,8 +280,14 @@ function App()
       ></Route>
       <Route
         path="/qr"
-        element={<Layout Component={Qr} type="admin" headerTextTop={"Doctor's"}
-          headerTextBottom={"QR Code"} />}
+        element={
+          <Layout
+            Component={Qr}
+            type="admin"
+            headerTextTop={"Doctor's"}
+            headerTextBottom={"QR Code"}
+          />
+        }
       ></Route>
       <Route
         path="/userform"

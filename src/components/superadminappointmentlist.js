@@ -52,7 +52,7 @@ export default function SuperAdminAppointmentList() {
           return;
         }
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_patientsList`,
+          `${baseUrl}/api/v1/.superAdmin/list_appointments `,
           {
             method: "GET",
             headers: {

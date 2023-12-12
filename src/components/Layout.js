@@ -4,11 +4,10 @@ import toggle from "../assets/toogle.svg";
 import { useMediaQuery } from "react-responsive";
 import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 // const navigate = useNavigate()
-const handleLogout = () =>
-{
+const handleLogout = () => {
   console.log("HELLO");
   localStorage.clear(); // or localStorage.removeItem('yourKey');
 };
@@ -60,10 +59,12 @@ const link4 = [
 
 // -------------SUPER ADMIN SIDEBAR NAVIGATION--------------------------
 const link5 = [
-  { text: "Admin’s List", to: "/adminlist" },
-  { text: "Patient’s List", to: "/patientlistadmin" },
-  { text: "Appointment List", to: "" },
-  { text: "Edit Profile", to: "#" },
+  { text: "Admin’s List", to: "/superadminadminlist" },
+  { text: "Doctor’s List", to: "/superadmindoctorlist" },
+  { text: "User’s List", to: "/superadminuserlist" },
+  { text: "Patient’s List", to: "/superadminpatientlist" },
+  { text: "Appointment List", to: "/superadminappointmentlist" },
+  { text: "Edit Profile", to: "/superadmineditform" },
   { text: "Support", to: "#" },
   { text: "Manage QR", to: "#" },
   { text: "Logout", to: "#", onClick: handleLogout },
@@ -77,8 +78,7 @@ export default function Layout({
   search,
   AddButton,
   // setSearchTerm,
-})
-{
+}) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const location = useLocation();
   console.log(location);
@@ -88,65 +88,50 @@ export default function Layout({
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
-  const [pic, setPic] = useState()
+  const [pic, setPic] = useState();
 
-  const toggleSidebar = () =>
-  {
+  const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const closeSidebarOnOutsideClick = (e) =>
-  {
-    if (sidebarRef.current && !sidebarRef.current.contains(e.target))
-    {
+  const closeSidebarOnOutsideClick = (e) => {
+    if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
       setIsSidebarOpen(false);
     }
   };
 
-  useEffect(() =>
-  {
-    setPic(localStorage.getItem("pic"))
+  useEffect(() => {
+    setPic(localStorage.getItem("pic"));
     document.addEventListener("click", closeSidebarOnOutsideClick);
 
-    return () =>
-    {
+    return () => {
       document.removeEventListener("click", closeSidebarOnOutsideClick);
     };
   }, []);
 
-  const handleEditProfile = () =>
-  {
-    if (type === "user")
-    {
+  const handleEditProfile = () => {
+    if (type === "user") {
       navigate("/edituserform");
-    } else if (type === "admin")
-    {
+    } else if (type === "admin") {
       navigate("/edituserform");
-    } else if (type === "superAdmin")
-    {
-      navigate("/edituserform");
-    } else
-    {
+    } else if (type === "superAdmin") {
+      navigate("/superadminuserform");
+    } else {
       navigate("/editdoctorform");
     }
   };
 
-  const handleDoctorForm = () =>
-  {
-    if (type === "user")
-    {
+  const handleDoctorForm = () => {
+    if (type === "user") {
       navigate("/patientform");
-    } else if (type === "admin")
-    {
+    } else if (type === "admin") {
       navigate("/doctorformadmin");
-    } else if (type === "superAdmin")
-    {
+    } else if (type === "superAdmin") {
       navigate("/adminform");
     }
   };
 
-  const handleSearchTerm = (e) =>
-  {
+  const handleSearchTerm = (e) => {
     setSearchTerm(e.target.value);
   };
 
@@ -156,8 +141,9 @@ export default function Layout({
     <>
       <div className="flex min-h-screen">
         <aside
-          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-            } ease-in-out transition-all duration-300 md:transform-none`}
+          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } ease-in-out transition-all duration-300 md:transform-none`}
         >
           <h1 className="font-bold text-2xl">
             Welcome! {type ? type : "Guest"}
@@ -166,15 +152,17 @@ export default function Layout({
             class="flex items-center gap-x-2 mt-3"
             onClick={handleEditProfile}
           >
-            {
-              pic ? <img
+            {pic ? (
+              <img
                 class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
                 src={pic}
                 alt={userName}
               />
-                :
-                <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
-            }
+            ) : (
+              <AccountCircleIcon
+                style={{ fontSize: "90px", color: "#A4A4A4" }}
+              />
+            )}
 
             <div>
               <h1 class="text-xl font-semibold text-white capitalize">

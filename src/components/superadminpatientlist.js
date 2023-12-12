@@ -46,7 +46,7 @@ export default function SuperAdminPatientList() {
           return;
         }
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_patientsList`,
+          `${baseUrl}/api/v1/superAdmin/list_patients `,
           {
             method: "GET",
             headers: {

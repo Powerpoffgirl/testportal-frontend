@@ -50,6 +50,7 @@ export default function SuperAdminDoctorList({ searchTerm }) {
 
   useEffect(() => {
     const fetchDoctorDetails = async () => {
+      const token = localStorage.getItem("token");
       try {
         const response = await fetch(
           `${baseUrl}/api/v1/superAdmin/list_doctors`,
@@ -57,7 +58,7 @@ export default function SuperAdminDoctorList({ searchTerm }) {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              // 'x-auth-token': token // Replace with your actual token from the previous session
+              "x-auth-token": token, // Replace with your actual token from the previous session
             },
           }
         );
