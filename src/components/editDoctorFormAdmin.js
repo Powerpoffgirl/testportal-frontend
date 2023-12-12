@@ -114,7 +114,7 @@ export default function EditDoctorFormAdmin()
                     console.error("No token found in local storage");
                     return;
                 }
-                const response = await fetch(`${baseUrl}/api/v1/doctor/get_doctorDetails`, {
+                const response = await fetch(`${baseUrl}/api/v1/admin/get_doctor/${doctorId}`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -263,7 +263,7 @@ export default function EditDoctorFormAdmin()
             return;
         }
         const response = await fetch(
-            `${baseUrl}/api/v1/doctor/update_doctor`,
+            `${baseUrl}/api/v1/admin/update_doctor/${doctorId}`,
             {
                 method: "put",
                 headers: {

@@ -27,6 +27,7 @@ import DoctorListUser from "./components/doctorListUser";
 import AppointmentListUser from "./components/appointmentListUser";
 import AppointmentListAdmin from "./components/AppointmentListAdmin";
 import EditUserForm from "./components/editUserForm";
+import EditPatientFormAdmin from "./components/editPatientFormAdmin";
 import AppointmentList from "./components/appointmentList";
 import PatientDescription from "./components/patientDescription";
 import PatientListAdmin from "./components/patientListAdmin";
@@ -431,6 +432,18 @@ function App()
             Component={EditPatientForm}
             type="user"
             headerTextTop={"Edit Member's"}
+            headerTextBottom={"Form"}
+          />
+        }
+      ></Route>
+
+      <Route
+        path="/editpatientformadmin"
+        element={
+          <Layout
+            Component={EditPatientFormAdmin}
+            type="admin"
+            headerTextTop={"Edit Patient's"}
             headerTextBottom={"Form"}
           />
         }

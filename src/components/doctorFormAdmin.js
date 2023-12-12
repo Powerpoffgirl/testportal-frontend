@@ -300,7 +300,6 @@ export default function DoctorFormAdmin()
     return (
         <>
             <div className="flex flex-row">
-                <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div>
                 <div className=" w-full">
                     <div className="mt-6 p-2">
                         <div className="flex  flex-col items-center justify-center w-full">

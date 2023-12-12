@@ -110,7 +110,7 @@ export default function EditAdminForm()
                     console.error("No token found in local storage");
                     return;
                 }
-                const response = await fetch(`${baseUrl}/api/v1/admin/get_doctor/${doctorId}`, {
+                const response = await fetch(`${baseUrl}/api/v1/admin/get_profile`, {
                     method: 'GET',
                     headers: {
                         'Content-Type': 'application/json',
@@ -386,6 +386,7 @@ export default function EditAdminForm()
                                     id="name"
                                     name="name"
                                     onChange={handleChange}
+                                    value={doctorDetails?.name}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
                             </div>
@@ -402,6 +403,7 @@ export default function EditAdminForm()
                                     id="email"
                                     name="email"
                                     onChange={handleChange}
+                                    value={doctorDetails?.email}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
                             </div>
@@ -418,6 +420,7 @@ export default function EditAdminForm()
                                     id="contactNumber"
                                     name="contactNumber"
                                     onChange={handleChange}
+                                    value={doctorDetails?.contactNumber}
                                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
                             </div>
@@ -440,6 +443,7 @@ export default function EditAdminForm()
                                             name="houseNo"
                                             onChange={handleChange}
                                             placeholder="1234"
+                                            value={doctorDetails?.address?.houseNo}
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
@@ -456,6 +460,7 @@ export default function EditAdminForm()
                                             name="floor"
                                             onChange={handleChange}
                                             placeholder="2nd"
+                                            value={doctorDetails?.address?.floor}
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
@@ -472,6 +477,7 @@ export default function EditAdminForm()
                                             name="block"
                                             onChange={handleChange}
                                             placeholder="A"
+                                            value={doctorDetails?.address?.block}
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
@@ -487,6 +493,7 @@ export default function EditAdminForm()
                                             id="area"
                                             name="area"
                                             onChange={handleChange}
+                                            value={doctorDetails?.address?.area}
                                             placeholder="Green Park"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
@@ -504,6 +511,7 @@ export default function EditAdminForm()
                                             name="pinCode"
                                             onChange={handleChange}
                                             placeholder="110016"
+                                            value={doctorDetails?.address?.pinCode}
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
@@ -520,6 +528,7 @@ export default function EditAdminForm()
                                             name="district"
                                             onChange={handleChange}
                                             placeholder="South Delhi"
+                                            value={doctorDetails?.address?.district}
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
@@ -535,6 +544,7 @@ export default function EditAdminForm()
                                             id="state"
                                             name="state"
                                             onChange={handleChange}
+                                            value={doctorDetails?.address?.state}
                                             placeholder="Delhi"
                                             class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
