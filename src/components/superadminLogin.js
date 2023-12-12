@@ -119,7 +119,7 @@ export default function SuperAdminLogin() {
 
     e.preventDefault();
     if (isAdmin) {
-      const response = await fetch(`${baseUrl}/api/v1/admin/login`, {
+      const response = await fetch(`${baseUrl}/api/v1/superAdmin/login`, {
         method: "post",
         headers: {
           "Content-Type": "application/json",
@@ -133,7 +133,7 @@ export default function SuperAdminLogin() {
       if (data.success === true) {
         if (data.token) {
           localStorage.setItem("token", data.token);
-          navigate("/doctorlistadmin");
+          navigate("/superadmindoctorlist");
         }
       }
       if (data.success === false) {
