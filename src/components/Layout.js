@@ -73,7 +73,7 @@ export default function Layout({
     { text: "Member’s List", to: "/patientlistuser" },
     { text: "Doctor’s List", to: "/doctorlistuser" },
     { text: "Appointment’s List", to: "/appointmentlistuser" },
-    { text: "Edit Profile", to: "/edituserform" },
+    { text: "Profile", to: "/edituserform" },
     { text: "Support", to: "#" },
     { text: "Logout User", to: "/userlogin", onClick: handleLogout },
   ];
@@ -83,9 +83,8 @@ export default function Layout({
   const link3 = [
     { text: "Patient’s List", to: "/patientlist" },
     { text: "Appointment List", to: "/appointmentlist" },
-    { text: "Edit Profile", to: "/editdoctorform" },
+    { text: "Profile", to: "/editdoctorform" },
     { text: "Support", to: "#" },
-    { text: "Manage QR", to: "#" },
     { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
   ];
 
@@ -95,12 +94,8 @@ export default function Layout({
     { text: "Doctor’s List", to: "/doctorlistadmin" },
     { text: "Patient’s List", to: "/patientlistadmin" },
     { text: "Appointment List", to: "/appointmentlistadmin" },
-    {
-      text: "Edit Profile",
-      to: "/editadminform",
-    },
+    { text: "Profile", to: "/editadminform" },
     { text: "Support", to: "#" },
-    { text: "Manage QR", to: "#" },
     { text: "Logout", to: "/adminlogin", onClick: handleLogout },
   ];
 
@@ -113,7 +108,6 @@ export default function Layout({
     { text: "Appointment List", to: "/superadminappointmentlist" },
     { text: "Profile", to: "/superadmineditform" },
     { text: "Support", to: "#" },
-    // { text: "Manage QR", to: "#" },
     { text: "Logout", to: "/superadminlogin", onClick: handleLogout },
   ];
 
