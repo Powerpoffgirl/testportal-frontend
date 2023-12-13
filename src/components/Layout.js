@@ -11,6 +11,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 //   console.log("HELLO");
 //   localStorage.clear(); // or localStorage.removeItem('yourKey');
 // };
+const type1 = localStorage.getItem("type");
+console.log("type1", type1);
 const baseUrl = process.env.REACT_APP_BASE_URL;
 const handleLogout = async () => {
   const token = localStorage.getItem("token");
