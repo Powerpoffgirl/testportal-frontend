@@ -42,7 +42,7 @@ import DocAppointment from "./components/docAppointment";
 import Table from "./components/tabel";
 // import Sidebar2 from './components/Sidebar2';
 import Layout from "./components/Layout";
-import Table2 from "./components/table2";
+// import Table2 from "./components/table2";
 import EditPatientForm from "./components/editPatientForm";
 import ForgetPassword from "./components/forgetpassword";
 import OtpVerify from "./components/otpverify";
@@ -63,8 +63,13 @@ import SuperAdminAdminEditForm from "./components/superadminadmineditform";
 import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
 import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
+<<<<<<< HEAD
 function App()
 {
+=======
+import SuperAdminOtp from "./components/superadminotp";
+function App() {
+>>>>>>> 6746858473ec04707117fa457b826c22fd368c61
   return (
     <Routes>
       <Route
@@ -203,7 +208,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"User List"}
             search={"true"}
-            AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -228,7 +233,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"Patient List"}
             search={"true"}
-            AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -242,7 +247,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"Appointment List"}
             search={"true"}
-            AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -268,7 +273,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor List"}
             search={"true"}
-            AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -280,6 +285,17 @@ function App()
             Component={SuperAdminDoctorOtpPage}
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor Otp"}
+          />
+        }
+      />
+
+      <Route
+        path="/superadminotp"
+        element={
+          <Layout
+            Component={SuperAdminOtp}
+            headerTextTop={"Super Admin"}
+            headerTextBottom={"Otp"}
           />
         }
       />
