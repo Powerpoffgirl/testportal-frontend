@@ -6,70 +6,7 @@ import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-// const navigate = useNavigate()
-const handleLogout = () =>
-{
-  console.log("HELLO");
-  localStorage.clear(); // or localStorage.removeItem('yourKey');
-};
 
-// -------------BASE URL SIDEBAR NAVIGATION--------------------------
-
-const link1 = [
-  { text: "User Login", to: "/userlogin" },
-  { text: "Doctor Login", to: "/doctorlogin" },
-  { text: "Support", to: "#" },
-];
-
-// -------------USER SIDEBAR NAVIGATION--------------------------
-
-const link2 = [
-  { text: "Member’s List", to: "/patientlistuser" },
-  { text: "Doctor’s List", to: "/doctorlistuser" },
-  { text: "Appointment’s List", to: "/appointmentlistuser" },
-  { text: "Edit Profile", to: "/edituserform" },
-  { text: "Support", to: "#" },
-  { text: "Logout User", to: "/userlogin", onClick: handleLogout },
-];
-
-// -------------DOCTOR SIDEBAR NAVIGATION--------------------------
-
-const link3 = [
-  { text: "Patient’s List", to: "/patientlist" },
-  { text: "Appointment List", to: "/appointmentlist" },
-  { text: "Edit Profile", to: "/editdoctorform" },
-  { text: "Support", to: "#" },
-  { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
-];
-
-// ------------- ADMIN SIDEBAR NAVIGATION--------------------------
-
-const link4 = [
-  { text: "Doctor’s List", to: "/doctorlistadmin" },
-  { text: "Patient’s List", to: "/patientlistadmin" },
-  { text: "Appointment List", to: "/appointmentlistadmin" },
-  {
-    text: "Edit Profile",
-    to: "/editadminform",
-  },
-  { text: "Support", to: "#" },
-  { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "/adminlogin", onClick: handleLogout },
-];
-
-// -------------SUPER ADMIN SIDEBAR NAVIGATION--------------------------
-const link5 = [
-  { text: "Admin’s List", to: "/superadminadminlist" },
-  { text: "Doctor’s List", to: "/superadmindoctorlist" },
-  { text: "User’s List", to: "/superadminuserlist" },
-  { text: "Patient’s List", to: "/superadminpatientlist" },
-  { text: "Appointment List", to: "/superadminappointmentlist" },
-  { text: "Edit Profile", to: "/superadmineditform" },
-  { text: "Support", to: "#" },
-  { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "/superadminlogin", onClick: handleLogout },
-];
 
 export default function Layout({
   Component,
@@ -81,6 +18,38 @@ export default function Layout({
   // setSearchTerm,
 })
 {
+
+
+  const baseUrl = process.env.REACT_APP_BASE_URL
+  console.log("TYPE=================", type)
+  const handleLogout = async () =>
+  {
+    const token = localStorage.getItem("token");
+
+    if (!token)
+    {
+      console.error("No token found in local storage");
+      return;
+    }
+    const response = await fetch(
+      `${baseUrl}/api/v1/${type}/logout`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,  // Add the token to the request headers
+        },
+        body: JSON.stringify({})
+      }
+    );
+    const data = await response.json();
+    if (data.success === true)
+    {
+      // navigate("/");
+      localStorage.removeItem("token");
+    }
+  }
+
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const location = useLocation();
   console.log(location);
@@ -91,6 +60,66 @@ export default function Layout({
   const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
   const [pic, setPic] = useState();
+
+
+  // -------------BASE URL SIDEBAR NAVIGATION--------------------------
+
+  const link1 = [
+    { text: "User Login", to: "/userlogin" },
+    { text: "Doctor Login", to: "/doctorlogin" },
+    { text: "Support", to: "#" },
+  ];
+
+  // -------------USER SIDEBAR NAVIGATION--------------------------
+
+  const link2 = [
+    { text: "Member’s List", to: "/patientlistuser" },
+    { text: "Doctor’s List", to: "/doctorlistuser" },
+    { text: "Appointment’s List", to: "/appointmentlistuser" },
+    { text: "Edit Profile", to: "/edituserform" },
+    { text: "Support", to: "#" },
+    { text: "Logout User", to: "/userlogin", onClick: handleLogout },
+  ];
+
+  // -------------DOCTOR SIDEBAR NAVIGATION--------------------------
+
+  const link3 = [
+    { text: "Patient’s List", to: "/patientlist" },
+    { text: "Appointment List", to: "/appointmentlist" },
+    { text: "Edit Profile", to: "/editdoctorform" },
+    { text: "Support", to: "#" },
+    { text: "Manage QR", to: "#" },
+    { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
+  ];
+
+  // ------------- ADMIN SIDEBAR NAVIGATION--------------------------
+
+  const link4 = [
+    { text: "Doctor’s List", to: "/doctorlistadmin" },
+    { text: "Patient’s List", to: "/patientlistadmin" },
+    { text: "Appointment List", to: "/appointmentlistadmin" },
+    {
+      text: "Edit Profile",
+      to: "/editadminform",
+    },
+    { text: "Support", to: "#" },
+    { text: "Manage QR", to: "#" },
+    { text: "Logout", to: "/adminlogin", onClick: handleLogout },
+  ];
+
+  // -------------SUPER ADMIN SIDEBAR NAVIGATION--------------------------
+  const link5 = [
+    { text: "Admin’s List", to: "/superadminadminlist" },
+    { text: "Doctor’s List", to: "/superadmindoctorlist" },
+    { text: "User’s List", to: "/superadminuserlist" },
+    { text: "Patient’s List", to: "/superadminpatientlist" },
+    { text: "Appointment List", to: "/superadminappointmentlist" },
+    { text: "Edit Profile", to: "/superadmineditform" },
+    { text: "Support", to: "#" },
+    { text: "Manage QR", to: "#" },
+    { text: "Logout", to: "/superadminlogin", onClick: handleLogout },
+  ];
+
 
   const toggleSidebar = () =>
   {
