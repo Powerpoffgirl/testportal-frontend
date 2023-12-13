@@ -1,10 +1,9 @@
 import { useMediaQuery } from "react-responsive";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
-
-const UserOTP = () =>
-{
+const UserOTP = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const otpInputs = [];
   const [mobileNo, setMobileNo] = useState();
@@ -17,27 +16,23 @@ const UserOTP = () =>
   const MAX_LENGTH = 6;
   const baseUrl = process.env.REACT_APP_BASE_URL;
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-  const [doctorName, setDoctorName] = useState()
+  const [doctorName, setDoctorName] = useState();
 
-  console.log("LOCATION STATE", location.state)
+  console.log("LOCATION STATE", location.state);
 
-  useEffect(() =>
-  {
-    const contactNumber = localStorage.getItem("contactNumber")
-    setDoctorName(localStorage.getItem("doctorName"))
-    setMobileNo(contactNumber)
-  }, [])
+  useEffect(() => {
+    const contactNumber = localStorage.getItem("contactNumber");
+    setDoctorName(localStorage.getItem("doctorName"));
+    setMobileNo(contactNumber);
+  }, []);
 
-  const SendOTP = async () =>
-  {
-
+  const SendOTP = async () => {
     const requestBody = {
       contactNumber: mobileNo,
     };
     const apiUrl = `${baseUrl}/api/v1/user/send_otp`;
 
-    try
-    {
+    try {
       // Send the POST request
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -52,25 +47,20 @@ const UserOTP = () =>
       const data = await response.json();
 
       // Check the response status
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("OTP sent successfully", data);
         setResendClicked(true);
         setSeconds(90);
-      } else
-      {
+      } else {
         console.error("Error sending OTP:", data);
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("Error during the API call:", error);
     }
   };
 
-  const verifyOTP = async () =>
-  {
-    try
-    {
+  const verifyOTP = async () => {
+    try {
       const id = localStorage.getItem("userId");
 
       const otpString = otp.join("");
@@ -83,44 +73,38 @@ const UserOTP = () =>
       });
 
       const data = await response.json();
-      if (data.success === true)
-      {
-        localStorage.setItem("token", data?.data?.token)
-        localStorage.setItem("pic", data?.data?.data?.userPic)
-        console.log("token", data?.data?.token)
-        console.log("======NEW USER=======", data?.data?.data?.newUser)
-        if (data?.data?.data?.newUser)
-        {
-          navigate("/edituserform", { state: { user: user } })
-        } else if (doctorName)
-        {
+      if (data.success === true) {
+        localStorage.setItem("token", data?.data?.token);
+        localStorage.setItem("pic", data?.data?.data?.userPic);
+        console.log("token", data?.data?.token);
+        console.log("======NEW USER=======", data?.data?.data?.newUser);
+        if (data?.data?.data?.newUser) {
+          navigate("/edituserform", { state: { user: user } });
+        } else if (doctorName) {
           navigate("/bookappointment", { state: { user: user } });
-        }
-        else
-        {
+        } else {
           navigate("/doctorlistuser", { state: { user: user } });
         }
       }
+      if (data.success === false) {
+        toast.error("OTP expired!");
+      }
       console.log("DATA from response", data);
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error verifying the OTP:", error);
     }
   };
 
-  const handleInputChange = (e, index) =>
-  {
+  const handleInputChange = (e, index) => {
     const value = e.target.value;
 
-    if (isNaN(value))
-    {
+    if (isNaN(value)) {
       return; // Allow only numeric input
     }
 
     otp[index] = value;
 
-    if (index < MAX_LENGTH - 1 && value)
-    {
+    if (index < MAX_LENGTH - 1 && value) {
       otpInputs[index + 1].focus();
     }
 
@@ -131,17 +115,12 @@ const UserOTP = () =>
   console.log("INPUT OTP", otpInputs);
   console.log("Mobile No", mobileNo);
 
-  useEffect(() =>
-  {
-    if (resendClicked || firstTime)
-    {
-      const intervalId = setInterval(() =>
-      {
-        if (seconds > 0)
-        {
+  useEffect(() => {
+    if (resendClicked || firstTime) {
+      const intervalId = setInterval(() => {
+        if (seconds > 0) {
           setSeconds((prevSeconds) => prevSeconds - 1);
-        } else
-        {
+        } else {
           setFirstTime(false);
           setSeconds(90);
           setResendClicked(false);
@@ -151,8 +130,7 @@ const UserOTP = () =>
     }
   }, [seconds, resendClicked, firstTime]);
 
-  const formatTime = (time) =>
-  {
+  const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const remainingSeconds = time % 60;
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
@@ -252,10 +230,8 @@ const UserOTP = () =>
                   style={{ border: "1px solid #08DA75" }}
                   value={digit}
                   onChange={(e) => handleInputChange(e, index)}
-                  onKeyDown={(e) =>
-                  {
-                    if (e.key === "Backspace" && index > 0 && !digit)
-                    {
+                  onKeyDown={(e) => {
+                    if (e.key === "Backspace" && index > 0 && !digit) {
                       otpInputs[index - 1].focus();
                     }
                   }}

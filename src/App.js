@@ -201,7 +201,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"User List"}
             search={"true"}
-            AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -226,7 +226,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"Patient List"}
             search={"true"}
-            AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -240,7 +240,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"Appointment List"}
             search={"true"}
-            AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -266,7 +266,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor List"}
             search={"true"}
-            AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
