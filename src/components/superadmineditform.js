@@ -16,7 +16,8 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function SuperAdminEditForm() {
+export default function SuperAdminEditForm()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -46,129 +47,161 @@ export default function SuperAdminEditForm() {
   const [state, setState] = useState("");
   const [stateError, setStateError] = useState("");
 
-  const handleDrNameChange = (e) => {
+  const handleDrNameChange = (e) =>
+  {
     const enteredDrName = e.target.value;
     setDrName(enteredDrName);
 
     // Validation logic for Dr. Name
     const drNameRegex = /^Dr\. [a-zA-Z\s-]+$/;
 
-    if (!enteredDrName.trim()) {
+    if (!enteredDrName.trim())
+    {
       setDrNameError("Dr. Name is required");
-    } else if (!drNameRegex.test(enteredDrName)) {
+    } else if (!drNameRegex.test(enteredDrName))
+    {
       setDrNameError("Invalid Dr. Name format. It should start with 'Dr. '");
-    } else {
+    } else
+    {
       setDrNameError("");
     }
   };
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e) =>
+  {
     const enteredEmail = e.target.value;
     setEmail(enteredEmail);
 
     // Validation logic for email
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!enteredEmail.trim()) {
+    if (!enteredEmail.trim())
+    {
       setEmailError("Email is required");
-    } else if (!emailPattern.test(enteredEmail)) {
+    } else if (!emailPattern.test(enteredEmail))
+    {
       setEmailError("Invalid email format");
-    } else {
+    } else
+    {
       setEmailError("");
     }
   };
 
-  const handleContactChange = (e) => {
+  const handleContactChange = (e) =>
+  {
     const enteredContact = e.target.value;
     setContactNumber(enteredContact);
 
     const contactRegex = /^\d{10}$/; // Validates a 10-digit number
 
-    if (!enteredContact.trim()) {
+    if (!enteredContact.trim())
+    {
       setContactError("Contact number is required");
-    } else if (!contactRegex.test(enteredContact)) {
+    } else if (!contactRegex.test(enteredContact))
+    {
       setContactError("Invalid contact number format (should be 10 digits)");
-    } else {
+    } else
+    {
       setContactError("");
     }
   };
 
-  const handleBlockChange = (e) => {
+  const handleBlockChange = (e) =>
+  {
     const enteredBlock = e.target.value;
     setBlock(enteredBlock);
 
     // Validation logic
     const blockRegex = /^[A-Za-z0-9]+$/; // Allows alphanumeric characters
 
-    if (!enteredBlock.trim()) {
+    if (!enteredBlock.trim())
+    {
       setBlockError("Block is required");
-    } else if (!blockRegex.test(enteredBlock)) {
+    } else if (!blockRegex.test(enteredBlock))
+    {
       setBlockError("Invalid block format");
-    } else {
+    } else
+    {
       setBlockError("");
     }
   };
 
-  const handleAreaChange = (e) => {
+  const handleAreaChange = (e) =>
+  {
     const enteredArea = e.target.value;
     setArea(enteredArea);
 
     // Validation logic
     const areaRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
 
-    if (!enteredArea.trim()) {
+    if (!enteredArea.trim())
+    {
       setAreaError("Area is required");
-    } else if (!areaRegex.test(enteredArea)) {
+    } else if (!areaRegex.test(enteredArea))
+    {
       setAreaError("Invalid area format");
-    } else {
+    } else
+    {
       setAreaError("");
     }
   };
 
-  const handleDistrictChange = (e) => {
+  const handleDistrictChange = (e) =>
+  {
     const enteredDistrict = e.target.value;
     setDistrict(enteredDistrict);
 
     // Validation logic
     const districtRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
 
-    if (!enteredDistrict.trim()) {
+    if (!enteredDistrict.trim())
+    {
       setDistrictError("District is required");
-    } else if (!districtRegex.test(enteredDistrict)) {
+    } else if (!districtRegex.test(enteredDistrict))
+    {
       setDistrictError("Invalid district format");
-    } else {
+    } else
+    {
       setDistrictError("");
     }
   };
 
-  const handleStateChange = (e) => {
+  const handleStateChange = (e) =>
+  {
     const enteredState = e.target.value;
     setState(enteredState);
 
     // Validation logic
     const stateRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
 
-    if (!enteredState.trim()) {
+    if (!enteredState.trim())
+    {
       setStateError("State is required");
-    } else if (!stateRegex.test(enteredState)) {
+    } else if (!stateRegex.test(enteredState))
+    {
       setStateError("Invalid state format");
-    } else {
+    } else
+    {
       setStateError("");
     }
   };
 
-  const handlePincodeChange = (e) => {
+  const handlePincodeChange = (e) =>
+  {
     const enteredPinCode = e.target.value;
     setPinCode(enteredPinCode);
 
     // Validation logic
     const pinCodeRegex = /^\d{6}$/; // Allows exactly 6 digits
 
-    if (!enteredPinCode.trim()) {
+    if (!enteredPinCode.trim())
+    {
       setPinCodeError("Pincode is required");
-    } else if (!pinCodeRegex.test(enteredPinCode)) {
+    } else if (!pinCodeRegex.test(enteredPinCode))
+    {
       setPinCodeError("Invalid pincode format (should be 6 digits)");
-    } else {
+    } else
+    {
       setPinCodeError("");
     }
   };
@@ -188,7 +221,8 @@ export default function SuperAdminEditForm() {
     },
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
     if (
@@ -201,7 +235,8 @@ export default function SuperAdminEditForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -209,7 +244,8 @@ export default function SuperAdminEditForm() {
           [name]: value,
         },
       }));
-    } else if (["issues"].includes(name)) {
+    } else if (["issues"].includes(name))
+    {
       // Assuming the value is an array or a string to be added to the array
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
@@ -217,7 +253,8 @@ export default function SuperAdminEditForm() {
           ? value
           : [...prevPatientDetails[name], value],
       }));
-    } else if (["diseases"].includes(name)) {
+    } else if (["diseases"].includes(name))
+    {
       // Assuming the value is an array or a string to be added to the array
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
@@ -225,7 +262,8 @@ export default function SuperAdminEditForm() {
           ? value
           : [...prevPatientDetails[name], value],
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -234,23 +272,27 @@ export default function SuperAdminEditForm() {
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
 
     const isEmpty = Object.values(patientDetails).some((value) => value === "");
 
-    if (isEmpty || isEditing === false) {
+    if (isEmpty || isEditing === false)
+    {
       toast.error("Please fill the fields");
       setIsEditing(false);
       return;
     }
 
-    if (!isEmpty || isEditing === true) {
+    if (!isEmpty || isEditing === true)
+    {
       toast.success("Form submitted successfully!");
     }
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       return;
     }
@@ -263,7 +305,8 @@ export default function SuperAdminEditForm() {
       body: JSON.stringify(patientDetails),
     });
     const data = await response.json();
-    if (data.success === true) {
+    if (data.success === true)
+    {
       // navigate("/otp")
       onOpenModal();
       localStorage.setItem("id", data.data._id);
@@ -324,9 +367,8 @@ export default function SuperAdminEditForm() {
                   id="name"
                   name="name"
                   onChange={handleDrNameChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                    drNameError ? "border-red-500" : "border-[#08DA75]"
-                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${drNameError ? "border-red-500" : "border-[#08DA75]"
+                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
                 {drNameError && (
                   <p className="text-red-500 text-sm mt-1">{drNameError}</p>
@@ -344,9 +386,8 @@ export default function SuperAdminEditForm() {
                   id="email"
                   name="email"
                   onChange={handleEmailChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                    emailError ? "border-red-500" : "border-[#08DA75]"
-                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${emailError ? "border-red-500" : "border-[#08DA75]"
+                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
                 {emailError && (
                   <p className="text-red-500 text-sm mt-1">{emailError}</p>
@@ -364,9 +405,8 @@ export default function SuperAdminEditForm() {
                   id="contact"
                   name="contact"
                   onChange={handleContactChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                    contactError ? "border-red-500" : "border-[#08DA75]"
-                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${contactError ? "border-red-500" : "border-[#08DA75]"
+                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
                 {contactError && (
                   <p className="text-red-500 text-sm mt-1">{contactError}</p>
@@ -419,9 +459,8 @@ export default function SuperAdminEditForm() {
                       name="block"
                       onChange={handleBlockChange}
                       placeholder="A"
-                      className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                        blockError ? "border-red-500" : "border-[#08DA75]"
-                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${blockError ? "border-red-500" : "border-[#08DA75]"
+                        } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
                     {blockError && (
                       <p className="text-red-500 text-sm mt-1">{blockError}</p>
@@ -440,9 +479,8 @@ export default function SuperAdminEditForm() {
                       name="area"
                       onChange={handleAreaChange}
                       placeholder="Green Park"
-                      className={`block w-full rounded-lg border ${
-                        areaError ? "border-red-500" : "border-[#08DA75]"
-                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      className={`block w-full rounded-lg border ${areaError ? "border-red-500" : "border-[#08DA75]"
+                        } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
                     {areaError && (
                       <p className="text-red-500 text-sm mt-1">{areaError}</p>
@@ -461,9 +499,8 @@ export default function SuperAdminEditForm() {
                       name="pinCode"
                       onChange={handlePincodeChange}
                       placeholder="110016"
-                      className={`block w-full rounded-lg border ${
-                        pinCodeError ? "border-red-500" : "border-[#08DA75]"
-                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      className={`block w-full rounded-lg border ${pinCodeError ? "border-red-500" : "border-[#08DA75]"
+                        } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
                     {pinCodeError && (
                       <p className="text-red-500 text-sm mt-1">
@@ -484,9 +521,8 @@ export default function SuperAdminEditForm() {
                       name="district"
                       onChange={handleDistrictChange}
                       placeholder="South Delhi"
-                      className={`block w-full rounded-lg border ${
-                        districtError ? "border-red-500" : "border-[#08DA75]"
-                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      className={`block w-full rounded-lg border ${districtError ? "border-red-500" : "border-[#08DA75]"
+                        } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
                     {districtError && (
                       <p className="text-red-500 text-sm mt-1">
@@ -507,9 +543,8 @@ export default function SuperAdminEditForm() {
                       name="state"
                       onChange={handleStateChange}
                       placeholder="Delhi"
-                      className={`block w-full rounded-lg border ${
-                        stateError ? "border-red-500" : "border-[#08DA75]"
-                      } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      className={`block w-full rounded-lg border ${stateError ? "border-red-500" : "border-[#08DA75]"
+                        } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
                     {stateError && (
                       <p className="text-red-500 text-sm mt-1">{stateError}</p>

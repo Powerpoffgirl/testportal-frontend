@@ -1,36 +1,47 @@
+import Sidebar from "./sidebar";
 import { useMediaQuery } from "react-responsive";
+import Header from "./header";
+
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import AdminSidebar from "./adminSidebar";
+import AdminHeader from "./adminHeader";
 
-const UserOTP = () => {
+const SuperAdminDoctorOtpPage = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const otpInputs = [];
   const [mobileNo, setMobileNo] = useState();
-  const [user, setUser] = useState();
-  const [seconds, setSeconds] = useState(90);
-  const [resendClicked, setResendClicked] = useState(false);
-  const [firstTime, setFirstTime] = useState(true);
   const navigate = useNavigate();
-  const location = useLocation();
   const MAX_LENGTH = 6;
   const baseUrl = process.env.REACT_APP_BASE_URL;
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-  const [doctorName, setDoctorName] = useState();
+  const location = useLocation();
 
-  console.log("LOCATION STATE", location.state);
-
+  console.log(location.state);
   useEffect(() => {
-    const contactNumber = localStorage.getItem("contactNumber");
-    setDoctorName(localStorage.getItem("doctorName"));
-    setMobileNo(contactNumber);
+    setMobileNo(location?.state);
   }, []);
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setMobileNo(value);
+  };
+
   const SendOTP = async () => {
+    // Retrieve the token from local storage
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("id");
+    // If there's no token, log an error and exit
+    if (!token) {
+      console.error("No token found in local storage");
+      return;
+    }
+
+    // Define the request body and the API endpoint
     const requestBody = {
-      contactNumber: mobileNo,
+      contactNumber: mobileNo.contactNumber,
     };
-    const apiUrl = `${baseUrl}/api/v1/user/send_otp`;
+    const apiUrl = `${baseUrl}/api/v1/superAdmin/send_otp/${id}`;
 
     try {
       // Send the POST request
@@ -38,7 +49,7 @@ const UserOTP = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          // "x-auth-token": token
+          "x-auth-token": token,
         },
         body: JSON.stringify(requestBody),
       });
@@ -49,8 +60,6 @@ const UserOTP = () => {
       // Check the response status
       if (response.ok) {
         console.log("OTP sent successfully", data);
-        setResendClicked(true);
-        setSeconds(90);
       } else {
         console.error("Error sending OTP:", data);
       }
@@ -61,33 +70,28 @@ const UserOTP = () => {
 
   const verifyOTP = async () => {
     try {
-      const id = localStorage.getItem("userId");
-
+      const token = localStorage.getItem("token");
+      const id = localStorage.getItem("id");
+      if (!token) {
+        console.error("No token found in local storage");
+        return;
+      }
       const otpString = otp.join("");
-      const response = await fetch(`${baseUrl}/api/v1/user/verify_otp/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ otp: otpString }),
-      });
+      const response = await fetch(
+        `${baseUrl}/api/v1/superAdmin/verifyOTPById/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+          body: JSON.stringify({ otp: otpString }),
+        }
+      );
 
       const data = await response.json();
       if (data.success === true) {
-        localStorage.setItem("token", data?.data?.token);
-        localStorage.setItem("pic", data?.data?.data?.userPic);
-        console.log("token", data?.data?.token);
-        console.log("======NEW USER=======", data?.data?.data?.newUser);
-        if (data?.data?.data?.newUser) {
-          navigate("/edituserform", { state: { user: user } });
-        } else if (doctorName) {
-          navigate("/bookappointment", { state: { user: user } });
-        } else {
-          navigate("/doctorlistuser", { state: { user: user } });
-        }
-      }
-      if (data.success === false) {
-        toast.error("OTP expired!");
+        navigate("/qr");
       }
       console.log("DATA from response", data);
     } catch (error) {
@@ -115,40 +119,20 @@ const UserOTP = () => {
   console.log("INPUT OTP", otpInputs);
   console.log("Mobile No", mobileNo);
 
-  useEffect(() => {
-    if (resendClicked || firstTime) {
-      const intervalId = setInterval(() => {
-        if (seconds > 0) {
-          setSeconds((prevSeconds) => prevSeconds - 1);
-        } else {
-          setFirstTime(false);
-          setSeconds(90);
-          setResendClicked(false);
-        }
-      }, 1000);
-      return () => clearInterval(intervalId);
-    }
-  }, [seconds, resendClicked, firstTime]);
-
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const remainingSeconds = time % 60;
-    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
-  };
-
   return (
     <>
       <div
         className="flex min-h-screen relative overflow-auto 
     box-border"
       >
+        {/* <AdminSidebar></AdminSidebar> */}
         <div
           className="flex flex-col bg-customGreen"
           style={{
             width: isTab ? "100%" : "77%",
           }}
         >
-          {/* <Header line1="Verify" line2="OTP"></Header> */}
+          {/* <AdminHeader line1="Find" line2="Doctors"></AdminHeader> */}
           <div
             className="flex flex-col gap-2 px-3 w-full"
             style={{
@@ -168,35 +152,39 @@ const UserOTP = () => {
                 fontFamily: "Lato, sans-serif",
               }}
             >
-              Mobile No.
+              Mobile No
             </label>
             <input
               className="mx-2"
               type="number"
               id="mobileNo"
               name="mobileNo"
-              value={mobileNo}
+              value={mobileNo?.contactNumber}
               style={{
                 border: "1px solid #08DA75",
                 height: "45px",
-                paddingLeft: "5px",
+                paddingLeft: "1.5%",
               }}
+              // onChange={handleChange}
             />
-            <button
-              className="mt-4 bg-customRed w-40"
-              style={{
-                display: "inline",
-                height: "45px",
-                borderRadius: "43px",
-                color: "white",
-                fontSize: "24px",
-                fontWeight: 600,
-                lineHeight: "28.8px",
-              }}
-              onClick={SendOTP}
-            >
-              Resend OTP
-            </button>
+            <div style={{ display: "flex", justifyContent: "center" }}>
+              <button
+                className="mt-4 bg-customRed w-40"
+                style={{
+                  display: "inline",
+                  height: "45px",
+                  borderRadius: "43px",
+                  color: "white",
+                  fontSize: "24px",
+                  fontWeight: 600,
+                  lineHeight: "28.8px",
+                }}
+                onClick={SendOTP}
+              >
+                Resend OTP
+              </button>
+            </div>
+
             <text
               className="ml-[45%] md:ml-[49%]"
               style={{
@@ -225,7 +213,7 @@ const UserOTP = () => {
                   key={index}
                   ref={(input) => (otpInputs[index] = input)}
                   type="text"
-                  className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-3xl md:text-3xl lg:text-3xl border rounded-md text-center"
+                  className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-4xl md:text-5xl lg:text-6xl border rounded-md text-center"
                   maxLength={1}
                   style={{ border: "1px solid #08DA75" }}
                   value={digit}
@@ -249,18 +237,19 @@ const UserOTP = () => {
                 justifyContent: "center",
               }}
             >
-              Resend OTP in
+              Resnd OTP in
               <text className="mx-2" style={{ color: "#000000" }}>
-                {formatTime(seconds)}
+                0.90
               </text>{" "}
               Sec
             </text>
             <div style={{ display: "flex", justifyContent: "center" }}>
               <button
-                className="mt-4 bg-customRed w-40"
+                className="mt-4 bg-customRed"
                 style={{
                   display: "inline",
-                  height: "45px",
+                  width: isTab ? "150px" : "198px",
+                  height: isTab ? "35px" : "45px",
                   borderRadius: "43px",
                   color: "white",
                   fontSize: "24px",
@@ -279,4 +268,4 @@ const UserOTP = () => {
   );
 };
 
-export default UserOTP;
+export default SuperAdminDoctorOtpPage;

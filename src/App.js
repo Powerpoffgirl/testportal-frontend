@@ -19,6 +19,7 @@ import UserLogin from "./components/userLogin";
 import DoctorListAdmin from "./components/doctorListAdmin";
 // import AdminForm from "./components/adminForm";
 import EditDoctorForm from "./components/editDoctorForm";
+import EditAdminlistform from "./components/editAdminlistform";
 import EditDoctorFormAdmin from "./components/editDoctorFormAdmin";
 import EditAdminForm from "./components/editAdminForm";
 import UserOTP from "./components/userOtp";
@@ -41,7 +42,7 @@ import DocAppointment from "./components/docAppointment";
 import Table from "./components/tabel";
 // import Sidebar2 from './components/Sidebar2';
 import Layout from "./components/Layout";
-import Table2 from "./components/table2";
+// import Table2 from "./components/table2";
 import EditPatientForm from "./components/editPatientForm";
 import ForgetPassword from "./components/forgetpassword";
 import OtpVerify from "./components/otpverify";
@@ -61,7 +62,6 @@ import SuperAdminDoctorEditForm from "./components/superadmindoctoreditform";
 import SuperAdminAdminEditForm from "./components/superadminadmineditform";
 import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
-import { useState } from "react";
 
 function App()
 {
@@ -166,6 +166,7 @@ function App()
         path="/superadminpatienteditform"
         element={
           <Layout
+            type="superAdmin"
             Component={SuperAdminPatientEditForm}
             headerTextTop={"Super Admin Patient"}
             headerTextBottom={"Edit Form"}
@@ -177,6 +178,7 @@ function App()
         path="/superadminusereditform"
         element={
           <Layout
+            type="superAdmin"
             Component={SuperAdminUserEditForm}
             headerTextTop={"Super Admin User"}
             headerTextBottom={"Edit Form"}
@@ -204,7 +206,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"User List"}
             search={"true"}
-            AddButton={"true"}
+          // AddButton={"true"}
           />
         }
       />
@@ -229,7 +231,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"Patient List"}
             search={"true"}
-            AddButton={"true"}
+          // AddButton={"true"}
           />
         }
       />
@@ -243,7 +245,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"Appointment List"}
             search={"true"}
-            AddButton={"true"}
+          // AddButton={"true"}
           />
         }
       />
@@ -269,7 +271,29 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor List"}
             search={"true"}
-            AddButton={"true"}
+          // AddButton={"true"}
+          />
+        }
+      />
+
+      <Route
+        path="/superadmindoctorotppage"
+        element={
+          <Layout
+            Component={SuperAdminDoctorOtpPage}
+            headerTextTop={"Super Admin"}
+            headerTextBottom={"Doctor Otp"}
+          />
+        }
+      />
+
+      <Route
+        path="/superadminotp"
+        element={
+          <Layout
+            Component={SuperAdminOtp}
+            headerTextTop={"Super Admin"}
+            headerTextBottom={"Otp"}
           />
         }
       />
@@ -299,10 +323,6 @@ function App()
         path="/userform"
         element={<Layout Component={UserForm} type="user" />}
       ></Route>
-      {/* <Route
-        path="/adminform"
-        element={<Layout Component={AdminForm} type="admin" />}
-      ></Route> */}
       <Route
         path="/useradmin"
         element={<Layout Component={UserAdmin} type="admin" />}
@@ -360,6 +380,17 @@ function App()
             type="user"
             headerTextTop={"Edit"}
             headerTextBottom={"Appointment"}
+          />
+        }
+      ></Route>
+      <Route
+        path="/editadminlistform"
+        element={
+          <Layout
+            Component={EditAdminlistform}
+            type="superadmin"
+            headerTextTop={"Edit"}
+            headerTextBottom={"Admin Form"}
           />
         }
       ></Route>

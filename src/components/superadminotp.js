@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
-const UserOTP = () => {
+const SuperAdminOtp = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const otpInputs = [];
   const [mobileNo, setMobileNo] = useState();
@@ -30,7 +30,7 @@ const UserOTP = () => {
     const requestBody = {
       contactNumber: mobileNo,
     };
-    const apiUrl = `${baseUrl}/api/v1/user/send_otp`;
+    const apiUrl = `${baseUrl}/api/v1/superAdmin/send_otp`;
 
     try {
       // Send the POST request
@@ -61,16 +61,21 @@ const UserOTP = () => {
 
   const verifyOTP = async () => {
     try {
-      const id = localStorage.getItem("userId");
+      const id = localStorage.getItem("adminId");
+      const token = localStorage.getItem("token");
 
       const otpString = otp.join("");
-      const response = await fetch(`${baseUrl}/api/v1/user/verify_otp/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ otp: otpString }),
-      });
+      const response = await fetch(
+        `${baseUrl}/api/v1/superAdmin/verify_otp/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+          body: JSON.stringify({ otp: otpString }),
+        }
+      );
 
       const data = await response.json();
       if (data.success === true) {
@@ -78,13 +83,7 @@ const UserOTP = () => {
         localStorage.setItem("pic", data?.data?.data?.userPic);
         console.log("token", data?.data?.token);
         console.log("======NEW USER=======", data?.data?.data?.newUser);
-        if (data?.data?.data?.newUser) {
-          navigate("/edituserform", { state: { user: user } });
-        } else if (doctorName) {
-          navigate("/bookappointment", { state: { user: user } });
-        } else {
-          navigate("/doctorlistuser", { state: { user: user } });
-        }
+        navigate("/superadmindoctorlist");
       }
       if (data.success === false) {
         toast.error("OTP expired!");
@@ -279,4 +278,4 @@ const UserOTP = () => {
   );
 };
 
-export default UserOTP;
+export default SuperAdminOtp;

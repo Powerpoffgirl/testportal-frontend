@@ -4,6 +4,12 @@ import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { HiOutlineUserAdd } from "react-icons/hi";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { MdEdit } from "react-icons/md";
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#08DA75"/>
@@ -21,225 +27,338 @@ export default function SuperAdminAdminForm() {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
   const [isEditing, setIsEditing] = useState(false);
-  const [open, setOpen] = useState(false);
-  const onOpenModal = () => setOpen(true);
-  const onCloseModal = () => setOpen(false);
+  const [open1, setOpen1] = useState(false);
+  const onOpenModal = () => setOpen1(true);
+  const onCloseModal = () => setOpen1(false);
   const navigate = useNavigate();
-  const [name, setName] = useState("");
-  const [emailError, setEmailError] = useState("");
-  const [email, setEmail] = useState("");
-  const [nameError, setNameError] = useState("");
-  const [contact, setContact] = useState("");
-  const [contactError, setContactError] = useState("");
-  const [age, setAge] = useState("");
-  const [ageError, setAgeError] = useState("");
-  const [bodyWeight, setBodyWeight] = useState("");
-  const [bodyWeightError, setBodyWeightError] = useState("");
-  const [houseNo, setHouseNo] = useState("");
-  const [houseNoError, setHouseNoError] = useState("");
-  const [floor, setFloor] = useState("");
-  const [floorError, setFloorError] = useState("");
-  const [block, setBlock] = useState("");
-  const [blockError, setBlockError] = useState("");
-  const [area, setArea] = useState("");
-  const [areaError, setAreaError] = useState("");
-  const [pinCode, setPinCode] = useState("");
-  const [pinCodeError, setPinCodeError] = useState("");
-  const [district, setDistrict] = useState("");
-  const [districtError, setDistrictError] = useState("");
-  const [state, setState] = useState("");
-  const [stateError, setStateError] = useState("");
+  // // const [name, setName] = useState("");
+  // const [emailError, setEmailError] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [nameError, setNameError] = useState("");
+  // const [contact, setContact] = useState("");
+  // const [contactError, setContactError] = useState("");
+  // const [age, setAge] = useState("");
+  // const [ageError, setAgeError] = useState("");
+  // const [bodyWeight, setBodyWeight] = useState("");
+  // const [bodyWeightError, setBodyWeightError] = useState("");
+  // const [houseNo, setHouseNo] = useState("");
+  // const [houseNoError, setHouseNoError] = useState("");
+  // const [floor, setFloor] = useState("");
+  // const [floorError, setFloorError] = useState("");
+  // const [block, setBlock] = useState("");
+  // const [blockError, setBlockError] = useState("");
+  // const [area, setArea] = useState("");
+  // const [areaError, setAreaError] = useState("");
+  // const [pinCode, setPinCode] = useState("");
+  // const [pinCodeError, setPinCodeError] = useState("");
+  // const [district, setDistrict] = useState("");
+  // const [districtError, setDistrictError] = useState("");
+  // const [state, setState] = useState("");
+  // const [stateError, setStateError] = useState("");
   const [action, setAction] = useState("");
+  const [adminImage, setAdminImage] = useState();
+  const [selectedFile, setSelectedFile] = useState(null);
+  const fileInputRef = useRef(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered1, setIsHovered1] = useState(false);
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleNewProfilePictureClick = async () => {
+    // This will trigger the hidden file input to open the file dialog
+    await fileInputRef.current.click();
+  };
+
+  const handleNewProfilePicture = async () => {
+    const token = localStorage.getItem("token");
+    const doctorId = localStorage.getItem("doctorId");
+
+    // if (!token || !doctorId)
+    // {
+    //     console.error('Token or doctor ID not found in local storage');
+    //     return;
+    // }
+
+    const formData = new FormData();
+    formData.append("adminPic", selectedFile);
+
+    console.log("FORM DATA", formData);
+    try {
+      const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+        method: "POST",
+        // headers: {
+        //     'x-auth-token': token,
+        // },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      console.log("Image uploaded successfully:", data);
+      setAdminImage(data.profilePicImageUrl);
+      alert("Image uploaded successfully.");
+
+      // Reset the file input
+      setSelectedFile(null);
+      fileInputRef.current.value = "";
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Error uploading image. Please try again.");
+    }
+  };
 
   const handleActionChange = (e) => {
     setAction(e.target.value);
   };
 
-  const handleNameChange = (e) => {
-    const enteredName = e.target.value;
-    setName(enteredName);
+  // const handleNameChange = (e) =>
+  // {
+  //   const enteredName = e.target.value;
+  //   setName(enteredName);
 
-    // Validation logic
-    if (!enteredName.trim()) {
-      setNameError("Name is required");
-    } else if (!/^[a-zA-Z\s-]+$/.test(enteredName)) {
-      setNameError("Invalid name format");
-    } else if (enteredName.length < 2 || enteredName.length > 50) {
-      setNameError("Name length should be between 2 and 50 characters");
-    } else {
-      setNameError("");
-    }
-  };
+  //   // Validation logic
+  //   if (!enteredName.trim())
+  //   {
+  //     setNameError("Name is required");
+  //   } else if (!/^[a-zA-Z\s-]+$/.test(enteredName))
+  //   {
+  //     setNameError("Invalid name format");
+  //   } else if (enteredName.length < 2 || enteredName.length > 50)
+  //   {
+  //     setNameError("Name length should be between 2 and 50 characters");
+  //   } else
+  //   {
+  //     setNameError("");
+  //   }
+  // };
 
-  const handleEmailChange = (e) => {
-    const enteredEmail = e.target.value;
-    setEmail(enteredEmail);
+  // const handleEmailChange = (e) =>
+  // {
+  //   const enteredEmail = e.target.value;
+  //   setEmail(enteredEmail);
 
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  //   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    if (!enteredEmail.trim()) {
-      setEmailError("Email is required");
-    } else if (!emailPattern.test(enteredEmail)) {
-      setEmailError("Invalid email format");
-    } else {
-      setEmailError("");
-    }
-  };
+  //   if (!enteredEmail.trim())
+  //   {
+  //     setEmailError("Email is required");
+  //   } else if (!emailPattern.test(enteredEmail))
+  //   {
+  //     setEmailError("Invalid email format");
+  //   } else
+  //   {
+  //     setEmailError("");
+  //   }
+  // };
 
-  const handleContactChange = (e) => {
-    const enteredContact = e.target.value;
-    setContact(enteredContact);
+  // const handleContactChange = (e) =>
+  // {
+  //   const enteredContact = e.target.value;
+  //   setContact(enteredContact);
 
-    const contactPattern = /^\d{10}$/;
+  //   const contactPattern = /^\d{10}$/;
 
-    if (!enteredContact.trim()) {
-      setContactError("Contact number is required");
-    } else if (!contactPattern.test(enteredContact)) {
-      setContactError("Invalid contact format. Please enter a 10-digit number");
-    } else {
-      setContactError("");
-    }
-  };
+  //   if (!enteredContact.trim())
+  //   {
+  //     setContactError("Contact number is required");
+  //   } else if (!contactPattern.test(enteredContact))
+  //   {
+  //     setContactError("Invalid contact format. Please enter a 10-digit number");
+  //   } else
+  //   {
+  //     setContactError("");
+  //   }
+  // };
 
-  const handleAgeChange = (e) => {
-    const enteredAge = e.target.value;
-    setAge(enteredAge);
+  // const handleAgeChange = (e) =>
+  // {
+  //   const enteredAge = e.target.value;
+  //   setAge(enteredAge);
 
-    // Validation logic
-    const ageRegex = /^\d+$/;
-    if (!enteredAge.trim()) {
-      setAgeError("Age is required");
-    } else if (!ageRegex.test(enteredAge)) {
-      setAgeError("Age should be a number");
-    } else if (enteredAge < 0 || enteredAge > 120) {
-      setAgeError("Age should be between 0 and 120");
-    } else {
-      setAgeError("");
-    }
-  };
+  //   // Validation logic
+  //   const ageRegex = /^\d+$/;
+  //   if (!enteredAge.trim())
+  //   {
+  //     setAgeError("Age is required");
+  //   } else if (!ageRegex.test(enteredAge))
+  //   {
+  //     setAgeError("Age should be a number");
+  //   } else if (enteredAge < 0 || enteredAge > 120)
+  //   {
+  //     setAgeError("Age should be between 0 and 120");
+  //   } else
+  //   {
+  //     setAgeError("");
+  //   }
+  // };
 
-  const handleBodyWeightChange = (e) => {
-    const enteredBodyWeight = e.target.value;
-    setBodyWeight(enteredBodyWeight);
+  // const handleBodyWeightChange = (e) =>
+  // {
+  //   const enteredBodyWeight = e.target.value;
+  //   setBodyWeight(enteredBodyWeight);
 
-    // Validation logic
-    const bodyWeightRegex = /^\d+(\.\d{1,2})?$/; // Allows positive numbers with up to 2 decimal places
+  //   // Validation logic
+  //   const bodyWeightRegex = /^\d+(\.\d{1,2})?$/; // Allows positive numbers with up to 2 decimal places
 
-    if (!enteredBodyWeight.trim()) {
-      setBodyWeightError("Body weight is required");
-    } else if (!bodyWeightRegex.test(enteredBodyWeight)) {
-      setBodyWeightError("Invalid body weight format");
-    } else if (enteredBodyWeight <= 0) {
-      setBodyWeightError("Body weight should be greater than 0");
-    } else {
-      setBodyWeightError("");
-    }
-  };
+  //   if (!enteredBodyWeight.trim())
+  //   {
+  //     setBodyWeightError("Body weight is required");
+  //   } else if (!bodyWeightRegex.test(enteredBodyWeight))
+  //   {
+  //     setBodyWeightError("Invalid body weight format");
+  //   } else if (enteredBodyWeight <= 0)
+  //   {
+  //     setBodyWeightError("Body weight should be greater than 0");
+  //   } else
+  //   {
+  //     setBodyWeightError("");
+  //   }
+  // };
 
-  const handleHouseNoChange = (e) => {
-    const enteredHouseNo = e.target.value;
-    setHouseNo(enteredHouseNo);
+  // const handleHouseNoChange = (e) =>
+  // {
+  //   const enteredHouseNo = e.target.value;
+  //   setHouseNo(enteredHouseNo);
 
-    // Validation logic
-    const houseNoRegex = /^\d+$/; // Allows only positive whole numbers
+  //   // Validation logic
+  //   const houseNoRegex = /^\d+$/; // Allows only positive whole numbers
 
-    if (!enteredHouseNo.trim()) {
-      setHouseNoError("");
-    } else if (!houseNoRegex.test(enteredHouseNo)) {
-      setHouseNoError("");
-    } else {
-      setHouseNoError("");
-    }
-  };
+  //   if (!enteredHouseNo.trim())
+  //   {
+  //     setHouseNoError("");
+  //   } else if (!houseNoRegex.test(enteredHouseNo))
+  //   {
+  //     setHouseNoError("");
+  //   } else
+  //   {
+  //     setHouseNoError("");
+  //   }
+  // };
 
-  const handleFloorChange = (e) => {
-    const enteredFloor = e.target.value;
-    setFloor(enteredFloor);
+  // const handleFloorChange = (e) =>
+  // {
+  //   const enteredFloor = e.target.value;
+  //   setFloor(enteredFloor);
 
-    // Validation logic
-    const alphabeticRegex = /^[a-zA-Z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-    const formatRegex =
-      /^(?=.*\b\d{1,3}(st|nd|rd|th)\b)\b\d{1,3}(st|nd|rd|th)?\b$/i; // Allows 1st, 2nd, 3rd, etc.
+  //   // Validation logic
+  //   const alphabeticRegex = /^[a-zA-Z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+  //   const formatRegex =
+  //     /^(?=.*\b\d{1,3}(st|nd|rd|th)\b)\b\d{1,3}(st|nd|rd|th)?\b$/i; // Allows 1st, 2nd, 3rd, etc.
 
-    if (!enteredFloor.trim()) {
-      setFloorError("");
-    } else if (
-      !alphabeticRegex.test(enteredFloor) &&
-      !formatRegex.test(enteredFloor)
-    ) {
-      setFloorError("");
-    } else {
-      setFloorError("");
-    }
-  };
+  //   if (!enteredFloor.trim())
+  //   {
+  //     setFloorError("");
+  //   } else if (
+  //     !alphabeticRegex.test(enteredFloor) &&
+  //     !formatRegex.test(enteredFloor)
+  //   )
+  //   {
+  //     setFloorError("");
+  //   } else
+  //   {
+  //     setFloorError("");
+  //   }
+  // };
 
-  const handleBlockChange = (e) => {
-    const enteredBlock = e.target.value;
-    setBlock(enteredBlock);
+  // const handleBlockChange = (e) =>
+  // {
+  //   const enteredBlock = e.target.value;
+  //   setBlock(enteredBlock);
 
-    // Validation logic
-    const blockRegex = /^[A-Za-z0-9]+$/; // Allows alphanumeric characters
+  //   // Validation logic
+  //   const blockRegex = /^[A-Za-z0-9]+$/; // Allows alphanumeric characters
 
-    if (!enteredBlock.trim()) {
-      setBlockError("Block is required");
-    } else if (!blockRegex.test(enteredBlock)) {
-      setBlockError("Invalid block format");
-    } else {
-      setBlockError("");
-    }
-  };
+  //   if (!enteredBlock.trim())
+  //   {
+  //     setBlockError("Block is required");
+  //   } else if (!blockRegex.test(enteredBlock))
+  //   {
+  //     setBlockError("Invalid block format");
+  //   } else
+  //   {
+  //     setBlockError("");
+  //   }
+  // };
 
-  const handleAreaChange = (e) => {
-    const enteredArea = e.target.value;
-    setArea(enteredArea);
+  // const handleAreaChange = (e) =>
+  // {
+  //   const enteredArea = e.target.value;
+  //   setArea(enteredArea);
 
-    // Validation logic
-    const areaRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+  //   // Validation logic
+  //   const areaRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
 
-    if (!enteredArea.trim()) {
-      setAreaError("Area is required");
-    } else if (!areaRegex.test(enteredArea)) {
-      setAreaError("Invalid area format");
-    } else {
-      setAreaError("");
-    }
-  };
+  //   if (!enteredArea.trim())
+  //   {
+  //     setAreaError("Area is required");
+  //   } else if (!areaRegex.test(enteredArea))
+  //   {
+  //     setAreaError("Invalid area format");
+  //   } else
+  //   {
+  //     setAreaError("");
+  //   }
+  // };
 
-  const handleDistrictChange = (e) => {
-    const enteredDistrict = e.target.value;
-    setDistrict(enteredDistrict);
+  // const handleDistrictChange = (e) =>
+  // {
+  //   const enteredDistrict = e.target.value;
+  //   setDistrict(enteredDistrict);
 
-    // Validation logic
-    const districtRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+  //   // Validation logic
+  //   const districtRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
 
-    if (!enteredDistrict.trim()) {
-      setDistrictError("District is required");
-    } else if (!districtRegex.test(enteredDistrict)) {
-      setDistrictError("Invalid district format");
-    } else {
-      setDistrictError("");
-    }
-  };
+  //   if (!enteredDistrict.trim())
+  //   {
+  //     setDistrictError("District is required");
+  //   } else if (!districtRegex.test(enteredDistrict))
+  //   {
+  //     setDistrictError("Invalid district format");
+  //   } else
+  //   {
+  //     setDistrictError("");
+  //   }
+  // };
 
-  const handleStateChange = (e) => {
-    const enteredState = e.target.value;
-    setState(enteredState);
+  // const handleStateChange = (e) =>
+  // {
+  //   const enteredState = e.target.value;
+  //   setState(enteredState);
 
-    // Validation logic
-    const stateRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
+  //   // Validation logic
+  //   const stateRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
 
-    if (!enteredState.trim()) {
-      setStateError("State is required");
-    } else if (!stateRegex.test(enteredState)) {
-      setStateError("Invalid state format");
-    } else {
-      setStateError("");
-    }
-  };
-  const [patientDetails, setPatientDetails] = useState({
+  //   if (!enteredState.trim())
+  //   {
+  //     setStateError("State is required");
+  //   } else if (!stateRegex.test(enteredState))
+  //   {
+  //     setStateError("Invalid state format");
+  //   } else
+  //   {
+  //     setStateError("");
+  //   }
+  // };
+  const [adminDetails, setAdminDetails] = useState({
     name: "",
-    age: "",
-    bodyWeight: "",
+    email: "",
+    contactNumber: "",
+    permissions: {
+      view: false,
+      create: false,
+      remove: false,
+      edit: false,
+    },
     address: {
       houseNo: "",
       floor: "",
@@ -249,28 +368,55 @@ export default function SuperAdminAdminForm() {
       district: "",
       state: "",
     },
+    adminPic: "",
   });
 
-  const handlePincodeChange = (e) => {
-    const enteredPinCode = e.target.value;
-    setPinCode(enteredPinCode);
-
-    // Validation logic
-    const pinCodeRegex = /^\d{6}$/; // Allows exactly 6 digits
-
-    if (!enteredPinCode.trim()) {
-      setPinCodeError("Pincode is required");
-    } else if (!pinCodeRegex.test(enteredPinCode)) {
-      setPinCodeError("Invalid pincode format (should be 6 digits)");
-    } else {
-      setPinCodeError("");
-    }
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-    if (
+  // const handlePincodeChange = (e) =>
+  // {
+  //   const enteredPinCode = e.target.value;
+  //   setPinCode(enteredPinCode);
+
+  //   // Validation logic
+  //   const pinCodeRegex = /^\d{6}$/; // Allows exactly 6 digits
+
+  //   if (!enteredPinCode.trim())
+  //   {
+  //     setPinCodeError("Pincode is required");
+  //   } else if (!pinCodeRegex.test(enteredPinCode))
+  //   {
+  //     setPinCodeError("Invalid pincode format (should be 6 digits)");
+  //   } else
+  //   {
+  //     setPinCodeError("");
+  //   }
+  // };
+
+  const handleChange = (e) => {
+    console.log("E value", e);
+    const { name, value, type, checked } = e.target;
+
+    setAdminDetails((prevAdminDetails) => ({
+      ...prevAdminDetails,
+      adminPic: adminImage,
+    }));
+
+    if (type === "checkbox") {
+      setAdminDetails({
+        ...adminDetails,
+        permissions: {
+          ...adminDetails.permissions,
+          [name]: checked,
+        },
+      });
+    } else if (
       [
         "houseNo",
         "floor",
@@ -281,80 +427,84 @@ export default function SuperAdminAdminForm() {
         "state",
       ].includes(name)
     ) {
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
+      setAdminDetails((prevAdminDetails) => ({
+        ...prevAdminDetails,
         address: {
-          ...prevPatientDetails.address,
+          ...prevAdminDetails.address,
           [name]: value,
         },
       }));
-    } else if (["issues"].includes(name)) {
-      // Assuming the value is an array or a string to be added to the array
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
-        [name]: Array.isArray(value)
-          ? value
-          : [...prevPatientDetails[name], value],
-      }));
-    } else if (["diseases"].includes(name)) {
-      // Assuming the value is an array or a string to be added to the array
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
-        [name]: Array.isArray(value)
-          ? value
-          : [...prevPatientDetails[name], value],
-      }));
     } else {
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
+      setAdminDetails((prevAdminDetails) => ({
+        ...prevAdminDetails,
         [name]: value,
       }));
     }
-    setIsEditing(true);
   };
 
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const isEmpty = Object.values(patientDetails).some((value) => value === "");
+    const isEmpty = Object.values(adminDetails).some((value) => value === "");
 
-    if (isEmpty || isEditing === false) {
-      toast.error("Please fill the fields");
-      setIsEditing(false);
-      return;
-    }
+    // if (isEmpty || isEditing === false)
+    // {
+    //   toast.error("Please fill the fields");
+    //   setIsEditing(false);
+    //   return;
+    // }
 
-    if (!isEmpty || isEditing === true) {
-      toast.success("Form submitted successfully!");
-    }
+    // if (!isEmpty || isEditing === true)
+    // {
+    //   toast.success("Form submitted successfully!");
+    // }
     // Check if the token exists
     const token = localStorage.getItem("token");
     if (!token) {
       console.error("No token found in local storage");
       return;
     }
-    const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
+    const response = await fetch(`${baseUrl}/api/v1/superAdmin/create_admin`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
         "x-auth-token": token,
       },
-      body: JSON.stringify(patientDetails),
+      body: JSON.stringify(adminDetails),
     });
     const data = await response.json();
     if (data.success === true) {
       // navigate("/otp")
       onOpenModal();
-      localStorage.setItem("id", data.data._id);
+      localStorage.setItem("adminId", data.data._id);
+      localStorage.setItem("contactNumber", data.data.contactNumber);
+      navigate("/superadminotp");
     }
     console.log("DATA from response", data);
   };
-  console.log("PATIENT DETAILS", patientDetails);
+  console.log("PATIENT DETAILS", adminDetails);
+
+  // const handleActionChange = (value) =>
+  // {
+  //   const index = selectedActions.indexOf(value);
+
+  //   if (index === -1)
+  //   {
+  //     // If the value is not present in the array, add it
+  //     setSelectedActions([...selectedActions, value]);
+  //   } else
+  //   {
+  //     // If the value is present in the array, remove it
+  //     const updatedActions = [...selectedActions];
+  //     updatedActions.splice(index, 1);
+  //     setSelectedActions(updatedActions);
+  //   }
+  // };
 
   return (
     <>
       <Modal
-        open={open}
+        open={open1}
         onClose={onCloseModal}
         center
         doctor={selectedDoctor}
@@ -378,9 +528,9 @@ export default function SuperAdminAdminForm() {
               color: "#FFFFFF",
             }}
           >
-            Patient's Details is Saved.
+            Admin is Created.
             <br />
-            Go to Patient's list to book an Appointment.
+            Go to Admin's list and Check.
           </text>
         </div>
       </Modal>
@@ -389,6 +539,114 @@ export default function SuperAdminAdminForm() {
         <ToastContainer />
         <div className=" w-full">
           <div className="mt-6 p-2">
+            <div className="flex  flex-col items-center justify-center w-full">
+              <div className="cursor-pointer">
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <div
+                    style={{
+                      backgroundColor: "#FFFFFF",
+                      width: "90px",
+                      height: "90px",
+                      borderRadius: "50%",
+                      alignItems: "center",
+                      display: "flex",
+                      flexDirection: "row",
+                      justifyContent: "space-evenly",
+                      color: "#A4A4A4",
+                    }}
+                  >
+                    {adminImage || adminDetails?.adminPic ? (
+                      <img
+                        src={adminImage || adminDetails?.adminPic}
+                        alt="Avatar"
+                        style={{
+                          borderRadius: "50%",
+                        }}
+                      />
+                    ) : (
+                      <PermIdentityOutlinedIcon
+                        style={{ width: "70px", height: "70px" }}
+                      />
+                    )}
+                  </div>
+                  <p
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                    style={{
+                      cursor: "pointer",
+                      marginLeft: 37,
+                      marginTop: -20,
+                    }}
+                  >
+                    <MdEdit />
+                  </p>
+                  <div style={{ backgroundColor: "#08DA75" }}>
+                    <Menu
+                      id="profile-pic-menu"
+                      anchorEl={anchorEl}
+                      open={open}
+                      onClose={handleClose}
+                      MenuListProps={{
+                        "aria-labelledby": "edit-profile-pic-text",
+                        style: { backgroundColor: "#08DA75" }, // Set background color for the whole menu
+                      }}
+                    >
+                      <MenuItem
+                        style={{
+                          backgroundColor: "#08DA75",
+                          color: isHovered ? "red" : "white",
+                        }}
+                        onClick={handleNewProfilePictureClick}
+                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseLeave={() => setIsHovered(false)}
+                      >
+                        {" "}
+                        <span style={{ marginRight: "8px" }}>
+                          <HiOutlineUserAdd />
+                        </span>
+                        <span>New profile picture</span>
+                      </MenuItem>
+
+                      <MenuItem
+                        style={{
+                          backgroundColor: "#08DA75",
+                          color: isHovered1 ? "red" : "white",
+                        }}
+                        // onClick={handleRemoveProfilePicture}
+                        onMouseEnter={() => setIsHovered1(true)}
+                        onMouseLeave={() => setIsHovered1(false)}
+                      >
+                        <span style={{ marginRight: "8px" }}>
+                          <FaRegTrashAlt />
+                        </span>
+                        <span>Remove current picture</span>
+                      </MenuItem>
+                    </Menu>
+                  </div>
+                  <input
+                    id="imageInput"
+                    type="file"
+                    ref={fileInputRef}
+                    style={{ display: "none" }}
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                  />
+                </div>
+                <button
+                  onClick={handleNewProfilePicture}
+                  style={{ marginLeft: 20, marginTop: 5 }}
+                >
+                  Upload
+                </button>
+              </div>
+            </div>
             <div class="grid grid-cols-1 w-full gap-4">
               <div>
                 <label
@@ -401,15 +659,13 @@ export default function SuperAdminAdminForm() {
                   type="text"
                   id="name"
                   name="name"
-                  value={name}
-                  onChange={handleNameChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                    nameError ? "border-red-500" : ""
-                  }`}
+                  value={adminDetails.name}
+                  onChange={handleChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                 />
-                {nameError && (
+                {/* {nameError && (
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
-                )}
+                )} */}
               </div>
               <div>
                 <label
@@ -422,14 +678,13 @@ export default function SuperAdminAdminForm() {
                   type="email"
                   id="email"
                   name="email"
-                  onChange={handleEmailChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                    emailError ? "border-red-500" : "border-[#08DA75]"
-                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  value={adminDetails.email}
+                  onChange={handleChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
-                {emailError && (
+                {/* {emailError && (
                   <p className="text-red-500 text-sm mt-1">{emailError}</p>
-                )}
+                )} */}
               </div>
               <div>
                 <label
@@ -439,17 +694,16 @@ export default function SuperAdminAdminForm() {
                   Contact Number
                 </label>
                 <input
-                  type="text"
-                  id="contact"
-                  name="contact"
-                  onChange={handleContactChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${
-                    contactError ? "border-red-500" : "border-[#08DA75]"
-                  } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  type="number"
+                  id="contactNumber"
+                  name="contactNumber"
+                  value={adminDetails.contactNumber}
+                  onChange={handleChange}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
-                {contactError && (
+                {/* {contactError && (
                   <p className="text-red-500 text-sm mt-1">{contactError}</p>
-                )}
+                )} */}
               </div>
 
               <div className="flex flex-row items-start pt-4 gap-4">
@@ -468,54 +722,45 @@ export default function SuperAdminAdminForm() {
                   className="flex flex-row  flex-grow "
                   style={{ justifyContent: "space-around" }}
                 >
-                  {/* Radio buttons for Create, Edit, Delete, Read */}
-                  <label htmlFor="create" className="mr-4">
+                  {/* Permissions */}
+                  <label>
+                    View:
                     <input
-                      type="radio"
-                      id="create"
-                      name="action"
-                      value="create"
-                      checked={action === "create"}
-                      onChange={handleActionChange}
-                      style={{ margin: 5 }}
+                      type="checkbox"
+                      name="view"
+                      checked={adminDetails.permissions.view}
+                      onChange={handleChange}
                     />
-                    Create
                   </label>
-                  <label htmlFor="edit" className="mr-4">
+
+                  <label>
+                    Create:
                     <input
-                      type="radio"
-                      id="edit"
-                      name="action"
-                      value="edit"
-                      checked={action === "edit"}
-                      onChange={handleActionChange}
-                      style={{ margin: 5 }}
+                      type="checkbox"
+                      name="create"
+                      checked={adminDetails.permissions.create}
+                      onChange={handleChange}
                     />
-                    Edit
                   </label>
-                  <label htmlFor="delete" className="mr-4">
+
+                  <label>
+                    Remove:
                     <input
-                      type="radio"
-                      id="delete"
-                      name="action"
-                      value="delete"
-                      checked={action === "delete"}
-                      onChange={handleActionChange}
-                      style={{ margin: 5 }}
+                      type="checkbox"
+                      name="remove"
+                      checked={adminDetails.permissions.remove}
+                      onChange={handleChange}
                     />
-                    Delete
                   </label>
-                  <label htmlFor="read">
+
+                  <label>
+                    Edit:
                     <input
-                      type="radio"
-                      id="read"
-                      name="action"
-                      value="read"
-                      checked={action === "read"}
-                      onChange={handleActionChange}
-                      style={{ margin: 5 }}
+                      type="checkbox"
+                      name="edit"
+                      checked={adminDetails.permissions.edit}
+                      onChange={handleChange}
                     />
-                    Read
                   </label>
                   {/* Error handling or displaying selected action */}
                   {/* {action && <p>Selected Action: {action}</p>} */}
@@ -535,18 +780,16 @@ export default function SuperAdminAdminForm() {
                       type="text"
                       id="houseNo"
                       name="houseNo"
-                      value={houseNo}
-                      onChange={handleHouseNoChange}
+                      value={adminDetails.address.houseNo}
+                      onChange={handleChange}
                       placeholder="1234"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        houseNoError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {houseNoError && (
+                    {/* {houseNoError && (
                       <p className="text-red-500 text-sm mt-1">
                         {houseNoError}
                       </p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/3">
                     <label
@@ -559,16 +802,14 @@ export default function SuperAdminAdminForm() {
                       type="text"
                       id="floor"
                       name="floor"
-                      value={floor}
-                      onChange={handleFloorChange}
+                      value={adminDetails.address.floor}
+                      onChange={handleChange}
                       placeholder="First Floor or 2nd"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        floorError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {floorError && (
+                    {/* {floorError && (
                       <p className="text-red-500 text-sm mt-1">{floorError}</p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/3">
                     <label
@@ -581,16 +822,14 @@ export default function SuperAdminAdminForm() {
                       type="text"
                       id="block"
                       name="block"
-                      value={block}
-                      onChange={handleBlockChange}
+                      value={adminDetails.address.block}
+                      onChange={handleChange}
                       placeholder="A"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        blockError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {blockError && (
+                    {/* {blockError && (
                       <p className="text-red-500 text-sm mt-1">{blockError}</p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
                     <label
@@ -603,16 +842,14 @@ export default function SuperAdminAdminForm() {
                       type="text"
                       id="area"
                       name="area"
-                      value={area}
-                      onChange={handleAreaChange}
+                      value={adminDetails.address.area}
+                      onChange={handleChange}
                       placeholder="Green Park"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        areaError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
-                    {areaError && (
+                    {/* {areaError && (
                       <p className="text-red-500 text-sm mt-1">{areaError}</p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
                     <label
@@ -625,18 +862,16 @@ export default function SuperAdminAdminForm() {
                       type="text"
                       id="pinCode"
                       name="pinCode"
-                      value={pinCode}
-                      onChange={handlePincodeChange}
+                      value={adminDetails.address.pinCode}
+                      onChange={handleChange}
                       placeholder="110016"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        pinCodeError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {pinCodeError && (
+                    {/* {pinCodeError && (
                       <p className="text-red-500 text-sm mt-1">
                         {pinCodeError}
                       </p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
                     <label
@@ -649,18 +884,16 @@ export default function SuperAdminAdminForm() {
                       type="text"
                       id="district"
                       name="district"
-                      value={district}
-                      onChange={handleDistrictChange}
+                      value={adminDetails.address.district}
+                      onChange={handleChange}
                       placeholder="South Delhi"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        districtError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {districtError && (
+                    {/* {districtError && (
                       <p className="text-red-500 text-sm mt-1">
                         {districtError}
                       </p>
-                    )}
+                    )} */}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
                     <label
@@ -673,16 +906,14 @@ export default function SuperAdminAdminForm() {
                       type="text"
                       id="state"
                       name="state"
-                      value={state}
-                      onChange={handleStateChange}
+                      value={adminDetails.address.state}
+                      onChange={handleChange}
                       placeholder="Delhi"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        stateError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {stateError && (
+                    {/* {stateError && (
                       <p className="text-red-500 text-sm mt-1">{stateError}</p>
-                    )}
+                    )} */}
                   </div>{" "}
                 </div>
               </div>
