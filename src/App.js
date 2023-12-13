@@ -62,7 +62,7 @@ import SuperAdminDoctorEditForm from "./components/superadmindoctoreditform";
 import SuperAdminAdminEditForm from "./components/superadminadmineditform";
 import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
-
+import SuperAdminOtp from "./components/superadminotp"
 function App()
 {
 
@@ -276,7 +276,7 @@ function App()
         }
       />
 
-      <Route
+      {/* <Route
         path="/superadmindoctorotppage"
         element={
           <Layout
@@ -285,7 +285,7 @@ function App()
             headerTextBottom={"Doctor Otp"}
           />
         }
-      />
+      /> */}
 
       <Route
         path="/superadminotp"
