@@ -41,7 +41,7 @@ import DocAppointment from "./components/docAppointment";
 import Table from "./components/tabel";
 // import Sidebar2 from './components/Sidebar2';
 import Layout from "./components/Layout";
-import Table2 from "./components/table2";
+// import Table2 from "./components/table2";
 import EditPatientForm from "./components/editPatientForm";
 import ForgetPassword from "./components/forgetpassword";
 import OtpVerify from "./components/otpverify";
@@ -62,6 +62,7 @@ import SuperAdminAdminEditForm from "./components/superadminadmineditform";
 import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
 import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
+import SuperAdminOtp from "./components/superadminotp";
 function App() {
   return (
     <Routes>
@@ -278,6 +279,17 @@ function App() {
             Component={SuperAdminDoctorOtpPage}
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor Otp"}
+          />
+        }
+      />
+
+      <Route
+        path="/superadminotp"
+        element={
+          <Layout
+            Component={SuperAdminOtp}
+            headerTextTop={"Super Admin"}
+            headerTextBottom={"Otp"}
           />
         }
       />
