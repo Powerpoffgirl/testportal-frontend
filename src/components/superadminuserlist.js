@@ -4,8 +4,13 @@ import Header from "./header";
 import { useMediaQuery } from "react-responsive";
 import { Modal } from "react-responsive-modal";
 import AdminSidebar from "./adminSidebar";
+import { useNavigate } from "react-router-dom";
+import UserList from "./userList";
+import { Button, Popconfirm } from 'antd';
+import { FaTrashAlt } from "react-icons/fa";
 
-export default function SuperAdminUserList() {
+export default function SuperAdminUserList()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [usersList, setUsersList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -13,6 +18,7 @@ export default function SuperAdminUserList() {
   const [open, setOpen] = useState(false);
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
+  const navigate = useNavigate();
 
   const categories = [
     { name: "All", value: "1" },
@@ -23,11 +29,16 @@ export default function SuperAdminUserList() {
     { name: "Physiotherapist", value: "6" },
   ];
 
-  useEffect(() => {
-    const fetchDoctorDetails = async () => {
-      try {
+
+  useEffect(() =>
+  {
+    const fetchDoctorDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -45,17 +56,27 @@ export default function SuperAdminUserList() {
         const data = await response.json();
         console.log("DATA from response", data);
         setUsersList(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleDeleteUser = async (userId) => {
-    try {
+  const handleBookAppointment = (userId) =>
+  {
+    localStorage.setItem("userId", userId);
+    navigate("/superadminusereditform");
+  };
+
+  const handleDeleteUser = async (userId) =>
+  {
+    try
+    {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         return;
       }
@@ -72,16 +93,19 @@ export default function SuperAdminUserList() {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok)
+      {
         console.log("Patient deleted successfully", data);
         // Update the list in the UI by removing the deleted doctor
         setUsersList((prevPatientsList) =>
           prevPatientsList.filter((patient) => patient._id !== userId)
         );
-      } else {
+      } else
+      {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("There was an error deleting the doctor:", error);
     }
   };
@@ -89,105 +113,135 @@ export default function SuperAdminUserList() {
   console.log("USER LIST", usersList);
   return (
     <>
-      <div
-        className="flex min-h-screen relative overflow-auto 
-    box-border"
-      >
-        <div
-          className="flex flex-col bg-customGreen"
-          style={{
-            width: isTab ? "100%" : "77%",
+      {/* <Modal
+          open={open}
+          onClose={onCloseModal}
+          center
+          patient={selectedPatient}
+          styles={{
+            modal: {
+              width: isTab ? "80%" : "70%",
+              backgroundColor: "#08DA75",
+              alignContent: "center",
+            },
           }}
         >
-          <div
-            className="scrollable-content"
-            style={{
-              overflow: isTab ? "auto" : "hidden",
-              maxHeight: "calc(100vh - 100px)", // Adjust the value as needed
-              padding: "10px",
-            }}
-          >
-            <div
-              className="flex flex-col gap-2 px-3 w-full"
+          <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
+            <div className="flex flex-row w-[100%] justify-between"></div>
+            <text
+              className="ml-4 text-center mt-4"
               style={{
-                top: "4%",
-                left: "2%",
-                position: "relative",
-                overflow: "hidden",
-                justifyContent: "center",
+                fontSize: isTab ? "18px" : "26px",
+                fontWeight: 600,
+                lineHeight: "28.8px",
+                fontFamily: "Lato, sans-serif",
               }}
             >
-              {/* items */}
-              {/* item */}
-              <div>
-                {usersList?.map((user) => (
-                  <div
-                    className="flex flex-row bg-white p-2 md:flex-row justify-between"
-                    style={{ borderRadius: "5px", marginBottom: "10px" }}
-                  >
-                    <span className="flex flex-row items-center">
-                      <img
-                        src="data:image/png;base64,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"
-                        alt="Avatar"
-                        style={{
-                          borderRadius: "50%",
-                          height: isTab ? "40px" : "81px",
-                          width: isTab ? "40px" : "81px",
-                        }}
-                      ></img>
+              {selectedPatient?.name}
+            </text>
+            <text
+              className="ml-4 text-center mt-4"
+              style={{
+                fontSize: isTab ? "12px" : "20px",
+                fontWeight: 400,
+                lineHeight: "24px",
+                fontFamily: "Lato, sans-serif",
+                color: "#FFFFFF",
+                marginBottom: "2%",
+              }}
+            >
+              {selectedPatient?.age} yr, {selectedPatient?.bodyWeight} kg
+            </text>
 
-                      <text
-                        className="ml-4"
-                        style={{
-                          fontSize: isTab ? "16px" : "24px",
-                          fontWeight: 400,
-                          lineHeight: "28.8px",
-                          fontFamily: "Lato, sans-serif",
-                        }}
-                      >
-                        {user.contactNumber}
-                      </text>
-                    </span>
-                    <span className="flex flex-row gap-2 items-center">
-                      <button
-                        style={{
-                          width: !isTab ? "111px" : "73px",
-                          height: "45px",
-                          borderRadius: "35px",
-                          backgroundColor: "#EF5F5F",
-                          color: "white",
-                          fontWeight: 400,
-                          fontSize: isTab ? "11px" : "24px",
-                          lineHeight: "28.8px",
-                          fontFamily: "Lato, sans-serif",
-                        }}
-                        onClick={() => handleDeleteUser(user._id)}
-                      >
-                        Decline
-                      </button>
-                      <button
-                        style={{
-                          width: !isTab ? "80%" : "73px",
-                          height: "45px",
-                          borderRadius: "35px",
-                          backgroundColor: "#08DA75",
-                          color: "white",
-                          fontWeight: 400,
-                          fontSize: isTab ? "11px" : "24px",
-                          lineHeight: "28.8px",
-                          fontFamily: "Lato, sans-serif",
-                        }}
-                        // onClick={() => handleBookAppointment(patient._id)}
-                      >
-                        Edit
-                      </button>
-                    </span>
-                  </div>
-                ))}
+            <text
+              className="ml-4 text-center mt-2"
+              style={{
+                fontSize: isTab ? "14px" : "20px",
+                fontWeight: 400,
+                lineHeight: "28.8px",
+                fontFamily: "Lato, sans-serif",
+                color: "#FFFFFF",
+              }}
+            >
+              {selectedPatient?.address?.houseNo +
+                " " +
+                selectedPatient?.address?.block +
+                " " +
+                selectedPatient?.address?.area +
+                ", " +
+                selectedPatient?.address?.district +
+                ", " +
+                selectedPatient?.address?.state +
+                " " +
+                selectedPatient?.address?.pinCode}
+            </text>
+
+            
+            <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
+              <span className="flex">
+                <span
+                  className="mr-8"
+                  style={{ width: "8px", height: "20px" }}
+                  dangerouslySetInnerHTML={{ __html: svg1 }}
+                ></span>
+                <span
+                  style={{ width: "8px", height: "20px" }}
+                  dangerouslySetInnerHTML={{ __html: svg2 }}
+                ></span>
+              </span>
+            </div>
+          </div>
+        </Modal> */}
+
+
+      <div className="flex flex-col">
+        {usersList?.map((user) => (
+          <div
+            className="bg-white w-full p-4 sm:px-5 px-1 mb-5"
+          // onClick={() => findSelectedDoctor(patient._id)}
+          >
+            <div className="flex flex-row justify-start items-center">
+              <div class="flex items-center gap-x-2">
+                <img
+                  class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
+                  alt=""
+                />
+
+                <div>
+                  <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
+                    {user.contactNumber}
+                  </h1>
+                  {/* <p>
+                      {patient.age} yrs , {patient.bodyWeight} kg
+                    </p>
+                    <p>
+                      {patient.address?.houseNo} , {patient.address?.block},{" "}
+                      {patient.address?.area}, {patient.address?.district},
+                      {patient.address?.state}, {patient.address?.pinCode}
+                    </p> */}
+                  {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}
+                </div>
+              </div>
+              <div class="flex flex-row ms-auto gap-1 sm:gap-4">
+                <Popconfirm
+                  title="Delete the Patient"
+                  description="Are you sure to delete this Patient?"
+                  okText={<FaTrashAlt />}
+                  cancelText="No"
+                  okTextcolor="blue"
+                  // onConfirm={() => handleDeletePatient(patient._id)}
+                  className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                >
+                  <button class="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm">
+                    Delete
+                  </button>
+                </Popconfirm>
+                <button class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm" onClick={() => handleBookAppointment(user._id)}>Edit</button>
               </div>
             </div>
           </div>
-        </div>
+        ))}
       </div>
     </>
   );

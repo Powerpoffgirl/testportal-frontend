@@ -165,7 +165,7 @@ export default function SuperAdminPatientList()
   const handleBookAppointment = (patientId) =>
   {
     localStorage.setItem("patientId", patientId);
-    navigate("/editappointment");
+    navigate("/superadminpatienteditform");
   };
 
   console.log("PATIENT LISTS", patientsList);

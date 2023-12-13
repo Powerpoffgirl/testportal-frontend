@@ -216,8 +216,8 @@ export default function EditAdminlistform()
                             color: "#FFFFFF"
                         }}
                     >
-                        Patient's Details is Saved.<br />
-                        Go to Patient's list to book an Appointment.
+                        changes are Saved.<br />
+
                     </text>
                 </div>
             </Modal>

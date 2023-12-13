@@ -63,13 +63,9 @@ import SuperAdminAdminEditForm from "./components/superadminadmineditform";
 import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
 import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
-<<<<<<< HEAD
+import SuperAdminOtp from "./components/superadminotp";
 function App()
 {
-=======
-import SuperAdminOtp from "./components/superadminotp";
-function App() {
->>>>>>> 6746858473ec04707117fa457b826c22fd368c61
   return (
     <Routes>
       <Route
@@ -170,6 +166,7 @@ function App() {
         path="/superadminpatienteditform"
         element={
           <Layout
+            type="superAdmin"
             Component={SuperAdminPatientEditForm}
             headerTextTop={"Super Admin Patient"}
             headerTextBottom={"Edit Form"}
@@ -181,6 +178,7 @@ function App() {
         path="/superadminusereditform"
         element={
           <Layout
+            type="superAdmin"
             Component={SuperAdminUserEditForm}
             headerTextTop={"Super Admin User"}
             headerTextBottom={"Edit Form"}
@@ -208,7 +206,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"User List"}
             search={"true"}
-            // AddButton={"true"}
+          // AddButton={"true"}
           />
         }
       />
@@ -233,7 +231,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"Patient List"}
             search={"true"}
-            // AddButton={"true"}
+          // AddButton={"true"}
           />
         }
       />
@@ -247,7 +245,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"Appointment List"}
             search={"true"}
-            // AddButton={"true"}
+          // AddButton={"true"}
           />
         }
       />
@@ -273,7 +271,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor List"}
             search={"true"}
-            // AddButton={"true"}
+          // AddButton={"true"}
           />
         }
       />
