@@ -61,12 +61,12 @@ const SuperAdminOtp = () => {
 
   const verifyOTP = async () => {
     try {
-      const id = localStorage.getItem("userId");
+      const id = localStorage.getItem("adminId");
       const token = localStorage.getItem("token");
 
       const otpString = otp.join("");
       const response = await fetch(
-        `${baseUrl}/api/v1/superAdmin/verifyOTPById/${id}`,
+        `${baseUrl}/api/v1/superAdmin/verify_otp/${id}`,
         {
           method: "POST",
           headers: {
@@ -83,13 +83,7 @@ const SuperAdminOtp = () => {
         localStorage.setItem("pic", data?.data?.data?.userPic);
         console.log("token", data?.data?.token);
         console.log("======NEW USER=======", data?.data?.data?.newUser);
-        if (data?.data?.data?.newUser) {
-          navigate("/edituserform", { state: { user: user } });
-        } else if (doctorName) {
-          navigate("/bookappointment", { state: { user: user } });
-        } else {
-          navigate("/doctorlistuser", { state: { user: user } });
-        }
+        navigate("/superadmindoctorlist");
       }
       if (data.success === false) {
         toast.error("OTP expired!");

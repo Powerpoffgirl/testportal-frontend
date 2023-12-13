@@ -476,7 +476,7 @@ export default function SuperAdminAdminForm() {
     if (data.success === true) {
       // navigate("/otp")
       onOpenModal();
-      localStorage.setItem("id", data.data._id);
+      localStorage.setItem("adminId", data.data._id);
       localStorage.setItem("contactNumber", data.data.contactNumber);
       navigate("/superadminotp");
     }

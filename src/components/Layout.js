@@ -7,9 +7,32 @@ import { IoIosSearch } from "react-icons/io";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 // const navigate = useNavigate()
-const handleLogout = () => {
-  console.log("HELLO");
-  localStorage.clear(); // or localStorage.removeItem('yourKey');
+// const handleLogout = () => {
+//   console.log("HELLO");
+//   localStorage.clear(); // or localStorage.removeItem('yourKey');
+// };
+const baseUrl = process.env.REACT_APP_BASE_URL;
+const handleLogout = async () => {
+  const token = localStorage.getItem("token");
+
+  // Check if the token exists
+  if (!token) {
+    console.error("No token found in local storage");
+    return;
+  }
+  const response = await fetch(`${baseUrl}/api/v1/superAdmin/logout`, {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+      "x-auth-token": token, // Add the token to the request headers
+    },
+    body: JSON.stringify({}),
+  });
+  const data = await response.json();
+  if (data.success === true) {
+    // navigate("/");
+    localStorage.removeItem("token");
+  }
 };
 
 // -------------BASE URL SIDEBAR NAVIGATION--------------------------
