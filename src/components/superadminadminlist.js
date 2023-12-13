@@ -211,7 +211,7 @@ export default function SuperAdminAdminList()
               marginBottom: "2%",
             }}
           >
-            {selectedPatient?.age} yr, {selectedPatient?.bodyWeight} kg
+            Email: {selectedPatient?.email}, {selectedPatient?.contactNumber}
           </text>
 
           <text
@@ -224,36 +224,38 @@ export default function SuperAdminAdminList()
               color: "#FFFFFF",
             }}
           >
-            {selectedPatient?.address?.houseNo +
-              " " +
-              selectedPatient?.address?.block +
-              " " +
-              selectedPatient?.address?.area +
-              ", " +
-              selectedPatient?.address?.district +
-              ", " +
-              selectedPatient?.address?.state +
-              " " +
-              selectedPatient?.address?.pinCode}
+            Create : {selectedPatient?.permissions?.create +
+              " Edit:  " +
+              selectedPatient?.permissions?.edit +
+              " Remove: " +
+              selectedPatient?.permissions?.remove +
+              " View:  " +
+              selectedPatient?.permissions?.view
+              // ", " +
+              // selectedPatient?.address?.state +
+              // " " +
+              // selectedPatient?.address?.pinCode
+            }
           </text>
 
+
           <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
-            {/* <span
-                            style={{
-                                width: "25px",
-                                height: "25px",
-                            }}
-                            onClick={() => handleEditPatient(selectedPatient?._id)}
-                            dangerouslySetInnerHTML={{ __html: svg4 }}
-                        ></span> */}
             <span
+              style={{
+                width: "25px",
+                height: "25px",
+              }}
+              onClick={() => handleEditPatient(selectedPatient?._id)}
+              dangerouslySetInnerHTML={{ __html: svg4 }}
+            ></span>
+            {/* <span
               style={{
                 width: "25px",
                 height: "25px",
               }}
               onClick={() => handleDeletePatient(selectedPatient?._id)}
               dangerouslySetInnerHTML={{ __html: svg5 }}
-            ></span>
+            ></span> */}
           </div>
           <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
             <span className="flex">
@@ -316,7 +318,7 @@ export default function SuperAdminAdminList()
                     Delete
                   </button>
                 </Popconfirm>
-                {/* <button class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm" onClick={() => handleBookAppointment(patient._id)}>Edit</button> */}
+                <button class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm" onClick={() => handleBookAppointment(patient._id)}>Edit</button>
               </div>
             </div>
           </div>

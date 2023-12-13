@@ -366,10 +366,10 @@ export default function SuperAdminAdminForm()
     email: "",
     contactNumber: "",
     permissions: {
-      view: true,
-      create: true,
-      remove: true,
-      edit: true,
+      view: false,
+      create: false,
+      remove: false,
+      edit: false,
     },
     address: {
       houseNo: "",
@@ -417,15 +417,25 @@ export default function SuperAdminAdminForm()
 
   const handleChange = (e) =>
   {
+
     console.log("E value", e);
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
+
     setAdminDetails((prevAdminDetails) => ({
       ...prevAdminDetails,
       adminPic: adminImage
     }))
 
-
-    if (
+    if (type === "checkbox")
+    {
+      setAdminDetails({
+        ...adminDetails,
+        permissions: {
+          ...adminDetails.permissions,
+          [name]: checked,
+        },
+      });
+    } else if (
       [
         "houseNo",
         "floor",
@@ -495,6 +505,23 @@ export default function SuperAdminAdminForm()
     console.log("DATA from response", data);
   };
   console.log("PATIENT DETAILS", adminDetails);
+
+  // const handleActionChange = (value) =>
+  // {
+  //   const index = selectedActions.indexOf(value);
+
+  //   if (index === -1)
+  //   {
+  //     // If the value is not present in the array, add it
+  //     setSelectedActions([...selectedActions, value]);
+  //   } else
+  //   {
+  //     // If the value is present in the array, remove it
+  //     const updatedActions = [...selectedActions];
+  //     updatedActions.splice(index, 1);
+  //     setSelectedActions(updatedActions);
+  //   }
+  // };
 
   return (
     <>
@@ -711,54 +738,45 @@ export default function SuperAdminAdminForm()
                   className="flex flex-row  flex-grow "
                   style={{ justifyContent: "space-around" }}
                 >
-                  {/* Radio buttons for Create, Edit, Delete, Read */}
-                  <label htmlFor="create" className="mr-4">
+                  {/* Permissions */}
+                  <label>
+                    View:
                     <input
-                      type="radio"
-                      id="create"
-                      name="action"
-                      value="create"
-                      checked={action === "create"}
-                      onChange={handleActionChange}
-                      style={{ margin: 5 }}
+                      type="checkbox"
+                      name="view"
+                      checked={adminDetails.permissions.view}
+                      onChange={handleChange}
                     />
-                    Create
                   </label>
-                  <label htmlFor="edit" className="mr-4">
+
+                  <label>
+                    Create:
                     <input
-                      type="radio"
-                      id="edit"
-                      name="action"
-                      value="edit"
-                      checked={action === "edit"}
-                      onChange={handleActionChange}
-                      style={{ margin: 5 }}
+                      type="checkbox"
+                      name="create"
+                      checked={adminDetails.permissions.create}
+                      onChange={handleChange}
                     />
-                    Edit
                   </label>
-                  <label htmlFor="delete" className="mr-4">
+
+                  <label>
+                    Remove:
                     <input
-                      type="radio"
-                      id="delete"
-                      name="action"
-                      value="delete"
-                      checked={action === "delete"}
-                      onChange={handleActionChange}
-                      style={{ margin: 5 }}
+                      type="checkbox"
+                      name="remove"
+                      checked={adminDetails.permissions.remove}
+                      onChange={handleChange}
                     />
-                    Delete
                   </label>
-                  <label htmlFor="read">
+
+                  <label>
+                    Edit:
                     <input
-                      type="radio"
-                      id="read"
-                      name="action"
-                      value="read"
-                      checked={action === "read"}
-                      onChange={handleActionChange}
-                      style={{ margin: 5 }}
+                      type="checkbox"
+                      name="edit"
+                      checked={adminDetails.permissions.edit}
+                      onChange={handleChange}
                     />
-                    Read
                   </label>
                   {/* Error handling or displaying selected action */}
                   {/* {action && <p>Selected Action: {action}</p>} */}
