@@ -245,14 +245,14 @@ export default function SuperAdminPatientList()
                             onClick={() => handleEditPatient(selectedPatient?._id)}
                             dangerouslySetInnerHTML={{ __html: svg4 }}
                         ></span> */}
-            <span
+            {/* <span
               style={{
                 width: "25px",
                 height: "25px",
               }}
               onClick={() => handleDeletePatient(selectedPatient?._id)}
               dangerouslySetInnerHTML={{ __html: svg5 }}
-            ></span>
+            ></span> */}
           </div>
           <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
             <span className="flex">

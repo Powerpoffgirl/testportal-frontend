@@ -19,6 +19,7 @@ import UserLogin from "./components/userLogin";
 import DoctorListAdmin from "./components/doctorListAdmin";
 // import AdminForm from "./components/adminForm";
 import EditDoctorForm from "./components/editDoctorForm";
+import EditAdminlistform from "./components/editAdminlistform";
 import EditDoctorFormAdmin from "./components/editDoctorFormAdmin";
 import EditAdminForm from "./components/editAdminForm";
 import UserOTP from "./components/userOtp";
@@ -62,7 +63,8 @@ import SuperAdminAdminEditForm from "./components/superadminadmineditform";
 import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
 import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
-function App() {
+function App()
+{
   return (
     <Routes>
       <Route
@@ -364,6 +366,17 @@ function App() {
             type="user"
             headerTextTop={"Edit"}
             headerTextBottom={"Appointment"}
+          />
+        }
+      ></Route>
+      <Route
+        path="/editadminlistform"
+        element={
+          <Layout
+            Component={EditAdminlistform}
+            type="superadmin"
+            headerTextTop={"Edit"}
+            headerTextBottom={"Admin Form"}
           />
         }
       ></Route>

@@ -166,7 +166,7 @@ export default function SuperAdminAdminList()
   const handleBookAppointment = (patientId) =>
   {
     localStorage.setItem("patientId", patientId);
-    navigate("/editappointment");
+    navigate("/editadminlistform");
   };
 
   console.log("PATIENT LISTS", patientsList);
@@ -240,14 +240,14 @@ export default function SuperAdminAdminList()
 
 
           <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
-            <span
+            {/* <span
               style={{
                 width: "25px",
                 height: "25px",
               }}
               onClick={() => handleEditPatient(selectedPatient?._id)}
               dangerouslySetInnerHTML={{ __html: svg4 }}
-            ></span>
+            ></span> */}
             {/* <span
               style={{
                 width: "25px",
