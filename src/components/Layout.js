@@ -6,101 +6,6 @@ import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-<<<<<<< HEAD
-// const navigate = useNavigate()
-// const handleLogout = () => {
-//   console.log("HELLO");
-//   localStorage.clear(); // or localStorage.removeItem('yourKey');
-// };
-const type1 = localStorage.getItem("type");
-console.log("type1", type1);
-
-const baseUrl = process.env.REACT_APP_BASE_URL;
-const handleLogout = async () =>
-{
-  const token = localStorage.getItem("token");
-
-  // Check if the token exists
-  if (!token)
-  {
-    console.error("No token found in local storage");
-    return;
-  }
-  const response = await fetch(`${baseUrl}/api/v1/superAdmin/logout`, {
-    method: "post",
-    headers: {
-      "Content-Type": "application/json",
-      "x-auth-token": token, // Add the token to the request headers
-    },
-    body: JSON.stringify({}),
-  });
-  const data = await response.json();
-  if (data.success === true)
-  {
-    // navigate("/");
-    localStorage.removeItem("token");
-  }
-};
-
-// -------------BASE URL SIDEBAR NAVIGATION--------------------------
-
-const link1 = [
-  { text: "User Login", to: "/userlogin" },
-  { text: "Doctor Login", to: "/doctorlogin" },
-  { text: "Support", to: "#" },
-];
-
-// -------------USER SIDEBAR NAVIGATION--------------------------
-
-const link2 = [
-  { text: "Member’s List", to: "/patientlistuser" },
-  { text: "Doctor’s List", to: "/doctorlistuser" },
-  { text: "Appointment’s List", to: "/appointmentlistuser" },
-  { text: "Edit Profile", to: "/edituserform" },
-  { text: "Support", to: "#" },
-  { text: "Logout User", to: "/userlogin", onClick: handleLogout },
-];
-
-// -------------DOCTOR SIDEBAR NAVIGATION--------------------------
-
-const link3 = [
-  { text: "Patient’s List", to: "/patientlist" },
-  { text: "Appointment List", to: "/appointmentlist" },
-  { text: "Edit Profile", to: "/editdoctorform" },
-  { text: "Support", to: "#" },
-  { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
-];
-
-// ------------- ADMIN SIDEBAR NAVIGATION--------------------------
-
-const link4 = [
-  { text: "Doctor’s List", to: "/doctorlistadmin" },
-  { text: "Patient’s List", to: "/patientlistadmin" },
-  { text: "Appointment List", to: "/appointmentlistadmin" },
-  {
-    text: "Edit Profile",
-    to: "/editadminform",
-  },
-  { text: "Support", to: "#" },
-  { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "/adminlogin", onClick: handleLogout },
-];
-
-// -------------SUPER ADMIN SIDEBAR NAVIGATION--------------------------
-const link5 = [
-  { text: "Admin’s List", to: "/superadminadminlist" },
-  { text: "Doctor’s List", to: "/superadmindoctorlist" },
-  { text: "User’s List", to: "/superadminuserlist" },
-  { text: "Patient’s List", to: "/superadminpatientlist" },
-  { text: "Appointment List", to: "/superadminappointmentlist" },
-  { text: "Profile", to: "/superadmineditform" },
-  { text: "Support", to: "#" },
-  // { text: "Manage QR", to: "#" },
-  { text: "Logout", to: "/superadminlogin", onClick: handleLogout },
-];
-=======
->>>>>>> de5b89b682633cb133123845adfec7e6be8fc598
 
 export default function Layout({
   Component,
@@ -112,8 +17,6 @@ export default function Layout({
   // setSearchTerm,
 })
 {
-<<<<<<< HEAD
-=======
   const baseUrl = process.env.REACT_APP_BASE_URL
   console.log("TYPE=================", type)
   const handleLogout = async () =>
@@ -144,7 +47,6 @@ export default function Layout({
     }
   }
 
->>>>>>> de5b89b682633cb133123845adfec7e6be8fc598
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const location = useLocation();
   console.log(location);
@@ -156,8 +58,6 @@ export default function Layout({
   const sidebarRef = useRef(null);
   const [pic, setPic] = useState();
 
-<<<<<<< HEAD
-=======
 
   // -------------BASE URL SIDEBAR NAVIGATION--------------------------
 
@@ -212,7 +112,6 @@ export default function Layout({
   ];
 
 
->>>>>>> de5b89b682633cb133123845adfec7e6be8fc598
   const toggleSidebar = () =>
   {
     setIsSidebarOpen(!isSidebarOpen);

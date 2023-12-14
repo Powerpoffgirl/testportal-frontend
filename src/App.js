@@ -63,19 +63,11 @@ import SuperAdminDoctorEditForm from "./components/superadmindoctoreditform";
 import SuperAdminAdminEditForm from "./components/superadminadmineditform";
 import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
-<<<<<<< HEAD
 import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
 import SuperAdminOtp from "./components/superadminotp";
-import { useState } from "react";
+
 function App()
 {
-  const [type, setType] = useState("");
-  localStorage.setItem("type", type);
-=======
-import SuperAdminOtp from "./components/superadminotp"
-function App()
-{
->>>>>>> de5b89b682633cb133123845adfec7e6be8fc598
 
   return (
     <Routes>
@@ -259,23 +251,6 @@ function App()
             headerTextBottom={"Appointment List"}
             search={"true"}
           // AddButton={"true"}
-<<<<<<< HEAD
-          />
-        }
-      />
-
-      <Route
-        path="/editappointmentsuperadmin"
-        element={
-          <Layout
-            Component={EditAppointmentSuperAdmin}
-            type="superAdmin"
-            headerTextTop={"Super Admin"}
-            headerTextBottom={"Edit Appointment"}
-          // search={"true"}
-          // AddButton={"true"}
-=======
->>>>>>> de5b89b682633cb133123845adfec7e6be8fc598
           />
         }
       />
