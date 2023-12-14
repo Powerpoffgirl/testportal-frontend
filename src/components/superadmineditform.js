@@ -322,6 +322,12 @@ export default function SuperAdminEditForm()
       }
     );
     const data = await response.json();
+
+    if (data.statusCode === 400)
+    {
+      toast.error("Please fill the details");
+    }
+
     if (data.success === true)
     {
       console.log("Doctor updated successfully.")
