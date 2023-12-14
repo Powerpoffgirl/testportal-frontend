@@ -49,7 +49,7 @@ export default function SuperAdminUserEditForm()
     // }
 
     const formData = new FormData();
-    formData.append('adminPic', selectedFile);
+    formData.append('userPic', selectedFile);
 
     console.log("FORM DATA", formData)
     try
@@ -104,13 +104,13 @@ export default function SuperAdminUserEditForm()
       try
       {
         const token = localStorage.getItem("token");
-        const doctorId = localStorage.getItem("doctorId");
+        const userId = localStorage.getItem("userId");
         if (!token)
         {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(`${baseUrl}/api/v1/superAdmin/get_user/${doctorId}`, {
+        const response = await fetch(`${baseUrl}/api/v1/superAdmin/get_user/${userId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -157,22 +157,7 @@ export default function SuperAdminUserEditForm()
   {
     const { name, value } = e.target;
 
-    if (name === "workingDays")
-    {
-      setDoctorDetails(prevDoctorDetails => ({
-        ...prevDoctorDetails,
-        workingDays: [...prevDoctorDetails.workingDays, value],
-      }));
-    } else if (name === "workHourFrom" || name === "workHourTo")
-    {
-      setDoctorDetails(prevDoctorDetails => ({
-        ...prevDoctorDetails,
-        workingHours: {
-          ...prevDoctorDetails.workingHours,
-          [name]: value,
-        }
-      }));
-    } else if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
+    if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
     {
       setDoctorDetails(prevDoctorDetails => ({
         ...prevDoctorDetails,
@@ -199,7 +184,7 @@ export default function SuperAdminUserEditForm()
     // Check if the token exists
     const newDoctorDetails = {
       name: doctorDetails?.name,
-      // email: doctorDetails.email,
+      email: doctorDetails.email,
       // contactNumber: doctorDetails.contactNumber,
       totalExperience: doctorDetails?.totalExperience,
       speciality: doctorDetails?.speciality,
@@ -213,11 +198,11 @@ export default function SuperAdminUserEditForm()
         district: doctorDetails?.address?.district,
         state: doctorDetails?.address?.state
       },
-      adminPic: adminImage
+      userPic: adminImage,
     }
 
     const token = localStorage.getItem("token");
-    const doctorId = localStorage.getItem('doctorId');
+    const userId = localStorage.getItem('userId');
     const isEmpty = Object.values(newDoctorDetails).some(value => value === '');
 
     if (isEmpty || isEditing === false)
@@ -240,7 +225,7 @@ export default function SuperAdminUserEditForm()
       return;
     }
     const response = await fetch(
-      `${baseUrl}/api/v1/superAdmin/update_user/${doctorId}`,
+      `${baseUrl}/api/v1/superAdmin/update_user/${userId}`,
       {
         method: "put",
         headers: {

@@ -292,9 +292,9 @@ export default function SuperAdminDoctorEditForm()
                       color: "#A4A4A4",
                     }}
                   >
-                    {adminImage || doctorDetails?.adminPic ? (
+                    {adminImage || doctorDetails?.doctorPic ? (
                       <img
-                        src={adminImage || doctorDetails?.adminPic}
+                        src={adminImage || doctorDetails?.doctorPic}
                         alt="Avatar"
                         style={{
                           borderRadius: "50%",

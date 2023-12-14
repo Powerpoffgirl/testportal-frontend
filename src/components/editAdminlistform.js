@@ -303,16 +303,14 @@ export default function EditAdminlistform()
                             color: "#FFFFFF"
                         }}
                     >
-                        changes are Saved.<br />
+                        Changes are saved.<br />
 
                     </text>
                 </div>
             </Modal>
 
             <div className="flex flex-row">
-                <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
 
-                </div>
                 <div className=" w-full">
 
                     <div className="mt-6 p-2">
