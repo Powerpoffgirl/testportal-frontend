@@ -2,15 +2,14 @@ import React, { useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import { ToastContainer, toast } from "react-toastify";
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import "react-toastify/dist/ReactToastify.css";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { HiOutlineUserAdd } from "react-icons/hi";
-
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#08DA75"/>
@@ -23,8 +22,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm()
-{
+export default function PatientForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -58,32 +56,25 @@ export default function PatientForm()
   const [selectedFile, setSelectedFile] = useState(null);
   const [patientImage, setPatientImage] = useState();
   const fileInputRef = useRef(null);
-  const [doctorDetails, setDoctorDetails] = useState(null)
+  const [doctorDetails, setDoctorDetails] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-
-
-  const handleFileSelect = (event) =>
-  {
+  const handleFileSelect = (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       setSelectedFile(file);
     }
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
-
   };
 
-  const handleNewProfilePicture = async () =>
-  {
-    const token = localStorage.getItem('token');
-    const doctorId = localStorage.getItem('doctorId');
+  const handleNewProfilePicture = async () => {
+    const token = localStorage.getItem("token");
+    const doctorId = localStorage.getItem("doctorId");
 
     // if (!token || !doctorId)
     // {
@@ -92,230 +83,36 @@ export default function PatientForm()
     // }
 
     const formData = new FormData();
-    formData.append('patientPic', selectedFile);
+    formData.append("patientPic", selectedFile);
 
-    console.log("FORM DATA", formData)
-    try
-    {
+    console.log("FORM DATA", formData);
+    try {
       const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'x-auth-token': token,
+          "x-auth-token": token,
         },
         body: formData,
       });
 
-      if (!response.ok)
-      {
+      if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Image uploaded successfully:', data);
-      setPatientImage(data.profilePicImageUrl)
-      alert('Image uploaded successfully.');
-
+      console.log("Image uploaded successfully:", data);
+      setPatientImage(data.profilePicImageUrl);
+      alert("Image uploaded successfully.");
 
       // Reset the file input
       setSelectedFile(null);
-      fileInputRef.current.value = '';
-    } catch (error)
-    {
-      console.error('Error uploading image:', error);
-      alert('Error uploading image. Please try again.');
+      fileInputRef.current.value = "";
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Error uploading image. Please try again.");
     }
   };
 
-  const handleNameChange = (e) =>
-  {
-    const enteredName = e.target.value;
-    setName(enteredName);
-
-    // Validation logic
-    if (!enteredName.trim())
-    {
-      setNameError("Name is required");
-    } else if (!/^[a-zA-Z\s-]+$/.test(enteredName))
-    {
-      setNameError("Invalid name format");
-    } else if (enteredName.length < 2 || enteredName.length > 50)
-    {
-      setNameError("Name length should be between 2 and 50 characters");
-    } else
-    {
-      setNameError("");
-    }
-  };
-
-  const handleAgeChange = (e) =>
-  {
-    const enteredAge = e.target.value;
-    setAge(enteredAge);
-
-    // Validation logic
-    const ageRegex = /^\d+$/;
-    if (!enteredAge.trim())
-    {
-      setAgeError("Age is required");
-    } else if (!ageRegex.test(enteredAge))
-    {
-      setAgeError("Age should be a number");
-    } else if (enteredAge < 0 || enteredAge > 120)
-    {
-      setAgeError("Age should be between 0 and 120");
-    } else
-    {
-      setAgeError("");
-    }
-  };
-
-  const handleBodyWeightChange = (e) =>
-  {
-    const enteredBodyWeight = e.target.value;
-    setBodyWeight(enteredBodyWeight);
-
-    // Validation logic
-    const bodyWeightRegex = /^\d+(\.\d{1,2})?$/; // Allows positive numbers with up to 2 decimal places
-
-    if (!enteredBodyWeight.trim())
-    {
-      setBodyWeightError("Body weight is required");
-    } else if (!bodyWeightRegex.test(enteredBodyWeight))
-    {
-      setBodyWeightError("Invalid body weight format");
-    } else if (enteredBodyWeight <= 0)
-    {
-      setBodyWeightError("Body weight should be greater than 0");
-    } else
-    {
-      setBodyWeightError("");
-    }
-  };
-
-  const handleHouseNoChange = (e) =>
-  {
-    const enteredHouseNo = e.target.value;
-    setHouseNo(enteredHouseNo);
-
-    // Validation logic
-    const houseNoRegex = /^\d+$/; // Allows only positive whole numbers
-
-    if (!enteredHouseNo.trim())
-    {
-      setHouseNoError("");
-    } else if (!houseNoRegex.test(enteredHouseNo))
-    {
-      setHouseNoError("");
-    } else
-    {
-      setHouseNoError("");
-    }
-  };
-
-  const handleFloorChange = (e) =>
-  {
-    const enteredFloor = e.target.value;
-    setFloor(enteredFloor);
-
-    // Validation logic
-    const alphabeticRegex = /^[a-zA-Z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-    const formatRegex =
-      /^(?=.*\b\d{1,3}(st|nd|rd|th)\b)\b\d{1,3}(st|nd|rd|th)?\b$/i; // Allows 1st, 2nd, 3rd, etc.
-
-    if (!enteredFloor.trim())
-    {
-      setFloorError("");
-    } else if (
-      !alphabeticRegex.test(enteredFloor) &&
-      !formatRegex.test(enteredFloor)
-    )
-    {
-      setFloorError("");
-    } else
-    {
-      setFloorError("");
-    }
-  };
-
-  const handleBlockChange = (e) =>
-  {
-    const enteredBlock = e.target.value;
-    setBlock(enteredBlock);
-
-    // Validation logic
-    const blockRegex = /^[A-Za-z0-9]+$/; // Allows alphanumeric characters
-
-    if (!enteredBlock.trim())
-    {
-      setBlockError("Block is required");
-    } else if (!blockRegex.test(enteredBlock))
-    {
-      setBlockError("Invalid block format");
-    } else
-    {
-      setBlockError("");
-    }
-  };
-
-  const handleAreaChange = (e) =>
-  {
-    const enteredArea = e.target.value;
-    setArea(enteredArea);
-
-    // Validation logic
-    const areaRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-
-    if (!enteredArea.trim())
-    {
-      setAreaError("Area is required");
-    } else if (!areaRegex.test(enteredArea))
-    {
-      setAreaError("Invalid area format");
-    } else
-    {
-      setAreaError("");
-    }
-  };
-
-  const handleDistrictChange = (e) =>
-  {
-    const enteredDistrict = e.target.value;
-    setDistrict(enteredDistrict);
-
-    // Validation logic
-    const districtRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-
-    if (!enteredDistrict.trim())
-    {
-      setDistrictError("District is required");
-    } else if (!districtRegex.test(enteredDistrict))
-    {
-      setDistrictError("Invalid district format");
-    } else
-    {
-      setDistrictError("");
-    }
-  };
-
-  const handleStateChange = (e) =>
-  {
-    const enteredState = e.target.value;
-    setState(enteredState);
-
-    // Validation logic
-    const stateRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-
-    if (!enteredState.trim())
-    {
-      setStateError("State is required");
-    } else if (!stateRegex.test(enteredState))
-    {
-      setStateError("Invalid state format");
-    } else
-    {
-      setStateError("");
-    }
-  };
   const [patientDetails, setPatientDetails] = useState({
     name: "",
     age: "",
@@ -332,36 +129,14 @@ export default function PatientForm()
     patientPic: "",
   });
 
-  const handlePincodeChange = (e) =>
-  {
-    const enteredPinCode = e.target.value;
-    setPinCode(enteredPinCode);
-
-    // Validation logic
-    const pinCodeRegex = /^\d{6}$/; // Allows exactly 6 digits
-
-    if (!enteredPinCode.trim())
-    {
-      setPinCodeError("Pincode is required");
-    } else if (!pinCodeRegex.test(enteredPinCode))
-    {
-      setPinCodeError("Invalid pincode format (should be 6 digits)");
-    } else
-    {
-      setPinCodeError("");
-    }
-  };
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     setPatientDetails((prevPatientDetails) => ({
@@ -379,8 +154,7 @@ export default function PatientForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -388,8 +162,7 @@ export default function PatientForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -398,8 +171,7 @@ export default function PatientForm()
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     // const isEmpty = Object.values(patientDetails).some((value) => value === "");
@@ -417,8 +189,7 @@ export default function PatientForm()
     // }
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
       return;
     }
@@ -431,8 +202,7 @@ export default function PatientForm()
       body: JSON.stringify(patientDetails),
     });
     const data = await response.json();
-    if (data.success === true)
-    {
+    if (data.success === true) {
       // navigate("/otp")
       onOpenModal();
       localStorage.setItem("id", data.data._id);
@@ -510,11 +280,9 @@ export default function PatientForm()
                         }}
                       />
                     ) : (
-
                       <PermIdentityOutlinedIcon
                         style={{ width: "70px", height: "70px" }}
                       />
-
                     )}
                   </div>
                   <p
@@ -522,7 +290,11 @@ export default function PatientForm()
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                     onClick={handleClick}
-                    style={{ cursor: "pointer", marginLeft: 37, marginTop: -20 }}
+                    style={{
+                      cursor: "pointer",
+                      marginLeft: 37,
+                      marginTop: -20,
+                    }}
                   >
                     <MdEdit />
                   </p>
@@ -573,12 +345,17 @@ export default function PatientForm()
                     id="imageInput"
                     type="file"
                     ref={fileInputRef}
-                    style={{ display: 'none' }}
+                    style={{ display: "none" }}
                     accept="image/*"
                     onChange={handleFileSelect}
                   />
                 </div>
-                <button onClick={handleNewProfilePicture} style={{ marginLeft: 20, marginTop: 5 }}>Upload</button>
+                <button
+                  onClick={handleNewProfilePicture}
+                  style={{ marginLeft: 20, marginTop: 5 }}
+                >
+                  Upload
+                </button>
               </div>
             </div>
 
@@ -596,8 +373,9 @@ export default function PatientForm()
                   name="name"
                   value={patientDetails.name}
                   onChange={handleChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${nameError ? "border-red-500" : ""
-                    }`}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                    nameError ? "border-red-500" : ""
+                  }`}
                 />
                 {nameError && (
                   <p className="text-red-500 text-sm mt-1">{nameError}</p>
@@ -612,8 +390,9 @@ export default function PatientForm()
                     Age
                   </label>
                   <input
-                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${ageError ? "border-red-500" : ""
-                      }`}
+                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${
+                      ageError ? "border-red-500" : ""
+                    }`}
                     type="text"
                     id="age"
                     name="age"
@@ -633,8 +412,9 @@ export default function PatientForm()
                     Body Weight
                   </label>
                   <input
-                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${bodyWeightError ? "border-red-500" : ""
-                      }`}
+                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${
+                      bodyWeightError ? "border-red-500" : ""
+                    }`}
                     type="text"
                     id="bodyWeight"
                     name="bodyWeight"
@@ -666,8 +446,9 @@ export default function PatientForm()
                       value={patientDetails.houseNo}
                       onChange={handleChange}
                       placeholder="1234"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${houseNoError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        houseNoError ? "border-red-500" : ""
+                      }`}
                     />
                     {houseNoError && (
                       <p className="text-red-500 text-sm mt-1">
@@ -689,8 +470,9 @@ export default function PatientForm()
                       value={patientDetails.floor}
                       onChange={handleChange}
                       placeholder="First Floor or 2nd"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${floorError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        floorError ? "border-red-500" : ""
+                      }`}
                     />
                     {floorError && (
                       <p className="text-red-500 text-sm mt-1">{floorError}</p>
@@ -710,8 +492,9 @@ export default function PatientForm()
                       value={patientDetails.block}
                       onChange={handleChange}
                       placeholder="A"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${blockError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        blockError ? "border-red-500" : ""
+                      }`}
                     />
                     {blockError && (
                       <p className="text-red-500 text-sm mt-1">{blockError}</p>
@@ -731,8 +514,9 @@ export default function PatientForm()
                       value={patientDetails.area}
                       onChange={handleChange}
                       placeholder="Green Park"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${areaError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        areaError ? "border-red-500" : ""
+                      }`}
                     />
                     {areaError && (
                       <p className="text-red-500 text-sm mt-1">{areaError}</p>
@@ -752,8 +536,9 @@ export default function PatientForm()
                       value={patientDetails?.address?.pinCode}
                       onChange={handleChange}
                       placeholder="110016"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${pinCodeError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        pinCodeError ? "border-red-500" : ""
+                      }`}
                     />
                     {pinCodeError && (
                       <p className="text-red-500 text-sm mt-1">
@@ -775,8 +560,9 @@ export default function PatientForm()
                       value={patientDetails?.address?.district}
                       onChange={handleChange}
                       placeholder="South Delhi"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${districtError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        districtError ? "border-red-500" : ""
+                      }`}
                     />
                     {districtError && (
                       <p className="text-red-500 text-sm mt-1">
@@ -798,8 +584,9 @@ export default function PatientForm()
                       value={patientDetails?.address?.state}
                       onChange={handleChange}
                       placeholder="Delhi"
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${stateError ? "border-red-500" : ""
-                        }`}
+                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        stateError ? "border-red-500" : ""
+                      }`}
                     />
                     {stateError && (
                       <p className="text-red-500 text-sm mt-1">{stateError}</p>
