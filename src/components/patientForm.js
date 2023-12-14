@@ -59,6 +59,9 @@ export default function PatientForm() {
   const [doctorDetails, setDoctorDetails] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const [errors, setErrors] = useState({});
+  const [userImage, setUserImage] = useState();
+  const [userDetails, setUserDetails] = useState({ name: "" });
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -101,7 +104,7 @@ export default function PatientForm() {
 
       const data = await response.json();
       console.log("Image uploaded successfully:", data);
-      setPatientImage(data.profilePicImageUrl);
+      setUserImage(data.profilePicImageUrl);
       alert("Image uploaded successfully.");
 
       // Reset the file input
@@ -136,12 +139,79 @@ export default function PatientForm() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const validateField = (name, value) => {
+    switch (name) {
+      case "name":
+        return value ? "" : "Name is required.";
+      case "age":
+        return /^[0-9]+$/.test(value) ? "" : "Age must be a number.";
+      case "bodyWeight":
+        return /^[0-9.]+$/.test(value) ? "" : "Body Weight must be a number.";
+      case "houseNo":
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "houseNo is required  ";
+      case "floor":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
+      case "block":
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "Block is required  ";
+      case "area":
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "Area is required and must be a string ";
+      case "pinCode":
+        return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
+      case "district":
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "District is required and must be a string ";
+      case "state":
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "State is required and must be a string ";
+      case "workHourFrom":
+        // Assuming time in HH:MM format, adjust as needed
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+          ? ""
+          : "Invalid start time.";
+      case "workHourTo":
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+          ? ""
+          : "Invalid end time.";
+      // Add more cases as needed for other fields
+      default:
+        return "";
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    const error = validateField(name, value);
+    setErrors({ ...errors, [name]: error });
 
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       patientPic: patientImage,
+      ...([
+        "houseNo",
+        "floor",
+        "block",
+        "area",
+        "pinCode",
+        "district",
+        "state",
+      ].includes(name)
+        ? {
+            address: {
+              ...prevPatientDetails.address,
+              [name]: value,
+            },
+          }
+        : { [name]: value }),
     }));
 
     if (
@@ -174,7 +244,23 @@ export default function PatientForm() {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    // const isEmpty = Object.values(patientDetails).some((value) => value === "");
+    const newPatientDetails = {
+      name: patientDetails?.name,
+      age: patientDetails?.age,
+      bodyWeight: patientDetails?.bodyWeight,
+      address: {
+        houseNo: patientDetails?.address?.houseNo,
+        floor: patientDetails?.address?.floor,
+        block: patientDetails?.address?.block,
+        area: patientDetails?.address?.area,
+        pinCode: patientDetails?.address?.pinCode,
+        district: patientDetails?.address?.district,
+        state: patientDetails?.address?.state,
+      },
+      patientPic: userImage,
+    };
+
+    const doctorId = localStorage.getItem("doctorId");
 
     // if (isEmpty || isEditing === false)
     // {
@@ -199,7 +285,7 @@ export default function PatientForm() {
         "Content-Type": "application/json",
         "x-auth-token": token,
       },
-      body: JSON.stringify(patientDetails),
+      body: JSON.stringify(newPatientDetails),
     });
     const data = await response.json();
     if (data.success === true) {
@@ -271,9 +357,9 @@ export default function PatientForm() {
                       color: "#A4A4A4",
                     }}
                   >
-                    {patientImage || patientDetails?.patientPic ? (
+                    {userImage || patientDetails?.patientPic ? (
                       <img
-                        src={patientImage || patientDetails?.patientPic}
+                        src={userImage || patientDetails?.patientPic}
                         alt="Avatar"
                         style={{
                           borderRadius: "50%",
@@ -377,9 +463,7 @@ export default function PatientForm() {
                     nameError ? "border-red-500" : ""
                   }`}
                 />
-                {nameError && (
-                  <p className="text-red-500 text-sm mt-1">{nameError}</p>
-                )}
+                {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
@@ -400,8 +484,8 @@ export default function PatientForm() {
                     onChange={handleChange}
                     style={{ marginLeft: -0.5 }}
                   />
-                  {ageError && (
-                    <p className="text-red-500 text-sm mt-1">{ageError}</p>
+                  {errors.age && ( // Change 'errors.email' to 'errors.age'
+                    <p className="text-red-500">{errors.age}</p>
                   )}
                 </div>
                 <div className="flex flex-col">
@@ -422,12 +506,12 @@ export default function PatientForm() {
                     value={patientDetails.bodyWeight}
                     style={{ marginRight: -2 }}
                   />
-                  {bodyWeightError && (
+                  {errors.bodyWeight && ( // Change 'error.bodyWeight' to 'bodyWeightError'
                     <p className="text-red-500 text-sm mt-1">
-                      {bodyWeightError}
+                      {errors.bodyWeight}
                     </p>
                   )}
-                </div>{" "}
+                </div>
               </div>
 
               <div class="p-3 pb-5 border border-[#08DA75]">
@@ -496,8 +580,8 @@ export default function PatientForm() {
                         blockError ? "border-red-500" : ""
                       }`}
                     />
-                    {blockError && (
-                      <p className="text-red-500 text-sm mt-1">{blockError}</p>
+                    {errors.block && (
+                      <p className="text-red-500">{errors.block}</p>
                     )}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
@@ -518,8 +602,8 @@ export default function PatientForm() {
                         areaError ? "border-red-500" : ""
                       }`}
                     />
-                    {areaError && (
-                      <p className="text-red-500 text-sm mt-1">{areaError}</p>
+                    {errors.area && (
+                      <p className="text-red-500">{errors.area}</p>
                     )}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
@@ -540,10 +624,8 @@ export default function PatientForm() {
                         pinCodeError ? "border-red-500" : ""
                       }`}
                     />
-                    {pinCodeError && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {pinCodeError}
-                      </p>
+                    {errors.pinCode && (
+                      <p className="text-red-500">{errors.pinCode}</p>
                     )}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
@@ -564,10 +646,8 @@ export default function PatientForm() {
                         districtError ? "border-red-500" : ""
                       }`}
                     />
-                    {districtError && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {districtError}
-                      </p>
+                    {errors.district && (
+                      <p className="text-red-500">{errors.district}</p>
                     )}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
@@ -588,8 +668,8 @@ export default function PatientForm() {
                         stateError ? "border-red-500" : ""
                       }`}
                     />
-                    {stateError && (
-                      <p className="text-red-500 text-sm mt-1">{stateError}</p>
+                    {errors.state && (
+                      <p className="text-red-500">{errors.state}</p>
                     )}
                   </div>{" "}
                 </div>
