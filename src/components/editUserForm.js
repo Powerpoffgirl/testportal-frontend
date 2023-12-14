@@ -6,45 +6,38 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 
-export default function EditUserForm()
-{
+export default function EditUserForm() {
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
   const [userImage, setUserImage] = useState();
-  const [userDetails, setUserDetails] = useState(
-    { name: "", }
-  );
   const [errors, setErrors] = useState({});
+
+  const [userDetails, setUserDetails] = useState({ name: "" });
   //     const [userDetails, setUserDetails] = useState({ name: '' });
   //   const [errors, setErrors] = useState({});
 
-  const handleFileSelect = (event) =>
-  {
+  const handleFileSelect = (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       setSelectedFile(file);
     }
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
-
   };
 
-  const handleNewProfilePicture = async () =>
-  {
-    const token = localStorage.getItem('token');
-    const doctorId = localStorage.getItem('doctorId');
+  const handleNewProfilePicture = async () => {
+    const token = localStorage.getItem("token");
+    const doctorId = localStorage.getItem("doctorId");
 
     // if (!token || !doctorId)
     // {
@@ -53,39 +46,35 @@ export default function EditUserForm()
     // }
 
     const formData = new FormData();
-    formData.append('doctorPic', selectedFile);
+    formData.append("doctorPic", selectedFile);
 
-    console.log("FORM DATA", formData)
-    try
-    {
+    console.log("FORM DATA", formData);
+    try {
       const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
-        method: 'POST',
+        method: "POST",
         headers: {
-          'x-auth-token': token,
+          "x-auth-token": token,
         },
         body: formData,
       });
 
-      if (!response.ok)
-      {
+      if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log('Image uploaded successfully:', data);
-      setUserImage(data.profilePicImageUrl)
-      alert('Image uploaded successfully.');
+      console.log("Image uploaded successfully:", data);
+      setUserImage(data.profilePicImageUrl);
+      alert("Image uploaded successfully.");
 
       // Reset the file input
       setSelectedFile(null);
-      fileInputRef.current.value = '';
-    } catch (error)
-    {
-      console.error('Error uploading image:', error);
-      alert('Error uploading image. Please try again.');
+      fileInputRef.current.value = "";
+    } catch (error) {
+      console.error("Error uploading image:", error);
+      alert("Error uploading image. Please try again.");
     }
   };
-
 
   // const [userDetails, setUserDetails] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null);
@@ -93,16 +82,12 @@ export default function EditUserForm()
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -117,132 +102,127 @@ export default function EditUserForm()
         const data = await response.json();
         console.log("DATA from response", data);
         setUserDetails(data?.data);
-
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleToggleEdit = () =>
-  {
+  const handleToggleEdit = () => {
     setIsEditing(!isEditing);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const handleChange = (e) =>
-  {
+  const validateField = (name, value) => {
+    switch (name) {
+      case "name":
+        return value ? "" : "Name is required.";
+      case "email":
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+          ? ""
+          : "Email is not valid.";
+      case "contactNumber":
+        return value.length > 0 && value.length === 10
+          ? ""
+          : "Contact number is required or Add valid 10 Digit Number.";
+      case "houseNo":
+        return value ? "" : "House number is required.";
+      case "floor":
+        return value ? "" : "Floor is required.";
+      case "block":
+        return value ? "" : "Block is required.";
+      case "area":
+        return value ? "" : "Area is required.";
+      case "pinCode":
+        return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
+      case "district":
+        return value ? "" : "District is required.";
+      case "state":
+        return value ? "" : "State is required.";
+      case "workHourFrom":
+        // Assuming time in HH:MM format, adjust as needed
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+          ? ""
+          : "Invalid start time.";
+      case "workHourTo":
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+          ? ""
+          : "Invalid end time.";
+      // Add more cases as needed for other fields
+      default:
+        return "";
+    }
+  };
 
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
+    const error = validateField(name, value);
+    setErrors({ ...errors, [name]: error });
 
-    let isValid = true;
-    let errorMessage = '';
-
-    // Validations
-    if (name === "name" && value.length < 3)
-    {
-      errorMessage = "Name should be at least 3 characters.";
-      isValid = false;
-
+    if (name === "workingDays") {
+      setUserDetails((prevUserDetails) => ({
+        ...prevUserDetails,
+        workingDays: [...prevUserDetails.workingDays, value],
+      }));
+    } else if (name === "workHourFrom" || name === "workHourTo") {
+      setUserDetails((prevUserDetails) => ({
+        ...prevUserDetails,
+        workingHours: {
+          ...prevUserDetails.workingHours,
+          [name]: value,
+        },
+      }));
+    } else if (
+      [
+        "houseNo",
+        "floor",
+        "block",
+        "area",
+        "pinCode",
+        "district",
+        "state",
+      ].includes(name)
+    ) {
+      setUserDetails((prevUserDetails) => ({
+        ...prevUserDetails,
+        address: {
+          ...prevUserDetails.address,
+          [name]: value,
+        },
+      }));
+    } else {
+      setUserDetails((prevUserDetails) => ({
+        ...prevUserDetails,
+        [name]: value,
+      }));
     }
 
-    if (name === "email")
-    {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(value))
-      {
-        errorMessage = "Please enter a valid email address.";
-        isValid = false;
-      }
-    }
-
-    if (["district", "state", "pinCode"].includes(name) && (!value || value.trim() === ""))
-    {
-      errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} is required.`;
-      isValid = false;
-    }
-
-    // if (name === "pinCode" && !/^\d{6}$/.test(value))
-    // {
-    //   errorMessage = "Pincode must be 6 digits.";
-    //   isValid = false;
-    // }
-
-
-    // if (["district", "state"].includes(name) && !/^[a-zA-Z\s]*$/.test(value))
-    // {
-    //   errorMessage = `${name.charAt(0).toUpperCase() + name.slice(1)} must contain only letters and spaces.`;
-    //   isValid = false;
-    // }
-
-    // Update errors and userDetails
-    if (!isValid)
-    {
-      setErrors({ ...errors, [name]: errorMessage });
-
-    } else
-    {
-      const { [name]: omit, ...rest } = errors;
-      setErrors(rest);
-
-      if (name === "workingDays")
-      {
-        setUserDetails(prevDoctorDetails => ({
-          ...prevDoctorDetails,
-          workingDays: [...prevDoctorDetails?.workingDays, value],
-        }));
-      } else if (name === "workHourFrom" || name === "workHourTo")
-      {
-        setUserDetails(prevDoctorDetails => ({
-          ...prevDoctorDetails,
-          workingHours: {
-            ...prevDoctorDetails?.workingHours,
-            [name]: value,
-          }
-        }));
-      } else if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
-      {
-        setUserDetails(prevDoctorDetails => ({
-          ...prevDoctorDetails,
-          address: {
-            ...prevDoctorDetails?.address,
-            [name]: value
-          }
-        }));
-      } else
-      {
-        setUserDetails(prevDoctorDetails => ({
-          ...prevDoctorDetails,
-          [name]: value
-        }));
-      }
-    }
     setIsEditing(true);
   };
 
-
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
+
+    // if (!validateField()) {
+    //   toast.error("Please correct the errors before submitting.");
+    //   return;
+    // }
+
     // Check if the token exists
     const newUserDetails = {
       name: userDetails?.name,
@@ -257,30 +237,31 @@ export default function EditUserForm()
         district: userDetails?.address?.district,
         state: userDetails?.address?.state,
       },
-      userPic: userImage
+      userPic: userImage,
     };
 
     const token = localStorage.getItem("token");
     const doctorId = localStorage.getItem("doctorId");
 
-    const isEmpty = Object.values(userDetails).some(value => value === '');
+    const isEmpty = Object.values(userDetails).some((value) => value === "");
 
-    if (isEmpty || isEditing === false)
-    {
-      toast.error('Please fill the fields or Update');
+    if (isEmpty || isEditing === false) {
+      toast.error("Please fill the fields or Update");
       setIsEditing(false);
       return;
     }
 
-    if (!isEmpty || isEditing === true)
-    {
-
-      toast.success('Form submitted successfully!');
-
+    if (!isEmpty === true) {
+      toast.error("Please fill the fields or Update");
+      // setIsEditing(false);
+      return;
     }
 
-    if (!token)
-    {
+    if (!isEmpty || isEditing === true) {
+      toast.success("Form submitted successfully!");
+    }
+
+    if (!token) {
       console.error("No token found in local storage");
       return;
     }
@@ -293,10 +274,9 @@ export default function EditUserForm()
       body: JSON.stringify(newUserDetails),
     });
     const data = await response.json();
-    if (data.success === true)
-    {
+    if (data.success === true) {
       console.log("Doctor updated successfully.");
-      navigate("/doctorlistuser")
+      navigate("/doctorlistuser");
       // localStorage.setItem("id", data.data._id)
     }
     console.log("DATA from response", data);
@@ -307,7 +287,7 @@ export default function EditUserForm()
   return (
     <>
       <div className="flex flex-row">
-        <div ></div>
+        <div></div>
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div className="flex  flex-col items-center justify-center w-full">
@@ -340,11 +320,9 @@ export default function EditUserForm()
                         }}
                       />
                     ) : (
-
                       <PermIdentityOutlinedIcon
                         style={{ width: "70px", height: "70px" }}
                       />
-
                     )}
                   </div>
                   <p
@@ -352,7 +330,11 @@ export default function EditUserForm()
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                     onClick={handleClick}
-                    style={{ cursor: "pointer", marginLeft: 37, marginTop: -20 }}
+                    style={{
+                      cursor: "pointer",
+                      marginLeft: 37,
+                      marginTop: -20,
+                    }}
                   >
                     <MdEdit />
                   </p>
@@ -403,12 +385,17 @@ export default function EditUserForm()
                     id="imageInput"
                     type="file"
                     ref={fileInputRef}
-                    style={{ display: 'none' }}
+                    style={{ display: "none" }}
                     accept="image/*"
                     onChange={handleFileSelect}
                   />
                 </div>
-                <button onClick={handleNewProfilePicture} style={{ marginLeft: 20, marginTop: 5 }}>Upload</button>
+                <button
+                  onClick={handleNewProfilePicture}
+                  style={{ marginLeft: 20, marginTop: 5 }}
+                >
+                  Upload
+                </button>
               </div>
             </div>
             <div class="grid grid-cols-1 w-full gap-4">
@@ -457,9 +444,13 @@ export default function EditUserForm()
                   type="number"
                   id="contactNumber"
                   name="contactNumber"
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  onChange={handleChange}
                   value={userDetails?.contactNumber}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
+                {errors.contactNumber && (
+                  <p className="text-red-500">{errors.contactNumber}</p>
+                )}
               </div>
               <div>
                 <label
@@ -469,7 +460,6 @@ export default function EditUserForm()
                   Address
                 </label>
                 <div class="p-3 pb-5 border border-[#08DA75]">
-
                   <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                     <div className="px-2 w-full sm:w-1/3">
                       <label
@@ -487,10 +477,7 @@ export default function EditUserForm()
                         className="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         value={userDetails?.address?.houseNo}
                       />
-                      {errors.houseNo && (
-                        <p className="text-red-500">{errors.houseNo}</p>
-                      )}
-                    </div>{" "}
+                    </div>
                     <div class="px-2 w-full sm:w-1/3">
                       <label
                         htmlFor="floor"
@@ -507,10 +494,7 @@ export default function EditUserForm()
                         class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         value={userDetails?.address?.floor}
                       />
-                      {errors.floor && (
-                        <p className="text-red-500">{errors.floor}</p>
-                      )}
-                    </div>{" "}
+                    </div>
                     <div class="px-2 w-full sm:w-1/3">
                       <label
                         htmlFor="block"
@@ -614,7 +598,6 @@ export default function EditUserForm()
                   </div>
                 </div>
               </div>
-
             </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button
