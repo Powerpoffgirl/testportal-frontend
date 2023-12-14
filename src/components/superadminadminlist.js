@@ -114,7 +114,7 @@ export default function SuperAdminAdminList()
         return;
       }
       const response = await fetch(
-        `${baseUrl}/api/v1/doctor/delete_patient/${patientId}`,
+        `${baseUrl}/api/v1/superAdmin/delete_admin/${patientId}`,
         {
           method: "DELETE", // Use DELETE method
           headers: {
@@ -224,17 +224,41 @@ export default function SuperAdminAdminList()
               color: "#FFFFFF",
             }}
           >
-            Create : {selectedPatient?.permissions?.create +
-              " Edit:  " +
+            Create :- {selectedPatient?.permissions?.create +
+              " || Edit:-  " +
               selectedPatient?.permissions?.edit +
-              " Remove: " +
+              " || Remove:- " +
               selectedPatient?.permissions?.remove +
-              " View:  " +
+              " || View:-  " +
               selectedPatient?.permissions?.view
               // ", " +
               // selectedPatient?.address?.state +
               // " " +
               // selectedPatient?.address?.pinCode
+            }
+          </text>
+
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              fontSize: isTab ? "14px" : "20px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "#FFFFFF",
+            }}
+          >
+            Address:- {selectedPatient?.address?.houseNo +
+              " " +
+              selectedPatient?.address?.floor +
+              " " +
+              selectedPatient?.address?.block +
+              " " +
+              selectedPatient?.address?.area +
+              ", " +
+              selectedPatient?.address?.state +
+              " " +
+              selectedPatient?.address?.pinCode
             }
           </text>
 
@@ -276,10 +300,10 @@ export default function SuperAdminAdminList()
         {patientsList?.map((patient) => (
           <div
             className="bg-white w-full p-4 sm:px-5 px-1 mb-5"
-            onClick={() => findSelectedDoctor(patient._id)}
+
           >
-            <div className="flex flex-row justify-start items-center">
-              <div class="flex items-center gap-x-2">
+            <div className="flex flex-row justify-start items-center" >
+              <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(patient._id)}>
                 {
                   patient.adminPic ? <img
                     class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"

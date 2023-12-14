@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import Header from "./header";
-import DoctorSidebar from "./doctorSidebar";
-import { Modal } from "react-responsive-modal";
+import UserSidebar from "./userSidebar";
 import { useNavigate } from "react-router-dom";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
-import { ImCancelCircle } from "react-icons/im";
+import Modal from "react-responsive-modal";
+import { FaTrashAlt } from "react-icons/fa";
+import { FaEdit } from "react-icons/fa";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Button, Popconfirm } from 'antd';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#08DA75"/>
@@ -20,64 +25,29 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 
 const svg4 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M22.2237 22.2222V20.243L8.6473 6.66664L6.66813 8.6458L20.2445 22.2222H22.2237ZM25.0015 25H19.0987L0.800076 6.66664C0.545446 6.38886 0.348687 6.08214 0.209798 5.7465C0.0709093 5.41085 0.00146484 5.05784 0.00146484 4.68747C0.00146484 4.3171 0.0709093 3.9583 0.209798 3.61108C0.348687 3.26386 0.55702 2.96293 0.834798 2.7083L2.77924 0.798582C3.03387 0.520803 3.3348 0.318256 3.68202 0.190942C4.02924 0.0636268 4.37646 -3.09348e-05 4.72369 -3.09348e-05C5.09406 -3.09348e-05 5.44707 0.0636268 5.78271 0.190942C6.11836 0.318256 6.42508 0.520803 6.70285 0.798582L25.0015 19.0972V25ZM7.67508 7.67358L6.66813 8.6458L8.6473 6.66664L7.67508 7.67358Z" fill="white"/>
-</svg>`;
+</svg>`
 
 const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
-</svg>`;
+</svg>`
 
-export default function SuperAdminAppointmentList()
+export default function SuperAdminAppointmentList({ searchTerm })
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const [patientsList, setPatientsList] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
-  const [selectedPatient, setSelectedPatient] = useState();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const onCloseModal = () => setOpen(false);
   const onOpenModal = () => setOpen(true);
-  const onCloseModall = () => setOpen(false);
-  const [modalOpen, setModalOpen] = useState(false);
-  const [modalContent, setModalContent] = useState("");
+  const [patientsList, setPatientsList] = useState([]);
+  const [selectedAppointment, setSelectedAppointment] = useState();
+  const [filteredAppointmentList, setFilteredAppointmentList] = useState([appointmentList])
 
-  const onCloseModal = () =>
-  {
-    setModalOpen(false);
-    setModalContent("");
-  };
+
   useEffect(() =>
   {
     const fetchPatientDetails = async () =>
-    {
-      try
-      {
-        const token = localStorage.getItem("token");
-        if (!token)
-        {
-          console.error("No token found in local storage");
-          return;
-        }
-        const response = await fetch(
-          `${baseUrl}/api/v1/.superAdmin/list_appointments `,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
-          }
-        );
-
-        const data = await response.json();
-        console.log("DATA from response", data);
-        setPatientsList(data?.data);
-      } catch (error)
-      {
-        console.error("There was an error verifying the OTP:", error);
-      }
-    };
-    fetchPatientDetails();
-    const fetchAppointmentDetails = async () =>
     {
       try
       {
@@ -97,7 +67,6 @@ export default function SuperAdminAppointmentList()
             },
           }
         );
-
         const data = await response.json();
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
@@ -106,10 +75,39 @@ export default function SuperAdminAppointmentList()
         console.error("There was an error verifying the OTP:", error);
       }
     };
-    fetchAppointmentDetails();
+    fetchPatientDetails();
   }, []);
 
-  const handleAppointmentStatus = async (patientId, status) =>
+  useEffect(() =>
+  {
+    let matchedDoctors = [];
+
+    if (appointmentList?.length > 0 && searchTerm)
+    {
+      const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
+
+      matchedDoctors = appointmentList.filter(appointment =>
+        appointment?.patientId?.name.toLowerCase().includes(lowerCaseSearchTerm)
+        ||
+        appointment?.doctorId?.name.toLowerCase().includes(lowerCaseSearchTerm)
+
+      );
+    } else
+    {
+      matchedDoctors = appointmentList;
+    }
+
+    setFilteredAppointmentList(matchedDoctors);
+  }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
+
+
+  const handleEditAppointment = (appointmentId) =>
+  {
+    localStorage.setItem("appointmentId", appointmentId);
+    navigate("/editappointmentsuperadmin");
+  };
+
+  const handleDeleteAppointment = async (appointmentId) =>
   {
     try
     {
@@ -119,123 +117,62 @@ export default function SuperAdminAppointmentList()
         console.error("No token found in local storage");
         return;
       }
-      // Use the 'status' parameter to set the appointment status
-      const appointmentStatus = status === "accept" ? "Confirm" : "Decline";
-      const response = await fetch(
-        `${baseUrl}/api/v1/doctor/accept_appointment/${patientId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token, // Replace with your actual token from the previous session
-          },
-          body: JSON.stringify({ appointmentStatus }),
+      const response = await fetch(`${baseUrl}/api/v1/superAdmin/delete_appointment/${appointmentId}`, {
+        method: 'DELETE', // Use DELETE method
+        headers: {
+          'Content-Type': 'application/json',
+          'x-auth-token': token // Use the stored token
         }
-      );
+      });
 
       const data = await response.json();
-      console.log("DATA from response", data);
-      if (data.status === 200)
+
+      if (response.ok)
       {
-        setModalContent(status === "accept" ? "Accepted" : "Declined");
-        setModalOpen(true);
+        console.log("Appointment deleted successfully", data);
+        toast.success('Appointment Deleted!');
+        // toast.success("Appointment Deleted")
+        // Update the list in the UI by removing the deleted doctor
+
+        setAppointmentList(prevAppointmentList => prevAppointmentList.filter(appointment => appointment._id !== appointmentId));
+      } else
+      {
+        console.error("Failed to delete the doctor", data?.message);
       }
+
     } catch (error)
     {
-      console.error("There was an error:", error);
+      console.error('There was an error deleting the Appointment:', error);
     }
+
   };
 
-  const findSelectedDoctor = async (patientId) =>
+  function formatDate(dateString)
   {
-    console.log("DOCTOR ID", patientId);
-    // // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
-    const patient = patientsList?.find((doc) => doc._id === patientId);
-    setSelectedPatient(patient); // This will return the doctor object if found, otherwise undefined
+    const parts = dateString.split("-");
+    return `${parts[2]}.${parts[1]}.${parts[0]}`;
+  }
+  console.log("APPOINTMENT LISTS", appointmentList, selectedAppointment);
+
+  const findSelectedDoctor = async (appointmentId) =>
+  {
+    console.log("appointmentId########################", appointmentId);
+    // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
+    const appointment = appointmentList?.find((appointment) => appointment._id === appointmentId);
+    setSelectedAppointment(appointment); // This will return the doctor object if found, otherwise undefined
     onOpenModal();
   };
-
-  const handleConsult = (appointmentId) =>
-  {
-    localStorage.setItem("appointmentId", appointmentId);
-    navigate(`/patientdescription/${appointmentId}`);
-  };
-
-  console.log("PATIENT LISTS", patientsList);
-  console.log("APPOINTMENT LIST", appointmentList);
 
   return (
     <>
       <Modal
-        open={modalOpen}
-        onClose={onCloseModal}
-        styles={{
-          modal: {
-            background: "transparent", // Makes modal background transparent
-            boxShadow: "none", // Removes shadow or border effects
-            // Any other styles to override default modal styles
-          },
-        }}
-        center
-      >
-        <div
-          className="flex flex-col items-center w-[100%] md:w-[100%]"
-          style={{
-            border: "none",
-            borderRadius: "5px",
-            backgroundColor: "#08DA75",
-          }}
-        >
-          <text
-            className="ml-4 text-center mt-4"
-            style={{
-              marginBottom: -20,
-              fontSize: "40px",
-              fontWeight: 700,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-              height: "100px",
-              width: "370px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {modalContent} {selectedPatient}
-          </text>
-          <text
-            className="ml-4 text-center"
-            style={{
-              fontSize: "60px",
-              fontWeight: 800,
-              lineHeight: "24px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-              marginBottom: "7%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {modalContent === "Accepted" ? (
-              <IoIosCheckmarkCircleOutline />
-            ) : (
-              <ImCancelCircle />
-            )}
-          </text>
-        </div>
-      </Modal>
-
-      {/* other modal */}
-
-      <Modal
         open={open}
-        onClose={onCloseModall}
+        onClose={onCloseModal}
         center
-        patient={selectedPatient}
+        patient={selectedAppointment}
         styles={{
           modal: {
+            // Set your custom width here (e.g., '70%')
             width: isTab ? "80%" : "70%",
             backgroundColor: "#08DA75",
             alignContent: "center",
@@ -243,7 +180,12 @@ export default function SuperAdminAppointmentList()
         }}
       >
         <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
-          <div className="flex flex-row w-[100%] justify-between"></div>
+          <div className="flex flex-row w-[100%] justify-between">
+            <span className="flex flex-col justify-start">
+              <text style={{ color: "#08DA75" }}>Mon-Fri</text>
+              <text style={{ color: "#08DA75" }}>10:00am-6:00pm</text>
+            </span>
+          </div>
           <text
             className="ml-4 text-center mt-4"
             style={{
@@ -253,8 +195,9 @@ export default function SuperAdminAppointmentList()
               fontFamily: "Lato, sans-serif",
             }}
           >
-            {selectedPatient?.name}
+            {selectedAppointment?.patientId?.name}
           </text>
+
           <text
             className="ml-4 text-center mt-4"
             style={{
@@ -266,9 +209,44 @@ export default function SuperAdminAppointmentList()
               marginBottom: "2%",
             }}
           >
-            {selectedPatient?.age} yr, {selectedPatient?.bodyWeight} kg
+            {selectedAppointment?.patientId?.age} yr, {selectedAppointment?.patientId?.bodyWeight} kg
           </text>
-
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              fontSize: isTab ? "16px" : "24px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "white",
+            }}
+          ></text>
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              fontSize: isTab ? "14px" : "22px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "white",
+            }}
+          >
+            Issues: {selectedAppointment?.issues.join(', ')}<br />
+            Diseases: {selectedAppointment?.diseases.join(', ')}
+          </text>
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              fontSize: isTab ? "14px" : "20px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "white",
+            }}
+          >
+            Appointment Date: {selectedAppointment?.appointmentDate?.date}<br />
+            Appointment Time: {selectedAppointment?.appointmentDate?.time}
+          </text>
           <text
             className="ml-4 text-center mt-2"
             style={{
@@ -279,36 +257,36 @@ export default function SuperAdminAppointmentList()
               color: "#FFFFFF",
             }}
           >
-            {selectedPatient?.address?.houseNo +
+            {selectedAppointment?.patientId?.address?.houseNo +
               " " +
-              selectedPatient?.address?.block +
+              selectedAppointment?.patientId?.address?.block +
               " " +
-              selectedPatient?.address?.area +
+              selectedAppointment?.patientId?.address?.area +
               ", " +
-              selectedPatient?.address?.district +
+              selectedAppointment?.patientId?.address?.district +
               ", " +
-              selectedPatient?.address?.state +
+              selectedAppointment?.patientId?.address?.state +
               " " +
-              selectedPatient?.address?.pinCode}
+              selectedAppointment?.patientId?.address?.pinCode}
           </text>
 
           <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
-            {/* <span
-                            style={{
-                                width: "25px",
-                                height: "25px",
-                            }}
-                            onClick={() => handleEditPatient(selectedPatient?._id)}
-                            dangerouslySetInnerHTML={{ __html: svg4 }}
-                        ></span> */}
-            {/* <span
+            <span
               style={{
                 width: "25px",
                 height: "25px",
               }}
-              // onClick={() => handleDeletePatient(selectedPatient?._id)}
+              onClick={() => handleEditAppointment(selectedAppointment._id)}
+              dangerouslySetInnerHTML={{ __html: svg4 }}
+            ></span>
+            <span
+              style={{
+                width: "25px",
+                height: "25px",
+              }}
+              // onClick={() => handleDeleteDoctor(selectedDoctor?._id)}
               dangerouslySetInnerHTML={{ __html: svg5 }}
-            ></span> */}
+            ></span>
           </div>
           <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
             <span className="flex">
@@ -327,133 +305,114 @@ export default function SuperAdminAppointmentList()
       </Modal>
 
       <div className="flex flex-col">
-        {appointmentList?.map((appointment) => (
-          <div
-            className="flex flex-row bg-white p-2 md:flex-row justify-between"
-            style={{ borderRadius: "5px", marginBottom: "10px" }}
-            key={appointment._id}
-            onClick={() => findSelectedDoctor(appointment._id)}
-          >
-            <span className="flex flex-row items-center">
-              <img
-                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
-                alt="Avatar"
-                style={{
-                  borderRadius: "50%",
-                  height: isTab ? "40px" : "81px",
-                  width: isTab ? "40px" : "81px",
-                }}
-              ></img>
+        {filteredAppointmentList?.map((appointment) => (
+          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" >
+            <div className="flex flex-row justify-start items-center">
+              <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(appointment?._id)}>
+                {
+                  appointment?.doctorId?.doctorPic ? <img
+                    class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                    src={appointment?.doctorId?.doctorPic}
+                    alt={appointment?.doctorId?.doctorPic.name}
+                  />
+                    :
+                    <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
+                }
 
-              <text
-                className="ml-4"
-                style={{
-                  fontSize: isTab ? "16px" : "20px",
-                  fontWeight: 600,
-                  lineHeight: "28.8px",
-                  fontFamily: "Lato, sans-serif",
-                }}
-              >
-                {appointment?.patientId?.name}
-                <br />
-                <span
+                <div
+                  class="flex flex-row bg-white p-2 md:flex-row justify-between"
                   style={{
-                    fontSize: isTab ? "12px" : "18px",
-                    fontWeight: 500,
-                    color: "#A4A4A4",
+                    borderRadius: "5px",
+                    marginBottom: "10px",
+                    position: "relative",
+                  }}
+                >
+                  <div className="flex flex-row items-center">
+                    <div>
+                      <h1 class="font-semibold text-gray-700 sm:text-lg text-sm capitalize">
+                        <p class="text-gray-500 sm:text-sm text-xs">
+                          Doctor's Name:<span className="ms-2"></span>
+                        </p>
+
+                        {appointment?.doctorId?.name}
+                      </h1>
+                    </div>
+                  </div>
+                </div>
+                <div style={{ textAlign: "center" }}>
+                  <h1
+                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                    style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
+                  >
+                    <p class="text-gray-500 sm:text-sm text-xs">
+                      Patient's Name:<span className="ms-2"></span>
+                    </p>
+                    {appointment?.patientId?.name}
+                  </h1>
+                </div>
+
+                <div style={{ textAlign: "center" }}>
+                  <h1
+                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                    style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
+                  >
+                    <p class="text-gray-500 sm:text-sm text-xs">
+                      Date & Time:<span className="ms-2"></span>
+                    </p>
+                    {appointment?.appointmentDate?.date.split('-').reverse().join('-')}
+                    <br />
+                    {appointment?.appointmentDate?.time}
+                  </h1>
+                </div>
+
+                <div
+                  style={{
                     display: "flex",
-                    gap: "20px",
+                    justifyContent: "flex-end",
+                    borderRadius: "5px",
+                    marginBottom: "20px",
+                    position: "relative",
+                    left: "29px",
+                    top: "12px",
+                    gap: '1px'
                   }}
                 >
-                  <span> {appointment?.appointmentDate?.date}</span>
-                  <span>{appointment?.appointmentDate?.time}</span>
-                </span>
-              </text>
-              <text
-                className="ml-4"
-                style={{
-                  fontSize: isTab ? "16px" : "20px",
-                  fontWeight: 400,
-                  lineHeight: "28.8px",
-                  fontFamily: "Lato, sans-serif",
-                }}
-              ></text>
-            </span>
-            {appointment.appointmentStatus === "Confirm" ? (
-              <button
-                style={{
-                  width: !isTab ? "111px" : "43px",
-                  height: "35px",
-                  borderRadius: "35px",
-                  backgroundColor: "white",
-                  border: "1px solid #08DA75",
-                  color: "#08DA75",
-                  fontWeight: 400,
-                  fontSize: isTab ? "11px" : "22px",
-                  lineHeight: "28.8px",
-                  fontFamily: "Lato, sans-serif",
-                  marginTop: "23px",
-                }}
-                onClick={() => handleConsult(appointment._id)}
-              >
-                Consult
-              </button>
-            ) : appointment.appointmentStatus === "Decline" ? (
-              <span
-                style={{
-                  color: "#EF5F5F",
-                  fontWeight: 400,
-                  // borderRadius: "35px",
-                  // border: "1px solid #EF5F5F",
-                  fontSize: isTab ? "11px" : "22px",
-                  lineHeight: "28.8px",
-                  fontFamily: "Lato, sans-serif",
-                  marginTop: "23px",
-                  marginRight: "10px",
-                }}
-              >
-                Declined
-              </span>
-            ) : (
-              <span className="flex flex-row gap-2 items-center">
+                  <h1
+                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize "
+                    style={{ marginLeft: isTab ? "-30px" : "8px", marginRight: isTab ? "4px" : "8px" }}
+                  >
+                    <p class="text-gray-500 sm:text-sm text-xs">
+                      Appointment status:<span className="ms-2"></span>
+                    </p>
+                    {appointment?.appointmentStatus}
+                  </h1>
+                </div>
+              </div>
+              <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: 'row' }}>
+                <Popconfirm title="Delete the Appointment"
+                  description="Are you sure to delete this Appointment?"
+                  okText="Delete"
+                  cancelText="No"
+                  className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                  onConfirm={() => handleDeleteAppointment(appointment._id)}>
+                  <button danger
+                    class="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-black bg-[#EF5F5F] text-xs sm:text-sm"
+                    // onClick={() => handleDeleteAppointment(appointment._id)}
+                    style={{ marginTop: isTab ? 90 : null, paddingLeft: isTab ? 20 : null, paddingRight: isTab ? 20 : null }}
+                  >
+                    {isTab ? <FaTrashAlt /> : 'Delete'}
+                  </button>
+                </Popconfirm>
                 <button
-                  style={{
-                    width: !isTab ? "111px" : "73px",
-                    height: "45px",
-                    borderRadius: "35px",
-                    backgroundColor: "#EF5F5F",
-                    color: "white",
-                    fontWeight: 400,
-                    fontSize: isTab ? "11px" : "24px",
-                    lineHeight: "28.8px",
-                    fontFamily: "Lato, sans-serif",
-                  }}
-                  onClick={() =>
-                    handleAppointmentStatus(appointment?._id, "decline")
-                  }
+                  class="rounded-full px-6 sm:px-6 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm"
+                  onClick={() => handleEditAppointment(appointment._id)}
+                  style={{ height: isTab ? 25 : null, marginTop: isTab ? 90 : null, }}
                 >
-                  Decline
+                  {isTab ? <FaEdit /> : 'Edit'}
                 </button>
-                <button
-                  style={{
-                    width: !isTab ? "111px" : "73px",
-                    height: "45px",
-                    borderRadius: "35px",
-                    backgroundColor: "#08DA75",
-                    color: "white",
-                    fontWeight: 400,
-                    fontSize: isTab ? "11px" : "24px",
-                    lineHeight: "28.8px",
-                    fontFamily: "Lato, sans-serif",
-                  }}
-                  onClick={() =>
-                    handleAppointmentStatus(appointment?._id, "accept")
-                  }
-                >
-                  Accept
-                </button>
-              </span>
-            )}
+              </div>
+            </div>
+            <ToastContainer />
           </div>
         ))}
       </div>

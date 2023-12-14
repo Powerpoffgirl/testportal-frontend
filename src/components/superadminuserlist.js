@@ -70,7 +70,7 @@ export default function SuperAdminUserList()
     navigate("/superadminusereditform");
   };
 
-  const handleDeleteUser = async (userId) =>
+  const handleDeletePatient = async (userId) =>
   {
     try
     {
@@ -81,7 +81,7 @@ export default function SuperAdminUserList()
         return;
       }
       const response = await fetch(
-        `${baseUrl}/api/v1/admin/delete_user/${userId}`,
+        `${baseUrl}/api/v1/superAdmin/delete_user/${userId}`,
         {
           method: "DELETE", // Use DELETE method
           headers: {
@@ -230,7 +230,7 @@ export default function SuperAdminUserList()
                   okText={<FaTrashAlt />}
                   cancelText="No"
                   okTextcolor="blue"
-                  // onConfirm={() => handleDeletePatient(patient._id)}
+                  onConfirm={() => handleDeletePatient(user._id)}
                   className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                 >
                   <button class="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm">

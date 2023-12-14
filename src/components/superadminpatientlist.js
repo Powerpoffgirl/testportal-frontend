@@ -113,7 +113,7 @@ export default function SuperAdminPatientList()
         return;
       }
       const response = await fetch(
-        `${baseUrl}/api/v1/doctor/delete_patient/${patientId}`,
+        `${baseUrl}/api/v1/superAdmin/delete_patient/${patientId}`,
         {
           method: "DELETE", // Use DELETE method
           headers: {
@@ -165,7 +165,7 @@ export default function SuperAdminPatientList()
   const handleBookAppointment = (patientId) =>
   {
     localStorage.setItem("patientId", patientId);
-    navigate("/superadminpatienteditform");
+    navigate("/superadminpatientform");
   };
 
   console.log("PATIENT LISTS", patientsList);
@@ -273,10 +273,9 @@ export default function SuperAdminPatientList()
         {patientsList?.map((patient) => (
           <div
             className="bg-white w-full p-4 sm:px-5 px-1 mb-5"
-            onClick={() => findSelectedDoctor(patient._id)}
           >
             <div className="flex flex-row justify-start items-center">
-              <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(patient._id)}>
                 <img
                   class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
                   src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"

@@ -13,12 +13,15 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 // };
 const type1 = localStorage.getItem("type");
 console.log("type1", type1);
+
 const baseUrl = process.env.REACT_APP_BASE_URL;
-const handleLogout = async () => {
+const handleLogout = async () =>
+{
   const token = localStorage.getItem("token");
 
   // Check if the token exists
-  if (!token) {
+  if (!token)
+  {
     console.error("No token found in local storage");
     return;
   }
@@ -31,7 +34,8 @@ const handleLogout = async () => {
     body: JSON.stringify({}),
   });
   const data = await response.json();
-  if (data.success === true) {
+  if (data.success === true)
+  {
     // navigate("/");
     localStorage.removeItem("token");
   }
@@ -103,7 +107,8 @@ export default function Layout({
   search,
   AddButton,
   // setSearchTerm,
-}) {
+})
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const location = useLocation();
   console.log(location);
@@ -115,49 +120,64 @@ export default function Layout({
   const sidebarRef = useRef(null);
   const [pic, setPic] = useState();
 
-  const toggleSidebar = () => {
+  const toggleSidebar = () =>
+  {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const closeSidebarOnOutsideClick = (e) => {
-    if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
+  const closeSidebarOnOutsideClick = (e) =>
+  {
+    if (sidebarRef.current && !sidebarRef.current.contains(e.target))
+    {
       setIsSidebarOpen(false);
     }
   };
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     setPic(localStorage.getItem("pic"));
     document.addEventListener("click", closeSidebarOnOutsideClick);
 
-    return () => {
+    return () =>
+    {
       document.removeEventListener("click", closeSidebarOnOutsideClick);
     };
   }, []);
 
-  const handleEditProfile = () => {
-    if (type === "user") {
+  const handleEditProfile = () =>
+  {
+    if (type === "user")
+    {
       navigate("/edituserform");
-    } else if (type === "admin") {
+    } else if (type === "admin")
+    {
       navigate("/edituserform");
-    } else if (type === "superAdmin") {
+    } else if (type === "superAdmin")
+    {
       navigate("/superadminuserform");
-    } else {
+    } else
+    {
       navigate("/editdoctorform");
     }
   };
 
-  const handleDoctorForm = () => {
-    if (type === "user") {
+  const handleDoctorForm = () =>
+  {
+    if (type === "user")
+    {
       navigate("/patientform");
-    } else if (type === "admin") {
+    } else if (type === "admin")
+    {
       navigate("/doctorformadmin");
-    } else if (type === "superAdmin") {
+    } else if (type === "superAdmin")
+    {
       console.log("hello");
       navigate("/superadminadminform");
     }
   };
 
-  const handleSearchTerm = (e) => {
+  const handleSearchTerm = (e) =>
+  {
     setSearchTerm(e.target.value);
   };
 
@@ -167,9 +187,8 @@ export default function Layout({
     <>
       <div className="flex min-h-screen">
         <aside
-          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } ease-in-out transition-all duration-300 md:transform-none`}
+          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#08DA75] border-r transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } ease-in-out transition-all duration-300 md:transform-none`}
         >
           <h1 className="font-bold text-2xl">
             Welcome! {type ? type : "Guest"}

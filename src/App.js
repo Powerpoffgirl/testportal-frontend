@@ -47,6 +47,7 @@ import EditPatientForm from "./components/editPatientForm";
 import ForgetPassword from "./components/forgetpassword";
 import OtpVerify from "./components/otpverify";
 import SuperAdminLogin from "./components/superadminLogin";
+import EditAppointmentSuperAdmin from "./components/editAppointmentSuperAdmin";
 import SuperAdminEditForm from "./components/superadmineditform";
 import SuperAdminEditList from "./components/superadmineditlist";
 import SuperAdminAdminList from "./components/superadminadminlist";
@@ -65,7 +66,8 @@ import SuperAdminUserEditForm from "./components/superadminusereditform";
 import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
 import SuperAdminOtp from "./components/superadminotp";
 import { useState } from "react";
-function App() {
+function App()
+{
   const [type, setType] = useState("");
   localStorage.setItem("type", type);
 
@@ -158,9 +160,10 @@ function App() {
         path="/superadmindoctoreditform"
         element={
           <Layout
+            type="superAdmin"
             Component={SuperAdminDoctorEditForm}
-            headerTextTop={"Super Admin Doctor"}
-            headerTextBottom={"Edit Form"}
+            headerTextTop={"Super Admin"}
+            headerTextBottom={"Edit Doctor Form"}
           />
         }
       />
@@ -209,7 +212,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"User List"}
             search={"true"}
-            // AddButton={"true"}
+          // AddButton={"true"}
           />
         }
       />
@@ -218,6 +221,7 @@ function App() {
         path="/superadminpatientform"
         element={
           <Layout
+            type="superAdmin"
             Component={SuperAdminPatientForm}
             headerTextTop={"Super Admin"}
             headerTextBottom={"Patient Form"}
@@ -234,7 +238,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"Patient List"}
             search={"true"}
-            // AddButton={"true"}
+          // AddButton={"true"}
           />
         }
       />
@@ -248,7 +252,21 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"Appointment List"}
             search={"true"}
-            // AddButton={"true"}
+          // AddButton={"true"}
+          />
+        }
+      />
+
+      <Route
+        path="/editappointmentsuperadmin"
+        element={
+          <Layout
+            Component={EditAppointmentSuperAdmin}
+            type="superAdmin"
+            headerTextTop={"Super Admin"}
+            headerTextBottom={"Edit Appointment"}
+          // search={"true"}
+          // AddButton={"true"}
           />
         }
       />
@@ -274,7 +292,7 @@ function App() {
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor List"}
             search={"true"}
-            // AddButton={"true"}
+          // AddButton={"true"}
           />
         }
       />
@@ -391,7 +409,7 @@ function App() {
         element={
           <Layout
             Component={EditAdminlistform}
-            type="superadmin"
+            type="superAdmin"
             headerTextTop={"Edit"}
             headerTextBottom={"Admin Form"}
           />
