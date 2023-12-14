@@ -9,7 +9,7 @@ import UserList from "./userList";
 import { Button, Popconfirm } from 'antd';
 import { FaTrashAlt } from "react-icons/fa";
 
-export default function SuperAdminUserList()
+export default function SuperAdminUserList({ searchTerm })
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [usersList, setUsersList] = useState([]);
@@ -19,6 +19,7 @@ export default function SuperAdminUserList()
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
   const navigate = useNavigate();
+  const [filteredUsers, setFilteredUsers] = useState([usersList])
 
   const categories = [
     { name: "All", value: "1" },
@@ -63,6 +64,22 @@ export default function SuperAdminUserList()
     };
     fetchDoctorDetails();
   }, []);
+
+  useEffect(() =>
+  {
+    if (usersList?.length > 0 && searchTerm)
+    {
+      const lowerCaseSearchTerm = searchTerm?.toLowerCase().trim();
+      const matchedPatients = usersList?.filter(p =>
+        p?.name?.toLowerCase()?.includes(lowerCaseSearchTerm)
+      );
+      setFilteredUsers(matchedPatients);
+    } else
+    {
+      // If searchTerm is empty, show all patients
+      setFilteredUsers(usersList);
+    }
+  }, [usersList, searchTerm]);
 
   const handleBookAppointment = (userId) =>
   {
@@ -195,7 +212,7 @@ export default function SuperAdminUserList()
 
 
       <div className="flex flex-col">
-        {usersList?.map((user) => (
+        {filteredUsers?.map((user) => (
           <div
             className="bg-white w-full p-4 sm:px-5 px-1 mb-5"
           // onClick={() => findSelectedDoctor(patient._id)}
