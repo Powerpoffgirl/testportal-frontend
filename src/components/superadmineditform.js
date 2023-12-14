@@ -21,6 +21,25 @@ export default function SuperAdminEditForm()
   const [adminImage, setAdminImage] = useState();
 
 
+  // const validate = () =>
+  // {
+  //   let tempErrors = {};
+  //   tempErrors.name = doctorDetails?.name ? "" : "Name is required.";
+  //   tempErrors.email = /$^|.+@.+..+/.test(doctorDetails?.email) ? "" : "Email is not valid.";
+  //   tempErrors.contactNumber = doctorDetails?.contactNumber.length > 0 ? "" : "Contact Number is required.";
+  //   tempErrors.houseNo = doctorDetails?.address?.houseNo ? "" : "House Number is required.";
+  //   tempErrors.floor = doctorDetails?.address?.floor ? "" : "Floor is required.";
+  //   tempErrors.block = doctorDetails?.address?.block ? "" : "Block is required.";
+  //   tempErrors.area = doctorDetails?.address?.area ? "" : "Area is required.";
+  //   tempErrors.pinCode = doctorDetails?.address?.pinCode ? "" : "Pincode is required.";
+  //   tempErrors.district = doctorDetails?.address?.district ? "" : "District is required.";
+  //   tempErrors.state = doctorDetails?.address?.state ? "" : "State is required.";
+
+  //   setErrors({ ...tempErrors });
+  //   return Object.values(tempErrors).every(x => x === "");
+  // }
+
+
   const handleFileSelect = (event) =>
   {
     const file = event.target.files[0];
@@ -96,6 +115,8 @@ export default function SuperAdminEditForm()
   const open = Boolean(anchorEl);
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [errors, setErrors] = useState({});
+
 
   useEffect(() =>
   {
@@ -153,10 +174,52 @@ export default function SuperAdminEditForm()
     handleClose();
   };
 
+  const validateField = (name, value) =>
+  {
+    switch (name)
+    {
+      case "name":
+        return value ? "" : "Name is required.";
+      case "email":
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? "" : "Email is not valid.";
+      case "contactNumber":
+        return value.length > 0 && value.length === 10 ? "" : "Contact number is required or Add valid 10 Digit Number.";
+      case "houseNo":
+        return value ? "" : "House number is required.";
+      case "floor":
+        return value ? "" : "Floor is required.";
+      case "block":
+        return value ? "" : "Block is required.";
+      case "area":
+        return value ? "" : "Area is required.";
+      case "pinCode":
+        return /^\d{5}(-\d{4})?$/.test(value) ? "" : "Pincode is not valid.";
+      case "district":
+        return value ? "" : "District is required.";
+      case "state":
+        return value ? "" : "State is required.";
+      case "workHourFrom":
+        // Assuming time in HH:MM format, adjust as needed
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value) ? "" : "Invalid start time.";
+      case "workHourTo":
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value) ? "" : "Invalid end time.";
+      // Add more cases as needed for other fields
+      default:
+        return "";
+    }
+  };
+
+
+
   const handleChange = (e) =>
   {
     const { name, value } = e.target;
 
+    // Validate the field and update errors
+    const error = validateField(name, value);
+    setErrors({ ...errors, [name]: error });
+
+    // Update doctorDetails logic remains the same
     if (name === "workingDays")
     {
       setDoctorDetails(prevDoctorDetails => ({
@@ -188,14 +251,22 @@ export default function SuperAdminEditForm()
         [name]: value
       }));
     }
+
     setIsEditing(true);
-  }
+  };
 
 
 
   const handleUpdate = async (e) =>
   {
     e.preventDefault();
+
+    if (!validateField())
+    {
+      toast.error('Please correct the errors before submitting.');
+      return;
+    }
+
     // Check if the token exists
     const newDoctorDetails = {
       name: doctorDetails?.name,
@@ -389,6 +460,7 @@ export default function SuperAdminEditForm()
                   value={doctorDetails?.name}
                   class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
+                {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
               <div>
                 <label
@@ -406,6 +478,7 @@ export default function SuperAdminEditForm()
                   value={doctorDetails?.email}
                   class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
+                {errors.email && <p className="text-red-500">{errors.email}</p>}
               </div>
               <div>
                 <label
@@ -423,6 +496,7 @@ export default function SuperAdminEditForm()
                   value={doctorDetails?.contactNumber}
                   class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
+                {errors.contactNumber && <p className="text-red-500">{errors.contactNumber}</p>}
               </div>
 
 
@@ -497,6 +571,7 @@ export default function SuperAdminEditForm()
                       placeholder="Green Park"
                       class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+                    {errors.area && <p className="text-red-500">{errors.area}</p>}
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
                     <label
@@ -514,6 +589,7 @@ export default function SuperAdminEditForm()
                       value={doctorDetails?.address?.pinCode}
                       class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+                    {errors.pinCode && <p className="text-red-500">{errors.pinCode}</p>}
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
                     <label
@@ -531,6 +607,7 @@ export default function SuperAdminEditForm()
                       value={doctorDetails?.address?.district}
                       class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+                    {errors.district && <p className="text-red-500">{errors.district}</p>}
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
                     <label
@@ -548,6 +625,7 @@ export default function SuperAdminEditForm()
                       placeholder="Delhi"
                       class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+                    {errors.state && <p className="text-red-500">{errors.state}</p>}
                   </div>
                 </div>
               </div>
