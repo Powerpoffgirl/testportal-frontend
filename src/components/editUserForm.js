@@ -478,13 +478,8 @@ export default function EditUserForm()
                   type="number"
                   id="contactNumber"
                   name="contactNumber"
-<<<<<<< HEAD
                   class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-=======
-                  onChange={handleChange}
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
                   value={userDetails?.contactNumber}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.contactNumber && (
                   <p className="text-red-500">{errors.contactNumber}</p>
@@ -497,12 +492,8 @@ export default function EditUserForm()
                 >
                   Address
                 </label>
-<<<<<<< HEAD
                 <div class="p-3 pb-5 border border-[#89CFF0]">
 
-=======
-                <div class="p-3 pb-5 border border-[#08DA75]">
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
                   <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                     <div className="px-2 w-full sm:w-1/3">
                       <label
@@ -641,7 +632,7 @@ export default function EditUserForm()
                   </div>
                 </div>
               </div>
-            </div>
+            </div >
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button
                 className="rounded-full justify-center px-9 py-2 bg-[#89CFF0] text-white"
@@ -650,10 +641,10 @@ export default function EditUserForm()
                 Process
               </button>
             </div>
-          </div>
+          </div >
           <ToastContainer />
-        </div>
-      </div>
+        </div >
+      </div >
     </>
   );
 }

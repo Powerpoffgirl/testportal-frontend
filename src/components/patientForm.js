@@ -22,7 +22,8 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm() {
+export default function PatientForm()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -63,19 +64,23 @@ export default function PatientForm() {
   const [userImage, setUserImage] = useState();
   const [userDetails, setUserDetails] = useState({ name: "" });
 
-  const handleFileSelect = (event) => {
+  const handleFileSelect = (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       setSelectedFile(file);
     }
   };
 
-  const handleNewProfilePictureClick = async () => {
+  const handleNewProfilePictureClick = async () =>
+  {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleNewProfilePicture = async () => {
+  const handleNewProfilePicture = async () =>
+  {
     const token = localStorage.getItem("token");
     const doctorId = localStorage.getItem("doctorId");
 
@@ -89,7 +94,8 @@ export default function PatientForm() {
     formData.append("patientPic", selectedFile);
 
     console.log("FORM DATA", formData);
-    try {
+    try
+    {
       const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
         method: "POST",
         headers: {
@@ -98,7 +104,8 @@ export default function PatientForm() {
         body: formData,
       });
 
-      if (!response.ok) {
+      if (!response.ok)
+      {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -110,7 +117,8 @@ export default function PatientForm() {
       // Reset the file input
       setSelectedFile(null);
       fileInputRef.current.value = "";
-    } catch (error) {
+    } catch (error)
+    {
       console.error("Error uploading image:", error);
       alert("Error uploading image. Please try again.");
     }
@@ -132,16 +140,20 @@ export default function PatientForm() {
     patientPic: "",
   });
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
-  const validateField = (name, value) => {
-    switch (name) {
+  const validateField = (name, value) =>
+  {
+    switch (name)
+    {
       case "name":
         return value ? "" : "Name is required.";
       case "age":
@@ -187,7 +199,8 @@ export default function PatientForm() {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
     const error = validateField(name, value);
@@ -206,11 +219,11 @@ export default function PatientForm() {
         "state",
       ].includes(name)
         ? {
-            address: {
-              ...prevPatientDetails.address,
-              [name]: value,
-            },
-          }
+          address: {
+            ...prevPatientDetails.address,
+            [name]: value,
+          },
+        }
         : { [name]: value }),
     }));
 
@@ -224,7 +237,8 @@ export default function PatientForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -232,7 +246,8 @@ export default function PatientForm() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -241,7 +256,8 @@ export default function PatientForm() {
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
 
     const newPatientDetails = {
@@ -275,7 +291,8 @@ export default function PatientForm() {
     // }
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       return;
     }
@@ -288,7 +305,8 @@ export default function PatientForm() {
       body: JSON.stringify(newPatientDetails),
     });
     const data = await response.json();
-    if (data.success === true) {
+    if (data.success === true)
+    {
       // navigate("/otp")
       onOpenModal();
       localStorage.setItem("id", data.data._id);
@@ -459,14 +477,8 @@ export default function PatientForm() {
                   name="name"
                   value={patientDetails.name}
                   onChange={handleChange}
-<<<<<<< HEAD
                   className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${nameError ? "border-red-500" : ""
                     }`}
-=======
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                    nameError ? "border-red-500" : ""
-                  }`}
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
                 />
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
@@ -479,9 +491,8 @@ export default function PatientForm() {
                     Age
                   </label>
                   <input
-                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${
-                      ageError ? "border-red-500" : ""
-                    }`}
+                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${ageError ? "border-red-500" : ""
+                      }`}
                     type="text"
                     id="age"
                     name="age"
@@ -501,9 +512,8 @@ export default function PatientForm() {
                     Body Weight
                   </label>
                   <input
-                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${
-                      bodyWeightError ? "border-red-500" : ""
-                    }`}
+                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${bodyWeightError ? "border-red-500" : ""
+                      }`}
                     type="text"
                     id="bodyWeight"
                     name="bodyWeight"
@@ -535,14 +545,8 @@ export default function PatientForm() {
                       value={patientDetails.houseNo}
                       onChange={handleChange}
                       placeholder="1234"
-<<<<<<< HEAD
                       className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${houseNoError ? "border-red-500" : ""
                         }`}
-=======
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        houseNoError ? "border-red-500" : ""
-                      }`}
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
                     />
                     {houseNoError && (
                       <p className="text-red-500 text-sm mt-1">
@@ -564,14 +568,8 @@ export default function PatientForm() {
                       value={patientDetails.floor}
                       onChange={handleChange}
                       placeholder="First Floor or 2nd"
-<<<<<<< HEAD
                       className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${floorError ? "border-red-500" : ""
                         }`}
-=======
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        floorError ? "border-red-500" : ""
-                      }`}
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
                     />
                     {floorError && (
                       <p className="text-red-500 text-sm mt-1">{floorError}</p>
@@ -591,14 +589,8 @@ export default function PatientForm() {
                       value={patientDetails.block}
                       onChange={handleChange}
                       placeholder="A"
-<<<<<<< HEAD
                       className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${blockError ? "border-red-500" : ""
                         }`}
-=======
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        blockError ? "border-red-500" : ""
-                      }`}
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
                     />
                     {errors.block && (
                       <p className="text-red-500">{errors.block}</p>
@@ -618,14 +610,8 @@ export default function PatientForm() {
                       value={patientDetails.area}
                       onChange={handleChange}
                       placeholder="Green Park"
-<<<<<<< HEAD
                       className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${areaError ? "border-red-500" : ""
                         }`}
-=======
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        areaError ? "border-red-500" : ""
-                      }`}
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
                     />
                     {errors.area && (
                       <p className="text-red-500">{errors.area}</p>
@@ -645,14 +631,8 @@ export default function PatientForm() {
                       value={patientDetails?.address?.pinCode}
                       onChange={handleChange}
                       placeholder="110016"
-<<<<<<< HEAD
                       className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${pinCodeError ? "border-red-500" : ""
                         }`}
-=======
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        pinCodeError ? "border-red-500" : ""
-                      }`}
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
                     />
                     {errors.pinCode && (
                       <p className="text-red-500">{errors.pinCode}</p>
@@ -672,14 +652,8 @@ export default function PatientForm() {
                       value={patientDetails?.address?.district}
                       onChange={handleChange}
                       placeholder="South Delhi"
-<<<<<<< HEAD
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${districtError ? "border-red-500" : ""
+                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${districtError ? "border-red-500" : ""
                         }`}
-=======
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        districtError ? "border-red-500" : ""
-                      }`}
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
                     />
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
@@ -699,14 +673,8 @@ export default function PatientForm() {
                       value={patientDetails?.address?.state}
                       onChange={handleChange}
                       placeholder="Delhi"
-<<<<<<< HEAD
                       className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${stateError ? "border-red-500" : ""
                         }`}
-=======
-                      className={`block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        stateError ? "border-red-500" : ""
-                      }`}
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
                     />
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>

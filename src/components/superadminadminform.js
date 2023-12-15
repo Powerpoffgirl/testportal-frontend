@@ -412,9 +412,7 @@ export default function SuperAdminAdminForm()
   //   }
   // };
 
-<<<<<<< HEAD
-=======
-  const validateField = (name, value) => 
+  const validateField = (name, value) =>
   {
     switch (name)
     {
@@ -462,7 +460,6 @@ export default function SuperAdminAdminForm()
   };
 
 
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
   const handleChange = (e) =>
   {
     console.log("E value", e);
@@ -555,14 +552,11 @@ export default function SuperAdminAdminForm()
       body: JSON.stringify(adminDetails),
     });
     const data = await response.json();
-<<<<<<< HEAD
-=======
     if (data.statusCode === 400)
     {
       toast.error("Please fill the details");
     }
 
->>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
     if (data.success === true)
     {
       // navigate("/otp")
