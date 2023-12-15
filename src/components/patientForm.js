@@ -331,7 +331,7 @@ export default function PatientForm()
           },
         }}
       >
-        <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
+        <div className="flex flex-col bg-customRed p-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
           <text
             className="text-center mt-4 mb-4"
             style={{
@@ -491,7 +491,7 @@ export default function PatientForm()
                     Age
                   </label>
                   <input
-                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${ageError ? "border-red-500" : ""
+                    className={`mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg ${ageError ? "border-red-500" : ""
                       }`}
                     type="text"
                     id="age"
@@ -512,7 +512,7 @@ export default function PatientForm()
                     Body Weight
                   </label>
                   <input
-                    className={`mx-2 px-2 border border-green-500 h-10 rounded-lg ${bodyWeightError ? "border-red-500" : ""
+                    className={`mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg ${bodyWeightError ? "border-red-500" : ""
                       }`}
                     type="text"
                     id="bodyWeight"

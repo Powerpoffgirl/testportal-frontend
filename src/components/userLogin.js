@@ -155,7 +155,7 @@ export default function UserLogin()
             onChange={handleMobileNumberChange}
           />
         </div>
-        <label>
+        <label className="label1">
           <input type="checkbox" /> I agree with the{" "}
           <a href="#terms" style={{ color: "#666", fontWeight: "600" }}>
             terms of service
@@ -165,7 +165,7 @@ export default function UserLogin()
             privacy policy
           </a>
         </label>
-        <button onClick={handleSubmit}> Agree & Continue</button>
+        <button className="button1" onClick={handleSubmit}> Agree & Continue</button>
       </div>
     </div>
   );
