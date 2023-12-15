@@ -32,6 +32,8 @@ export default function SuperAdminAdminForm()
   const onOpenModal = () => setOpen1(true);
   const onCloseModal = () => setOpen1(false);
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+
   // // const [name, setName] = useState("");
   // const [emailError, setEmailError] = useState("");
   // const [email, setEmail] = useState("");
@@ -410,10 +412,64 @@ export default function SuperAdminAdminForm()
   //   }
   // };
 
+<<<<<<< HEAD
+=======
+  const validateField = (name, value) => 
+  {
+    switch (name)
+    {
+      case "name":
+        return value ? "" : "Name is required.";
+      case "email":
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+          ? ""
+          : "Email is not valid.";
+      case "contactNumber":
+        return value.length > 0 && value.length === 10
+          ? ""
+          : "Contact number is required or Add valid 10 Digit Number.";
+      case "degree":
+        return value ? "" : "Degree is required  ";
+      case "totalExperience":
+        return value ? "" : "Total Experience is required  ";
+      case "houseNo":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "houseNo is required  ";
+      case "floor":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
+      case "block":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Block is required  ";
+      case "area":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Area is required and must be a string ";
+      case "pinCode":
+        return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
+      case "district":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "District is required and must be a string ";
+      case "state":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "State is required and must be a string ";
+      case "workHourFrom":
+        // Assuming time in HH:MM format, adjust as needed
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+          ? ""
+          : "Invalid start time.";
+      case "workHourTo":
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+          ? ""
+          : "Invalid end time.";
+      // Add more cases as needed for other fields
+      default:
+        return "";
+    }
+  };
+
+
+>>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
   const handleChange = (e) =>
   {
     console.log("E value", e);
     const { name, value, type, checked } = e.target;
+
+    const error = validateField(name, value);
+    setErrors({ ...errors, [name]: error });
 
     setAdminDetails((prevAdminDetails) => ({
       ...prevAdminDetails,
@@ -455,13 +511,21 @@ export default function SuperAdminAdminForm()
         [name]: value,
       }));
     }
+    setIsEditing(true);
   };
 
   const handleRegister = async (e) =>
   {
     e.preventDefault();
 
-    const isEmpty = Object.values(adminDetails).some((value) => value === "");
+    const isEmpty = Object.values(adminDetails).some(value => value === '');
+
+    if (isEmpty || isEditing === false)
+    {
+      toast.error('Please fill the fields or Update');
+      setIsEditing(false);
+      return;
+    }
 
     // if (isEmpty || isEditing === false)
     // {
@@ -481,6 +545,7 @@ export default function SuperAdminAdminForm()
       console.error("No token found in local storage");
       return;
     }
+
     const response = await fetch(`${baseUrl}/api/v1/superAdmin/create_admin`, {
       method: "post",
       headers: {
@@ -490,6 +555,14 @@ export default function SuperAdminAdminForm()
       body: JSON.stringify(adminDetails),
     });
     const data = await response.json();
+<<<<<<< HEAD
+=======
+    if (data.statusCode === 400)
+    {
+      toast.error("Please fill the details");
+    }
+
+>>>>>>> ffc5211ddfe2e1133cf3786a7ec35ae172302d55
     if (data.success === true)
     {
       // navigate("/otp")
@@ -681,9 +754,7 @@ export default function SuperAdminAdminForm()
                   onChange={handleChange}
                   className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                 />
-                {/* {nameError && (
-                  <p className="text-red-500 text-sm mt-1">{nameError}</p>
-                )} */}
+                {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
               <div>
                 <label
@@ -700,9 +771,9 @@ export default function SuperAdminAdminForm()
                   onChange={handleChange}
                   className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
-                {/* {emailError && (
-                  <p className="text-red-500 text-sm mt-1">{emailError}</p>
-                )} */}
+                {errors.email && (
+                  <p className="text-red-500">{errors.email}</p>
+                )}
               </div>
               <div>
                 <label
@@ -719,9 +790,9 @@ export default function SuperAdminAdminForm()
                   onChange={handleChange}
                   className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                 />
-                {/* {contactError && (
-                  <p className="text-red-500 text-sm mt-1">{contactError}</p>
-                )} */}
+                {errors.contactNumber && (
+                  <p className="text-red-500">{errors.contactNumber}</p>
+                )}
               </div>
 
               <div className="flex flex-row items-start pt-4 gap-4">
@@ -865,9 +936,9 @@ export default function SuperAdminAdminForm()
                       placeholder="Green Park"
                       className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
                     />
-                    {/* {areaError && (
-                      <p className="text-red-500 text-sm mt-1">{areaError}</p>
-                    )} */}
+                    {errors.area && (
+                      <p className="text-red-500">{errors.area}</p>
+                    )}
                   </div>{" "}
                   <div className="px-2 w-full sm:w-1/2">
                     <label
@@ -885,12 +956,10 @@ export default function SuperAdminAdminForm()
                       placeholder="110016"
                       className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {/* {pinCodeError && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {pinCodeError}
-                      </p>
-                    )} */}
-                  </div>{" "}
+                    {errors.pinCode && (
+                      <p className="text-red-500">{errors.pinCode}</p>
+                    )}
+                  </div>
                   <div className="px-2 w-full sm:w-1/2">
                     <label
                       htmlFor="district"
@@ -907,12 +976,10 @@ export default function SuperAdminAdminForm()
                       placeholder="South Delhi"
                       className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {/* {districtError && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {districtError}
-                      </p>
-                    )} */}
-                  </div>{" "}
+                    {errors.district && (
+                      <p className="text-red-500">{errors.district}</p>
+                    )}
+                  </div>
                   <div className="px-2 w-full sm:w-1/2">
                     <label
                       htmlFor="state"
@@ -929,10 +996,10 @@ export default function SuperAdminAdminForm()
                       placeholder="Delhi"
                       className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                     />
-                    {/* {stateError && (
-                      <p className="text-red-500 text-sm mt-1">{stateError}</p>
-                    )} */}
-                  </div>{" "}
+                    {errors.state && (
+                      <p className="text-red-500">{errors.state}</p>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
@@ -945,6 +1012,7 @@ export default function SuperAdminAdminForm()
               </button>
             </div>
           </div>
+          <ToastContainer />
         </div>
       </div>
     </>

@@ -274,6 +274,14 @@ export default function EditDoctorFormAdmin()
             }
         );
         const data = await response.json();
+
+
+        if (data.statusCode === 400)
+        {
+            toast.error("Permission Denied")
+
+        }
+
         if (data.success === true)
         {
             console.log("Doctor updated successfully.")
