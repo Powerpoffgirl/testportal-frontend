@@ -7,7 +7,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "./adminSidebar";
 import AdminHeader from "./adminHeader";
 
-const SuperAdminDoctorOtpPage = () => {
+const SuperAdminDoctorOtpPage = () =>
+{
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const otpInputs = [];
   const [mobileNo, setMobileNo] = useState();
@@ -18,21 +19,25 @@ const SuperAdminDoctorOtpPage = () => {
   const location = useLocation();
 
   console.log(location.state);
-  useEffect(() => {
+  useEffect(() =>
+  {
     setMobileNo(location?.state);
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
     setMobileNo(value);
   };
 
-  const SendOTP = async () => {
+  const SendOTP = async () =>
+  {
     // Retrieve the token from local storage
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("id");
     // If there's no token, log an error and exit
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       return;
     }
@@ -43,7 +48,8 @@ const SuperAdminDoctorOtpPage = () => {
     };
     const apiUrl = `${baseUrl}/api/v1/superAdmin/send_otp/${id}`;
 
-    try {
+    try
+    {
       // Send the POST request
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -58,21 +64,27 @@ const SuperAdminDoctorOtpPage = () => {
       const data = await response.json();
 
       // Check the response status
-      if (response.ok) {
+      if (response.ok)
+      {
         console.log("OTP sent successfully", data);
-      } else {
+      } else
+      {
         console.error("Error sending OTP:", data);
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("Error during the API call:", error);
     }
   };
 
-  const verifyOTP = async () => {
-    try {
+  const verifyOTP = async () =>
+  {
+    try
+    {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         return;
       }
@@ -90,25 +102,30 @@ const SuperAdminDoctorOtpPage = () => {
       );
 
       const data = await response.json();
-      if (data.success === true) {
+      if (data.success === true)
+      {
         navigate("/qr");
       }
       console.log("DATA from response", data);
-    } catch (error) {
+    } catch (error)
+    {
       console.error("There was an error verifying the OTP:", error);
     }
   };
 
-  const handleInputChange = (e, index) => {
+  const handleInputChange = (e, index) =>
+  {
     const value = e.target.value;
 
-    if (isNaN(value)) {
+    if (isNaN(value))
+    {
       return; // Allow only numeric input
     }
 
     otp[index] = value;
 
-    if (index < MAX_LENGTH - 1 && value) {
+    if (index < MAX_LENGTH - 1 && value)
+    {
       otpInputs[index + 1].focus();
     }
 
@@ -161,11 +178,11 @@ const SuperAdminDoctorOtpPage = () => {
               name="mobileNo"
               value={mobileNo?.contactNumber}
               style={{
-                border: "1px solid #08DA75",
+                border: "1px solid #89CFF0",
                 height: "45px",
                 paddingLeft: "1.5%",
               }}
-              // onChange={handleChange}
+            // onChange={handleChange}
             />
             <div style={{ display: "flex", justifyContent: "center" }}>
               <button
@@ -215,11 +232,13 @@ const SuperAdminDoctorOtpPage = () => {
                   type="text"
                   className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-4xl md:text-5xl lg:text-6xl border rounded-md text-center"
                   maxLength={1}
-                  style={{ border: "1px solid #08DA75" }}
+                  style={{ border: "1px solid #89CFF0" }}
                   value={digit}
                   onChange={(e) => handleInputChange(e, index)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Backspace" && index > 0 && !digit) {
+                  onKeyDown={(e) =>
+                  {
+                    if (e.key === "Backspace" && index > 0 && !digit)
+                    {
                       otpInputs[index - 1].focus();
                     }
                   }}

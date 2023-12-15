@@ -183,7 +183,7 @@ export default function UserList()
                                                         width: !isTab ? "80%" : "73px",
                                                         height: "45px",
                                                         borderRadius: "35px",
-                                                        backgroundColor: "#08DA75",
+                                                        backgroundColor: "#89CFF0",
                                                         color: "white",
                                                         fontWeight: 400,
                                                         fontSize: isTab ? "11px" : "24px",

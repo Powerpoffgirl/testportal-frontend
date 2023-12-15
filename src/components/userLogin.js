@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import "../App.css";
-
+import { FaPhoneAlt } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,12 +17,12 @@ const svgContent2 = `<svg width="374" height="379" viewBox="0 0 374 379" fill="n
 </svg>`;
 const svgContent3 = `<svg width="157" height="197" viewBox="0 0 157 197" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="78.4502" cy="117.821" r="78.4502" fill="white"/>
-<path d="M71.1591 165.051V80.6761H85.4773V165.051H71.1591ZM36.1307 130.023V115.705H120.506V130.023H36.1307Z" fill="#08DA75"/>
+<path d="M71.1591 165.051V80.6761H85.4773V165.051H71.1591ZM36.1307 130.023V115.705H120.506V130.023H36.1307Z" fill="#89CFF0"/>
 </svg>`;
 
 const smallSvgContent3 = `<svg width="97" height="127" viewBox="0 0 157 197" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="78.4502" cy="117.821" r="78.4502" fill="white"/>
-<path d="M71.1591 165.051V80.6761H85.4773V165.051H71.1591ZM36.1307 130.023V115.705H120.506V130.023H36.1307Z" fill="#08DA75"/>
+<path d="M71.1591 165.051V80.6761H85.4773V165.051H71.1591ZM36.1307 130.023V115.705H120.506V130.023H36.1307Z" fill="#89CFF0"/>
 </svg>`;
 
 const smallsvg1 = `<svg width="310" height="223" viewBox="0 0 290 293" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -196,187 +196,38 @@ export default function UserLogin()
   };
 
   return (
-    <>
-      <div className="bg-customRed min-h-screen relative overflow-hidden">
-        {!isTab ? (
-          <>
-            <div
-              className="absolute sm:top-[-400px] sm:right-[-400px] md:top-[-200px] md:right-[-200px] lg:top-0 lg:right-0"
-              dangerouslySetInnerHTML={{ __html: svgContent }}
-            ></div>
-
-            <div
-              className="absolute bottom-0 left-0 sm:bottom-[-200px] sm:left-[-0px] md:bottom-[-150px] md:left-[-150px] lg:bottom-0 lg:left-0"
-              dangerouslySetInnerHTML={{ __html: svgContent2 }}
-            ></div>
-          </>
-        ) : (
-          <>
-            <div
-              className="absolute top-0 right-0"
-              dangerouslySetInnerHTML={{ __html: smallsvg1 }}
-            ></div>
-            <div
-              className="absolute bottom-0 left-0"
-              dangerouslySetInnerHTML={{ __html: smallsvg2 }}
-            ></div>
-          </>
-        )}
-
-        <div
-          className="absolute z-10 flex flex-col justify-center items-center "
-          style={{ right: 0, left: 0, margin: "0 auto" }}
-        >
-          {!isTab ? (
-            <div dangerouslySetInnerHTML={{ __html: svgContent3 }}></div>
-          ) : (
-            <div
-              className="my-20"
-              dangerouslySetInnerHTML={{ __html: smallSvgContent3 }}
-            ></div>
-          )}
-
-          {!isTab ? (
-            <div
-              className="my-4"
-              dangerouslySetInnerHTML={{ __html: svgContent4 }}
-            ></div>
-          ) : (
-            <div
-              style={{ marginTop: -65, marginBottom: 20 }}
-              dangerouslySetInnerHTML={{ __html: smallSvgContent4 }}
-            ></div>
-          )}
-
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-
-          <div
-            className="rounded-full flex flex-row p-2 m-3 md:w-400 sm:w-300"
-            style={{
-              backgroundColor: "white",
-              display: "flex",
-              justifyContent: "space-evenly",
-              alignItems: "center",
-              width: isTab ? "180px" : "300px",
-            }}
-          >
-            <span
-              className={`rounded - full p - 2 pl - 10  cursor - pointer text-sm bg-customRed text-white text-center`}
-              style={{
-                width: isTab ? "120%" : "90%",
-                height: isTab ? "32px" : "40px",
-                borderRadius: "25px",
-                display: "flex",
-                justifyContent: "space-evenly",
-                alignItems: "center",
-                fontSize: "18px",
-              }}
-            >
-              User's Login
-            </span>
-          </div>
-          <form className="flex flex-col ">
-            <div className="flex flex-col items-center mb-5">
-              <input
-                className={`outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300 ${error ? "border-red-500" : ""
-                  }`}
-                style={{
-                  height: "29px",
-                  backgroundColor: "transparent",
-                  fontFamily: "Lato, sans-serif",
-                  fontWeight: 400,
-                  fontSize: isTab ? "20px" : "24px",
-                  lineHeight: "31.2px",
-                }}
-                placeholder={"Mobile No."}
-                value={contactNumber}
-                onChange={handleMobileNumberChange}
-              />
-              {error && (
-                <span style={{ color: "red", fontSize: "14px" }}>{error}</span>
-              )}{" "}
-
-            </div>
-
-            <div className="flex overflow-hidden md:w-413 sm:w-300">
-              <input
-                type="checkbox"
-                className="form-checkbox mr-2 w-6 h-6 cursor-pointer"
-                style={{
-                  marginRight: isTab ? "6px" : "10px",
-                }}
-                id="myCheckbox"
-              />
-              <label
-                className="text-white cursor-pointer"
-                style={{ alignItems: "flex-start" }}
-                htmlFor="myCheckbox"
-              >
-                <span
-                  style={{
-                    fontFamily: "Lato, sans-serif",
-                    fontWeight: 400,
-                    fontSize: isTab ? "18px" : "20px",
-                    lineHeight: "28.8px",
-                  }}
-                >
-                  Remember Me
-                </span>
-              </label>
-            </div>
-            <div className="flex justify-center">
-              <button
-                className="rounded-full mt-4 text-customRed"
-                type="submit"
-                style={{
-                  backgroundColor: "white",
-                  width: isTab ? "150px" : "198px",
-                  height: isTab ? "35px" : "45px",
-                  boxShadow: " 0 10px 5px -3px rgb(0 0 0 / 0.3)",
-                }}
-                onClick={handleSubmit}
-              >
-                Sign In
-              </button>
-            </div>
-            {/* <div className="flex justify-center text-white font-bold gap-2 mt-4">
-              <p
-                style={{
-                  fontFamily: "Lato, sans-serif",
-                  fontWeight: 400,
-                  fontSize: isTab ? "14px" : "18px",
-                  lineHeight: "24px",
-                }}
-              >
-                Need An Account?
-              </p>
-              <button
-                type="submit"
-                style={{
-                  fontFamily: "Lato, sans-serif",
-                  fontWeight: 900,
-                  fontSize: isTab ? "14px" : "18px",
-                  lineHeight: "24px",
-                }}
-                onClick={() => navigate("/usersignup")}
-              >
-                Sign Up
-              </button>
-            </div> */}
-          </form>
-        </div>
+    <div className="login">
+      <div className="left_side">
+        <h1 className="left_heading">
+          Welcome To <br /> Doctalk'S{" "}
+        </h1>
       </div>
-    </>
+      <div className="right_side" >
+        <h3 className="right_heading">User Login</h3>
+        <p className="para_one">Add Your Mobile Number</p>
+        <p className="para_two">Apply with your phone number</p>
+        <div className="input_container">
+          <FaPhoneAlt className="call_icon" />
+          <input
+            className="input_box"
+            type="text"
+            placeholder="Enter your mobile number"
+            value={contactNumber}
+            onChange={handleMobileNumberChange}
+          />
+        </div>
+        <label>
+          <input type="checkbox" /> I agree with the{" "}
+          <a href="#terms" style={{ color: "#666", fontWeight: "600" }}>
+            terms of service
+          </a>{" "}
+          and{" "}
+          <a href="#privacy" style={{ color: "#666", fontWeight: "600" }}>
+            privacy policy
+          </a>
+        </label>
+        <button onClick={handleSubmit}> Agree & Continue</button>
+      </div>
+    </div>
   );
 }

@@ -57,7 +57,7 @@ export default function UserForm()
                 type="text"
                 id="username"
                 name="username"
-                style={{ border: "1px solid #08DA75", height: "40px" }}
+                style={{ border: "1px solid #89CFF0", height: "40px" }}
               />
               {/* 1st Row */}
 
@@ -81,7 +81,7 @@ export default function UserForm()
                     type="number"
                     id="username"
                     name="username"
-                    style={{ border: "1px solid #08DA75", height: "40px" }}
+                    style={{ border: "1px solid #89CFF0", height: "40px" }}
                   />
                 </span>
                 <span className="flex flex-col w-[100%] md:w-[50%]">
@@ -101,7 +101,7 @@ export default function UserForm()
                     type="number"
                     id="username"
                     name="username"
-                    style={{ border: "1px solid #08DA75", height: "40px" }}
+                    style={{ border: "1px solid #89CFF0", height: "40px" }}
                   />
                 </span>
               </div>
@@ -126,7 +126,7 @@ export default function UserForm()
                 type="number"
                 id="username"
                 name="username"
-                style={{ border: "1px solid #08DA75", height: "40px" }}
+                style={{ border: "1px solid #89CFF0", height: "40px" }}
               />
               {/* 4th Row */}
 
@@ -148,7 +148,7 @@ export default function UserForm()
                 type="number"
                 id="username"
                 name="username"
-                style={{ border: "1px solid #08DA75", height: "60px" }}
+                style={{ border: "1px solid #89CFF0", height: "60px" }}
               />
               {/* 5th Row */}
 
@@ -158,7 +158,7 @@ export default function UserForm()
                   style={{
                     width: "159px",
                     height: "45px",
-                    backgroundColor: "#08DA75",
+                    backgroundColor: "#89CFF0",
                     borderRadius: "43px",
                     color: "white",
                     fontWeight: 600,

@@ -353,7 +353,7 @@ export default function DoctorForm()
                   >
                     Edit profile pic
                   </p>
-                  <div style={{ backgroundColor: "#08DA75" }}>
+                  <div style={{ backgroundColor: "#89CFF0" }}>
                     <Menu
                       id="profile-pic-menu"
                       anchorEl={anchorEl}
@@ -361,12 +361,12 @@ export default function DoctorForm()
                       onClose={handleClose}
                       MenuListProps={{
                         "aria-labelledby": "edit-profile-pic-text",
-                        style: { backgroundColor: "#08DA75" }, // Set background color for the whole menu
+                        style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
                       }}
                     >
                       <MenuItem
                         style={{
-                          backgroundColor: "#08DA75",
+                          backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
                         onClick={handleNewProfilePictureClick}
@@ -382,7 +382,7 @@ export default function DoctorForm()
 
                       <MenuItem
                         style={{
-                          backgroundColor: "#08DA75",
+                          backgroundColor: "#89CFF0",
                           color: isHovered1 ? "red" : "white",
                         }}
                         onClick={handleRemoveProfilePicture}
@@ -421,7 +421,7 @@ export default function DoctorForm()
                   id="name"
                   name="name"
                   onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
               </div>
               <div>
@@ -437,7 +437,7 @@ export default function DoctorForm()
                   id="email"
                   name="email"
                   onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
               </div>
               <div>
@@ -453,7 +453,7 @@ export default function DoctorForm()
                   id="contactNumber"
                   name="contactNumber"
                   onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
               </div>
 
@@ -465,7 +465,7 @@ export default function DoctorForm()
                   >
                     Working Days
                   </label>
-                  <div className="block w-full mt-0 rounded-lg border border-[#08DA75] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+                  <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
                     <Select
                       className="w-full border-none h-10"
                       mode="multiple"
@@ -491,7 +491,7 @@ export default function DoctorForm()
                   <div className="flex space-x-2">
                     <div className="flex-1">
                       <select
-                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         name="workHourFrom"
                         onChange={handleChange}
                       >
@@ -505,7 +505,7 @@ export default function DoctorForm()
 
                     <div className="flex-1">
                       <select
-                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         name="workHourTo"
                         onChange={handleChange}
                       >
@@ -532,7 +532,7 @@ export default function DoctorForm()
                     id="total-experience"
                     name="totalExperience"
                     onChange={handleChange}
-                    class="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    class="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                 </div>
                 <div class="flex-1" style={{ marginRight: "10px" }}>
@@ -543,7 +543,7 @@ export default function DoctorForm()
                     Specialist
                   </label>
                   <select
-                    className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     id="speciality"
                     name="speciality"
                     onChange={handleChange}
@@ -569,10 +569,10 @@ export default function DoctorForm()
                   id="degree"
                   name="degree"
                   onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
               </div>
-              <div class="p-3 pb-5 border border-[#08DA75]">
+              <div class="p-3 pb-5 border border-[#89CFF0]">
                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                   <div class="px-2 w-full sm:w-1/3">
                     <label
@@ -587,7 +587,7 @@ export default function DoctorForm()
                       name="houseNo"
                       onChange={handleChange}
                       placeholder="1234"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/3">
@@ -603,7 +603,7 @@ export default function DoctorForm()
                       name="floor"
                       onChange={handleChange}
                       placeholder="2nd"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/3">
@@ -619,7 +619,7 @@ export default function DoctorForm()
                       name="block"
                       onChange={handleChange}
                       placeholder="A"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
@@ -635,7 +635,7 @@ export default function DoctorForm()
                       name="area"
                       onChange={handleChange}
                       placeholder="Green Park"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
@@ -651,7 +651,7 @@ export default function DoctorForm()
                       name="pinCode"
                       onChange={handleChange}
                       placeholder="110016"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
@@ -667,7 +667,7 @@ export default function DoctorForm()
                       name="district"
                       onChange={handleChange}
                       placeholder="South Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
@@ -683,7 +683,7 @@ export default function DoctorForm()
                       name="state"
                       onChange={handleChange}
                       placeholder="Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                 </div>
@@ -691,7 +691,7 @@ export default function DoctorForm()
             </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button
-                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
+                className="rounded-full justify-center px-9 py-2 bg-[89CFF0] text-white"
                 onClick={handleRegister}
               >
                 Process

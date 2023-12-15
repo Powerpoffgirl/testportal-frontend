@@ -317,7 +317,7 @@ export default function EditAdminForm()
                                     >
                                         <MdEdit />
                                     </p>
-                                    <div style={{ backgroundColor: "#08DA75" }}>
+                                    <div style={{ backgroundColor: "#89CFF0" }}>
                                         <Menu
                                             id="profile-pic-menu"
                                             anchorEl={anchorEl}
@@ -325,12 +325,12 @@ export default function EditAdminForm()
                                             onClose={handleClose}
                                             MenuListProps={{
                                                 "aria-labelledby": "edit-profile-pic-text",
-                                                style: { backgroundColor: "#08DA75" }, // Set background color for the whole menu
+                                                style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
                                             }}
                                         >
                                             <MenuItem
                                                 style={{
-                                                    backgroundColor: "#08DA75",
+                                                    backgroundColor: "#89CFF0",
                                                     color: isHovered ? "red" : "white",
                                                 }}
                                                 onClick={handleNewProfilePictureClick}
@@ -346,7 +346,7 @@ export default function EditAdminForm()
 
                                             <MenuItem
                                                 style={{
-                                                    backgroundColor: "#08DA75",
+                                                    backgroundColor: "#89CFF0",
                                                     color: isHovered1 ? "red" : "white",
                                                 }}
                                                 // onClick={handleRemoveProfilePicture}
@@ -387,7 +387,7 @@ export default function EditAdminForm()
                                     name="name"
                                     onChange={handleChange}
                                     value={doctorDetails?.name}
-                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
                             </div>
                             <div>
@@ -404,7 +404,7 @@ export default function EditAdminForm()
                                     name="email"
                                     onChange={handleChange}
                                     value={doctorDetails?.email}
-                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
                             </div>
                             <div>
@@ -421,14 +421,14 @@ export default function EditAdminForm()
                                     name="contactNumber"
                                     onChange={handleChange}
                                     value={doctorDetails?.contactNumber}
-                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                 />
                             </div>
 
 
 
 
-                            <div class="p-3 pb-5 border border-[#08DA75]">
+                            <div class="p-3 pb-5 border border-[#89CFF0]">
                                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                                     <div class="px-2 w-full sm:w-1/3">
                                         <label
@@ -444,7 +444,7 @@ export default function EditAdminForm()
                                             onChange={handleChange}
                                             placeholder="1234"
                                             value={doctorDetails?.address?.houseNo}
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/3">
@@ -461,7 +461,7 @@ export default function EditAdminForm()
                                             onChange={handleChange}
                                             placeholder="2nd"
                                             value={doctorDetails?.address?.floor}
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/3">
@@ -478,7 +478,7 @@ export default function EditAdminForm()
                                             onChange={handleChange}
                                             placeholder="A"
                                             value={doctorDetails?.address?.block}
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -495,7 +495,7 @@ export default function EditAdminForm()
                                             onChange={handleChange}
                                             value={doctorDetails?.address?.area}
                                             placeholder="Green Park"
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -512,7 +512,7 @@ export default function EditAdminForm()
                                             onChange={handleChange}
                                             placeholder="110016"
                                             value={doctorDetails?.address?.pinCode}
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -529,7 +529,7 @@ export default function EditAdminForm()
                                             onChange={handleChange}
                                             placeholder="South Delhi"
                                             value={doctorDetails?.address?.district}
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
                                     <div class="px-2 w-full sm:w-1/2">
@@ -546,7 +546,7 @@ export default function EditAdminForm()
                                             onChange={handleChange}
                                             value={doctorDetails?.address?.state}
                                             placeholder="Delhi"
-                                            class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
                                 </div>

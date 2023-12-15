@@ -6,8 +6,8 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        customRed: '#08DA75', // Define a custom color with a hex code
-        customGreen: '#E4FFF2'
+        customRed: '#89CFF0', // Define a custom color with a hex code
+        customGreen: '#E3F6FF'
       },
       width: {
         '413': '413px',

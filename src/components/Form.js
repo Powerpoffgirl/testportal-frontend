@@ -3,7 +3,8 @@ import { useMediaQuery } from "react-responsive";
 import Sidebar from "./sidebar";
 import Header from "./header";
 
-export default function Form() {
+export default function Form()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
 
   return (
@@ -58,7 +59,7 @@ export default function Form() {
                     type="text"
                     id="username"
                     name="username"
-                    style={{ border: "1px solid #08DA75", height: "40px" }}
+                    style={{ border: "1px solid #89CFF0", height: "40px" }}
                   />
                 </span>
                 <span className="flex flex-col w-[100%] md:w-[50%]">
@@ -78,7 +79,7 @@ export default function Form() {
                     type="text"
                     id="username"
                     name="username"
-                    style={{ border: "1px solid #08DA75", height: "40px" }}
+                    style={{ border: "1px solid #89CFF0", height: "40px" }}
                   />
                 </span>
               </div>
@@ -104,7 +105,7 @@ export default function Form() {
                     type="number"
                     id="username"
                     name="username"
-                    style={{ border: "1px solid #08DA75", height: "40px" }}
+                    style={{ border: "1px solid #89CFF0", height: "40px" }}
                   />
                 </span>
                 <span className="flex flex-col w-[100%] md:w-[50%]">
@@ -124,7 +125,7 @@ export default function Form() {
                     type="text"
                     id="username"
                     name="username"
-                    style={{ border: "1px solid #08DA75", height: "40px" }}
+                    style={{ border: "1px solid #89CFF0", height: "40px" }}
                   />
                 </span>
               </div>
@@ -151,7 +152,7 @@ export default function Form() {
                     type="number"
                     id="username"
                     name="username"
-                    style={{ border: "1px solid #08DA75", height: "40px" }}
+                    style={{ border: "1px solid #89CFF0", height: "40px" }}
                   />
                 </span>
                 <span className="flex flex-col w-[100%] md:w-[50%]">
@@ -171,7 +172,7 @@ export default function Form() {
                     type="text"
                     id="username"
                     name="username"
-                    style={{ border: "1px solid #08DA75", height: "40px" }}
+                    style={{ border: "1px solid #89CFF0", height: "40px" }}
                   />
                 </span>
               </div>
@@ -198,7 +199,7 @@ export default function Form() {
                     type="number"
                     id="username"
                     name="username"
-                    style={{ border: "1px solid #08DA75", height: "40px" }}
+                    style={{ border: "1px solid #89CFF0", height: "40px" }}
                   />
                 </span>
                 <span className="flex flex-col w-[100%] md:w-[50%]">
@@ -218,7 +219,7 @@ export default function Form() {
                     type="text"
                     id="username"
                     name="username"
-                    style={{ border: "1px solid #08DA75", height: "40px" }}
+                    style={{ border: "1px solid #89CFF0", height: "40px" }}
                   />
                 </span>
               </div>
@@ -242,7 +243,7 @@ export default function Form() {
                 type="text"
                 id="username"
                 name="username"
-                style={{ border: "1px solid #08DA75", height: "60px" }}
+                style={{ border: "1px solid #89CFF0", height: "60px" }}
               />
               {/* 5th Row */}
 
@@ -252,7 +253,7 @@ export default function Form() {
                   style={{
                     width: "159px",
                     height: "45px",
-                    backgroundColor: "#08DA75",
+                    backgroundColor: "#89CFF0",
                     borderRadius: "43px",
                     color: "white",
                     fontWeight: 600,

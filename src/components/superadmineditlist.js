@@ -5,7 +5,8 @@ import { useMediaQuery } from "react-responsive";
 import { Modal } from "react-responsive-modal";
 import AdminSidebar from "./adminSidebar";
 
-export default function SuperAdminEditList() {
+export default function SuperAdminEditList()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [usersList, setUsersList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -23,11 +24,15 @@ export default function SuperAdminEditList() {
     { name: "Physiotherapist", value: "6" },
   ];
 
-  useEffect(() => {
-    const fetchDoctorDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchDoctorDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -42,17 +47,21 @@ export default function SuperAdminEditList() {
         const data = await response.json();
         console.log("DATA from response", data);
         setUsersList(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleDeleteUser = async (userId) => {
-    try {
+  const handleDeleteUser = async (userId) =>
+  {
+    try
+    {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         return;
       }
@@ -69,16 +78,19 @@ export default function SuperAdminEditList() {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok)
+      {
         console.log("Patient deleted successfully", data);
         // Update the list in the UI by removing the deleted doctor
         setUsersList((prevPatientsList) =>
           prevPatientsList.filter((patient) => patient._id !== userId)
         );
-      } else {
+      } else
+      {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("There was an error deleting the doctor:", error);
     }
   };
@@ -167,14 +179,14 @@ export default function SuperAdminEditList() {
                           width: !isTab ? "80%" : "73px",
                           height: "45px",
                           borderRadius: "35px",
-                          backgroundColor: "#08DA75",
+                          backgroundColor: "#89CFF0",
                           color: "white",
                           fontWeight: 400,
                           fontSize: isTab ? "11px" : "24px",
                           lineHeight: "28.8px",
                           fontFamily: "Lato, sans-serif",
                         }}
-                        // onClick={() => handleBookAppointment(patient._id)}
+                      // onClick={() => handleBookAppointment(patient._id)}
                       >
                         Edit
                       </button>

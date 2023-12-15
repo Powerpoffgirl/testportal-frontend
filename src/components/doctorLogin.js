@@ -17,11 +17,11 @@ const svgContent2 = `<svg width="374" height="379" viewBox="0 0 374 379" fill="n
 </svg>`;
 const svgContent3 = `<svg width="157" height="197" viewBox="0 0 157 197" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="78.4502" cy="117.821" r="78.4502" fill="white"/>
-<path d="M71.1591 165.051V80.6761H85.4773V165.051H71.1591ZM36.1307 130.023V115.705H120.506V130.023H36.1307Z" fill="#08DA75"/>
+<path d="M71.1591 165.051V80.6761H85.4773V165.051H71.1591ZM36.1307 130.023V115.705H120.506V130.023H36.1307Z" fill="#89CFF0"/>
 </svg>`;
 const smallSvgContent3 = `<svg width="97" height="127" viewBox="0 0 157 197" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="78.4502" cy="117.821" r="78.4502" fill="white"/>
-<path d="M71.1591 165.051V80.6761H85.4773V165.051H71.1591ZM36.1307 130.023V115.705H120.506V130.023H36.1307Z" fill="#08DA75"/>
+<path d="M71.1591 165.051V80.6761H85.4773V165.051H71.1591ZM36.1307 130.023V115.705H120.506V130.023H36.1307Z" fill="#89CFF0"/>
 </svg>`;
 
 const smallsvg1 = `<svg width="310" height="223" viewBox="0 0 290 293" fill="none" xmlns="http://www.w3.org/2000/svg">
