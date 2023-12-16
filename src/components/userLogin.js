@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 // import "../App.css";
-import "./userLogin.css"
+import "./userLogin.css";
 import { FaPhoneAlt } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
@@ -8,9 +8,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
-export default function UserLogin()
-{
+export default function UserLogin() {
   let isTab = useMediaQuery({ query: "(max-width: 640px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -22,48 +20,40 @@ export default function UserLogin()
   const location = useLocation();
   const [error, setError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [isValid, setIsValid] = useState(true);
 
-  const handleMobileNumberChange = (e) =>
-  {
-    const newContactNumber = e.target.value;
-    setContactNumber(newContactNumber);
-
-    const isValidNumber = /^\d{10}$/.test(newContactNumber);
-
-    if (isValidNumber || newContactNumber === "")
-    {
-      setError(""); // Clear any previous error message
-    } else
-    {
-      setError("Please enter a valid 10-digit mobile number");
-    }
+  const handleMobileNumberChange = (e) => {
+    const number = e.target.value;
+    const isValidNumber = validateMobileNumber(number);
+    setIsValid(isValidNumber);
+    setContactNumber(number);
   };
 
-  const handlePasswordChange = (e) =>
-  {
+  const validateMobileNumber = (number) => {
+    const isValidFormat = /^\d{10}$/.test(number);
+    return isValidFormat;
+  };
+
+  const handlePasswordChange = (e) => {
     const enteredPassword = e.target.value;
     setPassword(enteredPassword);
 
     // Password validation
-    if (enteredPassword.trim().length < 6)
-    {
+    if (enteredPassword.trim().length < 6) {
       setPasswordError("Password should be at least 6 characters");
-    } else
-    {
+    } else {
       setPasswordError("");
     }
   };
 
-  const handleForgetPassword = async (e) =>
-  {
-    e.preventDefault()
+  const handleForgetPassword = async (e) => {
+    e.preventDefault();
     const requestBody = {
       contactNumber: contactNumber,
     };
     const apiUrl = `${baseUrl}/api/v1/user/send_otp`;
 
-    try
-    {
+    try {
       // Send the POST request
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -78,34 +68,27 @@ export default function UserLogin()
       const data = await response.json();
 
       // Check the response status
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("OTP sent successfully", data);
-        localStorage.setItem("contactNumber", contactNumber)
-        navigate("/otpverify")
-      } else
-      {
+        localStorage.setItem("contactNumber", contactNumber);
+        navigate("/otpverify");
+      } else {
         console.error("Error sending OTP:", data);
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("Error during the API call:", error);
     }
+  };
 
-  }
-
-  useEffect(() =>
-  {
+  useEffect(() => {
     const doctor = location?.state;
     setSelectedDoctor(doctor?.doctor);
     console.log("SELECTED DOCTOR", selectedDoctor);
   }, []);
 
-  const handleSubmit = async (e) =>
-  {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isDoctor)
-    {
+    if (isDoctor) {
       const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
         method: "post",
         headers: {
@@ -117,43 +100,48 @@ export default function UserLogin()
       });
       const data = await response.json();
       console.log("DATA FROM RESPONSE", data);
-      if (data?.user?._id)
-      {
-        localStorage.setItem("userId", data?.user?._id)
-        localStorage.setItem("name", data?.user?.name)
-        localStorage.setItem("userContactNumber", data?.user?.email)
-      }
-      else
-      {
-        localStorage.setItem("userId", data?.data?._id)
+      if (data?.user?._id) {
+        localStorage.setItem("userId", data?.user?._id);
+        localStorage.setItem("name", data?.user?.name);
+        localStorage.setItem("userContactNumber", data?.user?.email);
+      } else {
+        localStorage.setItem("userId", data?.data?._id);
       }
       localStorage.setItem("contactNumber", contactNumber);
-      navigate("/userotp", { state: { name: selectedDoctor?.name, id: selectedDoctor?._id } })
+      navigate("/userotp", {
+        state: { name: selectedDoctor?.name, id: selectedDoctor?._id },
+      });
 
       console.log(data);
     }
   };
 
   return (
-    <div className="login" style={{ backgroundColor: "white", fontWeight: "700" }}>
+    <div
+      className="login"
+      style={{ backgroundColor: "white", fontWeight: "700" }}
+    >
       <div className="left_side">
         <h1 className="left_heading">
           Welcome To <br /> Doctalk'S{" "}
         </h1>
       </div>
-      <div className="right_side"  >
+      <div className="right_side">
         <h3 className="right_heading">User Login</h3>
         <p className="para_one">Add Your Mobile Number</p>
         <p className="para_two">Apply with your phone number</p>
         <div className="input_container">
           <FaPhoneAlt className="call_icon" />
           <input
-            className="input_box"
+            className={`input_box ${isValid ? "" : "invalid"}`}
             type="text"
             placeholder="Enter your mobile number"
             value={contactNumber}
             onChange={handleMobileNumberChange}
           />
+          {!isValid && (
+            <p className="error_message">Please enter a valid mobile number</p>
+          )}{" "}
         </div>
         <label className="label1">
           <input type="checkbox" /> I agree with the{" "}
@@ -165,7 +153,10 @@ export default function UserLogin()
             privacy policy
           </a>
         </label>
-        <button className="button1" onClick={handleSubmit}> Agree & Continue</button>
+        <button className="button1" onClick={handleSubmit}>
+          {" "}
+          Agree & Continue
+        </button>
       </div>
     </div>
   );

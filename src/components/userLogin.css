@@ -430,3 +430,11 @@ input[type="checkbox"] {
     background-color: #89cff0;
   }
 }
+.error_message {
+  color: red;
+  font-size: 13px;
+  margin-top: 5px;
+  position: absolute;
+  top: 49px;
+  left: 16px;
+}
