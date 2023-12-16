@@ -5,6 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { FaPhoneAlt } from "react-icons/fa";
 import { LuRefreshCcw } from "react-icons/lu";
 import "./userLogin.css";
+import { Tooltip } from 'antd';
 
 const UserOTP = () =>
 {
@@ -219,7 +220,10 @@ const UserOTP = () =>
           </div>
           {/* OTP input boxes */}
           <div className="input_container">
-            <LuRefreshCcw className="call_icon" onClick={SendOTP} />
+            <Tooltip placement="top" title="Resend OtP">
+              <LuRefreshCcw className="Resend_icon" onClick={SendOTP} />
+            </Tooltip>
+
             <input
               className="input_box"
               type="number"
@@ -230,18 +234,22 @@ const UserOTP = () =>
             />
             <p className="error_message">{otperror}</p>
           </div>
-          <p style={{ fontWeight: 400, fontSize: '16px', display: "flex", marginLeft: "70%" }}>
-            <p onClick={SendOTP} style={{ color: "#666", fontWeight: 'bold', cursor: 'pointer' }}>
+          {/* <p style={{ fontWeight: 400, fontSize: '16px', display: "flex", marginLeft: "70%" }}>
+            <p onClick={SendOTP} className="resendOtp" >
               Resend OTP
             </p>{" "}
           </p>
+ */}
+
+
           <p style={{ fontWeight: 400, fontSize: '16px', display: "flex", marginLeft: "40%" }}>
-            <p style={{ color: "#666", cursor: 'pointer' }}>
+            <p className="timer" style={{ color: "#666", cursor: 'pointer' }}>
               <text className="mx-2" style={{ color: "#000000" }}>
                 {formatTime(seconds)} sec
               </text>{" "}
             </p>{" "}
           </p>
+
           <button style={{ marginTop: '10px' }} className="button1" onClick={verifyOTP}> Verify OTP</button>
         </div>
         <ToastContainer />

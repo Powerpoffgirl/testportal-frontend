@@ -4,6 +4,16 @@
   overflow: hidden;
 }
 
+.resendOtp {
+  color: #666;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.resendOtp:hover {
+  color: #89cff0;
+}
+
 .left_side {
   width: 55%;
   display: flex;
@@ -75,6 +85,17 @@
   color: grey;
   /* background-color: #eb1a1a; */
   font-size: 40px;
+}
+
+.Resend_icon {
+  color: grey;
+  font-size: 25px;
+  left: 10px;
+  top: 50%;
+}
+
+.Resend_icon:hover {
+  color: #89cff0;
 }
 
 .input_box {
@@ -444,4 +465,13 @@ input[type="checkbox"] {
   position: absolute;
   top: 49px;
   left: 16px;
+}
+
+@media (max-width: 600px) {
+  /* Adjust the max-width as needed */
+  .timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
