@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import { FaPhoneAlt } from "react-icons/fa";
+import { LuRefreshCcw } from "react-icons/lu";
 import "./userLogin.css";
 
 const UserOTP = () =>
@@ -59,9 +60,11 @@ const UserOTP = () =>
         console.log("OTP sent successfully", data);
         setResendClicked(true);
         setSeconds(90);
+        toast.success('Otp sent !!');
       } else
       {
         console.error("Error sending OTP:", data);
+        toast.error('Error sending Otp');
       }
     } catch (error)
     {
@@ -216,6 +219,7 @@ const UserOTP = () =>
           </div>
           {/* OTP input boxes */}
           <div className="input_container">
+            <LuRefreshCcw className="call_icon" onClick={SendOTP} />
             <input
               className="input_box"
               type="number"
@@ -227,17 +231,20 @@ const UserOTP = () =>
             <p className="error_message">{otperror}</p>
           </div>
           <p style={{ fontWeight: 400, fontSize: '16px', display: "flex", marginLeft: "70%" }}>
-            <a onClick={() => navigate("/termsofservices")} style={{ color: "#666", fontWeight: 'bold', cursor: 'pointer' }}>
+            <p onClick={SendOTP} style={{ color: "#666", fontWeight: 'bold', cursor: 'pointer' }}>
               Resend OTP
-            </a>{" "}
+            </p>{" "}
           </p>
           <p style={{ fontWeight: 400, fontSize: '16px', display: "flex", marginLeft: "40%" }}>
-            <a onClick={() => navigate("/termsofservices")} style={{ color: "#666", cursor: 'pointer' }}>
-              30 sec
-            </a>{" "}
+            <p style={{ color: "#666", cursor: 'pointer' }}>
+              <text className="mx-2" style={{ color: "#000000" }}>
+                {formatTime(seconds)} sec
+              </text>{" "}
+            </p>{" "}
           </p>
           <button style={{ marginTop: '10px' }} className="button1" onClick={verifyOTP}> Verify OTP</button>
         </div>
+        <ToastContainer />
       </div>
     </>
   );

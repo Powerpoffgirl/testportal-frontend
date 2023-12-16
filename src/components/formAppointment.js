@@ -146,6 +146,8 @@ const FormAppoinment = ({ onDataFromChild }) =>
         console.log("SELECTED DOCTOR", selectedDoctor)
     }, [selectedDoctor])
 
+    console.log("patient id ######################", patientId);
+
     useEffect(() =>
     {
         const fetchPatientList = async () =>

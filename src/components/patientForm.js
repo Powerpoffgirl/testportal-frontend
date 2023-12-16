@@ -309,11 +309,12 @@ export default function PatientForm()
     {
       // navigate("/otp")
       onOpenModal();
-      localStorage.setItem("id", data.data._id);
+      localStorage.setItem("patientId", data.data._id);
     }
     console.log("DATA from response", data);
   };
   console.log("PATIENT DETAILS", patientDetails);
+
 
   return (
     <>

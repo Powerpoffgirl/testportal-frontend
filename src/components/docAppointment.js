@@ -16,6 +16,8 @@ export default function DocAppointment()
     const [doctorName, setDoctorName] = useState()
     const [doctorEmail, setDoctorEmail] = useState()
 
+    console.log("patientid-------------------", localStorage.getItem("patientId"))
+
     const handleChildData = (data) =>
     {
         setDataFromChild(data);
