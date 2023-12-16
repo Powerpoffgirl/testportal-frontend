@@ -224,11 +224,18 @@ const UserOTP = () =>
               name="otp"
               onChange={handleMobileNumberChange}
             />
-
             <p className="error_message">{otperror}</p>
-
-
           </div>
+          <p style={{ fontWeight: 400, fontSize: '16px', display: "flex", marginLeft: "70%" }}>
+            <a onClick={() => navigate("/termsofservices")} style={{ color: "#666", fontWeight: 'bold', cursor: 'pointer' }}>
+              Resend OTP
+            </a>{" "}
+          </p>
+          <p style={{ fontWeight: 400, fontSize: '16px', display: "flex", marginLeft: "40%" }}>
+            <a onClick={() => navigate("/termsofservices")} style={{ color: "#666", cursor: 'pointer' }}>
+              30 sec
+            </a>{" "}
+          </p>
           <button style={{ marginTop: '10px' }} className="button1" onClick={verifyOTP}> Verify OTP</button>
         </div>
       </div>
