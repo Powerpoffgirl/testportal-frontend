@@ -53,6 +53,11 @@ export default function DoctorList({ searchTerm })
 
   useEffect(() =>
   {
+    localStorage.clear()
+  }, [])
+
+  useEffect(() =>
+  {
     const fetchDoctorDetails = async () =>
     {
       try

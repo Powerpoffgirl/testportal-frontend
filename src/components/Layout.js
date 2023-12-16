@@ -44,6 +44,7 @@ export default function Layout({
     {
       // navigate("/");
       localStorage.removeItem("token");
+      localStorage.clear()
     }
   }
 
