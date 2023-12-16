@@ -17,6 +17,8 @@ import DoctorLogin from "./components/doctorLogin";
 import AdminLogin from "./components/adminLogin";
 import UserLogin from "./components/userLogin";
 import DoctorListAdmin from "./components/doctorListAdmin";
+import TermsOfServices from "./components/TermsOfServices";
+import PrivacyPolicy from "./components/privacyPolicy";
 // import AdminForm from "./components/adminForm";
 import EditDoctorForm from "./components/editDoctorForm";
 import EditAdminlistform from "./components/editAdminlistform";
@@ -103,6 +105,8 @@ function App()
           />
         }
       />
+      <Route path="/termsofservices" element={<TermsOfServices />}></Route>
+      <Route path="/privacypolicy" element={<PrivacyPolicy />}></Route>
 
       <Route
         path="/superadmineditlist"
@@ -306,11 +310,7 @@ function App()
       <Route
         path="/userotp"
         element={
-          <Layout
-            Component={UserOTP}
-            headerTextTop={"Verify"}
-            headerTextBottom={"OTP"}
-          />
+          <UserOTP />
         }
       ></Route>
       <Route

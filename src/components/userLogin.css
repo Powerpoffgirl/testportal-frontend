@@ -58,7 +58,12 @@
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   padding: 4px 30px;
   border-radius: 10px;
-  width: 80%;
+  width: 100%;
+}
+
+.input_container ::placeholder {
+  color: grey;
+  opacity: 1;
 }
 
 .call_icon {
@@ -67,7 +72,9 @@
   left: 10px;
   top: 50%;
   transform: translateY(-50%);
-  color: #ccc;
+  color: grey;
+  /* background-color: #eb1a1a; */
+  font-size: 40px;
 }
 
 .input_box {
@@ -152,14 +159,14 @@ input[type="checkbox"] {
     width: 70%;
   }
 
-  .call_icon {
+  /* .call_icon {
     position: absolute;
     padding-left: 20px;
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
     color: #ccc;
-  }
+  } */
 
   .input_box {
     width: calc(100% - 30px);
@@ -269,7 +276,7 @@ input[type="checkbox"] {
     width: 85%;
   }
 
-  .call_icon {
+  /* .call_icon {
     position: absolute;
     padding-left: 12px;
 
@@ -277,7 +284,7 @@ input[type="checkbox"] {
     top: 50%;
     transform: translateY(-50%);
     color: #ccc;
-  }
+  } */
 
   .input_box {
     width: calc(100% - 30px);
@@ -385,14 +392,14 @@ input[type="checkbox"] {
     width: 70%;
   }
 
-  .call_icon {
+  /* .call_icon {
     position: absolute;
     padding-left: 20px;
     left: 10px;
     top: 50%;
     transform: translateY(-50%);
     color: #ccc;
-  }
+  } */
 
   .input_box {
     width: calc(100% - 30px);

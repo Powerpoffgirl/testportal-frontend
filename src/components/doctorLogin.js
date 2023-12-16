@@ -9,11 +9,11 @@ import "react-toastify/dist/ReactToastify.css";
 
 const svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg" width="836" height="579" viewBox="0 0 786 679" fill="none">
-  <circle cx="514.5" cy="164.5" r="514.5" fill="#2BEA8E"/>
+  <circle cx="514.5" cy="164.5" r="514.5" fill="#B1DAED"/>
 </svg>
 `;
 const svgContent2 = `<svg width="374" height="379" viewBox="0 0 374 379" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="93" cy="281" r="281" fill="#2BEA8E"/>
+<circle cx="93" cy="281" r="281" fill="#B1DAED"/>
 </svg>`;
 const svgContent3 = `<svg width="157" height="197" viewBox="0 0 157 197" fill="none" xmlns="http://www.w3.org/2000/svg">
 <circle cx="78.4502" cy="117.821" r="78.4502" fill="white"/>
@@ -25,11 +25,11 @@ const smallSvgContent3 = `<svg width="97" height="127" viewBox="0 0 157 197" fil
 </svg>`;
 
 const smallsvg1 = `<svg width="310" height="223" viewBox="0 0 290 293" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="188" cy="105" r="188" fill="#2BEA8E"/>
+<circle cx="188" cy="105" r="188" fill="#B1DAEDE"/>
 </svg>
 `;
 const smallsvg2 = `<svg width="200" height="164" viewBox="0 0 225 194" fill="none" xmlns="http://www.w3.org/2000/svg">
-<circle cx="37" cy="188" r="188" fill="#2BEA8E"/>
+<circle cx="37" cy="188" r="188" fill="#B1DAEDE"/>
 </svg>
 `;
 

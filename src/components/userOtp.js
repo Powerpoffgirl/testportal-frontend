@@ -2,10 +2,12 @@ import { useMediaQuery } from "react-responsive";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { FaPhoneAlt } from "react-icons/fa";
+import "./userLogin.css";
 
 const UserOTP = () =>
 {
-  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const [otp, setOtp] = useState();
   const otpInputs = [];
   const [mobileNo, setMobileNo] = useState();
   const [user, setUser] = useState();
@@ -18,6 +20,7 @@ const UserOTP = () =>
   const baseUrl = process.env.REACT_APP_BASE_URL;
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [doctorName, setDoctorName] = useState();
+  const [otperror, setOtperror] = useState();
 
   console.log("LOCATION STATE", location.state);
 
@@ -66,19 +69,48 @@ const UserOTP = () =>
     }
   };
 
+  const handleMobileNumberChange = (e) =>
+  {
+    const { name, value } = e.target;
+    // if (name === "contactNumber")
+    // {
+    //   setContactNumber(value);
+    // }
+    if (name === "otp")
+    {
+      setOtp(value);
+    }
+
+    // const isValidNumber = /^\d{10}$/.test(newContactNumber);
+
+    // if (isValidNumber || newContactNumber === "") {
+    //   setError(""); // Clear any previous error message
+    // } else {
+    //   setError("Please enter a valid 10-digit mobile number");
+    // }
+  };
+
+  console.log("otp output$$$$$$$$$$$", otp)
+
+
   const verifyOTP = async () =>
   {
+    if (otp?.length < 6)
+    {
+      setOtperror("Please enter valid otp");
+    }
+
     try
     {
       const id = localStorage.getItem("userId");
 
-      const otpString = otp.join("");
+      // const otpString = otp.join("");
       const response = await fetch(`${baseUrl}/api/v1/user/verify_otp/${id}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ otp: otpString }),
+        body: JSON.stringify({ otp: otp }),
       });
 
       const data = await response.json();
@@ -162,143 +194,42 @@ const UserOTP = () =>
 
   return (
     <>
-      <div
-        className="flex min-h-screen relative overflow-auto 
-    box-border"
-      >
-        <div
-          className="flex flex-col white"
-          style={{
-            width: isTab ? "100%" : "77%",
-          }}
-        >
-          {/* <Header line1="Verify" line2="OTP"></Header> */}
-          <div
-            className="flex flex-col gap-2 px-3 w-full"
-            style={{
-              top: "4%",
-              left: "2%",
-              position: "relative",
-              overflow: "hidden",
-              justifyContent: "center",
-            }}
-          >
-            <label
-              htmlFor="mobileNo"
-              className="mx-2"
-              style={{
-                fontWeight: 400,
-                fontSize: "20px",
-                fontFamily: "Lato, sans-serif",
-              }}
-            >
-              Mobile No.
-            </label>
+      <div className="login"
+        style={{ backgroundColor: "white", fontWeight: "700" }}>
+        <div className="left_side">
+          <h1 className="left_heading">
+            Welcome To <br /> Doctalk'S{" "}
+          </h1>
+        </div>
+        <div className="right_side">
+          {/* <h3 className="right_heading">User Login</h3> */}
+          <p className="para_one">Verify OTP</p>
+          <p className="para_two">Please enter OTP</p>
+          <div className="input_container">
+            <FaPhoneAlt className="call_icon" />
             <input
-              className="mx-2"
+              className="input_box"
               type="number"
-              id="mobileNo"
-              name="mobileNo"
               value={mobileNo}
-              style={{
-                border: "1px solid lightgrey",
-                height: "45px",
-                paddingLeft: "10px",
-              }}
+              name="contactNumber"
             />
-            <button
-              className="mt-4 bg-customRed w-40"
-              style={{
-                display: "inline",
-                height: "45px",
-                borderRadius: "43px",
-                color: "white",
-                fontSize: "24px",
-                fontWeight: 600,
-                lineHeight: "28.8px",
-              }}
-              onClick={SendOTP}
-            >
-              Resend OTP
-            </button>
-            <text
-              className="ml-[45%] md:ml-[49%]"
-              style={{
-                // marginLeft: "49%",
-                marginTop: "2%",
-                fontSize: "20px",
-                fontWeight: 400,
-                lineHeight: "24px",
-                fontFamily: "Lato, sans-serif",
-              }}
-            >
-              OTP
-            </text>
-
-            <div
-              className="flex  gap-1 md:gap-2 w-full"
-              style={{
-                top: "8%",
-                position: "relative",
-                overflow: "hidden",
-                justifyContent: "center",
-              }}
-            >
-              {otp.map((digit, index) => (
-                <input
-                  key={index}
-                  ref={(input) => (otpInputs[index] = input)}
-                  type="text"
-                  className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-3xl md:text-3xl lg:text-3xl border rounded-md text-center"
-                  maxLength={1}
-                  style={{ border: "1px solid lightgrey" }}
-                  value={digit}
-                  onChange={(e) => handleInputChange(e, index)}
-                  onKeyDown={(e) =>
-                  {
-                    if (e.key === "Backspace" && index > 0 && !digit)
-                    {
-                      otpInputs[index - 1].focus();
-                    }
-                  }}
-                />
-              ))}
-            </div>
-            <text
-              className="mt-20"
-              style={{
-                color: "#A4A4A4",
-                display: "flex",
-                fontWeight: 400,
-                fontSize: "18px",
-                lineHeight: "21.6px",
-                justifyContent: "center",
-              }}
-            >
-              Resend OTP in
-              <text className="mx-2" style={{ color: "#000000" }}>
-                {formatTime(seconds)}
-              </text>{" "}
-              Sec
-            </text>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <button
-                className="mt-4 bg-customRed w-40"
-                style={{
-                  display: "inline",
-                  height: "45px",
-                  borderRadius: "43px",
-                  color: "white",
-                  fontSize: "24px",
-                  fontWeight: 600,
-                  lineHeight: "28.8px",
-                }}
-                onClick={verifyOTP}
-              >
-                Verify
-              </button>
-            </div>
           </div>
+          {/* OTP input boxes */}
+          <div className="input_container">
+            <input
+              className="input_box"
+              type="number"
+              placeholder="Enter OTP"
+              value={otp}
+              name="otp"
+              onChange={handleMobileNumberChange}
+            />
+
+            <p className="error_message">{otperror}</p>
+
+
+          </div>
+          <button style={{ marginTop: '10px' }} className="button1" onClick={verifyOTP}> Verify OTP</button>
         </div>
       </div>
     </>
