@@ -321,7 +321,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                 doctor={selectedDoctor}
                 styles={{
                     modal: {
-                        backgroundColor: '#08DA75',
+                        backgroundColor: '#89CFF0',
                         alignContent: 'center'
                     },
                 }}

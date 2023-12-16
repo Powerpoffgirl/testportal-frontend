@@ -352,7 +352,7 @@ export default function EditUserForm() {
                   >
                     <MdEdit />
                   </p>
-                  <div style={{ backgroundColor: "#08DA75" }}>
+                  <div style={{ backgroundColor: "#89CFF0" }}>
                     <Menu
                       id="profile-pic-menu"
                       anchorEl={anchorEl}
@@ -360,12 +360,12 @@ export default function EditUserForm() {
                       onClose={handleClose}
                       MenuListProps={{
                         "aria-labelledby": "edit-profile-pic-text",
-                        style: { backgroundColor: "#08DA75" }, // Set background color for the whole menu
+                        style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
                       }}
                     >
                       <MenuItem
                         style={{
-                          backgroundColor: "#08DA75",
+                          backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
                         onClick={handleNewProfilePictureClick}
@@ -381,7 +381,7 @@ export default function EditUserForm() {
 
                       <MenuItem
                         style={{
-                          backgroundColor: "#08DA75",
+                          backgroundColor: "#89CFF0",
                           color: isHovered1 ? "red" : "white",
                         }}
                         // onClick={handleRemoveProfilePicture}
@@ -425,7 +425,7 @@ export default function EditUserForm() {
                   id="name"
                   name="name"
                   onChange={handleChange}
-                  className="block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  className="block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   value={userDetails.name}
                 />
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
@@ -442,7 +442,7 @@ export default function EditUserForm() {
                   id="email"
                   name="email"
                   onChange={handleChange}
-                  className="block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  className="block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   value={userDetails.email}
                 />
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
@@ -458,9 +458,8 @@ export default function EditUserForm() {
                   type="number"
                   id="contactNumber"
                   name="contactNumber"
-                  onChange={handleChange}
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   value={userDetails?.contactNumber}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.contactNumber && (
                   <p className="text-red-500">{errors.contactNumber}</p>
@@ -473,7 +472,8 @@ export default function EditUserForm() {
                 >
                   Address
                 </label>
-                <div class="p-3 pb-5 border border-[#08DA75]">
+                <div class="p-3 pb-5 border border-[#89CFF0]">
+
                   <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                     <div className="px-2 w-full sm:w-1/3">
                       <label
@@ -488,7 +488,7 @@ export default function EditUserForm() {
                         name="houseNo"
                         onChange={handleChange}
                         placeholder="1234"
-                        className="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         value={userDetails?.address?.houseNo}
                       />
                     </div>
@@ -505,7 +505,7 @@ export default function EditUserForm() {
                         name="floor"
                         onChange={handleChange}
                         placeholder="2nd"
-                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         value={userDetails?.address?.floor}
                       />
                     </div>
@@ -522,7 +522,7 @@ export default function EditUserForm() {
                         name="block"
                         onChange={handleChange}
                         placeholder="A"
-                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         value={userDetails?.address?.block}
                       />
                       {errors.block && (
@@ -542,7 +542,7 @@ export default function EditUserForm() {
                         name="area"
                         onChange={handleChange}
                         placeholder="Green Park"
-                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         value={userDetails?.address?.area}
                       />
                       {errors.area && (
@@ -562,7 +562,7 @@ export default function EditUserForm() {
                         name="pinCode"
                         onChange={handleChange}
                         placeholder="110016"
-                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         value={userDetails?.address?.pinCode}
                       />
                       {errors.pinCode && (
@@ -582,7 +582,7 @@ export default function EditUserForm() {
                         name="district"
                         onChange={handleChange}
                         placeholder="South Delhi"
-                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         value={userDetails?.address?.district}
                       />
                       {errors.district && (
@@ -602,7 +602,7 @@ export default function EditUserForm() {
                         name="state"
                         onChange={handleChange}
                         placeholder="Delhi"
-                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         value={userDetails?.address?.state}
                       />
                       {errors.state && (
@@ -612,19 +612,19 @@ export default function EditUserForm() {
                   </div>
                 </div>
               </div>
-            </div>
+            </div >
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button
-                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
+                className="rounded-full justify-center px-9 py-2 bg-[#89CFF0] text-white"
                 onClick={handleUpdate}
               >
                 Process
               </button>
             </div>
-          </div>
+          </div >
           <ToastContainer />
-        </div>
-      </div>
+        </div >
+      </div >
     </>
   );
 }

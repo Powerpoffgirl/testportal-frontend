@@ -138,7 +138,7 @@ export default function SuperAdminUserList({ searchTerm })
           styles={{
             modal: {
               width: isTab ? "80%" : "70%",
-              backgroundColor: "#08DA75",
+              backgroundColor: "#89CFF0",
               alignContent: "center",
             },
           }}
@@ -254,7 +254,7 @@ export default function SuperAdminUserList({ searchTerm })
                     Delete
                   </button>
                 </Popconfirm>
-                <button class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#08DA75] text-xs sm:text-sm" onClick={() => handleBookAppointment(user._id)}>Edit</button>
+                <button class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm" onClick={() => handleBookAppointment(user._id)}>Edit</button>
               </div>
             </div>
           </div>

@@ -67,7 +67,7 @@ export default function Admin()
             modal: {
               // Set your custom width here (e.g., '70%')
               width: isTab ? '80%' : '70%',
-              backgroundColor: '#08DA75',
+              backgroundColor: '#89CFF0',
               alignContent: 'center'
             },
           }}
@@ -107,8 +107,8 @@ export default function Admin()
 
 
               <span className="flex flex-col justify-start">
-                <text style={{ color: "#08DA75" }}>Mon-Fri</text>
-                <text style={{ color: "#08DA75" }}>10:00am-6:00pm</text>
+                <text style={{ color: "#89CFF0" }}>Mon-Fri</text>
+                <text style={{ color: "#89CFF0" }}>10:00am-6:00pm</text>
               </span>
             </div>
             <text
@@ -275,7 +275,7 @@ export default function Admin()
                   style={{
                     left: "2%",
                     height: "29px",
-                    border: "1px solid #08DA75",
+                    border: "1px solid #89CFF0",
                     borderRadius: "5px",
                     display: "flex",
                     justifyContent: "center",

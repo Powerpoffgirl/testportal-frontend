@@ -11,7 +11,8 @@ export default function UserHeader({
   line1,
   line2,
   isAdd,
-}) {
+})
+{
   const threeDots = `<svg width="25" height="14" viewBox="0 0 25 14" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M1 1L24 0.999998" stroke="black" stroke-width="2" stroke-linecap="round"/>
   <path d="M1 13L24 13" stroke="black" stroke-width="2" stroke-linecap="round"/>
@@ -33,18 +34,23 @@ export default function UserHeader({
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
-  const handleDoctorForm = () => {
+  const handleDoctorForm = () =>
+  {
     navigate("/patientform");
   };
 
-  const handleToggleSidebar = () => {
+  const handleToggleSidebar = () =>
+  {
     dispatch(toggleSidebar());
   };
 
   // Find doctor API call
-  useEffect(() => {
-    const fetchDoctorDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchDoctorDetails = async () =>
+    {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
           method: "GET",
           headers: {
@@ -59,14 +65,16 @@ export default function UserHeader({
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleSearchTerm = (e) => {
+  const handleSearchTerm = (e) =>
+  {
     setSearchTerm(e.target.value);
   };
 
@@ -190,7 +198,7 @@ export default function UserHeader({
                       width: isTab ? "55px" : "100px",
                       marginRight: "30px",
                       // display: 'inline-block',
-                      backgroundColor: "#08DA75",
+                      backgroundColor: "#89CFF0",
                       fontSize: "24px",
                       color: "white",
                       fontWeight: 600,
@@ -212,7 +220,7 @@ export default function UserHeader({
                     fontWeight: isTab ? 600 : 800,
                     fontFamily: "Lato, sans-serif",
                     lineHeight: isTab ? "16.8px" : "34.8px",
-                    color: "#08DA75",
+                    color: "#89CFF0",
                     backgroundColor: "white",
                     height: isTab ? "40px" : "38px",
                     width: isTab ? "90px" : "122px",

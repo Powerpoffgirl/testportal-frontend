@@ -555,7 +555,7 @@ export default function ViewPatientDescription()
                                     <div className="mx-5" style={{ display: "flex" }}>
                                         {
                                             patientDetails?.issues?.map((issue) => (
-                                                <div className="breadcrumb-chip" key={issue} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
+                                                <div className="breadcrumb-chip" key={issue} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#89CFF0", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
                                                     {issue}
                                                 </div>
                                             ))
@@ -567,7 +567,7 @@ export default function ViewPatientDescription()
                                         id="issues"
                                         name="issues"
                                         onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
+                                        style={{ border: "1px solid #89CFF0", height: "40px" }}
                                     >
                                         {issues?.map((option) => (
                                             <option key={option.value} value={option.value}>
@@ -596,7 +596,7 @@ export default function ViewPatientDescription()
                                     <div className="mx-5" style={{ display: "flex" }}>
                                         {
                                             patientDetails?.diseases?.map((disease) => (
-                                                <div className="breadcrumb-chip" key={disease} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
+                                                <div className="breadcrumb-chip" key={disease} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#89CFF0", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
                                                     {disease}
                                                 </div>
                                             ))
@@ -608,7 +608,7 @@ export default function ViewPatientDescription()
                                         id="diseases"
                                         name="diseases"
                                         onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
+                                        style={{ border: "1px solid #89CFF0", height: "40px" }}
                                     >
                                         {diseases?.map((option) => (
                                             <option key={option.value} value={option.value}>
@@ -637,7 +637,7 @@ export default function ViewPatientDescription()
                                     <div className="mx-5" style={{ display: "flex" }}>
                                         {
                                             patientDetails?.medicineName?.map((medicineName) => (
-                                                <div className="breadcrumb-chip" key={medicineName} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
+                                                <div className="breadcrumb-chip" key={medicineName} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#89CFF0", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
                                                     {medicineName}
                                                 </div>
                                             ))
@@ -649,7 +649,7 @@ export default function ViewPatientDescription()
                                         id="medicineName"
                                         name="medicineName"
                                         onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
+                                        style={{ border: "1px solid #89CFF0", height: "40px" }}
                                     >
                                         {medicineName?.map((option) => (
                                             <option key={option.value} value={option.value}>
@@ -678,7 +678,7 @@ export default function ViewPatientDescription()
                                     <div className="mx-5" style={{ display: "flex" }}>
                                         {
                                             patientDetails?.labTests?.map((labTest) => (
-                                                <div className="breadcrumb-chip" key={labTest} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#08DA75", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
+                                                <div className="breadcrumb-chip" key={labTest} style={{ margin: "5px 2px 5px 2px", backgroundColor: "#89CFF0", borderRadius: "5%", padding: "2px 5px 0px 5px" }}>
                                                     {labTest}
                                                 </div>
                                             ))
@@ -690,7 +690,7 @@ export default function ViewPatientDescription()
                                         id="labTests"
                                         name="labTests"
                                         onChange={handleChange}
-                                        style={{ border: "1px solid #08DA75", height: "40px" }}
+                                        style={{ border: "1px solid #89CFF0", height: "40px" }}
                                     >
                                         {labTests?.map((option) => (
                                             <option key={option.value} value={option.value}>
@@ -715,7 +715,7 @@ export default function ViewPatientDescription()
                                     style={{
                                         width: "159px",
                                         height: "45px",
-                                        backgroundColor: "#08DA75",
+                                        backgroundColor: "#89CFF0",
                                         borderRadius: "43px",
                                         color: "white",
                                         fontWeight: 600,

@@ -111,7 +111,7 @@ function AdminSidebar()
                     modal: {
                         // Set your custom width here (e.g., '70%')
                         width: isTab ? "80%" : "40%",
-                        backgroundColor: "#08DA75",
+                        backgroundColor: "#89CFF0",
                         alignContent: "center",
                         padding: "2%",
                     },

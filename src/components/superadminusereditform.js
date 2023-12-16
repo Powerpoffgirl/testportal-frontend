@@ -19,6 +19,7 @@ export default function SuperAdminUserEditForm()
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
   const [adminImage, setAdminImage] = useState();
+  const [errors, setErrors] = useState({});
 
 
   const handleFileSelect = (event) =>
@@ -153,9 +154,60 @@ export default function SuperAdminUserEditForm()
     handleClose();
   };
 
+  const validateField = (name, value) => 
+  {
+    switch (name)
+    {
+      case "name":
+        return value ? "" : "Name is required.";
+      case "email":
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+          ? ""
+          : "Email is not valid.";
+      case "contactNumber":
+        return value.length > 0 && value.length === 10
+          ? ""
+          : "Contact number is required or Add valid 10 Digit Number.";
+      case "degree":
+        return value ? "" : "Degree is required  ";
+      case "totalExperience":
+        return value ? "" : "Total Experience is required  ";
+      case "houseNo":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "houseNo is required  ";
+      case "floor":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
+      case "block":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Block is required  ";
+      case "area":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Area is required and must be a string ";
+      case "pinCode":
+        return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
+      case "district":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "District is required and must be a string ";
+      case "state":
+        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "State is required and must be a string ";
+      case "workHourFrom":
+        // Assuming time in HH:MM format, adjust as needed
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+          ? ""
+          : "Invalid start time.";
+      case "workHourTo":
+        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+          ? ""
+          : "Invalid end time.";
+      // Add more cases as needed for other fields
+      default:
+        return "";
+    }
+  };
+
   const handleChange = (e) =>
   {
     const { name, value } = e.target;
+
+    const error = validateField(name, value);
+    setErrors({ ...errors, [name]: error });
+
 
     if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
     {
@@ -212,12 +264,12 @@ export default function SuperAdminUserEditForm()
       return;
     }
 
-    if (!isEmpty || isEditing === true)
-    {
+    // if (!isEmpty || isEditing === true)
+    // {
 
-      toast.success('Form submitted successfully!');
+    //   toast.success('Form submitted successfully!');
 
-    }
+    // }
 
     if (!token)
     {
@@ -236,9 +288,16 @@ export default function SuperAdminUserEditForm()
       }
     );
     const data = await response.json();
+
+    if (data.statusCode === 400)
+    {
+      toast.error("Please fill the details");
+    }
+
     if (data.success === true)
     {
       console.log("Doctor updated successfully.")
+      toast.success("Doctor updated successfully.");
       // navigate("/otp")
       // localStorage.setItem("id", data.data._id)
     }
@@ -302,7 +361,7 @@ export default function SuperAdminUserEditForm()
                   >
                     <MdEdit />
                   </p>
-                  <div style={{ backgroundColor: "#08DA75" }}>
+                  <div style={{ backgroundColor: "#89CFF0" }}>
                     <Menu
                       id="profile-pic-menu"
                       anchorEl={anchorEl}
@@ -310,12 +369,12 @@ export default function SuperAdminUserEditForm()
                       onClose={handleClose}
                       MenuListProps={{
                         "aria-labelledby": "edit-profile-pic-text",
-                        style: { backgroundColor: "#08DA75" }, // Set background color for the whole menu
+                        style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
                       }}
                     >
                       <MenuItem
                         style={{
-                          backgroundColor: "#08DA75",
+                          backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
                         onClick={handleNewProfilePictureClick}
@@ -331,7 +390,7 @@ export default function SuperAdminUserEditForm()
 
                       <MenuItem
                         style={{
-                          backgroundColor: "#08DA75",
+                          backgroundColor: "#89CFF0",
                           color: isHovered1 ? "red" : "white",
                         }}
                         // onClick={handleRemoveProfilePicture}
@@ -372,8 +431,9 @@ export default function SuperAdminUserEditForm()
                   name="name"
                   onChange={handleChange}
                   value={doctorDetails?.name}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
+                {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
               <div>
                 <label
@@ -389,8 +449,11 @@ export default function SuperAdminUserEditForm()
                   name="email"
                   onChange={handleChange}
                   value={doctorDetails?.email}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
+                {errors.email && (
+                  <p className="text-red-500">{errors.email}</p>
+                )}
               </div>
               <div>
                 <label
@@ -406,14 +469,17 @@ export default function SuperAdminUserEditForm()
                   name="contactNumber"
                   onChange={handleChange}
                   value={doctorDetails?.contactNumber}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
+                {errors.contactNumber && (
+                  <p className="text-red-500">{errors.contactNumber}</p>
+                )}
               </div>
 
 
 
 
-              <div class="p-3 pb-5 border border-[#08DA75]">
+              <div class="p-3 pb-5 border border-[#89CFF0]">
                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                   <div class="px-2 w-full sm:w-1/3">
                     <label
@@ -429,7 +495,7 @@ export default function SuperAdminUserEditForm()
                       onChange={handleChange}
                       placeholder="1234"
                       value={doctorDetails?.address?.houseNo}
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/3">
@@ -446,7 +512,7 @@ export default function SuperAdminUserEditForm()
                       onChange={handleChange}
                       placeholder="2nd"
                       value={doctorDetails?.address?.floor}
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/3">
@@ -463,7 +529,7 @@ export default function SuperAdminUserEditForm()
                       onChange={handleChange}
                       placeholder="A"
                       value={doctorDetails?.address?.block}
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
@@ -480,8 +546,11 @@ export default function SuperAdminUserEditForm()
                       onChange={handleChange}
                       value={doctorDetails?.address?.area}
                       placeholder="Green Park"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+                    {errors.area && (
+                      <p className="text-red-500">{errors.area}</p>
+                    )}
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
                     <label
@@ -497,8 +566,11 @@ export default function SuperAdminUserEditForm()
                       onChange={handleChange}
                       placeholder="110016"
                       value={doctorDetails?.address?.pinCode}
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+                    {errors.pinCode && (
+                      <p className="text-red-500">{errors.pinCode}</p>
+                    )}
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
                     <label
@@ -514,8 +586,11 @@ export default function SuperAdminUserEditForm()
                       onChange={handleChange}
                       placeholder="South Delhi"
                       value={doctorDetails?.address?.district}
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+                    {errors.district && (
+                      <p className="text-red-500">{errors.district}</p>
+                    )}
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
                     <label
@@ -531,8 +606,11 @@ export default function SuperAdminUserEditForm()
                       onChange={handleChange}
                       value={doctorDetails?.address?.state}
                       placeholder="Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+                    {errors.state && (
+                      <p className="text-red-500">{errors.state}</p>
+                    )}
                   </div>
                 </div>
               </div>

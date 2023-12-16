@@ -392,7 +392,7 @@ export default function PatientDescription()
                     // Any other styles to override default modal styles
                 }
             }} center>
-                <div className="flex flex-col items-center w-[100%] md:w-[100%]" style={{ border: 'none', borderRadius: "5px", backgroundColor: '#08DA75' }}>
+                <div className="flex flex-col items-center w-[100%] md:w-[100%]" style={{ border: 'none', borderRadius: "5px", backgroundColor: '#89CFF0' }}>
                     <text className="ml-4 text-center mt-4" style={{ marginBottom: -20, fontSize: "40px", fontWeight: 700, lineHeight: "28.8px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', height: '100px', width: '370px', display: "flex", alignItems: "center", justifyContent: "center" }}>
                         Confirmed !
                     </text>
@@ -423,7 +423,7 @@ export default function PatientDescription()
                 // doctor={selectedDoctor}
                 styles={{
                     modal: {
-                        backgroundColor: '#08DA75',
+                        backgroundColor: '#89CFF0',
                         alignContent: 'center'
                     },
                 }}
