@@ -91,7 +91,8 @@ export default function EditAppointmentAdmin()
                 if (!token)
                 {
                     console.error("No token found in local storage");
-                    return;
+                    localStorage.clear()
+                    navigate(`/adminlogin`)
                 }
                 const response = await fetch(`${baseUrl}/api/v1/admin/get_appointment/${appointmentId}`, {
                     method: 'GET',

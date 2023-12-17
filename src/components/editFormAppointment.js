@@ -150,7 +150,8 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                 if (!token)
                 {
                     console.error("No token found in local storage");
-                    return;
+                    localStorage.clear()
+                    navigate(`/adminlogin`)
                 }
                 const response = await fetch(`${baseUrl}/api/v1/user/get_patientsList`, {
                     method: 'GET',
@@ -177,7 +178,8 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                 if (!token)
                 {
                     console.error("No token found in local storage");
-                    return;
+                    localStorage.clear()
+                    navigate(`/adminlogin`)
                 }
                 const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
                     method: 'GET',
@@ -281,7 +283,8 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
         if (!token)
         {
             console.error("No token found in local storage");
-            return;
+            localStorage.clear()
+            navigate(`/adminlogin`)
         }
         const appointmentId = appointmentDetails?._id
 
@@ -523,7 +526,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
             <div className="flex justify-center my-5">
                 <button
                     type="submit"
-                    className="w-40 h-11 bg-green-500 rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                    className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
                     onClick={handleUpdate}
                 >
                     Process

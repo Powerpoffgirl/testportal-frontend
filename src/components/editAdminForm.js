@@ -109,7 +109,8 @@ export default function EditAdminForm()
                 if (!token)
                 {
                     console.error("No token found in local storage");
-                    return;
+                    localStorage.clear()
+                    navigate(`/adminlogin`)
                 }
                 const response = await fetch(`${baseUrl}/api/v1/admin/get_profile`, {
                     method: 'GET',
@@ -285,7 +286,8 @@ export default function EditAdminForm()
         if (!token)
         {
             console.error("No token found in local storage");
-            return;
+            localStorage.clear()
+            navigate(`/adminlogin`)
         }
         const response = await fetch(
             `${baseUrl}/api/v1/admin/update_profile`,
@@ -425,7 +427,7 @@ export default function EditAdminForm()
                                         onChange={handleFileSelect}
                                     />
                                 </div>
-                                <button onClick={handleNewProfilePicture} style={{ marginLeft: 20, marginTop: 5 }}>Upload</button>
+                                <button onClick={handleNewProfilePicture} style={{ marginLeft: 20, marginTop: 5, fontWeight: 600 }}>Upload</button>
                             </div>
                         </div>
                         <div class="grid grid-cols-1 w-full gap-4">
@@ -488,149 +490,156 @@ export default function EditAdminForm()
 
 
 
-
-                            <div class="p-3 pb-5 border border-[#89CFF0]">
-                                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-                                    <div class="px-2 w-full sm:w-1/3">
-                                        <label
-                                            for="houseNo"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            House No
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="houseNo"
-                                            name="houseNo"
-                                            onChange={handleChange}
-                                            placeholder="1234"
-                                            value={doctorDetails?.address?.houseNo}
-                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/3">
-                                        <label
-                                            for="floor"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            Floor
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="floor"
-                                            name="floor"
-                                            onChange={handleChange}
-                                            placeholder="2nd"
-                                            value={doctorDetails?.address?.floor}
-                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/3">
-                                        <label
-                                            for="block"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            Block
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="block"
-                                            name="block"
-                                            onChange={handleChange}
-                                            placeholder="A"
-                                            value={doctorDetails?.address?.block}
-                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                        {errors.block && (
-                                            <p className="text-red-500">{errors.block}</p>
-                                        )}
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/2">
-                                        <label
-                                            for="area"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            Area
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="area"
-                                            name="area"
-                                            onChange={handleChange}
-                                            value={doctorDetails?.address?.area}
-                                            placeholder="Green Park"
-                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                        {errors.area && (
-                                            <p className="text-red-500">{errors.area}</p>
-                                        )}
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/2">
-                                        <label
-                                            for="pincode"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            Pincode
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="pinCode"
-                                            name="pinCode"
-                                            onChange={handleChange}
-                                            placeholder="110016"
-                                            value={doctorDetails?.address?.pinCode}
-                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                        {errors.pinCode && (
-                                            <p className="text-red-500">{errors.pinCode}</p>
-                                        )}
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/2">
-                                        <label
-                                            for="district"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            District
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="district"
-                                            name="district"
-                                            onChange={handleChange}
-                                            placeholder="South Delhi"
-                                            value={doctorDetails?.address?.district}
-                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                        {errors.district && (
-                                            <p className="text-red-500">{errors.district}</p>
-                                        )}
-                                    </div>
-                                    <div class="px-2 w-full sm:w-1/2">
-                                        <label
-                                            for="state"
-                                            class="block text-black text-lg font-semibold"
-                                        >
-                                            State
-                                        </label>
-                                        <input
-                                            type="text"
-                                            id="state"
-                                            name="state"
-                                            onChange={handleChange}
-                                            value={doctorDetails?.address?.state}
-                                            placeholder="Delhi"
-                                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        />
-                                        {errors.state && (
-                                            <p className="text-red-500">{errors.state}</p>
-                                        )}
+                            <div>
+                                <label
+                                    for="houseNo"
+                                    class="block text-black text-lg font-semibold"
+                                >
+                                    Address
+                                </label>
+                                <div class="p-3 pb-5 border border-[#89CFF0]">
+                                    <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
+                                        <div class="px-2 w-full sm:w-1/3">
+                                            <label
+                                                for="houseNo"
+                                                class="block text-black text-lg font-semibold"
+                                            >
+                                                House No
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="houseNo"
+                                                name="houseNo"
+                                                onChange={handleChange}
+                                                placeholder="1234"
+                                                value={doctorDetails?.address?.houseNo}
+                                                class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            />
+                                        </div>
+                                        <div class="px-2 w-full sm:w-1/3">
+                                            <label
+                                                for="floor"
+                                                class="block text-black text-lg font-semibold"
+                                            >
+                                                Floor
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="floor"
+                                                name="floor"
+                                                onChange={handleChange}
+                                                placeholder="2nd"
+                                                value={doctorDetails?.address?.floor}
+                                                class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            />
+                                        </div>
+                                        <div class="px-2 w-full sm:w-1/3">
+                                            <label
+                                                for="block"
+                                                class="block text-black text-lg font-semibold"
+                                            >
+                                                Block
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="block"
+                                                name="block"
+                                                onChange={handleChange}
+                                                placeholder="A"
+                                                value={doctorDetails?.address?.block}
+                                                class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            />
+                                            {errors.block && (
+                                                <p className="text-red-500">{errors.block}</p>
+                                            )}
+                                        </div>
+                                        <div class="px-2 w-full sm:w-1/2">
+                                            <label
+                                                for="area"
+                                                class="block text-black text-lg font-semibold"
+                                            >
+                                                Area
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="area"
+                                                name="area"
+                                                onChange={handleChange}
+                                                value={doctorDetails?.address?.area}
+                                                placeholder="Green Park"
+                                                class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            />
+                                            {errors.area && (
+                                                <p className="text-red-500">{errors.area}</p>
+                                            )}
+                                        </div>
+                                        <div class="px-2 w-full sm:w-1/2">
+                                            <label
+                                                for="pincode"
+                                                class="block text-black text-lg font-semibold"
+                                            >
+                                                Pincode
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="pinCode"
+                                                name="pinCode"
+                                                onChange={handleChange}
+                                                placeholder="110016"
+                                                value={doctorDetails?.address?.pinCode}
+                                                class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            />
+                                            {errors.pinCode && (
+                                                <p className="text-red-500">{errors.pinCode}</p>
+                                            )}
+                                        </div>
+                                        <div class="px-2 w-full sm:w-1/2">
+                                            <label
+                                                for="district"
+                                                class="block text-black text-lg font-semibold"
+                                            >
+                                                District
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="district"
+                                                name="district"
+                                                onChange={handleChange}
+                                                placeholder="South Delhi"
+                                                value={doctorDetails?.address?.district}
+                                                class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            />
+                                            {errors.district && (
+                                                <p className="text-red-500">{errors.district}</p>
+                                            )}
+                                        </div>
+                                        <div class="px-2 w-full sm:w-1/2">
+                                            <label
+                                                for="state"
+                                                class="block text-black text-lg font-semibold"
+                                            >
+                                                State
+                                            </label>
+                                            <input
+                                                type="text"
+                                                id="state"
+                                                name="state"
+                                                onChange={handleChange}
+                                                value={doctorDetails?.address?.state}
+                                                placeholder="Delhi"
+                                                class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                                            />
+                                            {errors.state && (
+                                                <p className="text-red-500">{errors.state}</p>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="mt-10 w-100 items-center justify-center text-center">
                             <button
-                                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
+                                className="rounded-full justify-center px-9 py-2 bg-[#89CFF0] text-white"
                                 onClick={handleUpdate}
                             >
                                 Process

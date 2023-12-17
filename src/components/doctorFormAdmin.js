@@ -12,7 +12,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 
-export default function DoctorFormAdmin() {
+export default function DoctorFormAdmin()
+{
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [doctorImage, setDoctorImage] = useState();
@@ -51,34 +52,41 @@ export default function DoctorFormAdmin() {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
-  const handleFileSelect = (event) => {
+  const handleFileSelect = (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       setSelectedFile(file);
     }
   };
 
-  const handleNewProfilePictureClick = async () => {
+  const handleNewProfilePictureClick = async () =>
+  {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleNewProfilePicture = async () => {
+  const handleNewProfilePicture = async () =>
+  {
     const token = localStorage.getItem("token");
 
     const formData = new FormData();
     formData.append("doctorPic", selectedFile);
 
     console.log("FORM DATA", formData);
-    try {
+    try
+    {
       const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
         method: "POST",
         headers: {
@@ -87,7 +95,8 @@ export default function DoctorFormAdmin() {
         body: formData,
       });
 
-      if (!response.ok) {
+      if (!response.ok)
+      {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -99,12 +108,14 @@ export default function DoctorFormAdmin() {
       // Reset the file input
       setSelectedFile(null);
       fileInputRef.current.value = "";
-    } catch (error) {
+    } catch (error)
+    {
       console.error("Error uploading image:", error);
       alert("Error uploading image. Please try again.");
     }
   }; // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = () =>
+  {
     handleClose();
   };
 
@@ -178,21 +189,25 @@ export default function DoctorFormAdmin() {
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) => {
+    ...Array.from({ length: 24 }, (v, i) =>
+    {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange1 = (e) => {
+  const handleChange1 = (e) =>
+  {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: e,
     }));
   };
 
-  const validateField = (name, value) => {
-    switch (name) {
+  const validateField = (name, value) =>
+  {
+    switch (name)
+    {
       case "name":
         return value ? "" : "Name is required.";
       case "email":
@@ -246,7 +261,8 @@ export default function DoctorFormAdmin() {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     console.log("E value", e);
     const { name, value } = e.target;
     const error = validateField(name, value);
@@ -256,7 +272,8 @@ export default function DoctorFormAdmin() {
       doctorPic: doctorImage,
     }));
 
-    if (name === "workHourFrom" || name === "workHourTo") {
+    if (name === "workHourFrom" || name === "workHourTo")
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -274,7 +291,8 @@ export default function DoctorFormAdmin() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -282,7 +300,8 @@ export default function DoctorFormAdmin() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -291,19 +310,23 @@ export default function DoctorFormAdmin() {
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
     // Check if the token exists
 
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
-      return;
+      localStorage.clear()
+      navigate(`/adminlogin`)
     }
 
     const isEmpty = Object.values(doctorDetails).some((value) => value === "");
 
-    if (isEmpty || isEditing === false) {
+    if (isEmpty || isEditing === false)
+    {
       toast.error("Please fill the fields or Update");
       setIsEditing(false);
       return;
@@ -319,15 +342,18 @@ export default function DoctorFormAdmin() {
     });
     const data = await response.json();
 
-    if (data.statusCode === 400) {
+    if (data.statusCode === 400)
+    {
       toast.error("Please fill the details");
     }
 
-    if (data.statusCode === 500) {
+    if (data.statusCode === 500)
+    {
       toast.error("Enter Unique Values or Values already Exist ");
     }
 
-    if (data.success === true) {
+    if (data.success === true)
+    {
       navigate("/otp", {
         state: { contactNumber: doctorDetails.contactNumber },
       });
@@ -336,7 +362,8 @@ export default function DoctorFormAdmin() {
     console.log("DATA from response", data);
   };
 
-  const handleDelete = (workingDay) => {
+  const handleDelete = (workingDay) =>
+  {
     console.log("delete", workingDay);
     const days = doctorDetails.workingDays.filter(
       (doctorDetail) => doctorDetail !== workingDay
@@ -458,7 +485,7 @@ export default function DoctorFormAdmin() {
                 </div>
                 <button
                   onClick={handleNewProfilePicture}
-                  style={{ marginLeft: 20, marginTop: 5 }}
+                  style={{ marginLeft: 20, marginTop: 5, fontWeight: 600 }}
                 >
                   Upload
                 </button>
@@ -535,7 +562,7 @@ export default function DoctorFormAdmin() {
                       name="workingDays"
                       onChange={handleChange1}
                       placeholder="Select Working Days"
-                      // Add other props as needed
+                    // Add other props as needed
                     >
                       {Daysdropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -640,141 +667,149 @@ export default function DoctorFormAdmin() {
                   <p className="text-red-500">{errors.degree}</p>
                 )}
               </div>
-              <div class="p-3 pb-5 border border-[#08DA75]">
-                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-                  <div class="px-2 w-full sm:w-1/3">
-                    <label
-                      for="houseNo"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      House No
-                    </label>
-                    <input
-                      type="text"
-                      id="houseNo"
-                      name="houseNo"
-                      onChange={handleChange}
-                      placeholder="1234"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/3">
-                    <label
-                      for="floor"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      Floor
-                    </label>
-                    <input
-                      type="text"
-                      id="floor"
-                      name="floor"
-                      onChange={handleChange}
-                      placeholder="2nd"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                  </div>
-                  <div class="px-2 w-full sm:w-1/3">
-                    <label
-                      for="block"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      Block
-                    </label>
-                    <input
-                      type="text"
-                      id="block"
-                      name="block"
-                      onChange={handleChange}
-                      placeholder="A"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {errors.block && (
-                      <p className="text-red-500">{errors.block}</p>
-                    )}
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
-                    <label
-                      for="area"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      Area
-                    </label>
-                    <input
-                      type="text"
-                      id="area"
-                      name="area"
-                      onChange={handleChange}
-                      placeholder="Green Park"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {errors.area && (
-                      <p className="text-red-500">{errors.area}</p>
-                    )}
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
-                    <label
-                      for="pincode"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      Pincode
-                    </label>
-                    <input
-                      type="text"
-                      id="pinCode"
-                      name="pinCode"
-                      onChange={handleChange}
-                      placeholder="110016"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {errors.pinCode && (
-                      <p className="text-red-500">{errors.pinCode}</p>
-                    )}
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
-                    <label
-                      for="district"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      District
-                    </label>
-                    <input
-                      type="text"
-                      id="district"
-                      name="district"
-                      onChange={handleChange}
-                      placeholder="South Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {errors.district && (
-                      <p className="text-red-500">{errors.district}</p>
-                    )}
-                  </div>
-                  <div class="px-2 w-full sm:w-1/2">
-                    <label
-                      for="state"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      State
-                    </label>
-                    <input
-                      type="text"
-                      id="state"
-                      name="state"
-                      onChange={handleChange}
-                      placeholder="Delhi"
-                      class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {errors.state && (
-                      <p className="text-red-500">{errors.state}</p>
-                    )}
+              <div>
+                <label
+                  for="houseNo"
+                  class="block text-black text-lg font-semibold"
+                >
+                  Address
+                </label>
+                <div class="p-3 pb-5 border border-[#08DA75]">
+                  <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
+                    <div class="px-2 w-full sm:w-1/3">
+                      <label
+                        for="houseNo"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        House No
+                      </label>
+                      <input
+                        type="text"
+                        id="houseNo"
+                        name="houseNo"
+                        onChange={handleChange}
+                        placeholder="1234"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    </div>
+                    <div class="px-2 w-full sm:w-1/3">
+                      <label
+                        for="floor"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        Floor
+                      </label>
+                      <input
+                        type="text"
+                        id="floor"
+                        name="floor"
+                        onChange={handleChange}
+                        placeholder="2nd"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    </div>
+                    <div class="px-2 w-full sm:w-1/3">
+                      <label
+                        for="block"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        Block
+                      </label>
+                      <input
+                        type="text"
+                        id="block"
+                        name="block"
+                        onChange={handleChange}
+                        placeholder="A"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                      {errors.block && (
+                        <p className="text-red-500">{errors.block}</p>
+                      )}
+                    </div>
+                    <div class="px-2 w-full sm:w-1/2">
+                      <label
+                        for="area"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        Area
+                      </label>
+                      <input
+                        type="text"
+                        id="area"
+                        name="area"
+                        onChange={handleChange}
+                        placeholder="Green Park"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                      {errors.area && (
+                        <p className="text-red-500">{errors.area}</p>
+                      )}
+                    </div>
+                    <div class="px-2 w-full sm:w-1/2">
+                      <label
+                        for="pincode"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        Pincode
+                      </label>
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        onChange={handleChange}
+                        placeholder="110016"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                      {errors.pinCode && (
+                        <p className="text-red-500">{errors.pinCode}</p>
+                      )}
+                    </div>
+                    <div class="px-2 w-full sm:w-1/2">
+                      <label
+                        for="district"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        District
+                      </label>
+                      <input
+                        type="text"
+                        id="district"
+                        name="district"
+                        onChange={handleChange}
+                        placeholder="South Delhi"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                      {errors.district && (
+                        <p className="text-red-500">{errors.district}</p>
+                      )}
+                    </div>
+                    <div class="px-2 w-full sm:w-1/2">
+                      <label
+                        for="state"
+                        class="block text-black text-lg font-semibold"
+                      >
+                        State
+                      </label>
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        onChange={handleChange}
+                        placeholder="Delhi"
+                        class="block w-full rounded-lg border border-[#08DA75] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                      {errors.state && (
+                        <p className="text-red-500">{errors.state}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button
-                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
+                className="rounded-full justify-center px-9 py-2 bg-[#89CFF0] text-white"
                 onClick={handleRegister}
               >
                 Process
