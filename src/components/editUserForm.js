@@ -19,10 +19,7 @@ export default function EditUserForm()
   const [isHovered1, setIsHovered1] = useState(false);
   const [userImage, setUserImage] = useState();
   const [errors, setErrors] = useState({});
-
   const [userDetails, setUserDetails] = useState({ name: "" });
-  //     const [userDetails, setUserDetails] = useState({ name: '' });
-  //   const [errors, setErrors] = useState({});
 
   const handleFileSelect = (event) =>
   {
@@ -77,7 +74,6 @@ export default function EditUserForm()
     }
   };
 
-  // const [userDetails, setUserDetails] = useState(null)
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const fileInputRef = useRef(null);
@@ -288,7 +284,6 @@ export default function EditUserForm()
     {
       console.log("Doctor updated successfully.");
       navigate("/doctorlistuser");
-      // localStorage.setItem("id", data.data._id)
     }
     console.log("DATA from response", data);
   };

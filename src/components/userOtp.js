@@ -76,22 +76,12 @@ const UserOTP = () =>
   const handleMobileNumberChange = (e) =>
   {
     const { name, value } = e.target;
-    // if (name === "contactNumber")
-    // {
-    //   setContactNumber(value);
-    // }
+
     if (name === "otp")
     {
       setOtp(value);
     }
 
-    // const isValidNumber = /^\d{10}$/.test(newContactNumber);
-
-    // if (isValidNumber || newContactNumber === "") {
-    //   setError(""); // Clear any previous error message
-    // } else {
-    //   setError("Please enter a valid 10-digit mobile number");
-    // }
   };
 
   console.log("otp output$$$$$$$$$$$", otp)

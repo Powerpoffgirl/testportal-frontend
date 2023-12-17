@@ -29,8 +29,15 @@ export default function EditPatientForm()
     const [open, setOpen] = useState(false);
     const onOpenModal = () => setOpen(true);
     const onCloseModal = () => setOpen(false);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [isHovered, setIsHovered] = useState(false);
+    const [isHovered1, setIsHovered1] = useState(false);
+    const [userImage, setUserImage] = useState();
     const navigate = useNavigate()
-
+    const [anchorEl, setAnchorEl] = useState(null);
+    const open1 = Boolean(anchorEl);
+    const fileInputRef = useRef(null);
+    const [isEditing, setIsEditing] = useState(false);
 
     const [patientDetails, setPatientDetails] = useState({
         name: "",
@@ -44,7 +51,8 @@ export default function EditPatientForm()
             pinCode: "",
             district: "",
             state: ""
-        }
+        },
+        patientPic: "",
     })
 
     useEffect(() =>
@@ -79,6 +87,81 @@ export default function EditPatientForm()
         fetchPatientDetails()
     }, [])
 
+    const handleFileSelect = (event) =>
+    {
+        const file = event.target.files[0];
+        if (file)
+        {
+            setSelectedFile(file);
+        }
+    };
+
+    const handleNewProfilePictureClick = async () =>
+    {
+        // This will trigger the hidden file input to open the file dialog
+        await fileInputRef.current.click();
+    };
+
+    const handleNewProfilePicture = async () =>
+    {
+        const token = localStorage.getItem("token");
+        const doctorId = localStorage.getItem("doctorId");
+        const formData = new FormData();
+        formData.append("doctorPic", selectedFile);
+
+        console.log("FORM DATA", formData);
+        try
+        {
+            const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+                method: "POST",
+                headers: {
+                    "x-auth-token": token,
+                },
+                body: formData,
+            });
+
+            if (!response.ok)
+            {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            console.log("Image uploaded successfully:", data);
+            setUserImage(data.profilePicImageUrl);
+            alert("Image uploaded successfully.");
+
+            // Reset the file input
+            setSelectedFile(null);
+            fileInputRef.current.value = "";
+        } catch (error)
+        {
+            console.error("Error uploading image:", error);
+            alert("Error uploading image. Please try again.");
+        }
+    };
+
+
+    const handleClick = (event) =>
+    {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () =>
+    {
+        setAnchorEl(null);
+    };
+
+    const handleToggleEdit = () =>
+    {
+        setIsEditing(!isEditing);
+    };
+
+    // Function to handle profile picture removal
+    const handleRemoveProfilePicture = () =>
+    {
+        // Logic to handle removing the current profile picture
+        handleClose();
+    };
 
     const handleChange = (e) =>
     {
@@ -141,7 +224,8 @@ export default function EditPatientForm()
                     age: patientDetails.age,
                     bodyWeight: patientDetails.bodyWeight,
                     name: patientDetails.name,
-                    address: patientDetails.address
+                    address: patientDetails.address,
+                    patientPic: userImage,
                 })
             }
         );
@@ -218,7 +302,7 @@ export default function EditPatientForm()
                                             color: "#A4A4A4",
                                         }}
                                     >
-                                        {/* {userImage || patientDetails?.patientPic ? (
+                                        {userImage || patientDetails?.patientPic ? (
                                             <img
                                                 src={userImage || patientDetails?.patientPic}
                                                 alt="Avatar"
@@ -226,17 +310,17 @@ export default function EditPatientForm()
                                                     borderRadius: "50%",
                                                 }}
                                             />
-                                        ) : ( */}
-                                        <PermIdentityOutlinedIcon
-                                            style={{ width: "70px", height: "70px" }}
-                                        />
-                                        {/* )} */}
+                                        ) : (
+                                            <PermIdentityOutlinedIcon
+                                                style={{ width: "70px", height: "70px" }}
+                                            />
+                                        )}
                                     </div>
                                     <p
                                         aria-controls="profile-pic-menu"
                                         aria-haspopup="true"
                                         aria-expanded={open ? "true" : undefined}
-                                        // onClick={handleClick}
+                                        onClick={handleClick}
                                         style={{
                                             cursor: "pointer",
                                             marginLeft: 37,
@@ -248,15 +332,15 @@ export default function EditPatientForm()
                                     <div style={{ backgroundColor: "#89CFF0" }}>
                                         <Menu
                                             id="profile-pic-menu"
-                                            // anchorEl={anchorEl}
-                                            // open={open}
-                                            // onClose={handleClose}
+                                            anchorEl={anchorEl}
+                                            open={open1}
+                                            onClose={handleClose}
                                             MenuListProps={{
                                                 "aria-labelledby": "edit-profile-pic-text",
                                                 style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
                                             }}
                                         >
-                                            {/* <MenuItem
+                                            <MenuItem
                                                 style={{
                                                     backgroundColor: "#89CFF0",
                                                     color: isHovered ? "red" : "white",
@@ -270,19 +354,19 @@ export default function EditPatientForm()
                                                     <HiOutlineUserAdd />
                                                 </span>
                                                 <span>New profile picture</span>
-                                            </MenuItem> */}
+                                            </MenuItem>
 
                                             <MenuItem
                                                 style={{
                                                     backgroundColor: "#89CFF0",
-                                                    // color: isHovered1 ? "red" : "white",
+                                                    color: isHovered1 ? "red" : "white",
                                                 }}
-                                            // onClick={handleRemoveProfilePicture}
-                                            // onMouseEnter={() => setIsHovered1(true)}
-                                            // onMouseLeave={() => setIsHovered1(false)}
+                                                onClick={handleRemoveProfilePicture}
+                                                onMouseEnter={() => setIsHovered1(true)}
+                                                onMouseLeave={() => setIsHovered1(false)}
                                             >
                                                 <span style={{ marginRight: "8px" }}>
-                                                    {/* <FaRegTrashAlt /> */}
+                                                    <FaRegTrashAlt />
                                                 </span>
                                                 <span>Remove current picture</span>
                                             </MenuItem>
@@ -291,14 +375,14 @@ export default function EditPatientForm()
                                     <input
                                         id="imageInput"
                                         type="file"
-                                        // ref={fileInputRef}
+                                        ref={fileInputRef}
                                         style={{ display: "none" }}
                                         accept="image/*"
-                                    // onChange={handleFileSelect}
+                                        onChange={handleFileSelect}
                                     />
                                 </div>
                                 <button
-                                    // onClick={handleNewProfilePicture}
+                                    onClick={handleNewProfilePicture}
                                     style={{ marginLeft: 20, marginTop: 5, fontWeight: 600 }}
                                 >
                                     Upload

@@ -18,7 +18,7 @@ export default function Layout({
 {
   const baseUrl = process.env.REACT_APP_BASE_URL
   console.log("TYPE=================", type)
-  const userType = type.toLowerCase();
+  const userType = type?.toLowerCase();
   const handleLogout = async () =>
   {
     const token = localStorage.getItem("token");
