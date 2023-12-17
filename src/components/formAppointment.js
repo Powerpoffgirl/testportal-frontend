@@ -396,13 +396,13 @@ const FormAppoinment = ({ onDataFromChild }) =>
 
                 <div className="flex flex-col">
                     <label
-                        className="mx-2 text-lg font-normal text-black font-lato"
+                        className="mx-2 block text-black text-lg font-semibold"
                         htmlFor="patientName"
                     >
                         Patient Name
                     </label>
                     <select
-                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
                         name="patientName"
                         onChange={handleChange}
                     >
@@ -424,13 +424,13 @@ const FormAppoinment = ({ onDataFromChild }) =>
 
                 <div className="flex flex-col">
                     <label
-                        className="mx-2 text-lg font-normal text-black font-lato"
+                        className="mx-2 block text-black text-lg font-semibold"
                         htmlFor="doctorName"
                     >
                         Doctor Name
                     </label>
                     <select
-                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                        className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg"
                         name="doctorName"
                         onChange={handleChange}
                     >
@@ -452,13 +452,13 @@ const FormAppoinment = ({ onDataFromChild }) =>
 
                 <div className="flex flex-col">
                     <label
-                        className="mx-2 text-lg font-normal text-black font-lato"
+                        className="mx-2 block text-black text-lg font-semibold"
                         htmlFor="appointmentDate"
                     >
                         Appointment Date
                     </label>
                     <input
-                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
                         type="date"
                         id="appointmentDate"
                         name="date"
@@ -468,13 +468,13 @@ const FormAppoinment = ({ onDataFromChild }) =>
 
                 <div className="flex flex-col">
                     <label
-                        className="mx-2 text-lg font-normal text-black font-lato"
+                        className="mx-2 block text-black text-lg font-semibold"
                         htmlFor="appointmentTime"
                     >
                         Appointment Time
                     </label>
                     <input
-                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
                         type="time"
                         id="appointmentTime"
                         name="time"
@@ -485,12 +485,12 @@ const FormAppoinment = ({ onDataFromChild }) =>
 
             {/* <div className="grid grid-cols-1 w-full gap-4"> */}
             <div className="flex flex-col">
-                <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
+                <label className="mx-2 block text-black text-lg font-semibold" htmlFor="issues">
                     Issues
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 rounded-lg"
+                    className="mx-2 block text-black text-lg font-semibold"
                     popupClassName="no-border-dropdown-menu"
                     id="issues"
                     name="issues"
@@ -509,12 +509,14 @@ const FormAppoinment = ({ onDataFromChild }) =>
             </div>
 
             <div className="flex flex-col">
-                <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
+                <label
+                    className="mx-2 block text-black text-lg font-semibold"
+                    htmlFor="issues">
                     Disease
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 rounded-lg"
+                    className="mx-2 border border-[#89CFF0] rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="diseases"
                     name="diseases"
@@ -535,7 +537,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
             <div className="flex justify-center my-5">
                 <button
                     type="submit"
-                    className="w-40 h-11 bg-green-500 rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                    className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
                     onClick={handleRegister}
                 >
                     Process

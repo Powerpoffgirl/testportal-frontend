@@ -234,14 +234,6 @@ const UserOTP = () =>
             />
             <p className="error_message">{otperror}</p>
           </div>
-          {/* <p style={{ fontWeight: 400, fontSize: '16px', display: "flex", marginLeft: "70%" }}>
-            <p onClick={SendOTP} className="resendOtp" >
-              Resend OTP
-            </p>{" "}
-          </p>
- */}
-
-
           <p style={{ fontWeight: 400, fontSize: '16px', display: "flex", marginLeft: "40%" }}>
             <p className="timer" style={{ color: "#666", cursor: 'pointer' }}>
               <text className="mx-2" style={{ color: "#000000" }}>

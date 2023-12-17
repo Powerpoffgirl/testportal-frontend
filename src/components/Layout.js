@@ -14,11 +14,11 @@ export default function Layout({
   headerTextBottom,
   search,
   AddButton,
-  // setSearchTerm,
 })
 {
   const baseUrl = process.env.REACT_APP_BASE_URL
   console.log("TYPE=================", type)
+  const userType = type.toLowerCase();
   const handleLogout = async () =>
   {
     const token = localStorage.getItem("token");
@@ -26,7 +26,9 @@ export default function Layout({
     if (!token)
     {
       console.error("No token found in local storage");
-      return;
+      localStorage.clear()
+      navigate(`/${userType}login`)
+      // return;
     }
     const response = await fetch(
       `${baseUrl}/api/v1/${type}/logout`,
