@@ -173,88 +173,98 @@ export default function AppointmentListUser({ searchTerm })
         styles={{
           modal: {
             // Set your custom width here (e.g., '70%')
-            width: isTab ? "80%" : "70%",
-            backgroundColor: "#89CFF0",
+            width: isTab ? "80%" : "50%",
+            backgroundColor: "#fff",
             alignContent: "center",
           },
         }}
       >
-        <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
+        <div className="flex flex-col bg-customRedp-2  w-[100%] md:w-[100%]  mt-[1%]">
           <div className="flex flex-row w-[100%] justify-between">
-            <span className="flex flex-col justify-start">
-              <text style={{ color: "#89CFF0" }}>Mon-Fri</text>
-              <text style={{ color: "#89CFF0" }}>10:00am-6:00pm</text>
-            </span>
+            {
+              selectedAppointment?.UserPic ? <img
+                src={selectedAppointment?.UserPicc}
+                alt="Avatar"
+                style={{
+                  borderRadius: "50%",
+                  height: isTab ? "40px" : "123px",
+                  width: isTab ? "40px" : "123px",
+                  marginRight: '70px',
+                  marginLeft: '20px',
+                  boxShadow: 'inset 0 0 0 2px #76767'
+                }}
+              />
+                :
+                <AccountCircleIcon style={{
+                  fontSize: '90px', color: "#E3F6FF",
+                  borderRadius: "50%",
+                  height: isTab ? "40px" : "123px",
+                  width: isTab ? "40px" : "123px",
+                  marginRight: '75px',
+                  marginLeft: "-10px",
+                  boxShadow: 'inset 0 0 0 2px #76767'
+                }} />
+            }
           </div>
           <text
-            className="ml-4 text-center mt-4"
+            className="ml-4 text-start mt-2"
             style={{
-              fontSize: isTab ? "18px" : "26px",
-              fontWeight: 600,
+              fontSize: isTab ? "18px" : "30px",
+              fontWeight: 500,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
             }}
           >
             {selectedAppointment?.patientId?.name ? selectedAppointment.patientId?.name : "No Name"}
           </text>
-
           <text
-            className="ml-4 text-center mt-4"
+            className="ml-4 text-start mt-2"
             style={{
-              fontSize: isTab ? "12px" : "20px",
+              fontSize: isTab ? "12px" : "22px",
               fontWeight: 400,
               lineHeight: "24px",
               fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-              marginBottom: "2%",
+              color: "#767676",
+
             }}
           >
             Age: {selectedAppointment?.patientId?.age ? selectedAppointment?.patientId?.age : "   "} yr, Weight :{selectedAppointment?.patientId?.bodyWeight ? selectedAppointment?.patientId?.bodyWeight : "    "} kg
           </text>
           <text
-            className="ml-4 text-center mt-2"
+            className="ml-4 text-start mt-2"
             style={{
-              fontSize: isTab ? "16px" : "24px",
+              fontSize: isTab ? "16px" : "22px",
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              color: "white",
-            }}
-          ></text>
-          <text
-            className="ml-4 text-center mt-2"
-            style={{
-              fontSize: isTab ? "14px" : "22px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "white",
+              color: "#43BCF5",
             }}
           >
             Issues: {selectedAppointment?.issues ? selectedAppointment?.issues.join(', ') : "N/A"}<br />
             Diseases: {selectedAppointment?.diseases ? selectedAppointment?.diseases.join(', ') : "N/A"}
           </text>
           <text
-            className="ml-4 text-center mt-2"
+            className="ml-4 text-start mt-2"
             style={{
-              fontSize: isTab ? "14px" : "20px",
+              fontSize: isTab ? "14px" : "22px",
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              color: "white",
+              color: "#2CBE78"
+
             }}
           >
             Appointment Date: {selectedAppointment?.appointmentDate?.date ? selectedAppointment?.appointmentDate?.date : "No Date"}<br />
             Appointment Time: {selectedAppointment?.appointmentDate?.time ? selectedAppointment?.appointmentDate?.time : "N/A"}
           </text>
           <text
-            className="ml-4 text-center mt-2"
+            className="ml-4 text-start mt-2 text-purple-900"
             style={{
-              fontSize: isTab ? "14px" : "20px",
+              fontSize: isTab ? "14px" : "22px",
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
+              color: "#CB13CF"
             }}
           >
             {selectedAppointment?.patientId?.address?.houseNo ? selectedAppointment?.patientId?.address?.houseNo +
@@ -269,38 +279,6 @@ export default function AppointmentListUser({ searchTerm })
               " " +
               selectedAppointment?.patientId?.address?.pinCode : " "}
           </text>
-
-          <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
-            <span
-              style={{
-                width: "25px",
-                height: "25px",
-              }}
-              onClick={() => handleEditAppointment(selectedAppointment._id)}
-              dangerouslySetInnerHTML={{ __html: svg4 }}
-            ></span>
-            <span
-              style={{
-                width: "25px",
-                height: "25px",
-              }}
-              // onClick={() => handleDeleteDoctor(selectedDoctor?._id)}
-              dangerouslySetInnerHTML={{ __html: svg5 }}
-            ></span>
-          </div>
-          <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
-            <span className="flex">
-              <span
-                className="mr-8"
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg1 }}
-              ></span>
-              <span
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg2 }}
-              ></span>
-            </span>
-          </div>
         </div>
       </Modal>
 

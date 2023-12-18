@@ -4,7 +4,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DatePicker, Select, Space, TimePicker } from 'antd';
 import "../App.css"
 import celebrate from "../assets/celebrate.png"
+
 import { Datepicker } from 'flowbite-react';
+import 'react-datepicker/dist/react-datepicker.module.css'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const DiseasesDropdown = [
@@ -110,7 +114,6 @@ const SymptomsDropdown = [
 ];
 
 
-
 const FormAppoinment = ({ onDataFromChild }) =>
 {
     const baseUrl = process.env.REACT_APP_BASE_URL
@@ -146,7 +149,6 @@ const FormAppoinment = ({ onDataFromChild }) =>
         console.log("SELECTED DOCTOR", selectedDoctor)
     }, [selectedDoctor])
 
-    console.log("patient id ######################", patientId);
 
     useEffect(() =>
     {
@@ -215,6 +217,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
 
     const handleChange = (e) =>
     {
+
         const { name, value } = e.target;
         // Assuming 'patientsList' is an array of patient objects with '_id' and 'name'
         const selectedPatient = patientsList.find(patient => patient.name === value);
@@ -241,44 +244,79 @@ const FormAppoinment = ({ onDataFromChild }) =>
             onDataFromChild(value);
         }
         else
-        {
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                [name]: value
-            }));
+        else if (name === "time")
+{
+    setPatientDetails(prevPatientDetails => ({
+        ...prevPatientDetails,
+        appointmentDate: {
+            ...prevPatientDetails.appointmentDate,
+            [name]: value,
         }
+    }));
+} else
+{
+    setPatientDetails(prevPatientDetails => ({
+        ...prevPatientDetails,
+        [name]: value
+    }));
+}
 
     };
 
-    const handleChangeIssues = (values) =>
-    {
-        setPatientDetails(prevPatientDetails => ({
-            ...prevPatientDetails,
-            issues: values
-        }));
-    };
+const handleChangeIssues = (values) =>
+{
+    setPatientDetails(prevPatientDetails => ({
+        ...prevPatientDetails,
+        issues: values
+    }));
+};
 
-    const handleChangeDiseases = (values) =>
-    {
-        setPatientDetails(prevPatientDetails => ({
-            ...prevPatientDetails,
-            diseases: values
-        }));
-    };
+const handleChangeDiseases = (values) =>
+{
+    setPatientDetails(prevPatientDetails => ({
+        ...prevPatientDetails,
+        diseases: values
+    }));
+};
 
 
-    const handleRegister = async (e) =>
+const handleRegister = async (e) =>
+{
+    e.preventDefault();
+    if (patientDetails.patientId === null)
     {
-        e.preventDefault();
-        // Check if the token exists
+        toast.error("Please select a member!")
+    }
+    else if (patientDetails.doctorId === null)
+    {
+        toast.error("Please select a doctor!")
+    }
+    else if (patientDetails.appointmentDate.date === null || patientDetails.appointmentDate.date === '')
+    {
+        toast.error("Please select date!")
+    }
+    else if (patientDetails.appointmentDate.time === null || patientDetails.appointmentDate.time === '')
+    {
+        toast.error("Please select time!")
+    }
+    else if (Array.isArray(patientDetails.issues) && patientDetails.issues.length === 0)
+    {
+        toast.error("Please select issues!");
+    }
+    else
+    {
         const token = localStorage.getItem("token");
         if (!token)
         {
             console.error("No token found in local storage");
-            return;
+            localStorage.clear()
+            navigate("/userlogin")
         }
 
+        if (patientDetails.doctorId)
+        {
 
+        }
         const response = await fetch(
             `${baseUrl}/api/v1/user/create_appointment`,
             {
@@ -308,7 +346,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
             className="flex flex-col gap-2 px-3 w-full relative overflow-hidden justify-center"
             onSubmit={(e) => e.preventDefault()}
         >
-
+            <ToastContainer />
             <Modal open={open}
                 onClose={onCloseModal}
                 center
@@ -466,6 +504,20 @@ const FormAppoinment = ({ onDataFromChild }) =>
                                 }));
                             }
                         }}
+                        onChange={(date) =>
+                        {
+                            if (date && date.isValid())
+                            {
+                                const formattedDate = date.format('DD-MM-YYYY'); // Format the date
+                                setPatientDetails(prevPatientDetails => ({
+                                    ...prevPatientDetails,
+                                    appointmentDate: {
+                                        ...prevPatientDetails.appointmentDate,
+                                        date: formattedDate // Update state with the formatted date
+                                    }
+                                }));
+                            }
+                        }}
                     />
 
                 </div>
@@ -530,7 +582,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
             <div className="flex flex-col">
                 <label
                     className="mx-2 block text-black text-lg font-semibold"
-                    htmlFor="issues">
+                    htmlFor="diseases">
                     Disease
                 </label>
                 <Select
