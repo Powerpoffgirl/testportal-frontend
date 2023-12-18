@@ -22,8 +22,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm()
-{
+export default function PatientForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -63,24 +62,21 @@ export default function PatientForm()
   const [errors, setErrors] = useState({});
   const [userImage, setUserImage] = useState();
   const [userDetails, setUserDetails] = useState({ name: "" });
+  const [newPatientDetails, setNewPatientDetails] = useState({});
 
-  const handleFileSelect = (event) =>
-  {
+  const handleFileSelect = (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       setSelectedFile(file);
     }
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleNewProfilePicture = async () =>
-  {
+  const handleNewProfilePicture = async () => {
     const token = localStorage.getItem("token");
     const doctorId = localStorage.getItem("doctorId");
 
@@ -94,8 +90,7 @@ export default function PatientForm()
     formData.append("patientPic", selectedFile);
 
     console.log("FORM DATA", formData);
-    try
-    {
+    try {
       const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
         method: "POST",
         headers: {
@@ -104,8 +99,7 @@ export default function PatientForm()
         body: formData,
       });
 
-      if (!response.ok)
-      {
+      if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -117,8 +111,7 @@ export default function PatientForm()
       // Reset the file input
       setSelectedFile(null);
       fileInputRef.current.value = "";
-    } catch (error)
-    {
+    } catch (error) {
       console.error("Error uploading image:", error);
       alert("Error uploading image. Please try again.");
     }
@@ -140,71 +133,66 @@ export default function PatientForm()
     patientPic: "",
   });
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const validateField = (name, value) =>
-  {
-    switch (name)
-    {
-      case "name":
-        return value ? "" : "Name is required.";
-      case "age":
-        return /^[0-9]+$/.test(value) ? "" : "Age must be a number.";
-      case "bodyWeight":
-        return /^[0-9.]+$/.test(value) ? "" : "Body Weight must be a number.";
-      case "houseNo":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "houseNo is required  ";
-      case "floor":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-      case "block":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "Block is required  ";
-      case "area":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "Area is required and must be a string ";
-      case "pinCode":
-        return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-      case "district":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "District is required and must be a string ";
-      case "state":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "State is required and must be a string ";
-      case "workHourFrom":
-        // Assuming time in HH:MM format, adjust as needed
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-          ? ""
-          : "Invalid start time.";
-      case "workHourTo":
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-          ? ""
-          : "Invalid end time.";
-      // Add more cases as needed for other fields
-      default:
-        return "";
-    }
-  };
+  // const validateField = (name, value) => {
+  //   switch (name) {
+  //     case "name":
+  //       return value ? "" : "Name is required.";
+  //     case "age":
+  //       return /^[0-9]+$/.test(value) ? "" : "Age must be a number.";
+  //     case "bodyWeight":
+  //       return /^[0-9.]+$/.test(value) ? "" : "Body Weight must be a number.";
+  //     case "houseNo":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "houseNo is required  ";
+  //     case "floor":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
+  //     case "block":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "Block is required  ";
+  //     case "area":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "Area is required and must be a string ";
+  //     case "pinCode":
+  //       return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
+  //     case "district":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "District is required and must be a string ";
+  //     case "state":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "State is required and must be a string ";
+  //     case "workHourFrom":
+  //       // Assuming time in HH:MM format, adjust as needed
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid start time.";
+  //     case "workHourTo":
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid end time.";
+  //     // Add more cases as needed for other fields
+  //     default:
+  //       return "";
+  //   }
+  // };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
-    const error = validateField(name, value);
-    setErrors({ ...errors, [name]: error });
+    // const error = validateField(name, value);
+    // setErrors({ ...errors, [name]: error });
 
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
@@ -219,11 +207,11 @@ export default function PatientForm()
         "state",
       ].includes(name)
         ? {
-          address: {
-            ...prevPatientDetails.address,
-            [name]: value,
-          },
-        }
+            address: {
+              ...prevPatientDetails.address,
+              [name]: value,
+            },
+          }
         : { [name]: value }),
     }));
 
@@ -237,8 +225,7 @@ export default function PatientForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -246,8 +233,7 @@ export default function PatientForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -256,8 +242,7 @@ export default function PatientForm()
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     const newPatientDetails = {
@@ -275,47 +260,45 @@ export default function PatientForm()
       },
       patientPic: userImage,
     };
-
-    const doctorId = localStorage.getItem("doctorId");
-
-    // if (isEmpty || isEditing === false)
-    // {
-    //   toast.error("Please fill the fields");
-    //   setIsEditing(false);
-    //   return;
-    // }
-
-    // if (!isEmpty || isEditing === true)
-    // {
-    //   toast.success("Form submitted successfully!");
-    // }
-    // Check if the token exists
-    const token = localStorage.getItem("token");
-    if (!token)
-    {
-      console.error("No token found in local storage");
-      localStorage.clear()
-      navigate(`/userlogin`)
+    if (newPatientDetails.name === "") {
+      toast.error("Please write name");
+    } else if (newPatientDetails.age === "") {
+      toast.error("Please write age");
+    } else if (newPatientDetails.bodyWeight === "") {
+      toast.error("Please write body weight");
+    } else if (newPatientDetails.address?.pinCode === "") {
+      toast.error("Please write Pincode");
+    } else if (newPatientDetails.address?.district === "") {
+      toast.error("Please write district");
+    } else if (newPatientDetails.address?.state === "") {
+      toast.error("Please write state");
+    } else {
+      const doctorId = localStorage.getItem("doctorId");
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in local storage");
+        localStorage.clear();
+        navigate(`/userlogin`);
+      }
+      const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(newPatientDetails),
+      });
+      const data = await response.json();
+      if (data.success === true) {
+        // navigate("/otp")
+        onOpenModal();
+        localStorage.setItem("patientId", data.data._id);
+      }
+      console.log("DATA from response", data);
     }
-    const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify(newPatientDetails),
-    });
-    const data = await response.json();
-    if (data.success === true)
-    {
-      // navigate("/otp")
-      onOpenModal();
-      localStorage.setItem("patientId", data.data._id);
-    }
-    console.log("DATA from response", data);
   };
-  console.log("PATIENT DETAILS", patientDetails);
 
+  console.log("PATIENT DETAILS", patientDetails);
 
   return (
     <>
@@ -479,8 +462,9 @@ export default function PatientForm()
                   name="name"
                   value={patientDetails.name}
                   onChange={handleChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${nameError ? "border-red-500" : ""
-                    }`}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                    nameError ? "border-red-500" : ""
+                  }`}
                 />
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
@@ -494,7 +478,6 @@ export default function PatientForm()
                   </label>
                   <input
                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-
                     type="text"
                     id="age"
                     name="age"
@@ -515,7 +498,6 @@ export default function PatientForm()
                   </label>
                   <input
                     class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-
                     type="text"
                     id="bodyWeight"
                     name="bodyWeight"
@@ -555,8 +537,9 @@ export default function PatientForm()
                         value={patientDetails.houseNo}
                         onChange={handleChange}
                         placeholder="1234"
-                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${houseNoError ? "border-red-500" : ""
-                          }`}
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                          houseNoError ? "border-red-500" : ""
+                        }`}
                       />
                       {houseNoError && (
                         <p className="text-red-500 text-sm mt-1">
@@ -578,11 +561,14 @@ export default function PatientForm()
                         value={patientDetails.floor}
                         onChange={handleChange}
                         placeholder="First Floor or 2nd"
-                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${floorError ? "border-red-500" : ""
-                          }`}
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                          floorError ? "border-red-500" : ""
+                        }`}
                       />
                       {floorError && (
-                        <p className="text-red-500 text-sm mt-1">{floorError}</p>
+                        <p className="text-red-500 text-sm mt-1">
+                          {floorError}
+                        </p>
                       )}
                     </div>{" "}
                     <div className="px-2 w-full sm:w-1/3">
@@ -599,8 +585,9 @@ export default function PatientForm()
                         value={patientDetails.block}
                         onChange={handleChange}
                         placeholder="A"
-                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${blockError ? "border-red-500" : ""
-                          }`}
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                          blockError ? "border-red-500" : ""
+                        }`}
                       />
                       {errors.block && (
                         <p className="text-red-500">{errors.block}</p>
@@ -620,8 +607,9 @@ export default function PatientForm()
                         value={patientDetails.area}
                         onChange={handleChange}
                         placeholder="Green Park"
-                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${areaError ? "border-red-500" : ""
-                          }`}
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                          areaError ? "border-red-500" : ""
+                        }`}
                       />
                       {errors.area && (
                         <p className="text-red-500">{errors.area}</p>
@@ -641,8 +629,9 @@ export default function PatientForm()
                         value={patientDetails?.address?.pinCode}
                         onChange={handleChange}
                         placeholder="110016"
-                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${pinCodeError ? "border-red-500" : ""
-                          }`}
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                          pinCodeError ? "border-red-500" : ""
+                        }`}
                       />
                       {errors.pinCode && (
                         <p className="text-red-500">{errors.pinCode}</p>
@@ -662,8 +651,9 @@ export default function PatientForm()
                         value={patientDetails?.address?.district}
                         onChange={handleChange}
                         placeholder="South Delhi"
-                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${districtError ? "border-red-500" : ""
-                          }`}
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                          districtError ? "border-red-500" : ""
+                        }`}
                       />
                       {errors.district && (
                         <p className="text-red-500">{errors.district}</p>
@@ -683,8 +673,9 @@ export default function PatientForm()
                         value={patientDetails?.address?.state}
                         onChange={handleChange}
                         placeholder="Delhi"
-                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${stateError ? "border-red-500" : ""
-                          }`}
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                          stateError ? "border-red-500" : ""
+                        }`}
                       />
                       {errors.state && (
                         <p className="text-red-500">{errors.state}</p>
@@ -693,7 +684,6 @@ export default function PatientForm()
                   </div>
                 </div>
               </div>
-
             </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button

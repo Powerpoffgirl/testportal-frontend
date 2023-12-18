@@ -6,7 +6,6 @@ import "../App.css"
 
 
 const DiseasesDropdown = [
-    { label: "Select Disease", value: "" },
     { label: "Common Cold", value: "Common Cold" },
     { label: "Influenza", value: "Influenza" },
     { label: "Asthma", value: "Asthma" },
@@ -57,7 +56,6 @@ const DiseasesDropdown = [
     { label: "Cancer", value: "Cancer" }
 ];
 const SymptomsDropdown = [
-    { label: "Select Symptom", value: "" },
     { label: "Fever", value: "Fever" },
     { label: "Cough", value: "Cough" },
     { label: "Shortness of Breath", value: "Shortness of Breath" },
@@ -400,7 +398,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                         Patient Name
                     </label>
                     <select
-                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
                         name="patientName"
                         onChange={handleChange}
                         value={appointmentDetails?.patientId?.name}
@@ -423,7 +421,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                         Doctor Name
                     </label>
                     <select
-                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
                         name="doctorName"
                         onChange={handleChange}
                     >
@@ -449,14 +447,22 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                     >
                         Appointment Date
                     </label>
-                    <input
-                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
-                        type="date"
-                        id="appointmentDate"
-                        name="date"
-                        onChange={handleChange}
-                        value={newAppointmentDetails?.appointmentDate?.date}
-                    />
+                    {newAppointmentDetails?.appointmentDate?.date ? (
+                        <p className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg bg-white pt-1.5"
+                        >
+                            {newAppointmentDetails?.appointmentDate?.date}
+                        </p>
+                    ) : (
+                        <input
+                            className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+                            type="date"
+                            id="appointmentDate"
+                            name="date"
+                            onChange={handleChange}
+                            value={newAppointmentDetails?.appointmentDate?.date}
+                        />
+                    )}
+
                 </div>
 
                 <div className="flex flex-col">
@@ -467,7 +473,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                         Appointment Time
                     </label>
                     <input
-                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
                         type="time"
                         id="appointmentTime"
                         name="time"
@@ -484,7 +490,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-[#89CFF0] h-10 rounded-lg"
                     id="issues"
                     name="issues"
                     onChange={handleChangeIssues}
@@ -506,7 +512,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 h-10 rounded-lg"
+                    className="mx-2 border border-[#89CFF0] h-10 rounded-lg"
                     id="diseases"
                     name="diseases"
                     onChange={handleChangeDiseases}
