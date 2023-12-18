@@ -376,7 +376,7 @@ export default function DoctorLogin()
                   fontSize: '18px',
                 }}
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? <FaEyeSlash style={{ color: "white" }} /> : <FaEye style={{ color: "white", }} />}
               </button>
               {passwordError && (
                 <span style={{ color: "red", fontSize: "14px" }}>
