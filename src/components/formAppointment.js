@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-responsive-modal';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Select, Space } from 'antd';
+import { DatePicker, Select, Space, TimePicker } from 'antd';
 import "../App.css"
 import celebrate from "../assets/celebrate.png"
+import { Datepicker } from 'flowbite-react';
 
 
 const DiseasesDropdown = [
-    { label: "Select Disease", value: "" },
     { label: "Common Cold", value: "Common Cold" },
     { label: "Influenza", value: "Influenza" },
     { label: "Asthma", value: "Asthma" },
@@ -58,7 +58,6 @@ const DiseasesDropdown = [
     { label: "Cancer", value: "Cancer" }
 ];
 const SymptomsDropdown = [
-    { label: "Select Symptom", value: "" },
     { label: "Fever", value: "Fever" },
     { label: "Cough", value: "Cough" },
     { label: "Shortness of Breath", value: "Shortness of Breath" },
@@ -217,9 +216,6 @@ const FormAppoinment = ({ onDataFromChild }) =>
     const handleChange = (e) =>
     {
         const { name, value } = e.target;
-
-
-
         // Assuming 'patientsList' is an array of patient objects with '_id' and 'name'
         const selectedPatient = patientsList.find(patient => patient.name === value);
         const selectedDoctor = doctorsList.find(doctor => doctor.name === value);
@@ -244,16 +240,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
             setDataToSend(value);
             onDataFromChild(value);
         }
-        else if (name === "date" || name === "time")
-        {
-            setPatientDetails(prevPatientDetails => ({
-                ...prevPatientDetails,
-                appointmentDate: {
-                    ...prevPatientDetails.appointmentDate,
-                    [name]: value,
-                }
-            }));
-        } else
+        else
         {
             setPatientDetails(prevPatientDetails => ({
                 ...prevPatientDetails,
@@ -290,6 +277,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
             console.error("No token found in local storage");
             return;
         }
+
 
         const response = await fetch(
             `${baseUrl}/api/v1/user/create_appointment`,
@@ -459,14 +447,29 @@ const FormAppoinment = ({ onDataFromChild }) =>
                     >
                         Appointment Date
                     </label>
-                    <input
+                    <DatePicker
                         className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
                         type="date"
                         id="appointmentDate"
                         name="date"
-                        onChange={handleChange}
+                        onChange={(date) =>
+                        {
+                            if (date && date.isValid())
+                            {
+                                const formattedDate = date.format('DD/MM/YYYY'); // Format the date
+                                setPatientDetails(prevPatientDetails => ({
+                                    ...prevPatientDetails,
+                                    appointmentDate: {
+                                        ...prevPatientDetails.appointmentDate,
+                                        date: formattedDate // Update state with the formatted date
+                                    }
+                                }));
+                            }
+                        }}
                     />
+
                 </div>
+
 
                 <div className="flex flex-col">
                     <label
@@ -475,13 +478,27 @@ const FormAppoinment = ({ onDataFromChild }) =>
                     >
                         Appointment Time
                     </label>
-                    <input
+                    <TimePicker
                         className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
-                        type="time"
+                        format="HH:mm:ss"
                         id="appointmentTime"
                         name="time"
-                        onChange={handleChange}
+                        onChange={(time) =>
+                        {
+                            if (time && time.isValid())
+                            {
+                                const formattedTime = time.format('HH:mm:ss'); // Format the time
+                                setPatientDetails(prevPatientDetails => ({
+                                    ...prevPatientDetails,
+                                    appointmentDate: {
+                                        ...prevPatientDetails.appointmentDate,
+                                        time: formattedTime // Update state with the formatted time
+                                    }
+                                }));
+                            }
+                        }}
                     />
+
                 </div>
             </div>
 
@@ -492,7 +509,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 block text-black text-lg font-semibold"
+                    className="mx-2 border border-[#89CFF0] rounded-lg"
                     popupClassName="no-border-dropdown-menu"
                     id="issues"
                     name="issues"
