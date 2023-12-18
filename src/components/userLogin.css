@@ -460,11 +460,12 @@ input[type="checkbox"] {
 }
 .error_message {
   color: red;
-  font-size: 13px;
   margin-top: 5px;
+  display: block;
   position: absolute;
   top: 49px;
-  left: 16px;
+  left: 11px;
+  font-size: 11px;
 }
 
 @media (max-width: 600px) {
