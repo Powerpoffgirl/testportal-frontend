@@ -120,7 +120,6 @@ export default function DoctorFormAdmin()
   };
 
   const Daysdropdown = [
-    { label: "Select Days", value: "" },
     { label: "Monday", value: "Monday" },
     { label: "Tuesday", value: "Tuesday" },
     { label: "Wednesday", value: "Wednesday" },
@@ -501,7 +500,6 @@ export default function DoctorFormAdmin()
                 </label>
                 <input
                   type="text"
-                  placeholder="Smita Singh"
                   id="name"
                   name="name"
                   onChange={handleChange}
@@ -518,7 +516,6 @@ export default function DoctorFormAdmin()
                 </label>
                 <input
                   type="email"
-                  placeholder="smitasingh1234@gmail.com"
                   id="email"
                   name="email"
                   onChange={handleChange}
@@ -535,7 +532,6 @@ export default function DoctorFormAdmin()
                 </label>
                 <input
                   type="number"
-                  placeholder="+91-8603678852"
                   id="contactNumber"
                   name="contactNumber"
                   onChange={handleChange}

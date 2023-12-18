@@ -4,9 +4,8 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { DatePicker, Select, Space, TimePicker } from 'antd';
 import "../App.css"
 import celebrate from "../assets/celebrate.png"
-
-import { Datepicker } from 'flowbite-react';
-import 'react-datepicker/dist/react-datepicker.module.css'
+// import { Datepicker } from 'flowbite-react';
+import 'react-datepicker/dist/react-datepicker.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -302,11 +301,6 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 localStorage.clear()
                 navigate("/userlogin")
             }
-
-            if (patientDetails.doctorId)
-            {
-
-            }
             const response = await fetch(
                 `${baseUrl}/api/v1/user/create_appointment`,
                 {
@@ -331,268 +325,269 @@ const FormAppoinment = ({ onDataFromChild }) =>
         console.log("PATIENT DETAILS", patientDetails)
         console.log("PATIENT LIST", patientsList)
         console.log("DOCTORS LIST", doctorsList)
-        return (
-            <form
-                className="flex flex-col gap-2 px-3 w-full relative overflow-hidden justify-center"
-                onSubmit={(e) => e.preventDefault()}
+    }
+    return (
+        <form
+            className="flex flex-col gap-2 px-3 w-full relative overflow-hidden justify-center"
+            onSubmit={(e) => e.preventDefault()}
+        >
+            <ToastContainer />
+            <Modal open={open}
+                onClose={onCloseModal}
+                center
+                doctor={selectedDoctor}
+                styles={{
+                    modal: {
+                        backgroundColor: '#89CFF0',
+                        alignContent: 'center',
+                        width: "30%"
+                    },
+                }}
             >
-                <ToastContainer />
-                <Modal open={open}
-                    onClose={onCloseModal}
-                    center
-                    doctor={selectedDoctor}
-                    styles={{
-                        modal: {
-                            backgroundColor: '#89CFF0',
-                            alignContent: 'center',
-                            width: "30%"
-                        },
-                    }}
+                <div
+                    className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
+                    style={{ borderRadius: "5px" }}
                 >
-                    <div
-                        className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
-                        style={{ borderRadius: "5px" }}
+
+                    <text
+                        className="ml-4 text-center mt-4"
+                        style={{
+                            // fontSize: isTab ? "18px" : "26px",
+                            fontWeight: 600,
+                            lineHeight: "28.8px",
+                            fontFamily: "Lato, sans-serif",
+                            color: '#FFFFFF',
+                        }}
                     >
+                        Congratulations
+                    </text>
+                    <text
+                        className="ml-4 text-center mt-4"
+                        style={{
+                            fontSize: "40px",
+                            fontWeight: 400,
+                            lineHeight: "24px",
+                            fontFamily: "Lato, sans-serif",
+                            color: '#FFFFFF',
+                            marginBottom: "2%"
+                        }}
+                    >
+                        <img src={celebrate} alt='Congratulations' />
+                    </text>
 
-                        <text
-                            className="ml-4 text-center mt-4"
-                            style={{
-                                // fontSize: isTab ? "18px" : "26px",
-                                fontWeight: 600,
-                                lineHeight: "28.8px",
-                                fontFamily: "Lato, sans-serif",
-                                color: '#FFFFFF',
-                            }}
-                        >
-                            Congratulations
-                        </text>
-                        <text
-                            className="ml-4 text-center mt-4"
-                            style={{
-                                fontSize: "40px",
-                                fontWeight: 400,
-                                lineHeight: "24px",
-                                fontFamily: "Lato, sans-serif",
-                                color: '#FFFFFF',
-                                marginBottom: "2%"
-                            }}
-                        >
-                            <img src={celebrate} alt='Congratulations' />
-                        </text>
+                    <text
+                        className="ml-4 text-center mt-2"
+                        style={{
+                            // fontSize: isTab ? "16px" : "24px",
+                            fontWeight: 400,
+                            lineHeight: "28.8px",
+                            fontFamily: "Lato, sans-serif",
+                            color: "white",
+                        }}
+                    >
+                        Your Appointment Has Been Booked.<br />
+                        Please wait for Confirmation.<br />
 
-                        <text
-                            className="ml-4 text-center mt-2"
-                            style={{
-                                // fontSize: isTab ? "16px" : "24px",
-                                fontWeight: 400,
-                                lineHeight: "28.8px",
-                                fontFamily: "Lato, sans-serif",
-                                color: "white",
-                            }}
-                        >
-                            Your Appointment Has Been Booked.<br />
-                            Please wait for Confirmation.<br />
+                    </text>
+                    <text
+                        className="ml-4 text-center mt-2"
+                        style={{
+                            // fontSize: isTab ? "16px" : "24px",
+                            fontWeight: 400,
+                            lineHeight: "28.8px",
+                            fontFamily: "Lato, sans-serif",
+                            color: "white",
+                        }}
+                    >
+                        <b> Thank You</b>
 
-                        </text>
-                        <text
-                            className="ml-4 text-center mt-2"
-                            style={{
-                                // fontSize: isTab ? "16px" : "24px",
-                                fontWeight: 400,
-                                lineHeight: "28.8px",
-                                fontFamily: "Lato, sans-serif",
-                                color: "white",
-                            }}
-                        >
-                            <b> Thank You</b>
+                    </text>
+                </div>
+            </Modal>
 
-                        </text>
-                    </div>
-                </Modal>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                    <div className="flex flex-col">
-                        <label
-                            className="mx-2 block text-black text-lg font-semibold"
-                            htmlFor="patientName"
-                        >
-                            Patient Name
-                        </label>
-                        <select
-                            className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
-                            name="patientName"
-                            onChange={handleChange}
-                        >
-                            {
-                                patientName ? (
-                                    <option value={patientName}>{patientName}</option>
-                                ) : (
-                                    patientsList?.map((patient) => (
-                                        <option key={patient._id} value={patient.name}>
-                                            {patient.name}
-                                        </option>
-                                    ))
-                                )
-                            }
-
-
-                        </select>
-                    </div>
-
-                    <div className="flex flex-col">
-                        <label
-                            className="mx-2 block text-black text-lg font-semibold"
-                            htmlFor="doctorName"
-                        >
-                            Doctor Name
-                        </label>
-                        <select
-                            className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg"
-                            name="doctorName"
-                            onChange={handleChange}
-                        >
-                            {doctorName ? (
-                                <option value={doctorName}>{doctorName}</option>
+                <div className="flex flex-col">
+                    <label
+                        className="mx-2 block text-black text-lg font-semibold"
+                        htmlFor="patientName"
+                    >
+                        Patient Name
+                    </label>
+                    <select
+                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+                        name="patientName"
+                        onChange={handleChange}
+                    >
+                        {
+                            patientName ? (
+                                <option value={patientName}>{patientName}</option>
                             ) : (
-                                doctorsList?.map((doctor) => (
-                                    <option key={doctor._id} value={doctor.name}>
-                                        {doctor.name}
+                                patientsList?.map((patient) => (
+                                    <option key={patient._id} value={patient.name}>
+                                        {patient.name}
                                     </option>
                                 ))
-                            )}
-                        </select>
-
-                    </div>
-                </div>
-                {/* 1st Row */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                    <div className="flex flex-col">
-                        <label
-                            className="mx-2 block text-black text-lg font-semibold"
-                            htmlFor="appointmentDate"
-                        >
-                            Appointment Date
-                        </label>
-                        <DatePicker
-                            className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
-                            type="date"
-                            id="appointmentDate"
-                            name="date"
-                            onChange={(date) =>
-                            {
-                                if (date && date.isValid())
-                                {
-                                    const formattedDate = date.format('DD/MM/YYYY'); // Format the date
-                                    setPatientDetails(prevPatientDetails => ({
-                                        ...prevPatientDetails,
-                                        appointmentDate: {
-                                            ...prevPatientDetails.appointmentDate,
-                                            date: formattedDate // Update state with the formatted date
-                                        }
-                                    }));
-                                }
-                            }}
-                        />
-
-                    </div>
+                            )
+                        }
 
 
-                    <div className="flex flex-col">
-                        <label
-                            className="mx-2 block text-black text-lg font-semibold"
-                            htmlFor="appointmentTime"
-                        >
-                            Appointment Time
-                        </label>
-                        <TimePicker
-                            className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
-                            format="HH:mm:ss"
-                            id="appointmentTime"
-                            name="time"
-                            onChange={(time) =>
-                            {
-                                if (time && time.isValid())
-                                {
-                                    const formattedTime = time.format('HH:mm:ss'); // Format the time
-                                    setPatientDetails(prevPatientDetails => ({
-                                        ...prevPatientDetails,
-                                        appointmentDate: {
-                                            ...prevPatientDetails.appointmentDate,
-                                            time: formattedTime // Update state with the formatted time
-                                        }
-                                    }));
-                                }
-                            }}
-                        />
-
-                    </div>
-                </div>
-
-                {/* <div className="grid grid-cols-1 w-full gap-4"> */}
-                <div className="flex flex-col">
-                    <label className="mx-2 block text-black text-lg font-semibold" htmlFor="issues">
-                        Issues
-                    </label>
-                    <Select
-                        mode="multiple"
-                        className="mx-2 border border-[#89CFF0] rounded-lg"
-                        popupClassName="no-border-dropdown-menu"
-                        id="issues"
-                        name="issues"
-                        onChange={handleChangeIssues}
-                        value={patientDetails.issues}
-                        placeholder="Select Issues"
-                        style={{ overflowY: 'auto' }}
-                        dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }} // Set a maximum height for the dropdown
-                    >
-                        {SymptomsDropdown.map((option) => (
-                            <Select.Option key={option.value} value={option.value}>
-                                {option.label}
-                            </Select.Option>
-                        ))}
-                    </Select>
+                    </select>
                 </div>
 
                 <div className="flex flex-col">
                     <label
                         className="mx-2 block text-black text-lg font-semibold"
-                        htmlFor="diseases">
-                        Disease
+                        htmlFor="doctorName"
+                    >
+                        Doctor Name
                     </label>
-                    <Select
-                        mode="multiple"
-                        className="mx-2 border border-[#89CFF0] rounded-lg"
-                        popupClassName="no-border-dropdown-menu" // Apply the custom class here
-                        id="diseases"
-                        name="diseases"
-                        onChange={handleChangeDiseases}
-                        value={patientDetails.diseases}
-                        placeholder="Select Disease"
-                        style={{ overflowY: 'auto' }}
-                        dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
+                    <select
+                        className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg"
+                        name="doctorName"
+                        onChange={handleChange}
                     >
-                        {DiseasesDropdown.map((option) => (
-                            <Select.Option key={option.value} value={option.value}>
-                                {option.label}
-                            </Select.Option>
-                        ))}
-                    </Select>
+                        {doctorName ? (
+                            <option value={doctorName}>{doctorName}</option>
+                        ) : (
+                            doctorsList?.map((doctor) => (
+                                <option key={doctor._id} value={doctor.name}>
+                                    {doctor.name}
+                                </option>
+                            ))
+                        )}
+                    </select>
+
+                </div>
+            </div>
+            {/* 1st Row */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                <div className="flex flex-col">
+                    <label
+                        className="mx-2 block text-black text-lg font-semibold"
+                        htmlFor="appointmentDate"
+                    >
+                        Appointment Date
+                    </label>
+                    <DatePicker
+                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+                        type="date"
+                        id="appointmentDate"
+                        name="date"
+                        onChange={(date) =>
+                        {
+                            if (date && date.isValid())
+                            {
+                                const formattedDate = date.format('DD/MM/YYYY'); // Format the date
+                                setPatientDetails(prevPatientDetails => ({
+                                    ...prevPatientDetails,
+                                    appointmentDate: {
+                                        ...prevPatientDetails.appointmentDate,
+                                        date: formattedDate // Update state with the formatted date
+                                    }
+                                }));
+                            }
+                        }}
+                    />
+
                 </div>
 
-                <div className="flex justify-center my-5">
-                    <button
-                        type="submit"
-                        className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
-                        onClick={handleRegister}
-                    >
-                        Process
-                    </button>
-                </div>
-            </form>
 
-        );
-    };
-}
+                <div className="flex flex-col">
+                    <label
+                        className="mx-2 block text-black text-lg font-semibold"
+                        htmlFor="appointmentTime"
+                    >
+                        Appointment Time
+                    </label>
+                    <TimePicker
+                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+                        format="HH:mm:ss"
+                        id="appointmentTime"
+                        name="time"
+                        onChange={(time) =>
+                        {
+                            if (time && time.isValid())
+                            {
+                                const formattedTime = time.format('HH:mm:ss'); // Format the time
+                                setPatientDetails(prevPatientDetails => ({
+                                    ...prevPatientDetails,
+                                    appointmentDate: {
+                                        ...prevPatientDetails.appointmentDate,
+                                        time: formattedTime // Update state with the formatted time
+                                    }
+                                }));
+                            }
+                        }}
+                    />
+
+                </div>
+            </div>
+
+            {/* <div className="grid grid-cols-1 w-full gap-4"> */}
+            <div className="flex flex-col">
+                <label className="mx-2 block text-black text-lg font-semibold" htmlFor="issues">
+                    Issues
+                </label>
+                <Select
+                    mode="multiple"
+                    className="mx-2 border border-[#89CFF0] rounded-lg"
+                    popupClassName="no-border-dropdown-menu"
+                    id="issues"
+                    name="issues"
+                    onChange={handleChangeIssues}
+                    value={patientDetails.issues}
+                    placeholder="Select Issues"
+                    style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }} // Set a maximum height for the dropdown
+                >
+                    {SymptomsDropdown.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                            {option.label}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </div>
+
+            <div className="flex flex-col">
+                <label
+                    className="mx-2 block text-black text-lg font-semibold"
+                    htmlFor="diseases">
+                    Disease
+                </label>
+                <Select
+                    mode="multiple"
+                    className="mx-2 border border-[#89CFF0] rounded-lg"
+                    popupClassName="no-border-dropdown-menu" // Apply the custom class here
+                    id="diseases"
+                    name="diseases"
+                    onChange={handleChangeDiseases}
+                    value={patientDetails.diseases}
+                    placeholder="Select Disease"
+                    style={{ overflowY: 'auto' }}
+                    dropdownStyle={{ maxHeight: '300px', overflowY: 'auto' }}
+                >
+                    {DiseasesDropdown.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                            {option.label}
+                        </Select.Option>
+                    ))}
+                </Select>
+            </div>
+
+            <div className="flex justify-center my-5">
+                <button
+                    type="submit"
+                    className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                    onClick={handleRegister}
+                >
+                    Process
+                </button>
+            </div>
+        </form>
+
+    );
+};
+
 export default FormAppoinment;
