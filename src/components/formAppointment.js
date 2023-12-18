@@ -586,7 +586,6 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 </button>
             </div>
         </form>
-
     );
 };
 

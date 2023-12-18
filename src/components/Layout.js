@@ -65,14 +65,26 @@ export default function Layout({
 
   useEffect(() =>
   {
-    if (type === "doctor" || "admin" || "user")
+    // Exit the effect early if 'type' is an empty string
+    if (type !== "")
+    {
+      navigate("/");
+    }
+    else
     {
       const nameParts = userName.split(' '); // Split the string by spaces
       const firstName = nameParts[0]; // Get the first part, which is the first name
-      setUser("Dr. " + firstName); // Set the user with "Dr." and the first name
-    }
-  }, [type, userName]); // Include dependencies in the dependency array
 
+      if (type === "doctor")
+      {
+        setUser("Dr. " + firstName); // Set the user with "Dr." and the first name
+      } else
+      {
+        setUser(firstName); // Set the user with only the first name
+      }
+    }
+
+  }, [type, userName]); // Include dependencies in the dependency array
 
   // -------------BASE URL SIDEBAR NAVIGATION--------------------------
 
@@ -198,7 +210,7 @@ export default function Layout({
             } ease-in-out transition-all duration-300 md:transform-none`}
         >
           <h1 className="font-bold text-2xl" style={{ color: "white" }}>
-            Welcome! {user}
+            Welcome! {type ? type : "Guest"}
           </h1>
           <div
             class="flex items-center gap-x-2 mt-3"
