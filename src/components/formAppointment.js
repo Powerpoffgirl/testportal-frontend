@@ -3,13 +3,10 @@ import Modal from 'react-responsive-modal';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { DatePicker, Select, Space, TimePicker } from 'antd';
 import "../App.css"
-<<<<<<< HEAD
 import celebrate from "../assets/celebrate.png"
-=======
 import 'react-datepicker/dist/react-datepicker.module.css'
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
->>>>>>> c84d4bf4949ce24d7b323c44747c506648679fe2
 
 
 const DiseasesDropdown = [
