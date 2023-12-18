@@ -3,6 +3,7 @@ import Modal from 'react-responsive-modal';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Select, Space } from 'antd';
 import "../App.css"
+import celebrate from "../assets/celebrate.png"
 
 
 const DiseasesDropdown = [
@@ -327,7 +328,8 @@ const FormAppoinment = ({ onDataFromChild }) =>
                 styles={{
                     modal: {
                         backgroundColor: '#89CFF0',
-                        alignContent: 'center'
+                        alignContent: 'center',
+                        width: "30%"
                     },
                 }}
             >
@@ -351,7 +353,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
                     <text
                         className="ml-4 text-center mt-4"
                         style={{
-                            // fontSize: isTab ? "12px" : "20px",
+                            fontSize: "40px",
                             fontWeight: 400,
                             lineHeight: "24px",
                             fontFamily: "Lato, sans-serif",
@@ -359,7 +361,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
                             marginBottom: "2%"
                         }}
                     >
-                        <svg1 />
+                        <img src={celebrate} alt='Congratulations' />
                     </text>
 
                     <text

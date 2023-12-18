@@ -6,6 +6,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg" width="836" height="579" viewBox="0 0 786 679" fill="none">
@@ -78,6 +79,7 @@ export default function DoctorLogin()
   const [isDoctor, setIsDoctor] = useState(true);
 
   const [contactNumber, setContactNumber] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [passwordError, setPasswordError] = useState("");
 
   const [password, setPassword] = useState("");
@@ -99,6 +101,11 @@ export default function DoctorLogin()
     }
   };
 
+  const togglePasswordVisibility = (e) =>
+  {
+    e.preventDefault();
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
   const handlePasswordChange = (e) =>
   {
     const enteredPassword = e.target.value;
@@ -207,6 +214,11 @@ export default function DoctorLogin()
       const data = await response.json();
 
       // Check the response status
+      if (response.status === 404)
+      {
+        toast.error("Doctor Not Found Register First !")
+      }
+
       if (response.ok)
       {
         console.log("OTP sent successfully", data);
@@ -345,12 +357,27 @@ export default function DoctorLogin()
                   fontWeight: 400,
                   fontSize: isTab ? "20px" : "24px",
                   lineHeight: "31.2px",
+                  position: 'relative',
                 }}
-                type="password"
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 value={password}
                 onChange={handlePasswordChange}
               />
+              <button
+                onClick={togglePasswordVisibility}
+                style={{
+                  position: 'absolute',
+                  left: '940px',
+                  bottom: '139px',
+                  border: 'none',
+                  background: 'none',
+                  cursor: 'pointer',
+                  fontSize: '18px',
+                }}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </button>
               {passwordError && (
                 <span style={{ color: "red", fontSize: "14px" }}>
                   {passwordError}

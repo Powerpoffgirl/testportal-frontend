@@ -146,15 +146,15 @@ export default function DoctorListUser({ searchTerm })
         styles={{
           modal: {
             // Set your custom width here (e.g., '70%')
-            width: isTab ? "80%" : "70%",
-            backgroundColor: "#89CFF0",
+            width: isTab ? "80%" : "50%",
+            backgroundColor: "#fff",
             alignContent: "center",
           },
         }}
       >
-        <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
+        <div className="flex flex-col bg-customRedp-2  w-[100%] md:w-[100%]  mt-[2%]">
           <div className="flex flex-row w-[100%] justify-between">
-            <span className="flex flex-col justify-start">
+            {/* <span className="flex flex-col justify-start">
               <text
                 style={{
                   fontWeight: 400,
@@ -178,29 +178,55 @@ export default function DoctorListUser({ searchTerm })
                 {selectedDoctor?.workingHours?.workHourFrom}:00 To{" "}
                 {selectedDoctor?.workingHours?.workHourTo}:00
               </text>
-            </span>
+            </span> */}
 
-            <img
+            {
+              selectedDoctor?.doctorPic ? <img
+                src={selectedDoctor?.doctorPic}
+                alt="Avatar"
+                style={{
+                  borderRadius: "50%",
+                  height: isTab ? "40px" : "123px",
+                  width: isTab ? "40px" : "123px",
+                  marginRight: '70px',
+                  marginLeft: '20px',
+                  boxShadow: 'inset 0 0 0 2px #76767'
+                }}
+              />
+                :
+                <AccountCircleIcon style={{
+                  fontSize: '90px', color: "#E3F6FF",
+                  borderRadius: "50%",
+                  height: isTab ? "40px" : "123px",
+                  width: isTab ? "40px" : "123px",
+                  marginRight: '70px',
+                  boxShadow: 'inset 0 0 0 2px #76767'
+                }} />
+            }
+
+            {/* <img
               src={selectedDoctor?.doctorPic}
               alt="Avatar"
               style={{
                 borderRadius: "50%",
                 height: isTab ? "40px" : "123px",
                 width: isTab ? "40px" : "123px",
-                marginRight: '70px'
+                marginRight: '70px',
+                marginLeft: '20px',
+                boxShadow: 'inset 0 0 0 2px #76767'
               }}
-            ></img>
+            ></img> */}
 
-            <span className="flex flex-col justify-start">
+            {/* <span className="flex flex-col justify-start">
               <text style={{ color: "#89CFF0" }}>Mon-Fri</text>
               <text style={{ color: "#89CFF0" }}>10:00am-6:00pm</text>
-            </span>
+            </span> */}
           </div>
           <text
-            className="ml-4 text-center mt-4"
+            className="ml-4 text-start mt-4"
             style={{
-              fontSize: isTab ? "18px" : "26px",
-              fontWeight: 600,
+              fontSize: isTab ? "18px" : "30px",
+              fontWeight: 500,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
             }}
@@ -208,75 +234,63 @@ export default function DoctorListUser({ searchTerm })
             Dr. {selectedDoctor?.name}
           </text>
           <text
-            className="ml-4 text-center mt-2"
+            className="ml-4 text-start mt-2"
             style={{
-              fontSize: isTab ? "14px" : "20px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-            }}
-          >
-            {selectedDoctor?.contactNumber}
-          </text>
-
-          <text
-            className="ml-4 text-center mt-2"
-            style={{
-              fontSize: isTab ? "12px" : "20px",
+              fontSize: isTab ? "12px" : "24px",
               fontWeight: 400,
               lineHeight: "24px",
               fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-              marginBottom: "2%",
+              color: "#767676",
+
             }}
           >
             {selectedDoctor?.email}
           </text>
           <text
-            className="ml-4 text-center mt-2"
+            className="ml-4 text-start mt-2"
             style={{
               fontSize: isTab ? "16px" : "24px",
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              color: "white",
+              color: "#43BCF5",
             }}
           >
             {selectedDoctor?.speciality}
           </text>
           <text
-            className="ml-4 text-center mt-2"
+            className="ml-4 text-start mt-2"
             style={{
-              fontSize: isTab ? "14px" : "22px",
+              fontSize: isTab ? "14px" : "24px",
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              color: "white",
+              color: "#2CBE78"
+
             }}
           >
             {selectedDoctor?.totalExperience} Years Experience
           </text>
           <text
-            className="ml-4 text-center mt-2"
+            className="ml-4 text-start mt-2 text-purple-900"
             style={{
-              fontSize: isTab ? "14px" : "20px",
+              fontSize: isTab ? "14px" : "24px",
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              color: "white",
+              color: "#CB13CF"
             }}
           >
             {selectedDoctor?.degree}
           </text>
           <text
-            className="ml-4 text-center mt-2"
+            className="ml-4 text-start mt-2"
             style={{
-              fontSize: isTab ? "14px" : "20px",
+              fontSize: isTab ? "14px" : "24px",
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
+              color: "#000000",
             }}
           >
             {selectedDoctor?.address?.houseNo +
@@ -294,13 +308,15 @@ export default function DoctorListUser({ searchTerm })
 
           <div className="flex justify-center">
             <button
-              className="rounded-full mt-4 text-customRed"
+              className="rounded-full mt-4 "
               type="submit"
               style={{
                 backgroundColor: "white",
                 width: isTab ? "150px" : "198px",
                 height: isTab ? "35px" : "45px",
-                boxShadow: " 0 10px 5px -3px rgb(0 0 0 / 0.3)",
+                boxShadow: " rgba(0, 0, 0, 0.35) 0px 5px 15px",
+                // box- shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+                color: "#000000"
               }}
               onClick={handleBookAppointment}
             >
@@ -308,19 +324,7 @@ export default function DoctorListUser({ searchTerm })
             </button>
           </div>
 
-          <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
-            <span className="flex">
-              <span
-                className="mr-8"
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg1 }}
-              ></span>
-              <span
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg2 }}
-              ></span>
-            </span>
-
+          <div className="flex flex-row gap-3 mt-10 w-[45%] ml-3" >
             <span className="flex">
               <span
                 className="mr-8"
@@ -332,13 +336,29 @@ export default function DoctorListUser({ searchTerm })
                   fontWeight: 400,
                   fontSize: isTab ? "14px" : "20px",
                   fontFamily: "Lato, sans-serif",
-                  color: "white",
+                  color: "#000000",
                 }}
               >
                 (4.5 Ratings)
               </text>
             </span>
           </div>
+          <span className="flex flex-col" style={{ marginTop: -50 }}>
+            <text style={{
+              fontWeight: 400,
+              fontSize: isTab ? "14px" : "20px",
+              fontFamily: "Lato, sans-serif",
+              color: "#43BCF5",
+              textAlign: 'end'
+            }}>Mon-Fri</text>
+            <text style={{
+              fontWeight: 400,
+              fontSize: isTab ? "14px" : "20px",
+              fontFamily: "Lato, sans-serif",
+              color: "#43BCF5",
+              textAlign: 'end'
+            }}>10:00am-6:00pm</text>
+          </span>
         </div>
       </Modal>
       <div

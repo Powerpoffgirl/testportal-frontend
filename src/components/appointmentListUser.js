@@ -195,7 +195,7 @@ export default function AppointmentListUser({ searchTerm })
               fontFamily: "Lato, sans-serif",
             }}
           >
-            {selectedAppointment?.patientId?.name}
+            {selectedAppointment?.patientId?.name ? selectedAppointment.patientId?.name : "No Name"}
           </text>
 
           <text
@@ -209,7 +209,7 @@ export default function AppointmentListUser({ searchTerm })
               marginBottom: "2%",
             }}
           >
-            {selectedAppointment?.patientId?.age} yr, {selectedAppointment?.patientId?.bodyWeight} kg
+            Age: {selectedAppointment?.patientId?.age ? selectedAppointment?.patientId?.age : "   "} yr, Weight :{selectedAppointment?.patientId?.bodyWeight ? selectedAppointment?.patientId?.bodyWeight : "    "} kg
           </text>
           <text
             className="ml-4 text-center mt-2"
@@ -231,8 +231,8 @@ export default function AppointmentListUser({ searchTerm })
               color: "white",
             }}
           >
-            Issues: {selectedAppointment?.issues.join(', ')}<br />
-            Diseases: {selectedAppointment?.diseases.join(', ')}
+            Issues: {selectedAppointment?.issues ? selectedAppointment?.issues.join(', ') : "N/A"}<br />
+            Diseases: {selectedAppointment?.diseases ? selectedAppointment?.diseases.join(', ') : "N/A"}
           </text>
           <text
             className="ml-4 text-center mt-2"
@@ -244,8 +244,8 @@ export default function AppointmentListUser({ searchTerm })
               color: "white",
             }}
           >
-            Appointment Date: {selectedAppointment?.appointmentDate?.date}<br />
-            Appointment Time: {selectedAppointment?.appointmentDate?.time}
+            Appointment Date: {selectedAppointment?.appointmentDate?.date ? selectedAppointment?.appointmentDate?.date : "No Date"}<br />
+            Appointment Time: {selectedAppointment?.appointmentDate?.time ? selectedAppointment?.appointmentDate?.time : "N/A"}
           </text>
           <text
             className="ml-4 text-center mt-2"
@@ -257,7 +257,7 @@ export default function AppointmentListUser({ searchTerm })
               color: "#FFFFFF",
             }}
           >
-            {selectedAppointment?.patientId?.address?.houseNo +
+            {selectedAppointment?.patientId?.address?.houseNo ? selectedAppointment?.patientId?.address?.houseNo +
               " " +
               selectedAppointment?.patientId?.address?.block +
               " " +
@@ -267,7 +267,7 @@ export default function AppointmentListUser({ searchTerm })
               ", " +
               selectedAppointment?.patientId?.address?.state +
               " " +
-              selectedAppointment?.patientId?.address?.pinCode}
+              selectedAppointment?.patientId?.address?.pinCode : " "}
           </text>
 
           <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
@@ -346,7 +346,7 @@ export default function AppointmentListUser({ searchTerm })
                     <p class="text-gray-500 sm:text-sm text-xs">
                       Patient's Name:<span className="ms-2"></span>
                     </p>
-                    {appointment?.patientId?.name}
+                    {appointment?.patientId?.name ? appointment?.patientId?.name : "No Name"}
                   </h1>
                 </div>
 
@@ -358,9 +358,9 @@ export default function AppointmentListUser({ searchTerm })
                     <p class="text-gray-500 sm:text-sm text-xs">
                       Date & Time:<span className="ms-2"></span>
                     </p>
-                    {appointment?.appointmentDate?.date.split('-').reverse().join('-')}
-                    <br />
-                    {appointment?.appointmentDate?.time}
+                    {appointment?.appointmentDate?.date ? appointment?.appointmentDate?.date.split('-').reverse().join('-') : "No Date"}
+                    {/* <br />
+                    {appointment?.appointmentDate?.time} */}
                   </h1>
                 </div>
 
