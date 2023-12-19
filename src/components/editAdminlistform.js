@@ -518,7 +518,7 @@ export default function EditAdminlistform()
                                         Email
                                     </label>
                                     <input
-                                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
                                         type="email"
                                         id="email"
                                         name="email"
@@ -538,7 +538,7 @@ export default function EditAdminlistform()
                                         Contact Number
                                     </label>
                                     <input
-                                        className="mx-2 px-2 border border-green-500 h-10 rounded-lg"
+                                        className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
                                         type="number"
                                         id="contactNumber"
                                         name="contactNumber"
@@ -752,7 +752,7 @@ export default function EditAdminlistform()
                         </div>
                         <div className="mt-10 w-100 items-center justify-center text-center">
                             <button
-                                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
+                                className="rounded-full justify-center px-9 py-2 bg-[#89CFF0] text-white"
                                 onClick={handleRegister}
                             >
                                 Process

@@ -274,8 +274,8 @@ export default function EditDoctorForm()
     // Check if the token exists
     const newDoctorDetails = {
       name: doctorDetails?.name,
-      email: doctorDetails?.email, // Added email field
-      contactNumber: doctorDetails?.contactNumber, // Added contactNumber field
+      // email: doctorDetails?.email, // Added email field
+      // contactNumber: doctorDetails?.contactNumber, // Added contactNumber field
       workingDays: doctorDetails?.workingDays, // Added workingDays field
       workingHours: {
         workHourFrom: doctorDetails?.workingHours?.workHourFrom,
@@ -362,10 +362,9 @@ export default function EditDoctorForm()
 
       const data = await response.json();
 
-      if (data.statusCode === 400)
-      {
-        toast.error("Please fill the details");
-      }
+      // if (data.statusCode === 400) {
+      //   toast.error("Please fill the details");
+      // }
       if (data.success === true)
       {
         console.log("Doctor updated successfully.");

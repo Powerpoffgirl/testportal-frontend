@@ -138,65 +138,63 @@ export default function EditUserForm()
     handleClose();
   };
 
-  const validateField = (name, value) =>
-  {
-    switch (name)
-    {
-      case "name":
-        return value ? "" : "Name is required.";
-      case "email":
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-          ? ""
-          : "Email is not valid.";
-      case "contactNumber":
-        return value.length > 0 && value.length === 10
-          ? ""
-          : "Contact number is required or Add valid 10 Digit Number.";
-      case "houseNo":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "houseNo is required  ";
-      case "floor":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-      case "block":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "Block is required  ";
-      case "area":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "Area is required and must be a string ";
-      case "pinCode":
-        return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-      case "district":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "District is required and must be a string ";
-      case "state":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "State is required and must be a string ";
-      case "workHourFrom":
-        // Assuming time in HH:MM format, adjust as needed
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-          ? ""
-          : "Invalid start time.";
-      case "workHourTo":
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-          ? ""
-          : "Invalid end time.";
-      // Add more cases as needed for other fields
-      default:
-        return "";
-    }
-  };
+  // const validateField = (name, value) => {
+  //   switch (name) {
+  //     case "name":
+  //       return value ? "" : "Name is required.";
+  //     case "email":
+  //       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  //         ? ""
+  //         : "Email is not valid.";
+  //     case "contactNumber":
+  //       return value.length > 0 && value.length === 10
+  //         ? ""
+  //         : "Contact number is required or Add valid 10 Digit Number.";
+  //     case "houseNo":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "houseNo is required  ";
+  //     case "floor":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
+  //     case "block":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "Block is required  ";
+  //     case "area":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "Area is required and must be a string ";
+  //     case "pinCode":
+  //       return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
+  //     case "district":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "District is required and must be a string ";
+  //     case "state":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "State is required and must be a string ";
+  //     case "workHourFrom":
+  //       // Assuming time in HH:MM format, adjust as needed
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid start time.";
+  //     case "workHourTo":
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid end time.";
+  //     // Add more cases as needed for other fields
+  //     default:
+  //       return "";
+  //   }
+  // };
 
   const handleChange = (e) =>
   {
     const { name, value } = e.target;
 
-    const error = validateField(name, value);
-    setErrors({ ...errors, [name]: error });
+    // const error = validateField(name, value);
+    // setErrors({ ...errors, [name]: error });
 
     if (name === "workingDays")
     {
@@ -261,36 +259,56 @@ export default function EditUserForm()
       },
       userPic: userImage,
     };
-
-    const token = localStorage.getItem("token");
-    const doctorId = localStorage.getItem("doctorId");
-    if (!token)
+    if (newUserDetails.name === "")
     {
-      console.error("No token found in local storage");
-      localStorage.clear()
-      navigate("/userlogin")
-    }
-    const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify(newUserDetails),
-    });
-    const data = await response.json();
-
-    if (data.statusCode === 400)
+      toast.error("Please write name");
+    } else if (newUserDetails.email === "")
     {
-      toast.error("Please fill the details");
-    }
-
-    if (data.success === true)
+      toast.error("Please write email");
+    } else if (newUserDetails.contactNumber === "")
     {
-      console.log("Doctor updated successfully.");
-      navigate("/doctorlistuser");
+      toast.error("Please write contact number");
+    } else if (newUserDetails.address?.pinCode === "")
+    {
+      toast.error("Please write Pincode");
+    } else if (newUserDetails.address?.district === "")
+    {
+      toast.error("Please write district");
+    } else if (newUserDetails.address?.state === "")
+    {
+      toast.error("Please write state");
+    } else
+    {
+      const token = localStorage.getItem("token");
+      const doctorId = localStorage.getItem("doctorId");
+      if (!token)
+      {
+        console.error("No token found in local storage");
+        localStorage.clear();
+        navigate("/userlogin");
+      }
+      const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(newUserDetails),
+      });
+      const data = await response.json();
+
+      if (data.statusCode === 400)
+      {
+        toast.error("Please fill the details");
+      }
+
+      if (data.success === true)
+      {
+        console.log("Doctor updated successfully.");
+        navigate("/doctorlistuser");
+      }
+      console.log("DATA from response", data);
     }
-    console.log("DATA from response", data);
   };
 
   console.log("User DETAILS", userDetails);
@@ -474,7 +492,6 @@ export default function EditUserForm()
                   Address
                 </label>
                 <div class="p-3 pb-5 border border-[#89CFF0]">
-
                   <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                     <div className="px-2 w-full sm:w-1/3">
                       <label
@@ -613,7 +630,7 @@ export default function EditUserForm()
                   </div>
                 </div>
               </div>
-            </div >
+            </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button
                 className="rounded-full justify-center px-9 py-2 bg-[#89CFF0] text-white"
@@ -622,10 +639,10 @@ export default function EditUserForm()
                 Process
               </button>
             </div>
-          </div >
+          </div>
           <ToastContainer />
-        </div >
-      </div >
+        </div>
+      </div>
     </>
   );
 }
