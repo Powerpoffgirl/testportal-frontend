@@ -226,7 +226,7 @@ export default function AppointmentList({ searchTerm })
                 }}
             >
                 <div className="flex flex-col bg-customRedp-2 w-[100%] md:w-[100%]  mt-[2%]">
-                    <div className="flex flex-row w-[100%] justify-between">
+                    <div className="flex flex-row w-[100%] justify-center ">
                         <AccountCircleIcon style={{
                             fontSize: '90px', color: "#E3F6FF",
                             borderRadius: "50%",
@@ -237,12 +237,13 @@ export default function AppointmentList({ searchTerm })
                         }} />
                     </div>
                     <text
-                        className="ml-4 text-start mt-4"
+                        className=" text-center mt-4"
                         style={{
                             fontSize: isTab ? "18px" : "26px",
                             fontWeight: 600,
                             lineHeight: "28.8px",
                             fontFamily: "Lato, sans-serif",
+                            marginLeft: -70
                         }}
                     >
                         {selectedAppointment?.patientId?.name}

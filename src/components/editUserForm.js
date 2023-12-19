@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
@@ -9,9 +9,13 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
+import UserContext from './userContext';
 
 export default function EditUserForm()
 {
+  const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
+
+
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
@@ -103,6 +107,7 @@ export default function EditUserForm()
         const data = await response.json();
         console.log("DATA from response", data);
         setUserDetails(data?.data);
+        console.log("usser name$$$$$$$", data?.data.name);
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);
@@ -289,6 +294,10 @@ export default function EditUserForm()
   };
 
   console.log("User DETAILS", userDetails);
+  updateUser(userDetails.name);
+  updateUserEmail(userDetails.email);
+  updateUserimage(userDetails?.userPic)
+
 
   return (
     <>

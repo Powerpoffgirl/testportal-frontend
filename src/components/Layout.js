@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import toggle from "../assets/toogle.svg";
 import { useMediaQuery } from "react-responsive";
 import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import UserContext from './userContext';
 
 
 export default function Layout({
@@ -55,21 +56,22 @@ export default function Layout({
   console.log(location);
   const navigate = useNavigate();
   const userContactNumber = localStorage.getItem("userContactNumber");
-  const userName = localStorage.getItem("name");
+  // const userName = localStorage.getItem("name");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
   const [pic, setPic] = useState();
   const [user, setUser] = useState()
-
+  const { userName, userEmail, userPic } = useContext(UserContext);
 
   useEffect(() =>
   {
     if (type === "doctor" || "admin" || "user")
     {
-      const nameParts = userName.split(' '); // Split the string by spaces
-      const firstName = nameParts[0]; // Get the first part, which is the first name
-      setUser("Dr. " + firstName); // Set the user with "Dr." and the first name
+      // const nameParts = userName.split(' '); // Split the string by spaces
+      // const firstName = nameParts[0]; // Get the first part, which is the first name
+      setUser("Dr. " + userName);
+      setPic(userPic)
     }
   }, [type, userName]); // Include dependencies in the dependency array
 
@@ -204,10 +206,10 @@ export default function Layout({
             class="flex items-center gap-x-2 mt-3"
             onClick={handleEditProfile}
           >
-            {pic ? (
+            {userPic ? (
               <img
                 class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
-                src={pic}
+                src={userPic}
                 alt={userName}
               />
             ) : (
@@ -222,7 +224,8 @@ export default function Layout({
               </h1>
 
               <p class="text-base text-white">
-                {userContactNumber ? userContactNumber : ""}
+                {/* {userContactNumber ? userContactNumber : ""} */}
+                {userEmail}
               </p>
             </div>
           </div>
