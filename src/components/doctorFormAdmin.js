@@ -430,7 +430,7 @@ export default function DoctorFormAdmin()
                   >
                     <MdEdit />
                   </p>
-                  <div style={{ backgroundColor: "#08DA75" }}>
+                  <div style={{ backgroundColor: "#89CFF0" }}>
                     <Menu
                       id="profile-pic-menu"
                       anchorEl={anchorEl}
@@ -438,12 +438,12 @@ export default function DoctorFormAdmin()
                       onClose={handleClose}
                       MenuListProps={{
                         "aria-labelledby": "edit-profile-pic-text",
-                        style: { backgroundColor: "#08DA75" }, // Set background color for the whole menu
+                        style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
                       }}
                     >
                       <MenuItem
                         style={{
-                          backgroundColor: "#08DA75",
+                          backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
                         onClick={handleNewProfilePictureClick}
@@ -459,7 +459,7 @@ export default function DoctorFormAdmin()
 
                       <MenuItem
                         style={{
-                          backgroundColor: "#08DA75",
+                          backgroundColor: "#89CFF0",
                           color: isHovered1 ? "red" : "white",
                         }}
                         // onClick={handleRemoveProfilePicture}

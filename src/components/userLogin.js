@@ -23,12 +23,23 @@ export default function UserLogin()
   const [error, setError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [isValid, setIsValid] = useState(true);
+  const [isChecked, setIsChecked] = useState(false);
+  const [checkboxerror, setCheckboxerror] = useState();
   const [isValidNumber, setIsValidNumber] = useState(true);
+
+
+  const handleCheckboxChange = (event) =>
+  {
+    setIsChecked(event.target.checked);
+  };
 
   const handleMobileNumberChange = (e) =>
   {
+
     const number = e.target.value;
     const isValidNumber = validateMobileNumber(number);
+    setIsValid(isValidNumber);
+    setContactNumber(number);
     setIsValidNumber(isValidNumber);
     if (isValidNumber || number === "")
     {
@@ -38,6 +49,7 @@ export default function UserLogin()
 
   const validateMobileNumber = (number) =>
   {
+
     const isValidFormat = /^\d{0,10}$/.test(number); // Validates up to 10 digits
     return isValidFormat;
   };
@@ -105,7 +117,12 @@ export default function UserLogin()
   const handleSubmit = async (e) =>
   {
     e.preventDefault();
-    if (isDoctor)
+
+    if (!isChecked)
+    {
+      setCheckboxerror("Please select the Checkbox")
+    }
+    if (isValid && isChecked)
     {
       const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
         method: "post",
@@ -148,29 +165,33 @@ export default function UserLogin()
       </div>
       <div className="right_side">
         <h3 className="right_heading">User Login</h3>
-        <p className="para_one">Add Your Mobile Number</p>
-        <p className="para_two">Apply with your phone number</p>
+        <p className="para_one" style={{ fontSize: '22px', fontWeight: 700 }}>Add Your Mobile Number</p>
+        <p className="para_two" style={{ fontSize: '18px', fontWeight: 300 }}>Apply with your phone number</p>
         <div className="input_container">
           <FaPhoneAlt className="call_icon" />
           <input
-            className={`input_box ${isValidNumber ? "" : "invalid"}`}
+            className={`input_box ${isValid ? "" : "invalid"}`}
             type="text"
             placeholder="Enter your mobile number"
             value={contactNumber}
             onChange={handleMobileNumberChange}
+            maxLength={10}
           />
-          {!isValidNumber && (
-            <p className="error_message">Please enter correct number.</p>
-          )}
-        </div>{" "}
-        <label className="label1">
-          <input type="checkbox" /> I agree with the{" "}
-          <a href="#terms" style={{ color: "#666", fontWeight: "600" }}>
-            terms of service
+          {!isValid && (
+            <p className="error_message">Please enter a valid mobile number</p>
+          )}{isValid && !isChecked && (
+            <p className="error_message">{checkboxerror}</p>
+          )}{" "}
+        </div>
+        <label className="label1" style={{ fontWeight: 400, fontSize: '16px' }}>
+          <input type="checkbox" checked={isChecked}
+            onChange={handleCheckboxChange} /> I agree with the{" "}
+          <a onClick={() => navigate("/termsofservices")} style={{ color: "#666", fontWeight: 'bolder', textDecoration: 'underline' }}>
+            Terms of service
           </a>{" "}
           and{" "}
-          <a href="#privacy" style={{ color: "#666", fontWeight: "600" }}>
-            privacy policy
+          <a onClick={() => navigate("/privacypolicy")} style={{ color: "#666", fontWeight: 'bolder', textDecoration: 'underline' }}>
+            Privacy policy
           </a>
         </label>
         <button className="button1" onClick={handleSubmit}>

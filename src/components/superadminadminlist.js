@@ -224,7 +224,7 @@ export default function SuperAdminAdminList({ searchTerm })
               marginBottom: "2%",
             }}
           >
-            Email: {selectedPatient?.email}, {selectedPatient?.contactNumber}
+            {selectedPatient?.email}, {selectedPatient?.contactNumber}
           </text>
 
           <text
@@ -237,17 +237,13 @@ export default function SuperAdminAdminList({ searchTerm })
               color: "#FFFFFF",
             }}
           >
-            Create :- {selectedPatient?.permissions?.create +
-              " || Edit:-  " +
+            Create: {selectedPatient?.permissions?.create +
+              " || Edit: " +
               selectedPatient?.permissions?.edit +
-              " || Remove:- " +
+              " || Remove: " +
               selectedPatient?.permissions?.remove +
-              " || View:-  " +
+              " || View:  " +
               selectedPatient?.permissions?.view
-              // ", " +
-              // selectedPatient?.address?.state +
-              // " " +
-              // selectedPatient?.address?.pinCode
             }
           </text>
 
@@ -261,7 +257,7 @@ export default function SuperAdminAdminList({ searchTerm })
               color: "#FFFFFF",
             }}
           >
-            Address:- {selectedPatient?.address?.houseNo +
+            {selectedPatient?.address?.houseNo +
               " " +
               selectedPatient?.address?.floor +
               " " +
@@ -330,9 +326,6 @@ export default function SuperAdminAdminList({ searchTerm })
                   <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
                     {patient.name}
                   </h1>
-                  <p>
-                    {patient.age} yrs , {patient.bodyWeight} kg
-                  </p>
                   <p>
                     {patient.address?.houseNo} , {patient.address?.block},{" "}
                     {patient.address?.area}, {patient.address?.district},

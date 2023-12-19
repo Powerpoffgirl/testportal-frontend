@@ -63,28 +63,29 @@ export default function Layout({
   const [user, setUser] = useState()
 
 
-  useEffect(() =>
-  {
-    // Exit the effect early if 'type' is an empty string
-    if (type !== "")
-    {
-      navigate("/");
-    }
-    else
-    {
-      const nameParts = userName.split(' '); // Split the string by spaces
-      const firstName = nameParts[0]; // Get the first part, which is the first name
+  // useEffect(() =>
+  // {
+  //   // Exit the effect early if 'type' is an empty string
+  //   if (type !== "")
+  //   {
+  //     const nameParts = userName.split(' '); // Split the string by spaces
+  //     const firstName = nameParts[0]; // Get the first part, which is the first name
 
-      if (type === "doctor")
-      {
-        setUser("Dr. " + firstName); // Set the user with "Dr." and the first name
-      } else
-      {
-        setUser(firstName); // Set the user with only the first name
-      }
-    }
+  //     // if (type === "doctor")
+  //     // {
+  //     //   setUser("Dr. " + firstName); // Set the user with "Dr." and the first name
+  //     // } else
+  //     if (type === "admin")
+  //     {
+  //       setUser(firstName); // Set the user with only the first name
+  //     }
+  //   }
+  //   else
+  //   {
+  //     navigate("/")
+  //   }
 
-  }, [type, userName]); // Include dependencies in the dependency array
+  // }, [type, userName]); // Include dependencies in the dependency array
 
   // -------------BASE URL SIDEBAR NAVIGATION--------------------------
 
