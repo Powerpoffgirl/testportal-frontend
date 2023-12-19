@@ -192,33 +192,58 @@ export default function PatientList({ searchTerm })
                 styles={{
                     modal: {
                         width: isTab ? "80%" : "70%",
-                        backgroundColor: "#89CFF0",
+                        backgroundColor: "#fff",
                         alignContent: "center",
                     },
                 }}
             >
-                <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
+                <div className="flex flex-col bg-customRedp-2 w-[100%] md:w-[100%]  mt-[2%]">
                     <div className="flex flex-row w-[100%] justify-between">
+                        {
+                            selectedPatient?.patientPic ? <img
+                                src={selectedPatient?.patientPic}
+                                alt="Avatar"
+                                style={{
+                                    borderRadius: "50%",
+                                    height: isTab ? "40px" : "123px",
+                                    width: isTab ? "40px" : "123px",
+                                    marginRight: '70px',
+                                    marginLeft: '20px',
+                                    boxShadow: 'inset 0 0 0 2px #76767'
+                                }}
+                            />
+                                :
+                                <AccountCircleIcon style={{
+                                    fontSize: '90px', color: "#E3F6FF",
+                                    borderRadius: "50%",
+                                    height: isTab ? "40px" : "123px",
+                                    width: isTab ? "40px" : "123px",
+                                    marginRight: '70px',
+                                    boxShadow: 'inset 0 0 0 2px #76767'
+                                }} />
+                        }
+
                     </div>
                     <text
-                        className="ml-4 text-center mt-4"
+                        className="ml-4 text-start mt-4"
                         style={{
                             fontSize: isTab ? "18px" : "26px",
                             fontWeight: 600,
                             lineHeight: "28.8px",
                             fontFamily: "Lato, sans-serif",
+                            color: "#000000"
                         }}
                     >
                         {selectedPatient?.name}
                     </text>
                     <text
-                        className="ml-4 text-center mt-4"
+                        className="ml-4 text-start mt-4"
                         style={{
                             fontSize: isTab ? "12px" : "20px",
                             fontWeight: 400,
                             lineHeight: "24px",
                             fontFamily: "Lato, sans-serif",
-                            color: "#FFFFFF",
+                            color: "#000000",
                             marginBottom: "2%",
                         }}
                     >
@@ -226,13 +251,13 @@ export default function PatientList({ searchTerm })
                     </text>
 
                     <text
-                        className="ml-4 text-center mt-2"
+                        className="ml-4 text-start mt-1"
                         style={{
                             fontSize: isTab ? "14px" : "20px",
                             fontWeight: 400,
                             lineHeight: "28.8px",
                             fontFamily: "Lato, sans-serif",
-                            color: "#FFFFFF",
+                            color: "#000000",
                         }}
                     >
                         {selectedPatient?.address?.houseNo +
@@ -247,38 +272,6 @@ export default function PatientList({ searchTerm })
                             " " +
                             selectedPatient?.address?.pinCode}
                     </text>
-
-                    <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
-                        {/* <span
-                            style={{
-                                width: "25px",
-                                height: "25px",
-                            }}
-                            onClick={() => handleEditPatient(selectedPatient?._id)}
-                            dangerouslySetInnerHTML={{ __html: svg4 }}
-                        ></span> */}
-                        <span
-                            style={{
-                                width: "25px",
-                                height: "25px",
-                            }}
-                            onClick={() => handleDeletePatient(selectedPatient?._id)}
-                            dangerouslySetInnerHTML={{ __html: svg5 }}
-                        ></span>
-                    </div>
-                    <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
-                        <span className="flex">
-                            <span
-                                className="mr-8"
-                                style={{ width: "8px", height: "20px" }}
-                                dangerouslySetInnerHTML={{ __html: svg1 }}
-                            ></span>
-                            <span
-                                style={{ width: "8px", height: "20px" }}
-                                dangerouslySetInnerHTML={{ __html: svg2 }}
-                            ></span>
-                        </span>
-                    </div>
                 </div>
             </Modal>
             <div className="flex flex-col">

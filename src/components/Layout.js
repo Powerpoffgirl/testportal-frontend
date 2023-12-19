@@ -60,6 +60,18 @@ export default function Layout({
   const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
   const [pic, setPic] = useState();
+  const [user, setUser] = useState()
+
+
+  useEffect(() =>
+  {
+    if (type === "doctor" || "admin" || "user")
+    {
+      const nameParts = userName.split(' '); // Split the string by spaces
+      const firstName = nameParts[0]; // Get the first part, which is the first name
+      setUser("Dr. " + firstName); // Set the user with "Dr." and the first name
+    }
+  }, [type, userName]); // Include dependencies in the dependency array
 
 
   // -------------BASE URL SIDEBAR NAVIGATION--------------------------
@@ -186,7 +198,7 @@ export default function Layout({
             } ease-in-out transition-all duration-300 md:transform-none`}
         >
           <h1 className="font-bold text-2xl" style={{ color: "white" }}>
-            Welcome! {type ? type : "Guest"}
+            Welcome! {user}
           </h1>
           <div
             class="flex items-center gap-x-2 mt-3"

@@ -183,7 +183,7 @@ export default function AppointmentListUser({ searchTerm })
           <div className="flex flex-row w-[100%] justify-between">
             {
               selectedAppointment?.UserPic ? <img
-                src={selectedAppointment?.UserPicc}
+                src={selectedAppointment?.UserPic}
                 alt="Avatar"
                 style={{
                   borderRadius: "50%",

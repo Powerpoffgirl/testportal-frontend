@@ -328,7 +328,7 @@ export default function DoctorLogin()
             </span>
           </div>
           <form className="flex flex-col ">
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col items-center relative">
               <input
                 className={`outline-none border-b-2 m-4 text-white placeholder-white md:w-413 sm:w-300 ${error ? "" : ""
                   }`}
@@ -368,21 +368,20 @@ export default function DoctorLogin()
                 onClick={togglePasswordVisibility}
                 style={{
                   position: 'absolute',
-                  left: '940px',
-                  bottom: '139px',
-                  border: 'none',
-                  background: 'none',
+                  top: '70%',
+                  right: '30px',
+                  transform: 'translateY(-50%)',
                   cursor: 'pointer',
                   fontSize: '18px',
                 }}
               >
-                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                {showPassword ? <FaEyeSlash style={{ color: "white" }} /> : <FaEye style={{ color: "white" }} />}
               </button>
               {passwordError && (
                 <span style={{ color: "red", fontSize: "14px" }}>
                   {passwordError}
                 </span>
-              )}{" "}
+              )}
             </div>
             <div className="flex justify-end md:w-413 sm:w-300">
               <button
