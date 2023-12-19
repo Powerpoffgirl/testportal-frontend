@@ -175,7 +175,7 @@ export default function PatientListUser({ searchTerm })
           },
         }}
       >
-        <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
+        <div className="flex flex-col bg-customRed p-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
           <div className="flex flex-row w-[100%] justify-between">
           </div>
           <text

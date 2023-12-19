@@ -396,7 +396,7 @@ export default function OtpVerify()
               </div>
 
               <text
-                className="mt-20"
+                className="mt-10"
                 style={{
                   color: "#A4A4A4",
                   display: "flex",

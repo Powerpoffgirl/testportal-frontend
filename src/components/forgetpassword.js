@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
 import "../App.css";
-
 import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -83,7 +82,13 @@ export default function Forgetpassword()
   const handleSubmit = async (e) =>
   {
     e.preventDefault();
-    const id = localStorage.getItem("doctorId");
+    if (password !== confirmPassword)
+    {
+      toast.error('Passwords do not match.');
+      return;
+    }
+
+    const id = localStorage.getItem('doctorId');
     const requestBody = {
       password: confirmPassword,
     };
@@ -92,47 +97,35 @@ export default function Forgetpassword()
     try
     {
       const response = await fetch(apiUrl, {
-        method: "POST",
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(requestBody),
       });
+
       const data = await response.json();
+      console.log("DATA", data)
 
       if (response.ok)
       {
-        navigate("/doctorlogin")
-        console.log("OTP sent successfully", data);
-        // localStorage.setItem("doctorId", data?.data._id)
-        // console.log("DOCTOR ID", data?.data._id)
-
+        toast.success('Password reset successfully.');
+        navigate('/doctorlogin');
       } else
       {
-        console.error("Error sending OTP:", data);
+        toast.error('Failed to reset password. Please try again.');
       }
     } catch (error)
     {
-      console.error("Error during the API call:", error);
+      toast.error(`Error during the API call: ${error.message}`);
     }
   };
 
   const handleChange = (e) =>
   {
     const { name, value } = e.target;
-
-    switch (name)
-    {
-      case "password":
-        setPassword(value);
-        break;
-      case "confirmPassword":
-        setConfirmPassword(value);
-        break;
-      // You can add more cases here if you have more fields
-      default:
-        break;
-    }
+    if (name === "password") setPassword(value);
+    else if (name === "confirmPassword") setConfirmPassword(value);
   };
 
 
@@ -140,6 +133,8 @@ export default function Forgetpassword()
   console.log("CONFIRM PASSWORD", confirmPassword)
   return (
     <>
+
+      <ToastContainer />
       <div className="bg-customRed min-h-screen relative overflow-hidden">
         {!isTab ? (
           <>
@@ -191,18 +186,6 @@ export default function Forgetpassword()
             ></div>
           )}
 
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
 
           <div
             className="rounded-full flex flex-row p-2 m-3 md:w-400 sm:w-300"

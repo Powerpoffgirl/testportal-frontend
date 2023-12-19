@@ -1,15 +1,10 @@
 import React, { useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import Sidebar from "./sidebar";
-import Header from "./header";
 import { useNavigate } from "react-router-dom";
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import DoctorSidebar from "./doctorSidebar";
 import { Select } from "antd";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import Modal from "react-responsive-modal";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function PatientDescription()
 {
@@ -371,8 +366,8 @@ export default function PatientDescription()
         if (data.success === true)
         {
             localStorage.setItem("appointmentId", appointmentId)
+            toast.success("Diagnosis saved.")
             setModalOpen(true);
-            // navigate(`/appointmentlist`)
         }
         console.log("DATA from response", data)
     }
@@ -394,100 +389,15 @@ export default function PatientDescription()
             }} center>
                 <div className="flex flex-col items-center w-[100%] md:w-[100%]" style={{ border: 'none', borderRadius: "5px", backgroundColor: '#89CFF0' }}>
                     <text className="ml-4 text-center mt-4" style={{ marginBottom: -20, fontSize: "40px", fontWeight: 700, lineHeight: "28.8px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', height: '100px', width: '370px', display: "flex", alignItems: "center", justifyContent: "center" }}>
-                        Confirmed !
+                        Diagnosis saved.
                     </text>
                     <text className="ml-4 text-center" style={{ fontSize: "60px", fontWeight: 800, lineHeight: "24px", fontFamily: "Lato, sans-serif", color: '#FFFFFF', marginBottom: "7%", display: "flex", alignItems: "center", justifyContent: "center" }}>
                         {<IoIosCheckmarkCircleOutline />}
                     </text>
-                    {/* <div className="flex justify-center">
-                        <button
-                            className="rounded-full mt-4 text-customRed"
-                            type="submit"
-                            style={{
-                                backgroundColor: "white",
-                                width: isTab ? "150px" : "198px",
-                                height: isTab ? "35px" : "45px",
-                                boxShadow: " 0 10px 5px -3px rgb(0 0 0 / 0.3)",
-                            }}
-                        // onClick={navigate(`/appointmentlist`)}
-                        >
-                            Appointment List
-                        </button>
-                    </div> */}
                 </div>
             </Modal>
 
-            {/* <Modal open={open}
-                // onClose={onCloseModal}
-                center
-                // doctor={selectedDoctor}
-                styles={{
-                    modal: {
-                        backgroundColor: '#89CFF0',
-                        alignContent: 'center'
-                    },
-                }}
-            >
-                <div
-                    className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
-                    style={{ borderRadius: "5px" }}
-                >
 
-                    <text
-                        className="ml-4 text-center mt-4"
-                        style={{
-                            // fontSize: isTab ? "18px" : "26px",
-                            fontWeight: 600,
-                            lineHeight: "28.8px",
-                            fontFamily: "Lato, sans-serif",
-                            color: '#FFFFFF',
-                        }}
-                    >
-                        Congratulations
-                    </text>
-                    <text
-                        className="ml-4 text-center mt-4"
-                        style={{
-                            // fontSize: isTab ? "12px" : "20px",
-                            fontWeight: 400,
-                            lineHeight: "24px",
-                            fontFamily: "Lato, sans-serif",
-                            color: '#FFFFFF',
-                            marginBottom: "2%"
-                        }}
-                    >
-                        <svg1 />
-                    </text>
-
-                    <text
-                        className="ml-4 text-center mt-2"
-                        style={{
-                            // fontSize: isTab ? "16px" : "24px",
-                            fontWeight: 400,
-                            lineHeight: "28.8px",
-                            fontFamily: "Lato, sans-serif",
-                            color: "white",
-                        }}
-                    >
-                        Your Appointment Has Been Booked.<br />
-                        Please wait for Confirmation.<br />
-
-                    </text>
-                    <text
-                        className="ml-4 text-center mt-2"
-                        style={{
-                            // fontSize: isTab ? "16px" : "24px",
-                            fontWeight: 400,
-                            lineHeight: "28.8px",
-                            fontFamily: "Lato, sans-serif",
-                            color: "white",
-                        }}
-                    >
-                        <b> Thank You</b>
-
-                    </text>
-                </div>
-            </Modal> */}
             {/* <div className="grid grid-cols-1 w-full gap-4"> */}
             <div className="flex flex-col">
                 <label className="mx-2 text-lg font-normal text-black font-lato" htmlFor="issues">
@@ -495,7 +405,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 rounded-lg"
+                    className="mx-2 border border-[#89CFF0] rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="issues"
                     name="issues"
@@ -519,7 +429,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 rounded-lg"
+                    className="mx-2 border border-[#89CFF0] rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="diesease"
                     name="diesease"
@@ -544,7 +454,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 rounded-lg"
+                    className="mx-2 border border-[#89CFF0] rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="medicineName"
                     name="medicineName"
@@ -569,7 +479,7 @@ export default function PatientDescription()
                 </label>
                 <Select
                     mode="multiple"
-                    className="mx-2 border border-green-500 rounded-lg"
+                    className="mx-2 border border-[#89CFF0] rounded-lg"
                     popupClassName="no-border-dropdown-menu" // Apply the custom class here
                     id="labTests"
                     name="labTests"
@@ -590,7 +500,7 @@ export default function PatientDescription()
             <div className="flex justify-center my-5">
                 <button
                     type="submit"
-                    className="w-40 h-11 bg-green-500 rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                    className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
                     onClick={handleRegister}
                 >
                     Process

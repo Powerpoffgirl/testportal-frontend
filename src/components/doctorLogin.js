@@ -216,7 +216,7 @@ export default function DoctorLogin()
       // Check the response status
       if (response.status === 404)
       {
-        toast.error("Doctor Not Found Register First !")
+        toast.error("Please register.")
       }
 
       if (response.ok)
@@ -289,18 +289,7 @@ export default function DoctorLogin()
             ></div>
           )}
 
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
+          <ToastContainer />
 
           <div
             className="rounded-full flex flex-row p-2 m-3 md:w-400 sm:w-300"
