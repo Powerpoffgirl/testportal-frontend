@@ -10,8 +10,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 
-export default function EditUserForm()
-{
+export default function EditUserForm() {
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
@@ -21,31 +20,26 @@ export default function EditUserForm()
   const [errors, setErrors] = useState({});
   const [userDetails, setUserDetails] = useState({ name: "" });
 
-  const handleFileSelect = (event) =>
-  {
+  const handleFileSelect = (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       setSelectedFile(file);
     }
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleNewProfilePicture = async () =>
-  {
+  const handleNewProfilePicture = async () => {
     const token = localStorage.getItem("token");
     const doctorId = localStorage.getItem("doctorId");
     const formData = new FormData();
     formData.append("doctorPic", selectedFile);
 
     console.log("FORM DATA", formData);
-    try
-    {
+    try {
       const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
         method: "POST",
         headers: {
@@ -54,8 +48,7 @@ export default function EditUserForm()
         body: formData,
       });
 
-      if (!response.ok)
-      {
+      if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -67,8 +60,7 @@ export default function EditUserForm()
       // Reset the file input
       setSelectedFile(null);
       fileInputRef.current.value = "";
-    } catch (error)
-    {
+    } catch (error) {
       console.error("Error uploading image:", error);
       alert("Error uploading image. Please try again.");
     }
@@ -79,16 +71,12 @@ export default function EditUserForm()
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -103,104 +91,94 @@ export default function EditUserForm()
         const data = await response.json();
         console.log("DATA from response", data);
         setUserDetails(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleToggleEdit = () =>
-  {
+  const handleToggleEdit = () => {
     setIsEditing(!isEditing);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const validateField = (name, value) =>
-  {
-    switch (name)
-    {
-      case "name":
-        return value ? "" : "Name is required.";
-      case "email":
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-          ? ""
-          : "Email is not valid.";
-      case "contactNumber":
-        return value.length > 0 && value.length === 10
-          ? ""
-          : "Contact number is required or Add valid 10 Digit Number.";
-      case "houseNo":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "houseNo is required  ";
-      case "floor":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-      case "block":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "Block is required  ";
-      case "area":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "Area is required and must be a string ";
-      case "pinCode":
-        return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-      case "district":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "District is required and must be a string ";
-      case "state":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "State is required and must be a string ";
-      case "workHourFrom":
-        // Assuming time in HH:MM format, adjust as needed
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-          ? ""
-          : "Invalid start time.";
-      case "workHourTo":
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-          ? ""
-          : "Invalid end time.";
-      // Add more cases as needed for other fields
-      default:
-        return "";
-    }
-  };
+  // const validateField = (name, value) => {
+  //   switch (name) {
+  //     case "name":
+  //       return value ? "" : "Name is required.";
+  //     case "email":
+  //       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  //         ? ""
+  //         : "Email is not valid.";
+  //     case "contactNumber":
+  //       return value.length > 0 && value.length === 10
+  //         ? ""
+  //         : "Contact number is required or Add valid 10 Digit Number.";
+  //     case "houseNo":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "houseNo is required  ";
+  //     case "floor":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
+  //     case "block":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "Block is required  ";
+  //     case "area":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "Area is required and must be a string ";
+  //     case "pinCode":
+  //       return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
+  //     case "district":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "District is required and must be a string ";
+  //     case "state":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "State is required and must be a string ";
+  //     case "workHourFrom":
+  //       // Assuming time in HH:MM format, adjust as needed
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid start time.";
+  //     case "workHourTo":
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid end time.";
+  //     // Add more cases as needed for other fields
+  //     default:
+  //       return "";
+  //   }
+  // };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
-    const error = validateField(name, value);
-    setErrors({ ...errors, [name]: error });
+    // const error = validateField(name, value);
+    // setErrors({ ...errors, [name]: error });
 
-    if (name === "workingDays")
-    {
+    if (name === "workingDays") {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         workingDays: [...prevUserDetails.workingDays, value],
       }));
-    } else if (name === "workHourFrom" || name === "workHourTo")
-    {
+    } else if (name === "workHourFrom" || name === "workHourTo") {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         workingHours: {
@@ -218,8 +196,7 @@ export default function EditUserForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         address: {
@@ -227,8 +204,7 @@ export default function EditUserForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         [name]: value,
@@ -238,8 +214,7 @@ export default function EditUserForm()
     setIsEditing(true);
   };
 
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     const newUserDetails = {
       name: userDetails?.name,
@@ -256,36 +231,46 @@ export default function EditUserForm()
       },
       userPic: userImage,
     };
+    if (newUserDetails.name === "") {
+      toast.error("Please write name");
+    } else if (newUserDetails.email === "") {
+      toast.error("Please write email");
+    } else if (newUserDetails.contactNumber === "") {
+      toast.error("Please write contact number");
+    } else if (newUserDetails.address?.pinCode === "") {
+      toast.error("Please write Pincode");
+    } else if (newUserDetails.address?.district === "") {
+      toast.error("Please write district");
+    } else if (newUserDetails.address?.state === "") {
+      toast.error("Please write state");
+    } else {
+      const token = localStorage.getItem("token");
+      const doctorId = localStorage.getItem("doctorId");
+      if (!token) {
+        console.error("No token found in local storage");
+        localStorage.clear();
+        navigate("/userlogin");
+      }
+      const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(newUserDetails),
+      });
+      const data = await response.json();
 
-    const token = localStorage.getItem("token");
-    const doctorId = localStorage.getItem("doctorId");
-    if (!token)
-    {
-      console.error("No token found in local storage");
-      localStorage.clear()
-      navigate("/userlogin")
-    }
-    const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify(newUserDetails),
-    });
-    const data = await response.json();
+      if (data.statusCode === 400) {
+        toast.error("Please fill the details");
+      }
 
-    if (data.statusCode === 400)
-    {
-      toast.error("Please fill the details");
+      if (data.success === true) {
+        console.log("Doctor updated successfully.");
+        navigate("/doctorlistuser");
+      }
+      console.log("DATA from response", data);
     }
-
-    if (data.success === true)
-    {
-      console.log("Doctor updated successfully.");
-      navigate("/doctorlistuser");
-    }
-    console.log("DATA from response", data);
   };
 
   console.log("User DETAILS", userDetails);
@@ -465,7 +450,6 @@ export default function EditUserForm()
                   Address
                 </label>
                 <div class="p-3 pb-5 border border-[#89CFF0]">
-
                   <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                     <div className="px-2 w-full sm:w-1/3">
                       <label
@@ -604,7 +588,7 @@ export default function EditUserForm()
                   </div>
                 </div>
               </div>
-            </div >
+            </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button
                 className="rounded-full justify-center px-9 py-2 bg-[#89CFF0] text-white"
@@ -613,10 +597,10 @@ export default function EditUserForm()
                 Process
               </button>
             </div>
-          </div >
+          </div>
           <ToastContainer />
-        </div >
-      </div >
+        </div>
+      </div>
     </>
   );
 }

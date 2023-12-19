@@ -7,7 +7,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "react-datepicker/dist/react-datepicker.min.css";
+// import "react-datepicker/dist/react-datepicker.min.css";
 
 export default function UserLogin() {
   let isTab = useMediaQuery({ query: "(max-width: 640px)" });
