@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "react-responsive-modal";
@@ -6,6 +6,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Popconfirm } from 'antd';
+import UserContext from './userContext';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
@@ -30,6 +31,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 
 export default function PatientListUser({ searchTerm })
 {
+  const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [patientsList, setPatientsList] = useState([]);
@@ -39,6 +41,9 @@ export default function PatientListUser({ searchTerm })
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
   const [selectedPatient, setSelectedPatient] = useState();
+  const [userDetailsName, setUserDetailsName] = useState();
+  const [userDetailsEmail, setUserDetailsEmail] = useState();
+  const [userDetailsPic, setUserDetailsPic] = useState();
 
   useEffect(() =>
   {
@@ -76,8 +81,43 @@ export default function PatientListUser({ searchTerm })
 
   }, [searchTerm]);
 
-
   useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("patientId");
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(`${baseUrl}/api/v1/user/get_userDetails`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
+
+        const data = await response.json();
+        console.log("DATA from response", data);
+        setUserDetailsName(data?.data.name);
+        setUserDetailsEmail(data?.data.email);
+        setUserDetailsPic(data?.data.userPic);
+        console.log("usser name$$$$$$$", data?.data.name);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchUserDetails();
+  }, []);
+
+
+  useEffect(() => 
   {
     if (patientsList?.length > 0 && searchTerm)
     {
@@ -159,6 +199,9 @@ export default function PatientListUser({ searchTerm })
 
   console.log("SELECTED PATIENT", selectedPatient);
   console.log("SEARCH TERM FROM COMPONENT", searchTerm)
+  updateUser(userDetailsName);
+  updateUserEmail(userDetailsEmail);
+  updateUserimage(userDetailsPic);
 
   return (
     <>

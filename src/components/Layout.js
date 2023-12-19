@@ -63,6 +63,9 @@ export default function Layout({
   const [pic, setPic] = useState();
   const [user, setUser] = useState()
   const { userName, userEmail, userPic } = useContext(UserContext);
+  const [userDetails, setUserDetails] = useState();
+
+
 
   useEffect(() =>
   {
@@ -74,6 +77,7 @@ export default function Layout({
       setPic(userPic)
     }
   }, [type, userName]); // Include dependencies in the dependency array
+
 
 
   // -------------BASE URL SIDEBAR NAVIGATION--------------------------
@@ -220,7 +224,7 @@ export default function Layout({
 
             <div>
               <h1 class="text-xl font-semibold text-white capitalize">
-                {userName}
+                {userDetails ? userDetails : userName}
               </h1>
 
               <p class="text-base text-white">

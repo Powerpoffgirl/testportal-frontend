@@ -191,6 +191,8 @@ export default function AppointmentList({ searchTerm })
     console.log("PATIENT LISTS", patientsList)
     console.log("APPOINTMENT LIST", appointmentList)
 
+
+
     return (
         <>
             <Modal open={modalOpen} onClose={onCloseModal} styles={{

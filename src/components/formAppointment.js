@@ -537,6 +537,16 @@ const FormAppoinment = ({ onDataFromChild }) =>
                     id="issues"
                     name="issues"
                     onChange={handleChangeIssues}
+                    onInputKeyDown={(e) =>
+                    {
+                        // Handle custom value input
+                        if (e.key === 'Enter')
+                        {
+                            e.preventDefault();
+                            handleChangeIssues(e.target.value);
+                            e.target.value = ''; // Clear the input
+                        }
+                    }}
                     value={patientDetails.issues}
                     placeholder="Select Issues"
                     style={{ overflowY: 'auto' }}
