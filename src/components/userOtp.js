@@ -122,7 +122,7 @@ const UserOTP = () =>
           navigate("/bookappointment", { state: { user: user } });
         } else
         {
-          navigate("/doctorlistuser", { state: { user: user } });
+          navigate("/patientlistuser", { state: { user: user } });
         }
       }
       if (data.success === false)

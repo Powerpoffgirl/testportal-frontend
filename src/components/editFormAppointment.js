@@ -494,6 +494,17 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                     id="issues"
                     name="issues"
                     onChange={handleChangeIssues}
+                    onInputKeyDown={(e) =>
+                    {
+                        // Handle custom value input
+                        if (e.key === 'Enter')
+                        {
+                            e.preventDefault();
+                            const inputValue = e.target.value;
+                            handleChangeIssues([...newAppointmentDetails.issues, inputValue]);
+                            e.target.value = ''; // Clear the input
+                        }
+                    }}
                     value={newAppointmentDetails.issues}
                     placeholder="Select Issues"
                     style={{ overflowY: 'auto' }}
@@ -516,6 +527,17 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                     id="diseases"
                     name="diseases"
                     onChange={handleChangeDiseases}
+                    onInputKeyDown={(e) =>
+                    {
+                        // Handle custom value input
+                        if (e.key === 'Enter')
+                        {
+                            e.preventDefault();
+                            const inputValue = e.target.value;
+                            handleChangeDiseases([...newAppointmentDetails.diseases, inputValue]);
+                            e.target.value = ''; // Clear the input
+                        }
+                    }}
                     value={newAppointmentDetails.diseases}
                     placeholder="Select Diseases"
                     style={{ overflowY: 'auto' }}

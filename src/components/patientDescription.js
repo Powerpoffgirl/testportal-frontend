@@ -410,6 +410,17 @@ export default function PatientDescription()
                     id="issues"
                     name="issues"
                     onChange={handleChangeIssues}
+                    onInputKeyDown={(e) =>
+                    {
+                        // Handle custom value input
+                        if (e.key === 'Enter')
+                        {
+                            e.preventDefault();
+                            const inputValue = e.target.value;
+                            handleChangeIssues([...patientDetails.issues, inputValue]);
+                            e.target.value = ''; // Clear the input
+                        }
+                    }}
                     value={patientDetails.issues}
                     placeholder="Select Issues"
                     style={{ overflowY: 'auto' }}
@@ -434,6 +445,17 @@ export default function PatientDescription()
                     id="diesease"
                     name="diesease"
                     onChange={handleChangeDiseases}
+                    onInputKeyDown={(e) =>
+                    {
+                        // Handle custom value input
+                        if (e.key === 'Enter')
+                        {
+                            e.preventDefault();
+                            const inputValue = e.target.value;
+                            handleChangeDiseases([...patientDetails.diseases, inputValue]);
+                            e.target.value = ''; // Clear the input
+                        }
+                    }}
                     value={patientDetails.diseases}
                     placeholder="Select Diesease"
                     style={{ overflowY: 'auto' }}
@@ -459,6 +481,17 @@ export default function PatientDescription()
                     id="medicineName"
                     name="medicineName"
                     onChange={handleChangeMedicine}
+                    onInputKeyDown={(e) =>
+                    {
+                        // Handle custom value input
+                        if (e.key === 'Enter')
+                        {
+                            e.preventDefault();
+                            const inputValue = e.target.value;
+                            handleChangeMedicine([...patientDetails.medicineName, inputValue]);
+                            e.target.value = ''; // Clear the input
+                        }
+                    }}
                     value={patientDetails.medicineName}
                     placeholder="Select Medicine"
                     style={{ overflowY: 'auto' }}
@@ -484,6 +517,17 @@ export default function PatientDescription()
                     id="labTests"
                     name="labTests"
                     onChange={handleChangeLabTests}
+                    onInputKeyDown={(e) =>
+                    {
+                        // Handle custom value input
+                        if (e.key === 'Enter')
+                        {
+                            e.preventDefault();
+                            const inputValue = e.target.value;
+                            handleChangeLabTests([...patientDetails.labTests, inputValue]);
+                            e.target.value = ''; // Clear the input
+                        }
+                    }}
                     value={patientDetails.labTests}
                     placeholder="Select Lab Tests"
                     style={{ overflowY: 'auto' }}
