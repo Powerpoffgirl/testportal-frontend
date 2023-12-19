@@ -76,6 +76,7 @@ export default function Layout({
       setUser("Dr. " + userName);
       setPic(userPic)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, userName]); // Include dependencies in the dependency array
 
   //     // if (type === "doctor")
