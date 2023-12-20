@@ -347,6 +347,13 @@ export default function DoctorFormAdmin()
       toast.error("Please fill the details");
     }
 
+
+    if (data.message === "Permission denied")
+    {
+      toast.error("Permission Denied")
+
+    }
+
     if (data.statusCode === 500)
     {
       toast.error("Enter Unique Values or Values already Exist ");

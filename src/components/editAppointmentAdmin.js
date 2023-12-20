@@ -9,6 +9,8 @@ import AdminSidebar from "./adminSidebar";
 import FormAppoinment from "./formAppointment";
 import design from "../assets/design.svg";
 import EditFormAppoinment from "./editFormAppointment";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 
@@ -103,6 +105,12 @@ export default function EditAppointmentAdmin()
                 });
 
                 const data = await response.json();
+
+                if (data.message === "Permission denied")
+                {
+                    toast.error("Permission Denied")
+
+                }
                 console.log("DATA from USE EFFECT response", data?.data)
                 setSelectedDoctor({
                     name: data?.data?.doctorId?.name,
@@ -310,6 +318,7 @@ export default function EditAppointmentAdmin()
     return (
         <>
             <div className="p-3 h-32">
+                <ToastContainer />
                 <div className="flex h-16 flex-row justify-between bg-[#89CFF0] w-full rounded-full px-10 pr-0">
                     <div class="flex items-center gap-x-2">
                         <img class="object-cover w-12 h-12 rounded-full" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100" alt="" />
@@ -320,6 +329,7 @@ export default function EditAppointmentAdmin()
                     </div>
                     <img className="h-16 hidden sm:block md:hidden lg:block" src={design} alt="design" />
                 </div>
+
             </div>
             <EditFormAppoinment appointmentDetails={appointmentDetails} />
         </>
