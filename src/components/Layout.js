@@ -15,6 +15,7 @@ export default function Layout({
   headerTextBottom,
   search,
   AddButton,
+  filter
 })
 {
   const baseUrl = process.env.REACT_APP_BASE_URL
