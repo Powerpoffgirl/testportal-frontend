@@ -298,6 +298,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
             }
         );
         const data = await response.json();
+
         if (data.success === true)
         {
             // navigate("/otp")
