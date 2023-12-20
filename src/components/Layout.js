@@ -220,7 +220,7 @@ export default function Layout({
             } ease-in-out transition-all duration-300 md:transform-none`}
         >
           <h1 className="font-bold text-2xl" style={{ color: "white" }}>
-            Welcome! {type ? type : "Guest"}
+            Welcome! {type ? type.charAt(0).toUpperCase() + type.slice(1) : "Guest"}
           </h1>
           <div
             class="flex items-center gap-x-2 mt-3"
@@ -240,7 +240,7 @@ export default function Layout({
 
             <div>
               <h1 class="text-xl font-semibold text-white capitalize">
-                {userDetails ? userDetails : userName}
+                {type === "doctor" ? "Dr. " + userName : userName}
               </h1>
 
               <p class="text-base text-white">
