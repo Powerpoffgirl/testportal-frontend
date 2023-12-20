@@ -25,14 +25,7 @@ export default function EditUserForm()
   const [errors, setErrors] = useState({});
   const [userDetails, setUserDetails] = useState({ name: "" });
 
-  const handleFileSelect = (event) =>
-  {
-    const file = event.target.files[0];
-    if (file)
-    {
-      setSelectedFile(file);
-    }
-  };
+
 
   const handleNewProfilePictureClick = async () =>
   {
@@ -40,43 +33,54 @@ export default function EditUserForm()
     await fileInputRef.current.click();
   };
 
-  const handleNewProfilePicture = async () =>
+
+
+  const handleFileSelect = async (event) =>
   {
-    const token = localStorage.getItem("token");
-    const doctorId = localStorage.getItem("doctorId");
-    const formData = new FormData();
-    formData.append("doctorPic", selectedFile);
-
-    console.log("FORM DATA", formData);
-    try
+    const file = event.target.files[0];
+    if (file)
     {
-      const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
-        method: "POST",
-        headers: {
-          "x-auth-token": token,
-        },
-        body: formData,
-      });
 
-      if (!response.ok)
+      const token = localStorage.getItem("token");
+      const doctorId = localStorage.getItem("doctorId");
+      const formData = new FormData();
+      formData.append("doctorPic", file);
+
+      console.log("FORM DATA", formData);
+      try
       {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+          method: "POST",
+          headers: {
+            "x-auth-token": token,
+          },
+          body: formData,
+        });
+
+        if (!response.ok)
+        {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Image uploaded successfully:", data);
+        setUserImage(data.profilePicImageUrl);
+        alert("Image uploaded successfully.");
+
+        // Reset the file input
+        setSelectedFile(null);
+        fileInputRef.current.value = "";
+      } catch (error)
+      {
+        console.error("Error uploading image:", error);
+        alert("Error uploading image. Please try again.");
       }
 
-      const data = await response.json();
-      console.log("Image uploaded successfully:", data);
-      setUserImage(data.profilePicImageUrl);
-      alert("Image uploaded successfully.");
-
-      // Reset the file input
-      setSelectedFile(null);
-      fileInputRef.current.value = "";
-    } catch (error)
-    {
-      console.error("Error uploading image:", error);
-      alert("Error uploading image. Please try again.");
     }
+
   };
+
+
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -387,7 +391,6 @@ export default function EditUserForm()
                           backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
-                        onClick={handleNewProfilePictureClick}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                       >
@@ -395,7 +398,7 @@ export default function EditUserForm()
                         <span style={{ marginRight: "8px" }}>
                           <HiOutlineUserAdd />
                         </span>
-                        <span>New profile picture</span>
+                        <label htmlFor="files" >New profile picture</label>
                       </MenuItem>
 
                       <MenuItem
@@ -403,6 +406,7 @@ export default function EditUserForm()
                           backgroundColor: "#89CFF0",
                           color: isHovered1 ? "red" : "white",
                         }}
+
                         // onClick={handleRemoveProfilePicture}
                         onMouseEnter={() => setIsHovered1(true)}
                         onMouseLeave={() => setIsHovered1(false)}
@@ -414,8 +418,11 @@ export default function EditUserForm()
                       </MenuItem>
                     </Menu>
                   </div>
+                  <label style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}>
+                    Edit Profile Picture
+                  </label>
                   <input
-                    id="imageInput"
+                    id="files"
                     type="file"
                     ref={fileInputRef}
                     style={{ display: "none" }}
@@ -423,12 +430,13 @@ export default function EditUserForm()
                     onChange={handleFileSelect}
                   />
                 </div>
-                <button
+
+                {/* <button
                   onClick={handleNewProfilePicture}
                   style={{ marginLeft: 20, marginTop: 5, fontWeight: "600" }}
                 >
                   Upload
-                </button>
+                </button> */}
               </div>
             </div>
             <div class="grid grid-cols-1 w-full gap-4">
