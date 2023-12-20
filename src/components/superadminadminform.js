@@ -763,7 +763,7 @@ export default function SuperAdminAdminForm()
                   name="email"
                   value={adminDetails.email}
                   onChange={handleChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                 />
                 {errors.email && (
                   <p className="text-red-500">{errors.email}</p>
@@ -782,7 +782,7 @@ export default function SuperAdminAdminForm()
                   name="contactNumber"
                   value={adminDetails.contactNumber}
                   onChange={handleChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                 />
                 {errors.contactNumber && (
                   <p className="text-red-500">{errors.contactNumber}</p>
@@ -792,6 +792,7 @@ export default function SuperAdminAdminForm()
               <div className="flex flex-row items-start pt-4 gap-4">
                 <div className="flex flex-col mr-2 ">
                   <label
+                    style={{ marginRight: '10px' }}
                     className="mx-2 text-lg font-normal text-black font-lato font-semibold"
                     htmlFor="Permission"
                   >
@@ -802,204 +803,215 @@ export default function SuperAdminAdminForm()
                 </div>
 
                 <div
-                  className="flex flex-row  flex-grow "
+                  className="flex flex-row flex-grow "
                   style={{ justifyContent: "space-around" }}
                 >
                   {/* Permissions */}
-                  <label>
-                    View:
+                  <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                    <label style={{ marginRight: '15px' }}>View:</label>
                     <input
                       type="checkbox"
                       name="view"
                       checked={adminDetails.permissions.view}
                       onChange={handleChange}
                     />
-                  </label>
+                  </div>
 
-                  <label>
-                    Create:
+                  <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                    <label style={{ marginRight: '15px' }}>Create:</label>
                     <input
                       type="checkbox"
                       name="create"
                       checked={adminDetails.permissions.create}
                       onChange={handleChange}
                     />
-                  </label>
+                  </div>
 
-                  <label>
-                    Remove:
+                  <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                    <label style={{ marginRight: '15px' }}>Remove:</label>
                     <input
                       type="checkbox"
                       name="remove"
                       checked={adminDetails.permissions.remove}
                       onChange={handleChange}
                     />
-                  </label>
+                  </div>
 
-                  <label>
-                    Edit:
+                  <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
+                    <label style={{ marginRight: '15px' }}>Edit:</label>
                     <input
                       type="checkbox"
                       name="edit"
                       checked={adminDetails.permissions.edit}
                       onChange={handleChange}
                     />
-                  </label>
+                  </div>
                   {/* Error handling or displaying selected action */}
                   {/* {action && <p>Selected Action: {action}</p>} */}
                 </div>
               </div>
 
-              <div class="p-3 pb-5 border border-[#89CFF0]">
-                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-                  <div className="px-2 w-full sm:w-1/3">
-                    <label
-                      htmlFor="houseNo"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      House No
-                    </label>
-                    <input
-                      type="text"
-                      id="houseNo"
-                      name="houseNo"
-                      value={adminDetails.address.houseNo}
-                      onChange={handleChange}
-                      placeholder="1234"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
-                    />
-                    {/* {houseNoError && (
+
+              <div>
+                <label
+                  htmlFor="state"
+                  className="block text-black text-lg font-semibold"
+                >
+                  Address
+                </label>
+                <div class="p-3 pb-5 border border-[#89CFF0]">
+                  <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
+                    <div className="px-2 w-full sm:w-1/3">
+                      <label
+                        htmlFor="houseNo"
+                        className="block text-black text-lg font-semibold"
+                      >
+                        House No
+                      </label>
+                      <input
+                        type="text"
+                        id="houseNo"
+                        name="houseNo"
+                        value={adminDetails.address.houseNo}
+                        onChange={handleChange}
+                        placeholder="1234"
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
+                      />
+                      {/* {houseNoError && (
                       <p className="text-red-500 text-sm mt-1">
                         {houseNoError}
                       </p>
                     )} */}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/3">
-                    <label
-                      htmlFor="floor"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      Floor
-                    </label>
-                    <input
-                      type="text"
-                      id="floor"
-                      name="floor"
-                      value={adminDetails.address.floor}
-                      onChange={handleChange}
-                      placeholder="First Floor or 2nd"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
-                    />
-                    {/* {floorError && (
+                    </div>{" "}
+                    <div className="px-2 w-full sm:w-1/3">
+                      <label
+                        htmlFor="floor"
+                        className="block text-black text-lg font-semibold"
+                      >
+                        Floor
+                      </label>
+                      <input
+                        type="text"
+                        id="floor"
+                        name="floor"
+                        value={adminDetails.address.floor}
+                        onChange={handleChange}
+                        placeholder="First Floor or 2nd"
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
+                      />
+                      {/* {floorError && (
                       <p className="text-red-500 text-sm mt-1">{floorError}</p>
                     )} */}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/3">
-                    <label
-                      htmlFor="block"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      Block
-                    </label>
-                    <input
-                      type="text"
-                      id="block"
-                      name="block"
-                      value={adminDetails.address.block}
-                      onChange={handleChange}
-                      placeholder="A"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
-                    />
-                    {/* {blockError && (
+                    </div>{" "}
+                    <div className="px-2 w-full sm:w-1/3">
+                      <label
+                        htmlFor="block"
+                        className="block text-black text-lg font-semibold"
+                      >
+                        Block
+                      </label>
+                      <input
+                        type="text"
+                        id="block"
+                        name="block"
+                        value={adminDetails.address.block}
+                        onChange={handleChange}
+                        placeholder="A"
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
+                      />
+                      {/* {blockError && (
                       <p className="text-red-500 text-sm mt-1">{blockError}</p>
                     )} */}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="area"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      Area
-                    </label>
-                    <input
-                      type="text"
-                      id="area"
-                      name="area"
-                      value={adminDetails.address.area}
-                      onChange={handleChange}
-                      placeholder="Green Park"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
-                    />
-                    {errors.area && (
-                      <p className="text-red-500">{errors.area}</p>
-                    )}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="pinCode"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      Pincode
-                    </label>
-                    <input
-                      type="text"
-                      id="pinCode"
-                      name="pinCode"
-                      value={adminDetails.address.pinCode}
-                      onChange={handleChange}
-                      placeholder="110016"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
-                    />
-                    {errors.pinCode && (
-                      <p className="text-red-500">{errors.pinCode}</p>
-                    )}
-                  </div>
-                  <div className="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="district"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      District
-                    </label>
-                    <input
-                      type="text"
-                      id="district"
-                      name="district"
-                      value={adminDetails.address.district}
-                      onChange={handleChange}
-                      placeholder="South Delhi"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
-                    />
-                    {errors.district && (
-                      <p className="text-red-500">{errors.district}</p>
-                    )}
-                  </div>
-                  <div className="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="state"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      State
-                    </label>
-                    <input
-                      type="text"
-                      id="state"
-                      name="state"
-                      value={adminDetails.address.state}
-                      onChange={handleChange}
-                      placeholder="Delhi"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
-                    />
-                    {errors.state && (
-                      <p className="text-red-500">{errors.state}</p>
-                    )}
+                    </div>{" "}
+                    <div className="px-2 w-full sm:w-1/2">
+                      <label
+                        htmlFor="area"
+                        className="block text-black text-lg font-semibold"
+                      >
+                        Area
+                      </label>
+                      <input
+                        type="text"
+                        id="area"
+                        name="area"
+                        value={adminDetails.address.area}
+                        onChange={handleChange}
+                        placeholder="Green Park"
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                      />
+                      {errors.area && (
+                        <p className="text-red-500">{errors.area}</p>
+                      )}
+                    </div>{" "}
+                    <div className="px-2 w-full sm:w-1/2">
+                      <label
+                        htmlFor="pinCode"
+                        className="block text-black text-lg font-semibold"
+                      >
+                        Pincode
+                      </label>
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        value={adminDetails.address.pinCode}
+                        onChange={handleChange}
+                        placeholder="110016"
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
+                      />
+                      {errors.pinCode && (
+                        <p className="text-red-500">{errors.pinCode}</p>
+                      )}
+                    </div>
+                    <div className="px-2 w-full sm:w-1/2">
+                      <label
+                        htmlFor="district"
+                        className="block text-black text-lg font-semibold"
+                      >
+                        District
+                      </label>
+                      <input
+                        type="text"
+                        id="district"
+                        name="district"
+                        value={adminDetails.address.district}
+                        onChange={handleChange}
+                        placeholder="South Delhi"
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
+                      />
+                      {errors.district && (
+                        <p className="text-red-500">{errors.district}</p>
+                      )}
+                    </div>
+                    <div className="px-2 w-full sm:w-1/2">
+                      <label
+                        htmlFor="state"
+                        className="block text-black text-lg font-semibold"
+                      >
+                        State
+                      </label>
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value={adminDetails.address.state}
+                        onChange={handleChange}
+                        placeholder="Delhi"
+                        className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
+                      />
+                      {errors.state && (
+                        <p className="text-red-500">{errors.state}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
+
+
             </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button
-                className="rounded-full justify-center px-9 py-2 bg-[89CFF0] text-white"
+                className="rounded-full justify-center px-9 py-2 bg-[#89CFF0] text-white"
                 onClick={handleRegister}
               >
                 Process

@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import UserList from "./userList";
 import { Button, Popconfirm } from 'antd';
 import { FaTrashAlt } from "react-icons/fa";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+
 
 export default function SuperAdminUserList({ searchTerm })
 {
@@ -219,12 +221,17 @@ export default function SuperAdminUserList({ searchTerm })
           >
             <div className="flex flex-row justify-start items-center">
               <div class="flex items-center gap-x-2">
-                <img
-                  class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
-                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=faceare&facepad=3&w=688&h=688&q=100"
-                  alt=""
-                />
-
+                {user.userPic ? (
+                  <img
+                    class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                    src={user.userPic}
+                    alt={user.name}
+                  />
+                ) : (
+                  <AccountCircleIcon
+                    style={{ fontSize: "90px", color: "#A4A4A4" }}
+                  />
+                )}
                 <div>
                   <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
                     {user.contactNumber}
