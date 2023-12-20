@@ -9,6 +9,9 @@ import UserSidebar from "./userSidebar";
 import PatientHeader from "./patientHeader";
 import AdminSidebar from "./adminSidebar";
 import AdminHeader from "./adminHeader";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -64,10 +67,19 @@ export default function PatientListAdmin({ searchTerm })
                 });
 
                 const data = await response.json();
+
+                if (data.message === "Permission denied")
+                {
+                    toast.error("Permission Denied")
+
+                }
                 console.log("DATA from response", data)
                 setPatientsList(data?.data)
+
+
             } catch (error)
             {
+
                 console.error('There was an error verifying the OTP:', error);
             }
         }
@@ -93,6 +105,13 @@ export default function PatientListAdmin({ searchTerm })
             });
 
             const data = await response.json();
+
+
+            if (data.message === "Permission denied")
+            {
+                toast.error("Permission Denied")
+
+            }
 
             if (response.ok)
             {
@@ -144,6 +163,7 @@ export default function PatientListAdmin({ searchTerm })
 
     return (
         <>
+            <ToastContainer />
             <Modal
                 open={open}
                 onClose={onCloseModal}
@@ -258,6 +278,7 @@ export default function PatientListAdmin({ searchTerm })
                                             <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
                                     }
                                     <div>
+                                        <ToastContainer />
                                         <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize ml-2" >
                                             {patient.name}
                                         </h1>
@@ -270,6 +291,8 @@ export default function PatientListAdmin({ searchTerm })
                                         {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}
                                     </div>
                                 </div>
+
+
                                 <div class="flex flex-row ms-auto gap-1 sm:gap-4">
                                     <Popconfirm title="Delete the Patient"
                                         description="Are you sure to delete this Patient?"

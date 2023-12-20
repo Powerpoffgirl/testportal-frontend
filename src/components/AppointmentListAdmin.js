@@ -68,6 +68,12 @@ export default function AppointmentListAdmin({ searchTerm })
                     }
                 );
                 const data = await response.json();
+
+                if (data.message === "Permission denied")
+                {
+                    toast.error("Permission Denied")
+
+                }
                 console.log("DATA from response", data);
                 setAppointmentList(data?.data);
             } catch (error)
@@ -126,6 +132,12 @@ export default function AppointmentListAdmin({ searchTerm })
             });
 
             const data = await response.json();
+
+            if (data.message === "Permission denied")
+            {
+                toast.error("Permission Denied")
+
+            }
 
             if (response.ok)
             {

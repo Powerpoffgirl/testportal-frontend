@@ -3,6 +3,8 @@ import Modal from 'react-responsive-modal';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Select, Space } from 'antd';
 import "../App.css"
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 const DiseasesDropdown = [
@@ -160,6 +162,12 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                 });
 
                 const data = await response.json();
+
+                if (data.message === "Permission denied")
+                {
+                    toast.error("Permission Denied")
+
+                }
                 console.log("DATA from response", data)
                 setPatientsList(data?.data)
             } catch (error)
@@ -299,6 +307,13 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
         );
         const data = await response.json();
 
+
+        if (data.message === "Invalid or expired token")
+        {
+            toast.error("Invalid or expired token")
+
+        }
+
         if (data.success === true)
         {
             // navigate("/otp")
@@ -312,6 +327,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
     console.log("DOCTORS LIST", doctorsList)
     console.log("APPOINTMENT DETAILS", appointmentDetails)
     return (
+
         <form
             className="flex flex-col gap-2 px-3 w-full relative overflow-hidden justify-center"
             onSubmit={(e) => e.preventDefault()}
@@ -392,6 +408,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
                 <div className="flex flex-col">
+                    <ToastContainer />
                     <label
                         className="mx-2 text-lg font-normal text-black font-lato"
                         htmlFor="patientName"
@@ -441,6 +458,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
             {/* 1st Row */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 
+
                 <div className="flex flex-col">
                     <label
                         className="mx-2 text-lg font-normal text-black font-lato"
@@ -482,6 +500,7 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                         value={newAppointmentDetails?.appointmentDate?.time}
                     />
                 </div>
+
             </div>
 
             {/* <div className="grid grid-cols-1 w-full gap-4"> */}
@@ -497,13 +516,20 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                     onChange={handleChangeIssues}
                     onInputKeyDown={(e) =>
                     {
-                        // Handle custom value input
+
                         if (e.key === 'Enter')
                         {
                             e.preventDefault();
-                            const inputValue = e.target.value;
-                            handleChangeIssues([...newAppointmentDetails.issues, inputValue]);
-                            e.target.value = ''; // Clear the input
+                            const inputValue = e.target.value.trim();
+                            if (inputValue)
+                            {
+                                handleChangeIssues([...newAppointmentDetails.issues, inputValue]);
+                                setTimeout(() =>
+                                {
+                                    e.target.value = '';
+                                    e.target.focus();
+                                }, 0);
+                            }
                         }
                     }}
                     value={newAppointmentDetails.issues}
