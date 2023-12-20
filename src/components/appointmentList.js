@@ -105,8 +105,11 @@ export default function AppointmentList({ searchTerm })
                 });
 
                 const data = await response.json();
-                console.log("DATA from response", data)
-                setAppointmentList(data?.data)
+                console.log("DATA from response", data);
+
+                const filteredAppointmentList = data?.data.filter(appointment => appointment.patientId !== null);
+
+                setAppointmentList(filteredAppointmentList);
             } catch (error)
             {
                 console.error('There was an error verifying the OTP:', error);
