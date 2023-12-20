@@ -497,13 +497,20 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                     onChange={handleChangeIssues}
                     onInputKeyDown={(e) =>
                     {
-                        // Handle custom value input
+
                         if (e.key === 'Enter')
                         {
                             e.preventDefault();
-                            const inputValue = e.target.value;
-                            handleChangeIssues([...newAppointmentDetails.issues, inputValue]);
-                            e.target.value = ''; // Clear the input
+                            const inputValue = e.target.value.trim();
+                            if (inputValue)
+                            {
+                                handleChangeIssues([...newAppointmentDetails.issues, inputValue]);
+                                setTimeout(() =>
+                                {
+                                    e.target.value = '';
+                                    e.target.focus();
+                                }, 0);
+                            }
                         }
                     }}
                     value={newAppointmentDetails.issues}
