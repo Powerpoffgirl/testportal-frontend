@@ -416,9 +416,16 @@ export default function PatientDescription()
                         if (e.key === 'Enter')
                         {
                             e.preventDefault();
-                            const inputValue = e.target.value;
-                            handleChangeIssues([...patientDetails.issues, inputValue]);
-                            e.target.value = ''; // Clear the input
+                            let inputValue = e.target.value.trim();
+                            if (inputValue)
+                            {
+                                handleChangeIssues([...patientDetails.issues, inputValue]);
+                                setTimeout(() =>
+                                {
+                                    e.target.value = '';
+                                    inputValue = '';
+                                }, 0);
+                            }
                         }
                     }}
                     value={patientDetails.issues}
@@ -451,9 +458,16 @@ export default function PatientDescription()
                         if (e.key === 'Enter')
                         {
                             e.preventDefault();
-                            const inputValue = e.target.value;
-                            handleChangeDiseases([...patientDetails.diseases, inputValue]);
-                            e.target.value = ''; // Clear the input
+                            let inputValue = e.target.value.trim();
+                            if (inputValue)
+                            {
+                                handleChangeDiseases([...patientDetails.diseases, inputValue]);
+                                setTimeout(() =>
+                                {
+                                    e.target.value = '';
+                                    inputValue = '';
+                                }, 0);
+                            }
                         }
                     }}
                     value={patientDetails.diseases}
@@ -487,9 +501,16 @@ export default function PatientDescription()
                         if (e.key === 'Enter')
                         {
                             e.preventDefault();
-                            const inputValue = e.target.value;
-                            handleChangeMedicine([...patientDetails.medicineName, inputValue]);
-                            e.target.value = ''; // Clear the input
+                            let inputValue = e.target.value.trim();
+                            if (inputValue)
+                            {
+                                handleChangeMedicine([...patientDetails.medicineName, inputValue]);
+                                setTimeout(() =>
+                                {
+                                    e.target.value = '';
+                                    inputValue = '';
+                                }, 0);
+                            }
                         }
                     }}
                     value={patientDetails.medicineName}
@@ -523,9 +544,16 @@ export default function PatientDescription()
                         if (e.key === 'Enter')
                         {
                             e.preventDefault();
-                            const inputValue = e.target.value;
-                            handleChangeLabTests([...patientDetails.labTests, inputValue]);
-                            e.target.value = ''; // Clear the input
+                            let inputValue = e.target.value.trim();
+                            if (inputValue)
+                            {
+                                handleChangeLabTests([...patientDetails.labTests, inputValue]);
+                                setTimeout(() =>
+                                {
+                                    e.target.value = '';
+                                    inputValue = '';
+                                }, 0);
+                            }
                         }
                     }}
                     value={patientDetails.labTests}

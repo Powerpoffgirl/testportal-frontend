@@ -520,14 +520,15 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                         if (e.key === 'Enter')
                         {
                             e.preventDefault();
-                            const inputValue = e.target.value.trim();
+                            let inputValue = e.target.value.trim();
                             if (inputValue)
                             {
                                 handleChangeIssues([...newAppointmentDetails.issues, inputValue]);
                                 setTimeout(() =>
                                 {
                                     e.target.value = '';
-                                    e.target.focus();
+
+                                    inputValue = '';
                                 }, 0);
                             }
                         }

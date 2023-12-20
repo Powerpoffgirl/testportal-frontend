@@ -394,7 +394,7 @@ export default function DoctorListAdmin({ searchTerm })
         }}
       >
         <ToastContainer />
-        <div
+        {/* <div
           className="divWithHiddenScrollbar flex flex-row gap-4 "
           style={{
             overflowX: "auto",
@@ -425,7 +425,7 @@ export default function DoctorListAdmin({ searchTerm })
               {items.name}
             </span>
           ))}
-        </div>
+        </div> */}
 
         {/* Doctors Array Start */}
 
