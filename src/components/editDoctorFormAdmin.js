@@ -26,13 +26,49 @@ export default function EditDoctorFormAdmin()
     const [isHovered1, setIsHovered1] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
 
-    const handleFileSelect = (event) =>
+    const handleFileSelect = async (event) =>
     {
         const file = event.target.files[0];
         if (file)
         {
-            setSelectedFile(file);
+
+            const token = localStorage.getItem("token");
+            const doctorId = localStorage.getItem("doctorId");
+            const formData = new FormData();
+            formData.append("doctorPic", file);
+
+            console.log("FORM DATA", formData);
+            try
+            {
+                const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+                    method: "POST",
+                    headers: {
+                        "x-auth-token": token,
+                    },
+                    body: formData,
+                });
+
+                if (!response.ok)
+                {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log("Image uploaded successfully:", data);
+                setDoctorImage(data.profilePicImageUrl);
+                alert("Image uploaded successfully.");
+
+                // Reset the file input
+                setSelectedFile(null);
+                fileInputRef.current.value = "";
+            } catch (error)
+            {
+                console.error("Error uploading image:", error);
+                alert("Error uploading image. Please try again.");
+            }
+
         }
+
     };
 
     const handleNewProfilePictureClick = async () =>
@@ -42,50 +78,7 @@ export default function EditDoctorFormAdmin()
 
     };
 
-    const handleNewProfilePicture = async () =>
-    {
-        const token = localStorage.getItem('token');
-        const doctorId = localStorage.getItem('doctorId');
 
-        // if (!token || !doctorId)
-        // {
-        //     console.error('Token or doctor ID not found in local storage');
-        //     return;
-        // }
-
-        const formData = new FormData();
-        formData.append('doctorPic', selectedFile);
-
-        console.log("FORM DATA", formData)
-        try
-        {
-            const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
-                method: 'POST',
-                headers: {
-                    'x-auth-token': token,
-                },
-                body: formData,
-            });
-
-            if (!response.ok)
-            {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-
-            const data = await response.json();
-            console.log('Image uploaded successfully:', data);
-            setDoctorImage(data.profilePicImageUrl)
-            alert('Image uploaded successfully.');
-
-            // Reset the file input
-            setSelectedFile(null);
-            fileInputRef.current.value = '';
-        } catch (error)
-        {
-            console.error('Error uploading image:', error);
-            alert('Error uploading image. Please try again.');
-        }
-    };
     const Daysdropdown = [
         { label: "Select Days", value: "" },
         { label: "Monday", value: "Monday" },
@@ -448,7 +441,6 @@ export default function EditDoctorFormAdmin()
                                                     backgroundColor: "#89CFF0",
                                                     color: isHovered ? "red" : "white",
                                                 }}
-                                                onClick={handleNewProfilePictureClick}
                                                 onMouseEnter={() => setIsHovered(true)}
                                                 onMouseLeave={() => setIsHovered(false)}
                                             >
@@ -456,7 +448,7 @@ export default function EditDoctorFormAdmin()
                                                 <span style={{ marginRight: "8px" }}>
                                                     <HiOutlineUserAdd />
                                                 </span>
-                                                <span>New profile picture</span>
+                                                <label htmlFor="files" >New profile picture</label>
                                             </MenuItem>
 
                                             <MenuItem
@@ -475,16 +467,19 @@ export default function EditDoctorFormAdmin()
                                             </MenuItem>
                                         </Menu>
                                     </div>
+                                    <label style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}>
+                                        Edit Profile Picture
+                                    </label>
                                     <input
-                                        id="imageInput"
+                                        id="files"
                                         type="file"
                                         ref={fileInputRef}
-                                        style={{ display: 'none' }}
+                                        style={{ display: "none" }}
                                         accept="image/*"
                                         onChange={handleFileSelect}
                                     />
                                 </div>
-                                <button onClick={handleNewProfilePicture} style={{ marginLeft: 20, marginTop: 5, fontWeight: 600 }}>Upload</button>
+
                             </div>
                         </div>
                         {/* <div>
