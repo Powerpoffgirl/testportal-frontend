@@ -12,8 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 
-export default function DoctorFormAdmin()
-{
+export default function DoctorFormAdmin() {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [doctorImage, setDoctorImage] = useState();
@@ -52,30 +51,24 @@ export default function DoctorFormAdmin()
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
-
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -84,8 +77,7 @@ export default function DoctorFormAdmin()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -97,26 +89,19 @@ export default function DoctorFormAdmin()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         alert("Error uploading image. Please try again.");
       }
-
     }
-
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-
-
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     handleClose();
   };
 
@@ -189,91 +174,85 @@ export default function DoctorFormAdmin()
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) =>
-    {
+    ...Array.from({ length: 24 }, (v, i) => {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange1 = (e) =>
-  {
+  const handleChange1 = (e) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: e,
     }));
   };
 
-  const validateField = (name, value) =>
-  {
-    switch (name)
-    {
-      case "name":
-        return value ? "" : "Name is required.";
-      case "email":
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-          ? ""
-          : "Email is not valid.";
-      case "contactNumber":
-        return value.length > 0 && value.length === 10
-          ? ""
-          : "Contact number is required or Add valid 10 Digit Number.";
-      case "degree":
-        return value ? "" : "Degree is required  ";
-      case "totalExperience":
-        return value ? "" : "Total Experience is required  ";
-      case "houseNo":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "houseNo is required  ";
-      case "floor":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-      case "block":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "Block is required  ";
-      case "area":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "Area is required and must be a string ";
-      case "pinCode":
-        return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-      case "district":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "District is required and must be a string ";
-      case "state":
-        return /^[a-zA-Z\s]+$/.test(value) && value
-          ? ""
-          : "State is required and must be a string ";
-      case "workHourFrom":
-        // Assuming time in HH:MM format, adjust as needed
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-          ? ""
-          : "Invalid start time.";
-      case "workHourTo":
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-          ? ""
-          : "Invalid end time.";
-      // Add more cases as needed for other fields
-      default:
-        return "";
-    }
-  };
+  // const validateField = (name, value) => {
+  //   switch (name) {
+  //     case "name":
+  //       return value ? "" : "Name is required.";
+  //     case "email":
+  //       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  //         ? ""
+  //         : "Email is not valid.";
+  //     case "contactNumber":
+  //       return value.length > 0 && value.length === 10
+  //         ? ""
+  //         : "Contact number is required or Add valid 10 Digit Number.";
+  //     case "degree":
+  //       return value ? "" : "Degree is required  ";
+  //     case "totalExperience":
+  //       return value ? "" : "Total Experience is required  ";
+  //     case "houseNo":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "houseNo is required  ";
+  //     case "floor":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
+  //     case "block":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "Block is required  ";
+  //     case "area":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "Area is required and must be a string ";
+  //     case "pinCode":
+  //       return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
+  //     case "district":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "District is required and must be a string ";
+  //     case "state":
+  //       return /^[a-zA-Z\s]+$/.test(value) && value
+  //         ? ""
+  //         : "State is required and must be a string ";
+  //     case "workHourFrom":
+  //       // Assuming time in HH:MM format, adjust as needed
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid start time.";
+  //     case "workHourTo":
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid end time.";
+  //     // Add more cases as needed for other fields
+  //     default:
+  //       return "";
+  //   }
+  // };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     console.log("E value", e);
     const { name, value } = e.target;
-    const error = validateField(name, value);
-    setErrors({ ...errors, [name]: error });
+    // const error = validateField(name, value);
+    // setErrors({ ...errors, [name]: error });
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       doctorPic: doctorImage,
     }));
 
-    if (name === "workHourFrom" || name === "workHourTo")
-    {
+    if (name === "workHourFrom" || name === "workHourTo") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -291,8 +270,7 @@ export default function DoctorFormAdmin()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -300,8 +278,7 @@ export default function DoctorFormAdmin()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -310,70 +287,82 @@ export default function DoctorFormAdmin()
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
     // Check if the token exists
+    if (doctorDetails.name === "") {
+      toast.error("Please write name");
+    } else if (doctorDetails.email === "") {
+      toast.error("Please write email");
+    } else if (doctorDetails.contactNumber === "") {
+      toast.error("Please write contact number");
+    } else if (doctorDetails.totalExperience === "") {
+      toast.error("Please write total experience");
+    } else if (doctorDetails.degree === "") {
+      toast.error("Please write degree");
+    } else if (doctorDetails.address.pinCode === "") {
+      toast.error("Please write Pincode");
+    } else if (doctorDetails.address.district === "") {
+      toast.error("Please write district");
+    } else if (doctorDetails.address.state === "") {
+      toast.error("Please write state");
+    } else {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in local storage");
+        localStorage.clear();
+        navigate(`/adminlogin`);
+      }
 
-    const token = localStorage.getItem("token");
-    if (!token)
-    {
-      console.error("No token found in local storage");
-      localStorage.clear()
-      navigate(`/adminlogin`)
-    }
+      const isEmpty = Object.values(doctorDetails).some(
+        (value) => value === ""
+      );
 
-    const isEmpty = Object.values(doctorDetails).some((value) => value === "");
+      if (isEmpty || isEditing === false) {
+        toast.error("Please fill the fields or Update");
+        setIsEditing(false);
+        return;
+      }
 
-    if (isEmpty || isEditing === false)
-    {
-      toast.error("Please fill the fields or Update");
-      setIsEditing(false);
-      return;
-    }
-
-    const response = await fetch(`${baseUrl}/api/v1/admin/register_doctor`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify(doctorDetails),
-    });
-    const data = await response.json();
-
-    if (data.statusCode === 400)
-    {
-      toast.error("Please fill the details");
-    }
-
-    if (data.statusCode === 500)
-    {
-      toast.error("Enter Unique Values or Values already Exist ");
-    }
-
-    if (data.success === true)
-    {
-      navigate("/otp", {
-        state: { contactNumber: doctorDetails.contactNumber },
+      const response = await fetch(`${baseUrl}/api/v1/admin/register_doctor`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(doctorDetails),
       });
-      localStorage.setItem("id", data.data._id);
+      const data = await response.json();
+
+      if (data.statusCode === 400) {
+        toast.error("Please fill the details");
+      }
+
+      if (data.statusCode === 500) {
+        toast.error("Enter Unique Values or Values already Exist ");
+      }
+
+      if (data.success === true) {
+        navigate("/otp", {
+          state: { contactNumber: doctorDetails.contactNumber },
+        });
+        localStorage.setItem("id", data.data._id);
+      }
+      console.log("DATA from response", data);
     }
-    console.log("DATA from response", data);
-  };
 
-  const handleDelete = (workingDay) =>
-  {
-    console.log("delete", workingDay);
-    const days = doctorDetails.workingDays.filter(
-      (doctorDetail) => doctorDetail !== workingDay
-    );
+    const handleDelete = (workingDay) => {
+      console.log("delete", workingDay);
+      const days = doctorDetails.workingDays.filter(
+        (doctorDetail) => doctorDetail !== workingDay
+      );
 
-    // Assuming you want to update the doctorDetails state after filtering
-    setDoctorDetails({
-      ...doctorDetails,
-      workingDays: days,
-    });
+      // Assuming you want to update the doctorDetails state after filtering
+      setDoctorDetails({
+        ...doctorDetails,
+        workingDays: days,
+      });
+    };
   };
 
   console.log("DOCTOR DETAILS", doctorDetails);
@@ -454,7 +443,7 @@ export default function DoctorFormAdmin()
                         <span style={{ marginRight: "8px" }}>
                           <HiOutlineUserAdd />
                         </span>
-                        <label htmlFor="files" >New profile picture</label>
+                        <label htmlFor="files">New profile picture</label>
                       </MenuItem>
 
                       <MenuItem
@@ -473,7 +462,9 @@ export default function DoctorFormAdmin()
                       </MenuItem>
                     </Menu>
                   </div>
-                  <label style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}>
+                  <label
+                    style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}
+                  >
                     Edit Profile Picture
                   </label>
                   <input
@@ -555,7 +546,7 @@ export default function DoctorFormAdmin()
                       name="workingDays"
                       onChange={handleChange1}
                       placeholder="Select Working Days"
-                    // Add other props as needed
+                      // Add other props as needed
                     >
                       {Daysdropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
