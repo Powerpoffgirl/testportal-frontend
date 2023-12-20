@@ -508,6 +508,24 @@ const FormAppoinment = ({ onDataFromChild }) => {
           id="issues"
           name="issues"
           onChange={handleChangeIssues}
+          onInputKeyDown={(e) =>
+          {
+
+            if (e.key === 'Enter')
+            {
+              e.preventDefault();
+              let inputValue = e.target.value.trim();
+              if (inputValue)
+              {
+                handleChangeIssues([...patientDetails.issues, inputValue]);
+                setTimeout(() =>
+                {
+                  e.target.value = '';
+                  inputValue = '';
+                }, 0);
+              }
+            }
+          }}
           value={patientDetails.issues}
           placeholder="Select Issues"
           style={{ overflowY: "auto" }}
@@ -535,6 +553,24 @@ const FormAppoinment = ({ onDataFromChild }) => {
           id="diseases"
           name="diseases"
           onChange={handleChangeDiseases}
+          onInputKeyDown={(e) =>
+          {
+
+            if (e.key === 'Enter')
+            {
+              e.preventDefault();
+              let inputValue = e.target.value.trim();
+              if (inputValue)
+              {
+                handleChangeDiseases([...patientDetails.diseases, inputValue]);
+                setTimeout(() =>
+                {
+                  e.target.value = '';
+                  inputValue = '';
+                }, 0);
+              }
+            }
+          }}
           value={patientDetails.diseases}
           placeholder="Select Disease"
           style={{ overflowY: "auto" }}

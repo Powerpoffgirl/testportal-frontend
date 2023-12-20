@@ -318,11 +318,11 @@ export default function DoctorFormAdmin() {
         (value) => value === ""
       );
 
-      // if (isEmpty || isEditing === false) {
-      //   toast.error("Please fill the fields or Update");
-      //   setIsEditing(false);
-      //   return;
-      // }
+      if (isEmpty || isEditing === false) {
+        toast.error("Please fill the fields or Update");
+        setIsEditing(false);
+        return;
+      }
 
       const response = await fetch(`${baseUrl}/api/v1/admin/register_doctor`, {
         method: "post",
