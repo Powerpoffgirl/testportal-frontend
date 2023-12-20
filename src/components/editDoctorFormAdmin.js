@@ -120,6 +120,13 @@ export default function EditDoctorFormAdmin()
                 console.log("DATA from USE EFFECT response", data?.data)
                 setDoctorDetails(data?.data)
 
+
+                if (data.message === "Permission denied")
+                {
+                    toast.error("Permission Denied")
+
+                }
+
             } catch (error)
             {
                 console.error('There was an error verifying the OTP:', error);
@@ -231,6 +238,8 @@ export default function EditDoctorFormAdmin()
 
 
 
+
+
         console.log("New DOCTOR DETAILS", newDoctorDetails)
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem('doctorId');
@@ -244,12 +253,12 @@ export default function EditDoctorFormAdmin()
             return;
         }
 
-        if (!isEmpty || isEditing === true)
-        {
+        // if (!isEmpty || isEditing === true)
+        // {
 
-            toast.success('Form submitted successfully!');
+        //     toast.success('Form submitted successfully!');
 
-        }
+        // }
 
         if (!token)
         {
@@ -271,7 +280,7 @@ export default function EditDoctorFormAdmin()
         const data = await response.json();
 
 
-        if (data.statusCode === 400)
+        if (data.message === "Permission denied")
         {
             toast.error("Permission Denied")
 
@@ -280,6 +289,7 @@ export default function EditDoctorFormAdmin()
         if (data.success === true)
         {
             console.log("Doctor updated successfully.")
+            toast.success('Form submitted successfully!');
             // onOpenModal()
             // navigate("/doctorlistadmin")
 
