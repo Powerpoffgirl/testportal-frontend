@@ -62,7 +62,7 @@ export default function PatientDescription() {
         );
 
         const data = await response.json();
-        console.log("DATA from response#$#$#$#$#$%", data);
+        console.log("DATA from response", data.data);
         setPatientsHistory(data?.data);
       } catch (error) {
         console.error("There was an error verifying the OTP:", error);
@@ -70,6 +70,7 @@ export default function PatientDescription() {
     };
     fetchPatientDetails();
   }, []);
+  console.log("patientsHistory", patientsHistory);
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -665,29 +666,43 @@ export default function PatientDescription() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col">
           <label
-            className="mx-2 block text-black text-lg font-semibold"
+            className="mx-2 text-lg font-normal text-black font-lato"
             htmlFor="patientName"
           >
             Patient Name
           </label>
-          <input
-            className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg"
-            name="doctorName"
-            // onChange={handleChange}
-          />
+          {patientsHistory?.length > 0 ? (
+            <input
+              className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+              name="doctorName"
+              value={patientsHistory[0]?.patientId?.name} // Value based on condition
+            />
+          ) : (
+            <input
+              className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+              name="doctorName"
+              // value={/* Your default value if patientsHistory is empty */}
+            />
+          )}
         </div>
 
         <div className="flex flex-col">
           <label
-            className="mx-2 block text-black text-lg font-semibold"
+            className="mx-2 text-lg font-normal text-black font-lato"
             htmlFor="doctorName"
           >
-            Doctor Name
+            Age & Body weight
           </label>
           <input
             className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg"
             name="doctorName"
-            // onChange={handleChange}
+            value={
+              patientsHistory[0]?.patientId?.age +
+              " yr" +
+              " & " +
+              patientsHistory[0]?.patientId?.bodyWeight +
+              " kg"
+            } // Value based on condition
           />
         </div>
       </div>
@@ -857,108 +872,222 @@ export default function PatientDescription() {
         </Select>
       </div>
       <div className="flex justify-center my-5">
-        <button
+        <label
+          className="mx-2 block text-black text-lg font-semibold"
+          //   htmlFor="issues"
+        >
+          Medical History
+        </label>
+        {/* <button
           type="submit"
           className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
           onClick={handleRegister}
         >
           Process
-        </button>
+        </button> */}
       </div>
-      <div
-        className="your-div-class"
-        style={{ height: "300px", color: "white", backgroundColor: "white" }}
-      >
-        <div>
-          <table
-            style={{
-              width: "100%",
-              backgroundColor: "white",
-              borderCollapse: "collapse",
-            }}
+      <div>
+        <table
+          style={{
+            width: "100%",
+            backgroundColor: "white",
+            borderCollapse: "collapse",
+            marginBottom: "40px",
+          }}
+        >
+          <thead>
+            <tr
+              style={{
+                color: "black",
+                textAlign: "center",
+                padding: "8px",
+                border: "1px solid #89CFF0",
+                borderRadius: "5px",
+              }}
+            >
+              <th
+                style={{
+                  color: "black",
+                  textAlign: "center", // Center text horizontally
+                  padding: "8px",
+                  paddingLeft: "10px",
+                  border: "1px solid #89CFF0",
+                  // alignItems: "center", This won't affect th elements directly
+                }}
+              >
+                Dr. Name
+              </th>
+              <th
+                style={{
+                  color: "black",
+                  textAlign: "center",
+                  padding: "8px",
+                  paddingLeft: "10px",
+                  border: "1px solid #89CFF0",
+                  // Border for table header cells
+                }}
+              >
+                Date
+              </th>
+              <th
+                style={{
+                  color: "black",
+                  textAlign: "center",
+                  padding: "8px",
+                  paddingLeft: "10px",
+                  border: "1px solid #89CFF0",
+                  // Border for table header cells
+                }}
+              >
+                Time
+              </th>
+              <th
+                style={{
+                  color: "black",
+                  textAlign: "center",
+                  padding: "8px",
+                  paddingLeft: "10px",
+                  border: "1px solid #89CFF0",
+                  // Border for table header cells
+                }}
+              >
+                Issues
+              </th>
+              <th
+                style={{
+                  color: "black",
+                  textAlign: "center",
+                  padding: "8px",
+                  paddingLeft: "10px",
+                  border: "1px solid #89CFF0",
+                  // Border for table header cells
+                }}
+              >
+                Disease
+              </th>
+              <th
+                style={{
+                  color: "black",
+                  textAlign: "center",
+                  padding: "8px",
+                  paddingLeft: "10px",
+                  border: "1px solid #89CFF0",
+                  // Border for table header cells
+                }}
+              >
+                Medicine Name
+              </th>
+              <th
+                style={{
+                  color: "black",
+                  textAlign: "center",
+                  padding: "8px",
+                  paddingLeft: "10px",
+                  border: "1px solid #89CFF0",
+                  // Border for table header cells
+                }}
+              >
+                Lab Test
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {patientsHistory?.map((history, index) => (
+              <tr
+                key={index}
+                style={{
+                  color: "black",
+                  textAlign: "center",
+                  padding: "8px",
+                  border: "1px solid #89CFF0",
+                  borderRadius: "5px", // Border for table header cells
+                }}
+              >
+                <td
+                  style={{
+                    color: "black",
+                    textAlign: "center",
+                    padding: "8px",
+                    border: "1px solid #89CFF0",
+                  }}
+                >
+                  {history?.doctorId?.name}
+                </td>
+                <td
+                  style={{
+                    color: "black",
+                    textAlign: "center",
+                    padding: "8px",
+                    border: "1px solid #89CFF0",
+                  }}
+                >
+                  {history?.appointmentDate?.date}
+                </td>
+                <td
+                  style={{
+                    color: "black",
+                    textAlign: "center",
+                    padding: "8px",
+                    border: "1px solid #89CFF0",
+                  }}
+                >
+                  {history?.appointmentDate?.time}
+                </td>
+                <td
+                  style={{
+                    color: "black",
+                    textAlign: "center",
+                    padding: "8px",
+                    border: "1px solid #89CFF0",
+                  }}
+                >
+                  {history?.issues}
+                </td>
+                <td
+                  style={{
+                    color: "black",
+                    textAlign: "center",
+                    padding: "8px",
+                    border: "1px solid #89CFF0",
+                  }}
+                >
+                  {history?.diseases}
+                </td>
+                <td
+                  style={{
+                    color: "black",
+                    textAlign: "center",
+                    padding: "8px",
+                    border: "1px solid #89CFF0",
+                  }}
+                >
+                  {history?.medicineName}
+                </td>
+                <td
+                  style={{
+                    color: "black",
+                    textAlign: "center",
+                    padding: "8px",
+                    border: "1px solid #89CFF0",
+                  }}
+                >
+                  {history?.labTests}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="flex justify-center my-5">
+          <button
+            type="submit"
+            className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+            onClick={handleRegister}
           >
-            <thead>
-              <tr>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Dr.Name
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Date
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Time
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Issues
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Disease
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Medicine Name
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Lab Test
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Anjali
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  29/12/2023
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  02:47:49
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Fever
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  (patientsHistory.data[0].diesease)
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Paracetamol
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Blood Test
-                </td>
-              </tr>
-              {/* Add more rows for additional data */}
-            </tbody>
-          </table>
+            Process
+          </button>
         </div>
       </div>
+      {/* </div> */}
     </form>
   );
 }
