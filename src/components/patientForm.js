@@ -95,7 +95,7 @@ export default function PatientForm()
         const data = await response.json();
         console.log("Image uploaded successfully:", data);
         setUserImage(data.profilePicImageUrl);
-        alert("Image uploaded successfully.");
+        toast.success("Image uploaded successfully");
 
         // Reset the file input
         setSelectedFile(null);
@@ -103,7 +103,7 @@ export default function PatientForm()
       } catch (error)
       {
         console.error("Error uploading image:", error);
-        alert("Error uploading image. Please try again.");
+        toast.error("Error uploading image. Please try again.");
       }
 
     }
@@ -412,6 +412,10 @@ export default function PatientForm()
                         style={{
                           backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
+                        }}
+                        onClick={() =>
+                        {
+                          handleClose();
                         }}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}

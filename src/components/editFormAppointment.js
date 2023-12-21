@@ -527,7 +527,6 @@ const EditFormAppoinment = ({ appointmentDetails }) =>
                                 setTimeout(() =>
                                 {
                                     e.target.value = '';
-
                                     inputValue = '';
                                 }, 0);
                             }
