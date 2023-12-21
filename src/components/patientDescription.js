@@ -13,7 +13,8 @@ import { MdEdit } from "react-icons/md";
 
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
-export default function PatientDescription() {
+export default function PatientDescription()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const location = useLocation;
@@ -42,11 +43,15 @@ export default function PatientDescription() {
     diseases: [],
     labTests: [],
   });
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -64,22 +69,27 @@ export default function PatientDescription() {
         const data = await response.json();
         console.log("DATA from response#$#$#$#$#$%", data);
         setPatientsHistory(data?.data);
-      } catch (error) {
+        console.log("diseases####", patientsHistory);
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -88,7 +98,8 @@ export default function PatientDescription() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -100,14 +111,16 @@ export default function PatientDescription() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         alert("Error uploading image. Please try again.");
       }
     }
   };
 
-  const onCloseModal = () => {
+  const onCloseModal = () =>
+  {
     setModalOpen(false);
     setModalContent("");
     navigate(`/appointmentlist`);
@@ -415,48 +428,56 @@ export default function PatientDescription() {
   const [anchorEl, setAnchorEl] = useState(null);
   // const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
   // Function to handle profile picture change
-  const handleNewProfilePicture = () => {
+  const handleNewProfilePicture = () =>
+  {
     // Logic to handle adding a new profile picture
     handleClose();
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = () =>
+  {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const handleChangeIssues = (values) => {
+  const handleChangeIssues = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       issues: values,
     }));
   };
 
-  const handleChangeDiseases = (values) => {
+  const handleChangeDiseases = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       diseases: values,
     }));
   };
 
-  const handleChangeMedicine = (values) => {
+  const handleChangeMedicine = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       medicineName: values,
     }));
   };
 
-  const handleChangeLabTests = (values) => {
+  const handleChangeLabTests = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       labTests: values,
@@ -465,11 +486,13 @@ export default function PatientDescription() {
 
   console.log("PATIENT DETAILS", patientDetails);
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       return;
     }
@@ -486,7 +509,8 @@ export default function PatientDescription() {
       }
     );
     const data = await response.json();
-    if (data.success === true) {
+    if (data.success === true)
+    {
       localStorage.setItem("appointmentId", appointmentId);
       toast.success("Diagnosis saved.");
       setModalOpen(true);
@@ -673,7 +697,7 @@ export default function PatientDescription() {
           <input
             className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg"
             name="doctorName"
-            // onChange={handleChange}
+          // onChange={handleChange}
           />
         </div>
 
@@ -687,7 +711,7 @@ export default function PatientDescription() {
           <input
             className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg"
             name="doctorName"
-            // onChange={handleChange}
+          // onChange={handleChange}
           />
         </div>
       </div>
@@ -705,14 +729,18 @@ export default function PatientDescription() {
           id="issues"
           name="issues"
           onChange={handleChangeIssues}
-          onInputKeyDown={(e) => {
+          onInputKeyDown={(e) =>
+          {
             // Handle custom value input
-            if (e.key === "Enter") {
+            if (e.key === "Enter")
+            {
               e.preventDefault();
               let inputValue = e.target.value.trim();
-              if (inputValue) {
+              if (inputValue)
+              {
                 handleChangeIssues([...patientDetails.issues, inputValue]);
-                setTimeout(() => {
+                setTimeout(() =>
+                {
                   e.target.value = "";
                   inputValue = "";
                 }, 0);
@@ -745,14 +773,18 @@ export default function PatientDescription() {
           id="diesease"
           name="diesease"
           onChange={handleChangeDiseases}
-          onInputKeyDown={(e) => {
+          onInputKeyDown={(e) =>
+          {
             // Handle custom value input
-            if (e.key === "Enter") {
+            if (e.key === "Enter")
+            {
               e.preventDefault();
               let inputValue = e.target.value.trim();
-              if (inputValue) {
+              if (inputValue)
+              {
                 handleChangeDiseases([...patientDetails.diseases, inputValue]);
-                setTimeout(() => {
+                setTimeout(() =>
+                {
                   e.target.value = "";
                   inputValue = "";
                 }, 0);
@@ -786,17 +818,21 @@ export default function PatientDescription() {
           id="medicineName"
           name="medicineName"
           onChange={handleChangeMedicine}
-          onInputKeyDown={(e) => {
+          onInputKeyDown={(e) =>
+          {
             // Handle custom value input
-            if (e.key === "Enter") {
+            if (e.key === "Enter")
+            {
               e.preventDefault();
               let inputValue = e.target.value.trim();
-              if (inputValue) {
+              if (inputValue)
+              {
                 handleChangeMedicine([
                   ...patientDetails.medicineName,
                   inputValue,
                 ]);
-                setTimeout(() => {
+                setTimeout(() =>
+                {
                   e.target.value = "";
                   inputValue = "";
                 }, 0);
@@ -830,14 +866,18 @@ export default function PatientDescription() {
           id="labTests"
           name="labTests"
           onChange={handleChangeLabTests}
-          onInputKeyDown={(e) => {
+          onInputKeyDown={(e) =>
+          {
             // Handle custom value input
-            if (e.key === "Enter") {
+            if (e.key === "Enter")
+            {
               e.preventDefault();
               let inputValue = e.target.value.trim();
-              if (inputValue) {
+              if (inputValue)
+              {
                 handleChangeLabTests([...patientDetails.labTests, inputValue]);
-                setTimeout(() => {
+                setTimeout(() =>
+                {
                   e.target.value = "";
                   inputValue = "";
                 }, 0);
@@ -870,93 +910,96 @@ export default function PatientDescription() {
         style={{ height: "300px", color: "white", backgroundColor: "white" }}
       >
         <div>
-          <table
-            style={{
-              width: "100%",
-              backgroundColor: "white",
-              borderCollapse: "collapse",
-            }}
-          >
-            <thead>
-              <tr>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Dr.Name
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Date
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Time
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Issues
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Disease
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Medicine Name
-                </th>
-                <th
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Lab Test
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Anjali
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  29/12/2023
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  02:47:49
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Fever
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  (patientsHistory.data[0].diesease)
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Paracetamol
-                </td>
-                <td
-                  style={{ color: "black", textAlign: "left", padding: "8px" }}
-                >
-                  Blood Test
-                </td>
-              </tr>
-              {/* Add more rows for additional data */}
-            </tbody>
-          </table>
+          {patientsHistory.length > 0 ? (
+            <table
+              style={{
+                width: "100%",
+                backgroundColor: "white",
+                borderCollapse: "collapse",
+              }}
+            >
+              <thead>
+                <tr>
+                  <th
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Dr.Name
+                  </th>
+                  <th
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Date
+                  </th>
+                  <th
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Time
+                  </th>
+                  <th
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Issues
+                  </th>
+                  <th
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Disease
+                  </th>
+                  <th
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Medicine Name
+                  </th>
+                  <th
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Lab Test
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Anjali
+                  </td>
+                  <td
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    29/12/2023
+                  </td>
+                  <td
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    02:47:49
+                  </td>
+                  <td
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Fever
+                  </td>
+                  <td
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    {patientsHistory.data[0].diseases}
+                  </td>
+                  <td
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Paracetamol
+                  </td>
+                  <td
+                    style={{ color: "black", textAlign: "left", padding: "8px" }}
+                  >
+                    Blood Test
+                  </td>
+                </tr>
+                {/* Add more rows for additional data */}
+              </tbody>
+            </table>
+          ) : (<p>no data found</p>)
+          }
         </div>
       </div>
     </form>
