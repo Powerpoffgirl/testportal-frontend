@@ -33,8 +33,8 @@ export default function TestListPage()
     };
 
     const [data, setData] = useState([
-        { id: 1, test: 'Test 1', testCode: 'TC001', department: 'Department A', sampleType: 'Type 1', cost: '$50', isEditing: false },
-        { id: 2, test: 'Test 2', testCode: 'TC002', department: 'Department B', sampleType: 'Type 2', cost: '$75', isEditing: false },
+        { id: 1, test: 'Viral Load', testCode: 'Hiv', department: 'Molucular Test', sampleType: 'serum', cost: '$50', isEditing: false },
+        { id: 2, test: 'Vitamin D3', testCode: 'vitamin d3', department: 'Immuinio', sampleType: 'serum', cost: '$75', isEditing: false },
     ]);
 
     const addRow = () =>
