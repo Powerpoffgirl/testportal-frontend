@@ -42,6 +42,7 @@ export default function PatientDescription() {
     diseases: [],
     labTests: [],
   });
+  const [patient, setPatient] = useState({});
   useEffect(() => {
     const fetchPatientDetails = async () => {
       try {
@@ -62,8 +63,10 @@ export default function PatientDescription() {
         );
 
         const data = await response.json();
+
         console.log("DATA from response", data.data);
         setPatientsHistory(data?.data);
+        setPatient(data?.data[0]);
       } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
@@ -71,6 +74,7 @@ export default function PatientDescription() {
     fetchPatientDetails();
   }, []);
   console.log("patientsHistory", patientsHistory);
+  console.log("patient", patient);
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -675,13 +679,12 @@ export default function PatientDescription() {
             <input
               className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
               name="doctorName"
-              value={patientsHistory[0]?.patientId?.name} // Value based on condition
+              value={patient?.patientId?.name} // Value based on condition
             />
           ) : (
             <input
               className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
               name="doctorName"
-              // value={/* Your default value if patientsHistory is empty */}
             />
           )}
         </div>
@@ -697,10 +700,10 @@ export default function PatientDescription() {
             className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg"
             name="doctorName"
             value={
-              patientsHistory[0]?.patientId?.age +
+              patient?.patientId?.age +
               " yr" +
               " & " +
-              patientsHistory[0]?.patientId?.bodyWeight +
+              patient?.patientId?.bodyWeight +
               " kg"
             } // Value based on condition
           />
