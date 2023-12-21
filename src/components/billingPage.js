@@ -190,7 +190,7 @@ export default function BillingPage()
                         </form>
 
 
-                        <div className="Absolute_left" style={{ width: '35%', float: 'left', borderRight: '0.5px solid #D3D3D3' }}>
+                        <div className="Absolute_left" style={{ width: '35%', float: 'left', height: '30vh', borderRight: '0.5px solid #D3D3D3' }}>
                             <div style={{ width: '45%', float: 'left', marginRight: '5px' }}>
                                 <label style={{ fontSize: 12 }}>Discount (%) (optional)</label>
                                 <input type="text" style={{ border: '1px solid gray', width: '80%' }} />
@@ -229,24 +229,24 @@ export default function BillingPage()
 
 
 
-                        <div className="middle" style={{ width: '35%', float: 'left', borderRight: '0.5px solid #D3D3D3' }}>
-                            <div style={{ width: '100%', marginleft: '50px' }}>
+                        <div className="middle" style={{ width: '35%', height: '30vh', float: 'left', borderRight: '0.5px solid #D3D3D3' }}>
+                            <div style={{ width: '100%', marginLeft: '30px' }}>
                                 <input type="checkbox" />
                                 <label >Due Payment</label>
 
                             </div>
 
                             <div style={{ marginTop: '15px' }}>
-                                <p style={{ color: 'gray', marginRight: '100px' }}>Paid Amount</p>
-                                <input type="text" style={{ border: '1px solid gray', width: '80%' }} />
+                                <p style={{ color: 'gray', marginRight: '100px', marginLeft: '20px' }}>Paid Amount</p>
+                                <input type="text" style={{ border: '1px solid gray', width: '80%', marginLeft: '20px' }} />
                             </div>
 
                             <div style={{ marginTop: '15px', display: 'flex', flexDirection: 'row' }}>
-                                <p style={{ color: 'black', marginRight: '80px', fontWeight: 500 }}>Due Amount</p>
+                                <p style={{ color: 'black', marginRight: '80px', fontWeight: 500, marginLeft: '20px' }}>Due Amount</p>
                                 <p style={{ color: 'black' }}>0</p>
 
                             </div>
-                            <hr />
+
 
 
 
@@ -265,7 +265,7 @@ export default function BillingPage()
 
                         <div className="Absolute_Right">
                             <div style={{ margin: '20px', marginBottom: '10px' }}>
-                                <label>Payment Method</label>
+                                <label style={{ marginLeft: '20px' }}>Payment Method</label>
                             </div>
 
                             <div style={{ width: '25%', float: 'left', marginLeft: '20px' }}>
