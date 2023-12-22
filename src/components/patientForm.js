@@ -387,8 +387,7 @@ export default function PatientForm() {
                           backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
-                        onClick={() =>
-                        {
+                        onClick={() => {
                           handleClose();
                         }}
                         onMouseEnter={() => setIsHovered(true)}

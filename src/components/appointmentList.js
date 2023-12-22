@@ -400,11 +400,11 @@ export default function AppointmentList({ searchTerm }) {
                 class="flex items-center gap-x-2"
                 onClick={() => findSelectedDoctor(appointment?._id)}
               >
-                {appointment?.doctorId?.doctorPic ? (
+                {appointment?.patientId?.patientPic ? (
                   <img
                     class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
-                    src={appointment?.doctorId?.doctorPic}
-                    alt={appointment?.doctorId?.doctorPic.name}
+                    src={appointment?.patientId?.patientPic}
+                    alt={appointment?.patientId?.name}
                   />
                 ) : (
                   <AccountCircleIcon
