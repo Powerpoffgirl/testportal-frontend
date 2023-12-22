@@ -10,6 +10,7 @@ import Menu from "@mui/material/Menu";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
+import "react-toastify/dist/ReactToastify.css";
 
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
@@ -75,6 +76,7 @@ export default function PatientDescription() {
   }, []);
   console.log("patientsHistory", patientsHistory);
   console.log("patient", patient);
+
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -100,14 +102,14 @@ export default function PatientDescription() {
         const data = await response.json();
         console.log("Image uploaded successfully:", data);
         setUserImage(data.profilePicImageUrl);
-        alert("Image uploaded successfully.");
+        toast.success("Image uploaded successfully.");
 
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
       } catch (error) {
         console.error("Error uploading image:", error);
-        alert("Error uploading image. Please try again.");
+        toast.error("Error uploading image. Please try again.");
       }
     }
   };
@@ -563,8 +565,10 @@ export default function PatientDescription() {
           </text>
         </div>
       </Modal>
+      <ToastContainer />
+
       {/* <div className="grid grid-cols-1 w-full gap-4"> */}
-      <div className="flex  flex-col items-center justify-center w-full">
+      <div className="flex  flex-col items-center justify-center w-full mb-10">
         <div className="cursor-pointer">
           <div
             style={{
@@ -585,10 +589,10 @@ export default function PatientDescription() {
                 color: "#A4A4A4",
               }}
             >
-              {userImage || patientDetails?.patientPic ? (
+              {patient?.patientId?.patientPic ? (
                 <img
-                  src={userImage || patientDetails?.patientPic}
-                  alt="Avatar"
+                  src={patient?.patientId?.patientPic}
+                  alt={patient?.patientId?.name}
                   style={{
                     borderRadius: "50%",
                   }}
@@ -609,67 +613,12 @@ export default function PatientDescription() {
                 marginLeft: 37,
                 marginTop: -20,
               }}
-            >
-              <MdEdit />
-            </p>
-            <div style={{ backgroundColor: "#89CFF0" }}>
-              <Menu
-                id="profile-pic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "edit-profile-pic-text",
-                  style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
-                }}
-              >
-                <MenuItem
-                  style={{
-                    backgroundColor: "#89CFF0",
-                    color: isHovered ? "red" : "white",
-                  }}
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                >
-                  {" "}
-                  <span style={{ marginRight: "8px" }}>
-                    <HiOutlineUserAdd />
-                  </span>
-                  <label htmlFor="files">New profile picture</label>
-                </MenuItem>
-
-                <MenuItem
-                  style={{
-                    backgroundColor: "#89CFF0",
-                    color: isHovered1 ? "red" : "white",
-                  }}
-                  onClick={handleRemoveProfilePicture}
-                  onMouseEnter={() => setIsHovered1(true)}
-                  onMouseLeave={() => setIsHovered1(false)}
-                >
-                  <span style={{ marginRight: "8px" }}>
-                    <FaRegTrashAlt />
-                  </span>
-                  <span>Remove current picture</span>
-                </MenuItem>
-              </Menu>
-            </div>
-            <label style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}>
-              Edit Profile Picture
-            </label>
-            <input
-              id="files"
-              type="file"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              accept="image/*"
-              onChange={handleFileSelect}
-            />
+            ></p>
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex flex-col">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+        <div className="flex flex-col ">
           <label
             className="mx-2 text-lg font-normal text-black font-lato"
             htmlFor="patientName"
