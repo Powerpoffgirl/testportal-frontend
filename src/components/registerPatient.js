@@ -460,25 +460,17 @@ export default function PatientForm()
 
             <div className="flex flex-row">
                 <ToastContainer />
-
+                <div></div>
                 <div className=" w-full">
-
-                    <div className="mt-6 p-2  ">
-                        <div className="flex flex-row w-full ">
-                            <div className="cursor-pointer  w-full flex flex-row">
-
-                                <div
+                    <div className="mt-6 p-2">
+                        <div className="flex  flex-col items-center justify-center w-full">
+                            <div className="cursor-pointer">
+                                {/* <div
                                     style={{
                                         display: "flex",
                                         flexDirection: "column",
-                                        alignItems: "end",
-                                        marginLeft: '400px',
-                                        marginRight: '200px',
-                                        justifyItems: "end"
-
                                     }}
                                 >
-
                                     <div
                                         style={{
                                             backgroundColor: "#FFFFFF",
@@ -505,7 +497,6 @@ export default function PatientForm()
                                                 style={{ width: "70px", height: "70px" }}
                                             />
                                         )}
-
                                     </div>
                                     <p
                                         aria-controls="profile-pic-menu"
@@ -520,11 +511,6 @@ export default function PatientForm()
                                     >
                                         <MdEdit />
                                     </p>
-                                    <label
-                                        style={{ marginLeft: 10, marginTop: 5, fontWeight: "600" }}
-                                    >
-                                        Edit Profile Picture
-                                    </label>
                                     <div style={{ backgroundColor: "#89CFF0" }}>
                                         <Menu
                                             id="profile-pic-menu"
@@ -571,7 +557,11 @@ export default function PatientForm()
                                             </MenuItem>
                                         </Menu>
                                     </div>
-
+                                    <label
+                                        style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}
+                                    >
+                                        Edit Profile Picture
+                                    </label>
                                     <input
                                         id="files"
                                         type="file"
@@ -580,41 +570,43 @@ export default function PatientForm()
                                         accept="image/*"
                                         onChange={handleFileSelect}
                                     />
-                                </div>
-
-                                <form>
-                                    <label htmlFor="default-search" className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">
-                                        Search
-                                    </label>
-                                    <div style={{ marginTop: '30px', width: '400%' }} className="relative">
-                                        <input
-                                            // value={searchTerm}
-
-                                            onChange={handleSearch}
-                                            type="search"
-                                            id="default-search"
-                                            className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Search"
-                                            required
-                                            style={{ width: '40%', justifyContent: 'flex-end', alignItems: 'flex-end', display: "flex" }}
-                                        />
-                                        <ul style={{ width: '40%' }} className="divide-y divide-gray-200 bg-white">
-                                            {filteredPatients.map((patient) => (
-                                                <li key={patient.id} className="p-4">
-                                                    <div className="font-bold">{patient.name}</div>
-                                                    <div className="text-sm">
-                                                        <span>Gender: {patient.gender}</span>
-                                                        <span className="ml-2">Email: {patient.email}</span>
-                                                        <span className="ml-2">Phone Number: {patient.phoneNo}</span>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </form>
+                                </div> */}
                             </div>
-
                         </div>
+
+
+
+                        <form>
+                            <label style={{ marginLeft: '640px', fontWeight: 500 }} htmlFor="default-search" >
+                                Search:
+                            </label>
+                            <div className="relative">
+                                <input
+                                    value={searchTerm}
+                                    onChange={handleSearch}
+                                    type="search"
+                                    id="default-search"
+                                    className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                    placeholder="Search"
+                                    required
+                                    style={{ marginLeft: '700px', width: '40%', marginTop: '-30px', zIndex: 200 }}
+                                />
+                                <ul style={{ marginLeft: '700px', width: '40%', zIndex: 100 }} className="divide-y divide-gray-200 bg-white">
+                                    {filteredPatients.map((patient) => (
+                                        <li key={patient.id} className="p-4">
+                                            <div className="font-bold">{patient.name}</div>
+                                            <div className="text-sm">
+                                                <span>Gender: {patient.gender}</span>
+                                                <span className="ml-2">Email: {patient.email}</span>
+                                                <span className="ml-2">Phone Number: {patient.phoneNo}</span>
+                                            </div>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        </form>
+
+
                         <div class="grid grid-cols-1 w-full  gap-4 mt-10">
 
 
@@ -1075,7 +1067,7 @@ export default function PatientForm()
                         </div>
                     </div>
                 </div>
-            </div >
+            </div>
         </>
     );
 }

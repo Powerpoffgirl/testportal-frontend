@@ -356,7 +356,6 @@ function App()
           <Layout
             Component={RegisterPatient}
             type="doctor"
-            search={"true"}
             headerTextTop={"Patients's"}
             headerTextBottom={"Registration"}
           />
