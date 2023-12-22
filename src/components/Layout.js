@@ -122,6 +122,7 @@ export default function Layout({
     { text: "Patient’s List", to: "/patientlist" },
     { text: "Appointment List", to: "/appointmentlist" },
     { text: "Profile", to: "/editdoctorform" },
+    { text: "Test List", to: "/testlist" },
     { text: "Support", to: "#" },
     { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
   ];
