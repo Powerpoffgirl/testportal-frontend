@@ -238,11 +238,11 @@ export default function BillingPage()
 
                             <div style={{ marginTop: '15px' }}>
                                 <p style={{ color: 'gray', marginRight: '100px', marginLeft: '20px' }}>Paid Amount</p>
-                                <input type="text" style={{ border: '1px solid gray', width: '80%', marginLeft: '20px' }} />
+                                <input type="text" style={{ border: '1px solid gray', width: '80%' }} />
                             </div>
 
                             <div style={{ marginTop: '15px', display: 'flex', flexDirection: 'row' }}>
-                                <p style={{ color: 'black', marginRight: '80px', fontWeight: 500, marginLeft: '20px' }}>Due Amount</p>
+                                <p style={{ color: 'black', marginRight: '80px', fontWeight: 500, }}>Due Amount</p>
                                 <p style={{ color: 'black' }}>0</p>
 
                             </div>
