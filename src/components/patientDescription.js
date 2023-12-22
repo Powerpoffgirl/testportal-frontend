@@ -472,6 +472,7 @@ export default function PatientDescription() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+
     // Check if the token exists
     const token = localStorage.getItem("token");
     if (!token) {
