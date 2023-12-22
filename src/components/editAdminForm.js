@@ -45,14 +45,14 @@ export default function EditAdminForm() {
         const data = await response.json();
         console.log("Image uploaded successfully:", data);
         setAdminImage(data.profilePicImageUrl);
-        alert("Image uploaded successfully.");
+        toast.success("Image uploaded successfully.");
 
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
       } catch (error) {
         console.error("Error uploading image:", error);
-        alert("Error uploading image. Please try again.");
+        toast.error("Error uploading image. Please try again.");
       }
     }
   };
@@ -300,6 +300,8 @@ export default function EditAdminForm() {
   return (
     <>
       <div className="flex flex-row">
+        <ToastContainer />
+
         {/* <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
 
                 </div> */}
@@ -368,6 +370,9 @@ export default function EditAdminForm() {
                         style={{
                           backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
+                        }}
+                        onClick={() => {
+                          handleClose();
                         }}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}

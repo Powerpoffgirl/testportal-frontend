@@ -16,11 +16,13 @@ export default function TestListPage()
     const onOpenModal = () => setOpen(true);
     const onCloseModall = () => setOpen(false);
     const [open, setOpen] = useState(false);
-    const [patientDetails, setPatientDetails] = useState({
-        medicineName: [],
-        issues: [],
-        diseases: [],
-        labTests: []
+    const [test, setTest] = useState({
+        testName: "",
+        testCode: "",
+        department: "",
+        sampleType: "",
+        costOfDiagnosticTest: "",
+        patientId: ""
     })
 
 
@@ -55,6 +57,11 @@ export default function TestListPage()
             )
         );
     };
+
+    const saveRow = () =>
+    {
+
+    }
 
     const handleEditChange = (id, field, value) =>
     {
@@ -133,9 +140,16 @@ export default function TestListPage()
                                             {row.cost}
                                         </div>
                                         <div style={{ flexBasis: '15%' }}>
-                                            <button style={{ height: '30px', width: '50px', backgroundColor: '#89CFF0', color: 'white', borderRadius: '10px' }} onClick={() => editRow(row.id)}>
-                                                {row.isEditing ? 'Save' : 'Edit'}
-                                            </button>
+                                            {row.isEditing ? (
+                                                <button style={{ height: '30px', width: '50px', backgroundColor: '#89CFF0', color: 'white', borderRadius: '10px' }} onClick={() => editRow(row.id)}>
+                                                    Save
+                                                </button>
+                                            ) : (
+                                                <button style={{ height: '30px', width: '50px', backgroundColor: '#89CFF0', color: 'white', borderRadius: '10px' }} onClick={() => saveRow(row.id)}>
+                                                    Edit
+                                                </button>
+                                            )
+                                            }
                                         </div>
                                     </div>
                                 ))}
@@ -152,14 +166,6 @@ export default function TestListPage()
                 </div>
 
             </div>
-
-
-
-
-
-
-
-
         </>
 
     );

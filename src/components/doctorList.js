@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import one from "../assets/one.svg";
 import two from "../assets/two.svg";
 import three from "../assets/three.svg";
+import home from "../assets/home.svg"
+import education from "../assets/education.svg"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
 
@@ -30,8 +32,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function DoctorList({ searchTerm })
-{
+export default function DoctorList({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -51,17 +52,13 @@ export default function DoctorList({ searchTerm })
     "Urology",
   ];
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     localStorage.clear()
   }, [])
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
           method: "GET",
           headers: {
@@ -75,19 +72,16 @@ export default function DoctorList({ searchTerm })
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, [searchTerm]);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     // Check if there is a searchTerm and the doctorsList is not empty.
-    if (doctorsList.length > 0 && searchTerm)
-    {
+    if (doctorsList.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedDoctors = doctorsList.filter(
         (doctor) =>
@@ -95,47 +89,256 @@ export default function DoctorList({ searchTerm })
           doctor.speciality.toLowerCase().includes(lowerCaseSearchTerm)
       );
       setFilteredDoctors(matchedDoctors);
-    } else
-    {
+    } else {
       // If no searchTerm or doctorsList is empty, use the original list.
       setFilteredDoctors(doctorsList);
     }
   }, [doctorsList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleQRCode = (doctorId) =>
-  {
+  const handleQRCode = (doctorId) => {
     console.log("HELLO");
     localStorage.setItem("doctorId", doctorId);
     const doctor = doctorsList?.find((doc) => doc._id === doctorId);
     setselectedDoctor(doctor);
+    console.log(selectedDoctor)
+    console.log(selectedDoctor.degree.split(','))
+
     onOpenModal();
   };
 
-  const handleBookAppointment = () =>
-  {
+  const handleBookAppointment = () => {
     localStorage.setItem("doctorId", selectedDoctor._id)
     localStorage.setItem("doctorName", selectedDoctor.name)
     localStorage.setItem("doctorEmail", selectedDoctor.email)
     navigate("/userlogin");
   };
 
-  const handleFilterDocotors = (item) =>
-  {
+  const handleFilterDocotors = (item) => {
     console.log("ITEM NAME IS================>", item);
-    if (item.toLowerCase() === "all")
-    {
+    if (item.toLowerCase() === "all") {
       setFilteredDoctors(doctorsList);
-    } else
-    {
+    } else {
       const filteredDoctors = doctorsList.filter(
         (doc) => doc.speciality === item
       );
       setFilteredDoctors(filteredDoctors);
     }
   };
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [bookingslottoggle, setbookingslottoggle] = useState(false);
+  const showSlot = () => {
+    setbookingslottoggle(!bookingslottoggle)
+  }
+  const bookingslot = [
+    {
+      "date": "2023-12-22",
+      "startTime": "09:00",
+      "endTime": "09:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "09:15",
+      "endTime": "09:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "09:30",
+      "endTime": "09:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "09:45",
+      "endTime": "10:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "10:00",
+      "endTime": "10:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "10:15",
+      "endTime": "10:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "10:30",
+      "endTime": "10:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "10:45",
+      "endTime": "11:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "11:00",
+      "endTime": "11:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "11:15",
+      "endTime": "11:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "11:30",
+      "endTime": "11:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "11:45",
+      "endTime": "12:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "12:00",
+      "endTime": "12:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "12:15",
+      "endTime": "12:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "12:30",
+      "endTime": "12:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "12:45",
+      "endTime": "13:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "13:00",
+      "endTime": "13:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "13:15",
+      "endTime": "13:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "13:30",
+      "endTime": "13:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "13:45",
+      "endTime": "14:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "14:00",
+      "endTime": "14:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "14:15",
+      "endTime": "14:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "14:30",
+      "endTime": "14:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "14:45",
+      "endTime": "15:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "15:00",
+      "endTime": "15:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "15:15",
+      "endTime": "15:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "15:30",
+      "endTime": "15:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "15:45",
+      "endTime": "16:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "16:00",
+      "endTime": "16:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "16:15",
+      "endTime": "16:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "16:30",
+      "endTime": "16:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "16:45",
+      "endTime": "17:00",
+      "isBooked": false
+    }
+  ]
+
+  const goToNext = () => {
+    const isLastItem = currentIndex === bookingslot.length - 1;
+    const nextIndex = isLastItem ? 0 : currentIndex + 1;
+    setCurrentIndex(nextIndex);
+  };
+
+  const goToPrev = () => {
+    const isFirstItem = currentIndex === 0;
+    const prevIndex = isFirstItem ? bookingslot.length - 1 : currentIndex - 1;
+    setCurrentIndex(prevIndex);
+  };
 
   return (
     <>
+      {/* ---------------------------------------------modal--------------------------------------------- */}
       <Modal
         open={open}
         onClose={onCloseModal}
@@ -144,131 +347,21 @@ export default function DoctorList({ searchTerm })
         styles={{
           modal: {
             // Set your custom width here (e.g., '70%')
-            width: isTab ? "80%" : "50%",
-            backgroundColor: "#fff",
+            width: isTab ? "80%" : "60%",
+            backgroundColor: "#E3F6FF",
             alignContent: "center",
           },
         }}
       >
-        <div className="flex flex-col bg-customRedp-2  w-[100%] md:w-[100%]  mt-[2%]">
+        {/* <div className="flex flex-col bg-customRedp-2  w-[100%] md:w-[100%]  mt-[2%]">
           <div className="flex flex-row w-[100%] justify-between">
-            {/* <span className="flex flex-col justify-start">
-              <text
-                style={{
-                  fontWeight: 400,
-                  fontSize: !isTab ? "20px" : "16px",
-                  fontFamily: "Lato, sans-serif",
-                  color: "white",
-                }}
-              >
-                {selectedDoctor?.workingDays?.map((day) => (
-                  <span key={day}>{day.slice(0, 3)} </span>
-                ))}
-              </text>
-              <text
-                style={{
-                  fontWeight: 400,
-                  fontSize: !isTab ? "20px" : "16px",
-                  fontFamily: "Lato, sans-serif",
-                  color: "white",
-                }}
-              >
-                {selectedDoctor?.workingHours?.workHourFrom}:00 To{" "}
-                {selectedDoctor?.workingHours?.workHourTo}:00
-              </text>
-            </span> */}
 
-            {
-              selectedDoctor?.doctorPic ? <img
-                src={selectedDoctor?.doctorPic}
-                alt="Avatar"
-                style={{
-                  borderRadius: "50%",
-                  height: isTab ? "40px" : "123px",
-                  width: isTab ? "40px" : "123px",
-                  marginRight: '70px',
-                  marginLeft: '20px',
-                  boxShadow: 'inset 0 0 0 2px #76767'
-                }}
-              />
-                :
-                <AccountCircleIcon style={{
-                  fontSize: '90px', color: "#E3F6FF",
-                  borderRadius: "50%",
-                  height: isTab ? "40px" : "123px",
-                  width: isTab ? "40px" : "123px",
-                  marginRight: '70px',
-                  boxShadow: 'inset 0 0 0 2px #76767'
-                }} />
-            }
 
-            {/* <img
-              src={selectedDoctor?.doctorPic}
-              alt="Avatar"
-              style={{
-                borderRadius: "50%",
-                height: isTab ? "40px" : "123px",
-                width: isTab ? "40px" : "123px",
-                marginRight: '70px',
-                marginLeft: '20px',
-                boxShadow: 'inset 0 0 0 2px #76767'
-              }}
-            ></img> */}
-
-            {/* <span className="flex flex-col justify-start">
-              <text style={{ color: "#89CFF0" }}>Mon-Fri</text>
-              <text style={{ color: "#89CFF0" }}>10:00am-6:00pm</text>
-            </span> */}
-          </div>
-          <text
-            className="ml-4 text-start mt-4"
-            style={{
-              fontSize: isTab ? "18px" : "30px",
-              fontWeight: 500,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-            }}
-          >
-            Dr. {selectedDoctor?.name}
-          </text>
-          <text
-            className="ml-4 text-start mt-2"
-            style={{
-              fontSize: isTab ? "12px" : "24px",
-              fontWeight: 400,
-              lineHeight: "24px",
-              fontFamily: "Lato, sans-serif",
-              color: "#767676",
-
-            }}
-          >
+        
             {selectedDoctor?.email}
           </text>
-          <text
-            className="ml-4 text-start mt-2"
-            style={{
-              fontSize: isTab ? "16px" : "24px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#43BCF5",
-            }}
-          >
-            {selectedDoctor?.speciality}
-          </text>
-          <text
-            className="ml-4 text-start mt-2"
-            style={{
-              fontSize: isTab ? "14px" : "24px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#2CBE78"
-
-            }}
-          >
-            {selectedDoctor?.totalExperience} Years Experience
-          </text>
+          
+          
           <text
             className="ml-4 text-start mt-2 text-purple-900"
             style={{
@@ -281,28 +374,7 @@ export default function DoctorList({ searchTerm })
           >
             {selectedDoctor?.degree}
           </text>
-          <text
-            className="ml-4 text-start mt-2"
-            style={{
-              fontSize: isTab ? "14px" : "24px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#000000",
-            }}
-          >
-            {selectedDoctor?.address?.houseNo +
-              " " +
-              selectedDoctor?.address?.block +
-              " " +
-              selectedDoctor?.address?.area +
-              ", " +
-              selectedDoctor?.address?.district +
-              ", " +
-              selectedDoctor?.address?.state +
-              " " +
-              selectedDoctor?.address?.pinCode}
-          </text>
+          
 
           <div className="flex justify-center">
             <button
@@ -357,8 +429,181 @@ export default function DoctorList({ searchTerm })
               textAlign: 'end'
             }}>10:00am-6:00pm</text>
           </span>
-        </div>
-      </Modal>
+        </div> */}
+
+        <div className="flex flex-row p-2 pt-5">
+          {/* ---------------------------left part--------------------------- */}
+          <div className="flex flex-col w-1/2 px-2">
+            <div class="">
+              <img src={selectedDoctor?.doctorPic} alt="doctor image" class=" h-80 w-full" ></img>
+            </div>
+            <div class="flex flex-col  py-4 px-5 bg-white mt-1">
+
+              <p class="text-xs text-black font-medium mb-2" >Registration No. :- 33256</p>
+
+              <p class="text-black text-3xl font-medium mb-2" >Dr. {selectedDoctor?.name}</p>
+              <div class="flex flex-row">
+                <div>
+                  <img src={education} class="w-5 py-2 " ></img>
+                </div>
+                <div class="ml-1">
+
+
+                  {selectedDoctor?.degree?.split(',')?.map((item) => (
+
+                    <p class="text-gray-600 text-xl mb-1">{item}</p>
+                  ))}
+                  {/* <p class="text-gray-400 text-sm -mt-1 mb-2">Darbhanga Medical College</p> */}
+                  {/* <p class="text-gray-600 text-xl">MBBS - 2004</p>
+                  <p class="text-gray-400 text-sm -mt-1 mb-2">Darbhanga Medical College</p> */}
+                </div>
+              </div>
+              <p class="text-gray-600 text-xl mb-2" >{selectedDoctor?.totalExperience} Years Experience</p>
+
+              <div class="flex flex-row space-x-2">
+                <div class="mt-2">
+                  <img src={home} style={{ minWidth: '15px', maxWidth: '16px' }} ></img>
+                </div>
+                <div class="">
+                  <p class="text-gray-600 text-xl ">{selectedDoctor?.address?.houseNo +
+                    " " +
+                    selectedDoctor?.address?.block +
+                    " " +
+                    selectedDoctor?.address?.area +
+                    ", " +
+                    selectedDoctor?.address?.district +
+                    ", " +
+                    selectedDoctor?.address?.state +
+                    " " +
+                    selectedDoctor?.address?.pinCode}</p>
+                </div>
+
+              </div>
+
+
+            </div>
+          </div>
+          {/* --------------------------------right part-------------------------------- */}
+          <div className="flex flex-col  w-1/2 px-2" >
+
+            <div class=" py-1 mb-2">
+              <p class="text-lg font-medium text-black" >SPECIALITY</p>
+              <div class="flex flex-wrap ">
+                <p class="bg-white rounded-xl py-1 px-4 mx-2 my-1 ">{selectedDoctor?.speciality}</p>
+                {/* <p class="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p>
+                <p class="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p>
+                <p class="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p> */}
+
+              </div>
+            </div>
+
+
+            <div class=" py-1 mb-2">
+              <p class="text-lg font-medium text-black">About The Doctor</p>
+              <p class=" italic text-gray-600">
+                Lorem ipsum dolor sit amet consectetur. Vitae dui elit vel justo facilisi praesent in et donec. Rutrum lorem consequat tempus fermentum egestas. At gravida enim proin blandit. Non et arcu arcu mauris augue massa.
+              </p>
+            </div>
+
+
+            <div class=" py-1 mb-2">
+              <p class="text-lg font-medium text-black">Timing</p>
+              <div class="flex flex-row  place-content-between">
+                <div class="flex flex-col ">
+                  <p class="text-gray-600 font-semibold">Mon - Thur :</p>
+                  <p class="text-gray-600">10:00 AM - 3:00 PM</p>
+                  <p class="text-gray-600">3:00 AM - 7:00 PM</p>
+                </div>
+                <div class="flex flex-col">
+                  <p class="text-gray-600 font-semibold">Mon - Thur :</p>
+                  <p class="text-gray-600">10:00 AM - 3:00 PM</p>
+                  <p class="text-gray-600">3:00 AM - 7:00 PM</p>
+                </div>
+              </div>
+            </div>
+
+
+            <div class=" py-1 mb-2">
+              <p class="text-lg font-medium text-black">Select service</p>
+
+              <div class="flex flex-col mb-2">
+                <div class="flex flex-col  bg-white p-1">
+                  <p class="flex place-content-between my-1"><span class="font-medium px-2">Consultation</span> <span class="font-bold px-2">Rs1000</span></p>
+                  <p class="text-xs text-gray-500 px-2 my-1">Slot available for Tommorrow 22 Dec. 2023</p>
+                  <p class="flex flex-wrap space-x-1 ml-2 my-1">
+                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
+                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">3:00 AM</p>
+                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
+
+                  </p>
+
+                  <div>
+
+
+                    {bookingslottoggle && <div class="flex flex-col">
+                      <div class=" flex flex-col text-center">
+                        <p>
+                          Date: {bookingslot[currentIndex].date}
+                        </p>
+
+                        <p>
+                          Start Time: {bookingslot[currentIndex].startTime}
+                        </p>
+                        <p>
+                          End Time: {bookingslot[currentIndex].endTime}
+                        </p>
+
+
+                      </div>
+                      <div class="flex justify-center mt-3">
+                        <button class="text-white text-xs rounded-3xl px-3 py-1 mx-5" onClick={goToPrev} style={{ backgroundColor: ' #89CFF0' }}>
+                          Previous
+                        </button>
+                        <button class="text-white text-xs rounded-3xl px-3 py-1 mx-5 " onClick={goToNext} style={{ backgroundColor: ' #89CFF0' }}>
+                          Next
+                        </button>
+                      </div>
+                    </div>}
+
+
+                  </div>
+                  <div class="flex flex-row-reverse my-1">
+                    <button class="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                      See all Slots
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="flex flex-col">
+                <div class="flex flex-col  bg-white p-1">
+                  <p class="flex place-content-between my-1"><span class="font-medium px-2">Consultation</span> <span class="font-bold px-2">Rs1000</span></p>
+                  <p class="text-xs text-gray-500 px-2 my-1">Slot available for Tommorrow 22 Dec. 2023</p>
+                  <p class="flex flex-wrap space-x-1 ml-2 my-1">
+                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
+                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">3:00 AM</p>
+                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
+
+                  </p>
+                  <div class="flex flex-row-reverse my-1">
+                    <button class="text-white text-xs rounded-3xl px-3 py-1 " style={{ backgroundColor: ' #89CFF0' }}>
+                      See all Slots
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div >
+
+        </div >
+      </Modal >
+
+
+
       <div
         className="flex flex-col bg-customGreen"
         style={{
@@ -410,8 +655,9 @@ export default function DoctorList({ searchTerm })
         <div style={{ marginTop: "10px" }}>
           {filteredDoctors?.map((doctor, index) => (
             <div
-              className="bg-white w-full p-4 mb-5"
+              className="bg-white w-full p-4 mb-5 hover:cursor-pointer"
               onClick={() => handleQRCode(doctor._id)}
+
             >
               <div className="flex flex-row justify-between">
                 <div class="flex items-center gap-x-2">

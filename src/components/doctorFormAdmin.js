@@ -84,14 +84,14 @@ export default function DoctorFormAdmin() {
         const data = await response.json();
         console.log("Image uploaded successfully:", data);
         setDoctorImage(data.profilePicImageUrl);
-        alert("Image uploaded successfully.");
+        toast.success("Image uploaded successfully.");
 
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
       } catch (error) {
         console.error("Error uploading image:", error);
-        alert("Error uploading image. Please try again.");
+        toast.error("Error uploading image. Please try again.");
       }
     }
   };
@@ -373,6 +373,8 @@ export default function DoctorFormAdmin() {
 
   return (
     <>
+      <ToastContainer />
+
       <div className="flex flex-row">
         <div className=" w-full">
           <div className="mt-6 p-2">
@@ -439,6 +441,9 @@ export default function DoctorFormAdmin() {
                         style={{
                           backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
+                        }}
+                        onClick={() => {
+                          handleClose();
                         }}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
