@@ -10,11 +10,11 @@ import Menu from "@mui/material/Menu";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
+import "react-toastify/dist/ReactToastify.css";
 
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
-export default function PatientDescription()
-{
+export default function PatientDescription() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const location = useLocation;
@@ -44,15 +44,11 @@ export default function PatientDescription()
     labTests: [],
   });
   const [patient, setPatient] = useState({});
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -72,8 +68,7 @@ export default function PatientDescription()
         console.log("DATA from response", data.data);
         setPatientsHistory(data?.data);
         setPatient(data?.data[0]);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -81,19 +76,17 @@ export default function PatientDescription()
   }, []);
   console.log("patientsHistory", patientsHistory);
   console.log("patient", patient);
-  const handleFileSelect = async (event) =>
-  {
+
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -102,29 +95,26 @@ export default function PatientDescription()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
         console.log("Image uploaded successfully:", data);
         setUserImage(data.profilePicImageUrl);
-        alert("Image uploaded successfully.");
+        toast.success("Image uploaded successfully.");
 
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
-        alert("Error uploading image. Please try again.");
+        toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const onCloseModal = () =>
-  {
+  const onCloseModal = () => {
     setModalOpen(false);
     setModalContent("");
     navigate(`/appointmentlist`);
@@ -432,56 +422,48 @@ export default function PatientDescription()
   const [anchorEl, setAnchorEl] = useState(null);
   // const open = Boolean(anchorEl);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
   // Function to handle profile picture change
-  const handleNewProfilePicture = () =>
-  {
+  const handleNewProfilePicture = () => {
     // Logic to handle adding a new profile picture
     handleClose();
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const handleChangeIssues = (values) =>
-  {
+  const handleChangeIssues = (values) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       issues: values,
     }));
   };
 
-  const handleChangeDiseases = (values) =>
-  {
+  const handleChangeDiseases = (values) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       diseases: values,
     }));
   };
 
-  const handleChangeMedicine = (values) =>
-  {
+  const handleChangeMedicine = (values) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       medicineName: values,
     }));
   };
 
-  const handleChangeLabTests = (values) =>
-  {
+  const handleChangeLabTests = (values) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       labTests: values,
@@ -490,14 +472,12 @@ export default function PatientDescription()
 
   console.log("PATIENT DETAILS", patientDetails);
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
       return;
     }
@@ -514,8 +494,7 @@ export default function PatientDescription()
       }
     );
     const data = await response.json();
-    if (data.success === true)
-    {
+    if (data.success === true) {
       localStorage.setItem("appointmentId", appointmentId);
       toast.success("Diagnosis saved.");
       setModalOpen(true);
@@ -586,8 +565,10 @@ export default function PatientDescription()
           </text>
         </div>
       </Modal>
+      <ToastContainer />
+
       {/* <div className="grid grid-cols-1 w-full gap-4"> */}
-      <div className="flex  flex-col items-center justify-center w-full">
+      <div className="flex  flex-col items-center justify-center w-full mb-10">
         <div className="cursor-pointer">
           <div
             style={{
@@ -608,10 +589,10 @@ export default function PatientDescription()
                 color: "#A4A4A4",
               }}
             >
-              {userImage || patientDetails?.patientPic ? (
+              {patient?.patientId?.patientPic ? (
                 <img
-                  src={userImage || patientDetails?.patientPic}
-                  alt="Avatar"
+                  src={patient?.patientId?.patientPic}
+                  alt={patient?.patientId?.name}
                   style={{
                     borderRadius: "50%",
                   }}
@@ -632,67 +613,12 @@ export default function PatientDescription()
                 marginLeft: 37,
                 marginTop: -20,
               }}
-            >
-              <MdEdit />
-            </p>
-            <div style={{ backgroundColor: "#89CFF0" }}>
-              <Menu
-                id="profile-pic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={handleClose}
-                MenuListProps={{
-                  "aria-labelledby": "edit-profile-pic-text",
-                  style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
-                }}
-              >
-                <MenuItem
-                  style={{
-                    backgroundColor: "#89CFF0",
-                    color: isHovered ? "red" : "white",
-                  }}
-                  onMouseEnter={() => setIsHovered(true)}
-                  onMouseLeave={() => setIsHovered(false)}
-                >
-                  {" "}
-                  <span style={{ marginRight: "8px" }}>
-                    <HiOutlineUserAdd />
-                  </span>
-                  <label htmlFor="files">New profile picture</label>
-                </MenuItem>
-
-                <MenuItem
-                  style={{
-                    backgroundColor: "#89CFF0",
-                    color: isHovered1 ? "red" : "white",
-                  }}
-                  onClick={handleRemoveProfilePicture}
-                  onMouseEnter={() => setIsHovered1(true)}
-                  onMouseLeave={() => setIsHovered1(false)}
-                >
-                  <span style={{ marginRight: "8px" }}>
-                    <FaRegTrashAlt />
-                  </span>
-                  <span>Remove current picture</span>
-                </MenuItem>
-              </Menu>
-            </div>
-            <label style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}>
-              Edit Profile Picture
-            </label>
-            <input
-              id="files"
-              type="file"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              accept="image/*"
-              onChange={handleFileSelect}
-            />
+            ></p>
           </div>
         </div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex flex-col">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
+        <div className="flex flex-col ">
           <label
             className="mx-2 text-lg font-normal text-black font-lato"
             htmlFor="patientName"
@@ -712,212 +638,241 @@ export default function PatientDescription()
             />
           )}
         </div>
-
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
+          <div className="flex flex-col">
+            <label
+              className="mx-2 text-lg font-normal text-black font-lato " // Corrected class name
+              htmlFor="doctorName"
+            >
+              Age
+            </label>
+            <input
+              className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg "
+              name="doctorName"
+              value={patient?.patientId?.age + " yr"}
+            />
+          </div>
+          <div className="flex flex-col">
+            <label
+              className="mx-2 text-lg font-normal text-black font-lato"
+              htmlFor="doctorName"
+            >
+              Weight
+            </label>
+            <input
+              className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg "
+              name="doctorName"
+              value={patient?.patientId?.bodyWeight + " kg"} // Value based on condition
+            />
+          </div>
+          <div className="flex flex-col">
+            <label
+              className="mx-2 text-lg font-normal text-black font-lato"
+              htmlFor="doctorName"
+            >
+              Temperature
+            </label>
+            <input
+              className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg "
+              name="doctorName"
+              value="32"
+            />
+          </div>
+          <div className="flex flex-col">
+            <label
+              className="mx-2 text-lg font-normal text-black font-lato"
+              htmlFor="doctorName"
+            >
+              BP
+            </label>
+            <input
+              className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg "
+              name="doctorName"
+              value="100/80mm Hg"
+            />
+          </div>
+        </div>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col">
           <label
             className="mx-2 text-lg font-normal text-black font-lato"
-            htmlFor="doctorName"
+            htmlFor="issues"
           >
-            Age & Body weight
+            Issues
           </label>
-          <input
-            className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg"
-            name="doctorName"
-            value={
-              patient?.patientId?.age +
-              " yr" +
-              " & " +
-              patient?.patientId?.bodyWeight +
-              " kg"
-            } // Value based on condition
-          />
+          <Select
+            mode="multiple"
+            className="mx-2 border border-[#89CFF0]  h-10 rounded-lg "
+            popupClassName="no-border-dropdown-menu" // Apply the custom class here
+            id="issues"
+            name="issues"
+            onChange={handleChangeIssues}
+            onInputKeyDown={(e) => {
+              // Handle custom value input
+              if (e.key === "Enter") {
+                e.preventDefault();
+                let inputValue = e.target.value.trim();
+                if (inputValue) {
+                  handleChangeIssues([...patientDetails.issues, inputValue]);
+                  setTimeout(() => {
+                    e.target.value = "";
+                    inputValue = "";
+                  }, 0);
+                }
+              }
+            }}
+            value={patientDetails.issues}
+            placeholder="Select Issues"
+            style={{ overflowY: "auto" }}
+            dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+          >
+            {issues.map((option) => (
+              <Select.Option key={option.value} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+        <div className="flex flex-col">
+          <label
+            className="mx-2 text-lg font-normal text-black font-lato"
+            htmlFor="issues"
+          >
+            Disease
+          </label>
+          <Select
+            mode="multiple"
+            className="mx-2 border border-[#89CFF0] h-10 rounded-lg"
+            popupClassName="no-border-dropdown-menu" // Apply the custom class here
+            id="diesease"
+            name="diesease"
+            onChange={handleChangeDiseases}
+            onInputKeyDown={(e) => {
+              // Handle custom value input
+              if (e.key === "Enter") {
+                e.preventDefault();
+                let inputValue = e.target.value.trim();
+                if (inputValue) {
+                  handleChangeDiseases([
+                    ...patientDetails.diseases,
+                    inputValue,
+                  ]);
+                  setTimeout(() => {
+                    e.target.value = "";
+                    inputValue = "";
+                  }, 0);
+                }
+              }
+            }}
+            value={patientDetails.diseases}
+            placeholder="Select Diesease"
+            style={{ overflowY: "auto" }}
+            dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+          >
+            {diseases.map((option) => (
+              <Select.Option key={option.value} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select>
         </div>
       </div>
-      <div className="flex flex-col">
-        <label
-          className="mx-2 text-lg font-normal text-black font-lato"
-          htmlFor="issues"
-        >
-          Issues
-        </label>
-        <Select
-          mode="multiple"
-          className="mx-2 border border-[#89CFF0] rounded-lg"
-          popupClassName="no-border-dropdown-menu" // Apply the custom class here
-          id="issues"
-          name="issues"
-          onChange={handleChangeIssues}
-          onInputKeyDown={(e) =>
-          {
-            // Handle custom value input
-            if (e.key === "Enter")
-            {
-              e.preventDefault();
-              let inputValue = e.target.value.trim();
-              if (inputValue)
-              {
-                handleChangeIssues([...patientDetails.issues, inputValue]);
-                setTimeout(() =>
-                {
-                  e.target.value = "";
-                  inputValue = "";
-                }, 0);
-              }
-            }
-          }}
-          value={patientDetails.issues}
-          placeholder="Select Issues"
-          style={{ overflowY: "auto" }}
-          dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
-        >
-          {issues.map((option) => (
-            <Select.Option key={option.value} value={option.value}>
-              {option.label}
-            </Select.Option>
-          ))}
-        </Select>
-      </div>
-      <div className="flex flex-col">
-        <label
-          className="mx-2 text-lg font-normal text-black font-lato"
-          htmlFor="issues"
-        >
-          Disease
-        </label>
-        <Select
-          mode="multiple"
-          className="mx-2 border border-[#89CFF0] rounded-lg"
-          popupClassName="no-border-dropdown-menu" // Apply the custom class here
-          id="diesease"
-          name="diesease"
-          onChange={handleChangeDiseases}
-          onInputKeyDown={(e) =>
-          {
-            // Handle custom value input
-            if (e.key === "Enter")
-            {
-              e.preventDefault();
-              let inputValue = e.target.value.trim();
-              if (inputValue)
-              {
-                handleChangeDiseases([...patientDetails.diseases, inputValue]);
-                setTimeout(() =>
-                {
-                  e.target.value = "";
-                  inputValue = "";
-                }, 0);
-              }
-            }
-          }}
-          value={patientDetails.diseases}
-          placeholder="Select Diesease"
-          style={{ overflowY: "auto" }}
-          dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
-        >
-          {diseases.map((option) => (
-            <Select.Option key={option.value} value={option.value}>
-              {option.label}
-            </Select.Option>
-          ))}
-        </Select>
-      </div>
       {/* <div className="grid grid-cols-1 w-full gap-4"> */}
-      <div className="flex flex-col">
-        <label
-          className="mx-2 text-lg font-normal text-black font-lato"
-          htmlFor="issues"
-        >
-          Medicine Name
-        </label>
-        <Select
-          mode="multiple"
-          className="mx-2 border border-[#89CFF0] rounded-lg"
-          popupClassName="no-border-dropdown-menu" // Apply the custom class here
-          id="medicineName"
-          name="medicineName"
-          onChange={handleChangeMedicine}
-          onInputKeyDown={(e) =>
-          {
-            // Handle custom value input
-            if (e.key === "Enter")
-            {
-              e.preventDefault();
-              let inputValue = e.target.value.trim();
-              if (inputValue)
-              {
-                handleChangeMedicine([
-                  ...patientDetails.medicineName,
-                  inputValue,
-                ]);
-                setTimeout(() =>
-                {
-                  e.target.value = "";
-                  inputValue = "";
-                }, 0);
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="flex flex-col">
+          <label
+            className="mx-2 text-lg font-normal text-black font-lato"
+            htmlFor="issues"
+          >
+            Medicine Name
+          </label>
+          <Select
+            mode="multiple"
+            className="mx-2 border border-[#89CFF0] h-10 rounded-lg"
+            popupClassName="no-border-dropdown-menu" // Apply the custom class here
+            id="medicineName"
+            name="medicineName"
+            onChange={handleChangeMedicine}
+            onInputKeyDown={(e) => {
+              // Handle custom value input
+              if (e.key === "Enter") {
+                e.preventDefault();
+                let inputValue = e.target.value.trim();
+                if (inputValue) {
+                  handleChangeMedicine([
+                    ...patientDetails.medicineName,
+                    inputValue,
+                  ]);
+                  setTimeout(() => {
+                    e.target.value = "";
+                    inputValue = "";
+                  }, 0);
+                }
               }
-            }
-          }}
-          value={patientDetails.medicineName}
-          placeholder="Select Medicine"
-          style={{ overflowY: "auto" }}
-          dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
-        >
-          {medicineName.map((option) => (
-            <Select.Option key={option.value} value={option.value}>
-              {option.label}
-            </Select.Option>
-          ))}
-        </Select>
-      </div>
-      {/* <div className="grid grid-cols-1 w-full gap-4"> */}
-      <div className="flex flex-col">
-        <label
-          className="mx-2 text-lg font-normal text-black font-lato"
-          htmlFor="issues"
-        >
-          Lab Tests
-        </label>
-        <Select
-          mode="multiple"
-          className="mx-2 border border-[#89CFF0] rounded-lg"
-          popupClassName="no-border-dropdown-menu" // Apply the custom class here
-          id="labTests"
-          name="labTests"
-          onChange={handleChangeLabTests}
-          onInputKeyDown={(e) =>
-          {
-            // Handle custom value input
-            if (e.key === "Enter")
-            {
-              e.preventDefault();
-              let inputValue = e.target.value.trim();
-              if (inputValue)
-              {
-                handleChangeLabTests([...patientDetails.labTests, inputValue]);
-                setTimeout(() =>
-                {
-                  e.target.value = "";
-                  inputValue = "";
-                }, 0);
+            }}
+            value={patientDetails.medicineName}
+            placeholder="Select Medicine"
+            style={{ overflowY: "auto" }}
+            dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+          >
+            {medicineName.map((option) => (
+              <Select.Option key={option.value} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
+        {/* <div className="grid grid-cols-1 w-full gap-4"> */}
+        <div className="flex flex-col">
+          <label
+            className="mx-2 text-lg font-normal text-black font-lato"
+            htmlFor="issues"
+          >
+            Lab Tests
+          </label>
+          <Select
+            mode="multiple"
+            className="mx-2 border border-[#89CFF0] h-10  rounded-lg"
+            popupClassName="no-border-dropdown-menu" // Apply the custom class here
+            id="labTests"
+            name="labTests"
+            onChange={handleChangeLabTests}
+            onInputKeyDown={(e) => {
+              // Handle custom value input
+              if (e.key === "Enter") {
+                e.preventDefault();
+                let inputValue = e.target.value.trim();
+                if (inputValue) {
+                  handleChangeLabTests([
+                    ...patientDetails.labTests,
+                    inputValue,
+                  ]);
+                  setTimeout(() => {
+                    e.target.value = "";
+                    inputValue = "";
+                  }, 0);
+                }
               }
-            }
-          }}
-          value={patientDetails.labTests}
-          placeholder="Select Lab Tests"
-          style={{ overflowY: "auto" }}
-          dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
-        >
-          {labTests.map((option) => (
-            <Select.Option key={option.value} value={option.value}>
-              {option.label}
-            </Select.Option>
-          ))}
-        </Select>
+            }}
+            value={patientDetails.labTests}
+            placeholder="Select Lab Tests"
+            style={{ overflowY: "auto" }}
+            dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+          >
+            {labTests.map((option) => (
+              <Select.Option key={option.value} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </div>
       </div>
+
       <div className="flex justify-center my-5">
         <label
           className="mx-2 block text-black text-lg font-semibold"
-        //   htmlFor="issues"
+          //   htmlFor="issues"
         >
           Medical History
         </label>
