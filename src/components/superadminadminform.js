@@ -22,8 +22,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function SuperAdminAdminForm()
-{
+export default function SuperAdminAdminForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -67,20 +66,16 @@ export default function SuperAdminAdminForm()
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
-
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -89,39 +84,31 @@ export default function SuperAdminAdminForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
         console.log("Image uploaded successfully:", data);
         setAdminImage(data.profilePicImageUrl);
-        alert("Image uploaded successfully.");
+        toast.success("Image uploaded successfully.");
 
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
-        alert("Error uploading image. Please try again.");
+        toast.error("Error uploading image. Please try again.");
       }
-
     }
-
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-
-
-  const handleActionChange = (e) =>
-  {
+  const handleActionChange = (e) => {
     setAction(e.target.value);
   };
 
@@ -375,13 +362,11 @@ export default function SuperAdminAdminForm()
     adminPic: "",
   });
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -405,10 +390,8 @@ export default function SuperAdminAdminForm()
   //   }
   // };
 
-  const validateField = (name, value) =>
-  {
-    switch (name)
-    {
+  const validateField = (name, value) => {
+    switch (name) {
       case "name":
         return value ? "" : "Name is required.";
       case "email":
@@ -424,19 +407,29 @@ export default function SuperAdminAdminForm()
       case "totalExperience":
         return value ? "" : "Total Experience is required  ";
       case "houseNo":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "houseNo is required  ";
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "houseNo is required  ";
       case "floor":
         return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
       case "block":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Block is required  ";
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "Block is required  ";
       case "area":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Area is required and must be a string ";
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "Area is required and must be a string ";
       case "pinCode":
         return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
       case "district":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "District is required and must be a string ";
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "District is required and must be a string ";
       case "state":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "State is required and must be a string ";
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "State is required and must be a string ";
       case "workHourFrom":
         // Assuming time in HH:MM format, adjust as needed
         return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
@@ -452,9 +445,7 @@ export default function SuperAdminAdminForm()
     }
   };
 
-
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     console.log("E value", e);
     const { name, value, type, checked } = e.target;
 
@@ -466,8 +457,7 @@ export default function SuperAdminAdminForm()
       adminPic: adminImage,
     }));
 
-    if (type === "checkbox")
-    {
+    if (type === "checkbox") {
       setAdminDetails({
         ...adminDetails,
         permissions: {
@@ -485,8 +475,7 @@ export default function SuperAdminAdminForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setAdminDetails((prevAdminDetails) => ({
         ...prevAdminDetails,
         address: {
@@ -494,8 +483,7 @@ export default function SuperAdminAdminForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setAdminDetails((prevAdminDetails) => ({
         ...prevAdminDetails,
         [name]: value,
@@ -504,15 +492,13 @@ export default function SuperAdminAdminForm()
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    const isEmpty = Object.values(adminDetails).some(value => value === '');
+    const isEmpty = Object.values(adminDetails).some((value) => value === "");
 
-    if (isEmpty || isEditing === false)
-    {
-      toast.error('Please fill the fields or Update');
+    if (isEmpty || isEditing === false) {
+      toast.error("Please fill the fields or Update");
       setIsEditing(false);
       return;
     }
@@ -530,8 +516,7 @@ export default function SuperAdminAdminForm()
     // }
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
       return;
     }
@@ -545,13 +530,11 @@ export default function SuperAdminAdminForm()
       body: JSON.stringify(adminDetails),
     });
     const data = await response.json();
-    if (data.statusCode === 400)
-    {
+    if (data.statusCode === 400) {
       toast.error("Please fill the details");
     }
 
-    if (data.success === true)
-    {
+    if (data.success === true) {
       // navigate("/otp")
       onOpenModal();
       localStorage.setItem("adminId", data.data._id);
@@ -681,6 +664,9 @@ export default function SuperAdminAdminForm()
                           backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
+                        onClick={() => {
+                          handleClose();
+                        }}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                       >
@@ -688,7 +674,7 @@ export default function SuperAdminAdminForm()
                         <span style={{ marginRight: "8px" }}>
                           <HiOutlineUserAdd />
                         </span>
-                        <label htmlFor="files" >New profile picture</label>
+                        <label htmlFor="files">New profile picture</label>
                       </MenuItem>
 
                       <MenuItem
@@ -707,7 +693,9 @@ export default function SuperAdminAdminForm()
                       </MenuItem>
                     </Menu>
                   </div>
-                  <label style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}>
+                  <label
+                    style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}
+                  >
                     Edit Profile Picture
                   </label>
                   <input
@@ -754,9 +742,7 @@ export default function SuperAdminAdminForm()
                   onChange={handleChange}
                   className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 `}
                 />
-                {errors.email && (
-                  <p className="text-red-500">{errors.email}</p>
-                )}
+                {errors.email && <p className="text-red-500">{errors.email}</p>}
               </div>
               <div>
                 <label
@@ -781,7 +767,7 @@ export default function SuperAdminAdminForm()
               <div className="flex flex-row items-start pt-4 gap-4">
                 <div className="flex flex-col mr-2 ">
                   <label
-                    style={{ marginRight: '10px' }}
+                    style={{ marginRight: "10px" }}
                     className="mx-2 text-lg font-normal text-black font-lato font-semibold"
                     htmlFor="Permission"
                   >
@@ -796,8 +782,14 @@ export default function SuperAdminAdminForm()
                   style={{ justifyContent: "space-around" }}
                 >
                   {/* Permissions */}
-                  <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-                    <label style={{ marginRight: '15px' }}>View:</label>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <label style={{ marginRight: "15px" }}>View:</label>
                     <input
                       type="checkbox"
                       name="view"
@@ -806,8 +798,14 @@ export default function SuperAdminAdminForm()
                     />
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-                    <label style={{ marginRight: '15px' }}>Create:</label>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <label style={{ marginRight: "15px" }}>Create:</label>
                     <input
                       type="checkbox"
                       name="create"
@@ -816,8 +814,14 @@ export default function SuperAdminAdminForm()
                     />
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-                    <label style={{ marginRight: '15px' }}>Remove:</label>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <label style={{ marginRight: "15px" }}>Remove:</label>
                     <input
                       type="checkbox"
                       name="remove"
@@ -826,8 +830,14 @@ export default function SuperAdminAdminForm()
                     />
                   </div>
 
-                  <div style={{ display: 'flex', alignItems: 'center', marginRight: '10px' }}>
-                    <label style={{ marginRight: '15px' }}>Edit:</label>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <label style={{ marginRight: "15px" }}>Edit:</label>
                     <input
                       type="checkbox"
                       name="edit"
@@ -839,7 +849,6 @@ export default function SuperAdminAdminForm()
                   {/* {action && <p>Selected Action: {action}</p>} */}
                 </div>
               </div>
-
 
               <div>
                 <label
@@ -995,8 +1004,6 @@ export default function SuperAdminAdminForm()
                   </div>
                 </div>
               </div>
-
-
             </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button

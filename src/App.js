@@ -21,6 +21,7 @@ import UserLogin from "./components/userLogin";
 import DoctorListAdmin from "./components/doctorListAdmin";
 import TermsOfServices from "./components/TermsOfServices";
 import PrivacyPolicy from "./components/privacyPolicy";
+import RegisterPatient from "./components/registerPatient";
 // import AdminForm from "./components/adminForm";
 import EditDoctorForm from "./components/editDoctorForm";
 import EditAdminlistform from "./components/editAdminlistform";
@@ -346,6 +347,17 @@ function App()
             type="doctor"
             headerTextTop={"Patients's"}
             headerTextBottom={"Description"}
+          />
+        }
+      ></Route>
+      <Route
+        path="/registerpatient"
+        element={
+          <Layout
+            Component={RegisterPatient}
+            type="doctor"
+            headerTextTop={"Patients's"}
+            headerTextBottom={"Registration"}
           />
         }
       ></Route>
