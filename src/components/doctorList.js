@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import DoctorSidebar from "./doctorSidebar";
 import { useMediaQuery } from "react-responsive";
 import { Modal } from "react-responsive-modal";
@@ -11,6 +11,8 @@ import three from "../assets/three.svg";
 import home from "../assets/home.svg"
 import education from "../assets/education.svg"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { FaAngleRight } from "react-icons/fa";
+import { FaAngleLeft } from "react-icons/fa";
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -323,18 +325,88 @@ export default function DoctorList({ searchTerm }) {
       "isBooked": false
     }
   ]
+  const numberOfColumns = 4;
+  const numberOfRows = Math.ceil(bookingslot.length / numberOfColumns);
+
+  function getYearMonthDay(dateString) {
+    // Create a new Date object using the provided date string
+    const date = new Date(dateString);
+
+    // Get the year, month, day, and day of the week from the date
+    const year = date.getFullYear(); // Retrieves the year as a four-digit number
+    const month = date.getMonth() + 1; // getMonth() returns 0-11, so adding 1 for human-readable format
+    const day = date.getDate(); // Retrieves the day of the month
+    const dayOfWeek = date.getDay(); // Retrieves the day of the week (0-6)
+    // console.log(month)
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const dayName = dayNames[dayOfWeek];
+
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    const monthName = monthNames[month - 1];
+
+    return { year, monthName, day, dayName };
+  }
+
+  const [currentDateIndex, setCurrentDateIndex] = useState(0);
+  const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
+  const dateRefs = useRef([]);
+  const timeRefs = useRef([]);
+  const handleDateClick = (index) => {
+    setCurrentDateIndex(index);
+  };
+
+  const handleTimeClick = (index) => {
+    setCurrentTimeIndex(index);
+  };
+  useEffect(() => {
+    if (dateRefs.current[currentDateIndex]) {
+      dateRefs.current[currentDateIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'start'
+      });
+    }
+  }, [currentDateIndex]);
+
+  // Scroll to the selected time
+  useEffect(() => {
+    if (timeRefs.current[currentTimeIndex]) {
+      timeRefs.current[currentTimeIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'start'
+      });
+    }
+  }, [currentTimeIndex]);
+
 
   const goToNext = () => {
     const isLastItem = currentIndex === bookingslot.length - 1;
     const nextIndex = isLastItem ? 0 : currentIndex + 1;
     setCurrentIndex(nextIndex);
+    console.log(currentIndex)
   };
 
   const goToPrev = () => {
     const isFirstItem = currentIndex === 0;
     const prevIndex = isFirstItem ? bookingslot.length - 1 : currentIndex - 1;
     setCurrentIndex(prevIndex);
+    console.log(currentIndex)
   };
+  var selectedschedule = 0;
 
   return (
     <>
@@ -431,41 +503,41 @@ export default function DoctorList({ searchTerm }) {
           </span>
         </div> */}
 
-        <div className="flex flex-row p-2 pt-5">
+        <div className="flex md:flex-row p-2 pt-5 flex-col">
           {/* ---------------------------left part--------------------------- */}
-          <div className="flex flex-col w-1/2 px-2">
-            <div class="">
-              <img src={selectedDoctor?.doctorPic} alt="doctor image" class=" h-80 w-full" ></img>
+          <div className="flex flex-col  px-2  md:w-1/2">
+            <div className="">
+              <img src={selectedDoctor?.doctorPic} alt="doctor image" className=" h-80 w-full" ></img>
             </div>
-            <div class="flex flex-col  py-4 px-5 bg-white mt-1">
+            <div className="flex flex-col  py-4 px-5 bg-white mt-1">
 
-              <p class="text-xs text-black font-medium mb-2" >Registration No. :- 33256</p>
+              <p className="text-xs text-black font-medium mb-2" >Registration No. :- 33256</p>
 
-              <p class="text-black text-3xl font-medium mb-2" >Dr. {selectedDoctor?.name}</p>
-              <div class="flex flex-row">
+              <p className="text-black text-3xl font-medium mb-2" >Dr. {selectedDoctor?.name}</p>
+              <div className="flex flex-row">
                 <div>
-                  <img src={education} class="w-5 py-2 " ></img>
+                  <img src={education} className="w-5 py-2 " ></img>
                 </div>
-                <div class="ml-1">
+                <div className="ml-1">
 
 
                   {selectedDoctor?.degree?.split(',')?.map((item) => (
 
-                    <p class="text-gray-600 text-xl mb-1">{item}</p>
+                    <p className="text-gray-600 text-xl mb-1">{item}</p>
                   ))}
-                  {/* <p class="text-gray-400 text-sm -mt-1 mb-2">Darbhanga Medical College</p> */}
-                  {/* <p class="text-gray-600 text-xl">MBBS - 2004</p>
-                  <p class="text-gray-400 text-sm -mt-1 mb-2">Darbhanga Medical College</p> */}
+                  {/* <p className="text-gray-400 text-sm -mt-1 mb-2">Darbhanga Medical College</p> */}
+                  {/* <p className="text-gray-600 text-xl">MBBS - 2004</p>
+                  <p className="text-gray-400 text-sm -mt-1 mb-2">Darbhanga Medical College</p> */}
                 </div>
               </div>
-              <p class="text-gray-600 text-xl mb-2" >{selectedDoctor?.totalExperience} Years Experience</p>
+              <p className="text-gray-600 text-xl mb-2" >{selectedDoctor?.totalExperience} Years Experience</p>
 
-              <div class="flex flex-row space-x-2">
-                <div class="mt-2">
+              <div className="flex flex-row space-x-2">
+                <div className="mt-2">
                   <img src={home} style={{ minWidth: '15px', maxWidth: '16px' }} ></img>
                 </div>
-                <div class="">
-                  <p class="text-gray-600 text-xl ">{selectedDoctor?.address?.houseNo +
+                <div className="">
+                  <p className="text-gray-600 text-xl ">{selectedDoctor?.address?.houseNo +
                     " " +
                     selectedDoctor?.address?.block +
                     " " +
@@ -484,112 +556,186 @@ export default function DoctorList({ searchTerm }) {
             </div>
           </div>
           {/* --------------------------------right part-------------------------------- */}
-          <div className="flex flex-col  w-1/2 px-2" >
+          <div className="flex flex-col  md:w-1/2 px-2" >
 
-            <div class=" py-1 mb-2">
-              <p class="text-lg font-medium text-black" >SPECIALITY</p>
-              <div class="flex flex-wrap ">
-                <p class="bg-white rounded-xl py-1 px-4 mx-2 my-1 ">{selectedDoctor?.speciality}</p>
-                {/* <p class="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p>
-                <p class="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p>
-                <p class="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p> */}
+            <div className=" py-1 mb-2">
+              <p className="text-lg font-medium text-black" >SPECIALITY</p>
+              <div className="flex flex-wrap ">
+                <p className="bg-white rounded-xl py-1 px-4 mx-2 my-1 ">{selectedDoctor?.speciality}</p>
+                {/* <p className="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p>
+                <p className="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p>
+                <p className="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p> */}
 
               </div>
             </div>
 
 
-            <div class=" py-1 mb-2">
-              <p class="text-lg font-medium text-black">About The Doctor</p>
-              <p class=" italic text-gray-600">
+            <div className=" py-1 mb-2">
+              <p className="text-lg font-medium text-black">About The Doctor</p>
+              <p className=" italic text-gray-600">
                 Lorem ipsum dolor sit amet consectetur. Vitae dui elit vel justo facilisi praesent in et donec. Rutrum lorem consequat tempus fermentum egestas. At gravida enim proin blandit. Non et arcu arcu mauris augue massa.
               </p>
             </div>
 
 
-            <div class=" py-1 mb-2">
-              <p class="text-lg font-medium text-black">Timing</p>
-              <div class="flex flex-row  place-content-between">
-                <div class="flex flex-col ">
-                  <p class="text-gray-600 font-semibold">Mon - Thur :</p>
-                  <p class="text-gray-600">10:00 AM - 3:00 PM</p>
-                  <p class="text-gray-600">3:00 AM - 7:00 PM</p>
+            <div className=" py-1 mb-2">
+              <p className="text-lg font-medium text-black">Timing</p>
+              <div className="flex flex-row  place-content-between">
+                <div className="flex flex-col ">
+                  <p className="text-gray-600 font-semibold">Mon - Thur :</p>
+                  <p className="text-gray-600">10:00 AM - 3:00 PM</p>
+                  <p className="text-gray-600">3:00 AM - 7:00 PM</p>
                 </div>
-                <div class="flex flex-col">
-                  <p class="text-gray-600 font-semibold">Mon - Thur :</p>
-                  <p class="text-gray-600">10:00 AM - 3:00 PM</p>
-                  <p class="text-gray-600">3:00 AM - 7:00 PM</p>
+                <div className="flex flex-col">
+                  <p className="text-gray-600 font-semibold">Mon - Thur :</p>
+                  <p className="text-gray-600">10:00 AM - 3:00 PM</p>
+                  <p className="text-gray-600">3:00 AM - 7:00 PM</p>
                 </div>
               </div>
             </div>
 
 
-            <div class=" py-1 mb-2">
-              <p class="text-lg font-medium text-black">Select service</p>
+            <div className=" py-1 mb-2">
+              <p className="text-lg font-medium text-black">Select service</p>
 
-              <div class="flex flex-col mb-2">
-                <div class="flex flex-col  bg-white p-1">
-                  <p class="flex place-content-between my-1"><span class="font-medium px-2">Consultation</span> <span class="font-bold px-2">Rs1000</span></p>
-                  <p class="text-xs text-gray-500 px-2 my-1">Slot available for Tommorrow 22 Dec. 2023</p>
-                  <p class="flex flex-wrap space-x-1 ml-2 my-1">
-                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
-                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
-                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">3:00 AM</p>
-                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
+              <div className="flex flex-col mb-2">
+                <div className="flex flex-col  bg-white p-1">
+                  <p className="flex place-content-between my-1"><span className="font-medium px-2">Consultation</span> <span className="font-bold px-2">Rs1000</span></p>
+                  {!bookingslottoggle &&
+                    <div>
 
-                  </p>
+                      <p className="text-xs text-gray-500 px-2 my-1">Slot available for Tommorrow 22 Dec. 2023</p>
+                      <p className="flex flex-wrap space-x-1 ml-2 my-1">
+                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+
+                      </p>
+                    </div>
+                  }
 
                   <div>
+                    {bookingslottoggle && <div className="flex flex-col">
+                      <div className=" flex flex-col text-center space-y-2">
+                        <div class="flex flex-row border-2">
+
+                          <button className="text-white text-xs rounded-3xl  " onClick={goToPrev} >
+                            <FaAngleLeft style={{ color: 'black' }} />
+                          </button>
+                          <div className="flex flex-row overflow-x-auto mx-2 ">
+                            {
+                              bookingslot.map((data, index) => {
+                                console.log(data.date)
+                                const { year, monthName, day, dayName } = getYearMonthDay(data.date)
+                                // console.log(year, monthName, day, dayName)
+                                if (index == currentIndex) {
+                                  return (
+                                    <div key={index} className="flex flex-col px-2"
+                                      ref={el => dateRefs.current[index] = el}
+                                      onClick={() => handleDateClick(index)}>
+                                      <p>{monthName}</p>
+                                      <p className=" p-2 border-2 rounded-lg bg-blue-300" >{day}</p>
+                                      <p>{dayName}</p>
+                                    </div>
+                                  )
+                                } else {
+
+                                  return (
+                                    <div key={index} className="flex flex-col px-2"
+                                      ref={el => dateRefs.current[index] = el}
+                                      onClick={() => handleDateClick(index)}>
+                                      <p>{monthName}</p>
+                                      <p className=" p-2 border-2 rounded-lg bg-gray-200" >{day}</p>
+                                      <p>{dayName}</p>
+                                    </div>
+                                  )
+                                }
+                              })}
 
 
-                    {bookingslottoggle && <div class="flex flex-col">
-                      <div class=" flex flex-col text-center">
-                        <p>
-                          Date: {bookingslot[currentIndex].date}
-                        </p>
 
-                        <p>
-                          Start Time: {bookingslot[currentIndex].startTime}
-                        </p>
-                        <p>
-                          End Time: {bookingslot[currentIndex].endTime}
-                        </p>
+
+                          </div>
+                          <button className="text-white text-xs rounded-3xl   " onClick={goToNext} >
+                            <FaAngleRight style={{ color: 'black' }} />
+                          </button>
+                        </div>
+
+                        <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32">
+                          {[...Array(numberOfRows)].map((_, rowIndex) => {
+                            return (
+                              <div key={rowIndex} className="flex space-x-2">
+                                {bookingslot.slice(rowIndex * numberOfColumns, (rowIndex + 1) * numberOfColumns).map((data, index) => {
+                                  selectedschedule = selectedschedule + 1;
+                                  console.log(selectedschedule)
+
+                                  if (selectedschedule - 1 === currentIndex) {
+                                    return (
+                                      <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-300 text-gray-800" >
+                                        {data.startTime}
+                                      </div>
+                                    )
+                                  }
+                                  else {
+                                    return (
+                                      <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800" >
+                                        {data.startTime}
+                                      </div>
+                                    )
+                                  }
+                                })}
+                              </div>
+                            )
+                          })}
+                        </div>
+
+
+
+                        {/* <p className="flex flex-wrap space-x-1 ml-2 my-1">
+                          <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >{bookingslot[currentIndex].startTime}</p>
+                        </p> */}
+
 
 
                       </div>
-                      <div class="flex justify-center mt-3">
-                        <button class="text-white text-xs rounded-3xl px-3 py-1 mx-5" onClick={goToPrev} style={{ backgroundColor: ' #89CFF0' }}>
+                      {/* <div className="flex justify-center mt-3">
+                        <button className="text-white text-xs rounded-3xl px-3 py-1 mx-5" onClick={goToPrev} style={{ backgroundColor: ' #89CFF0' }}>
                           Previous
                         </button>
-                        <button class="text-white text-xs rounded-3xl px-3 py-1 mx-5 " onClick={goToNext} style={{ backgroundColor: ' #89CFF0' }}>
+                        <button className="text-white text-xs rounded-3xl px-3 py-1 mx-5 " onClick={goToNext} style={{ backgroundColor: ' #89CFF0' }}>
                           Next
                         </button>
-                      </div>
+                      </div> */}
                     </div>}
 
 
                   </div>
-                  <div class="flex flex-row-reverse my-1">
-                    <button class="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                  <div className="flex flex-row-reverse my-1">
+                    {!bookingslottoggle && <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
                       See all Slots
-                    </button>
+                    </button>}
+                    {bookingslottoggle && <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                      See less Slots
+                    </button>}
                   </div>
                 </div>
 
               </div>
 
-              <div class="flex flex-col">
-                <div class="flex flex-col  bg-white p-1">
-                  <p class="flex place-content-between my-1"><span class="font-medium px-2">Consultation</span> <span class="font-bold px-2">Rs1000</span></p>
-                  <p class="text-xs text-gray-500 px-2 my-1">Slot available for Tommorrow 22 Dec. 2023</p>
-                  <p class="flex flex-wrap space-x-1 ml-2 my-1">
-                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
-                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
-                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">3:00 AM</p>
-                    <p class="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
+              <div className="flex flex-col">
+                <div className="flex flex-col  bg-white p-1">
+                  <p className="flex place-content-between my-1"><span className="font-medium px-2">Consultation</span> <span className="font-bold px-2">Rs1000</span></p>
+                  <p className="text-xs text-gray-500 px-2 my-1">Slot available for Tommorrow 22 Dec. 2023</p>
+                  <p className="flex flex-wrap space-x-1 ml-2 my-1">
+                    <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                    <p className="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
+                    <p className="border-2 rounded-3xl py-1 px-2 text-gray-800">3:00 AM</p>
+                    <p className="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
 
                   </p>
-                  <div class="flex flex-row-reverse my-1">
-                    <button class="text-white text-xs rounded-3xl px-3 py-1 " style={{ backgroundColor: ' #89CFF0' }}>
+                  <div className="flex flex-row-reverse my-1">
+                    <button className="text-white text-xs rounded-3xl px-3 py-1 " style={{ backgroundColor: ' #89CFF0' }}>
                       See all Slots
                     </button>
                   </div>
@@ -660,10 +806,10 @@ export default function DoctorList({ searchTerm }) {
 
             >
               <div className="flex flex-row justify-between">
-                <div class="flex items-center gap-x-2">
+                <div className="flex items-center gap-x-2">
                   {
                     doctor.doctorPic ? <img
-                      class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                      className="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
                       src={doctor.doctorPic}
                       alt={doctor.name}
                     />
@@ -671,14 +817,14 @@ export default function DoctorList({ searchTerm }) {
                       <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
                   }
                   <div>
-                    <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
+                    <h1 className=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
                       Dr. {doctor.name}
                     </h1>
 
-                    <p class=" text-gray-500 sm:text-sm text-xs ">
+                    <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.speciality}
                     </p>
-                    <p class=" text-gray-500 sm:text-sm text-xs ">
+                    <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience
                     </p>
                   </div>
