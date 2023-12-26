@@ -6,7 +6,8 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import Modal from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 
-export default function BillingPage() {
+export default function BillingPage()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -24,7 +25,8 @@ export default function BillingPage() {
 
   const [selectedMethod, setSelectedMethod] = useState(null);
 
-  const handleMethodClick = (method) => {
+  const handleMethodClick = (method) =>
+  {
     setSelectedMethod(method);
   };
 
