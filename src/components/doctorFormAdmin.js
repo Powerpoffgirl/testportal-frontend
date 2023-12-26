@@ -33,7 +33,7 @@ export default function DoctorFormAdmin() {
       workHourTo: "",
     },
     totalExperience: "",
-    speciality: "",
+    speciality: [],
     degree: "",
     address: {
       houseNo: "",
@@ -168,7 +168,7 @@ export default function DoctorFormAdmin() {
     "Audiology and Speech Therapy",
   ];
 
-  const SpecialtiesDropdown = IndianDoctorSpecialties.map((specialty) => ({
+  const SpecialtiesDropdown = IndianDoctorSpecialties?.map((specialty) => ({
     label: specialty,
     value: specialty,
   }));
@@ -185,6 +185,14 @@ export default function DoctorFormAdmin() {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: e,
+      // speciality: e,
+    }));
+  };
+  const handleChange2 = (e) => {
+    setDoctorDetails((prevDoctorDetails) => ({
+      ...prevDoctorDetails,
+      // workingDays: e,
+      speciality: e,
     }));
   };
 
@@ -252,6 +260,17 @@ export default function DoctorFormAdmin() {
       ...prevDoctorDetails,
       doctorPic: doctorImage,
     }));
+    // if (name === "speciality") {
+
+    //   setDoctorDetails((prevDoctorDetails) => ({
+    //     ...prevDoctorDetails,
+    //     speciality: {
+    //       ...prevDoctorDetails.speciality,
+    //       [name]: value,
+    //     },
+    //     // speciality: e,
+    //   }));
+    // }
 
     if (name === "workHourFrom" || name === "workHourTo") {
       setDoctorDetails((prevDoctorDetails) => ({
@@ -374,7 +393,7 @@ export default function DoctorFormAdmin() {
 
   return (
     <>
-      <div className="flex flex-row">
+      <div className="flex flex-row -ml-7">
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white w-1/4 p-6 m-5">
           <div className="mx-auto my-2">
@@ -561,18 +580,19 @@ export default function DoctorFormAdmin() {
             >
               Specialist
             </label>
-            <select
-              className=" block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-2 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            <Select
+              className="w-full border-none h-10"
               id="speciality"
               name="speciality"
-              onChange={handleChange}
+              mode="multiple"
+              onChange={handleChange2}
             >
-              {SpecialtiesDropdown.map(({ label, value }) => (
-                <option key={value} value={value}>
-                  {label}
-                </option>
+              {SpecialtiesDropdown.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
               ))}
-            </select>
+            </Select>
           </div>
 
           <div className="mt-3">

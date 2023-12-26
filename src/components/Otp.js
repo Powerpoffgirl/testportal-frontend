@@ -158,7 +158,7 @@ const OTP = () => {
           }}>
           <AdminHeader line1="Find" line2="Doctors"></AdminHeader>
 
-          <div className="flex flex-row">
+          <div className="flex flex-row ml-2">
             {/* --------------left-------------- */}
             <div className="flex flex-col border bg-white w-1/4 p-6 m-5">
               <div className="mx-auto my-2">

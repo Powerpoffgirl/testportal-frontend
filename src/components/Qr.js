@@ -92,9 +92,9 @@ export default function Qr() {
         >
 
 
-          <div className="flex flex-row">
+          <div className="flex flex-row ">
             {/* --------------left-------------- */}
-            <div className="flex flex-col border bg-white w-1/2 p-6 m-5">
+            <div className="flex flex-col border bg-white w-1/2 p-6 my-5 mr-5">
 
 
 
