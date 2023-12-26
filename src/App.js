@@ -73,11 +73,9 @@ import SuperAdminOtp from "./components/superadminotp";
 import { ToastContainer } from "react-toastify";
 
 function App() {
-
   return (
-
-
     <>
+
 
       <ToastContainer />
       <Routes>
@@ -179,13 +177,15 @@ function App() {
         />
 
         <Route
-          path="/superadminpatienteditform"
+          path="/superadminuserlist"
           element={
             <Layout
+              Component={SuperAdminUserList}
               type="superAdmin"
-              Component={SuperAdminPatientEditForm}
-              headerTextTop={"Super Admin Patient"}
-              headerTextBottom={"Edit Form"}
+              headerTextTop={"Super Admin"}
+              headerTextBottom={"User List"}
+              search={"true"}
+            // AddButton={"true"}
             />
           }
         />
@@ -203,24 +203,27 @@ function App() {
         />
 
         <Route
-          path="/superadminuserform"
+          path="/superadminpatientlist"
           element={
             <Layout
-              Component={SuperAdminUserForm}
+              Component={SuperAdminPatientList}
+              type="superAdmin"
               headerTextTop={"Super Admin"}
-              headerTextBottom={"User Form"}
+              headerTextBottom={"Patient List"}
+              search={"true"}
+            // AddButton={"true"}
             />
           }
         />
 
         <Route
-          path="/superadminuserlist"
+          path="/superadminappointmentlist"
           element={
             <Layout
-              Component={SuperAdminUserList}
+              Component={SuperAdminAppointmentList}
               type="superAdmin"
               headerTextTop={"Super Admin"}
-              headerTextBottom={"User List"}
+              headerTextBottom={"Appointment List"}
               search={"true"}
             // AddButton={"true"}
             />
@@ -240,13 +243,13 @@ function App() {
         />
 
         <Route
-          path="/superadminpatientlist"
+          path="/superadmindoctorlist"
           element={
             <Layout
-              Component={SuperAdminPatientList}
+              Component={SuperAdminDoctorList}
               type="superAdmin"
               headerTextTop={"Super Admin"}
-              headerTextBottom={"Patient List"}
+              headerTextBottom={"Doctor List"}
               search={"true"}
             // AddButton={"true"}
             />
@@ -315,12 +318,7 @@ function App() {
           }
         />
 
-        <Route
-          path="/userotp"
-          element={
-            <UserOTP />
-          }
-        ></Route>
+        <Route path="/userotp" element={<UserOTP />}></Route>
         <Route
           path="/qr"
           element={
@@ -542,6 +540,19 @@ function App() {
             />
           }
         ></Route>
+
+        <Route
+          path="/editappointmentsuperadmin"
+          element={
+            <Layout
+              Component={EditAppointmentSuperAdmin}
+              type="superAdmin"
+              headerTextTop={"Edit Appointment"}
+              headerTextBottom={"Super Admin"}
+            />
+          }
+        ></Route>
+
         <Route
           path="/patientlistadmin"
           element={
@@ -646,7 +657,6 @@ function App() {
         ></Route>
         <Route path="/tabel" element={<Table></Table>}></Route>
       </Routes>
-
     </>
   );
 }
