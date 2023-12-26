@@ -34,7 +34,8 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function DoctorList({ searchTerm }) {
+export default function DoctorList({ searchTerm })
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -54,13 +55,17 @@ export default function DoctorList({ searchTerm }) {
     "Urology",
   ];
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     localStorage.clear()
   }, [])
 
-  useEffect(() => {
-    const fetchDoctorDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchDoctorDetails = async () =>
+    {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
           method: "GET",
           headers: {
@@ -74,16 +79,19 @@ export default function DoctorList({ searchTerm }) {
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, [searchTerm]);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     // Check if there is a searchTerm and the doctorsList is not empty.
-    if (doctorsList.length > 0 && searchTerm) {
+    if (doctorsList.length > 0 && searchTerm)
+    {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedDoctors = doctorsList.filter(
         (doctor) =>
@@ -91,35 +99,41 @@ export default function DoctorList({ searchTerm }) {
           doctor.speciality.toLowerCase().includes(lowerCaseSearchTerm)
       );
       setFilteredDoctors(matchedDoctors);
-    } else {
+    } else
+    {
       // If no searchTerm or doctorsList is empty, use the original list.
       setFilteredDoctors(doctorsList);
     }
   }, [doctorsList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleQRCode = (doctorId) => {
+  const handleQRCode = (doctorId) =>
+  {
     console.log("HELLO");
     localStorage.setItem("doctorId", doctorId);
     const doctor = doctorsList?.find((doc) => doc._id === doctorId);
     setselectedDoctor(doctor);
     console.log(selectedDoctor)
-    console.log(selectedDoctor.degree.split(','))
+    // console.log(selectedDoctor.degree.split(','))
 
     onOpenModal();
   };
 
-  const handleBookAppointment = () => {
+  const handleBookAppointment = () =>
+  {
     localStorage.setItem("doctorId", selectedDoctor._id)
     localStorage.setItem("doctorName", selectedDoctor.name)
     localStorage.setItem("doctorEmail", selectedDoctor.email)
     navigate("/userlogin");
   };
 
-  const handleFilterDocotors = (item) => {
+  const handleFilterDocotors = (item) =>
+  {
     console.log("ITEM NAME IS================>", item);
-    if (item.toLowerCase() === "all") {
+    if (item.toLowerCase() === "all")
+    {
       setFilteredDoctors(doctorsList);
-    } else {
+    } else
+    {
       const filteredDoctors = doctorsList.filter(
         (doc) => doc.speciality === item
       );
@@ -128,7 +142,8 @@ export default function DoctorList({ searchTerm }) {
   };
   const [currentIndex, setCurrentIndex] = useState(0);
   const [bookingslottoggle, setbookingslottoggle] = useState(false);
-  const showSlot = () => {
+  const showSlot = () =>
+  {
     setbookingslottoggle(!bookingslottoggle)
   }
   const bookingslot = [
@@ -328,7 +343,8 @@ export default function DoctorList({ searchTerm }) {
   const numberOfColumns = 4;
   const numberOfRows = Math.ceil(bookingslot.length / numberOfColumns);
 
-  function getYearMonthDay(dateString) {
+  function getYearMonthDay(dateString)
+  {
     // Create a new Date object using the provided date string
     const date = new Date(dateString);
 
@@ -364,15 +380,19 @@ export default function DoctorList({ searchTerm }) {
   const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
   const dateRefs = useRef([]);
   const timeRefs = useRef([]);
-  const handleDateClick = (index) => {
+  const handleDateClick = (index) =>
+  {
     setCurrentDateIndex(index);
   };
 
-  const handleTimeClick = (index) => {
+  const handleTimeClick = (index) =>
+  {
     setCurrentTimeIndex(index);
   };
-  useEffect(() => {
-    if (dateRefs.current[currentDateIndex]) {
+  useEffect(() =>
+  {
+    if (dateRefs.current[currentDateIndex])
+    {
       dateRefs.current[currentDateIndex].scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
@@ -382,8 +402,10 @@ export default function DoctorList({ searchTerm }) {
   }, [currentDateIndex]);
 
   // Scroll to the selected time
-  useEffect(() => {
-    if (timeRefs.current[currentTimeIndex]) {
+  useEffect(() =>
+  {
+    if (timeRefs.current[currentTimeIndex])
+    {
       timeRefs.current[currentTimeIndex].scrollIntoView({
         behavior: 'smooth',
         block: 'nearest',
@@ -393,14 +415,16 @@ export default function DoctorList({ searchTerm }) {
   }, [currentTimeIndex]);
 
 
-  const goToNext = () => {
+  const goToNext = () =>
+  {
     const isLastItem = currentIndex === bookingslot.length - 1;
     const nextIndex = isLastItem ? 0 : currentIndex + 1;
     setCurrentIndex(nextIndex);
     console.log(currentIndex)
   };
 
-  const goToPrev = () => {
+  const goToPrev = () =>
+  {
     const isFirstItem = currentIndex === 0;
     const prevIndex = isFirstItem ? bookingslot.length - 1 : currentIndex - 1;
     setCurrentIndex(prevIndex);
@@ -625,11 +649,13 @@ export default function DoctorList({ searchTerm }) {
                           </button>
                           <div className="flex flex-row overflow-x-auto mx-2 ">
                             {
-                              bookingslot.map((data, index) => {
+                              bookingslot.map((data, index) =>
+                              {
                                 console.log(data.date)
                                 const { year, monthName, day, dayName } = getYearMonthDay(data.date)
                                 // console.log(year, monthName, day, dayName)
-                                if (index == currentIndex) {
+                                if (index == currentIndex)
+                                {
                                   return (
                                     <div key={index} className="flex flex-col px-2"
                                       ref={el => dateRefs.current[index] = el}
@@ -639,7 +665,8 @@ export default function DoctorList({ searchTerm }) {
                                       <p>{dayName}</p>
                                     </div>
                                   )
-                                } else {
+                                } else
+                                {
 
                                   return (
                                     <div key={index} className="flex flex-col px-2"
@@ -663,21 +690,25 @@ export default function DoctorList({ searchTerm }) {
                         </div>
 
                         <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32">
-                          {[...Array(numberOfRows)].map((_, rowIndex) => {
+                          {[...Array(numberOfRows)].map((_, rowIndex) =>
+                          {
                             return (
                               <div key={rowIndex} className="flex space-x-2">
-                                {bookingslot.slice(rowIndex * numberOfColumns, (rowIndex + 1) * numberOfColumns).map((data, index) => {
+                                {bookingslot.slice(rowIndex * numberOfColumns, (rowIndex + 1) * numberOfColumns).map((data, index) =>
+                                {
                                   selectedschedule = selectedschedule + 1;
                                   console.log(selectedschedule)
 
-                                  if (selectedschedule - 1 === currentIndex) {
+                                  if (selectedschedule - 1 === currentIndex)
+                                  {
                                     return (
                                       <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-300 text-gray-800" >
                                         {data.startTime}
                                       </div>
                                     )
                                   }
-                                  else {
+                                  else
+                                  {
                                     return (
                                       <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800" >
                                         {data.startTime}
@@ -756,45 +787,7 @@ export default function DoctorList({ searchTerm }) {
           width: "100%",
         }}
       >
-        <div
-          className="divWithHiddenScrollbar flex flex-row gap-4"
-          style={{
-            overflowX: "auto",
-            whiteSpace: "nowrap", // Ensures items are in a single line
-            position: "relative",
-            maxWidth: "100%", // Set a max-width to ensure scrolling
-            msOverflowStyle: "none", // Hides scrollbar in IE and Edge
-            scrollbarWidth: "none", // Hides scrollbar in Firefox
 
-            // Additional styles for Webkit browsers like Chrome and Safari
-            "&::-webkit-scrollbar": {
-              display: "none", // Hides scrollbar
-            },
-          }}
-        >
-          {categories.map((item, index) => (
-            <span
-              className="bg-#E4FFF2; cursor-pointer px-8 hover:bg-customRed"
-              style={{
-                height: "29px",
-                border: "1px solid #89CFF0",
-                borderRadius: "5px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                fontFamily: "Lato, sans-serif",
-                fontWeight: 400,
-                fontSize: "20px",
-                lineHeight: "28.8px",
-                color: "#595959",
-              }}
-              key={index} // It's better to use a unique identifier if available
-              onClick={() => handleFilterDocotors(item)}
-            >
-              {item}
-            </span>
-          ))}
-        </div>
 
         {/* Doctors Array Start */}
 
