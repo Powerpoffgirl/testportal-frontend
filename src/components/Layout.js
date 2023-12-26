@@ -122,7 +122,7 @@ export default function Layout({
     { text: "Patient’s List", to: "/patientlist" },
     { text: "Appointment List", to: "/appointmentlist" },
     { text: "Profile", to: "/editdoctorform" },
-    { text: "Test List", to: "/testlist" },
+    { text: "Go To Lab", to: "/registerpatient" },
     { text: "Support", to: "#" },
     { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
   ];
@@ -216,7 +216,7 @@ export default function Layout({
 
   return (
     <>
-      <div className="flex min-h-screen">
+      <div className="flex min-h-screen truncate">
         <aside
           className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#89CFF0] border-r transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
             } ease-in-out transition-all duration-300 md:transform-none`}
@@ -225,7 +225,7 @@ export default function Layout({
             Welcome! {type ? type.charAt(0).toUpperCase() + type.slice(1) : "Guest"}
           </h1>
           <div
-            class="flex items-center gap-x-2 mt-3"
+            class="flex items-center gap-x-2 mt-3 truncate"
             onClick={handleEditProfile}
           >
             {userPic ? (
@@ -245,10 +245,11 @@ export default function Layout({
                 {type === "doctor" ? "Dr. " + userName : userName}
               </h1>
 
-              <p class="text-base text-white">
-                {/* {userContactNumber ? userContactNumber : ""} */}
-                {userEmail}
-              </p>
+              <div class="truncate">
+                <p class="text-white text-base truncate">
+                  {userEmail}
+                </p>
+              </div>
             </div>
           </div>
           <hr className="mt-3" />

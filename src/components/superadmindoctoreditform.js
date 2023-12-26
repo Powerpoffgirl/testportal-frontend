@@ -1,41 +1,35 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 
-export default function SuperAdminDoctorEditForm()
-{
+export default function SuperAdminDoctorEditForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-  const navigate = useNavigate()
-  const baseUrl = process.env.REACT_APP_BASE_URL
+  const navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
   const [adminImage, setAdminImage] = useState();
   const [errors, setErrors] = useState({});
 
-
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
-
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -44,34 +38,28 @@ export default function SuperAdminDoctorEditForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
         console.log("Image uploaded successfully:", data);
         setAdminImage(data.profilePicImageUrl);
-        alert("Image uploaded successfully.");
+        toast.success("Image uploaded successfully.");
 
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
-        alert("Error uploading image. Please try again.");
+        toast.error("Error uploading image. Please try again.");
       }
-
     }
-
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
-
   };
 
   const Daysdropdown = [
@@ -84,72 +72,62 @@ export default function SuperAdminDoctorEditForm()
     { label: "Saturday", value: "Saturday" },
     { label: "Sunday", value: "Sunday" },
   ];
-  const [doctorDetails, setDoctorDetails] = useState(null)
+  const [doctorDetails, setDoctorDetails] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem("doctorId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(`${baseUrl}/api/v1/superAdmin/get_doctor/${doctorId}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'x-auth-token': token // Replace with your actual token from the previous session
+        const response = await fetch(
+          `${baseUrl}/api/v1/superAdmin/get_doctor/${doctorId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
           }
-        });
+        );
 
         const data = await response.json();
-        console.log("DATA from response", data?.data)
-        setDoctorDetails(data?.data)
-
-      } catch (error)
-      {
-        console.error('There was an error verifying the OTP:', error);
+        console.log("DATA from response", data?.data);
+        setDoctorDetails(data?.data);
+      } catch (error) {
+        console.error("There was an error verifying the OTP:", error);
       }
-    }
-    fetchDoctorDetails()
-  }, [])
+    };
+    fetchDoctorDetails();
+  }, []);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-
-  const handleToggleEdit = () =>
-  {
-    setIsEditing(!isEditing)
-  }
+  const handleToggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const validateField = (name, value) => 
-  {
-    switch (name)
-    {
+  const validateField = (name, value) => {
+    switch (name) {
       case "name":
         return value ? "" : "Name is required.";
       case "email":
@@ -165,19 +143,29 @@ export default function SuperAdminDoctorEditForm()
       case "totalExperience":
         return value ? "" : "Total Experience is required  ";
       case "houseNo":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "houseNo is required  ";
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "houseNo is required  ";
       case "floor":
         return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
       case "block":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Block is required  ";
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "Block is required  ";
       case "area":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Area is required and must be a string ";
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "Area is required and must be a string ";
       case "pinCode":
         return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
       case "district":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "District is required and must be a string ";
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "District is required and must be a string ";
       case "state":
-        return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "State is required and must be a string ";
+        return /^[a-zA-Z\s]+$/.test(value) && value
+          ? ""
+          : "State is required and must be a string ";
       case "workHourFrom":
         // Assuming time in HH:MM format, adjust as needed
         return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
@@ -192,51 +180,53 @@ export default function SuperAdminDoctorEditForm()
         return "";
     }
   };
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     const error = validateField(name, value);
     setErrors({ ...errors, [name]: error });
 
-    if (name === "workingDays")
-    {
-      setDoctorDetails(prevDoctorDetails => ({
+    if (name === "workingDays") {
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingDays: [...prevDoctorDetails.workingDays, value],
       }));
-    } else if (name === "workHourFrom" || name === "workHourTo")
-    {
-      setDoctorDetails(prevDoctorDetails => ({
+    } else if (name === "workHourFrom" || name === "workHourTo") {
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
           ...prevDoctorDetails.workingHours,
           [name]: value,
-        }
+        },
       }));
-    } else if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
-    {
-      setDoctorDetails(prevDoctorDetails => ({
+    } else if (
+      [
+        "houseNo",
+        "floor",
+        "block",
+        "area",
+        "pinCode",
+        "district",
+        "state",
+      ].includes(name)
+    ) {
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
           ...prevDoctorDetails.address,
-          [name]: value
-        }
+          [name]: value,
+        },
       }));
-    } else
-    {
-      setDoctorDetails(prevDoctorDetails => ({
+    } else {
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
-        [name]: value
+        [name]: value,
       }));
     }
     setIsEditing(true);
-  }
+  };
 
-
-
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     // Check if the token exists
     const newDoctorDetails = {
@@ -253,18 +243,19 @@ export default function SuperAdminDoctorEditForm()
         area: doctorDetails?.address?.area,
         pinCode: doctorDetails?.address?.pinCode,
         district: doctorDetails?.address?.district,
-        state: doctorDetails?.address?.state
+        state: doctorDetails?.address?.state,
       },
-      doctorPic: adminImage
-    }
+      doctorPic: adminImage,
+    };
 
     const token = localStorage.getItem("token");
-    const doctorId = localStorage.getItem('doctorId');
-    const isEmpty = Object.values(newDoctorDetails).some(value => value === '');
+    const doctorId = localStorage.getItem("doctorId");
+    const isEmpty = Object.values(newDoctorDetails).some(
+      (value) => value === ""
+    );
 
-    if (isEmpty || isEditing === false)
-    {
-      toast.error('Please fill the fields or Update');
+    if (isEmpty || isEditing === false) {
+      toast.error("Please fill the fields or Update");
       setIsEditing(false);
       return;
     }
@@ -276,8 +267,7 @@ export default function SuperAdminDoctorEditForm()
 
     // }
 
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
       return;
     }
@@ -289,35 +279,34 @@ export default function SuperAdminDoctorEditForm()
           "Content-Type": "application/json",
           "x-auth-token": token,
         },
-        body: JSON.stringify(newDoctorDetails)
+        body: JSON.stringify(newDoctorDetails),
       }
     );
     const data = await response.json();
-    if (data.statusCode === 400)
-    {
+    if (data.statusCode === 400) {
       toast.error("Please fill the details");
     }
 
-    if (data.success === true)
-    {
-      console.log("Doctor updated successfully.")
+    if (data.success === true) {
+      console.log("Doctor updated successfully.");
       toast.success("Doctor updated successfully.");
       // navigate("/otp")
       // localStorage.setItem("id", data.data._id)
     }
-    console.log("DATA from response", data)
-  }
+    console.log("DATA from response", data);
+  };
 
-  console.log("DOCTOR DETAILS", doctorDetails)
+  console.log("DOCTOR DETAILS", doctorDetails);
 
   return (
     <>
       <div className="flex flex-row">
+        <ToastContainer />
+
         {/* <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
 
                 </div> */}
         <div className=" w-full">
-
           <div className="mt-6 p-2">
             <div className="flex  flex-col items-center justify-center w-full">
               <div className="cursor-pointer">
@@ -349,11 +338,9 @@ export default function SuperAdminDoctorEditForm()
                         }}
                       />
                     ) : (
-
                       <PermIdentityOutlinedIcon
                         style={{ width: "70px", height: "70px" }}
                       />
-
                     )}
                   </div>
                   <p
@@ -361,7 +348,11 @@ export default function SuperAdminDoctorEditForm()
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                     onClick={handleClick}
-                    style={{ cursor: "pointer", marginLeft: 37, marginTop: -20 }}
+                    style={{
+                      cursor: "pointer",
+                      marginLeft: 37,
+                      marginTop: -20,
+                    }}
                   >
                     <MdEdit />
                   </p>
@@ -381,6 +372,9 @@ export default function SuperAdminDoctorEditForm()
                           backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
+                        onClick={() => {
+                          handleClose();
+                        }}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                       >
@@ -388,7 +382,7 @@ export default function SuperAdminDoctorEditForm()
                         <span htmlFor="files" style={{ marginRight: "8px" }}>
                           <HiOutlineUserAdd />
                         </span>
-                        <label htmlFor="files" >New profile picture</label>
+                        <label htmlFor="files">New profile picture</label>
                       </MenuItem>
 
                       <MenuItem
@@ -407,7 +401,9 @@ export default function SuperAdminDoctorEditForm()
                       </MenuItem>
                     </Menu>
                   </div>
-                  <label style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}>
+                  <label
+                    style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}
+                  >
                     Edit Profile Picture
                   </label>
                   <input
@@ -456,9 +452,7 @@ export default function SuperAdminDoctorEditForm()
                   value={doctorDetails?.email}
                   class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
-                {errors.email && (
-                  <p className="text-red-500">{errors.email}</p>
-                )}
+                {errors.email && <p className="text-red-500">{errors.email}</p>}
               </div>
               <div>
                 <label
@@ -480,8 +474,6 @@ export default function SuperAdminDoctorEditForm()
                   <p className="text-red-500">{errors.contactNumber}</p>
                 )}
               </div>
-
-
 
               <div>
                 <label
@@ -626,8 +618,6 @@ export default function SuperAdminDoctorEditForm()
                   </div>
                 </div>
               </div>
-
-
             </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
               <button

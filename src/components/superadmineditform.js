@@ -1,59 +1,34 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
-import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 
-export default function SuperAdminEditForm()
-{
+export default function SuperAdminEditForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-  const navigate = useNavigate()
-  const baseUrl = process.env.REACT_APP_BASE_URL
+  const navigate = useNavigate();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
   const [adminImage, setAdminImage] = useState();
 
-
-  // const validate = () =>
-  // {
-  //   let tempErrors = {};
-  //   tempErrors.name = doctorDetails?.name ? "" : "Name is required.";
-  //   tempErrors.email = /$^|.+@.+..+/.test(doctorDetails?.email) ? "" : "Email is not valid.";
-  //   tempErrors.contactNumber = doctorDetails?.contactNumber.length > 0 ? "" : "Contact Number is required.";
-  //   tempErrors.houseNo = doctorDetails?.address?.houseNo ? "" : "House Number is required.";
-  //   tempErrors.floor = doctorDetails?.address?.floor ? "" : "Floor is required.";
-  //   tempErrors.block = doctorDetails?.address?.block ? "" : "Block is required.";
-  //   tempErrors.area = doctorDetails?.address?.area ? "" : "Area is required.";
-  //   tempErrors.pinCode = doctorDetails?.address?.pinCode ? "" : "Pincode is required.";
-  //   tempErrors.district = doctorDetails?.address?.district ? "" : "District is required.";
-  //   tempErrors.state = doctorDetails?.address?.state ? "" : "State is required.";
-
-  //   setErrors({ ...tempErrors });
-  //   return Object.values(tempErrors).every(x => x === "");
-  // }
-
-
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
-
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -62,36 +37,29 @@ export default function SuperAdminEditForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
         console.log("Image uploaded successfully:", data);
         setAdminImage(data.profilePicImageUrl);
-        alert("Image uploaded successfully.");
+        toast.success("Image uploaded successfully.");
 
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
-        alert("Error uploading image. Please try again.");
+        toast.error("Error uploading image. Please try again.");
       }
-
     }
-
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
-
   };
-
 
   const Daysdropdown = [
     { label: "Select Days", value: "" },
@@ -103,171 +71,164 @@ export default function SuperAdminEditForm()
     { label: "Saturday", value: "Saturday" },
     { label: "Sunday", value: "Sunday" },
   ];
-  const [doctorDetails, setDoctorDetails] = useState(null)
+  const [doctorDetails, setDoctorDetails] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
 
-
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem("doctorId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
         const response = await fetch(`${baseUrl}/api/v1/admin/get_profile`, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            'x-auth-token': token // Replace with your actual token from the previous session
-          }
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
         });
 
         const data = await response.json();
-        console.log("DATA from response", data?.data)
-        setDoctorDetails(data?.data)
-
-      } catch (error)
-      {
-        console.error('There was an error verifying the OTP:', error);
+        console.log("DATA from response", data?.data);
+        setDoctorDetails(data?.data);
+      } catch (error) {
+        console.error("There was an error verifying the OTP:", error);
       }
-    }
-    fetchDoctorDetails()
-  }, [])
+    };
+    fetchDoctorDetails();
+  }, []);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-
-  const handleToggleEdit = () =>
-  {
-    setIsEditing(!isEditing)
-  }
+  const handleToggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const validateField = (name, value) =>
-  {
-    switch (name)
-    {
-      case "name":
-        return value ? "" : "Name is required.";
-      case "email":
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value) ? "" : "Email is not valid.";
-      case "contactNumber":
-        return value.length > 0 && value.length === 10 ? "" : "Contact number is required or Add valid 10 Digit Number.";
-      case "houseNo":
-        return value ? "" : "House number is required.";
-      case "floor":
-        return value ? "" : "Floor is required.";
-      case "block":
-        return value ? "" : "Block is required.";
-      case "area":
-        return value ? "" : "Area is required.";
-      case "pinCode":
-        return /^\d{5}(-\d{4})?$/.test(value) ? "" : "Pincode is not valid.";
-      case "district":
-        return value ? "" : "District is required.";
-      case "state":
-        return value ? "" : "State is required.";
-      case "workHourFrom":
-        // Assuming time in HH:MM format, adjust as needed
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value) ? "" : "Invalid start time.";
-      case "workHourTo":
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value) ? "" : "Invalid end time.";
-      // Add more cases as needed for other fields
-      default:
-        return "";
-    }
-  };
+  // const validateField = (name, value) => {
+  //   switch (name) {
+  //     case "name":
+  //       return value ? "" : "Name is required.";
+  //     case "email":
+  //       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  //         ? ""
+  //         : "Email is not valid.";
+  //     case "contactNumber":
+  //       return value.length > 0 && value.length === 10
+  //         ? ""
+  //         : "Contact number is required or Add valid 10 Digit Number.";
+  //     case "houseNo":
+  //       return value ? "" : "House number is required.";
+  //     case "floor":
+  //       return value ? "" : "Floor is required.";
+  //     case "block":
+  //       return value ? "" : "Block is required.";
+  //     case "area":
+  //       return value ? "" : "Area is required.";
+  //     case "pinCode":
+  //       return /^\d{5}(-\d{4})?$/.test(value) ? "" : "Pincode is not valid.";
+  //     case "district":
+  //       return value ? "" : "District is required.";
+  //     case "state":
+  //       return value ? "" : "State is required.";
+  //     case "workHourFrom":
+  //       // Assuming time in HH:MM format, adjust as needed
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid start time.";
+  //     case "workHourTo":
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid end time.";
+  //     // Add more cases as needed for other fields
+  //     default:
+  //       return "";
+  //   }
+  // };
 
-
-
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     // Validate the field and update errors
-    const error = validateField(name, value);
-    setErrors({ ...errors, [name]: error });
+    // const error = validateField(name, value);
+    // setErrors({ ...errors, [name]: error });
 
     // Update doctorDetails logic remains the same
-    if (name === "workingDays")
-    {
-      setDoctorDetails(prevDoctorDetails => ({
+    if (name === "workingDays") {
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingDays: [...prevDoctorDetails.workingDays, value],
       }));
-    } else if (name === "workHourFrom" || name === "workHourTo")
-    {
-      setDoctorDetails(prevDoctorDetails => ({
+    } else if (name === "workHourFrom" || name === "workHourTo") {
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
           ...prevDoctorDetails.workingHours,
           [name]: value,
-        }
+        },
       }));
-    } else if (["houseNo", "floor", "block", "area", "pinCode", "district", "state"].includes(name))
-    {
-      setDoctorDetails(prevDoctorDetails => ({
+    } else if (
+      [
+        "houseNo",
+        "floor",
+        "block",
+        "area",
+        "pinCode",
+        "district",
+        "state",
+      ].includes(name)
+    ) {
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
           ...prevDoctorDetails.address,
-          [name]: value
-        }
+          [name]: value,
+        },
       }));
-    } else
-    {
-      setDoctorDetails(prevDoctorDetails => ({
+    } else {
+      setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
-        [name]: value
+        [name]: value,
       }));
     }
 
     setIsEditing(true);
   };
 
-
-
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
-    if (!validateField())
-    {
-      toast.error('Please correct the errors before submitting.');
-      return;
-    }
+    // if (!validateField()) {
+    //   toast.error("Please correct the errors before submitting.");
+    //   return;
+    // }
 
     // Check if the token exists
     const newDoctorDetails = {
       name: doctorDetails?.name,
-      // email: doctorDetails.email,
-      // contactNumber: doctorDetails.contactNumber,
-      totalExperience: doctorDetails?.totalExperience,
-      speciality: doctorDetails?.speciality,
-      degree: doctorDetails?.degree,
+      email: doctorDetails.email,
+      contactNumber: doctorDetails.contactNumber,
+      // totalExperience: doctorDetails?.totalExperience,
+      // speciality: doctorDetails?.speciality,
+      // degree: doctorDetails?.degree,
       address: {
         houseNo: doctorDetails?.address?.houseNo,
         floor: doctorDetails?.address?.floor,
@@ -275,71 +236,78 @@ export default function SuperAdminEditForm()
         area: doctorDetails?.address?.area,
         pinCode: doctorDetails?.address?.pinCode,
         district: doctorDetails?.address?.district,
-        state: doctorDetails?.address?.state
+        state: doctorDetails?.address?.state,
       },
-      adminPic: adminImage
-    }
+      adminPic: adminImage,
+    };
+    if (newDoctorDetails.name === "") {
+      toast.error("Please write name");
+    } else if (newDoctorDetails.email === "") {
+      toast.error("Please write email");
+    } else if (newDoctorDetails.contactNumber === "") {
+      toast.error("Please write contact number");
+    } else if (newDoctorDetails.address?.pinCode === "") {
+      toast.error("Please write Pincode");
+    } else if (newDoctorDetails.address?.district === "") {
+      toast.error("Please write district");
+    } else if (newDoctorDetails.address?.state === "") {
+      toast.error("Please write state");
+    } else {
+      const token = localStorage.getItem("token");
+      const doctorId = localStorage.getItem("doctorId");
+      const isEmpty = Object.values(newDoctorDetails).some(
+        (value) => value === ""
+      );
 
-    const token = localStorage.getItem("token");
-    const doctorId = localStorage.getItem('doctorId');
-    const isEmpty = Object.values(newDoctorDetails).some(value => value === '');
+      if (isEmpty || isEditing === false) {
+        toast.error("Please fill the fields or Update");
+        setIsEditing(false);
+        return;
+      }
 
-    if (isEmpty || isEditing === false)
-    {
-      toast.error('Please fill the fields or Update');
-      setIsEditing(false);
-      return;
-    }
+      if (!isEmpty || isEditing === true) {
+        toast.success("Form submitted successfully!");
+      }
 
-    if (!isEmpty || isEditing === true)
-    {
-
-      toast.success('Form submitted successfully!');
-
-    }
-
-    if (!token)
-    {
-      console.error("No token found in local storage");
-      return;
-    }
-    const response = await fetch(
-      `${baseUrl}/api/v1/admin/update_profile`,
-      {
+      if (!token) {
+        console.error("No token found in local storage");
+        return;
+      }
+      const response = await fetch(`${baseUrl}/api/v1/admin/update_profile`, {
         method: "put",
         headers: {
           "Content-Type": "application/json",
           "x-auth-token": token,
         },
-        body: JSON.stringify(newDoctorDetails)
+        body: JSON.stringify(newDoctorDetails),
+      });
+      const data = await response.json();
+
+      if (data.statusCode === 400) {
+        toast.error("Please fill the details");
       }
-    );
-    const data = await response.json();
 
-    if (data.statusCode === 400)
-    {
-      toast.error("Please fill the details");
+      if (data.success === true) {
+        console.log("Doctor updated successfully.");
+        // navigate("/otp")
+        // localStorage.setItem("id", data.data._id)
+      }
+
+      console.log("DATA from response", data);
     }
+  };
 
-    if (data.success === true)
-    {
-      console.log("Doctor updated successfully.")
-      // navigate("/otp")
-      // localStorage.setItem("id", data.data._id)
-    }
-    console.log("DATA from response", data)
-  }
-
-  console.log("DOCTOR DETAILS", doctorDetails)
+  console.log("DOCTOR DETAILS", doctorDetails);
 
   return (
     <>
       <div className="flex flex-row">
+        <ToastContainer />
+
         {/* <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
 
                 </div> */}
         <div className=" w-full">
-
           <div className="mt-6 p-2">
             <div className="flex  flex-col items-center justify-center w-full">
               <div className="cursor-pointer">
@@ -371,11 +339,9 @@ export default function SuperAdminEditForm()
                         }}
                       />
                     ) : (
-
                       <PermIdentityOutlinedIcon
                         style={{ width: "70px", height: "70px" }}
                       />
-
                     )}
                   </div>
                   <p
@@ -383,7 +349,11 @@ export default function SuperAdminEditForm()
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                     onClick={handleClick}
-                    style={{ cursor: "pointer", marginLeft: 37, marginTop: -20 }}
+                    style={{
+                      cursor: "pointer",
+                      marginLeft: 37,
+                      marginTop: -20,
+                    }}
                   >
                     <MdEdit />
                   </p>
@@ -403,6 +373,9 @@ export default function SuperAdminEditForm()
                           backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
+                        onClick={() => {
+                          handleClose();
+                        }}
                         onMouseEnter={() => setIsHovered(true)}
                         onMouseLeave={() => setIsHovered(false)}
                       >
@@ -410,7 +383,7 @@ export default function SuperAdminEditForm()
                         <span style={{ marginRight: "8px" }}>
                           <HiOutlineUserAdd />
                         </span>
-                        <label htmlFor="files" >New profile picture</label>
+                        <label htmlFor="files">New profile picture</label>
                       </MenuItem>
 
                       <MenuItem
@@ -429,7 +402,9 @@ export default function SuperAdminEditForm()
                       </MenuItem>
                     </Menu>
                   </div>
-                  <label style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}>
+                  <label
+                    style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}
+                  >
                     Edit Profile Picture
                   </label>
                   <input
@@ -453,7 +428,6 @@ export default function SuperAdminEditForm()
                 </label>
                 <input
                   type="text"
-
                   id="name"
                   name="name"
                   onChange={handleChange}
@@ -471,7 +445,6 @@ export default function SuperAdminEditForm()
                 </label>
                 <input
                   type="email"
-
                   id="email"
                   name="email"
                   onChange={handleChange}
@@ -489,18 +462,16 @@ export default function SuperAdminEditForm()
                 </label>
                 <input
                   type="number"
-
                   id="contactNumber"
                   name="contactNumber"
                   onChange={handleChange}
                   value={doctorDetails?.contactNumber}
                   class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
-                {errors.contactNumber && <p className="text-red-500">{errors.contactNumber}</p>}
+                {errors.contactNumber && (
+                  <p className="text-red-500">{errors.contactNumber}</p>
+                )}
               </div>
-
-
-
 
               <div class="p-3 pb-5 border border-[#89CFF0]">
                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
@@ -571,7 +542,9 @@ export default function SuperAdminEditForm()
                       placeholder="Green Park"
                       class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.area && <p className="text-red-500">{errors.area}</p>}
+                    {errors.area && (
+                      <p className="text-red-500">{errors.area}</p>
+                    )}
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
                     <label
@@ -589,7 +562,9 @@ export default function SuperAdminEditForm()
                       value={doctorDetails?.address?.pinCode}
                       class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.pinCode && <p className="text-red-500">{errors.pinCode}</p>}
+                    {errors.pinCode && (
+                      <p className="text-red-500">{errors.pinCode}</p>
+                    )}
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
                     <label
@@ -607,7 +582,9 @@ export default function SuperAdminEditForm()
                       value={doctorDetails?.address?.district}
                       class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.district && <p className="text-red-500">{errors.district}</p>}
+                    {errors.district && (
+                      <p className="text-red-500">{errors.district}</p>
+                    )}
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
                     <label
@@ -625,7 +602,9 @@ export default function SuperAdminEditForm()
                       placeholder="Delhi"
                       class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.state && <p className="text-red-500">{errors.state}</p>}
+                    {errors.state && (
+                      <p className="text-red-500">{errors.state}</p>
+                    )}
                   </div>
                 </div>
               </div>

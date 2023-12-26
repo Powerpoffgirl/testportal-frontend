@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import DoctorSidebar from "./doctorSidebar";
 import { useMediaQuery } from "react-responsive";
 import { Modal } from "react-responsive-modal";
@@ -8,7 +8,11 @@ import { useNavigate } from "react-router-dom";
 import one from "../assets/one.svg";
 import two from "../assets/two.svg";
 import three from "../assets/three.svg";
+import home from "../assets/home.svg"
+import education from "../assets/education.svg"
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { FaAngleRight } from "react-icons/fa";
+import { FaAngleLeft } from "react-icons/fa";
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,8 +34,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function DoctorList({ searchTerm })
-{
+export default function DoctorList({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -51,17 +54,13 @@ export default function DoctorList({ searchTerm })
     "Urology",
   ];
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     localStorage.clear()
   }, [])
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
           method: "GET",
           headers: {
@@ -75,19 +74,16 @@ export default function DoctorList({ searchTerm })
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, [searchTerm]);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     // Check if there is a searchTerm and the doctorsList is not empty.
-    if (doctorsList.length > 0 && searchTerm)
-    {
+    if (doctorsList.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedDoctors = doctorsList.filter(
         (doctor) =>
@@ -95,47 +91,326 @@ export default function DoctorList({ searchTerm })
           doctor.speciality.toLowerCase().includes(lowerCaseSearchTerm)
       );
       setFilteredDoctors(matchedDoctors);
-    } else
-    {
+    } else {
       // If no searchTerm or doctorsList is empty, use the original list.
       setFilteredDoctors(doctorsList);
     }
   }, [doctorsList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleQRCode = (doctorId) =>
-  {
+  const handleQRCode = (doctorId) => {
     console.log("HELLO");
     localStorage.setItem("doctorId", doctorId);
     const doctor = doctorsList?.find((doc) => doc._id === doctorId);
     setselectedDoctor(doctor);
+    console.log(selectedDoctor)
+    console.log(selectedDoctor.degree.split(','))
+
     onOpenModal();
   };
 
-  const handleBookAppointment = () =>
-  {
+  const handleBookAppointment = () => {
     localStorage.setItem("doctorId", selectedDoctor._id)
     localStorage.setItem("doctorName", selectedDoctor.name)
     localStorage.setItem("doctorEmail", selectedDoctor.email)
     navigate("/userlogin");
   };
 
-  const handleFilterDocotors = (item) =>
-  {
+  const handleFilterDocotors = (item) => {
     console.log("ITEM NAME IS================>", item);
-    if (item.toLowerCase() === "all")
-    {
+    if (item.toLowerCase() === "all") {
       setFilteredDoctors(doctorsList);
-    } else
-    {
+    } else {
       const filteredDoctors = doctorsList.filter(
         (doc) => doc.speciality === item
       );
       setFilteredDoctors(filteredDoctors);
     }
   };
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [bookingslottoggle, setbookingslottoggle] = useState(false);
+  const showSlot = () => {
+    setbookingslottoggle(!bookingslottoggle)
+  }
+  const bookingslot = [
+    {
+      "date": "2023-12-22",
+      "startTime": "09:00",
+      "endTime": "09:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "09:15",
+      "endTime": "09:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "09:30",
+      "endTime": "09:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "09:45",
+      "endTime": "10:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "10:00",
+      "endTime": "10:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "10:15",
+      "endTime": "10:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "10:30",
+      "endTime": "10:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "10:45",
+      "endTime": "11:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "11:00",
+      "endTime": "11:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "11:15",
+      "endTime": "11:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "11:30",
+      "endTime": "11:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "11:45",
+      "endTime": "12:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "12:00",
+      "endTime": "12:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "12:15",
+      "endTime": "12:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "12:30",
+      "endTime": "12:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "12:45",
+      "endTime": "13:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "13:00",
+      "endTime": "13:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "13:15",
+      "endTime": "13:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "13:30",
+      "endTime": "13:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "13:45",
+      "endTime": "14:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "14:00",
+      "endTime": "14:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "14:15",
+      "endTime": "14:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "14:30",
+      "endTime": "14:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "14:45",
+      "endTime": "15:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "15:00",
+      "endTime": "15:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "15:15",
+      "endTime": "15:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "15:30",
+      "endTime": "15:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "15:45",
+      "endTime": "16:00",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "16:00",
+      "endTime": "16:15",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "16:15",
+      "endTime": "16:30",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "16:30",
+      "endTime": "16:45",
+      "isBooked": false
+    },
+    {
+      "date": "2023-12-22",
+      "startTime": "16:45",
+      "endTime": "17:00",
+      "isBooked": false
+    }
+  ]
+  const numberOfColumns = 4;
+  const numberOfRows = Math.ceil(bookingslot.length / numberOfColumns);
+
+  function getYearMonthDay(dateString) {
+    // Create a new Date object using the provided date string
+    const date = new Date(dateString);
+
+    // Get the year, month, day, and day of the week from the date
+    const year = date.getFullYear(); // Retrieves the year as a four-digit number
+    const month = date.getMonth() + 1; // getMonth() returns 0-11, so adding 1 for human-readable format
+    const day = date.getDate(); // Retrieves the day of the month
+    const dayOfWeek = date.getDay(); // Retrieves the day of the week (0-6)
+    // console.log(month)
+    const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const dayName = dayNames[dayOfWeek];
+
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+    ];
+    const monthName = monthNames[month - 1];
+
+    return { year, monthName, day, dayName };
+  }
+
+  const [currentDateIndex, setCurrentDateIndex] = useState(0);
+  const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
+  const dateRefs = useRef([]);
+  const timeRefs = useRef([]);
+  const handleDateClick = (index) => {
+    setCurrentDateIndex(index);
+  };
+
+  const handleTimeClick = (index) => {
+    setCurrentTimeIndex(index);
+  };
+  useEffect(() => {
+    if (dateRefs.current[currentDateIndex]) {
+      dateRefs.current[currentDateIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'start'
+      });
+    }
+  }, [currentDateIndex]);
+
+  // Scroll to the selected time
+  useEffect(() => {
+    if (timeRefs.current[currentTimeIndex]) {
+      timeRefs.current[currentTimeIndex].scrollIntoView({
+        behavior: 'smooth',
+        block: 'nearest',
+        inline: 'start'
+      });
+    }
+  }, [currentTimeIndex]);
+
+
+  const goToNext = () => {
+    const isLastItem = currentIndex === bookingslot.length - 1;
+    const nextIndex = isLastItem ? 0 : currentIndex + 1;
+    setCurrentIndex(nextIndex);
+    console.log(currentIndex)
+  };
+
+  const goToPrev = () => {
+    const isFirstItem = currentIndex === 0;
+    const prevIndex = isFirstItem ? bookingslot.length - 1 : currentIndex - 1;
+    setCurrentIndex(prevIndex);
+    console.log(currentIndex)
+  };
+  var selectedschedule = 0;
 
   return (
     <>
+      {/* ---------------------------------------------modal--------------------------------------------- */}
       <Modal
         open={open}
         onClose={onCloseModal}
@@ -144,131 +419,21 @@ export default function DoctorList({ searchTerm })
         styles={{
           modal: {
             // Set your custom width here (e.g., '70%')
-            width: isTab ? "80%" : "50%",
-            backgroundColor: "#fff",
+            width: isTab ? "80%" : "60%",
+            backgroundColor: "#E3F6FF",
             alignContent: "center",
           },
         }}
       >
-        <div className="flex flex-col bg-customRedp-2  w-[100%] md:w-[100%]  mt-[2%]">
+        {/* <div className="flex flex-col bg-customRedp-2  w-[100%] md:w-[100%]  mt-[2%]">
           <div className="flex flex-row w-[100%] justify-between">
-            {/* <span className="flex flex-col justify-start">
-              <text
-                style={{
-                  fontWeight: 400,
-                  fontSize: !isTab ? "20px" : "16px",
-                  fontFamily: "Lato, sans-serif",
-                  color: "white",
-                }}
-              >
-                {selectedDoctor?.workingDays?.map((day) => (
-                  <span key={day}>{day.slice(0, 3)} </span>
-                ))}
-              </text>
-              <text
-                style={{
-                  fontWeight: 400,
-                  fontSize: !isTab ? "20px" : "16px",
-                  fontFamily: "Lato, sans-serif",
-                  color: "white",
-                }}
-              >
-                {selectedDoctor?.workingHours?.workHourFrom}:00 To{" "}
-                {selectedDoctor?.workingHours?.workHourTo}:00
-              </text>
-            </span> */}
 
-            {
-              selectedDoctor?.doctorPic ? <img
-                src={selectedDoctor?.doctorPic}
-                alt="Avatar"
-                style={{
-                  borderRadius: "50%",
-                  height: isTab ? "40px" : "123px",
-                  width: isTab ? "40px" : "123px",
-                  marginRight: '70px',
-                  marginLeft: '20px',
-                  boxShadow: 'inset 0 0 0 2px #76767'
-                }}
-              />
-                :
-                <AccountCircleIcon style={{
-                  fontSize: '90px', color: "#E3F6FF",
-                  borderRadius: "50%",
-                  height: isTab ? "40px" : "123px",
-                  width: isTab ? "40px" : "123px",
-                  marginRight: '70px',
-                  boxShadow: 'inset 0 0 0 2px #76767'
-                }} />
-            }
 
-            {/* <img
-              src={selectedDoctor?.doctorPic}
-              alt="Avatar"
-              style={{
-                borderRadius: "50%",
-                height: isTab ? "40px" : "123px",
-                width: isTab ? "40px" : "123px",
-                marginRight: '70px',
-                marginLeft: '20px',
-                boxShadow: 'inset 0 0 0 2px #76767'
-              }}
-            ></img> */}
-
-            {/* <span className="flex flex-col justify-start">
-              <text style={{ color: "#89CFF0" }}>Mon-Fri</text>
-              <text style={{ color: "#89CFF0" }}>10:00am-6:00pm</text>
-            </span> */}
-          </div>
-          <text
-            className="ml-4 text-start mt-4"
-            style={{
-              fontSize: isTab ? "18px" : "30px",
-              fontWeight: 500,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-            }}
-          >
-            Dr. {selectedDoctor?.name}
-          </text>
-          <text
-            className="ml-4 text-start mt-2"
-            style={{
-              fontSize: isTab ? "12px" : "24px",
-              fontWeight: 400,
-              lineHeight: "24px",
-              fontFamily: "Lato, sans-serif",
-              color: "#767676",
-
-            }}
-          >
+        
             {selectedDoctor?.email}
           </text>
-          <text
-            className="ml-4 text-start mt-2"
-            style={{
-              fontSize: isTab ? "16px" : "24px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#43BCF5",
-            }}
-          >
-            {selectedDoctor?.speciality}
-          </text>
-          <text
-            className="ml-4 text-start mt-2"
-            style={{
-              fontSize: isTab ? "14px" : "24px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#2CBE78"
-
-            }}
-          >
-            {selectedDoctor?.totalExperience} Years Experience
-          </text>
+          
+          
           <text
             className="ml-4 text-start mt-2 text-purple-900"
             style={{
@@ -281,28 +446,7 @@ export default function DoctorList({ searchTerm })
           >
             {selectedDoctor?.degree}
           </text>
-          <text
-            className="ml-4 text-start mt-2"
-            style={{
-              fontSize: isTab ? "14px" : "24px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#000000",
-            }}
-          >
-            {selectedDoctor?.address?.houseNo +
-              " " +
-              selectedDoctor?.address?.block +
-              " " +
-              selectedDoctor?.address?.area +
-              ", " +
-              selectedDoctor?.address?.district +
-              ", " +
-              selectedDoctor?.address?.state +
-              " " +
-              selectedDoctor?.address?.pinCode}
-          </text>
+          
 
           <div className="flex justify-center">
             <button
@@ -357,8 +501,255 @@ export default function DoctorList({ searchTerm })
               textAlign: 'end'
             }}>10:00am-6:00pm</text>
           </span>
-        </div>
-      </Modal>
+        </div> */}
+
+        <div className="flex md:flex-row p-2 pt-5 flex-col">
+          {/* ---------------------------left part--------------------------- */}
+          <div className="flex flex-col  px-2  md:w-1/2">
+            <div className="">
+              <img src={selectedDoctor?.doctorPic} alt="doctor image" className=" h-80 w-full" ></img>
+            </div>
+            <div className="flex flex-col  py-4 px-5 bg-white mt-1">
+
+              <p className="text-xs text-black font-medium mb-2" >Registration No. :- 33256</p>
+
+              <p className="text-black text-3xl font-medium mb-2" >Dr. {selectedDoctor?.name}</p>
+              <div className="flex flex-row">
+                <div>
+                  <img src={education} className="w-5 py-2 " ></img>
+                </div>
+                <div className="ml-1">
+
+
+                  {selectedDoctor?.degree?.split(',')?.map((item) => (
+
+                    <p className="text-gray-600 text-xl mb-1">{item}</p>
+                  ))}
+                  {/* <p className="text-gray-400 text-sm -mt-1 mb-2">Darbhanga Medical College</p> */}
+                  {/* <p className="text-gray-600 text-xl">MBBS - 2004</p>
+                  <p className="text-gray-400 text-sm -mt-1 mb-2">Darbhanga Medical College</p> */}
+                </div>
+              </div>
+              <p className="text-gray-600 text-xl mb-2" >{selectedDoctor?.totalExperience} Years Experience</p>
+
+              <div className="flex flex-row space-x-2">
+                <div className="mt-2">
+                  <img src={home} style={{ minWidth: '15px', maxWidth: '16px' }} ></img>
+                </div>
+                <div className="">
+                  <p className="text-gray-600 text-xl ">{selectedDoctor?.address?.houseNo +
+                    " " +
+                    selectedDoctor?.address?.block +
+                    " " +
+                    selectedDoctor?.address?.area +
+                    ", " +
+                    selectedDoctor?.address?.district +
+                    ", " +
+                    selectedDoctor?.address?.state +
+                    " " +
+                    selectedDoctor?.address?.pinCode}</p>
+                </div>
+
+              </div>
+
+
+            </div>
+          </div>
+          {/* --------------------------------right part-------------------------------- */}
+          <div className="flex flex-col  md:w-1/2 px-2" >
+
+            <div className=" py-1 mb-2">
+              <p className="text-lg font-medium text-black" >SPECIALITY</p>
+              <div className="flex flex-wrap ">
+                <p className="bg-white rounded-xl py-1 px-4 mx-2 my-1 ">{selectedDoctor?.speciality}</p>
+                {/* <p className="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p>
+                <p className="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p>
+                <p className="bg-white rounded-xl py-1 px-4 mx-2 my-1">Pulmonologist</p> */}
+
+              </div>
+            </div>
+
+
+            <div className=" py-1 mb-2">
+              <p className="text-lg font-medium text-black">About The Doctor</p>
+              <p className=" italic text-gray-600">
+                Lorem ipsum dolor sit amet consectetur. Vitae dui elit vel justo facilisi praesent in et donec. Rutrum lorem consequat tempus fermentum egestas. At gravida enim proin blandit. Non et arcu arcu mauris augue massa.
+              </p>
+            </div>
+
+
+            <div className=" py-1 mb-2">
+              <p className="text-lg font-medium text-black">Timing</p>
+              <div className="flex flex-row  place-content-between">
+                <div className="flex flex-col ">
+                  <p className="text-gray-600 font-semibold">Mon - Thur :</p>
+                  <p className="text-gray-600">10:00 AM - 3:00 PM</p>
+                  <p className="text-gray-600">3:00 AM - 7:00 PM</p>
+                </div>
+                <div className="flex flex-col">
+                  <p className="text-gray-600 font-semibold">Mon - Thur :</p>
+                  <p className="text-gray-600">10:00 AM - 3:00 PM</p>
+                  <p className="text-gray-600">3:00 AM - 7:00 PM</p>
+                </div>
+              </div>
+            </div>
+
+
+            <div className=" py-1 mb-2">
+              <p className="text-lg font-medium text-black">Select service</p>
+
+              <div className="flex flex-col mb-2">
+                <div className="flex flex-col  bg-white p-1">
+                  <p className="flex place-content-between my-1"><span className="font-medium px-2">Consultation</span> <span className="font-bold px-2">Rs1000</span></p>
+                  {!bookingslottoggle &&
+                    <div>
+
+                      <p className="text-xs text-gray-500 px-2 my-1">Slot available for Tommorrow 22 Dec. 2023</p>
+                      <p className="flex flex-wrap space-x-1 ml-2 my-1">
+                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+
+                      </p>
+                    </div>
+                  }
+
+                  <div>
+                    {bookingslottoggle && <div className="flex flex-col">
+                      <div className=" flex flex-col text-center space-y-2">
+                        <div class="flex flex-row border-2">
+
+                          <button className="text-white text-xs rounded-3xl  " onClick={goToPrev} >
+                            <FaAngleLeft style={{ color: 'black' }} />
+                          </button>
+                          <div className="flex flex-row overflow-x-auto mx-2 ">
+                            {
+                              bookingslot.map((data, index) => {
+                                console.log(data.date)
+                                const { year, monthName, day, dayName } = getYearMonthDay(data.date)
+                                // console.log(year, monthName, day, dayName)
+                                if (index == currentIndex) {
+                                  return (
+                                    <div key={index} className="flex flex-col px-2"
+                                      ref={el => dateRefs.current[index] = el}
+                                      onClick={() => handleDateClick(index)}>
+                                      <p>{monthName}</p>
+                                      <p className=" p-2 border-2 rounded-lg bg-blue-300" >{day}</p>
+                                      <p>{dayName}</p>
+                                    </div>
+                                  )
+                                } else {
+
+                                  return (
+                                    <div key={index} className="flex flex-col px-2"
+                                      ref={el => dateRefs.current[index] = el}
+                                      onClick={() => handleDateClick(index)}>
+                                      <p>{monthName}</p>
+                                      <p className=" p-2 border-2 rounded-lg bg-gray-200" >{day}</p>
+                                      <p>{dayName}</p>
+                                    </div>
+                                  )
+                                }
+                              })}
+
+
+
+
+                          </div>
+                          <button className="text-white text-xs rounded-3xl   " onClick={goToNext} >
+                            <FaAngleRight style={{ color: 'black' }} />
+                          </button>
+                        </div>
+
+                        <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32">
+                          {[...Array(numberOfRows)].map((_, rowIndex) => {
+                            return (
+                              <div key={rowIndex} className="flex space-x-2">
+                                {bookingslot.slice(rowIndex * numberOfColumns, (rowIndex + 1) * numberOfColumns).map((data, index) => {
+                                  selectedschedule = selectedschedule + 1;
+                                  console.log(selectedschedule)
+
+                                  if (selectedschedule - 1 === currentIndex) {
+                                    return (
+                                      <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-300 text-gray-800" >
+                                        {data.startTime}
+                                      </div>
+                                    )
+                                  }
+                                  else {
+                                    return (
+                                      <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800" >
+                                        {data.startTime}
+                                      </div>
+                                    )
+                                  }
+                                })}
+                              </div>
+                            )
+                          })}
+                        </div>
+
+
+
+                        {/* <p className="flex flex-wrap space-x-1 ml-2 my-1">
+                          <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >{bookingslot[currentIndex].startTime}</p>
+                        </p> */}
+
+
+
+                      </div>
+                      {/* <div className="flex justify-center mt-3">
+                        <button className="text-white text-xs rounded-3xl px-3 py-1 mx-5" onClick={goToPrev} style={{ backgroundColor: ' #89CFF0' }}>
+                          Previous
+                        </button>
+                        <button className="text-white text-xs rounded-3xl px-3 py-1 mx-5 " onClick={goToNext} style={{ backgroundColor: ' #89CFF0' }}>
+                          Next
+                        </button>
+                      </div> */}
+                    </div>}
+
+
+                  </div>
+                  <div className="flex flex-row-reverse my-1">
+                    {!bookingslottoggle && <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                      See all Slots
+                    </button>}
+                    {bookingslottoggle && <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                      See less Slots
+                    </button>}
+                  </div>
+                </div>
+
+              </div>
+
+              <div className="flex flex-col">
+                <div className="flex flex-col  bg-white p-1">
+                  <p className="flex place-content-between my-1"><span className="font-medium px-2">Consultation</span> <span className="font-bold px-2">Rs1000</span></p>
+                  <p className="text-xs text-gray-500 px-2 my-1">Slot available for Tommorrow 22 Dec. 2023</p>
+                  <p className="flex flex-wrap space-x-1 ml-2 my-1">
+                    <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                    <p className="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
+                    <p className="border-2 rounded-3xl py-1 px-2 text-gray-800">3:00 AM</p>
+                    <p className="border-2 rounded-3xl py-1 px-2 text-gray-800">7:00 PM</p>
+
+                  </p>
+                  <div className="flex flex-row-reverse my-1">
+                    <button className="text-white text-xs rounded-3xl px-3 py-1 " style={{ backgroundColor: ' #89CFF0' }}>
+                      See all Slots
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          </div >
+
+        </div >
+      </Modal >
+
+
+
       <div
         className="flex flex-col bg-customGreen"
         style={{
@@ -410,14 +801,15 @@ export default function DoctorList({ searchTerm })
         <div style={{ marginTop: "10px" }}>
           {filteredDoctors?.map((doctor, index) => (
             <div
-              className="bg-white w-full p-4 mb-5"
+              className="bg-white w-full p-4 mb-5 hover:cursor-pointer"
               onClick={() => handleQRCode(doctor._id)}
+
             >
               <div className="flex flex-row justify-between">
-                <div class="flex items-center gap-x-2">
+                <div className="flex items-center gap-x-2">
                   {
                     doctor.doctorPic ? <img
-                      class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                      className="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
                       src={doctor.doctorPic}
                       alt={doctor.name}
                     />
@@ -425,14 +817,14 @@ export default function DoctorList({ searchTerm })
                       <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
                   }
                   <div>
-                    <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
+                    <h1 className=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
                       Dr. {doctor.name}
                     </h1>
 
-                    <p class=" text-gray-500 sm:text-sm text-xs ">
+                    <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.speciality}
                     </p>
-                    <p class=" text-gray-500 sm:text-sm text-xs ">
+                    <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience
                     </p>
                   </div>
