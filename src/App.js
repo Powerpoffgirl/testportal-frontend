@@ -536,7 +536,7 @@ function App() {
         element={
           <Layout
             Component={EditAppointmentSuperAdmin}
-            type="admin"
+            type="superAdmin"
             headerTextTop={"Edit Appointment"}
             headerTextBottom={"Super Admin"}
           />
