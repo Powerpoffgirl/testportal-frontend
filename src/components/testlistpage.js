@@ -91,7 +91,7 @@ export default function TestListPage()
 
                         <div>
                             <lable style={{ marginRight: '50px' }}>Test List</lable>
-                            <button onClick={addRow} style={{ marginBottom: '10px', height: '30px', width: '80px', backgroundColor: '#89CFF0', color: 'white', borderRadius: '10px' }}>
+                            <button onClick={addRow} style={{ marginBottom: '10px', height: '30px', width: '80px', backgroundColor: '#89CFF0', color: 'white', borderRadius: '10px', marginLeft: "850px" }}>
                                 Add Row
                             </button>
                             <div style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
@@ -157,11 +157,11 @@ export default function TestListPage()
                             </div>
                         </div>
 
-                        <div style={{ display: "flex", alignItems: 'center', justifyContent: 'center' }}>
+                        {/* <div style={{ display: "flex", alignItems: 'center', justifyContent: 'center' }}>
                             <button onClick={() => navigate(`/billing`)} style={{ height: '30px', width: '80px', backgroundColor: '#89CFF0', color: 'white', borderRadius: '10px' }}>
                                 Process
                             </button>
-                        </div>
+                        </div> */}
                     </div>
 
                 </div>
