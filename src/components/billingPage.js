@@ -6,7 +6,7 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import Modal from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 
-export default function BillingPage()
+export default function BillingPage({ name, contactNo, gender, age })
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
@@ -50,7 +50,7 @@ export default function BillingPage()
               Patient Details
             </p>
             <p style={{ color: "black", fontWeight: 500, marginTop: "10px" }}>
-              Vishal Patel
+              {localStorage.getItem("name")}
             </p>
             <p style={{ color: "black", fontWeight: 500, marginTop: "10px" }}>
               2312119001
@@ -78,10 +78,10 @@ export default function BillingPage()
               }}
             >
               <div style={{ color: "black", fontWeight: 500, width: "45%" }}>
-                male
+                {localStorage.getItem("gender")}
               </div>
               <div style={{ color: "black", fontWeight: 500, width: "45%" }}>
-                24
+                {localStorage.getItem("age")}
               </div>
             </div>
 
@@ -95,7 +95,7 @@ export default function BillingPage()
                   marginBottom: "10px",
                 }}
               >
-                +914234234324
+                {localStorage.getItem("phoneNo")}
               </p>
             </div>
 
@@ -112,7 +112,11 @@ export default function BillingPage()
               />
             </div>
 
-            <div style={{ marginTop: "15px" }}>
+            {/* <div style={{ marginTop: "15px" }}>
+              <p style={{ color: "gray" }}>Summary</p>
+            </div> */}
+
+            {/* <div style={{ marginTop: "15px" }}>
               <p style={{ color: "gray" }}>Sample collector</p>
               <p style={{ color: "black" }}>-</p>
             </div>
@@ -125,7 +129,7 @@ export default function BillingPage()
             <div style={{ marginTop: "15px" }}>
               <p style={{ color: "gray" }}>Organisation</p>
               <p style={{ color: "black" }}>Self</p>
-            </div>
+            </div> */}
           </div>
 
           <div
@@ -299,25 +303,42 @@ export default function BillingPage()
             <div
               className="Absolute_left"
               style={{
-                width: "35%",
+                width: "30%",
                 float: "left",
                 height: "30vh",
                 borderRight: "0.5px solid #D3D3D3",
               }}
             >
-              <div style={{ width: "45%", float: "left", marginRight: "5px" }}>
-                <label style={{ fontSize: 12 }}>Discount (%) (optional)</label>
+
+              <p style={{ color: "gray" }}>Summary</p>
+
+
+            </div>
+
+            <div
+              className="Absolute_left"
+              style={{
+                width: "35%",
+                float: "left",
+                height: "30vh",
+                borderRight: "0.5px solid #D3D3D3",
+                padding: '10px'
+
+              }}
+            >
+              <div style={{ width: "50%", float: "left", display: 'flex', flexDirection: 'column', }}>
+                <label style={{ fontSize: 12 }}>Discount (%) </label>
                 <input
                   type="text"
-                  style={{ border: "1px solid gray", width: "80%" }}
+                  style={{ border: "1px solid gray", width: "60%" }}
                 />
               </div>
 
-              <div style={{ width: "45%", float: "right", marginLeft: "5px" }}>
-                <label style={{ fontSize: 12 }}>Discount (%) (optional)</label>
+              <div style={{ width: "50%", float: "right", display: 'flex', flexDirection: 'column' }}>
+                <label style={{ fontSize: 12 }}>Discount (%) </label>
                 <input
                   type="text"
-                  style={{ border: "1px solid gray", width: "80%" }}
+                  style={{ border: "1px solid gray", width: "60%" }}
                 />
               </div>
 
@@ -364,12 +385,13 @@ export default function BillingPage()
             </div>
 
             <div
+
               className="middle"
               style={{
-                width: "35%",
+                width: "30%",
                 height: "30vh",
                 float: "left",
-                borderRight: "0.5px solid #D3D3D3",
+                // borderRight: "0.5px solid #D3D3D3",
               }}
             >
               <div style={{ width: "100%", marginLeft: "30px" }}>
@@ -391,7 +413,7 @@ export default function BillingPage()
                   type="text"
                   style={{
                     border: "1px solid gray",
-                    width: "80%",
+                    width: "50%",
                     marginLeft: "20px",
                   }}
                 />
@@ -418,7 +440,7 @@ export default function BillingPage()
               </div>
             </div>
 
-            <div className="Absolute_Right">
+            {/* <div className="Absolute_Right">
               <div style={{ margin: "20px", marginBottom: "10px" }}>
                 <label style={{ marginLeft: "20px" }}>Payment Method</label>
               </div>
@@ -471,7 +493,7 @@ export default function BillingPage()
                   Card
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

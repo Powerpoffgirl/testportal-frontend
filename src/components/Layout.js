@@ -123,6 +123,7 @@ export default function Layout({
     { text: "Appointment List", to: "/appointmentlist" },
     { text: "Profile", to: "/editdoctorform" },
     { text: "Go To Lab", to: "/registerpatient" },
+    { text: "Available Test", to: "/testlist" },
     { text: "Support", to: "#" },
     { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
   ];
