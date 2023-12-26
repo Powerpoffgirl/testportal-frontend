@@ -34,6 +34,7 @@ export default function TestListPage()
         setSelectedMethod(method);
     };
 
+    // change data to tests ===> Plural test
     const [data, setData] = useState([
         { id: 1, test: 'Viral Load', testCode: 'Hiv', department: 'Molucular Test', sampleType: 'serum', cost: '$50', isEditing: false },
         { id: 2, test: 'Vitamin D3', testCode: 'vitamin d3', department: 'Immuinio', sampleType: 'serum', cost: '$75', isEditing: false },
@@ -90,7 +91,7 @@ export default function TestListPage()
 
                         <div>
                             <lable style={{ marginRight: '50px' }}>Test List</lable>
-                            <button onClick={addRow} style={{ marginBottom: '10px', height: '30px', width: '80px', backgroundColor: '#89CFF0', color: 'white', borderRadius: '10px' }}>
+                            <button onClick={addRow} style={{ marginBottom: '10px', height: '30px', width: '80px', backgroundColor: '#89CFF0', color: 'white', borderRadius: '10px', marginLeft: "850px" }}>
                                 Add Row
                             </button>
                             <div style={{ width: '100%', borderCollapse: 'collapse', marginBottom: '20px' }}>
@@ -156,11 +157,11 @@ export default function TestListPage()
                             </div>
                         </div>
 
-                        <div style={{ display: "flex", alignItems: 'center', justifyContent: 'center' }}>
+                        {/* <div style={{ display: "flex", alignItems: 'center', justifyContent: 'center' }}>
                             <button onClick={() => navigate(`/billing`)} style={{ height: '30px', width: '80px', backgroundColor: '#89CFF0', color: 'white', borderRadius: '10px' }}>
                                 Process
                             </button>
-                        </div>
+                        </div> */}
                     </div>
 
                 </div>
