@@ -70,9 +70,7 @@ import SuperAdminUserEditForm from "./components/superadminusereditform";
 import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
 import SuperAdminOtp from "./components/superadminotp";
 
-function App()
-{
-
+function App() {
   return (
     <Routes>
       <Route
@@ -216,7 +214,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"User List"}
             search={"true"}
-          // AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -242,7 +240,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"Patient List"}
             search={"true"}
-          // AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -256,7 +254,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"Appointment List"}
             search={"true"}
-          // AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -282,7 +280,7 @@ function App()
             headerTextTop={"Super Admin"}
             headerTextBottom={"Doctor List"}
             search={"true"}
-          // AddButton={"true"}
+            // AddButton={"true"}
           />
         }
       />
@@ -309,12 +307,7 @@ function App()
         }
       />
 
-      <Route
-        path="/userotp"
-        element={
-          <UserOTP />
-        }
-      ></Route>
+      <Route path="/userotp" element={<UserOTP />}></Route>
       <Route
         path="/qr"
         element={
@@ -525,6 +518,19 @@ function App()
           />
         }
       ></Route>
+
+      <Route
+        path="/editappointmentsuperadmin"
+        element={
+          <Layout
+            Component={EditAppointmentSuperAdmin}
+            type="admin"
+            headerTextTop={"Edit Appointment"}
+            headerTextBottom={"Super Admin"}
+          />
+        }
+      ></Route>
+
       <Route
         path="/patientlistadmin"
         element={
