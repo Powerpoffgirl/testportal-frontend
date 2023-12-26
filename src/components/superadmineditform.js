@@ -19,24 +19,6 @@ export default function SuperAdminEditForm() {
   const [isHovered1, setIsHovered1] = useState(false);
   const [adminImage, setAdminImage] = useState();
 
-  // const validate = () =>
-  // {
-  //   let tempErrors = {};
-  //   tempErrors.name = doctorDetails?.name ? "" : "Name is required.";
-  //   tempErrors.email = /$^|.+@.+..+/.test(doctorDetails?.email) ? "" : "Email is not valid.";
-  //   tempErrors.contactNumber = doctorDetails?.contactNumber.length > 0 ? "" : "Contact Number is required.";
-  //   tempErrors.houseNo = doctorDetails?.address?.houseNo ? "" : "House Number is required.";
-  //   tempErrors.floor = doctorDetails?.address?.floor ? "" : "Floor is required.";
-  //   tempErrors.block = doctorDetails?.address?.block ? "" : "Block is required.";
-  //   tempErrors.area = doctorDetails?.address?.area ? "" : "Area is required.";
-  //   tempErrors.pinCode = doctorDetails?.address?.pinCode ? "" : "Pincode is required.";
-  //   tempErrors.district = doctorDetails?.address?.district ? "" : "District is required.";
-  //   tempErrors.state = doctorDetails?.address?.state ? "" : "State is required.";
-
-  //   setErrors({ ...tempErrors });
-  //   return Object.values(tempErrors).every(x => x === "");
-  // }
-
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -141,53 +123,53 @@ export default function SuperAdminEditForm() {
     handleClose();
   };
 
-  const validateField = (name, value) => {
-    switch (name) {
-      case "name":
-        return value ? "" : "Name is required.";
-      case "email":
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-          ? ""
-          : "Email is not valid.";
-      case "contactNumber":
-        return value.length > 0 && value.length === 10
-          ? ""
-          : "Contact number is required or Add valid 10 Digit Number.";
-      case "houseNo":
-        return value ? "" : "House number is required.";
-      case "floor":
-        return value ? "" : "Floor is required.";
-      case "block":
-        return value ? "" : "Block is required.";
-      case "area":
-        return value ? "" : "Area is required.";
-      case "pinCode":
-        return /^\d{5}(-\d{4})?$/.test(value) ? "" : "Pincode is not valid.";
-      case "district":
-        return value ? "" : "District is required.";
-      case "state":
-        return value ? "" : "State is required.";
-      case "workHourFrom":
-        // Assuming time in HH:MM format, adjust as needed
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-          ? ""
-          : "Invalid start time.";
-      case "workHourTo":
-        return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-          ? ""
-          : "Invalid end time.";
-      // Add more cases as needed for other fields
-      default:
-        return "";
-    }
-  };
+  // const validateField = (name, value) => {
+  //   switch (name) {
+  //     case "name":
+  //       return value ? "" : "Name is required.";
+  //     case "email":
+  //       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+  //         ? ""
+  //         : "Email is not valid.";
+  //     case "contactNumber":
+  //       return value.length > 0 && value.length === 10
+  //         ? ""
+  //         : "Contact number is required or Add valid 10 Digit Number.";
+  //     case "houseNo":
+  //       return value ? "" : "House number is required.";
+  //     case "floor":
+  //       return value ? "" : "Floor is required.";
+  //     case "block":
+  //       return value ? "" : "Block is required.";
+  //     case "area":
+  //       return value ? "" : "Area is required.";
+  //     case "pinCode":
+  //       return /^\d{5}(-\d{4})?$/.test(value) ? "" : "Pincode is not valid.";
+  //     case "district":
+  //       return value ? "" : "District is required.";
+  //     case "state":
+  //       return value ? "" : "State is required.";
+  //     case "workHourFrom":
+  //       // Assuming time in HH:MM format, adjust as needed
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid start time.";
+  //     case "workHourTo":
+  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
+  //         ? ""
+  //         : "Invalid end time.";
+  //     // Add more cases as needed for other fields
+  //     default:
+  //       return "";
+  //   }
+  // };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
 
     // Validate the field and update errors
-    const error = validateField(name, value);
-    setErrors({ ...errors, [name]: error });
+    // const error = validateField(name, value);
+    // setErrors({ ...errors, [name]: error });
 
     // Update doctorDetails logic remains the same
     if (name === "workingDays") {
@@ -234,19 +216,19 @@ export default function SuperAdminEditForm() {
   const handleUpdate = async (e) => {
     e.preventDefault();
 
-    if (!validateField()) {
-      toast.error("Please correct the errors before submitting.");
-      return;
-    }
+    // if (!validateField()) {
+    //   toast.error("Please correct the errors before submitting.");
+    //   return;
+    // }
 
     // Check if the token exists
     const newDoctorDetails = {
       name: doctorDetails?.name,
-      // email: doctorDetails.email,
-      // contactNumber: doctorDetails.contactNumber,
-      totalExperience: doctorDetails?.totalExperience,
-      speciality: doctorDetails?.speciality,
-      degree: doctorDetails?.degree,
+      email: doctorDetails.email,
+      contactNumber: doctorDetails.contactNumber,
+      // totalExperience: doctorDetails?.totalExperience,
+      // speciality: doctorDetails?.speciality,
+      // degree: doctorDetails?.degree,
       address: {
         houseNo: doctorDetails?.address?.houseNo,
         floor: doctorDetails?.address?.floor,
@@ -258,47 +240,61 @@ export default function SuperAdminEditForm() {
       },
       adminPic: adminImage,
     };
+    if (newDoctorDetails.name === "") {
+      toast.error("Please write name");
+    } else if (newDoctorDetails.email === "") {
+      toast.error("Please write email");
+    } else if (newDoctorDetails.contactNumber === "") {
+      toast.error("Please write contact number");
+    } else if (newDoctorDetails.address?.pinCode === "") {
+      toast.error("Please write Pincode");
+    } else if (newDoctorDetails.address?.district === "") {
+      toast.error("Please write district");
+    } else if (newDoctorDetails.address?.state === "") {
+      toast.error("Please write state");
+    } else {
+      const token = localStorage.getItem("token");
+      const doctorId = localStorage.getItem("doctorId");
+      const isEmpty = Object.values(newDoctorDetails).some(
+        (value) => value === ""
+      );
 
-    const token = localStorage.getItem("token");
-    const doctorId = localStorage.getItem("doctorId");
-    const isEmpty = Object.values(newDoctorDetails).some(
-      (value) => value === ""
-    );
+      if (isEmpty || isEditing === false) {
+        toast.error("Please fill the fields or Update");
+        setIsEditing(false);
+        return;
+      }
 
-    if (isEmpty || isEditing === false) {
-      toast.error("Please fill the fields or Update");
-      setIsEditing(false);
-      return;
+      if (!isEmpty || isEditing === true) {
+        toast.success("Form submitted successfully!");
+      }
+
+      if (!token) {
+        console.error("No token found in local storage");
+        return;
+      }
+      const response = await fetch(`${baseUrl}/api/v1/admin/update_profile`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(newDoctorDetails),
+      });
+      const data = await response.json();
+
+      if (data.statusCode === 400) {
+        toast.error("Please fill the details");
+      }
+
+      if (data.success === true) {
+        console.log("Doctor updated successfully.");
+        // navigate("/otp")
+        // localStorage.setItem("id", data.data._id)
+      }
+
+      console.log("DATA from response", data);
     }
-
-    if (!isEmpty || isEditing === true) {
-      toast.success("Form submitted successfully!");
-    }
-
-    if (!token) {
-      console.error("No token found in local storage");
-      return;
-    }
-    const response = await fetch(`${baseUrl}/api/v1/admin/update_profile`, {
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify(newDoctorDetails),
-    });
-    const data = await response.json();
-
-    if (data.statusCode === 400) {
-      toast.error("Please fill the details");
-    }
-
-    if (data.success === true) {
-      console.log("Doctor updated successfully.");
-      // navigate("/otp")
-      // localStorage.setItem("id", data.data._id)
-    }
-    console.log("DATA from response", data);
   };
 
   console.log("DOCTOR DETAILS", doctorDetails);
