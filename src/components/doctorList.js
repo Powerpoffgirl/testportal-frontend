@@ -116,6 +116,7 @@ export default function DoctorList({ searchTerm }) {
       },
       body: JSON.stringify(bookslot),
     });
+
     const data = await response.json()
 
     console.log("slot booked", data)
@@ -174,8 +175,11 @@ export default function DoctorList({ searchTerm }) {
       body: JSON.stringify({ contactNumber: contactNumber }),
     });
     const data = await response.json()
-    console.log("user id", data?.data?._id)
-    localStorage.setItem('userId', data?.data?._id)
+    console.log("RESPONSE------", data)
+    console.log("user id", data?.user?._id)
+    localStorage.setItem('userId', data?.user?._id)
+
+    // localStorage.setItem("token", data?.user?.token)
     setotppage(true)
 
   }
@@ -211,9 +215,12 @@ export default function DoctorList({ searchTerm }) {
 
       const data = await response.json();
       if (data.success === true) {
+        console.log("DATA from response", data)
+
+        localStorage.setItem('token', data?.data?.token)
         navigate("/edituserform")
       }
-      console.log("DATA from response", data)
+
     } catch (error) {
       console.error('There was an error verifying the OTP:', error);
     }
@@ -407,7 +414,9 @@ export default function DoctorList({ searchTerm }) {
                           </button>
                           <div className="flex flex-row overflow-x-auto mx-2 ">
                             {bookingslot?.map((data, index) => {
+                              // console.log(data.date)
                               const { year, monthName, day, dayName } = getYearMonthDay(data.date)
+                              // console.log(year, monthName, day, dayName)
                               if (index == currentIndex) {
                                 return (
                                   <div key={index} className="flex flex-col px-2"
