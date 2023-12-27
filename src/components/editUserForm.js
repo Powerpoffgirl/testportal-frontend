@@ -275,18 +275,18 @@ export default function EditUserForm()
 
   const handleChange2 = (e) =>
   {
-    setDoctorDetails((prevDoctorDetails) => ({
-      ...prevDoctorDetails,
+    setUserDetails((prevUserDetails) => ({
+      ...prevUserDetails,
       // workingDays: e,
-      speciality: e,
+      ageType: e,
     }));
   };
 
   const handleChange1 = (e) =>
   {
-    setDoctorDetails((prevDoctorDetails) => ({
-      ...prevDoctorDetails,
-      workingDays: e,
+    setUserDetails((prevUserDetails) => ({
+      ...prevUserDetails,
+      gender: e,
       // speciality: e,
     }));
   };
@@ -348,8 +348,11 @@ export default function EditUserForm()
     e.preventDefault();
     const newUserDetails = {
       name: userDetails?.name,
-      contactNumber: userDetails.contactNumber,
-      email: userDetails.email,
+      contactNumber: userDetails?.contactNumber,
+      age: userDetails?.age,
+      ageType: userDetails?.ageType,
+      gender: userDetails?.gender,
+      bodyWeight: userDetails?.bodyWeight,
       address: {
         houseNo: userDetails?.address?.houseNo,
         floor: userDetails?.address?.floor,
@@ -425,71 +428,6 @@ export default function EditUserForm()
     { label: "Other", value: "Other" },
   ];
 
-  const handleRegister = async (e) =>
-  {
-    e.preventDefault();
-
-    const newPatientDetails = {
-      name: patientDetails?.name,
-      age: patientDetails?.age,
-      bodyWeight: patientDetails?.bodyWeight,
-      address: {
-        houseNo: patientDetails?.address?.houseNo,
-        floor: patientDetails?.address?.floor,
-        block: patientDetails?.address?.block,
-        area: patientDetails?.address?.area,
-        pinCode: patientDetails?.address?.pinCode,
-        district: patientDetails?.address?.district,
-        state: patientDetails?.address?.state,
-      },
-      patientPic: userImage,
-    };
-    if (newPatientDetails.name === "")
-    {
-      toast.error("Please write name");
-    } else if (newPatientDetails.age === "")
-    {
-      toast.error("Please write age");
-    } else if (newPatientDetails.bodyWeight === "")
-    {
-      toast.error("Please write body weight");
-    } else if (newPatientDetails.address?.pinCode === "")
-    {
-      toast.error("Please write Pincode");
-    } else if (newPatientDetails.address?.district === "")
-    {
-      toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "")
-    {
-      toast.error("Please write state");
-    } else
-    {
-      const doctorId = localStorage.getItem("doctorId");
-      const token = localStorage.getItem("token");
-      if (!token)
-      {
-        console.error("No token found in local storage");
-        localStorage.clear();
-        navigate(`/userlogin`);
-      }
-      const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(newPatientDetails),
-      });
-      const data = await response.json();
-      if (data.success === true)
-      {
-        // navigate("/otp")
-        onOpenModal();
-        localStorage.setItem("patientId", data.data._id);
-      }
-      console.log("DATA from response", data);
-    }
-  };
 
   console.log("User DETAILS", userDetails);
   updateUser(userDetails.name);
@@ -560,11 +498,11 @@ export default function EditUserForm()
                       </label>
                       <Select
                         // mode="multiple"
-                        className="border border-[#89CFF0] rounded-lg h-11"
+                        className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
                         id="ageType"
                         name="ageType"
-                        value={patientDetails?.ageType}
+                        value={userDetails?.ageType}
                         onChange={handleChange2}
                         placeholder="Select Age Type"
                         style={{ overflowY: "auto" }}
@@ -596,13 +534,13 @@ export default function EditUserForm()
                       </label>
                       <Select
                         // mode="multiple"
-                        className="border border-[#89CFF0] rounded-lg h-11"
+                        className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
                         id="gender"
                         name="gender"
                         value={userDetails?.gender}
                         onChange={handleChange1}
-                        placeholder="Select Gender Type"
+                        placeholder="Select Gender"
                         style={{ overflowY: "auto" }}
                         dropdownStyle={{
                           maxHeight: "300px",
@@ -635,9 +573,9 @@ export default function EditUserForm()
                   Body Weight
                 </label>
                 <input
-                  type="number"
-                  id="body"
-                  name="body"
+                  type="text"
+                  id="bodyWeight"
+                  name="bodyWeight"
                   onChange={handleChange}
                   value={userDetails?.bodyWeight}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -694,13 +632,42 @@ export default function EditUserForm()
                 >
                   Issues
                 </label>
-                <input
-                  type="text"
-                  id="issue"
+                <Select
+                  mode="multiple"
+                  className="h-11 block w-full placeholder-gray-400 rounded-lg border bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  popupClassName="no-border-dropdown-menu" // Apply the custom class here
+                  id="issues"
                   name="issues"
-                  onChange={handleChange}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
+                  // onChange={handleChangeDiseases}
+                  onInputKeyDown={(e) =>
+                  {
+
+                    if (e.key === 'Enter')
+                    {
+                      e.preventDefault();
+                      let inputValue = e.target.value.trim();
+                      if (inputValue)
+                      {
+                        // handleChangeDiseases([...patientDetails.diseases, inputValue]);
+                        setTimeout(() =>
+                        {
+                          e.target.value = '';
+                          inputValue = '';
+                        }, 0);
+                      }
+                    }
+                  }}
+                  value={patientDetails.issues}
+                  placeholder="Select Issues"
+                  style={{ overflowY: "auto" }}
+                  dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+                >
+                  {SymptomsDropdown.map((option) => (
+                    <Select.Option key={option.value} value={option.value}>
+                      {option.label}
+                    </Select.Option>
+                  ))}
+                </Select>
                 {errors.contactNumber && (
                   <p className="text-red-500">{errors.contactNumber}</p>
                 )}
@@ -716,7 +683,7 @@ export default function EditUserForm()
                 </label>
                 <Select
                   mode="multiple"
-                  className="border-[#89CFF0] h-11 block w-full placeholder-gray-400 rounded-lg border bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  className="h-11 block w-full placeholder-gray-400 rounded-lg border bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   popupClassName="no-border-dropdown-menu" // Apply the custom class here
                   id="diseases"
                   name="diseases"
@@ -874,7 +841,7 @@ export default function EditUserForm()
               style={{
                 backgroundColor: "#89CFF0",
               }}
-              onClick={handleRegister}
+              onClick={handleUpdate}
             >
               Continue...
             </button>
