@@ -272,7 +272,7 @@ export default function AppointmentListUser({ searchTerm })
                     alt={appointment?.doctorId?.doctorPic.name}
                   />
                     :
-                    <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
+                    <AccountCircleIcon style={{ fontSize: '90px', color: "#B1DAED" }} />
                 }
                 <div
                   class="flex flex-row bg-white p-2 md:flex-row justify-between"

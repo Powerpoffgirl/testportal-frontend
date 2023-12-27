@@ -373,7 +373,7 @@ export default function DoctorListUser({ searchTerm })
                       alt={doctor?.name}
                     />
                       :
-                      <AccountCircleIcon style={{ fontSize: '90px', color: "#E3F6FF" }} />
+                      <AccountCircleIcon style={{ fontSize: '90px', color: "#B1DAED" }} />
                   }
                   <div>
                     <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">

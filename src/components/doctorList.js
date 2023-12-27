@@ -807,7 +807,7 @@ export default function DoctorList({ searchTerm })
                       alt={doctor.name}
                     />
                       :
-                      <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
+                      <AccountCircleIcon style={{ fontSize: '90px', color: "#B1DAED" }} />
                   }
                   <div>
                     <h1 className=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
