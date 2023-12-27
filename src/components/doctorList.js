@@ -46,10 +46,7 @@ export default function DoctorList({ searchTerm }) {
   const [filteredDoctors, setFilteredDoctors] = useState([doctorsList]);
   const navigate = useNavigate();
 
-<<<<<<< HEAD
-=======
   const categories = ["All", "General Medicine", "Cardiology", "Dermatology", "Endocrinology", "Urology"];
->>>>>>> ae51253e4b0d0e283fec4785e764601504464ef9
 
   useEffect(() => {
     localStorage.clear()

@@ -393,9 +393,9 @@ export default function DoctorFormAdmin() {
 
   return (
     <>
-      <div className="flex flex-row -ml-7">
+      <div className="flex flex-col -ml-7  lg:flex-row">
         {/* --------------left-------------- */}
-        <div className="flex flex-col border bg-white w-1/4 p-6 m-5">
+        <div className="flex flex-col border bg-white lg:w-1/4 p-6 m-5 ">
           <div className="mx-auto my-2">
             <div className=" " >
               <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
@@ -519,14 +519,12 @@ export default function DoctorFormAdmin() {
 
           <div className="mt-3">
             <p className="block text-black text-lg font-semibold">Working Hours</p>
-            <div className="flex -ml-2 mr-2">
-              <div className="flex flex-row">
+            <div className="flex flex-row-ml-2 mr-2">
+              <div className="flex ">
                 <select
                   className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   name="workHourFrom"
-
                   onChange={handleChange}
-
                 >
                   {TimeDropdown.map((time) => (
                     <option key={time.value} value={time.value}>
@@ -538,7 +536,7 @@ export default function DoctorFormAdmin() {
               <div className=" mt-2 text-lg font-medium">
                 to
               </div>
-              <div className="flex-1">
+              <div className="flex">
                 <select
                   className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   name="workHourTo"
@@ -619,7 +617,7 @@ export default function DoctorFormAdmin() {
         </div>
 
         {/* ----------------------------------right---------------------------------- */}
-        <div className="border bg-white flex flex-col w-3/4 p-6 my-5 mx-3">
+        <div className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3">
           <p className="text-3xl " >Personal Information</p>
           <hr className="border my-2 " />
           {/* -------name------- */}
