@@ -168,21 +168,6 @@ export default function DoctorLogin()
           progress: undefined,
           theme: "light",
         });
-<<<<<<< HEAD
-      } else
-      {
-        toast.error("Validation failed", {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-=======
->>>>>>> d97bf0fb4ab6a3e37c09c96f01f8071249d5d325
       }
       console.log(data);
     }
