@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
-import DoctorSidebar from "./doctorSidebar";
-import Header from "./header";
 import { useMediaQuery } from "react-responsive";
 import { Modal } from "react-responsive-modal";
-import UserSidebar from "./userSidebar";
-import UserHeader from "./userHeader";
 import { useNavigate } from "react-router-dom";
 import one from "../assets/one.svg";
 import two from "../assets/two.svg";
