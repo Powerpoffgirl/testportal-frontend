@@ -119,6 +119,9 @@ export default function DoctorList({ searchTerm }) {
     const data = await response.json()
 
     console.log("slot booked", data)
+    localStorage.setItem('appointment_date', data?.doctorSlot?.date?.split('T')[0])
+    localStorage.setItem('appointment_time', data?.doctorSlot?.startTime)
+
     showappointment()
 
 
