@@ -12,6 +12,111 @@ import { MdEdit } from "react-icons/md";
 import UserContext from "./userContext";
 import { Select } from "antd";
 
+const DiseasesDropdown = [
+  { label: "Common Cold", value: "Common Cold" },
+  { label: "Influenza", value: "Influenza" },
+  { label: "Asthma", value: "Asthma" },
+  { label: "Diabetes Mellitus", value: "Diabetes Mellitus" },
+  { label: "Hypertension", value: "Hypertension" },
+  { label: "Arthritis", value: "Arthritis" },
+  { label: "Depression", value: "Depression" },
+  { label: "Anxiety Disorders", value: "Anxiety Disorders" },
+  { label: "Allergic Rhinitis", value: "Allergic Rhinitis" },
+  { label: "Reflux Esophagitis", value: "Reflux Esophagitis" },
+  {
+    label: "Chronic Obstructive Pulmonary Disease",
+    value: "Chronic Obstructive Pulmonary Disease",
+  },
+  { label: "Migraine", value: "Migraine" },
+  { label: "Chronic Kidney Disease", value: "Chronic Kidney Disease" },
+  { label: "Heart Failure", value: "Heart Failure" },
+  { label: "Anemia", value: "Anemia" },
+  { label: "Coronary Artery Disease", value: "Coronary Artery Disease" },
+  { label: "Hyperlipidemia", value: "Hyperlipidemia" },
+  { label: "Osteoporosis", value: "Osteoporosis" },
+  { label: "Gastroenteritis", value: "Gastroenteritis" },
+  { label: "Bronchitis", value: "Bronchitis" },
+  { label: "Pneumonia", value: "Pneumonia" },
+  { label: "Urinary Tract Infection", value: "Urinary Tract Infection" },
+  { label: "Skin Infections", value: "Skin Infections" },
+  { label: "Sinusitis", value: "Sinusitis" },
+  { label: "Tuberculosis", value: "Tuberculosis" },
+  { label: "Hepatitis", value: "Hepatitis" },
+  { label: "HIV/AIDS", value: "HIV/AIDS" },
+  { label: "Dengue Fever", value: "Dengue Fever" },
+  { label: "Typhoid Fever", value: "Typhoid Fever" },
+  { label: "Malaria", value: "Malaria" },
+  { label: "Chickenpox", value: "Chickenpox" },
+  { label: "Measles", value: "Measles" },
+  { label: "Peptic Ulcer Disease", value: "Peptic Ulcer Disease" },
+  { label: "Pancreatitis", value: "Pancreatitis" },
+  { label: "Irritable Bowel Syndrome", value: "Irritable Bowel Syndrome" },
+  { label: "Crohn's Disease", value: "Crohn's Disease" },
+  { label: "Rheumatoid Arthritis", value: "Rheumatoid Arthritis" },
+  { label: "Psoriasis", value: "Psoriasis" },
+  { label: "Eczema", value: "Eczema" },
+  { label: "Lyme Disease", value: "Lyme Disease" },
+  { label: "Sepsis", value: "Sepsis" },
+  { label: "Osteoarthritis", value: "Osteoarthritis" },
+  { label: "Thyroid Disorders", value: "Thyroid Disorders" },
+  { label: "Epilepsy", value: "Epilepsy" },
+  { label: "Parkinson's Disease", value: "Parkinson's Disease" },
+  { label: "Alzheimer's Disease", value: "Alzheimer's Disease" },
+  { label: "Multiple Sclerosis", value: "Multiple Sclerosis" },
+  { label: "Cancer", value: "Cancer" },
+];
+const SymptomsDropdown = [
+  { label: "Fever", value: "Fever" },
+  { label: "Cough", value: "Cough" },
+  { label: "Shortness of Breath", value: "Shortness of Breath" },
+  { label: "Fatigue", value: "Fatigue" },
+  { label: "Headache", value: "Headache" },
+  { label: "Muscle or Body Aches", value: "Muscle or Body Aches" },
+  { label: "Sore Throat", value: "Sore Throat" },
+  { label: "Congestion or Runny Nose", value: "Congestion or Runny Nose" },
+  { label: "Nausea or Vomiting", value: "Nausea or Vomiting" },
+  { label: "Diarrhea", value: "Diarrhea" },
+  { label: "Chills", value: "Chills" },
+  { label: "Chest Pain", value: "Chest Pain" },
+  { label: "Dizziness", value: "Dizziness" },
+  { label: "Abdominal Pain", value: "Abdominal Pain" },
+  { label: "Loss of Appetite", value: "Loss of Appetite" },
+  { label: "Rapid Heartbeat", value: "Rapid Heartbeat" },
+  { label: "Dehydration", value: "Dehydration" },
+  { label: "Skin Rash", value: "Skin Rash" },
+  { label: "Weight Loss", value: "Weight Loss" },
+  { label: "Swelling", value: "Swelling" },
+  { label: "Bruising", value: "Bruising" },
+  { label: "Bleeding", value: "Bleeding" },
+  { label: "Constipation", value: "Constipation" },
+  { label: "Insomnia", value: "Insomnia" },
+  { label: "Anxiety", value: "Anxiety" },
+  { label: "Depression", value: "Depression" },
+  { label: "Palpitations", value: "Palpitations" },
+  { label: "Blurred Vision", value: "Blurred Vision" },
+  { label: "Hearing Loss", value: "Hearing Loss" },
+  { label: "Tinnitus", value: "Tinnitus" },
+  { label: "Hair Loss", value: "Hair Loss" },
+  { label: "Frequent Urination", value: "Frequent Urination" },
+  { label: "Urinary Incontinence", value: "Urinary Incontinence" },
+  { label: "Back Pain", value: "Back Pain" },
+  { label: "Joint Pain", value: "Joint Pain" },
+  { label: "Memory Loss", value: "Memory Loss" },
+  { label: "Difficulty Concentrating", value: "Difficulty Concentrating" },
+  { label: "Stiffness", value: "Stiffness" },
+  { label: "Tremors", value: "Tremors" },
+  { label: "Numbness or Tingling", value: "Numbness or Tingling" },
+  { label: "Weakness", value: "Weakness" },
+  { label: "Change in Vision", value: "Change in Vision" },
+  { label: "Difficulty Swallowing", value: "Difficulty Swallowing" },
+  { label: "Excessive Thirst", value: "Excessive Thirst" },
+  { label: "Excessive Hunger", value: "Excessive Hunger" },
+  { label: "Night Sweats", value: "Night Sweats" },
+  { label: "Hot Flashes", value: "Hot Flashes" },
+  { label: "Mood Swings", value: "Mood Swings" },
+  { label: "Snoring", value: "Snoring" },
+];
+
 export default function EditUserForm()
 {
   const { updateUser, updateUserEmail, updateUserimage } =
@@ -609,13 +714,42 @@ export default function EditUserForm()
                 >
                   Disease
                 </label>
-                <input
-                  type="text"
-                  id="disease"
-                  name="disease"
-                  onChange={handleChange}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
+                <Select
+                  mode="multiple"
+                  className="border-[#89CFF0] h-11 block w-full placeholder-gray-400 rounded-lg border bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  popupClassName="no-border-dropdown-menu" // Apply the custom class here
+                  id="diseases"
+                  name="diseases"
+                  // onChange={handleChangeDiseases}
+                  onInputKeyDown={(e) =>
+                  {
+
+                    if (e.key === 'Enter')
+                    {
+                      e.preventDefault();
+                      let inputValue = e.target.value.trim();
+                      if (inputValue)
+                      {
+                        // handleChangeDiseases([...patientDetails.diseases, inputValue]);
+                        setTimeout(() =>
+                        {
+                          e.target.value = '';
+                          inputValue = '';
+                        }, 0);
+                      }
+                    }
+                  }}
+                  value={patientDetails.diseases}
+                  placeholder="Select Disease"
+                  style={{ overflowY: "auto" }}
+                  dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+                >
+                  {DiseasesDropdown.map((option) => (
+                    <Select.Option key={option.value} value={option.value}>
+                      {option.label}
+                    </Select.Option>
+                  ))}
+                </Select>
                 {errors.contactNumber && (
                   <p className="text-red-500">{errors.contactNumber}</p>
                 )}
