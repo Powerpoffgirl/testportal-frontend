@@ -168,6 +168,7 @@ export default function DoctorLogin()
           progress: undefined,
           theme: "light",
         });
+<<<<<<< HEAD
       } else
       {
         toast.error("Validation failed", {
@@ -180,6 +181,8 @@ export default function DoctorLogin()
           progress: undefined,
           theme: "light",
         });
+=======
+>>>>>>> d97bf0fb4ab6a3e37c09c96f01f8071249d5d325
       }
       console.log(data);
     }
