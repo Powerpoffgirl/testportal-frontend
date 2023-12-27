@@ -304,7 +304,7 @@ export default function PatientForm()
 
     const Gender = [
         { label: "Male", value: "Male" },
-        { label: "Female", value: "female" },
+        { label: "Female", value: "Female" },
         { label: "Other", value: "Other" },
 
     ];

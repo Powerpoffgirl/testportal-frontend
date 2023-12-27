@@ -315,7 +315,7 @@ export default function PatientListUser({ searchTerm })
                     alt={patient.name}
                   />
                     :
-                    <AccountCircleIcon style={{ fontSize: '90px', color: "#A4A4A4" }} />
+                    <AccountCircleIcon style={{ fontSize: '90px', color: "#B1DAED" }} />
                 }
 
                 < div className="gap-x-3">

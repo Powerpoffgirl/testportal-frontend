@@ -72,7 +72,8 @@ import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
 import SuperAdminOtp from "./components/superadminotp";
 import { ToastContainer } from "react-toastify";
 
-function App() {
+function App()
+{
   return (
     <>
 
@@ -359,7 +360,7 @@ function App() {
             <Layout
               Component={RegisterPatient}
               type="doctor"
-              headerTextTop={"Patients's"}
+              headerTextTop={"Lab Patient"}
               headerTextBottom={"Registration"}
             />
           }
@@ -382,8 +383,8 @@ function App() {
             <Layout
               Component={TestListPage}
               type="doctor"
-              headerTextTop={"Patients's"}
-              headerTextBottom={"test list"}
+              headerTextTop={"Lab Test"}
+              headerTextBottom={"List"}
             />
           }
         ></Route>

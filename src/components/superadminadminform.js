@@ -22,7 +22,8 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function SuperAdminAdminForm() {
+export default function SuperAdminAdminForm()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -32,31 +33,6 @@ export default function SuperAdminAdminForm() {
   const onCloseModal = () => setOpen1(false);
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
-
-  // // const [name, setName] = useState("");
-  // const [emailError, setEmailError] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [nameError, setNameError] = useState("");
-  // const [contact, setContact] = useState("");
-  // const [contactError, setContactError] = useState("");
-  // const [age, setAge] = useState("");
-  // const [ageError, setAgeError] = useState("");
-  // const [bodyWeight, setBodyWeight] = useState("");
-  // const [bodyWeightError, setBodyWeightError] = useState("");
-  // const [houseNo, setHouseNo] = useState("");
-  // const [houseNoError, setHouseNoError] = useState("");
-  // const [floor, setFloor] = useState("");
-  // const [floorError, setFloorError] = useState("");
-  // const [block, setBlock] = useState("");
-  // const [blockError, setBlockError] = useState("");
-  // const [area, setArea] = useState("");
-  // const [areaError, setAreaError] = useState("");
-  // const [pinCode, setPinCode] = useState("");
-  // const [pinCodeError, setPinCodeError] = useState("");
-  // const [district, setDistrict] = useState("");
-  // const [districtError, setDistrictError] = useState("");
-  // const [state, setState] = useState("");
-  // const [stateError, setStateError] = useState("");
   const [action, setAction] = useState("");
   const [adminImage, setAdminImage] = useState();
   const [selectedFile, setSelectedFile] = useState(null);
@@ -66,16 +42,19 @@ export default function SuperAdminAdminForm() {
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -84,7 +63,8 @@ export default function SuperAdminAdminForm() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -96,19 +76,22 @@ export default function SuperAdminAdminForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const handleNewProfilePictureClick = async () => {
+  const handleNewProfilePictureClick = async () =>
+  {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleActionChange = (e) => {
+  const handleActionChange = (e) =>
+  {
     setAction(e.target.value);
   };
 
@@ -362,11 +345,13 @@ export default function SuperAdminAdminForm() {
     adminPic: "",
   });
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
@@ -390,8 +375,10 @@ export default function SuperAdminAdminForm() {
   //   }
   // };
 
-  const validateField = (name, value) => {
-    switch (name) {
+  const validateField = (name, value) =>
+  {
+    switch (name)
+    {
       case "name":
         return value ? "" : "Name is required.";
       case "email":
@@ -445,7 +432,8 @@ export default function SuperAdminAdminForm() {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     console.log("E value", e);
     const { name, value, type, checked } = e.target;
 
@@ -457,7 +445,8 @@ export default function SuperAdminAdminForm() {
       adminPic: adminImage,
     }));
 
-    if (type === "checkbox") {
+    if (type === "checkbox")
+    {
       setAdminDetails({
         ...adminDetails,
         permissions: {
@@ -475,7 +464,8 @@ export default function SuperAdminAdminForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setAdminDetails((prevAdminDetails) => ({
         ...prevAdminDetails,
         address: {
@@ -483,7 +473,8 @@ export default function SuperAdminAdminForm() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setAdminDetails((prevAdminDetails) => ({
         ...prevAdminDetails,
         [name]: value,
@@ -492,12 +483,14 @@ export default function SuperAdminAdminForm() {
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
 
     const isEmpty = Object.values(adminDetails).some((value) => value === "");
 
-    if (isEmpty || isEditing === false) {
+    if (isEmpty || isEditing === false)
+    {
       toast.error("Please fill the fields or Update");
       setIsEditing(false);
       return;
@@ -516,7 +509,8 @@ export default function SuperAdminAdminForm() {
     // }
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       return;
     }
@@ -530,11 +524,13 @@ export default function SuperAdminAdminForm() {
       body: JSON.stringify(adminDetails),
     });
     const data = await response.json();
-    if (data.statusCode === 400) {
+    if (data.statusCode === 400)
+    {
       toast.error("Please fill the details");
     }
 
-    if (data.success === true) {
+    if (data.success === true)
+    {
       // navigate("/otp")
       onOpenModal();
       localStorage.setItem("adminId", data.data._id);
@@ -664,7 +660,8 @@ export default function SuperAdminAdminForm() {
                           backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
-                        onClick={() => {
+                        onClick={() =>
+                        {
                           handleClose();
                         }}
                         onMouseEnter={() => setIsHovered(true)}
@@ -693,11 +690,11 @@ export default function SuperAdminAdminForm() {
                       </MenuItem>
                     </Menu>
                   </div>
-                  <label
+                  {/* <label
                     style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}
                   >
                     Edit Profile Picture
-                  </label>
+                  </label> */}
                   <input
                     id="files"
                     type="file"

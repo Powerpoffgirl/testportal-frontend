@@ -348,9 +348,7 @@ export default function PatientList({ searchTerm })
                     alt={patient.name}
                   />
                 ) : (
-                  <AccountCircleIcon
-                    style={{ fontSize: "90px", color: "#A4A4A4" }}
-                  />
+                  <AccountCircleIcon style={{ fontSize: '90px', color: "#B1DAED" }} />
                 )}
                 <div>
                   <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
