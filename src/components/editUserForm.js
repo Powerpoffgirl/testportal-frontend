@@ -12,7 +12,8 @@ import { MdEdit } from "react-icons/md";
 import UserContext from "./userContext";
 import { Select } from "antd";
 
-export default function EditUserForm() {
+export default function EditUserForm()
+{
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
 
@@ -27,7 +28,8 @@ export default function EditUserForm() {
   const [errors, setErrors] = useState({});
   const [doctorDetails, setDoctorDetails] = useState(null);
   const onOpenModal = () => setOpen1(true);
-
+  const appointmentDate = localStorage.getItem("appointment_date")
+  const appointmentTime = localStorage.getItem("appointment_time")
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [floorError, setFloorError] = useState("");
 
@@ -47,21 +49,27 @@ export default function EditUserForm() {
     patientPic: "",
   });
 
-  const handleNewProfilePictureClick = async () => {
+
+  console.log("DATE TIME", appointmentDate, appointmentTime)
+  const handleNewProfilePictureClick = async () =>
+  {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -70,7 +78,8 @@ export default function EditUserForm() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -82,7 +91,8 @@ export default function EditUserForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -94,12 +104,16 @@ export default function EditUserForm() {
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -115,91 +129,47 @@ export default function EditUserForm() {
         console.log("DATA from response", data);
         setUserDetails(data?.data);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
-  const handleToggleEdit = () => {
+  const handleToggleEdit = () =>
+  {
     setIsEditing(!isEditing);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = () =>
+  {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  // const validateField = (name, value) => {
-  //   switch (name) {
-  //     case "name":
-  //       return value ? "" : "Name is required.";
-  //     case "email":
-  //       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-  //         ? ""
-  //         : "Email is not valid.";
-  //     case "contactNumber":
-  //       return value.length > 0 && value.length === 10
-  //         ? ""
-  //         : "Contact number is required or Add valid 10 Digit Number.";
-  //     case "houseNo":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "houseNo is required  ";
-  //     case "floor":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-  //     case "block":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "Block is required  ";
-  //     case "area":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "Area is required and must be a string ";
-  //     case "pinCode":
-  //       return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-  //     case "district":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "District is required and must be a string ";
-  //     case "state":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "State is required and must be a string ";
-  //     case "workHourFrom":
-  //       // Assuming time in HH:MM format, adjust as needed
-  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //         ? ""
-  //         : "Invalid start time.";
-  //     case "workHourTo":
-  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //         ? ""
-  //         : "Invalid end time.";
-  //     // Add more cases as needed for other fields
-  //     default:
-  //       return "";
-  //   }
-  // };
-
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) => {
+    ...Array.from({ length: 24 }, (v, i) =>
+    {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange2 = (e) => {
+  const handleChange2 = (e) =>
+  {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       // workingDays: e,
@@ -207,7 +177,8 @@ export default function EditUserForm() {
     }));
   };
 
-  const handleChange1 = (e) => {
+  const handleChange1 = (e) =>
+  {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: e,
@@ -215,18 +186,21 @@ export default function EditUserForm() {
     }));
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
 
-    if (name === "workingDays") {
+    if (name === "workingDays")
+    {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         workingDays: [...prevUserDetails.workingDays, value],
       }));
-    } else if (name === "workHourFrom" || name === "workHourTo") {
+    } else if (name === "workHourFrom" || name === "workHourTo")
+    {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         workingHours: {
@@ -244,7 +218,8 @@ export default function EditUserForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         address: {
@@ -252,7 +227,8 @@ export default function EditUserForm() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         [name]: value,
@@ -262,7 +238,8 @@ export default function EditUserForm() {
     setIsEditing(true);
   };
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e) =>
+  {
     e.preventDefault();
     const newUserDetails = {
       name: userDetails?.name,
@@ -279,22 +256,30 @@ export default function EditUserForm() {
       },
       userPic: userImage,
     };
-    if (newUserDetails.name === "") {
+    if (newUserDetails.name === "")
+    {
       toast.error("Please write name");
-    } else if (newUserDetails.email === "") {
+    } else if (newUserDetails.email === "")
+    {
       toast.error("Please write email");
-    } else if (newUserDetails.contactNumber === "") {
+    } else if (newUserDetails.contactNumber === "")
+    {
       toast.error("Please write contact number");
-    } else if (newUserDetails.address?.pinCode === "") {
+    } else if (newUserDetails.address?.pinCode === "")
+    {
       toast.error("Please write Pincode");
-    } else if (newUserDetails.address?.district === "") {
+    } else if (newUserDetails.address?.district === "")
+    {
       toast.error("Please write district");
-    } else if (newUserDetails.address?.state === "") {
+    } else if (newUserDetails.address?.state === "")
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate("/userlogin");
@@ -309,11 +294,13 @@ export default function EditUserForm() {
       });
       const data = await response.json();
 
-      if (data.statusCode === 400) {
+      if (data.statusCode === 400)
+      {
         toast.error("Please fill the details");
       }
 
-      if (data.success === true) {
+      if (data.success === true)
+      {
         console.log("Doctor updated successfully.");
         navigate("/doctorlistuser");
       }
@@ -333,7 +320,8 @@ export default function EditUserForm() {
     { label: "Other", value: "Other" },
   ];
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
 
     const newPatientDetails = {
@@ -351,22 +339,30 @@ export default function EditUserForm() {
       },
       patientPic: userImage,
     };
-    if (newPatientDetails.name === "") {
+    if (newPatientDetails.name === "")
+    {
       toast.error("Please write name");
-    } else if (newPatientDetails.age === "") {
+    } else if (newPatientDetails.age === "")
+    {
       toast.error("Please write age");
-    } else if (newPatientDetails.bodyWeight === "") {
+    } else if (newPatientDetails.bodyWeight === "")
+    {
       toast.error("Please write body weight");
-    } else if (newPatientDetails.address?.pinCode === "") {
+    } else if (newPatientDetails.address?.pinCode === "")
+    {
       toast.error("Please write Pincode");
-    } else if (newPatientDetails.address?.district === "") {
+    } else if (newPatientDetails.address?.district === "")
+    {
       toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "") {
+    } else if (newPatientDetails.address?.state === "")
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       const doctorId = localStorage.getItem("doctorId");
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/userlogin`);
@@ -380,7 +376,8 @@ export default function EditUserForm() {
         body: JSON.stringify(newPatientDetails),
       });
       const data = await response.json();
-      if (data.success === true) {
+      if (data.success === true)
+      {
         // navigate("/otp")
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
@@ -413,10 +410,10 @@ export default function EditUserForm() {
                 </label>
                 <input
                   type="text"
-                  placeholder="Dr. Sneha Ahuja"
                   id="name"
                   name="name"
                   onChange={handleChange}
+                  value={userDetails?.name}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
@@ -438,7 +435,7 @@ export default function EditUserForm() {
                       type="text"
                       id="age"
                       name="age"
-                      value={patientDetails?.age}
+                      value={userDetails?.age}
                       onChange={handleChange}
                       className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
@@ -498,7 +495,7 @@ export default function EditUserForm() {
                         popupClassName="no-border-dropdown-menu"
                         id="gender"
                         name="gender"
-                        value={patientDetails?.gender}
+                        value={userDetails?.gender}
                         onChange={handleChange1}
                         placeholder="Select Gender Type"
                         style={{ overflowY: "auto" }}
@@ -537,6 +534,7 @@ export default function EditUserForm() {
                   id="body"
                   name="body"
                   onChange={handleChange}
+                  value={userDetails?.bodyWeight}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
@@ -551,10 +549,11 @@ export default function EditUserForm() {
                   Appointment Date
                 </label>
                 <input
-                  type="number"
-                  id="body"
-                  name="body"
+                  type="text"
+                  id="appointmentDate"
+                  name="appointmentDate"
                   onChange={handleChange}
+                  value={appointmentDate}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
@@ -569,10 +568,11 @@ export default function EditUserForm() {
                   Appointment Time
                 </label>
                 <input
-                  type="number"
-                  id="time"
-                  name="time"
+                  type="text"
+                  id="appointmentTime"
+                  name="appointmentTime"
                   onChange={handleChange}
+                  value={appointmentTime}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
@@ -642,7 +642,7 @@ export default function EditUserForm() {
                       id="houseNo"
                       name="houseNo"
                       onChange={handleChange}
-                      // placeholder="1234"
+                      value={userDetails?.address?.houseNo}
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
@@ -652,6 +652,7 @@ export default function EditUserForm() {
                       id="floor"
                       name="floor"
                       onChange={handleChange}
+                      value={userDetails?.address?.floor}
                       placeholder="Floor"
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
@@ -662,6 +663,7 @@ export default function EditUserForm() {
                       id="block"
                       name="block"
                       onChange={handleChange}
+                      value={userDetails?.address?.block}
                       placeholder="Block"
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
@@ -675,6 +677,7 @@ export default function EditUserForm() {
                       id="pinCode"
                       name="pinCode"
                       onChange={handleChange}
+                      value={userDetails?.address?.pinCode}
                       placeholder="Pin Code"
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
@@ -690,6 +693,7 @@ export default function EditUserForm() {
                     id="area"
                     name="area"
                     onChange={handleChange}
+                    value={userDetails?.address?.area}
                     placeholder="Area/Landmark"
                     className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
@@ -703,6 +707,7 @@ export default function EditUserForm() {
                       id="district"
                       name="district"
                       onChange={handleChange}
+                      value={userDetails?.address?.district}
                       placeholder="District"
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
@@ -717,6 +722,7 @@ export default function EditUserForm() {
                       id="state"
                       name="state"
                       onChange={handleChange}
+                      value={userDetails?.address?.state}
                       placeholder="State"
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
