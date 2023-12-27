@@ -422,11 +422,11 @@ export default function PatientForm() {
             {/* ------------email------------ */}
             <div className="w-1/2 pl-2">
               <div className="flex flex-row justify-between">
-                <div className="w-full sm:w-1/3 px-2 ">
-                  <div className="mt-3">
+                <div className="w-full sm:w-1/3 px-2">
+                  <div className="mt-5">
                     <label
                       htmlFor="age"
-                      className="block text-black text-lg font-semibold "
+                      className="block text-black text-lg font-semibold"
                     >
                       Age
                     </label>
@@ -444,75 +444,65 @@ export default function PatientForm() {
                   </div>
                 </div>
                 <div className="w-full sm:w-1/3 px-2">
-                  <div className="flex flex-col ">
-                    <div className="mt-3">
-                      <label
-                        className="block text-lg font-semibold text-black font-lato"
-                        htmlFor="ageType"
-                      >
-                        Age Type
-                      </label>
-                      <Select
-                        // mode="multiple"
-                        className="border border-[#89CFF0] rounded-lg h-11"
-                        popupClassName="no-border-dropdown-menu"
-                        id="ageType"
-                        name="ageType"
-                        value={patientDetails?.ageType}
-                        onChange={handleChange2}
-                        placeholder="Select Age Type"
-                        style={{ overflowY: "auto" }}
-                        dropdownStyle={{
-                          maxHeight: "300px",
-                          overflowY: "auto",
-                        }}
-                      >
-                        {AgeType.map((option) => (
-                          <Select.Option
-                            key={option.value}
-                            value={option.value}
-                          >
-                            {option.label}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </div>
+                  <div className="mt-5">
+                    <label
+                      className="block text-lg font-semibold text-black font-lato"
+                      htmlFor="ageType"
+                    >
+                      Age Type
+                    </label>
+                    <Select
+                      // mode="multiple"
+                      className="border border-[#89CFF0] rounded-lg h-11"
+                      popupClassName="no-border-dropdown-menu"
+                      id="ageType"
+                      name="ageType"
+                      value={patientDetails?.ageType}
+                      onChange={handleChange2}
+                      placeholder="Select Age Type"
+                      style={{ overflowY: "auto" }}
+                      dropdownStyle={{
+                        maxHeight: "300px",
+                        overflowY: "auto",
+                      }}
+                    >
+                      {AgeType.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                          {option.label}
+                        </Select.Option>
+                      ))}
+                    </Select>
                   </div>
                 </div>
                 <div className="w-full sm:w-1/3 px-2">
-                  <div className="flex flex-col ">
-                    <div className="mt-3">
-                      <label
-                        className="block text-lg font-semibold text-black font-lato"
-                        htmlFor="gender"
-                      >
-                        Gender
-                      </label>
-                      <Select
-                        // mode="multiple"
-                        className="border border-[#89CFF0] rounded-lg h-11"
-                        popupClassName="no-border-dropdown-menu"
-                        id="gender"
-                        name="gender"
-                        value={patientDetails?.gender}
-                        onChange={handleChange1}
-                        placeholder="Select Gender Type"
-                        style={{ overflowY: "auto" }}
-                        dropdownStyle={{
-                          maxHeight: "300px",
-                          overflowY: "auto",
-                        }}
-                      >
-                        {Gender.map((option) => (
-                          <Select.Option
-                            key={option.value}
-                            value={option.value}
-                          >
-                            {option.label}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </div>
+                  <div className="mt-5">
+                    <label
+                      className="block text-lg font-semibold text-black font-lato"
+                      htmlFor="gender"
+                    >
+                      Gender
+                    </label>
+                    <Select
+                      // mode="multiple"
+                      className="border border-[#89CFF0] rounded-lg h-11"
+                      popupClassName="no-border-dropdown-menu"
+                      id="gender"
+                      name="gender"
+                      value={patientDetails?.gender}
+                      onChange={handleChange1}
+                      placeholder="Select Gender Type"
+                      style={{ overflowY: "auto" }}
+                      dropdownStyle={{
+                        maxHeight: "300px",
+                        overflowY: "auto",
+                      }}
+                    >
+                      {Gender.map((option) => (
+                        <Select.Option key={option.value} value={option.value}>
+                          {option.label}
+                        </Select.Option>
+                      ))}
+                    </Select>
                   </div>
                 </div>
               </div>
@@ -521,17 +511,17 @@ export default function PatientForm() {
           {/* ------------email------------ */}
           <div className="flex flex-row justify-between">
             <div className="w-full sm:w-1/3 pr-2">
-              <div className="mt-3">
+              <div className="mt-5">
                 <label
                   htmlFor="email1"
                   className="block text-black text-lg font-semibold"
                 >
-                  Body Weight 1
+                  Body Weight
                 </label>
                 <input
-                  type="email"
-                  id="email1"
-                  name="email1"
+                  type="number"
+                  id="body"
+                  name="body"
                   onChange={handleChange}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
@@ -539,17 +529,17 @@ export default function PatientForm() {
               </div>
             </div>
             <div className="w-full sm:w-1/3 pr-2">
-              <div className="mt-3">
+              <div className="mt-5">
                 <label
                   htmlFor="email2"
                   className="block text-black text-lg font-semibold"
                 >
-                  Body Weight 2
+                  Appointment Date
                 </label>
                 <input
-                  type="email"
-                  id="email2"
-                  name="email2"
+                  type="number"
+                  id="body"
+                  name="body"
                   onChange={handleChange}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
@@ -557,17 +547,17 @@ export default function PatientForm() {
               </div>
             </div>
             <div className="w-full sm:w-1/3">
-              <div className="mt-3">
+              <div className="mt-5">
                 <label
                   htmlFor="email3"
                   className="block text-black text-lg font-semibold"
                 >
-                  Body Weight 3
+                  Appointment Time
                 </label>
                 <input
-                  type="email"
-                  id="email3"
-                  name="email3"
+                  type="number"
+                  id="time"
+                  name="time"
                   onChange={handleChange}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
@@ -576,24 +566,49 @@ export default function PatientForm() {
             </div>
           </div>
           {/* -----------contact----------- */}
-          <div className="mt-3">
-            <label
-              for="contact"
-              className="block text-black text-lg font-semibold"
-            >
-              Contact Number
-            </label>
-            <input
-              type="number"
-              placeholder="+91-8603678862"
-              id="contactNumber"
-              name="contactNumber"
-              onChange={handleChange}
-              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-            />
-            {errors.contactNumber && (
-              <p className="text-red-500">{errors.contactNumber}</p>
-            )}
+          <div className="flex flex-row">
+            <div className="w-full sm:w-1/2 pr-2">
+              <div className="mt-3">
+                <label
+                  htmlFor="contact"
+                  className="block text-black text-lg font-semibold"
+                >
+                  Issues
+                </label>
+                <input
+                  type="text"
+                  id="issue"
+                  name="issues"
+                  onChange={handleChange}
+                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                />
+                {errors.contactNumber && (
+                  <p className="text-red-500">{errors.contactNumber}</p>
+                )}
+              </div>
+            </div>
+            <div className="w-full sm:w-1/2 pl-2">
+              <div className="mt-3">
+                <label
+                  htmlFor="contact"
+                  className="block text-black text-lg font-semibold"
+                >
+                  Disease
+                </label>
+                <input
+                  type="text"
+                  id="disease"
+                  name="disease"
+                  onChange={handleChange}
+                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                />
+                {errors.contactNumber && (
+                  <p className="text-red-500">{errors.contactNumber}</p>
+                )}
+              </div>
+
+              {/* Add the second input field here */}
+            </div>
           </div>
           {/* -----------address----------- */}
           <div className="mt-3">
