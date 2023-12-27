@@ -80,21 +80,18 @@ export default function Qr() {
   return (
     <>
       <div
-        className="flex min-h-screen relative overflow-auto 
-    box-border"
       >
-
         <div
-          className="flex flex-col bg-customGreen "
+          className=" bg-customGreen "
           style={{
-            width: isTab ? "100%" : "77%",
+
           }}
         >
 
 
-          <div className="flex flex-row ">
+          <div className="flex flex-col lg:flex-row ">
             {/* --------------left-------------- */}
-            <div className="flex flex-col border bg-white w-1/2 p-6 my-5 mr-5">
+            <div className="flex flex-col border bg-white w-2/3 lg:w-1/3 p-6 my-5 mr-5">
 
 
 
@@ -204,17 +201,20 @@ export default function Qr() {
 
               {/* -----------address----------- */}
               <div className="mt-3 flex flex-row ">
-                <p
-                  className="block text-black text-lg font-semibold"
-                >
-                  Address :
+
+                <p className="block text-black text-lg font-semibold">
+                  Address:
                 </p>
-                <p className=" text-black text-lg flex " >{userDetails?.address?.houseNo}, {userDetails?.address?.floor}, {userDetails?.address?.block}, {userDetails?.address?.pinCode}, {userDetails?.address?.area} ,{userDetails?.address?.district} ,{userDetails?.address?.state}</p>
+
+                <div class="flex flex- overflow-hidden">
+                  <p className=" text-black text-lg  " >{userDetails?.address?.houseNo}, {userDetails?.address?.floor}, {userDetails?.address?.block}, {userDetails?.address?.pinCode}, {userDetails?.address?.area} ,{userDetails?.address?.district} ,{userDetails?.address?.state}
+                  </p>
+                </div>
               </div>
             </div>
 
             {/* ----------------------------------right---------------------------------- */}
-            <div className="border bg-white flex flex-col w-1/2 p-6 my-5 mx-3">
+            <div className="border bg-white flex flex-col w-2/3 lg:w-1/3 p-6 my-5  ">
               <text
                 className="text-center"
                 style={{
@@ -237,52 +237,6 @@ export default function Qr() {
               </div>
             </div>
 
-
-            {/* <div
-            className="flex flex-col gap-2 px-3 w-full border"
-            style={{
-              top: "4%",
-              left: "2%",
-              position: "relative",
-              overflow: "hidden",
-              // justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <text
-              className="text-center"
-              style={{
-                fontWeight: 600,
-                fontSize: "24px",
-                lineHeight: "28.8px",
-                fontFamily: "Lato, sans-serif",
-              }}
-            >
-              Generate Personal QR
-            </text>
-            <p>
-              {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
-            </p>
-            QR
-
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <button
-                className="mt-4 bg-customRed w-40"
-                style={{
-                  display: "inline",
-                  height: "45px",
-                  borderRadius: "43px",
-                  color: "white",
-                  fontSize: "24px",
-                  fontWeight: 600,
-                  lineHeight: "28.8px",
-                }}
-                onClick={handleDownload}
-              >
-                Download
-              </button>
-            </div>
-          </div> */}
           </div>
         </div >
       </div >

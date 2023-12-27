@@ -395,7 +395,7 @@ export default function DoctorFormAdmin() {
     <>
       <div className="flex flex-col -ml-7  lg:flex-row">
         {/* --------------left-------------- */}
-        <div className="flex flex-col border bg-white lg:w-1/4 p-6 m-5 ">
+        <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
           <div className="mx-auto my-2">
             <div className=" " >
               <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>

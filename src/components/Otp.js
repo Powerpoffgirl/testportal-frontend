@@ -158,9 +158,9 @@ const OTP = () => {
           }}>
           <AdminHeader line1="Find" line2="Doctors"></AdminHeader>
 
-          <div className="flex flex-row ml-2">
+          <div className="flex flex-col lg:flex-row ml-2">
             {/* --------------left-------------- */}
-            <div className="flex flex-col border bg-white w-1/4 p-6 m-5">
+            <div className="flex flex-col border bg-white lg:w-1/3 p-5 ml-5 mt-5 mb-5 md:1/3">
               <div className="mx-auto my-2">
                 <div className=" " >
                   <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
@@ -182,73 +182,6 @@ const OTP = () => {
                   </div>
                 </div>
 
-                {/* <div className="flex flex-row mt-5 mb-3">
-{/* 
-                  <p className="block text-black text-lg font-semibold ">
-                    Edit Profile Picture
-                  </p>
-
-                  <p
-                    className="mt-2 ml-3"
-                    aria-controls="profile-pic-menu"
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={handleClick}
-                    style={{
-                      cursor: "pointer",
-
-                    }}
-                  >
-                    <FaAngleDown />
-                  </p> */}
-
-                {/* <div style={{ backgroundColor: "#89CFF0" }}>
-                    <Menu
-                      id="profile-pic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      MenuListProps={{
-                        "aria-labelledby": "edit-profile-pic-text",
-                        style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
-                      }}
-                    >
-                      <MenuItem
-                        style={{
-                          backgroundColor: "#89CFF0",
-                          color: isHovered ? "red" : "white",
-                        }}
-                        onClick={() => {
-                          handleClose();
-                        }}
-                        onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}
-                      >
-                        {" "}
-                        <span style={{ marginRight: "8px" }}>
-                          <HiOutlineUserAdd />
-                        </span>
-                        <label htmlFor="files">New profile picture</label>
-                      </MenuItem>
-
-                      <MenuItem
-                        style={{
-                          backgroundColor: "#89CFF0",
-                          color: isHovered1 ? "red" : "white",
-                        }}
-                        // onClick={handleRemoveProfilePicture}
-                        onMouseEnter={() => setIsHovered1(true)}
-                        onMouseLeave={() => setIsHovered1(false)}
-                      >
-                        <span style={{ marginRight: "8px" }}>
-                          <FaRegTrashAlt />
-                        </span>
-                        <span>Remove current picture</span>
-                      </MenuItem>
-                    </Menu>
-                  </div> 
-
-                </div> */}
               </div>
 
               <div className="mt-4 flex flex-row">
@@ -289,7 +222,16 @@ const OTP = () => {
                 >
                   Specialist:
                 </p>
-                <p className="block text-black text-lg ">{userDetails?.speciality}</p>
+
+                <p class=" flex flex-wrap">
+                  {userDetails?.speciality?.map((item, index) => {
+                    return (
+                      <p key={index} className="block text-black text-lg ">{item},</p>
+
+                    )
+                  })}
+                </p>
+
               </div>
 
               <div className="mt-3 flex flex-row">
@@ -304,7 +246,7 @@ const OTP = () => {
             </div>
 
             {/* ----------------------------------right---------------------------------- */}
-            <div className="border bg-white flex flex-col w-3/4 p-6 my-5 mx-3">
+            <div className="border bg-white flex flex-col lg:w-2/3 p-6 my-5 mx-3 md:2/3">
               <p className="text-3xl " >Personal Information</p>
               <hr className="border my-2 " />
               {/* -------name------- */}
@@ -340,9 +282,9 @@ const OTP = () => {
                 <p
                   className="block text-black text-lg font-semibold"
                 >
-                  Address :
+                  Address:
                 </p>
-                <p className="block text-black text-lg ">{userDetails?.address?.houseNo} {userDetails?.address?.floor} {userDetails?.address?.block} {userDetails?.address?.pinCode} {userDetails?.address?.area} {userDetails?.address?.district} {userDetails?.address?.state}</p>
+                <p className=" text-black text-lg flex flex-wrap"> {" "} {userDetails?.address?.houseNo}, {userDetails?.address?.floor}, {userDetails?.address?.block}, {userDetails?.address?.pinCode}, {userDetails?.address?.area} ,{userDetails?.address?.district} ,{userDetails?.ddress?.state}</p>
               </div>
               <hr class=" mt-3" />
 
