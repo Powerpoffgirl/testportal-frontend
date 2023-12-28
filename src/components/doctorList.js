@@ -65,9 +65,7 @@ export default function DoctorList({ searchTerm }) {
   useEffect(() => {
     localStorage.clear();
   }, []);
-  useEffect(() => {
-    localStorage.clear()
-  }, [])
+
 
   useEffect(() => {
     const fetchDoctorDetails = async () => {
@@ -86,7 +84,6 @@ export default function DoctorList({ searchTerm }) {
         );
         setDoctorsList(verifiedDoctors);
       } catch (error) {
-
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -230,12 +227,10 @@ export default function DoctorList({ searchTerm }) {
     otp[index] = value;
 
     if (index < MAX_LENGTH - 1 && value) {
-      if (index < MAX_LENGTH - 1 && value) {
-        otpInputs[index + 1].focus();
-      }
+      otpInputs[index + 1].focus();
+    }
 
-      setOtp([...otp]);
-    };
+    setOtp([...otp]);
   }
   const verifyOTP = async () => {
     try {
