@@ -153,7 +153,7 @@ export default function DoctorList({ searchTerm }) {
       });
     } else {
       toast.error("Failed to Book Appointment", {
-        position: "top-center",
+        // position: "top-center",
       });
     }
   };
@@ -484,264 +484,260 @@ export default function DoctorList({ searchTerm }) {
                   <p className="text-lg font-medium text-black">
                     Select service
                   </p>
-                  <div className=" py-1 mb-2">
-                    <p className="text-lg font-medium text-black">
-                      Select service
-                    </p>
 
-                    <div className="flex flex-col mb-2">
-                      <div className="flex flex-col  bg-white p-1 px-3">
-                        <p className="flex place-content-between my-1">
-                          <span className="font-medium px-2">Consultation</span>{" "}
-                          <span className="font-bold px-2">Rs1000</span>
-                        </p>
-                        {!bookingslottoggle && !appointment && (
-                          <div>
-                            <p className="text-xs text-gray-500 px-2 my-1">
-                              Slot available for Tommorrow{" "}
-                            </p>
-                            <p className="flex flex-wrap space-x-1 ml-2 my-1">
-                              <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                                3:00 AM
-                              </p>
-                              <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                                3:00 AM
-                              </p>
-                              <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                                3:00 AM
-                              </p>
-                              <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                                3:00 AM
-                              </p>
-                            </p>
-                          </div>
-                        )}
-                        {appointment && (
-                          <div class="mx-2">
-                            <p class="font-medium text-gray-500 ">
-                              Date:{" "}
-                              {
-                                selectedDoctor?.slots[currentIndex].date.split(
-                                  "T"
-                                )[0]
-                              }
-                            </p>
-                            <p class="font-medium text-gray-500 mb-3">
-                              Time:
-                              {selectedDoctor?.slots[currentIndex].startTime}
-                            </p>
-                            <hr />
-                            <p class="mt-2">Mobile Number</p>
-                            <div class="flex flex-row">
-                              <img src={phonelogo} class="pl-1 pr-3"></img>
-                              <input
-                                class=" border my-1 placeholder-gray-500 p-1 pl-2"
-                                type="tel"
-                                id="phone-number"
-                                name="contactNumber"
-                                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                                required
-                                value={contactNumber}
-                                onChange={handleChange}
-                              />
-                            </div>
-                            <p class=" text-red-500 ">{mobileNumberError}</p>
-                            <div class="flex flex-row-reverse">
-                              {mobileNumberError.length === 0 ? (
-                                <button
-                                  className="text-white text-xs rounded-3xl px-3 py-1 "
-                                  onClick={handleOtp}
-                                  style={{ backgroundColor: " #89CFF0" }}
-                                >
-                                  Send OTP
-                                </button>
-                              ) : (
-                                <button
-                                  className="text-white text-xs rounded-3xl px-3 py-1 "
-                                  disabled
-                                  onClick={handleOtp}
-                                  style={{ backgroundColor: " #89CFF0" }}
-                                >
-                                  Send OTP
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        )}
+                  <div className="flex flex-col mb-2">
+                    <div className="flex flex-col  bg-white p-1 px-3">
+                      <p className="flex place-content-between my-1">
+                        <span className="font-medium px-2">Consultation</span>{" "}
+                        <span className="font-bold px-2">Rs1000</span>
+                      </p>
+                      {!bookingslottoggle && !appointment && (
                         <div>
-                          {bookingslottoggle && (
-                            <div className="flex flex-col">
-                              <div className=" flex flex-col text-center space-y-2">
-                                <div class="flex flex-row border-2">
-                                  <button
-                                    className="text-white text-xs rounded-3xl  "
-                                    onClick={goToPrev}
-                                  >
-                                    <FaAngleLeft style={{ color: "black" }} />
-                                  </button>
-                                  <div className="flex flex-row overflow-x-auto mx-2 ">
-                                    {bookingslot?.map((data, index) => {
-                                      console.log(data);
-                                      const { year, monthName, day, dayName } =
-                                        getYearMonthDay(data.date);
-                                      // console.log(year, monthName, day, dayName)
-                                      if (data.isBooked == true) {
-                                        return (
-                                          <div
-                                            key={index}
-                                            className="flex flex-col px-2"
-                                            disabled
-                                          >
-                                            <p>{monthName}</p>
-                                            <p
-                                              className=" p-2 border-2 rounded-lg "
-                                              style={{
-                                                backgroundColor: "#89CFF0",
-                                              }}
-                                            >
-                                              {day}
-                                            </p>
-                                            <p>{dayName}</p>
-                                          </div>
-                                        );
-                                      } else if (index == currentIndex) {
-                                        return (
-                                          <div
-                                            key={index}
-                                            className="flex flex-col px-2"
-                                          >
-                                            <p>{monthName}</p>
-                                            <p className=" p-2 border-2 rounded-lg bg-blue-100">
-                                              {day}
-                                            </p>
-                                            <p>{dayName}</p>
-                                          </div>
-                                        );
-                                      } else {
-                                        return (
-                                          <div
-                                            key={index}
-                                            className="flex flex-col px-2 hover:cursor-pointer"
-                                            onClick={() => {
-                                              handleDateClick(index);
-                                            }}
-                                          >
-                                            <p>{monthName}</p>
-                                            <p className=" p-2 border-2 rounded-lg bg-gray-200">
-                                              {day}
-                                            </p>
-                                            <p>{dayName}</p>
-                                          </div>
-                                        );
-                                      }
-                                    })}
-                                  </div>
-                                  <button
-                                    className="text-white text-xs rounded-3xl"
-                                    onClick={goToNext}
-                                  >
-                                    <FaAngleRight style={{ color: "black" }} />
-                                  </button>
-                                </div>
-
-                                <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                                  {[...Array(numberOfRows)].map(
-                                    (_, rowIndex) => {
+                          <p className="text-xs text-gray-500 px-2 my-1">
+                            Slot available for Tommorrow{" "}
+                          </p>
+                          <p className="flex flex-wrap space-x-1  my-1">
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                          </p>
+                        </div>
+                      )}
+                      {appointment && (
+                        <div class="mx-2">
+                          <p class="font-medium text-gray-500 ">
+                            Date:{" "}
+                            {
+                              selectedDoctor?.slots[currentIndex].date.split(
+                                "T"
+                              )[0]
+                            }
+                          </p>
+                          <p class="font-medium text-gray-500 mb-3">
+                            Time:
+                            {selectedDoctor?.slots[currentIndex].startTime}
+                          </p>
+                          <hr />
+                          <p class="mt-2">Mobile Number</p>
+                          <div class="flex flex-row">
+                            <img src={phonelogo} class="pl-1 pr-3"></img>
+                            <input
+                              class=" border my-1 placeholder-gray-500 p-1 pl-2"
+                              type="tel"
+                              id="phone-number"
+                              name="contactNumber"
+                              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                              required
+                              value={contactNumber}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <p class=" text-red-500 ">{mobileNumberError}</p>
+                          <div class="flex flex-row-reverse">
+                            {mobileNumberError.length === 0 ? (
+                              <button
+                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                onClick={handleOtp}
+                                style={{ backgroundColor: " #89CFF0" }}
+                              >
+                                Send OTP
+                              </button>
+                            ) : (
+                              <button
+                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                disabled
+                                onClick={handleOtp}
+                                style={{ backgroundColor: " #89CFF0" }}
+                              >
+                                Send OTP
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      <div>
+                        {bookingslottoggle && (
+                          <div className="flex flex-col">
+                            <div className=" flex flex-col text-center space-y-2">
+                              <div class="flex flex-row border-2">
+                                <button
+                                  className="text-white text-xs rounded-3xl  "
+                                  onClick={goToPrev}
+                                >
+                                  <FaAngleLeft style={{ color: "black" }} />
+                                </button>
+                                <div className="flex flex-row overflow-x-auto mx-2 ">
+                                  {bookingslot?.map((data, index) => {
+                                    console.log(data);
+                                    const { year, monthName, day, dayName } =
+                                      getYearMonthDay(data.date);
+                                    // console.log(year, monthName, day, dayName)
+                                    if (data.isBooked == true) {
                                       return (
                                         <div
-                                          key={rowIndex}
-                                          className="flex space-x-2"
+                                          key={index}
+                                          className="flex flex-col px-2"
+                                          disabled
                                         >
-                                          {bookingslot
-                                            .slice(
-                                              rowIndex * numberOfColumns,
-                                              (rowIndex + 1) * numberOfColumns
-                                            )
-                                            ?.map((data, index) => {
-                                              selectedschedule =
-                                                selectedschedule + 1;
-                                              index = selectedschedule - 1;
-                                              // console.log(selectedschedule)
-                                              if (data.isBooked == true) {
-                                                return (
-                                                  <div
-                                                    key={index}
-                                                    className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
-                                                    disabled
-                                                    style={{
-                                                      backgroundColor:
-                                                        "#89CFF0",
-                                                    }}
-                                                  >
-                                                    {data.startTime}
-                                                  </div>
-                                                );
-                                              } else if (
-                                                selectedschedule - 1 ===
-                                                currentIndex
-                                              ) {
-                                                return (
-                                                  <div
-                                                    key={index}
-                                                    className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
-                                                  >
-                                                    {data.startTime}
-                                                  </div>
-                                                );
-                                              } else {
-                                                return (
-                                                  <div
-                                                    key={index}
-                                                    className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                                    onClick={() => {
-                                                      handleDateClick(index);
-                                                    }}
-                                                  >
-                                                    {data.startTime}
-                                                  </div>
-                                                );
-                                              }
-                                            })}
+                                          <p>{monthName}</p>
+                                          <p
+                                            className=" p-2 border-2 rounded-lg "
+                                            style={{
+                                              backgroundColor: "#89CFF0",
+                                            }}
+                                          >
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    } else if (index == currentIndex) {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2"
+                                        >
+                                          <p>{monthName}</p>
+                                          <p className=" p-2 border-2 rounded-lg bg-blue-100">
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    } else {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2 hover:cursor-pointer"
+                                          onClick={() => {
+                                            handleDateClick(index);
+                                          }}
+                                        >
+                                          <p>{monthName}</p>
+                                          <p className=" p-2 border-2 rounded-lg bg-gray-200">
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
                                         </div>
                                       );
                                     }
-                                  )}
+                                  })}
                                 </div>
+                                <button
+                                  className="text-white text-xs rounded-3xl"
+                                  onClick={goToNext}
+                                >
+                                  <FaAngleRight style={{ color: "black" }} />
+                                </button>
+                              </div>
+
+                              <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
+                                {[...Array(numberOfRows)].map(
+                                  (_, rowIndex) => {
+                                    return (
+                                      <div
+                                        key={rowIndex}
+                                        className="flex space-x-2"
+                                      >
+                                        {bookingslot
+                                          .slice(
+                                            rowIndex * numberOfColumns,
+                                            (rowIndex + 1) * numberOfColumns
+                                          )
+                                          ?.map((data, index) => {
+                                            selectedschedule =
+                                              selectedschedule + 1;
+                                            index = selectedschedule - 1;
+                                            // console.log(selectedschedule)
+                                            if (data.isBooked == true) {
+                                              return (
+                                                <div
+                                                  key={index}
+                                                  className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
+                                                  disabled
+                                                  style={{
+                                                    backgroundColor:
+                                                      "#89CFF0",
+                                                  }}
+                                                >
+                                                  {data.startTime}
+                                                </div>
+                                              );
+                                            } else if (
+                                              selectedschedule - 1 ===
+                                              currentIndex
+                                            ) {
+                                              return (
+                                                <div
+                                                  key={index}
+                                                  className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
+                                                >
+                                                  {data.startTime}
+                                                </div>
+                                              );
+                                            } else {
+                                              return (
+                                                <div
+                                                  key={index}
+                                                  className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
+                                                  onClick={() => {
+                                                    handleDateClick(index);
+                                                  }}
+                                                >
+                                                  {data.startTime}
+                                                </div>
+                                              );
+                                            }
+                                          })}
+                                      </div>
+                                    );
+                                  }
+                                )}
                               </div>
                             </div>
-                          )}
-                        </div>
-                        <div className="flex flex-row-reverse my-1">
-                          {!bookingslottoggle && !appointment && (
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-row-reverse my-1">
+                        {!bookingslottoggle && !appointment && (
+                          <button
+                            className="text-white text-xs rounded-3xl px-3 py-1 "
+                            onClick={() => {
+                              showSlot();
+                            }}
+                            style={{ backgroundColor: " #89CFF0" }}
+                          >
+                            Book Slots
+                          </button>
+                        )}
+                        {bookingslottoggle && !appointment && (
+                          <div class="flex mx-auto space-x-4 mt-3">
                             <button
-                              className="text-white text-xs rounded-3xl px-3 py-1 "
-                              onClick={() => {
-                                showSlot();
-                              }}
+                              className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
+                              onClick={handleBookAppointment}
                               style={{ backgroundColor: " #89CFF0" }}
                             >
-                              Book Slots
+                              Book Appointment
                             </button>
-                          )}
-                          {bookingslottoggle && !appointment && (
-                            <div class="flex mx-auto space-x-4 mt-3">
-                              <button
-                                className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
-                                onClick={handleBookAppointment}
-                                style={{ backgroundColor: " #89CFF0" }}
-                              >
-                                Book Appointment
-                              </button>
-                              {/* <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                            {/* <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
                           Go Back
                         </button> */}
-                            </div>
-                          )}
-                        </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
+
               </div>
             )}
             {otppage && (

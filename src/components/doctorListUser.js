@@ -54,9 +54,9 @@ export default function DoctorListUser({ searchTerm }) {
     "Urology",
   ];
 
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
+  // useEffect(() => {
+  //   localStorage.clear();
+  // }, []);
 
   useEffect(() => {
     const fetchDoctorDetails = async () => {
