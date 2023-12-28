@@ -14,6 +14,13 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 import phonelogo from '../assets/phone.svg'
+import close_button from '../assets/close_button.svg'
+import delete_button from '../assets/delete_button.svg'
+import edit_button from '../assets/edit_button.svg'
+import CloseIcon from '@mui/icons-material/Close';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,8 +42,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function DoctorList({ searchTerm })
-{
+export default function DoctorList({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -49,17 +55,13 @@ export default function DoctorList({ searchTerm })
 
   const categories = ["All", "General Medicine", "Cardiology", "Dermatology", "Endocrinology", "Urology"];
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     localStorage.clear()
   }, [])
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
           method: "GET",
           headers: {
@@ -73,19 +75,16 @@ export default function DoctorList({ searchTerm })
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, [searchTerm]);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     // Check if there is a searchTerm and the doctorsList is not empty.
-    if (doctorsList.length > 0 && searchTerm)
-    {
+    if (doctorsList.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedDoctors = doctorsList.filter(
         (doctor) =>
@@ -93,15 +92,13 @@ export default function DoctorList({ searchTerm })
           doctor.speciality.toLowerCase().includes(lowerCaseSearchTerm)
       );
       setFilteredDoctors(matchedDoctors);
-    } else
-    {
+    } else {
       // If no searchTerm or doctorsList is empty, use the original list.
       setFilteredDoctors(doctorsList);
     }
   }, [doctorsList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleQRCode = (doctorId) =>
-  {
+  const handleQRCode = (doctorId) => {
     console.log("HELLO");
     localStorage.setItem("doctorId", doctorId);
     const doctor = doctorsList?.find((doc) => doc._id === doctorId);
@@ -112,8 +109,7 @@ export default function DoctorList({ searchTerm })
     onOpenModal();
   };
 
-  const handleBookAppointment = async () =>
-  {
+  const handleBookAppointment = async () => {
     console.log(selectedDoctor?.slots[currentIndex])
     const bookslot = {
       "date": selectedDoctor?.slots[currentIndex].date.split('T')[0],
@@ -136,17 +132,17 @@ export default function DoctorList({ searchTerm })
 
     showappointment()
     showSlot()
+    toast.success('Appointment Booked Successfully', {
+      position: "top-center",
+    })
 
   };
 
-  const handleFilterDocotors = (item) =>
-  {
+  const handleFilterDocotors = (item) => {
     console.log("ITEM NAME IS================>", item);
-    if (item.toLowerCase() === "all")
-    {
+    if (item.toLowerCase() === "all") {
       setFilteredDoctors(doctorsList);
-    } else
-    {
+    } else {
       const filteredDoctors = doctorsList.filter(
         (doc) => doc.speciality === item
       );
@@ -160,31 +156,34 @@ export default function DoctorList({ searchTerm })
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [contactNumber, setcontactNumber] = useState(null)
+  const [mobileNumberError, setmobileNumberError] = useState('');
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const MAX_LENGTH = 6;
   const otpInputs = [];
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     let { name, value } = e.target
     console.log(value)
+    if (value.length != 10) {
+      setmobileNumberError('Please enter a valid number')
+    }
+    if (value.length == 10) {
+      setmobileNumberError('')
+    }
     setcontactNumber(value)
     console.log(contactNumber)
   }
 
-  const showSlot = () =>
-  {
+  const showSlot = () => {
     setbookingslottoggle(!bookingslottoggle)
   }
 
-  const showappointment = () =>
-  {
+  const showappointment = () => {
 
     setappointment(!appointment)
   }
 
-  const handleOtp = async () =>
-  {
+  const handleOtp = async () => {
     const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
       method: "post",
       headers: {
@@ -201,29 +200,24 @@ export default function DoctorList({ searchTerm })
     setotppage(true)
 
   }
-  const handleInputChange = (e, index) =>
-  {
+  const handleInputChange = (e, index) => {
     const value = e.target.value;
 
-    if (isNaN(value))
-    {
+    if (isNaN(value)) {
       return; // Allow only numeric input
     }
 
     otp[index] = value;
 
-    if (index < MAX_LENGTH - 1 && value)
-    {
+    if (index < MAX_LENGTH - 1 && value) {
       otpInputs[index + 1].focus();
     }
 
     setOtp([...otp]);
   };
 
-  const verifyOTP = async () =>
-  {
-    try
-    {
+  const verifyOTP = async () => {
+    try {
       const userId = localStorage.getItem("userId")
 
       const otpString = otp.join('');
@@ -237,16 +231,14 @@ export default function DoctorList({ searchTerm })
       });
 
       const data = await response.json();
-      if (data.success === true)
-      {
+      if (data.success === true) {
         console.log("DATA from response", data)
 
         localStorage.setItem('token', data?.data?.token)
         navigate("/edituserform")
       }
 
-    } catch (error)
-    {
+    } catch (error) {
       console.error('There was an error verifying the OTP:', error);
     }
   };
@@ -256,8 +248,7 @@ export default function DoctorList({ searchTerm })
   const numberOfColumns = 4;
   const numberOfRows = Math.ceil(bookingslot?.length / numberOfColumns);
 
-  function getYearMonthDay(dateString)
-  {
+  function getYearMonthDay(dateString) {
     // Create a new Date object using the provided date string
     const date = new Date(dateString);
 
@@ -277,21 +268,18 @@ export default function DoctorList({ searchTerm })
   }
 
 
-  const handleDateClick = (index) =>
-  {
+  const handleDateClick = (index) => {
     setCurrentIndex(index);
   };
 
-  const goToNext = () =>
-  {
+  const goToNext = () => {
     const isLastItem = currentIndex === bookingslot.length - 1;
     const nextIndex = isLastItem ? 0 : currentIndex + 1;
     setCurrentIndex(nextIndex);
     console.log(currentIndex)
   };
 
-  const goToPrev = () =>
-  {
+  const goToPrev = () => {
     const isFirstItem = currentIndex === 0;
     const prevIndex = isFirstItem ? bookingslot.length - 1 : currentIndex - 1;
     setCurrentIndex(prevIndex);
@@ -311,306 +299,329 @@ export default function DoctorList({ searchTerm })
         doctor={selectedDoctor}
         styles={{
           modal: {
-            width: isTab ? "80%" : "60%",
+            width: isTab ? "94%" : "80%",
             backgroundColor: "#E3F6FF",
             alignContent: "center",
           },
+          closeButton: {
+            display: 'none'
+          }
+
         }}
       >
-
-        <div className="flex md:flex-row p-2 pt-5 flex-col">
-          {/* ---------------------------left part--------------------------- */}
-          <div className="flex flex-col px-1 md:w-1/2">
-            <div className="">
-              {selectedDoctor?.doctorPic ? (<img src={selectedDoctor?.doctorPic} alt="doctor image" className=" h-80 w-full" ></img>) : (<AccountCircleIcon style={{ height: '100%', width: '100%', color: "#B1DAED" }} />)}
-
-            </div>
-            <div className="flex flex-col  py-4 px-5 bg-white mt-1">
-
-              <p className="text-xs text-black font-medium mb-2" >Registration No. :- 33256</p>
-
-              <p className="text-black text-3xl font-medium mb-2" >Dr. {selectedDoctor?.name}</p>
-              <div className="flex flex-row">
-                <div>
-                  <img src={education} className="w-5 py-2 " ></img>
-                </div>
-                <div className="ml-1">
-                  {selectedDoctor?.degree?.split(',')?.map((item) => (
-                    <p className="text-gray-600 text-xl mb-1">{item}</p>
-                  ))}
-                </div>
-              </div>
-              <p className="text-gray-600 text-xl mb-2" >{selectedDoctor?.totalExperience} Years Experience</p>
-
-              <div className="flex flex-row space-x-2">
-                <div className="mt-2">
-                  <img src={home} style={{ minWidth: '15px', maxWidth: '16px' }} ></img>
-                </div>
-                <div className="">
-                  <p className="text-gray-600 text-xl ">{selectedDoctor?.address?.houseNo +
-                    " " +
-                    selectedDoctor?.address?.block +
-                    " " +
-                    selectedDoctor?.address?.area +
-                    ", " +
-                    selectedDoctor?.address?.district +
-                    ", " +
-                    selectedDoctor?.address?.state +
-                    " " +
-                    selectedDoctor?.address?.pinCode}</p>
-                </div>
-
-              </div>
-
-
-            </div>
+        <div class="flex flex-col ">
+          <div class="flex flex-row-reverse md:-mb-14  -mb-14 z-50" >
+            <button onClick={onCloseModal}><img src={close_button} class="w-8 mb-1"></img></button>
+            {/* <button><img src={delete_button} class="w-8"></img></button>
+            <button><img src={edit_button} class="w-8"></img></button> */}
           </div>
-          {/* --------------------------------right part-------------------------------- */}
-          {!otppage && <div className="flex flex-col  md:w-1/2 px-2" >
+          <div className="flex md:flex-row p-2 pt-5 flex-col">
+            {/* ---------------------------left part--------------------------- */}
+            <div className="flex flex-col px-1 md:w-1/2">
+              <div className="">
+                {selectedDoctor?.doctorPic ? (<img src={selectedDoctor?.doctorPic} alt="doctor image" className=" h-80 w-full" ></img>) : (<AccountCircleIcon style={{ height: '100%', width: '100%', color: "#B1DAED" }} />)}
 
-            <div className=" py-1 mb-2">
-              <p className="text-lg font-medium text-black " >SPECIALITY</p>
-              <div className="flex flex-wrap ">
-                {selectedDoctor?.speciality?.map((item, index) =>
-                {
-                  return (
-                    <p key={index} className="bg-white rounded-xl py-1 px-4 mx-2 my-1 ">{item}</p>
-                  )
-                })}
               </div>
-            </div>
-            <div className=" py-1 mb-2">
-              <p className="text-lg font-medium text-black">About The Doctor</p>
-              <p className=" italic text-gray-600">
-                Lorem ipsum dolor sit amet consectetur. Vitae dui elit vel justo facilisi praesent in et donec. Rutrum lorem consequat tempus fermentum egestas. At gravida enim proin blandit. Non et arcu arcu mauris augue massa.
-              </p>
-            </div>
+              <div className="flex flex-col  py-4 px-5 bg-white mt-1">
 
-            <div className=" py-1 mb-2">
-              <p className="text-lg font-medium text-black">Timing</p>
-              <div className="flex flex-row  place-content-between">
-                <div className="flex flex-col ">
-                  <p className="text-gray-600 font-semibold">Mon - Thur :</p>
-                  <p className="text-gray-600">10:00 AM - 3:00 PM</p>
-                  <p className="text-gray-600">3:00 AM - 7:00 PM</p>
-                </div>
-                <div className="flex flex-col">
-                  <p className="text-gray-600 font-semibold">Mon - Thur :</p>
-                  <p className="text-gray-600">10:00 AM - 3:00 PM</p>
-                  <p className="text-gray-600">3:00 AM - 7:00 PM</p>
-                </div>
-              </div>
-            </div>
+                <p className="text-xs text-black font-medium mb-2" >Registration No. :- 33256</p>
 
-
-            <div className=" py-1 mb-2">
-              <p className="text-lg font-medium text-black">Select service</p>
-
-              <div className="flex flex-col mb-2">
-                <div className="flex flex-col  bg-white p-1">
-                  <p className="flex place-content-between my-1"><span className="font-medium px-2">Consultation</span> <span className="font-bold px-2">Rs1000</span></p>
-                  {!bookingslottoggle && !appointment &&
-                    <div>
-
-                      <p className="text-xs text-gray-500 px-2 my-1">Slot available for Tommorrow </p>
-                      <p className="flex flex-wrap space-x-1 ml-2 my-1">
-                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
-                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
-                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
-                        <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
-
-                      </p>
-                    </div>
-                  }
-                  {appointment &&
-                    <div class="mx-2">
-                      <p class="font-medium text-gray-500 ">Date: {selectedDoctor?.slots[currentIndex].date.split('T')[0]}</p>
-                      <p class="font-medium text-gray-500 mb-3">Time:{selectedDoctor?.slots[currentIndex].startTime}</p>
-                      <hr />
-                      <p class="mt-2">Mobile Number</p>
-                      <input class=" border my-1 placeholder-gray-500" type="tel" id="phone-number" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required value={contactNumber} onChange={handleChange} />
-                      <div class="flex flex-row-reverse">
-
-                        <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={handleOtp} style={{ backgroundColor: ' #89CFF0' }}>Send OTP</button>
-                      </div>
-                    </div>
-                  }
+                <p className="text-black text-3xl font-medium mb-2" >Dr. {selectedDoctor?.name}</p>
+                <div className="flex flex-row">
                   <div>
-                    {bookingslottoggle && <div className="flex flex-col">
-                      <div className=" flex flex-col text-center space-y-2">
-                        <div class="flex flex-row border-2">
-                          <button className="text-white text-xs rounded-3xl  " onClick={goToPrev} >
-                            <FaAngleLeft style={{ color: 'black' }} />
-                          </button>
-                          <div className="flex flex-row overflow-x-auto mx-2 ">
-                            {bookingslot?.map((data, index) =>
-                            {
-                              // console.log(data.date)
-                              const { year, monthName, day, dayName } = getYearMonthDay(data.date)
-                              // console.log(year, monthName, day, dayName)
-                              if (index == currentIndex)
-                              {
-                                return (
-                                  <div key={index} className="flex flex-col px-2"
-                                  >
-                                    <p>{monthName}</p>
-                                    <p className=" p-2 border-2 rounded-lg bg-blue-300" >{day}</p>
-                                    <p>{dayName}</p>
-                                  </div>
-                                )
-                              } else
-                              {
-                                return (
-                                  <div key={index} className="flex flex-col px-2 hover:cursor-pointer" onClick={() => { handleDateClick(index) }}
-                                  >
-                                    <p>{monthName}</p>
-                                    <p className=" p-2 border-2 rounded-lg bg-gray-200" >{day}</p>
-                                    <p>{dayName}</p>
-                                  </div>
-                                )
-                              }
+                    <img src={education} className="w-5 py-2 " ></img>
+                  </div>
+                  <div className="ml-1">
+                    {selectedDoctor?.degree?.split(',')?.map((item) => (
+                      <p className="text-gray-600 text-xl mb-1">{item}</p>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-600 text-xl mb-2" >{selectedDoctor?.totalExperience} Years Experience</p>
+
+                <div className="flex flex-row space-x-2">
+                  <div className="mt-2">
+                    <img src={home} style={{ minWidth: '15px', maxWidth: '16px' }} ></img>
+                  </div>
+                  <div className="">
+                    <p className="text-gray-600 text-xl ">{selectedDoctor?.address?.houseNo +
+                      " " +
+                      selectedDoctor?.address?.block +
+                      " " +
+                      selectedDoctor?.address?.area +
+                      ", " +
+                      selectedDoctor?.address?.district +
+                      ", " +
+                      selectedDoctor?.address?.state +
+                      " " +
+                      selectedDoctor?.address?.pinCode}</p>
+                  </div>
+
+                </div>
+
+
+              </div>
+            </div>
+            {/* --------------------------------right part-------------------------------- */}
+            {!otppage && <div className="flex flex-col  md:w-1/2 px-2" >
+
+              <div className=" py-1 mb-2">
+                <p className="text-lg font-medium text-black " >SPECIALITY</p>
+                <div className="flex flex-wrap ">
+                  {selectedDoctor?.speciality?.map((item, index) => {
+                    return (
+                      <p key={index} className="bg-white rounded-xl py-1 px-4 mx-2 my-1 ">{item}</p>
+                    )
+                  })}
+                </div>
+              </div>
+              <div className=" py-1 mb-2">
+                <p className="text-lg font-medium text-black">About The Doctor</p>
+                <p className=" italic text-gray-600">
+                  Lorem ipsum dolor sit amet consectetur. Vitae dui elit vel justo facilisi praesent in et donec. Rutrum lorem consequat tempus fermentum egestas. At gravida enim proin blandit. Non et arcu arcu mauris augue massa.
+                </p>
+              </div>
+
+              <div className=" py-1 mb-2">
+                <p className="text-lg font-medium text-black">Timing</p>
+                <div className="flex flex-row  place-content-between">
+                  <div className="flex flex-col ">
+                    <p className="text-gray-600 font-semibold">Mon - Thur :</p>
+                    <p className="text-gray-600">10:00 AM - 3:00 PM</p>
+                    <p className="text-gray-600">3:00 AM - 7:00 PM</p>
+                  </div>
+                  <div className="flex flex-col">
+                    <p className="text-gray-600 font-semibold">Mon - Thur :</p>
+                    <p className="text-gray-600">10:00 AM - 3:00 PM</p>
+                    <p className="text-gray-600">3:00 AM - 7:00 PM</p>
+                  </div>
+                </div>
+              </div>
+
+
+              <div className=" py-1 mb-2">
+                <p className="text-lg font-medium text-black">Select service</p>
+
+                <div className="flex flex-col mb-2">
+                  <div className="flex flex-col  bg-white p-1 px-3">
+                    <p className="flex place-content-between my-1"><span className="font-medium px-2">Consultation</span> <span className="font-bold px-2">Rs1000</span></p>
+                    {!bookingslottoggle && !appointment &&
+                      <div>
+
+                        <p className="text-xs text-gray-500 px-2 my-1">Slot available for Tommorrow </p>
+                        <p className="flex flex-wrap space-x-1 ml-2 my-1">
+                          <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                          <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                          <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+                          <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 " >3:00 AM</p>
+
+                        </p>
+                      </div>
+                    }
+                    {appointment &&
+                      <div class="mx-2">
+                        <p class="font-medium text-gray-500 ">Date: {selectedDoctor?.slots[currentIndex].date.split('T')[0]}</p>
+                        <p class="font-medium text-gray-500 mb-3">Time:{selectedDoctor?.slots[currentIndex].startTime}</p>
+                        <hr />
+                        <p class="mt-2">Mobile Number</p>
+                        <div class="flex flex-row">
+                          <img src={phonelogo} class="pl-1 pr-3"></img>
+                          <input class=" border my-1 placeholder-gray-500 p-1 pl-2" type="tel" id="phone-number" name="contactNumber" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" required value={contactNumber} onChange={handleChange} />
+                        </div>
+                        <p class=" text-red-500 ">
+                          {mobileNumberError}
+                        </p>
+                        <div class="flex flex-row-reverse">
+
+                          {mobileNumberError.length === 0 ? <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={handleOtp} style={{ backgroundColor: ' #89CFF0' }}>Send OTP</button> :
+                            <button className="text-white text-xs rounded-3xl px-3 py-1 " disabled onClick={handleOtp} style={{ backgroundColor: ' #89CFF0' }}>Send OTP</button>}
+                        </div>
+                      </div>
+                    }
+                    <div>
+                      {bookingslottoggle && <div className="flex flex-col">
+                        <div className=" flex flex-col text-center space-y-2">
+                          <div class="flex flex-row border-2">
+                            <button className="text-white text-xs rounded-3xl  " onClick={goToPrev} >
+                              <FaAngleLeft style={{ color: 'black' }} />
+                            </button>
+                            <div className="flex flex-row overflow-x-auto mx-2 ">
+                              {bookingslot?.map((data, index) => {
+                                console.log(data)
+                                const { year, monthName, day, dayName } = getYearMonthDay(data.date)
+                                // console.log(year, monthName, day, dayName)
+                                if (data.isBooked == true) {
+                                  return (
+                                    <div key={index} className="flex flex-col px-2" disabled >
+                                      <p>{monthName}</p>
+                                      <p className=" p-2 border-2 rounded-lg " style={{ backgroundColor: '#89CFF0' }}>{day}</p>
+                                      <p>{dayName}</p>
+                                    </div>
+                                  )
+                                }
+                                else if (index == currentIndex) {
+                                  return (
+                                    <div key={index} className="flex flex-col px-2"
+                                    >
+                                      <p>{monthName}</p>
+                                      <p className=" p-2 border-2 rounded-lg bg-blue-100" >{day}</p>
+                                      <p>{dayName}</p>
+                                    </div>
+                                  )
+                                } else {
+                                  return (
+                                    <div key={index} className="flex flex-col px-2 hover:cursor-pointer" onClick={() => { handleDateClick(index) }}
+                                    >
+                                      <p>{monthName}</p>
+                                      <p className=" p-2 border-2 rounded-lg bg-gray-200" >{day}</p>
+                                      <p>{dayName}</p>
+                                    </div>
+                                  )
+                                }
+                              })}
+                            </div>
+                            <button className="text-white text-xs rounded-3xl" onClick={goToNext} >
+                              <FaAngleRight style={{ color: 'black' }} />
+                            </button>
+                          </div>
+
+                          <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
+                            {[...Array(numberOfRows)].map((_, rowIndex) => {
+                              return (
+                                <div key={rowIndex} className="flex space-x-2">
+                                  {bookingslot.slice(rowIndex * numberOfColumns, (rowIndex + 1) * numberOfColumns)?.map((data, index) => {
+                                    selectedschedule = selectedschedule + 1;
+                                    index = selectedschedule - 1
+                                    // console.log(selectedschedule)
+                                    if (data.isBooked == true) {
+                                      return (
+                                        <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800" disabled style={{ backgroundColor: '#89CFF0' }}>
+                                          {data.startTime}
+                                        </div>
+                                      )
+                                    }
+                                    else if (selectedschedule - 1 === currentIndex) {
+                                      return (
+                                        <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800" >
+                                          {data.startTime}
+                                        </div>
+                                      )
+                                    }
+                                    else {
+                                      return (
+                                        <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800" onClick={() => { handleDateClick(index) }}>
+                                          {data.startTime}
+                                        </div>
+                                      )
+                                    }
+                                  })}
+                                </div>
+                              )
                             })}
                           </div>
-                          <button className="text-white text-xs rounded-3xl" onClick={goToNext} >
-                            <FaAngleRight style={{ color: 'black' }} />
-                          </button>
                         </div>
-
-                        <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-44">
-                          {[...Array(numberOfRows)].map((_, rowIndex) =>
-                          {
-                            return (
-                              <div key={rowIndex} className="flex space-x-2">
-                                {bookingslot.slice(rowIndex * numberOfColumns, (rowIndex + 1) * numberOfColumns)?.map((data, index) =>
-                                {
-                                  selectedschedule = selectedschedule + 1;
-                                  // console.log(selectedschedule)
-
-                                  if (selectedschedule - 1 === currentIndex)
-                                  {
-                                    return (
-                                      <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-300 text-gray-800" >
-                                        {data.startTime}
-                                      </div>
-                                    )
-                                  }
-                                  else
-                                  {
-                                    return (
-                                      <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800" >
-                                        {data.startTime}
-                                      </div>
-                                    )
-                                  }
-                                })}
-                              </div>
-                            )
-                          })}
-                        </div>
-                      </div>
-                    </div>}
+                      </div>}
 
 
-                  </div>
-                  <div className="flex flex-row-reverse my-1">
-                    {!bookingslottoggle && !appointment && <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
-                      Book Slots
-                    </button>}
-                    {bookingslottoggle && !appointment && <div class="flex flex-row space-x-4 mt-3">
-                      <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={handleBookAppointment} style={{ backgroundColor: ' #89CFF0' }}>
-                        Book Appointment
-                      </button>
-                      <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
-                        Go Back
-                      </button>
-                    </div>}
+                    </div>
+                    <div className="flex flex-row-reverse my-1">
+                      {!bookingslottoggle && !appointment && <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                        Book Slots
+                      </button>}
+                      {bookingslottoggle && !appointment && <div class="flex mx-auto space-x-4 mt-3">
+                        <button className="text-white text-sm rounded-3xl px-3 py-1 mb-1 " onClick={handleBookAppointment} style={{ backgroundColor: ' #89CFF0' }}>
+                          Book Appointment
+                        </button>
+                        {/* <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                          Go Back
+                        </button> */}
+                      </div>}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          </div>}
-          {otppage &&
-            <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
-              <p className="text-3xl " >Personal Information</p>
-              <hr className="border my-2 " />
-              {/* ------------mobile Number------------ */}
-              <div className="mt-3 flex flex-row">
-                <p
-                  className="block text-black text-base font-semibold"
-                >
-                  Mobile Number :{contactNumber}
-                </p>
-              </div>
-              {/* -----------contact----------- */}
-              <div className="mt-3 flex flex-row">
-                <p
-                  className="block text-black text-base font-semibold"
-                >
-                  Date  : {selectedDoctor?.slots[currentIndex]?.date?.split('T')[0]}
-                </p>
-              </div>
-              {/* -----------address----------- */}
-              <div className="mt-3 flex flex-row">
-                <p
-                  className="block text-black text-base font-semibold"
-                >
-                  Time :{selectedDoctor?.slots[currentIndex]?.startTime}
-                </p>
-                <p></p>
-              </div>
-              <hr class=" mt-3" />
-
-
-              {/* ----------------------------------------otp verification section---------------------------------------- */}
-              <div class="flex flex-col">
-                <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
-                <div class="bg-gray-300 flex flex-row rounded-lg" style={{ maxWidth: '11rem' }} >
-                  <img src={phonelogo} class="pl-5 pr-1"></img>
-                  <input
-                    className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
-                    type="number"
-                    id="mobileNo"
-                    name="mobileNo"
-                    value={contactNumber}
-                    style={{ border: "", height: "45px", paddingLeft: "1.5%", maxWidth: '8rem' }}
-                  />
-                </div>
-
-                <div
-                  className="flex w-full my-3"
-                  style={{
-
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                >
-                  {otp.map((digit, index) => (
-                    <input
-                      key={index}
-                      ref={(input) => (otpInputs[index] = input)}
-                      type="text"
-                      className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleInputChange(e, index)}
-                      onKeyDown={(e) =>
-                      {
-                        if (e.key === "Backspace" && index > 0 && !digit)
-                        {
-                          otpInputs[index - 1].focus();
-                        }
-                      }}
-                    />
-                  ))}
-                </div>
-
-                <p class="text-gray-600">Otp will expire in 30 seconds  <button onClick={handleOtp} class="font-medium underline text-black">Resend</button> </p>
-                <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{ backgroundColor: '#89CFF0' }} onClick={verifyOTP}>
-                  Verify
-                </button>
               </div>
             </div>}
-        </div >
+            {otppage &&
+              <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
+                <p className="text-3xl " >Personal Information</p>
+                <hr className="border my-2 " />
+                {/* ------------mobile Number------------ */}
+                <div className="mt-3 flex flex-row">
+                  <p
+                    className="block text-black text-base font-semibold"
+                  >
+                    Mobile Number :{contactNumber}
+                  </p>
+                </div>
+                {/* -----------contact----------- */}
+                <div className="mt-3 flex flex-row">
+                  <p
+                    className="block text-black text-base font-semibold"
+                  >
+                    Date  : {selectedDoctor?.slots[currentIndex]?.date?.split('T')[0]}
+                  </p>
+                </div>
+                {/* -----------address----------- */}
+                <div className="mt-3 flex flex-row">
+                  <p
+                    className="block text-black text-base font-semibold"
+                  >
+                    Time :{selectedDoctor?.slots[currentIndex]?.startTime}
+                  </p>
+                  <p></p>
+                </div>
+                <hr class=" mt-3" />
+
+
+                {/* ----------------------------------------otp verification section---------------------------------------- */}
+                <div class="flex flex-col">
+                  <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
+                  <div class="bg-gray-300 flex flex-row rounded-lg" style={{ maxWidth: '11rem' }} >
+                    <img src={phonelogo} class="pl-5 pr-1"></img>
+                    <input
+                      className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
+                      type="number"
+                      id="mobileNo"
+                      name="mobileNo"
+                      value={contactNumber}
+                      style={{ border: "", height: "45px", paddingLeft: "1.5%", maxWidth: '8rem' }}
+                    />
+                  </div>
+
+                  <div
+                    className="flex w-full my-3"
+                    style={{
+
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {otp.map((digit, index) => (
+                      <input
+                        key={index}
+                        ref={(input) => (otpInputs[index] = input)}
+                        type="text"
+                        className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleInputChange(e, index)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Backspace" && index > 0 && !digit) {
+                            otpInputs[index - 1].focus();
+                          }
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  <p class="text-gray-600">Otp will expire in 30 seconds  <button onClick={handleOtp} class="font-medium underline text-black">Resend</button> </p>
+                  <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{ backgroundColor: '#89CFF0' }} onClick={verifyOTP}>
+                    Verify
+                  </button>
+                </div>
+              </div>}
+          </div >
+        </div>
       </Modal >
 
 
