@@ -3,6 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import Menu from "@mui/material/Menu";
+import Modal from "react-responsive-modal";
 import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -133,11 +134,21 @@ export default function EditUserForm()
   const [errors, setErrors] = useState({});
   const [doctorDetails, setDoctorDetails] = useState(null);
   const onOpenModal = () => setOpen1(true);
+  const onCloseModal = () => setOpen1(false);
   const appointmentDate = localStorage.getItem("appointment_date")
   const appointmentTime = localStorage.getItem("appointment_time")
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [floorError, setFloorError] = useState("");
-
+  const [appointmentDetails, setAppointmentDetails] = useState({
+    doctorId: localStorage.getItem("doctorId"),
+    patientId: localStorage.getItem("userId"),
+    appointmentDate: {
+      date: localStorage.getItem("appointment_date"),
+      time: localStorage.getItem("appointment_time"),
+    },
+    issues: [],
+    diseases: [],
+  });
   const [patientDetails, setPatientDetails] = useState({
     name: "",
     age: "",
@@ -156,6 +167,21 @@ export default function EditUserForm()
 
 
   console.log("DATE TIME", appointmentDate, appointmentTime)
+  const handleChangeIssues = (values) =>
+  {
+    setAppointmentDetails((prevAppointmentDetails) => ({
+      ...prevAppointmentDetails,
+      issues: values,
+    }));
+  };
+
+  const handleChangeDiseases = (values) =>
+  {
+    setAppointmentDetails((prevAppointmentDetails) => ({
+      ...prevAppointmentDetails,
+      diseases: values,
+    }));
+  };
   const handleNewProfilePictureClick = async () =>
   {
     // This will trigger the hidden file input to open the file dialog
@@ -275,18 +301,18 @@ export default function EditUserForm()
 
   const handleChange2 = (e) =>
   {
-    setDoctorDetails((prevDoctorDetails) => ({
-      ...prevDoctorDetails,
+    setUserDetails((prevUserDetails) => ({
+      ...prevUserDetails,
       // workingDays: e,
-      speciality: e,
+      ageType: e,
     }));
   };
 
   const handleChange1 = (e) =>
   {
-    setDoctorDetails((prevDoctorDetails) => ({
-      ...prevDoctorDetails,
-      workingDays: e,
+    setUserDetails((prevUserDetails) => ({
+      ...prevUserDetails,
+      gender: e,
       // speciality: e,
     }));
   };
@@ -348,8 +374,11 @@ export default function EditUserForm()
     e.preventDefault();
     const newUserDetails = {
       name: userDetails?.name,
-      contactNumber: userDetails.contactNumber,
-      email: userDetails.email,
+      contactNumber: userDetails?.contactNumber,
+      age: userDetails?.age,
+      ageType: userDetails?.ageType,
+      gender: userDetails?.gender,
+      bodyWeight: userDetails?.bodyWeight,
       address: {
         houseNo: userDetails?.address?.houseNo,
         floor: userDetails?.address?.floor,
@@ -406,6 +435,24 @@ export default function EditUserForm()
 
       if (data.success === true)
       {
+        console.log("====================APPOINTMENT DETAILS=====================", appointmentDetails)
+        const response = await fetch(
+          `${baseUrl}/api/v1/user/create_appointment`,
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+            body: JSON.stringify(appointmentDetails),
+          }
+        );
+        const data = await response.json();
+        console.log("DATA FROM APPOINTMENT BOOKING", data)
+        if (data.success === true)
+        {
+          onOpenModal();
+        }
         console.log("Doctor updated successfully.");
         navigate("/doctorlistuser");
       }
@@ -425,71 +472,6 @@ export default function EditUserForm()
     { label: "Other", value: "Other" },
   ];
 
-  const handleRegister = async (e) =>
-  {
-    e.preventDefault();
-
-    const newPatientDetails = {
-      name: patientDetails?.name,
-      age: patientDetails?.age,
-      bodyWeight: patientDetails?.bodyWeight,
-      address: {
-        houseNo: patientDetails?.address?.houseNo,
-        floor: patientDetails?.address?.floor,
-        block: patientDetails?.address?.block,
-        area: patientDetails?.address?.area,
-        pinCode: patientDetails?.address?.pinCode,
-        district: patientDetails?.address?.district,
-        state: patientDetails?.address?.state,
-      },
-      patientPic: userImage,
-    };
-    if (newPatientDetails.name === "")
-    {
-      toast.error("Please write name");
-    } else if (newPatientDetails.age === "")
-    {
-      toast.error("Please write age");
-    } else if (newPatientDetails.bodyWeight === "")
-    {
-      toast.error("Please write body weight");
-    } else if (newPatientDetails.address?.pinCode === "")
-    {
-      toast.error("Please write Pincode");
-    } else if (newPatientDetails.address?.district === "")
-    {
-      toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "")
-    {
-      toast.error("Please write state");
-    } else
-    {
-      const doctorId = localStorage.getItem("doctorId");
-      const token = localStorage.getItem("token");
-      if (!token)
-      {
-        console.error("No token found in local storage");
-        localStorage.clear();
-        navigate(`/userlogin`);
-      }
-      const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(newPatientDetails),
-      });
-      const data = await response.json();
-      if (data.success === true)
-      {
-        // navigate("/otp")
-        onOpenModal();
-        localStorage.setItem("patientId", data.data._id);
-      }
-      console.log("DATA from response", data);
-    }
-  };
 
   console.log("User DETAILS", userDetails);
   updateUser(userDetails.name);
@@ -498,6 +480,78 @@ export default function EditUserForm()
 
   return (
     <>
+      <Modal
+        open={open}
+        onClose={onCloseModal}
+        center
+        // doctor={selectedDoctor}
+        styles={{
+          modal: {
+            backgroundColor: "#89CFF0",
+            alignContent: "center",
+            width: "30%",
+          },
+        }}
+      >
+        <div
+          className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
+          style={{ borderRadius: "5px" }}
+        >
+          <text
+            className="ml-4 text-center mt-4"
+            style={{
+              // fontSize: isTab ? "18px" : "26px",
+              fontWeight: 600,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "#FFFFFF",
+            }}
+          >
+            Congratulations
+          </text>
+          <text
+            className="ml-4 text-center mt-4"
+            style={{
+              fontSize: "40px",
+              fontWeight: 400,
+              lineHeight: "24px",
+              fontFamily: "Lato, sans-serif",
+              color: "#FFFFFF",
+              marginBottom: "2%",
+            }}
+          >
+            {/* <img src={celebrate} alt="Congratulations" /> */}
+          </text>
+
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              // fontSize: isTab ? "16px" : "24px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "white",
+            }}
+          >
+            Your Appointment Has Been Booked.
+            <br />
+            Please wait for Confirmation.
+            <br />
+          </text>
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              // fontSize: isTab ? "16px" : "24px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "white",
+            }}
+          >
+            <b> Thank You</b>
+          </text>
+        </div>
+      </Modal>
       <div className="flex justify-center">
         <div className="border bg-white flex flex-col w-full sm:w p-6 my-5 me-3">
           {" "}
@@ -560,11 +614,11 @@ export default function EditUserForm()
                       </label>
                       <Select
                         // mode="multiple"
-                        className="border border-[#89CFF0] rounded-lg h-11"
+                        className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
                         id="ageType"
                         name="ageType"
-                        value={patientDetails?.ageType}
+                        value={userDetails?.ageType}
                         onChange={handleChange2}
                         placeholder="Select Age Type"
                         style={{ overflowY: "auto" }}
@@ -596,13 +650,13 @@ export default function EditUserForm()
                       </label>
                       <Select
                         // mode="multiple"
-                        className="border border-[#89CFF0] rounded-lg h-11"
+                        className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
                         id="gender"
                         name="gender"
                         value={userDetails?.gender}
                         onChange={handleChange1}
-                        placeholder="Select Gender Type"
+                        placeholder="Select Gender"
                         style={{ overflowY: "auto" }}
                         dropdownStyle={{
                           maxHeight: "300px",
@@ -635,9 +689,9 @@ export default function EditUserForm()
                   Body Weight
                 </label>
                 <input
-                  type="number"
-                  id="body"
-                  name="body"
+                  type="text"
+                  id="bodyWeight"
+                  name="bodyWeight"
                   onChange={handleChange}
                   value={userDetails?.bodyWeight}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -694,13 +748,42 @@ export default function EditUserForm()
                 >
                   Issues
                 </label>
-                <input
-                  type="text"
-                  id="issue"
+                <Select
+                  mode="multiple"
+                  className="h-11 block w-full placeholder-gray-400 rounded-lg border bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  popupClassName="no-border-dropdown-menu" // Apply the custom class here
+                  id="issues"
                   name="issues"
-                  onChange={handleChange}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
+                  onChange={handleChangeIssues}
+                  onInputKeyDown={(e) =>
+                  {
+
+                    if (e.key === 'Enter')
+                    {
+                      e.preventDefault();
+                      let inputValue = e.target.value.trim();
+                      if (inputValue)
+                      {
+                        handleChangeDiseases([...appointmentDetails.diseases, inputValue]);
+                        setTimeout(() =>
+                        {
+                          e.target.value = '';
+                          inputValue = '';
+                        }, 0);
+                      }
+                    }
+                  }}
+                  value={patientDetails.issues}
+                  placeholder="Select Issues"
+                  style={{ overflowY: "auto" }}
+                  dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+                >
+                  {SymptomsDropdown.map((option) => (
+                    <Select.Option key={option.value} value={option.value}>
+                      {option.label}
+                    </Select.Option>
+                  ))}
+                </Select>
                 {errors.contactNumber && (
                   <p className="text-red-500">{errors.contactNumber}</p>
                 )}
@@ -716,11 +799,11 @@ export default function EditUserForm()
                 </label>
                 <Select
                   mode="multiple"
-                  className="border-[#89CFF0] h-11 block w-full placeholder-gray-400 rounded-lg border bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  className="h-11 block w-full placeholder-gray-400 rounded-lg border bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   popupClassName="no-border-dropdown-menu" // Apply the custom class here
                   id="diseases"
                   name="diseases"
-                  // onChange={handleChangeDiseases}
+                  onChange={handleChangeDiseases}
                   onInputKeyDown={(e) =>
                   {
 
@@ -730,7 +813,7 @@ export default function EditUserForm()
                       let inputValue = e.target.value.trim();
                       if (inputValue)
                       {
-                        // handleChangeDiseases([...patientDetails.diseases, inputValue]);
+                        handleChangeDiseases([...appointmentDetails.diseases, inputValue]);
                         setTimeout(() =>
                         {
                           e.target.value = '';
@@ -777,7 +860,7 @@ export default function EditUserForm()
                       name="houseNo"
                       onChange={handleChange}
                       value={userDetails?.address?.houseNo}
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
@@ -788,7 +871,7 @@ export default function EditUserForm()
                       onChange={handleChange}
                       value={userDetails?.address?.floor}
                       placeholder="Floor"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
@@ -799,7 +882,7 @@ export default function EditUserForm()
                       onChange={handleChange}
                       value={userDetails?.address?.block}
                       placeholder="Block"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.block && (
                       <p className="text-red-500">{errors.block}</p>
@@ -813,7 +896,7 @@ export default function EditUserForm()
                       onChange={handleChange}
                       value={userDetails?.address?.pinCode}
                       placeholder="Pin Code"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.pinCode && (
                       <p className="text-red-500">{errors.pinCode}</p>
@@ -829,7 +912,7 @@ export default function EditUserForm()
                     onChange={handleChange}
                     value={userDetails?.address?.area}
                     placeholder="Area/Landmark"
-                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
@@ -843,7 +926,7 @@ export default function EditUserForm()
                       onChange={handleChange}
                       value={userDetails?.address?.district}
                       placeholder="District"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
@@ -858,7 +941,7 @@ export default function EditUserForm()
                       onChange={handleChange}
                       value={userDetails?.address?.state}
                       placeholder="State"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>
@@ -874,7 +957,7 @@ export default function EditUserForm()
               style={{
                 backgroundColor: "#89CFF0",
               }}
-              onClick={handleRegister}
+              onClick={handleUpdate}
             >
               Continue...
             </button>
