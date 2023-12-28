@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import { Flex, Row, Select } from "antd";
@@ -11,11 +11,15 @@ export default function BillingPage({ name, contactNo, gender, age })
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
+
+  const [searchTerm, setSearchTerm] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const onOpenModal = () => setOpen(true);
   const onCloseModall = () => setOpen(false);
   const [open, setOpen] = useState(false);
+  const [tests, setTests] = useState([]);
+  const [filteredTest, setFilteredtest] = useState([]);
   const [patientDetails, setPatientDetails] = useState({
     medicineName: [],
     issues: [],
@@ -29,6 +33,62 @@ export default function BillingPage({ name, contactNo, gender, age })
   {
     setSelectedMethod(method);
   };
+
+  const handleSearch = (event) =>
+  {
+    const searchTerm = event?.target?.value?.toLowerCase();
+
+    setSearchTerm(searchTerm);
+
+    console.log("all tests =======", tests)
+
+    const filtered = tests.filter((tests) =>
+      tests?.testName?.toLowerCase().includes(searchTerm)
+    );
+    setFilteredtest(filtered);
+    console.log("filtered value", filteredTest);
+  };
+
+
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          localStorage.clear()
+          navigate(`/doctorlogin`)
+        }
+        const response = await fetch(`${baseUrl}/api/v1/doctor/getall_testBooking`, {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+        });
+
+        const data = await response.json();
+        console.log("DATA from USE EFFECT response List Lab Patient", data?.data)
+        setTests(data?.data);
+
+      } catch (error)
+      {
+        console.error('There was an error verifying the OTP:', error);
+      }
+    }
+    fetchPatientDetails()
+  }, [])
+
+
+  const handleTestAdd = () =>
+  {
+
+  }
 
   return (
     <>
@@ -105,7 +165,7 @@ export default function BillingPage({ name, contactNo, gender, age })
             <div>
               <p style={{ color: "gray", marginTop: "15px" }}>Billing Date</p>
               <input
-                className="px-2 border h-10 rounded-lg"
+                className="px-2 border h-10 rounded-lg w-50"
                 type="date"
                 id="appointmentDate"
                 name="date"
@@ -208,7 +268,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                   class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600"
                   type="button"
                 >
-                  All categories{" "}
+                  Tests{" "}
                   <svg
                     class="w-2.5 h-2.5 ms-2.5"
                     aria-hidden="true"
@@ -269,10 +329,12 @@ export default function BillingPage({ name, contactNo, gender, age })
                 </div>
                 <div class="relative w-full">
                   <input
+                    value={searchTerm}
+                    onChange={handleSearch}
                     type="search"
                     id="search-dropdown"
                     class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-s-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500"
-                    placeholder="Search Mockups, Logos, Design Templates..."
+                    placeholder="Search by TestName or TestCode..."
                     required
                   />
                   <button
@@ -296,6 +358,16 @@ export default function BillingPage({ name, contactNo, gender, age })
                     </svg>
                     <span class="sr-only">Search</span>
                   </button>
+                  <ul className="divide-y divide-gray-200 bg-white">
+                    {filteredTest.map((test) => (
+                      <li key={test.id} className="p-4">
+                        <div onClick={handleTestAdd(test._id)} className="font-bold">{test.testName}</div>
+                        {/* <div className="text-sm">
+                          <span onClick={handleTestAdd(test._id)} className="ml-2">tid: {test._id}</span>
+                        </div> */}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
             </form>
