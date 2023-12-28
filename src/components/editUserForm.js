@@ -139,9 +139,10 @@ export default function EditUserForm()
   const appointmentTime = localStorage.getItem("appointment_time")
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [floorError, setFloorError] = useState("");
+  const [newUser, setNewUser] = useState(false)
   const [appointmentDetails, setAppointmentDetails] = useState({
     doctorId: localStorage.getItem("doctorId"),
-    patientId: localStorage.getItem("userId"),
+    patientId: "",
     appointmentDate: {
       date: localStorage.getItem("appointment_date"),
       time: localStorage.getItem("appointment_time"),
@@ -295,6 +296,10 @@ export default function EditUserForm()
 
         const data = await response.json();
         console.log("DATA from response", data);
+        if (data.data.newUser === true)
+        {
+          setNewUser(true)
+        }
         setUserDetails(data?.data);
         console.log("usser name$$$$$$$", data?.data.name);
       } catch (error)
@@ -360,6 +365,13 @@ export default function EditUserForm()
 
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
+    if (name === "patientName")
+    {
+      setAppointmentDetails((prevAppointmentDetails) => ({
+        ...prevAppointmentDetails,
+        patientId: [...prevAppointmentDetails.patientId, value]
+      }))
+    }
 
     if (name === "workingDays")
     {
@@ -514,6 +526,7 @@ export default function EditUserForm()
   updateUser(userDetails.name);
   updateUserEmail(userDetails.email);
   updateUserimage(userDetails?.userPic);
+  console.log("NEW USER", userDetails.newUser)
 
   return (
     <>
@@ -604,29 +617,34 @@ export default function EditUserForm()
                 >
                   Name
                 </label>
-                <select
-                  className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
-                  name="patientName"
-                  onChange={handleChange}
-                >
-                  {userDetails?.name ? (
-                    <option value={userDetails?.name}>{userDetails?.name}</option>
+                {
+                  (userDetails?.newUser === true) ? (
+                    <input
+                      type="text"
+                      id="name"
+                      name="name"
+                      placeholder="Enter Name"
+                      onChange={handleChange}
+                      className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
                   ) : (
-                    patientsList?.map((patient) => (
-                      <option key={patient._id} value={patient.name}>
-                        {patient.name}
-                      </option>
-                    ))
-                  )}
-                </select>
-                {/* <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  onChange={handleChange}
-                  value={userDetails?.name}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                /> */}
+
+                    <select
+                      className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+                      name="patientName"
+                      onChange={handleChange}
+                    >
+                      {patientsList?.map((patient) => (
+                        <option key={patient._id} value={patient._id}>
+                          {patient.name}
+                        </option>
+                      ))
+                      }
+                    </select>
+                  )
+                }
+
+
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
             </div>
@@ -642,14 +660,26 @@ export default function EditUserForm()
                     >
                       Age
                     </label>
-                    <input
-                      type="text"
-                      id="age"
-                      name="age"
-                      value={userDetails?.age}
-                      onChange={handleChange}
-                      className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                    {
+                      (userDetails?.newUser === true) ? (
+                        <input
+                          type="text"
+                          id="age"
+                          name="age"
+                          onChange={handleChange}
+                          className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          id="age"
+                          name="age"
+                          value={userDetails?.age}
+                          className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )
+                    }
+
                     {floorError && (
                       <p className="text-red-500 text-sm mt-1">{floorError}</p>
                     )}
@@ -664,30 +694,58 @@ export default function EditUserForm()
                       >
                         Age Type
                       </label>
-                      <Select
-                        // mode="multiple"
-                        className="border rounded-lg h-11"
-                        popupClassName="no-border-dropdown-menu"
-                        id="ageType"
-                        name="ageType"
-                        value={userDetails?.ageType}
-                        onChange={handleChange2}
-                        placeholder="Select Age Type"
-                        style={{ overflowY: "auto" }}
-                        dropdownStyle={{
-                          maxHeight: "300px",
-                          overflowY: "auto",
-                        }}
-                      >
-                        {AgeType.map((option) => (
-                          <Select.Option
-                            key={option.value}
-                            value={option.value}
+                      {
+                        (userDetails?.newUser === true) ? (
+                          <Select
+                            className="border rounded-lg h-11"
+                            popupClassName="no-border-dropdown-menu"
+                            id="ageType"
+                            name="ageType"
+                            // value={userDetails?.ageType}
+                            onChange={handleChange2}
+                            placeholder="Select Age Type"
+                            style={{ overflowY: "auto" }}
+                            dropdownStyle={{
+                              maxHeight: "300px",
+                              overflowY: "auto",
+                            }}
                           >
-                            {option.label}
-                          </Select.Option>
-                        ))}
-                      </Select>
+                            {AgeType.map((option) => (
+                              <Select.Option
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        ) : (
+                          <Select
+                            className="border rounded-lg h-11"
+                            popupClassName="no-border-dropdown-menu"
+                            id="ageType"
+                            name="ageType"
+                            value={userDetails?.ageType}
+                            // onChange={handleChange2}
+                            placeholder="Select Age Type"
+                            style={{ overflowY: "auto" }}
+                            dropdownStyle={{
+                              maxHeight: "300px",
+                              overflowY: "auto",
+                            }}
+                          >
+                            {AgeType.map((option) => (
+                              <Select.Option
+                                key={option.value}
+                                value={option.value}
+                              >
+                                {option.label}
+                              </Select.Option>
+                            ))}
+                          </Select>
+                        )
+                      }
+
                     </div>
                   </div>
                 </div>
@@ -700,30 +758,56 @@ export default function EditUserForm()
                       >
                         Gender
                       </label>
-                      <Select
-                        // mode="multiple"
-                        className="border rounded-lg h-11"
-                        popupClassName="no-border-dropdown-menu"
-                        id="gender"
-                        name="gender"
-                        value={userDetails?.gender}
-                        onChange={handleChange1}
-                        placeholder="Select Gender"
-                        style={{ overflowY: "auto" }}
-                        dropdownStyle={{
-                          maxHeight: "300px",
-                          overflowY: "auto",
-                        }}
-                      >
-                        {Gender.map((option) => (
-                          <Select.Option
-                            key={option.value}
-                            value={option.value}
-                          >
-                            {option.label}
-                          </Select.Option>
-                        ))}
-                      </Select>
+                      {(userDetails?.newUser === true) ? (
+                        <Select
+                          className="border rounded-lg h-11"
+                          popupClassName="no-border-dropdown-menu"
+                          id="gender"
+                          name="gender"
+                          onChange={handleChange1}
+                          placeholder="Select Gender"
+                          style={{ overflowY: "auto" }}
+                          dropdownStyle={{
+                            maxHeight: "300px",
+                            overflowY: "auto",
+                          }}
+                        >
+                          {Gender.map((option) => (
+                            <Select.Option
+                              key={option.value}
+                              value={option.value}
+                            >
+                              {option.label}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      ) : (
+                        <Select
+                          className="border rounded-lg h-11"
+                          popupClassName="no-border-dropdown-menu"
+                          id="gender"
+                          name="gender"
+                          value={userDetails?.gender}
+                          placeholder="Select Gender"
+                          style={{ overflowY: "auto" }}
+                          dropdownStyle={{
+                            maxHeight: "300px",
+                            overflowY: "auto",
+                          }}
+                        >
+                          {Gender.map((option) => (
+                            <Select.Option
+                              key={option.value}
+                              value={option.value}
+                            >
+                              {option.label}
+                            </Select.Option>
+                          ))}
+                        </Select>
+                      )
+
+                      }
+
                     </div>
                   </div>
                 </div>
@@ -740,14 +824,26 @@ export default function EditUserForm()
                 >
                   Body Weight
                 </label>
-                <input
-                  type="text"
-                  id="bodyWeight"
-                  name="bodyWeight"
-                  onChange={handleChange}
-                  value={userDetails?.bodyWeight}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
+                {
+                  (userDetails?.newUser === true) ? (
+                    <input
+                      type="text"
+                      id="bodyWeight"
+                      name="bodyWeight"
+                      onChange={handleChange}
+                      className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      id="bodyWeight"
+                      name="bodyWeight"
+                      value={userDetails?.bodyWeight}
+                      className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  )
+                }
+
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
               </div>
             </div>
@@ -905,51 +1001,103 @@ export default function EditUserForm()
               <div className="flex flex-col ">
                 <div className="flex flex-row">
                   <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      placeholder="House No."
-                      id="houseNo"
-                      name="houseNo"
-                      onChange={handleChange}
-                      value={userDetails?.address?.houseNo}
-                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                    {
+                      (userDetails?.newUser === true) ? (
+                        <input
+                          type="text"
+                          placeholder="House No."
+                          id="houseNo"
+                          name="houseNo"
+                          onChange={handleChange}
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          placeholder="House No."
+                          id="houseNo"
+                          name="houseNo"
+                          value={userDetails?.address?.houseNo}
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )
+                    }
+
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      id="floor"
-                      name="floor"
-                      onChange={handleChange}
-                      value={userDetails?.address?.floor}
-                      placeholder="Floor"
-                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                    {
+                      (userDetails?.newUser === true) ? (
+                        <input
+                          type="text"
+                          id="floor"
+                          name="floor"
+                          onChange={handleChange}
+                          placeholder="Floor"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          id="floor"
+                          name="floor"
+                          value={userDetails?.address?.floor}
+                          placeholder="Floor"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )
+                    }
+
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      id="block"
-                      name="block"
-                      onChange={handleChange}
-                      value={userDetails?.address?.block}
-                      placeholder="Block"
-                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                    {
+                      (userDetails?.newUser === true) ? (
+                        <input
+                          type="text"
+                          id="block"
+                          name="block"
+                          onChange={handleChange}
+                          placeholder="Block"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          id="block"
+                          name="block"
+                          value={userDetails?.address?.block}
+                          placeholder="Block"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )
+                    }
+
                     {errors.block && (
                       <p className="text-red-500">{errors.block}</p>
                     )}
                   </div>
                   <div className="px-2 w-full sm:w-1/2 mt-3">
-                    <input
-                      type="text"
-                      id="pinCode"
-                      name="pinCode"
-                      onChange={handleChange}
-                      value={userDetails?.address?.pinCode}
-                      placeholder="Pin Code"
-                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                    {
+                      (userDetails?.newUser === true) ? (
+                        <input
+                          type="number"
+                          id="pinCode"
+                          name="pinCode"
+                          onChange={handleChange}
+                          placeholder="Pin Code"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="number"
+                          id="pinCode"
+                          name="pinCode"
+                          value={userDetails?.address?.pinCode}
+                          placeholder="Pin Code"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )
+                    }
+
                     {errors.pinCode && (
                       <p className="text-red-500">{errors.pinCode}</p>
                     )}
@@ -957,44 +1105,71 @@ export default function EditUserForm()
                 </div>
 
                 <div className="px-2 w-full mt-3 ">
-                  <input
-                    type="text"
-                    id="area"
-                    name="area"
-                    onChange={handleChange}
-                    value={userDetails?.address?.area}
-                    placeholder="Area/Landmark"
-                    className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                  />
+                  {
+                    (userDetails?.newUser === true) ? (<input
+                      type="text"
+                      id="area"
+                      name="area"
+                      onChange={handleChange}
+                      placeholder="Area/Landmark"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />) : (<input
+                      type="text"
+                      id="area"
+                      name="area"
+                      value={userDetails?.address?.area}
+                      placeholder="Area/Landmark"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />)
+                  }
+
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
 
                 <div className="flex flex-row">
                   <div className="px-2 w-full sm:w-1/2 mt-3">
-                    <input
-                      type="text"
-                      id="district"
-                      name="district"
-                      onChange={handleChange}
-                      value={userDetails?.address?.district}
-                      placeholder="District"
-                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                    {
+                      (userDetails?.newUser === true) ? (<input
+                        type="text"
+                        id="district"
+                        name="district"
+                        onChange={handleChange}
+                        placeholder="District"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />) : (<input
+                        type="text"
+                        id="district"
+                        name="district"
+                        value={userDetails?.address?.district}
+                        placeholder="District"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />)
+                    }
+
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
                     )}
                   </div>
 
                   <div className="px-2 w-full sm:w-1/2 mt-3">
-                    <input
-                      type="text"
-                      id="state"
-                      name="state"
-                      onChange={handleChange}
-                      value={userDetails?.address?.state}
-                      placeholder="State"
-                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                    {
+                      (userDetails?.newUser === true) ? (<input
+                        type="text"
+                        id="state"
+                        name="state"
+                        onChange={handleChange}
+                        placeholder="State"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />) : (<input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value={userDetails?.address?.state}
+                        placeholder="State"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />)
+                    }
+
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>
                     )}
