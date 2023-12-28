@@ -114,7 +114,8 @@ const SymptomsDropdown = [
   { label: "Snoring", value: "Snoring" },
 ];
 
-const FormAppoinment = ({ onDataFromChild }) => {
+const FormAppoinment = ({ onDataFromChild }) =>
+{
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setSelectedDoctor] = useState();
   const navigate = useNavigate();
@@ -140,17 +141,22 @@ const FormAppoinment = ({ onDataFromChild }) => {
   const [doctorEmail, setDoctorEmail] = useState();
   const [patientId, setPatientId] = useState();
   const [patientName, setPatientName] = useState();
-  useEffect(() => {
+  useEffect(() =>
+  {
     const doctor = location?.state;
     setSelectedDoctor(doctor?.doctor);
     console.log("SELECTED DOCTOR", selectedDoctor);
   }, [selectedDoctor]);
 
-  useEffect(() => {
-    const fetchPatientList = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientList = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -168,15 +174,19 @@ const FormAppoinment = ({ onDataFromChild }) => {
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientsList(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
 
-    const fetchDoctorList = async () => {
-      try {
+    const fetchDoctorList = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -191,7 +201,8 @@ const FormAppoinment = ({ onDataFromChild }) => {
         const data = await response.json();
         console.log("DATA from response", data);
         setDoctorsList(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -205,7 +216,8 @@ const FormAppoinment = ({ onDataFromChild }) => {
     setPatientName(localStorage.getItem("patientName"));
   }, []);
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
     // Assuming 'patientsList' is an array of patient objects with '_id' and 'name'
     const selectedPatient = patientsList.find(
@@ -215,13 +227,15 @@ const FormAppoinment = ({ onDataFromChild }) => {
 
     // onDataFromChild(selectedDoctor);
 
-    if (name === "patientName") {
+    if (name === "patientName")
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         patientId: selectedPatient?._id,
         [name]: value,
       }));
-    } else if (name === "doctorName") {
+    } else if (name === "doctorName")
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         doctorId: selectedDoctor?._id,
@@ -229,7 +243,8 @@ const FormAppoinment = ({ onDataFromChild }) => {
       }));
       setDataToSend(value);
       onDataFromChild(value);
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -237,49 +252,60 @@ const FormAppoinment = ({ onDataFromChild }) => {
     }
   };
 
-  const handleChangeIssues = (values) => {
+  const handleChangeIssues = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       issues: values,
     }));
   };
 
-  const handleChangeDiseases = (values) => {
+  const handleChangeDiseases = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       diseases: values,
     }));
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
-    if (patientDetails.patientId === null) {
+    if (patientDetails.patientId === null)
+    {
       toast.error("Please select a member!");
-    } else if (patientDetails.doctorId === null) {
+    } else if (patientDetails.doctorId === null)
+    {
       toast.error("Please select a doctor!");
     } else if (
       patientDetails.appointmentDate.date === null ||
       patientDetails.appointmentDate.date === ""
-    ) {
+    )
+    {
       toast.error("Please select date!");
     } else if (
       patientDetails.appointmentDate.time === null ||
       patientDetails.appointmentDate.time === ""
-    ) {
+    )
+    {
       toast.error("Please select time!");
     } else if (
       Array.isArray(patientDetails.issues) &&
       patientDetails.issues.length === 0
-    ) {
+    )
+    {
       toast.error("Please select issues!");
     } else if (
       Array.isArray(patientDetails.diseases) &&
       patientDetails.diseases.length === 0
-    ) {
+    )
+    {
       toast.error("Please select diseases!");
-    } else {
+    } else
+    {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate("/userlogin");
@@ -296,7 +322,8 @@ const FormAppoinment = ({ onDataFromChild }) => {
         }
       );
       const data = await response.json();
-      if (data.success === true) {
+      if (data.success === true)
+      {
         // navigate("/otp")
         onOpenModal();
         localStorage.setItem("id", data.data._id);
@@ -450,8 +477,10 @@ const FormAppoinment = ({ onDataFromChild }) => {
             type="date"
             id="appointmentDate"
             name="date"
-            onChange={(date) => {
-              if (date && date.isValid()) {
+            onChange={(date) =>
+            {
+              if (date && date.isValid())
+              {
                 const formattedDate = date.format("DD/MM/YYYY"); // Format the date
                 setPatientDetails((prevPatientDetails) => ({
                   ...prevPatientDetails,
@@ -477,8 +506,10 @@ const FormAppoinment = ({ onDataFromChild }) => {
             format="HH:mm:ss"
             id="appointmentTime"
             name="time"
-            onChange={(time) => {
-              if (time && time.isValid()) {
+            onChange={(time) =>
+            {
+              if (time && time.isValid())
+              {
                 const formattedTime = time.format("HH:mm:ss"); // Format the time
                 setPatientDetails((prevPatientDetails) => ({
                   ...prevPatientDetails,

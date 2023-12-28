@@ -3,6 +3,7 @@ import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import Menu from "@mui/material/Menu";
+import Modal from "react-responsive-modal";
 import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -133,11 +134,21 @@ export default function EditUserForm()
   const [errors, setErrors] = useState({});
   const [doctorDetails, setDoctorDetails] = useState(null);
   const onOpenModal = () => setOpen1(true);
+  const onCloseModal = () => setOpen1(false);
   const appointmentDate = localStorage.getItem("appointment_date")
   const appointmentTime = localStorage.getItem("appointment_time")
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [floorError, setFloorError] = useState("");
-
+  const [appointmentDetails, setAppointmentDetails] = useState({
+    doctorId: localStorage.getItem("doctorId"),
+    patientId: localStorage.getItem("userId"),
+    appointmentDate: {
+      date: localStorage.getItem("appointment_date"),
+      time: localStorage.getItem("appointment_time"),
+    },
+    issues: [],
+    diseases: [],
+  });
   const [patientDetails, setPatientDetails] = useState({
     name: "",
     age: "",
@@ -156,6 +167,21 @@ export default function EditUserForm()
 
 
   console.log("DATE TIME", appointmentDate, appointmentTime)
+  const handleChangeIssues = (values) =>
+  {
+    setAppointmentDetails((prevAppointmentDetails) => ({
+      ...prevAppointmentDetails,
+      issues: values,
+    }));
+  };
+
+  const handleChangeDiseases = (values) =>
+  {
+    setAppointmentDetails((prevAppointmentDetails) => ({
+      ...prevAppointmentDetails,
+      diseases: values,
+    }));
+  };
   const handleNewProfilePictureClick = async () =>
   {
     // This will trigger the hidden file input to open the file dialog
@@ -409,6 +435,24 @@ export default function EditUserForm()
 
       if (data.success === true)
       {
+        console.log("====================APPOINTMENT DETAILS=====================", appointmentDetails)
+        const response = await fetch(
+          `${baseUrl}/api/v1/user/create_appointment`,
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+            body: JSON.stringify(appointmentDetails),
+          }
+        );
+        const data = await response.json();
+        console.log("DATA FROM APPOINTMENT BOOKING", data)
+        if (data.success === true)
+        {
+          onOpenModal();
+        }
         console.log("Doctor updated successfully.");
         navigate("/doctorlistuser");
       }
@@ -436,6 +480,78 @@ export default function EditUserForm()
 
   return (
     <>
+      <Modal
+        open={open}
+        onClose={onCloseModal}
+        center
+        // doctor={selectedDoctor}
+        styles={{
+          modal: {
+            backgroundColor: "#89CFF0",
+            alignContent: "center",
+            width: "30%",
+          },
+        }}
+      >
+        <div
+          className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]"
+          style={{ borderRadius: "5px" }}
+        >
+          <text
+            className="ml-4 text-center mt-4"
+            style={{
+              // fontSize: isTab ? "18px" : "26px",
+              fontWeight: 600,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "#FFFFFF",
+            }}
+          >
+            Congratulations
+          </text>
+          <text
+            className="ml-4 text-center mt-4"
+            style={{
+              fontSize: "40px",
+              fontWeight: 400,
+              lineHeight: "24px",
+              fontFamily: "Lato, sans-serif",
+              color: "#FFFFFF",
+              marginBottom: "2%",
+            }}
+          >
+            {/* <img src={celebrate} alt="Congratulations" /> */}
+          </text>
+
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              // fontSize: isTab ? "16px" : "24px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "white",
+            }}
+          >
+            Your Appointment Has Been Booked.
+            <br />
+            Please wait for Confirmation.
+            <br />
+          </text>
+          <text
+            className="ml-4 text-center mt-2"
+            style={{
+              // fontSize: isTab ? "16px" : "24px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "white",
+            }}
+          >
+            <b> Thank You</b>
+          </text>
+        </div>
+      </Modal>
       <div className="flex justify-center">
         <div className="border bg-white flex flex-col w-full sm:w p-6 my-5 me-3">
           {" "}
@@ -638,7 +754,7 @@ export default function EditUserForm()
                   popupClassName="no-border-dropdown-menu" // Apply the custom class here
                   id="issues"
                   name="issues"
-                  // onChange={handleChangeDiseases}
+                  onChange={handleChangeIssues}
                   onInputKeyDown={(e) =>
                   {
 
@@ -648,7 +764,7 @@ export default function EditUserForm()
                       let inputValue = e.target.value.trim();
                       if (inputValue)
                       {
-                        // handleChangeDiseases([...patientDetails.diseases, inputValue]);
+                        handleChangeDiseases([...appointmentDetails.diseases, inputValue]);
                         setTimeout(() =>
                         {
                           e.target.value = '';
@@ -687,7 +803,7 @@ export default function EditUserForm()
                   popupClassName="no-border-dropdown-menu" // Apply the custom class here
                   id="diseases"
                   name="diseases"
-                  // onChange={handleChangeDiseases}
+                  onChange={handleChangeDiseases}
                   onInputKeyDown={(e) =>
                   {
 
@@ -697,7 +813,7 @@ export default function EditUserForm()
                       let inputValue = e.target.value.trim();
                       if (inputValue)
                       {
-                        // handleChangeDiseases([...patientDetails.diseases, inputValue]);
+                        handleChangeDiseases([...appointmentDetails.diseases, inputValue]);
                         setTimeout(() =>
                         {
                           e.target.value = '';
@@ -744,7 +860,7 @@ export default function EditUserForm()
                       name="houseNo"
                       onChange={handleChange}
                       value={userDetails?.address?.houseNo}
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
@@ -755,7 +871,7 @@ export default function EditUserForm()
                       onChange={handleChange}
                       value={userDetails?.address?.floor}
                       placeholder="Floor"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
@@ -766,7 +882,7 @@ export default function EditUserForm()
                       onChange={handleChange}
                       value={userDetails?.address?.block}
                       placeholder="Block"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.block && (
                       <p className="text-red-500">{errors.block}</p>
@@ -780,7 +896,7 @@ export default function EditUserForm()
                       onChange={handleChange}
                       value={userDetails?.address?.pinCode}
                       placeholder="Pin Code"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.pinCode && (
                       <p className="text-red-500">{errors.pinCode}</p>
@@ -796,7 +912,7 @@ export default function EditUserForm()
                     onChange={handleChange}
                     value={userDetails?.address?.area}
                     placeholder="Area/Landmark"
-                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
@@ -810,7 +926,7 @@ export default function EditUserForm()
                       onChange={handleChange}
                       value={userDetails?.address?.district}
                       placeholder="District"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
@@ -825,7 +941,7 @@ export default function EditUserForm()
                       onChange={handleChange}
                       value={userDetails?.address?.state}
                       placeholder="State"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>
