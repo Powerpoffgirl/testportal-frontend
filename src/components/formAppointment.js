@@ -4,7 +4,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { DatePicker, Select, Space, TimePicker } from "antd";
 import "../App.css";
 import celebrate from "../assets/celebrate.png";
-// import { Datepicker } from 'flowbite-react';
 import "react-datepicker/dist/react-datepicker.css";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -141,6 +140,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
   const [doctorEmail, setDoctorEmail] = useState();
   const [patientId, setPatientId] = useState();
   const [patientName, setPatientName] = useState();
+
   useEffect(() =>
   {
     const doctor = location?.state;

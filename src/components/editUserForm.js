@@ -129,7 +129,7 @@ export default function EditUserForm()
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
   const [open1, setOpen1] = useState(false);
-
+  const [patientsList, setPatientsList] = useState([]);
   const [userImage, setUserImage] = useState();
   const [errors, setErrors] = useState({});
   const [doctorDetails, setDoctorDetails] = useState(null);
@@ -149,6 +149,7 @@ export default function EditUserForm()
     issues: [],
     diseases: [],
   });
+
   const [patientDetails, setPatientDetails] = useState({
     name: "",
     age: "",
@@ -165,6 +166,42 @@ export default function EditUserForm()
     patientPic: "",
   });
 
+
+  useEffect(() =>
+  {
+    const fetchPatientList = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(
+          `${baseUrl}/api/v1/user/get_patientsList`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log("DATA from response", data);
+        setPatientsList(data?.data);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+
+    fetchPatientList();
+
+  }, []);
 
   console.log("DATE TIME", appointmentDate, appointmentTime)
   const handleChangeIssues = (values) =>
@@ -567,14 +604,29 @@ export default function EditUserForm()
                 >
                   Name
                 </label>
-                <input
+                <select
+                  className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+                  name="patientName"
+                  onChange={handleChange}
+                >
+                  {userDetails?.name ? (
+                    <option value={userDetails?.name}>{userDetails?.name}</option>
+                  ) : (
+                    patientsList?.map((patient) => (
+                      <option key={patient._id} value={patient.name}>
+                        {patient.name}
+                      </option>
+                    ))
+                  )}
+                </select>
+                {/* <input
                   type="text"
                   id="name"
                   name="name"
                   onChange={handleChange}
                   value={userDetails?.name}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
+                /> */}
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
             </div>
