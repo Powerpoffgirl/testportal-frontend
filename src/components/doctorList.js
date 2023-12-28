@@ -147,9 +147,15 @@ export default function DoctorList({ searchTerm }) {
 
     showappointment();
     showSlot();
-    toast.success("Appointment Booked Successfully", {
-      position: "top-center",
-    });
+    if (data.success === true) {
+      toast.success("Appointment Booked Successfully", {
+        position: "top-center",
+      });
+    } else {
+      toast.error("Failed to Book Appointment", {
+        position: "top-center",
+      });
+    }
   };
 
   const handleFilterDocotors = (item) => {
@@ -828,6 +834,15 @@ export default function DoctorList({ searchTerm }) {
                         {formatTime(seconds)} sec
                       </text>{" "}
                     </p>{" "}
+                  </p>
+                  <p class="text-gray-600">
+                    Otp will expire in 30 seconds
+                    <button
+                      onClick={handleOtp}
+                      class="font-medium underline text-black"
+                    >
+                      Resend
+                    </button>{" "}
                   </p>
                   <button
                     className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
