@@ -314,11 +314,17 @@ export default function DoctorList({ searchTerm }) {
           {/* ---------------------------left part--------------------------- */}
           <div className="flex flex-col px-1 md:w-1/2">
             <div className="">
-              <img
-                src={selectedDoctor?.doctorPic}
-                alt="doctor image"
-                className=" h-80 w-full"
-              ></img>
+              {selectedDoctor?.doctorPic ? (
+                <img
+                  src={selectedDoctor?.doctorPic}
+                  alt="doctor image"
+                  className=" h-80 w-full"
+                ></img>
+              ) : (
+                <AccountCircleIcon
+                  style={{ height: "100%", width: "100%", color: "#B1DAED" }}
+                />
+              )}
             </div>
             <div className="flex flex-col  py-4 px-5 bg-white mt-1">
               <p className="text-xs text-black font-medium mb-2">
