@@ -630,7 +630,7 @@ export default function EditUserForm()
                   ) : (
 
                     <select
-                      className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+                      className="h-11 block w-full placeholder-gray-400 rounded-lg border ps-4 bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       name="patientName"
                       onChange={handleChange}
                     >

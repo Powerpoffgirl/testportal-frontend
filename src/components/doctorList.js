@@ -67,7 +67,8 @@ export default function DoctorList({ searchTerm })
   {
     localStorage.clear();
   }, []);
-  useEffect(() => {
+  useEffect(() =>
+  {
     localStorage.clear()
   }, [])
 
@@ -90,32 +91,19 @@ export default function DoctorList({ searchTerm })
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-<<<<<<< HEAD
       } catch (error)
       {
-=======
-      } catch (error) {
-
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, [searchTerm]);
 
-<<<<<<< HEAD
   useEffect(() =>
   {
     // Check if there is a searchTerm and the doctorsList is not empty.
     if (doctorsList.length > 0 && searchTerm)
     {
-=======
-
-  useEffect(() => {
-    // Check if there is a searchTerm and the doctorsList is not empty.
-
-    if (doctorsList.length > 0 && searchTerm) {
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedDoctors = doctorsList.filter(
         (doctor) =>
@@ -123,25 +111,15 @@ export default function DoctorList({ searchTerm })
           doctor.speciality.toLowerCase().includes(lowerCaseSearchTerm)
       );
       setFilteredDoctors(matchedDoctors);
-<<<<<<< HEAD
     } else
     {
-=======
-    } else {
-
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
       // If no searchTerm or doctorsList is empty, use the original list.
       setFilteredDoctors(doctorsList);
     }
   }, [doctorsList, searchTerm]); // Include all dependencies in the dependency array
 
-<<<<<<< HEAD
   const handleQRCode = (doctorId) =>
   {
-=======
-
-  const handleQRCode = (doctorId) => {
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
     console.log("HELLO");
     localStorage.setItem("doctorId", doctorId);
     const doctor = doctorsList?.find((doc) => doc._id === doctorId);
@@ -152,14 +130,9 @@ export default function DoctorList({ searchTerm })
     onOpenModal();
   };
 
-<<<<<<< HEAD
   const handleBookAppointment = async () =>
   {
     console.log(selectedDoctor?.slots[currentIndex]);
-=======
-  const handleBookAppointment = async () => {
-    console.log(selectedDoctor?.slots[currentIndex])
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
     const bookslot = {
       date: selectedDoctor?.slots[currentIndex].date.split("T")[0],
       time: selectedDoctor?.slots[currentIndex].startTime,
@@ -218,7 +191,6 @@ export default function DoctorList({ searchTerm })
   const MAX_LENGTH = 6;
   const otpInputs = [];
 
-<<<<<<< HEAD
   const handleChange = (e) =>
   {
     let { name, value } = e.target;
@@ -236,29 +208,6 @@ export default function DoctorList({ searchTerm })
   {
     setappointment(!appointment);
   };
-=======
-  const handleChange = (e) => {
-    let { name, value } = e.target
-    console.log(value)
-    if (value.length != 10) {
-      setmobileNumberError('Please enter a valid number')
-    }
-    if (value.length == 10) {
-      setmobileNumberError('')
-    }
-    setcontactNumber(value)
-    console.log(contactNumber)
-  }
-
-  const showSlot = () => {
-    setbookingslottoggle(!bookingslottoggle)
-  }
-
-  const showappointment = () => {
-
-    setappointment(!appointment)
-  }
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
 
   const handleOtp = async () =>
   {
@@ -275,17 +224,11 @@ export default function DoctorList({ searchTerm })
     localStorage.setItem("userId", data?.data?._id);
 
     // localStorage.setItem("token", data?.user?.token)
-<<<<<<< HEAD
-    setotppage(true);
-  };
-  const handleInputChange = (e, index) =>
-  {
-=======
     setotppage(true)
 
   }
-  const handleInputChange = (e, index) => {
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
+  const handleInputChange = (e, index) =>
+  {
     const value = e.target.value;
 
     if (isNaN(value))
@@ -294,8 +237,6 @@ export default function DoctorList({ searchTerm })
     }
 
     otp[index] = value;
-
-<<<<<<< HEAD
     if (index < MAX_LENGTH - 1 && value)
     {
       otpInputs[index + 1].focus();
@@ -308,20 +249,7 @@ export default function DoctorList({ searchTerm })
   {
     try
     {
-      const userId = localStorage.getItem("userId");
-=======
-    if (index < MAX_LENGTH - 1 && value) {
-      if (index < MAX_LENGTH - 1 && value) {
-        otpInputs[index + 1].focus();
-      }
-
-      setOtp([...otp]);
-    };
-  }
-  const verifyOTP = async () => {
-    try {
       const userId = localStorage.getItem("userId")
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
 
       const otpString = otp.join("");
 
@@ -337,27 +265,16 @@ export default function DoctorList({ searchTerm })
       );
 
       const data = await response.json();
-<<<<<<< HEAD
       if (data.success === true)
       {
         console.log("DATA from response", data);
-=======
-      if (data.success === true) {
-        console.log("DATA from response", data)
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
 
         localStorage.setItem("token", data?.data?.token);
         navigate("/edituserform");
       }
-<<<<<<< HEAD
     } catch (error)
     {
       console.error("There was an error verifying the OTP:", error);
-=======
-
-    } catch (error) {
-      console.error('There was an error verifying the OTP:', error);
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
     }
   };
 
@@ -399,13 +316,8 @@ export default function DoctorList({ searchTerm })
     return { year, monthName, day, dayName };
   }
 
-<<<<<<< HEAD
   const handleDateClick = (index) =>
   {
-=======
-
-  const handleDateClick = (index) => {
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
     setCurrentIndex(index);
   };
 
@@ -588,138 +500,75 @@ export default function DoctorList({ searchTerm })
                                 <FaAngleLeft style={{ color: 'black' }} />
                               </button>
                               <div className="flex flex-row overflow-x-auto mx-2 ">
-<<<<<<< HEAD
-                                {bookingslot?.map((data, index) =>
                                 {
-                                  // console.log(data.date)
-                                  const { year, monthName, day, dayName } =
-                                    getYearMonthDay(data.date);
-                                  // console.log(year, monthName, day, dayName)
-                                  if (index == currentIndex)
+                                  bookingslot?.map((data, index) =>
                                   {
-=======
-                                {bookingslot?.map((data, index) => {
-                                  console.log(data)
-                                  const { year, monthName, day, dayName } = getYearMonthDay(data.date)
-                                  // console.log(year, monthName, day, dayName)
-                                  if (data.isBooked == true) {
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
-                                    return (
-                                      <div key={index} className="flex flex-col px-2" disabled >
-                                        <p>{monthName}</p>
-                                        <p className=" p-2 border-2 rounded-lg " style={{ backgroundColor: '#89CFF0' }}>{day}</p>
-                                        <p>{dayName}</p>
-                                      </div>
-<<<<<<< HEAD
-                                    );
-                                  } else
-                                  {
-                                    return (
-                                      <div
-                                        key={index}
-                                        className="flex flex-col px-2 hover:cursor-pointer"
-                                        onClick={() =>
-                                        {
-                                          handleDateClick(index);
-                                        }}
-=======
-                                    )
-                                  }
-                                  else if (index == currentIndex) {
-                                    return (
-                                      <div key={index} className="flex flex-col px-2"
-                                      >
-                                        <p>{monthName}</p>
-                                        <p className=" p-2 border-2 rounded-lg bg-blue-100" >{day}</p>
-                                        <p>{dayName}</p>
-                                      </div>
-                                    )
-                                  } else {
-                                    return (
-                                      <div key={index} className="flex flex-col px-2 hover:cursor-pointer" onClick={() => { handleDateClick(index) }}
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
-                                      >
-                                        <p>{monthName}</p>
-                                        <p className=" p-2 border-2 rounded-lg bg-gray-200" >{day}</p>
-                                        <p>{dayName}</p>
-                                      </div>
-                                    )
-                                  }
-                                })}
-                              </div>
+                                    // console.log(data.date)
+                                    const { year, monthName, day, dayName } =
+                                      getYearMonthDay(data.date);
+                                    // console.log(year, monthName, day, dayName)
+                                    if (index == currentIndex)
+                                    {
+                                      return (
+                                        <div key={index} className="flex flex-col px-2" disabled >
+                                          <p>{monthName}</p>
+                                          <p className=" p-2 border-2 rounded-lg " style={{ backgroundColor: '#89CFF0' }}>{day}</p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    } else
+                                    {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2 hover:cursor-pointer"
+                                          onClick={() =>
+                                          {
+                                            handleDateClick(index);
+                                          }}
+                                        >
+                                          <p>{monthName}</p>
+                                          <p className=" p-2 border-2 rounded-lg bg-gray-200" >{day}</p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      )
+                                    }
+                                  })
+                                }
+                              </div >
                               <button className="text-white text-xs rounded-3xl" onClick={goToNext} >
                                 <FaAngleRight style={{ color: 'black' }} />
                               </button>
-                            </div>
+                            </div >
 
-<<<<<<< HEAD
-                            <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-44">
+                            <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
                               {[...Array(numberOfRows)].map((_, rowIndex) =>
                               {
                                 return (
-                                  <div
-                                    key={rowIndex}
-                                    className="flex space-x-2"
-                                  >
-                                    {bookingslot
-                                      .slice(
-                                        rowIndex * numberOfColumns,
-                                        (rowIndex + 1) * numberOfColumns
-                                      )
-                                      ?.map((data, index) =>
-                                      {
-                                        selectedschedule = selectedschedule + 1;
-                                        // console.log(selectedschedule)
-
-                                        if (
-                                          selectedschedule - 1 ===
-                                          currentIndex
-                                        )
-                                        {
-                                          return (
-                                            <div
-                                              key={index}
-                                              className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-300 text-gray-800"
-                                            >
-                                              {data.startTime}
-                                            </div>
-                                          );
-                                        } else
-                                        {
-                                          return (
-                                            <div
-                                              key={index}
-                                              className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                            >
-                                              {data.startTime}
-                                            </div>
-                                          );
-                                        }
-                                      })}
-=======
-                            <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                              {[...Array(numberOfRows)].map((_, rowIndex) => {
-                                return (
                                   <div key={rowIndex} className="flex space-x-2">
-                                    {bookingslot.slice(rowIndex * numberOfColumns, (rowIndex + 1) * numberOfColumns)?.map((data, index) => {
+                                    {bookingslot.slice(rowIndex * numberOfColumns, (rowIndex + 1) * numberOfColumns)?.map((data, index) =>
+                                    {
                                       selectedschedule = selectedschedule + 1;
                                       index = selectedschedule - 1
                                       // console.log(selectedschedule)
-                                      if (data.isBooked == true) {
+                                      if (data.isBooked == true)
+                                      {
                                         return (
                                           <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800" disabled style={{ backgroundColor: '#89CFF0' }}>
                                             {data.startTime}
                                           </div>
                                         )
                                       }
-                                      else if (selectedschedule - 1 === currentIndex) {
+                                      else if (selectedschedule - 1 === currentIndex)
+                                      {
                                         return (
                                           <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800" >
                                             {data.startTime}
                                           </div>
                                         )
                                       }
-                                      else {
+                                      else
+                                      {
                                         return (
                                           <div key={index} className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800" onClick={() => { handleDateClick(index) }}>
                                             {data.startTime}
@@ -727,149 +576,33 @@ export default function DoctorList({ searchTerm })
                                         )
                                       }
                                     })}
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
                                   </div>
                                 )
                               })}
                             </div>
                           </div>
-<<<<<<< HEAD
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex flex-row-reverse my-1">
-                      {!bookingslottoggle && !appointment && (
-                        <button
-                          className="text-white text-xs rounded-3xl px-3 py-1 "
-                          onClick={() =>
-                          {
-                            showSlot();
-                          }}
-                          style={{ backgroundColor: " #89CFF0" }}
-                        >
-=======
                         </div>}
 
 
                       </div>
                       <div className="flex flex-row-reverse my-1">
                         {!bookingslottoggle && !appointment && <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
                           Book Slots
                         </button>}
                         {bookingslottoggle && !appointment && <div class="flex mx-auto space-x-4 mt-3">
                           <button className="text-white text-sm rounded-3xl px-3 py-1 mb-1 " onClick={handleBookAppointment} style={{ backgroundColor: ' #89CFF0' }}>
                             Book Appointment
                           </button>
-<<<<<<< HEAD
-                          <button
-                            className="text-white text-xs rounded-3xl px-3 py-1 "
-                            onClick={() =>
-                            {
-                              showSlot();
-                            }}
-                            style={{ backgroundColor: " #89CFF0" }}
-                          >
-                            Go Back
-                          </button>
-                        </div>
-                      )}
-=======
                           {/* <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
                           Go Back
                         </button> */}
                         </div>}
                       </div>
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-<<<<<<< HEAD
-          )}
-          {otppage && (
-            <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
-              <p className="text-3xl ">Personal Information</p>
-              <hr className="border my-2 " />
-              {/* ------------mobile Number------------ */}
-              <div className="mt-3 flex flex-row">
-                <p className="block text-black text-base font-semibold">
-                  Mobile Number :{contactNumber}
-                </p>
-              </div>
-              {/* -----------contact----------- */}
-              <div className="mt-3 flex flex-row">
-                <p className="block text-black text-base font-semibold">
-                  Date :{" "}
-                  {selectedDoctor?.slots[currentIndex]?.date?.split("T")[0]}
-                </p>
-              </div>
-              {/* -----------address----------- */}
-              <div className="mt-3 flex flex-row">
-                <p className="block text-black text-base font-semibold">
-                  Time :{selectedDoctor?.slots[currentIndex]?.startTime}
-                </p>
-                <p></p>
-              </div>
-              <hr class=" mt-3" />
-
-              {/* ----------------------------------------otp verification section---------------------------------------- */}
-              <div class="flex flex-col">
-                <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
-                <div
-                  class="bg-gray-300 flex flex-row rounded-lg"
-                  style={{ maxWidth: "11rem" }}
-                >
-                  <img src={phonelogo} class="pl-5 pr-1"></img>
-                  <input
-                    className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
-                    type="number"
-                    id="mobileNo"
-                    name="mobileNo"
-                    value={contactNumber}
-                    style={{
-                      border: "",
-                      height: "45px",
-                      paddingLeft: "1.5%",
-                      maxWidth: "8rem",
-                    }}
-                  />
-                </div>
-
-                <div
-                  className="flex w-full my-3"
-                  style={{
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                >
-                  {otp.map((digit, index) => (
-                    <input
-                      key={index}
-                      ref={(input) => (otpInputs[index] = input)}
-                      type="text"
-                      className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleInputChange(e, index)}
-                      onKeyDown={(e) =>
-                      {
-                        if (e.key === "Backspace" && index > 0 && !digit)
-                        {
-                          otpInputs[index - 1].focus();
-                        }
-                      }}
-                    />
-                  ))}
-                </div>
-
-                <p class="text-gray-600">
-                  Otp will expire in 30 seconds{" "}
-                  <button
-                    onClick={handleOtp}
-                    class="font-medium underline text-black"
-=======
+                    </div >
+                  </div >
+                </div >
+              </div >
+            </div >
             }
             {otppage &&
               <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
@@ -879,7 +612,6 @@ export default function DoctorList({ searchTerm })
                 <div className="mt-3 flex flex-row">
                   <p
                     className="block text-black text-base font-semibold"
->>>>>>> be447b022a5fcb2726868f53dfb2208c0cb97eba
                   >
                     Mobile Number :{contactNumber}
                   </p>
@@ -936,8 +668,10 @@ export default function DoctorList({ searchTerm })
                         maxLength={1}
                         value={digit}
                         onChange={(e) => handleInputChange(e, index)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Backspace" && index > 0 && !digit) {
+                        onKeyDown={(e) =>
+                        {
+                          if (e.key === "Backspace" && index > 0 && !digit)
+                          {
                             otpInputs[index - 1].focus();
                           }
                         }}
@@ -952,7 +686,7 @@ export default function DoctorList({ searchTerm })
                 </div>
               </div>}
           </div >
-        </div>
+        </div >
       </Modal >
 
 
