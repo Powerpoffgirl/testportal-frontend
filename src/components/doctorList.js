@@ -65,9 +65,7 @@ export default function DoctorList({ searchTerm }) {
   useEffect(() => {
     localStorage.clear();
   }, []);
-  useEffect(() => {
-    localStorage.clear()
-  }, [])
+
 
   useEffect(() => {
     const fetchDoctorDetails = async () => {
@@ -86,14 +84,17 @@ export default function DoctorList({ searchTerm }) {
         );
         setDoctorsList(verifiedDoctors);
       } catch (error) {
+
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, [searchTerm]);
 
+
   useEffect(() => {
     // Check if there is a searchTerm and the doctorsList is not empty.
+
     if (doctorsList.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedDoctors = doctorsList.filter(
@@ -103,10 +104,12 @@ export default function DoctorList({ searchTerm }) {
       );
       setFilteredDoctors(matchedDoctors);
     } else {
+
       // If no searchTerm or doctorsList is empty, use the original list.
       setFilteredDoctors(doctorsList);
     }
   }, [doctorsList, searchTerm]); // Include all dependencies in the dependency array
+
 
   const handleQRCode = (doctorId) => {
     console.log("HELLO");
@@ -120,7 +123,7 @@ export default function DoctorList({ searchTerm }) {
   };
 
   const handleBookAppointment = async () => {
-    console.log(selectedDoctor?.slots[currentIndex]);
+    console.log(selectedDoctor?.slots[currentIndex])
     const bookslot = {
       date: selectedDoctor?.slots[currentIndex].date.split("T")[0],
       time: selectedDoctor?.slots[currentIndex].startTime,
@@ -177,19 +180,26 @@ export default function DoctorList({ searchTerm }) {
   const otpInputs = [];
 
   const handleChange = (e) => {
-    let { name, value } = e.target;
-    console.log(value);
-    setcontactNumber(value);
-    console.log(contactNumber);
-  };
+    let { name, value } = e.target
+    console.log(value)
+    if (value.length != 10) {
+      setmobileNumberError('Please enter a valid number')
+    }
+    if (value.length == 10) {
+      setmobileNumberError('')
+    }
+    setcontactNumber(value)
+    console.log(contactNumber)
+  }
 
   const showSlot = () => {
-    setbookingslottoggle(!bookingslottoggle);
-  };
+    setbookingslottoggle(!bookingslottoggle)
+  }
 
   const showappointment = () => {
-    setappointment(!appointment);
-  };
+
+    setappointment(!appointment)
+  }
 
   const handleOtp = async () => {
     const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
@@ -202,7 +212,7 @@ export default function DoctorList({ searchTerm }) {
     const data = await response.json();
     console.log("RESPONSE------", data);
     console.log("user id", data?.user?._id);
-    localStorage.setItem("userId", data?.data?._id);
+    localStorage.setItem("userId", data?.user?._id);
 
     // localStorage.setItem("token", data?.user?.token)
     setotppage(true)
@@ -216,13 +226,13 @@ export default function DoctorList({ searchTerm }) {
     }
 
     otp[index] = value;
+
     if (index < MAX_LENGTH - 1 && value) {
       otpInputs[index + 1].focus();
     }
 
     setOtp([...otp]);
-  };
-
+  }
   const verifyOTP = async () => {
     try {
       const userId = localStorage.getItem("userId")
@@ -242,13 +252,14 @@ export default function DoctorList({ searchTerm }) {
 
       const data = await response.json();
       if (data.success === true) {
-        console.log("DATA from response", data);
+        console.log("DATA from response", data)
 
         localStorage.setItem("token", data?.data?.token);
         navigate("/edituserform");
       }
+
     } catch (error) {
-      console.error("There was an error verifying the OTP:", error);
+      console.error('There was an error verifying the OTP:', error);
     }
   };
 
@@ -288,6 +299,7 @@ export default function DoctorList({ searchTerm }) {
 
     return { year, monthName, day, dayName };
   }
+
 
   const handleDateClick = (index) => {
     setCurrentIndex(index);
@@ -469,42 +481,44 @@ export default function DoctorList({ searchTerm }) {
                                 <FaAngleLeft style={{ color: 'black' }} />
                               </button>
                               <div className="flex flex-row overflow-x-auto mx-2 ">
-                                {
-                                  bookingslot?.map((data, index) => {
-                                    // console.log(data.date)
-                                    const { year, monthName, day, dayName } =
-                                      getYearMonthDay(data.date);
-                                    // console.log(year, monthName, day, dayName)
-                                    if (index == currentIndex) {
-                                      return (
-                                        <div key={index} className="flex flex-col px-2" disabled >
-                                          <p>{monthName}</p>
-                                          <p className=" p-2 border-2 rounded-lg " style={{ backgroundColor: '#89CFF0' }}>{day}</p>
-                                          <p>{dayName}</p>
-                                        </div>
-                                      );
-                                    } else {
-                                      return (
-                                        <div
-                                          key={index}
-                                          className="flex flex-col px-2 hover:cursor-pointer"
-                                          onClick={() => {
-                                            handleDateClick(index);
-                                          }}
-                                        >
-                                          <p>{monthName}</p>
-                                          <p className=" p-2 border-2 rounded-lg bg-gray-200" >{day}</p>
-                                          <p>{dayName}</p>
-                                        </div>
-                                      )
-                                    }
-                                  })
-                                }
-                              </div >
+                                {bookingslot?.map((data, index) => {
+                                  console.log(data)
+                                  const { year, monthName, day, dayName } = getYearMonthDay(data.date)
+                                  // console.log(year, monthName, day, dayName)
+                                  if (data.isBooked == true) {
+                                    return (
+                                      <div key={index} className="flex flex-col px-2" disabled >
+                                        <p>{monthName}</p>
+                                        <p className=" p-2 border-2 rounded-lg " style={{ backgroundColor: '#89CFF0' }}>{day}</p>
+                                        <p>{dayName}</p>
+                                      </div>
+                                    )
+                                  }
+                                  else if (index == currentIndex) {
+                                    return (
+                                      <div key={index} className="flex flex-col px-2"
+                                      >
+                                        <p>{monthName}</p>
+                                        <p className=" p-2 border-2 rounded-lg bg-blue-100" >{day}</p>
+                                        <p>{dayName}</p>
+                                      </div>
+                                    )
+                                  } else {
+                                    return (
+                                      <div key={index} className="flex flex-col px-2 hover:cursor-pointer" onClick={() => { handleDateClick(index) }}
+                                      >
+                                        <p>{monthName}</p>
+                                        <p className=" p-2 border-2 rounded-lg bg-gray-200" >{day}</p>
+                                        <p>{dayName}</p>
+                                      </div>
+                                    )
+                                  }
+                                })}
+                              </div>
                               <button className="text-white text-xs rounded-3xl" onClick={goToNext} >
                                 <FaAngleRight style={{ color: 'black' }} />
                               </button>
-                            </div >
+                            </div>
 
                             <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
                               {[...Array(numberOfRows)].map((_, rowIndex) => {
@@ -558,11 +572,11 @@ export default function DoctorList({ searchTerm }) {
                         </button> */}
                         </div>}
                       </div>
-                    </div >
-                  </div >
-                </div >
-              </div >
-            </div >
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             }
             {otppage &&
               <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
@@ -644,7 +658,7 @@ export default function DoctorList({ searchTerm }) {
                 </div>
               </div>}
           </div >
-        </div >
+        </div>
       </Modal >
 
 
