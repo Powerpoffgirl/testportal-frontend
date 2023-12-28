@@ -5,6 +5,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'Tabview': '900px', // Custom breakpoint larger than 'md' (768px)
+      },
       colors: {
         customRed: '#89CFF0', // Define a custom color with a hex code
         customGreen: '#E3F6FF'
