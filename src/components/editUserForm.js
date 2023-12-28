@@ -503,7 +503,7 @@ export default function EditUserForm()
           onOpenModal();
         }
         console.log("Doctor updated successfully.");
-        navigate("/doctorlistuser");
+        // navigate("/doctorlistuser");
       }
       console.log("DATA from response", data);
     }
