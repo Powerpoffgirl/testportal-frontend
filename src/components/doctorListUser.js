@@ -129,6 +129,9 @@ export default function DoctorListUser({ searchTerm }) {
     const data = await response.json();
 
     console.log("slot booked", data);
+    if (data.success === true) {
+      navigate("/edituserform");
+    }
     localStorage.setItem(
       "appointment_date",
       data?.doctorSlot?.date?.split("T")[0]
@@ -443,42 +446,6 @@ export default function DoctorListUser({ searchTerm }) {
                         </p>
                       </div>
                     )}
-                    {appointment && (
-                      <div class="mx-2">
-                        <p class="font-medium text-gray-500 ">
-                          Date:{" "}
-                          {
-                            selectedDoctor?.slots[currentIndex].date.split(
-                              "T"
-                            )[0]
-                          }
-                        </p>
-                        <p class="font-medium text-gray-500 mb-3">
-                          Time:{selectedDoctor?.slots[currentIndex].startTime}
-                        </p>
-                        <hr />
-                        <p class="mt-2">Mobile Number</p>
-                        <input
-                          class=" border my-1 placeholder-gray-500"
-                          type="tel"
-                          id="phone-number"
-                          name="contactNumber"
-                          pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                          required
-                          value={contactNumber}
-                          onChange={handleChange}
-                        />
-                        <div class="flex flex-row-reverse">
-                          <button
-                            className="text-white text-xs rounded-3xl px-3 py-1 "
-                            onClick={handleOtp}
-                            style={{ backgroundColor: " #89CFF0" }}
-                          >
-                            Send OTP
-                          </button>
-                        </div>
-                      </div>
-                    )}
                     <div>
                       {bookingslottoggle && (
                         <div className="flex flex-col">
@@ -648,70 +615,6 @@ export default function DoctorListUser({ searchTerm }) {
               <hr class=" mt-3" />
 
               {/* ----------------------------------------otp verification section---------------------------------------- */}
-              <div class="flex flex-col">
-                <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
-                <div
-                  class="bg-gray-300 flex flex-row rounded-lg"
-                  style={{ maxWidth: "11rem" }}
-                >
-                  <img src={phonelogo} class="pl-5 pr-1"></img>
-                  <input
-                    className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
-                    type="number"
-                    id="mobileNo"
-                    name="mobileNo"
-                    value={contactNumber}
-                    style={{
-                      border: "",
-                      height: "45px",
-                      paddingLeft: "1.5%",
-                      maxWidth: "8rem",
-                    }}
-                  />
-                </div>
-
-                <div
-                  className="flex w-full my-3"
-                  style={{
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                >
-                  {otp.map((digit, index) => (
-                    <input
-                      key={index}
-                      ref={(input) => (otpInputs[index] = input)}
-                      type="text"
-                      className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleInputChange(e, index)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Backspace" && index > 0 && !digit) {
-                          otpInputs[index - 1].focus();
-                        }
-                      }}
-                    />
-                  ))}
-                </div>
-
-                <p class="text-gray-600">
-                  Otp will expire in 30 seconds{" "}
-                  <button
-                    onClick={handleOtp}
-                    class="font-medium underline text-black"
-                  >
-                    Resend
-                  </button>{" "}
-                </p>
-                <button
-                  className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-                  style={{ backgroundColor: "#89CFF0" }}
-                  onClick={verifyOTP}
-                >
-                  Verify
-                </button>
-              </div>
             </div>
           )}
         </div>
