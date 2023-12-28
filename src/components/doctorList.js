@@ -153,7 +153,7 @@ export default function DoctorList({ searchTerm }) {
       });
     } else {
       toast.error("Failed to Book Appointment", {
-        position: "top-center",
+        // position: "top-center",
       });
     }
   };
