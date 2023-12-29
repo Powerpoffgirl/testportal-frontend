@@ -380,7 +380,6 @@ export default function EditUserForm()
           return;
         }
 
-
         const response = await fetch(`${baseUrl}/api/v1/user/get_patientDetails/${patientId}`, {
           method: "GET",
           headers: {
@@ -485,100 +484,99 @@ export default function EditUserForm()
       },
       userPic: userImage,
     };
-    if (newUserDetails.name === "")
+    // if (newUserDetails.name === "")
+    // {
+    //   toast.error("Please write name");
+    // } else if (newUserDetails.email === "")
+    // {
+    //   toast.error("Please write email");
+    // } else if (newUserDetails.contactNumber === "")
+    // {
+    //   toast.error("Please write contact number");
+    // } else if (newUserDetails.address?.pinCode === "")
+    // {
+    //   toast.error("Please write Pincode");
+    // } else if (newUserDetails.address?.district === "")
+    // {
+    //   toast.error("Please write district");
+    // } else if (newUserDetails.address?.state === "")
+    // {
+    //   toast.error("Please write state");
+    // } else
+    // {
+    const token = localStorage.getItem("token");
+    if (!token)
     {
-      toast.error("Please write name");
-    } else if (newUserDetails.email === "")
-    {
-      toast.error("Please write email");
-    } else if (newUserDetails.contactNumber === "")
-    {
-      toast.error("Please write contact number");
-    } else if (newUserDetails.address?.pinCode === "")
-    {
-      toast.error("Please write Pincode");
-    } else if (newUserDetails.address?.district === "")
-    {
-      toast.error("Please write district");
-    } else if (newUserDetails.address?.state === "")
-    {
-      toast.error("Please write state");
-    } else
-    {
-      const token = localStorage.getItem("token");
-      const doctorId = localStorage.getItem("doctorId");
-      if (!token)
-      {
-        console.error("No token found in local storage");
-        localStorage.clear();
-        navigate("/userlogin");
-      }
-      const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(newUserDetails),
-      });
-      const data = await response.json();
+      console.error("No token found in local storage");
+      localStorage.clear();
+      navigate("/userlogin");
+    }
+    const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+      body: JSON.stringify(newUserDetails),
+    });
+    const data = await response.json();
 
-      if (data.statusCode === 400)
-      {
-        toast.error("Please fill the details");
-      }
-      const response1 = await fetch(`${baseUrl}/api/v1/user/update_patient/${patientId}`, {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
+    if (data.statusCode === 400)
+    {
+      toast.error("Please fill the details");
+    }
+    const response1 = await fetch(`${baseUrl}/api/v1/user/update_patient/${patientId}`, {
+      method: "put",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+      body: JSON.stringify({
+        name: userDetails?.name,
+        age: userDetails?.age,
+        ageType: userDetails?.ageType,
+        gender: userDetails?.gender,
+        bodyWeight: userDetails?.bodyWeight,
+        address: {
+          houseNo: userDetails?.address?.houseNo,
+          floor: userDetails?.address?.floor,
+          block: userDetails?.address?.block,
+          area: userDetails?.address?.area,
+          pinCode: userDetails?.address?.pinCode,
+          district: userDetails?.address?.district,
+          state: userDetails?.address?.state,
         },
-        body: JSON.stringify({
-          name: userDetails?.name,
-          age: userDetails?.age,
-          ageType: userDetails?.ageType,
-          gender: userDetails?.gender,
-          bodyWeight: userDetails?.bodyWeight,
-          address: {
-            houseNo: userDetails?.address?.houseNo,
-            floor: userDetails?.address?.floor,
-            block: userDetails?.address?.block,
-            area: userDetails?.address?.area,
-            pinCode: userDetails?.address?.pinCode,
-            district: userDetails?.address?.district,
-            state: userDetails?.address?.state,
+        patientPic: userImage,
+      }),
+    });
+    const data1 = await response1.json();
+    console.log("PATIENT UPDATED SUCCESSFULLY", data1)
+
+    if (data.success === true)
+    {
+      console.log("====================APPOINTMENT DETAILS=====================", appointmentDetails)
+      const response = await fetch(
+        `${baseUrl}/api/v1/user/create_appointment`,
+        {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
           },
-          patientPic: userImage,
-        }),
-      });
-      const data1 = await response1.json();
-      console.log("PATIENT UPDATED SUCCESSFULLY", data1)
-
+          body: JSON.stringify(appointmentDetails),
+        }
+      );
+      const data = await response.json();
+      console.log("DATA FROM APPOINTMENT BOOKING", data)
       if (data.success === true)
       {
-        console.log("====================APPOINTMENT DETAILS=====================", appointmentDetails)
-        const response = await fetch(
-          `${baseUrl}/api/v1/user/create_appointment`,
-          {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token,
-            },
-            body: JSON.stringify(appointmentDetails),
-          }
-        );
-        const data = await response.json();
-        console.log("DATA FROM APPOINTMENT BOOKING", data)
-        if (data.success === true)
-        {
-          onOpenModal();
-        }
-        console.log("Doctor updated successfully.");
-        navigate("/doctorlistuser");
+        onOpenModal();
       }
-      console.log("DATA from response", data);
+      console.log("Doctor updated successfully.");
+      navigate("/doctorlistuser");
     }
+    console.log("DATA from response", data);
+    // }
   };
 
   const AgeType = [
