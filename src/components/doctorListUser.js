@@ -14,11 +14,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 import phonelogo from "../assets/phone.svg";
-<<<<<<< HEAD
 import close_button from "../assets/close_button.svg";
-=======
-import { toast } from "react-toastify";
->>>>>>> 15fdcd06cfbcd32f9706a5921292f70686f3c609
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#89CFF0"/>
@@ -147,17 +143,6 @@ export default function DoctorListUser({ searchTerm })
     const data = await response.json();
 
     console.log("slot booked", data);
-    if (data.success === true)
-    {
-      toast.success("Slot booked successfully", {
-        // position: "top-center",
-      });
-    } else
-    {
-      toast.error("Please book another slot", {
-        // position: "top-center",
-      });
-    }
     if (data.success === true)
     {
       navigate("/edituserform");
@@ -347,12 +332,17 @@ export default function DoctorListUser({ searchTerm })
   var selectedschedule = 0;
   // console.log(selectedDoctor?.slots[currentIndex])
 
-  useEffect(() => {
-    if (resendClicked || firstTime) {
-      const intervalId = setInterval(() => {
-        if (seconds > 0) {
+  useEffect(() =>
+  {
+    if (resendClicked || firstTime)
+    {
+      const intervalId = setInterval(() =>
+      {
+        if (seconds > 0)
+        {
           setSeconds((prevSeconds) => prevSeconds - 1);
-        } else {
+        } else
+        {
           setFirstTime(false);
           setSeconds(90);
           setResendClicked(false);
@@ -362,7 +352,8 @@ export default function DoctorListUser({ searchTerm })
     }
   }, [seconds, resendClicked, firstTime]);
 
-  const formatTime = (time) => {
+  const formatTime = (time) =>
+  {
     const minutes = Math.floor(time / 60);
     const remainingSeconds = time % 60;
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
@@ -411,36 +402,9 @@ export default function DoctorListUser({ searchTerm })
                   />
                 )}
               </div>
-<<<<<<< HEAD
               <div className="flex flex-col  py-4 px-5 bg-white mt-1">
                 <p className="text-xs text-black font-medium mb-2">
                   Registration No. :- 33256
-=======
-            </div>
-          </div>
-          {/* --------------------------------right part-------------------------------- */}
-          {!otppage && (
-            <div className="flex flex-col  md:w-1/2 px-2">
-              <div className=" py-1 mb-2">
-                <p className="text-lg font-medium text-black ">SPECIALITY</p>
-                <div className="flex flex-wrap ">
-                  {selectedDoctor?.speciality?.map((item, index) =>
-                  {
-                    return (
-                      <p
-                        key={index}
-                        className="bg-white rounded-xl py-1 px-4 mx-2 my-1 "
-                      >
-                        {item}
-                      </p>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className=" py-1 mb-2">
-                <p className="text-lg font-medium text-black">
-                  About The Doctor
->>>>>>> 15fdcd06cfbcd32f9706a5921292f70686f3c609
                 </p>
 
                 <p className="text-black text-3xl font-medium mb-2">
@@ -491,7 +455,8 @@ export default function DoctorListUser({ searchTerm })
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
                   <div className="flex flex-wrap ">
-                    {selectedDoctor?.speciality?.map((item, index) => {
+                    {selectedDoctor?.speciality?.map((item, index) =>
+                    {
                       return (
                         <p
                           key={index}
@@ -606,52 +571,7 @@ export default function DoctorListUser({ searchTerm })
                               >
                                 Send OTP
                               </button>
-<<<<<<< HEAD
                             ) : (
-=======
-                              <div className="flex flex-row overflow-x-auto mx-2 ">
-                                {bookingslot?.map((data, index) =>
-                                {
-                                  // console.log(data.date)
-                                  const { year, monthName, day, dayName } =
-                                    getYearMonthDay(data.date);
-                                  // console.log(year, monthName, day, dayName)
-                                  if (index == currentIndex)
-                                  {
-                                    return (
-                                      <div
-                                        key={index}
-                                        className="flex flex-col px-2"
-                                      >
-                                        <p>{monthName}</p>
-                                        <p className=" p-2 border-2 rounded-lg bg-blue-300">
-                                          {day}
-                                        </p>
-                                        <p>{dayName}</p>
-                                      </div>
-                                    );
-                                  } else
-                                  {
-                                    return (
-                                      <div
-                                        key={index}
-                                        className="flex flex-col px-2 hover:cursor-pointer"
-                                        onClick={() =>
-                                        {
-                                          handleDateClick(index);
-                                        }}
-                                      >
-                                        <p>{monthName}</p>
-                                        <p className=" p-2 border-2 rounded-lg bg-gray-200">
-                                          {day}
-                                        </p>
-                                        <p>{dayName}</p>
-                                      </div>
-                                    );
-                                  }
-                                })}
-                              </div>
->>>>>>> 15fdcd06cfbcd32f9706a5921292f70686f3c609
                               <button
                                 className="text-white text-xs rounded-3xl px-3 py-1 "
                                 disabled
@@ -660,7 +580,6 @@ export default function DoctorListUser({ searchTerm })
                               >
                                 Send OTP
                               </button>
-<<<<<<< HEAD
                             )}
                           </div>
                         </div>
@@ -677,12 +596,14 @@ export default function DoctorListUser({ searchTerm })
                                   <FaAngleLeft style={{ color: "black" }} />
                                 </button>
                                 <div className="flex flex-row overflow-x-auto mx-2 ">
-                                  {bookingslot?.map((data, index) => {
+                                  {bookingslot?.map((data, index) =>
+                                  {
                                     console.log(data);
                                     const { year, monthName, day, dayName } =
                                       getYearMonthDay(data.date);
                                     // console.log(year, monthName, day, dayName)
-                                    if (data.isBooked == true) {
+                                    if (data.isBooked == true)
+                                    {
                                       return (
                                         <div
                                           key={index}
@@ -701,7 +622,8 @@ export default function DoctorListUser({ searchTerm })
                                           <p>{dayName}</p>
                                         </div>
                                       );
-                                    } else if (index == currentIndex) {
+                                    } else if (index == currentIndex)
+                                    {
                                       return (
                                         <div
                                           key={index}
@@ -714,12 +636,14 @@ export default function DoctorListUser({ searchTerm })
                                           <p>{dayName}</p>
                                         </div>
                                       );
-                                    } else {
+                                    } else
+                                    {
                                       return (
                                         <div
                                           key={index}
                                           className="flex flex-col px-2 hover:cursor-pointer"
-                                          onClick={() => {
+                                          onClick={() =>
+                                          {
                                             handleDateClick(index);
                                           }}
                                         >
@@ -742,7 +666,8 @@ export default function DoctorListUser({ searchTerm })
                               </div>
 
                               <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                                {[...Array(numberOfRows)].map((_, rowIndex) => {
+                                {[...Array(numberOfRows)].map((_, rowIndex) =>
+                                {
                                   return (
                                     <div
                                       key={rowIndex}
@@ -753,12 +678,14 @@ export default function DoctorListUser({ searchTerm })
                                           rowIndex * numberOfColumns,
                                           (rowIndex + 1) * numberOfColumns
                                         )
-                                        ?.map((data, index) => {
+                                        ?.map((data, index) =>
+                                        {
                                           selectedschedule =
                                             selectedschedule + 1;
                                           index = selectedschedule - 1;
                                           // console.log(selectedschedule)
-                                          if (data.isBooked == true) {
+                                          if (data.isBooked == true)
+                                          {
                                             return (
                                               <div
                                                 key={index}
@@ -774,7 +701,8 @@ export default function DoctorListUser({ searchTerm })
                                           } else if (
                                             selectedschedule - 1 ===
                                             currentIndex
-                                          ) {
+                                          )
+                                          {
                                             return (
                                               <div
                                                 key={index}
@@ -783,12 +711,14 @@ export default function DoctorListUser({ searchTerm })
                                                 {data.startTime}
                                               </div>
                                             );
-                                          } else {
+                                          } else
+                                          {
                                             return (
                                               <div
                                                 key={index}
                                                 className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                                onClick={() => {
+                                                onClick={() =>
+                                                {
                                                   handleDateClick(index);
                                                 }}
                                               >
@@ -807,83 +737,6 @@ export default function DoctorListUser({ searchTerm })
                       </div>
                       <div className="flex flex-row-reverse my-1">
                         {!bookingslottoggle && !appointment && (
-=======
-                            </div>
-
-                            <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-44">
-                              {[...Array(numberOfRows)].map((_, rowIndex) =>
-                              {
-                                return (
-                                  <div
-                                    key={rowIndex}
-                                    className="flex space-x-2"
-                                  >
-                                    {bookingslot
-                                      .slice(
-                                        rowIndex * numberOfColumns,
-                                        (rowIndex + 1) * numberOfColumns
-                                      )
-                                      ?.map((data, index) =>
-                                      {
-                                        selectedschedule = selectedschedule + 1;
-                                        // console.log(selectedschedule)
-
-                                        if (
-                                          selectedschedule - 1 ===
-                                          currentIndex
-                                        )
-                                        {
-                                          return (
-                                            <div
-                                              key={index}
-                                              className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-300 text-gray-800"
-                                            >
-                                              {data.startTime}
-                                            </div>
-                                          );
-                                        } else
-                                        {
-                                          return (
-                                            <div
-                                              key={index}
-                                              className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                            >
-                                              {data.startTime}
-                                            </div>
-                                          );
-                                        }
-                                      })}
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex flex-row-reverse my-1">
-                      {!bookingslottoggle && !appointment && (
-                        <button
-                          className="text-white text-xs rounded-3xl px-3 py-1 "
-                          onClick={() =>
-                          {
-                            showSlot();
-                          }}
-                          style={{ backgroundColor: " #89CFF0" }}
-                        >
-                          Book Slots
-                        </button>
-                      )}
-                      {bookingslottoggle && !appointment && (
-                        <div class="flex flex-row space-x-4 mt-3">
-                          <button
-                            className="text-white text-xs rounded-3xl px-3 py-1 "
-                            onClick={handleBookAppointment}
-                            style={{ backgroundColor: " #89CFF0" }}
-                          >
-                            Book Appointment
-                          </button>
->>>>>>> 15fdcd06cfbcd32f9706a5921292f70686f3c609
                           <button
                             className="text-white text-xs rounded-3xl px-3 py-1 "
                             onClick={() =>
@@ -980,8 +833,10 @@ export default function DoctorListUser({ searchTerm })
                         maxLength={1}
                         value={digit}
                         onChange={(e) => handleInputChange(e, index)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Backspace" && index > 0 && !digit) {
+                        onKeyDown={(e) =>
+                        {
+                          if (e.key === "Backspace" && index > 0 && !digit)
+                          {
                             otpInputs[index - 1].focus();
                           }
                         }}
