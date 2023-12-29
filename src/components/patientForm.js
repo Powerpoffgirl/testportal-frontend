@@ -286,11 +286,11 @@ export default function PatientForm() {
         "state",
       ].includes(name)
         ? {
-            address: {
-              ...prevPatientDetails.address,
-              [name]: value,
-            },
-          }
+          address: {
+            ...prevPatientDetails.address,
+            [name]: value,
+          },
+        }
         : { [name]: value }),
     }));
 
@@ -390,225 +390,269 @@ export default function PatientForm() {
 
   console.log("PATIENT DETAILS", patientDetails);
 
+
+
+
   return (
     <>
-      <div className="flex justify-center">
-        <div className="border bg-white flex flex-col w-full sm:w p-6 my-5 me-3">
-          {" "}
-          <p className="text-3xl ">Appointment Details</p>
+
+
+
+      <div className="flex flex-col -ml-7  lg:flex-row">
+        {/* --------------left-------------- */}
+        <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+          <div className="mx-auto my-2">
+            <div className=" " >
+              <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
+                {/* {doctorImage || doctorDetails?.doctorPic ? (
+                                <img
+                                    src={doctorImage || doctorDetails?.doctorPic}
+                                    alt="Avatar"
+                                    style={{
+                                        borderRadius: "50%",
+                                        width: '130px',
+                                        height: '130px'
+                                    }}
+                                />
+                            ) : ( */}
+                <PermIdentityOutlinedIcon
+                  style={{ width: "auto", height: 'auto', color: 'white' }}
+                />
+                {/* )} */}
+              </div>
+            </div>
+
+            <div className="flex flex-row mt-5 mb-3">
+
+              <p className="block text-black text-lg font-semibold ">
+                Edit Profile Picture
+                <input
+                  id="files"
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                />
+              </p>
+
+              <p
+                className="mt-2 ml-3"
+                aria-controls="profile-pic-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                style={{
+                  cursor: "pointer",
+
+                }}
+              >
+                <FaAngleDown />
+              </p>
+
+              <div style={{ backgroundColor: "#89CFF0" }}>
+                <Menu
+                  id="profile-pic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "edit-profile-pic-text",
+                    style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
+                  }}
+                >
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered ? "red" : "white",
+                    }}
+                    onClick={() => {
+                      handleClose();
+                    }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    {" "}
+                    <span style={{ marginRight: "8px" }}>
+                      <HiOutlineUserAdd />
+                    </span>
+                    <label htmlFor="files">New profile picture</label>
+                  </MenuItem>
+
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered1 ? "red" : "white",
+                    }}
+                    // onClick={handleRemoveProfilePicture}
+                    onMouseEnter={() => setIsHovered1(true)}
+                    onMouseLeave={() => setIsHovered1(false)}
+                  >
+                    <span style={{ marginRight: "8px" }}>
+                      <FaRegTrashAlt />
+                    </span>
+                    <span>Remove current picture</span>
+                  </MenuItem>
+                </Menu>
+              </div>
+
+            </div>
+          </div>
+          <hr />
+
+          <div className=" mt-3">
+            <label
+              for="total-experience"
+              className="block text-black text-lg font-semibold"
+            >
+              Gender
+            </label>
+            <Select
+              className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70   bg-white  text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              popupClassName="no-border-dropdown-menu"
+              id="gender"
+              name="gender"
+              value={userDetails?.gender}
+              placeholder="Select Gender"
+              style={{ overflowY: "auto" }}
+              dropdownStyle={{
+                maxHeight: "300px",
+                overflowY: "auto",
+              }}
+            >
+              {Gender.map((option) => (
+                <Select.Option
+                  key={option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
+            {errors.totalExperience && (
+              <p className="text-red-500">{errors.totalExperience}</p>
+            )}
+          </div>
+
+
+          <div className="flex gap-2">
+            <div className="mt-3">
+              <label
+                for="degree"
+                className="block text-black text-lg font-semibold"
+              >
+                Age
+              </label>
+              <input
+                type="text"
+                id="degree"
+                name="degree"
+                onChange={handleChange}
+                className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.degree && (
+                <p className="text-red-500">{errors.degree}</p>
+              )}
+            </div>
+            <div className="mt-3">
+              <label
+                for="degree"
+                className="block text-black text-lg font-semibold"
+              >
+                Age Type
+              </label>
+              <Select
+                className="border rounded-lg h-11"
+                popupClassName="no-border-dropdown-menu"
+                id="ageType"
+                name="ageType"
+                value={userDetails?.ageType}
+                // onChange={handleChange2}
+                placeholder="Select Age Type"
+                style={{ overflowY: "auto" }}
+                dropdownStyle={{
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                }}
+              >
+                {AgeType.map((option) => (
+                  <Select.Option
+                    key={option.value}
+                    value={option.value}
+                  >
+                    {option.label}
+                  </Select.Option>
+                ))}
+              </Select>
+              {errors.degree && (
+                <p className="text-red-500">{errors.degree}</p>
+              )}
+            </div>
+
+          </div>
+
+          <div className=" mt-3">
+            <label
+              for="total-experience"
+              className="block text-black text-lg font-semibold"
+            >
+              Body Weight
+            </label>
+            <input
+              type="text"
+              id="bodyWeight"
+              name="bodyWeight"
+              onChange={handleChange}
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.totalExperience && (
+              <p className="text-red-500">{errors.totalExperience}</p>
+            )}
+          </div>
+
+
+        </div>
+
+        {/* ----------------------------------right---------------------------------- */}
+        <div className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3">
+          <p className="text-3xl " >Appointment Details</p>
           <hr className="border my-2 " />
           {/* -------name------- */}
-          <div className="flex flex-row">
-            <div className="w-1/2 pr-2">
-              <div className="mt-3">
-                <label
-                  htmlFor="name"
-                  className="block text-black text-lg font-semibold"
-                >
-                  Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Dr. Sneha Ahuja"
-                  id="name"
-                  name="name"
-                  onChange={handleChange}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
-                {errors.name && <p className="text-red-500">{errors.name}</p>}
-              </div>
-            </div>
+          <div className="mt-3">
+            <label
+              for="name"
+              className="block text-black text-lg font-semibold"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              onChange={handleChange}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.name && <p className="text-red-500">{errors.name}</p>}
+          </div>
 
-            {/* ------------email------------ */}
-            <div className="w-1/2 pl-2">
-              <div className="flex flex-row justify-between">
-                <div className="w-full sm:w-1/3 px-2">
-                  <div className="mt-5">
-                    <label
-                      htmlFor="age"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      Age
-                    </label>
-                    <input
-                      type="text"
-                      id="age"
-                      name="age"
-                      value={patientDetails?.age}
-                      onChange={handleChange}
-                      className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {floorError && (
-                      <p className="text-red-500 text-sm mt-1">{floorError}</p>
-                    )}
-                  </div>
-                </div>
-                <div className="w-full sm:w-1/3 px-2">
-                  <div className="mt-5">
-                    <label
-                      className="block text-lg font-semibold text-black font-lato"
-                      htmlFor="ageType"
-                    >
-                      Age Type
-                    </label>
-                    <Select
-                      // mode="multiple"
-                      className="border border-[#89CFF0] rounded-lg h-11"
-                      popupClassName="no-border-dropdown-menu"
-                      id="ageType"
-                      name="ageType"
-                      value={patientDetails?.ageType}
-                      onChange={handleChange2}
-                      placeholder="Select Age Type"
-                      style={{ overflowY: "auto" }}
-                      dropdownStyle={{
-                        maxHeight: "300px",
-                        overflowY: "auto",
-                      }}
-                    >
-                      {AgeType.map((option) => (
-                        <Select.Option key={option.value} value={option.value}>
-                          {option.label}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </div>
-                </div>
-                <div className="w-full sm:w-1/3 px-2">
-                  <div className="mt-5">
-                    <label
-                      className="block text-lg font-semibold text-black font-lato"
-                      htmlFor="gender"
-                    >
-                      Gender
-                    </label>
-                    <Select
-                      // mode="multiple"
-                      className="border border-[#89CFF0] rounded-lg h-11"
-                      popupClassName="no-border-dropdown-menu"
-                      id="gender"
-                      name="gender"
-                      value={patientDetails?.gender}
-                      onChange={handleChange1}
-                      placeholder="Select Gender Type"
-                      style={{ overflowY: "auto" }}
-                      dropdownStyle={{
-                        maxHeight: "300px",
-                        overflowY: "auto",
-                      }}
-                    >
-                      {Gender.map((option) => (
-                        <Select.Option key={option.value} value={option.value}>
-                          {option.label}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* ------------email------------ */}
-          <div className="flex flex-row justify-between">
-            <div className="w-full sm:w-1/3 pr-2">
-              <div className="mt-5">
-                <label
-                  htmlFor="email1"
-                  className="block text-black text-lg font-semibold"
-                >
-                  Body Weight
-                </label>
-                <input
-                  type="number"
-                  id="body"
-                  name="body"
-                  onChange={handleChange}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
-                {errors.email && <p className="text-red-500">{errors.email}</p>}
-              </div>
-            </div>
-            <div className="w-full sm:w-1/3 pr-2">
-              <div className="mt-5">
-                <label
-                  htmlFor="email2"
-                  className="block text-black text-lg font-semibold"
-                >
-                  Appointment Date
-                </label>
-                <input
-                  type="number"
-                  id="body"
-                  name="body"
-                  onChange={handleChange}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
-                {errors.email && <p className="text-red-500">{errors.email}</p>}
-              </div>
-            </div>
-            <div className="w-full sm:w-1/3">
-              <div className="mt-5">
-                <label
-                  htmlFor="email3"
-                  className="block text-black text-lg font-semibold"
-                >
-                  Appointment Time
-                </label>
-                <input
-                  type="number"
-                  id="time"
-                  name="time"
-                  onChange={handleChange}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
-                {errors.email && <p className="text-red-500">{errors.email}</p>}
-              </div>
-            </div>
-          </div>
           {/* -----------contact----------- */}
-          <div className="flex flex-row">
-            <div className="w-full sm:w-1/2 pr-2">
-              <div className="mt-3">
-                <label
-                  htmlFor="contact"
-                  className="block text-black text-lg font-semibold"
-                >
-                  Issues
-                </label>
-                <input
-                  type="text"
-                  id="issue"
-                  name="issues"
-                  onChange={handleChange}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
-                {errors.contactNumber && (
-                  <p className="text-red-500">{errors.contactNumber}</p>
-                )}
-              </div>
-            </div>
-            <div className="w-full sm:w-1/2 pl-2">
-              <div className="mt-3">
-                <label
-                  htmlFor="contact"
-                  className="block text-black text-lg font-semibold"
-                >
-                  Disease
-                </label>
-                <input
-                  type="text"
-                  id="disease"
-                  name="disease"
-                  onChange={handleChange}
-                  className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
-                {errors.contactNumber && (
-                  <p className="text-red-500">{errors.contactNumber}</p>
-                )}
-              </div>
-
-              {/* Add the second input field here */}
-            </div>
+          <div className="mt-3">
+            <label
+              for="contact"
+              className="block text-black text-lg font-semibold"
+            >
+              Contact Number
+            </label>
+            <input
+              type="number"
+              id="contactNumber"
+              name="contactNumber"
+              onChange={handleChange}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.contactNumber && (
+              <p className="text-red-500">{errors.contactNumber}</p>
+            )}
           </div>
           {/* -----------address----------- */}
           <div className="mt-3">
@@ -620,8 +664,11 @@ export default function PatientForm() {
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
+
                 <div className="flex flex-row">
+
                   <div className="px-2 w-full sm:w-1/3 mt-3">
+
                     <input
                       type="text"
                       placeholder="House No."
@@ -633,6 +680,7 @@ export default function PatientForm() {
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
+
                     <input
                       type="text"
                       id="floor"
@@ -643,6 +691,7 @@ export default function PatientForm() {
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
+
                     <input
                       type="text"
                       id="block"
@@ -656,6 +705,7 @@ export default function PatientForm() {
                     )}
                   </div>
                   <div className="px-2 w-full sm:w-1/2 mt-3">
+
                     <input
                       type="text"
                       id="pinCode"
@@ -671,6 +721,7 @@ export default function PatientForm() {
                 </div>
 
                 <div className="px-2 w-full mt-3 ">
+
                   <input
                     type="text"
                     id="area"
@@ -679,11 +730,14 @@ export default function PatientForm() {
                     placeholder="Area/Landmark"
                     className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
-                  {errors.area && <p className="text-red-500">{errors.area}</p>}
+                  {errors.area && (
+                    <p className="text-red-500">{errors.area}</p>
+                  )}
                 </div>
 
                 <div className="flex flex-row">
                   <div className="px-2 w-full sm:w-1/2 mt-3">
+
                     <input
                       type="text"
                       id="district"
@@ -698,6 +752,7 @@ export default function PatientForm() {
                   </div>
 
                   <div className="px-2 w-full sm:w-1/2 mt-3">
+
                     <input
                       type="text"
                       id="state"
@@ -710,23 +765,25 @@ export default function PatientForm() {
                       <p className="text-red-500">{errors.state}</p>
                     )}
                   </div>
+
                 </div>
+
               </div>
             </div>
           </div>
           <div className="flex flex-row-reverse mt-5 my-2">
-            <button
-              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-              style={{
-                backgroundColor: "#89CFF0",
-              }}
-              onClick={handleRegister}
+            <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
+              backgroundColor: '#89CFF0'
+            }}
+            // onClick={handleRegister}
             >
               Continue...
             </button>
           </div>
         </div>
-      </div>
+      </div >
+
+
 
       {/* <div className="flex flex-row">
         <div className=" w-full">
