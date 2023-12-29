@@ -641,67 +641,64 @@ export default function DoctorList({ searchTerm }) {
                               </div>
 
                               <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                                {[...Array(numberOfRows)].map(
-                                  (_, rowIndex) => {
-                                    return (
-                                      <div
-                                        key={rowIndex}
-                                        className="flex space-x-2"
-                                      >
-                                        {bookingslot
-                                          .slice(
-                                            rowIndex * numberOfColumns,
-                                            (rowIndex + 1) * numberOfColumns
-                                          )
-                                          ?.map((data, index) => {
-                                            selectedschedule =
-                                              selectedschedule + 1;
-                                            index = selectedschedule - 1;
-                                            // console.log(selectedschedule)
-                                            if (data.isBooked == true) {
-                                              return (
-                                                <div
-                                                  key={index}
-                                                  className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
-                                                  disabled
-                                                  style={{
-                                                    backgroundColor:
-                                                      "#89CFF0",
-                                                  }}
-                                                >
-                                                  {data.startTime}
-                                                </div>
-                                              );
-                                            } else if (
-                                              selectedschedule - 1 ===
-                                              currentIndex
-                                            ) {
-                                              return (
-                                                <div
-                                                  key={index}
-                                                  className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
-                                                >
-                                                  {data.startTime}
-                                                </div>
-                                              );
-                                            } else {
-                                              return (
-                                                <div
-                                                  key={index}
-                                                  className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                                  onClick={() => {
-                                                    handleDateClick(index);
-                                                  }}
-                                                >
-                                                  {data.startTime}
-                                                </div>
-                                              );
-                                            }
-                                          })}
-                                      </div>
-                                    );
-                                  }
-                                )}
+                                {[...Array(numberOfRows)].map((_, rowIndex) => {
+                                  return (
+                                    <div
+                                      key={rowIndex}
+                                      className="flex space-x-2"
+                                    >
+                                      {bookingslot
+                                        .slice(
+                                          rowIndex * numberOfColumns,
+                                          (rowIndex + 1) * numberOfColumns
+                                        )
+                                        ?.map((data, index) => {
+                                          selectedschedule =
+                                            selectedschedule + 1;
+                                          index = selectedschedule - 1;
+                                          // console.log(selectedschedule)
+                                          if (data.isBooked == true) {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
+                                                disabled
+                                                style={{
+                                                  backgroundColor: "#89CFF0",
+                                                }}
+                                              >
+                                                {data.startTime}
+                                              </div>
+                                            );
+                                          } else if (
+                                            selectedschedule - 1 ===
+                                            currentIndex
+                                          ) {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
+                                              >
+                                                {data.startTime}
+                                              </div>
+                                            );
+                                          } else {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
+                                                onClick={() => {
+                                                  handleDateClick(index);
+                                                }}
+                                              >
+                                                {data.startTime}
+                                              </div>
+                                            );
+                                          }
+                                        })}
+                                    </div>
+                                  );
+                                })}
                               </div>
                             </div>
                           </div>
@@ -737,7 +734,6 @@ export default function DoctorList({ searchTerm }) {
                     </div>
                   </div>
                 </div>
-
               </div>
             )}
             {otppage && (
