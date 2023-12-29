@@ -115,13 +115,11 @@ export default function DoctorList({ searchTerm }) {
     console.log(selectedDoctor);
     // console.log(selectedDoctor.degree.split(','))
     onOpenModal();
-
-
   };
 
   const handleBookAppointment = async () => {
-    console.log("date", keys[currentIndex])
-    console.log("slot", values[currentIndex][currentTimeIndex].start)
+    console.log("date", keys[currentIndex]);
+    console.log("slot", values[currentIndex][currentTimeIndex].start);
     const bookslot = {
       date: keys[currentIndex],
       time: values[currentIndex][currentTimeIndex].start,
@@ -215,9 +213,10 @@ export default function DoctorList({ searchTerm }) {
     console.log("RESPONSE------", data);
     console.log("user id", data?.data?._id);
     localStorage.setItem("userId", data?.data?._id);
-    localStorage.setItem("patientId", data?.patient?._id)
+    if (data.data.newUser === true) {
+      localStorage.setItem("patientId", data?.patient?._id);
+    }
 
-    // localStorage.setItem("token", data?.user?.token)
     setotppage(true);
   };
   const handleInputChange = (e, index) => {
@@ -264,30 +263,28 @@ export default function DoctorList({ searchTerm }) {
     }
   };
 
-
-  // processing for the booking slots 
+  // processing for the booking slots
   const bookingslot = selectedDoctor.slots;
   // console.log("current booking slots--------------------", selectedDoctor.slots)
   // Declare an empty object
   let processedSlots = {};
   // Loop for the array elements
   for (let i in bookingslot) {
-    let objTitle = bookingslot[i].date.split('T')[0];
+    let objTitle = bookingslot[i].date.split("T")[0];
     // Use the title as the index
     processedSlots[objTitle] = [];
   }
   // Loop to push unique object into array
   // console.log("uniques dates ====", processedSlots)
   for (let i in bookingslot) {
-    if (bookingslot[i].date.split('T')[0] in processedSlots) {
-      processedSlots[bookingslot[i].date.split('T')[0]].push({
-        "start": bookingslot[i].startTime,
-        "end": bookingslot[i].endTime,
-        "isBooked": bookingslot[i].isBooked,
-        "_id": bookingslot[i]._id
-      })
+    if (bookingslot[i].date.split("T")[0] in processedSlots) {
+      processedSlots[bookingslot[i].date.split("T")[0]].push({
+        start: bookingslot[i].startTime,
+        end: bookingslot[i].endTime,
+        isBooked: bookingslot[i].isBooked,
+        _id: bookingslot[i]._id,
+      });
     }
-
   }
 
   const keys = Object.keys(processedSlots);
@@ -332,12 +329,12 @@ export default function DoctorList({ searchTerm }) {
 
   const handleDateClick = (index) => {
     setCurrentIndex(index);
-    console.log(currentIndex)
+    console.log(currentIndex);
   };
   const handleTimeClick = (time) => {
     // console.log(time)
     setCurrentTimeIndex(time);
-    console.log(currentTimeIndex)
+    console.log(currentTimeIndex);
   };
   const goToNext = () => {
     const isLastItem = currentIndex === bookingslot.length - 1;
@@ -543,7 +540,6 @@ export default function DoctorList({ searchTerm }) {
                             <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
                               3:00 AM
                             </p>
-
                           </p>
                         </div>
                       )}
@@ -611,31 +607,32 @@ export default function DoctorList({ searchTerm }) {
                                   <FaAngleLeft style={{ color: "black" }} />
                                 </button>
                                 <div className="flex flex-row overflow-x-auto mx-2 ">
-
-                                  {
-                                    keys?.map((item, index) => {
-                                      const { year, monthName, day, dayName } =
-                                        getYearMonthDay(item);
-                                      // console.log(index)
-                                      const bg = currentIndex === index ? 'bg-blue-200' : 'bg-gray-200'
-                                      return (
-                                        <div
-                                          key={index}
-                                          className="flex flex-col px-2"
-                                          onClick={() => {
-                                            handleDateClick(index);
-                                          }}
+                                  {keys.map((item, index) => {
+                                    const { year, monthName, day, dayName } =
+                                      getYearMonthDay(item);
+                                    // console.log(index)
+                                    const bg =
+                                      currentIndex === index
+                                        ? "bg-blue-200"
+                                        : "bg-gray-200";
+                                    return (
+                                      <div
+                                        key={index}
+                                        className="flex flex-col px-2"
+                                        onClick={() => {
+                                          handleDateClick(index);
+                                        }}
+                                      >
+                                        <p>{monthName}</p>
+                                        <p
+                                          className={` p-2 border-2 rounded-lg ${bg}`}
                                         >
-                                          <p>{monthName}</p>
-                                          <p
-                                            className={` p-2 border-2 rounded-lg ${bg}`}
-                                          >
-                                            {day}
-                                          </p>
-                                          <p>{dayName}</p>
-                                        </div>
-                                      )
-                                    })}
+                                          {day}
+                                        </p>
+                                        <p>{dayName}</p>
+                                      </div>
+                                    );
+                                  })}
 
                                   {/* {bookingslot?.map((data, index) => {
                                     // console.log(data);
@@ -702,7 +699,8 @@ export default function DoctorList({ searchTerm }) {
                               </div>
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex]?.map((item, index) => {
-                                  const marginb = index === 0 ? 'mt-2 -mb-4' : ""
+                                  const marginb =
+                                    index === 0 ? "mt-2 -mb-4" : "";
                                   if (index === currentTimeIndex) {
                                     return (
                                       <div
@@ -712,8 +710,9 @@ export default function DoctorList({ searchTerm }) {
                                       >
                                         <div
                                           className={` rounded-3xl py-1 px-2 text-gray-800  bg-blue-200`}
-                                          onClick={() => { handleTimeClick(index) }}
-
+                                          onClick={() => {
+                                            handleTimeClick(index);
+                                          }}
                                         >
                                           {item.start}
                                         </div>
@@ -729,7 +728,7 @@ export default function DoctorList({ searchTerm }) {
                                         <div
                                           className={` rounded-3xl py-1 px-2 text-gray-800   `}
                                           style={{
-                                            backgroundColor: '#89CFF0'
+                                            backgroundColor: "#89CFF0",
                                           }}
                                         >
                                           {item.start}
@@ -741,7 +740,9 @@ export default function DoctorList({ searchTerm }) {
                                       <div
                                         key={index}
                                         className={` w-1/3 px-2 mb-4 ${marginb}`}
-                                        onClick={() => { handleTimeClick(index) }}
+                                        onClick={() => {
+                                          handleTimeClick(index);
+                                        }}
                                       >
                                         <div
                                           className={` rounded-3xl py-1 px-2 text-gray-800 bg-gray-200  `}
@@ -758,6 +759,75 @@ export default function DoctorList({ searchTerm }) {
                                 {values[currentIndex].map((item, index) => {
                                   const bgClass = item.isBooked ? "bg-blue-300" : "bg-gray-200"; // Using Tailwind classes for background colors
 
+<<<<<<< HEAD
+      return (
+        <div
+          key={index}
+          className={`flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 ${bgClass}`}
+          disabled={item.isBooked}
+        >
+<<<<<<< HEAD
+  {
+    bookingslot
+      .slice(
+        rowIndex * numberOfColumns,
+        (rowIndex + 1) * numberOfColumns
+      )
+    ?.map((data, index) =>
+    {
+      selectedschedule =
+        selectedschedule + 1;
+      index = selectedschedule - 1;
+      // console.log(selectedschedule)
+      if (data.isBooked === true)
+      {
+        return (
+          <div
+            key={index}
+            className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
+            disabled
+            style={{
+              backgroundColor: "#89CFF0",
+            }}
+          >
+            {data.startTime}
+          </div>
+        );
+      } else if (
+        selectedschedule - 1 ===
+        currentIndex
+      )
+      {
+        return (
+          <div
+            key={index}
+            className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
+          >
+            {data.startTime}
+          </div>
+        );
+      } else
+      {
+        return (
+          <div
+            key={index}
+            className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
+            onClick={() =>
+            {
+              handleDateClick(index);
+            }}
+          >
+            {data.startTime}
+          </div>
+        );
+      }
+    })
+  }
+=======
+                                      {item.start}
+>>>>>>> 21f7ed7b32de4fa7ca8f064050ae262a6f1e758e
+                                    </div >
+=======
                                   return (
                                     <div
                                       key={index}
@@ -766,9 +836,10 @@ export default function DoctorList({ searchTerm }) {
                                     >
                                       {item.start}
                                     </div>
+>>>>>>> b6940d3c753feb782e4f43283932b9a38ab49482
                                   );
-                                })}
-                                {/* {values[currentIndex].map((item, index) => {
+})}
+{/* {values[currentIndex].map((item, index) => {
                                   if (item.isBooked === true) {
                                     return (
                                       <div
@@ -883,7 +954,6 @@ export default function DoctorList({ searchTerm }) {
                     </div>
                   </div>
                 </div>
-
               </div>
             )}
             {otppage && (
@@ -998,7 +1068,7 @@ export default function DoctorList({ searchTerm }) {
             )}
           </div>
         </div>
-      </Modal >
+      </Modal>
 
       <div
         className="flex flex-col bg-customGreen"

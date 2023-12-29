@@ -5,6 +5,7 @@ import { Flex, Row, Select } from "antd";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import Modal from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
+import { MdOutlineDelete } from "react-icons/md";
 
 export default function BillingPage({ name, contactNo, gender, age })
 {
@@ -13,6 +14,7 @@ export default function BillingPage({ name, contactNo, gender, age })
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [isListOpen, setIsListOpen] = useState(false);
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const onOpenModal = () => setOpen(true);
@@ -84,11 +86,95 @@ export default function BillingPage({ name, contactNo, gender, age })
     fetchPatientDetails()
   }, [])
 
+  const [tableData, setTableData] = useState([
 
-  const handleTestAdd = () =>
+  ]);
+
+
+
+
+  const handleTestAdd = (testId, cost) => () =>
   {
 
+    const testToAdd = {
+      testPackage: testId,
+      price: cost,
+      action: <MdOutlineDelete />,
+    };
+
+    setTableData([...tableData, testToAdd]);
+
+
+    setSearchTerm('');
+
+    setIsListOpen(false)
+
+  };
+
+
+
+
+  const deleteRow = (index) =>
+  {
+
+    const updatedTableData = [...tableData];
+
+    updatedTableData.splice(index, 1);
+
+
+    setTableData(updatedTableData);
   }
+  const addRow = () =>
+  {
+    setTableData([...tableData, { testPackage: '-', price: '-', action: '-' }]);
+  };
+
+  const calculateTotalPrice = () =>
+  {
+    let totalPrice = 0;
+
+    tableData.forEach((row) =>
+    {
+      // Assuming price is a number, you might need to parse it if it's a string
+      totalPrice += row.price
+    });
+
+    return totalPrice;
+  };
+
+  const getTestNames = () =>
+  {
+    return tableData.map((row) => row.testPackage).join(', ');
+  };
+
+
+  const currentDate = new Date();
+
+  // Format the date as YYYY-MM-DD
+  const formattedDate =
+    currentDate.getFullYear() +
+    '-' +
+    ('0' + (currentDate.getMonth() + 1)).slice(-2) +
+    '-' +
+    ('0' + currentDate.getDate()).slice(-2);
+
+  // State to manage the date
+
+  const [appointmentDate, setAppointmentDate] = useState(formattedDate);
+
+
+
+  const Toggle = (e) =>
+  {
+
+    e.preventDefault();
+
+    setIsListOpen(true);
+  }
+
+
+
+
 
   return (
     <>
@@ -169,6 +255,8 @@ export default function BillingPage({ name, contactNo, gender, age })
                 type="date"
                 id="appointmentDate"
                 name="date"
+                value={appointmentDate}
+                onChange={(e) => setAppointmentDate(e.target.value)}
               />
             </div>
 
@@ -204,54 +292,42 @@ export default function BillingPage({ name, contactNo, gender, age })
               padding: "20px",
             }}
           >
-            <div class="relative overflow-x-auto">
-              <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" class="px-6 py-3">
-                      Test/package
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Price
-                    </th>
-                    <th scope="col" class="px-6 py-3">
-                      Action
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      -
-                    </th>
-                    <td class="px-6 py-4">-</td>
-                    <td class="px-6 py-4">-</td>
-                  </tr>
-                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      -
-                    </th>
-                    <td class="px-6 py-4">-</td>
-                    <td class="px-6 py-4">-</td>
-                  </tr>
-                  <tr class="bg-white dark:bg-gray-800">
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      -
-                    </th>
-                    <td class="px-6 py-4">-</td>
-                    <td class="px-6 py-4">-</td>
-                  </tr>
-                </tbody>
-              </table>
+            <div style={{ height: '45%', overflowY: 'auto' }}>
+              <div className="relative overflow-x-auto">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                      <th scope="col" className="px-6 py-3">
+                        Test/package
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Price
+                      </th>
+                      <th scope="col" className="px-6 py-3">
+                        Action
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tableData.map((row, index) => (
+                      <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <th
+                          scope="row"
+                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                        >
+                          {row.testPackage}
+                        </th>
+                        <td className="px-6 py-4">{row.price}</td>
+                        <td className="px-6 py-4">
+                          <button onClick={() => deleteRow(index)}><MdOutlineDelete size={25} color="red" /></button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+
+              </div>
+
             </div>
 
             <form>
@@ -338,7 +414,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                     required
                   />
                   <button
-                    type="submit"
+                    onClick={Toggle}
                     class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-gray-900 bg-gray-50 rounded-e-lg border border-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                   >
                     <svg
@@ -358,16 +434,21 @@ export default function BillingPage({ name, contactNo, gender, age })
                     </svg>
                     <span class="sr-only">Search</span>
                   </button>
-                  <ul className="divide-y divide-gray-200 bg-white">
-                    {filteredTest.map((test) => (
-                      <li key={test.id} className="p-4">
-                        <div onClick={handleTestAdd(test._id)} className="font-bold">{test.testName}</div>
-                        {/* <div className="text-sm">
-                          <span onClick={handleTestAdd(test._id)} className="ml-2">tid: {test._id}</span>
-                        </div> */}
-                      </li>
-                    ))}
-                  </ul>
+                  <div style={{ zIndex: 9999 }}>
+                    {isListOpen && (
+                      <ul style={{ width: '80%' }} className=" absolute divide-y divide-gray-200 bg-white">
+                        {filteredTest.map((test) => (
+                          <li key={test.id} className="p-4">
+                            <div onClick={handleTestAdd(test.testName, test.costOfDiagnosticTest)} className="font-bold">
+                              {test.testName}
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+
+                  </div>
+
                 </div>
               </div>
             </form>
@@ -379,11 +460,35 @@ export default function BillingPage({ name, contactNo, gender, age })
                 float: "left",
                 height: "30vh",
                 borderRight: "0.5px solid #D3D3D3",
+                overflowY: 'auto'
               }}
             >
 
               <p style={{ color: "gray" }}>Summary</p>
 
+              <div style={{ marginRight: 10 }}  >
+
+                <table style={{ borderCollapse: 'collapse' }} className="border-collapse w-full">
+                  <thead>
+                    <tr>
+                      <th style={{ border: '1px solid #ddd' }} className="border p-2 text-left">Test </th>
+                      <th style={{ border: '1px solid #ddd' }} className="border p-2  text-left">Price</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tableData.map((row, index) => (
+                      <tr key={index}>
+                        <td style={{ border: '1px solid #ddd' }} className="border p-2  text-left">{row.testPackage}</td>
+                        <td style={{ border: '1px solid #ddd' }} className="border p-2 text-left">{row.price}</td>
+                      </tr>
+                    ))}
+                    <tr >
+                      <td style={{ border: '1px solid #ddd' }} className="border p-2 font-bold  text-left">Total Price</td>
+                      <td style={{ border: '1px solid #ddd' }} className="border p-2 font-bold  text-left">{calculateTotalPrice()}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
 
             </div>
 
@@ -402,7 +507,9 @@ export default function BillingPage({ name, contactNo, gender, age })
                 <label style={{ fontSize: 12 }}>Discount (%) </label>
                 <input
                   type="text"
-                  style={{ border: "1px solid gray", width: "60%" }}
+                  style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
+                  disabled={true}
+                  value={0}
                 />
               </div>
 
@@ -410,7 +517,9 @@ export default function BillingPage({ name, contactNo, gender, age })
                 <label style={{ fontSize: 12 }}>Discount (%) </label>
                 <input
                   type="text"
-                  style={{ border: "1px solid gray", width: "60%" }}
+                  style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
+                  disabled={true}
+                  value={0}
                 />
               </div>
 
@@ -422,7 +531,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                 }}
               >
                 <p style={{ color: "gray", marginRight: "160px" }}>Amount</p>
-                <p style={{ color: "black" }}>0</p>
+                <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
               </div>
 
               <div
@@ -452,7 +561,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                 >
                   Total Amount
                 </p>
-                <p style={{ color: "black" }}>0</p>
+                <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
               </div>
             </div>
 
@@ -467,7 +576,8 @@ export default function BillingPage({ name, contactNo, gender, age })
               }}
             >
               <div style={{ width: "100%", marginLeft: "30px" }}>
-                <input type="checkbox" />
+                <input type="checkbox" disabled={true}
+                  checked={true} />
                 <label>Due Payment</label>
               </div>
 
@@ -487,7 +597,10 @@ export default function BillingPage({ name, contactNo, gender, age })
                     border: "1px solid gray",
                     width: "50%",
                     marginLeft: "20px",
+                    textAlign: "center"
                   }}
+                  disabled={true}
+                  value={0}
                 />
               </div>
 
@@ -504,11 +617,12 @@ export default function BillingPage({ name, contactNo, gender, age })
                     marginRight: "80px",
                     fontWeight: 500,
                     marginLeft: "20px",
+                    marginTop: '43px'
                   }}
                 >
                   Due Amount
                 </p>
-                <p style={{ color: "black" }}>0</p>
+                <p style={{ color: "black", marginTop: '43px' }}>{calculateTotalPrice()}</p>
               </div>
             </div>
 

@@ -12,6 +12,7 @@
 }
 
 .modal {
+  margin-left: 100px;
   margin-top: 80px;
   height: 70%;
   border-radius: 5px;

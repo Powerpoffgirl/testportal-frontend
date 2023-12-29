@@ -288,8 +288,6 @@ export default function EditUserForm()
           console.error("No token found in local storage");
           return;
         }
-
-
         const response = await fetch(`${baseUrl}/api/v1/user/get_userDetails`, {
           method: "GET",
           headers: {
@@ -300,7 +298,7 @@ export default function EditUserForm()
 
         const data = await response.json();
         console.log("DATA from response", data);
-        if (data?.data?.newUser === true)
+        if (data.data.newUser === true)
         {
           setNewUser(true)
         }
@@ -349,7 +347,6 @@ export default function EditUserForm()
   {
     setUserDetails((prevUserDetails) => ({
       ...prevUserDetails,
-      // workingDays: e,
       ageType: e,
     }));
   };
@@ -363,77 +360,29 @@ export default function EditUserForm()
     }));
   };
 
+  const handleChange3 = (e) =>
+  {
+    console.log("HELLOOOOOOOO")
+
+
+    setAppointmentDetails((prevAppointmentDetails) => ({
+      ...prevAppointmentDetails,
+      patientId: e
+    }))
+
+  }
+
   useEffect(() =>
   {
-    // Get patient's details
     localStorage.setItem("patientId", appointmentDetails?.patientId)
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
-        const token = localStorage.getItem("token");
-        const patientId = localStorage.getItem("patientId")
-
-        if (!token)
-        {
-          console.error("No token found in local storage");
-          return;
-        }
-
-        const response = await fetch(`${baseUrl}/api/v1/user/get_patientDetails/${patientId}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token, // Replace with your actual token from the previous session
-          },
-        });
-
-        const data = await response.json();
-        console.log("DATA from Patients response", data);
-        if (data?.data?.newUser === true)
-        {
-          setNewUser(true)
-        }
-        setUserDetails(data?.data);
-        console.log("usser name$$$$$$$", data?.data?.name);
-      } catch (error)
-      {
-        console.error("There was an error verifying the OTP:", error);
-      }
-    };
-    fetchPatientDetails();
-
-  }, [appointmentDetails?.patientId])
+    console.log("patientId", appointmentDetails?.patientId)
+  }, [appointmentDetails.patientId])
 
   const handleChange = (e) =>
   {
     const { name, value } = e.target;
 
-    if (name === "patientName")
-    {
-      setAppointmentDetails((prevAppointmentDetails) => ({
-        ...prevAppointmentDetails,
-        patientId: value
-      }))
-
-    }
-
-    if (name === "workingDays")
-    {
-      setUserDetails((prevUserDetails) => ({
-        ...prevUserDetails,
-        workingDays: [...prevUserDetails.workingDays, value],
-      }));
-    } else if (name === "workHourFrom" || name === "workHourTo")
-    {
-      setUserDetails((prevUserDetails) => ({
-        ...prevUserDetails,
-        workingHours: {
-          ...prevUserDetails.workingHours,
-          [name]: value,
-        },
-      }));
-    } else if (
+    if (
       [
         "houseNo",
         "floor",
@@ -484,99 +433,99 @@ export default function EditUserForm()
       },
       userPic: userImage,
     };
-    // if (newUserDetails.name === "")
-    // {
-    //   toast.error("Please write name");
-    // } else if (newUserDetails.email === "")
-    // {
-    //   toast.error("Please write email");
-    // } else if (newUserDetails.contactNumber === "")
-    // {
-    //   toast.error("Please write contact number");
-    // } else if (newUserDetails.address?.pinCode === "")
-    // {
-    //   toast.error("Please write Pincode");
-    // } else if (newUserDetails.address?.district === "")
-    // {
-    //   toast.error("Please write district");
-    // } else if (newUserDetails.address?.state === "")
-    // {
-    //   toast.error("Please write state");
-    // } else
-    // {
-    const token = localStorage.getItem("token");
-    if (!token)
+    if (newUserDetails.name === "")
     {
-      console.error("No token found in local storage");
-      localStorage.clear();
-      navigate("/userlogin");
-    }
-    const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify(newUserDetails),
-    });
-    const data = await response.json();
-
-    if (data.statusCode === 400)
+      toast.error("Please write name");
+    } else if (newUserDetails.email === "")
     {
-      toast.error("Please fill the details");
-    }
-    const response1 = await fetch(`${baseUrl}/api/v1/user/update_patient/${patientId}`, {
-      method: "put",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify({
-        name: userDetails?.name,
-        age: userDetails?.age,
-        ageType: userDetails?.ageType,
-        gender: userDetails?.gender,
-        bodyWeight: userDetails?.bodyWeight,
-        address: {
-          houseNo: userDetails?.address?.houseNo,
-          floor: userDetails?.address?.floor,
-          block: userDetails?.address?.block,
-          area: userDetails?.address?.area,
-          pinCode: userDetails?.address?.pinCode,
-          district: userDetails?.address?.district,
-          state: userDetails?.address?.state,
+      toast.error("Please write email");
+    } else if (newUserDetails.contactNumber === "")
+    {
+      toast.error("Please write contact number");
+    } else if (newUserDetails.address?.pinCode === "")
+    {
+      toast.error("Please write Pincode");
+    } else if (newUserDetails.address?.district === "")
+    {
+      toast.error("Please write district");
+    } else if (newUserDetails.address?.state === "")
+    {
+      toast.error("Please write state");
+    } else
+    {
+      const token = localStorage.getItem("token");
+      if (!token)
+      {
+        console.error("No token found in local storage");
+        localStorage.clear();
+        navigate("/userlogin");
+      }
+      const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
         },
-        patientPic: userImage,
-      }),
-    });
-    const data1 = await response1.json();
-    console.log("PATIENT UPDATED SUCCESSFULLY", data1)
-
-    if (data.success === true)
-    {
-      console.log("====================APPOINTMENT DETAILS=====================", appointmentDetails)
-      const response = await fetch(
-        `${baseUrl}/api/v1/user/create_appointment`,
-        {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token,
-          },
-          body: JSON.stringify(appointmentDetails),
-        }
-      );
+        body: JSON.stringify(newUserDetails),
+      });
       const data = await response.json();
-      console.log("DATA FROM APPOINTMENT BOOKING", data)
+
+      if (data.statusCode === 400)
+      {
+        toast.error("Please fill the details");
+      }
+      const response1 = await fetch(`${baseUrl}/api/v1/user/update_patient/${patientId}`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify({
+          name: userDetails?.name,
+          age: userDetails?.age,
+          ageType: userDetails?.ageType,
+          gender: userDetails?.gender,
+          bodyWeight: userDetails?.bodyWeight,
+          address: {
+            houseNo: userDetails?.address?.houseNo,
+            floor: userDetails?.address?.floor,
+            block: userDetails?.address?.block,
+            area: userDetails?.address?.area,
+            pinCode: userDetails?.address?.pinCode,
+            district: userDetails?.address?.district,
+            state: userDetails?.address?.state,
+          },
+          patientPic: userImage,
+        }),
+      });
+      const data1 = await response1.json();
+      console.log("PATIENT UPDATED SUCCESSFULLY", data1)
+
       if (data.success === true)
       {
-        onOpenModal();
+        console.log("====================APPOINTMENT DETAILS=====================", appointmentDetails)
+        const response = await fetch(
+          `${baseUrl}/api/v1/user/create_appointment`,
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+            body: JSON.stringify(appointmentDetails),
+          }
+        );
+        const data = await response.json();
+        console.log("DATA FROM APPOINTMENT BOOKING", data)
+        if (data.success === true)
+        {
+          console.log("OPEN MODAL")
+          onOpenModal();
+        }
+        console.log("Doctor updated successfully.");
       }
-      console.log("Doctor updated successfully.");
-      navigate("/doctorlistuser");
+      console.log("DATA from response", data);
     }
-    console.log("DATA from response", data);
-    // }
   };
 
   const AgeType = [
@@ -593,13 +542,12 @@ export default function EditUserForm()
 
 
   console.log("User DETAILS", userDetails);
-  updateUser(userDetails?.name);
-  updateUserEmail(userDetails?.email);
+  updateUser(userDetails.name);
+  updateUserEmail(userDetails.email);
   updateUserimage(userDetails?.userPic);
 
-  console.log("NEW USER", userDetails?.newUser)
-  console.log("==========APPOINTMENT DETAILS========", appointmentDetails)
-
+  console.log("NEW USER", userDetails.newUser)
+  console.log("PATIENTS LIST", patientsList)
   return (
     <>
       <Modal
@@ -701,17 +649,18 @@ export default function EditUserForm()
                       className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   ) : (
-                    <select
-                      className="h-11 block w-full placeholder-gray-400 rounded-lg border ps-4 bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    <Select
+                      className="h-11 block w-full placeholder-gray-400 rounded-lg border  bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       name="patientName"
-                      onChange={handleChange}
+                      onChange={handleChange3}
+                      placeholder="Select Member"
                     >
                       {patientsList?.map((patient) => (
-                        <option key={patient?._id} value={patient?._id}>
-                          {patient?.name}
-                        </option>
+                        <Select.Option key={patient._id} value={patient._id}>
+                          {patient.name}
+                        </Select.Option>
                       ))}
-                    </select>)}
+                    </Select>)}
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
             </div>
@@ -792,7 +741,6 @@ export default function EditUserForm()
                           id="ageType"
                           name="ageType"
                           value={userDetails?.ageType}
-                          // onChange={handleChange2}
                           placeholder="Select Age Type"
                           style={{ overflowY: "auto" }}
                           dropdownStyle={{
