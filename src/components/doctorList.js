@@ -533,19 +533,17 @@ export default function DoctorList({ searchTerm }) {
                           <p className="text-xs text-gray-500 px-2 my-1">
                             Slot available for Tommorrow{" "}
                           </p>
-                          <p className="flex flex-wrap space-x-1  my-1">
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                          <p className="flex flex-row justify-between  my-1 mx-2">
+                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
                               3:00 AM
                             </p>
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
                               3:00 AM
                             </p>
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
                               3:00 AM
                             </p>
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                              3:00 AM
-                            </p>
+
                           </p>
                         </div>
                       )}
@@ -713,8 +711,9 @@ export default function DoctorList({ searchTerm }) {
                                         disabled={item.isBooked}
                                       >
                                         <div
-                                          className={` rounded-3xl py-1 px-2 text-gray-800 bg-blue-200  `}
+                                          className={` rounded-3xl py-1 px-2 text-gray-800  bg-blue-200`}
                                           onClick={() => { handleTimeClick(index) }}
+
                                         >
                                           {item.start}
                                         </div>
@@ -728,7 +727,10 @@ export default function DoctorList({ searchTerm }) {
                                         disabled
                                       >
                                         <div
-                                          className={` rounded-3xl py-1 px-2 text-gray-800 bg-blue-300   `}
+                                          className={` rounded-3xl py-1 px-2 text-gray-800   `}
+                                          style={{
+                                            backgroundColor: '#89CFF0'
+                                          }}
                                         >
                                           {item.start}
                                         </div>
