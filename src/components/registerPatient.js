@@ -75,7 +75,7 @@ export default function PatientForm()
 
   const handleSearch = (event) =>
   {
-    const searchTerm = event.target.value.toLowerCase();
+    const searchTerm = event?.target?.value?.toLowerCase();
 
     setSearchTerm(searchTerm);
 
@@ -575,24 +575,16 @@ export default function PatientForm()
                   Clear
                 </button>
               </div>
-              <ul
-                style={{ marginLeft: "600px", width: "44%", zIndex: 100 }}
-                className="divide-y divide-gray-200 bg-white"
-              >
+              <ul style={{ marginLeft: '600px', width: '34%', zIndex: 9999, position: 'absolute' }} className="divide-y divide-gray-200 bg-white whitespace-normal">
                 {filteredPatients.map((patient) => (
                   <li key={patient.id} className="p-4">
-                    <div className="font-bold">{patient.name}</div>
-                    <div className="text-sm">
-                      <span className="ml-2">Email: {patient.email}</span>
-                      <span className="ml-2">
-                        Phone Number: {patient.phoneNo}
-                      </span>
-                      <span
-                        onClick={handlepatientDetails(patient._id)}
-                        className="ml-2"
-                      >
-                        Pid: {patient._id}
-                      </span>
+                    <div onClick={() => handlepatientDetails(patient._id)}>
+                      <div className="font-bold">{patient.name}</div>
+                      <div className="text-sm" >
+                        <span className="ml-2">Email: {patient.email}</span>
+                        <span className="ml-2">Phone Number: {patient.phoneNo}</span>
+                        {/* <span onClick={() => handlepatientDetails(patient._id)} className="ml-2">Pid: {patient._id}</span> */}
+                      </div>
                     </div>
                   </li>
                 ))}
@@ -1050,9 +1042,9 @@ export default function PatientForm()
                 Process
               </button>
             </div>
-          </div >
-        </div >
-      </div >
+          </div>
+        </div>
+      </div>
     </>
   );
 }
