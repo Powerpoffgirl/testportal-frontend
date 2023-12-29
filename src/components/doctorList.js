@@ -579,19 +579,17 @@ export default function DoctorList({ searchTerm })
                           <p className="text-xs text-gray-500 px-2 my-1">
                             Slot available for Tommorrow{" "}
                           </p>
-                          <p className="flex flex-wrap space-x-1  my-1">
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                          <p className="flex flex-row justify-between  my-1 mx-2">
+                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
                               3:00 AM
                             </p>
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
                               3:00 AM
                             </p>
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
                               3:00 AM
                             </p>
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                              3:00 AM
-                            </p>
+
                           </p>
                         </div>
                       )}
@@ -661,8 +659,12 @@ export default function DoctorList({ searchTerm })
                                 <div className="flex flex-row overflow-x-auto mx-2 ">
 
                                   {
+<<<<<<< HEAD
                                     keys.map((item, index) =>
                                     {
+=======
+                                    keys?.map((item, index) => {
+>>>>>>> 5a7ad95c931adf4bc0df52e87b9dc47d0a69dd05
                                       const { year, monthName, day, dayName } =
                                         getYearMonthDay(item);
                                       // console.log(index)
@@ -751,8 +753,12 @@ export default function DoctorList({ searchTerm })
                                 </button>
                               </div>
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
+<<<<<<< HEAD
                                 {values[currentIndex].map((item, index) =>
                                 {
+=======
+                                {values[currentIndex]?.map((item, index) => {
+>>>>>>> 5a7ad95c931adf4bc0df52e87b9dc47d0a69dd05
                                   const marginb = index === 0 ? 'mt-2 -mb-4' : ""
                                   if (index === currentTimeIndex)
                                   {
@@ -763,8 +769,9 @@ export default function DoctorList({ searchTerm })
                                         disabled={item.isBooked}
                                       >
                                         <div
-                                          className={` rounded-3xl py-1 px-2 text-gray-800 bg-blue-200  `}
+                                          className={` rounded-3xl py-1 px-2 text-gray-800  bg-blue-200`}
                                           onClick={() => { handleTimeClick(index) }}
+
                                         >
                                           {item.start}
                                         </div>
@@ -779,7 +786,10 @@ export default function DoctorList({ searchTerm })
                                         disabled
                                       >
                                         <div
-                                          className={` rounded-3xl py-1 px-2 text-gray-800 bg-blue-300   `}
+                                          className={` rounded-3xl py-1 px-2 text-gray-800   `}
+                                          style={{
+                                            backgroundColor: '#89CFF0'
+                                          }}
                                         >
                                           {item.start}
                                         </div>
@@ -993,7 +1003,7 @@ export default function DoctorList({ searchTerm })
                       overflow: "hidden",
                     }}
                   >
-                    {otp.map((digit, index) => (
+                    {otp?.map((digit, index) => (
                       <input
                         key={index}
                         ref={(input) => (otpInputs[index] = input)}
