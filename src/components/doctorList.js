@@ -143,9 +143,9 @@ export default function DoctorList({ searchTerm }) {
     console.log("slot booked", data);
     localStorage.setItem(
       "appointment_date",
-      keys[currentIndex]
+      data?.doctorSlot?.date?.split("T")[0]
     );
-    localStorage.setItem("appointment_time", values[currentIndex][currentTimeIndex].start);
+    localStorage.setItem("appointment_time", data?.doctorSlot?.startTime);
 
     showappointment();
     showSlot();
@@ -175,7 +175,7 @@ export default function DoctorList({ searchTerm }) {
   const [appointment, setappointment] = useState(false);
   const [otppage, setotppage] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentTimeIndex, setCurrentTimeIndex] = useState(null);
+  const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
   const [contactNumber, setcontactNumber] = useState(null);
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);

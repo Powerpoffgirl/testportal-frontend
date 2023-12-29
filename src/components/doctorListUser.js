@@ -14,7 +14,7 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { FaAngleRight } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 import phonelogo from "../assets/phone.svg";
-import { toast } from "react-toastify";
+import close_button from "../assets/close_button.svg";
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#89CFF0"/>
@@ -43,6 +43,9 @@ export default function DoctorListUser({ searchTerm })
   const [selectedDoctor, setselectedDoctor] = useState("");
   const [open, setOpen] = useState(false);
   const onOpenModal = () => setOpen(true);
+  const [resendClicked, setResendClicked] = useState(false);
+  const [firstTime, setFirstTime] = useState(true);
+
   const onCloseModal = () => setOpen(false);
   const [filteredDoctors, setFilteredDoctors] = useState([doctorsList]);
   const navigate = useNavigate();
@@ -142,17 +145,6 @@ export default function DoctorListUser({ searchTerm })
     console.log("slot booked", data);
     if (data.success === true)
     {
-      toast.success("Slot booked successfully", {
-        // position: "top-center",
-      });
-    } else
-    {
-      toast.error("Please book another slot", {
-        // position: "top-center",
-      });
-    }
-    if (data.success === true)
-    {
       navigate("/edituserform");
     }
     localStorage.setItem(
@@ -182,6 +174,8 @@ export default function DoctorListUser({ searchTerm })
   const [bookingslottoggle, setbookingslottoggle] = useState(false);
   const [appointment, setappointment] = useState(false);
   const [otppage, setotppage] = useState(false);
+  const [mobileNumberError, setmobileNumberError] = useState("");
+  const [seconds, setSeconds] = useState(90);
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [contactNumber, setcontactNumber] = useState(null);
@@ -338,6 +332,33 @@ export default function DoctorListUser({ searchTerm })
   var selectedschedule = 0;
   // console.log(selectedDoctor?.slots[currentIndex])
 
+  useEffect(() =>
+  {
+    if (resendClicked || firstTime)
+    {
+      const intervalId = setInterval(() =>
+      {
+        if (seconds > 0)
+        {
+          setSeconds((prevSeconds) => prevSeconds - 1);
+        } else
+        {
+          setFirstTime(false);
+          setSeconds(90);
+          setResendClicked(false);
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [seconds, resendClicked, firstTime]);
+
+  const formatTime = (time) =>
+  {
+    const minutes = Math.floor(time / 60);
+    const remainingSeconds = time % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
+
   return (
     <>
       {/* ---------------------------------------------modal--------------------------------------------- */}
@@ -348,280 +369,374 @@ export default function DoctorListUser({ searchTerm })
         doctor={selectedDoctor}
         styles={{
           modal: {
-            width: isTab ? "80%" : "60%",
+            width: isTab ? "94%" : "80%",
             backgroundColor: "#E3F6FF",
             alignContent: "center",
           },
+          closeButton: {
+            display: "none",
+          },
         }}
       >
-        <div className="flex md:flex-row p-2 pt-5 flex-col">
-          {/* ---------------------------left part--------------------------- */}
-          <div className="flex flex-col px-1 md:w-1/2">
-            <div className="">
-              <img
-                src={selectedDoctor?.doctorPic}
-                alt="doctor image"
-                className=" h-80 w-full"
-              ></img>
-            </div>
-            <div className="flex flex-col  py-4 px-5 bg-white mt-1">
-              <p className="text-xs text-black font-medium mb-2">
-                Registration No. :- 33256
-              </p>
+        <div class="flex flex-col ">
+          <div class="flex flex-row-reverse md:-mb-14  -mb-14 z-50">
+            <button onClick={onCloseModal}>
+              <img src={close_button} class="w-8 mb-1"></img>
+            </button>
+            {/* <button><img src={delete_button} class="w-8"></img></button>
+            <button><img src={edit_button} class="w-8"></img></button> */}
+          </div>
+          <div className="flex md:flex-row p-2 pt-5 flex-col">
+            {/* ---------------------------left part--------------------------- */}
+            <div className="flex flex-col px-1 md:w-1/2">
+              <div className="">
+                {selectedDoctor?.doctorPic ? (
+                  <img
+                    src={selectedDoctor?.doctorPic}
+                    alt="doctor image"
+                    className=" h-80 w-full"
+                  ></img>
+                ) : (
+                  <AccountCircleIcon
+                    style={{ height: "100%", width: "100%", color: "#B1DAED" }}
+                  />
+                )}
+              </div>
+              <div className="flex flex-col  py-4 px-5 bg-white mt-1">
+                <p className="text-xs text-black font-medium mb-2">
+                  Registration No. :- 33256
+                </p>
 
-              <p className="text-black text-3xl font-medium mb-2">
-                Dr. {selectedDoctor?.name}
-              </p>
-              <div className="flex flex-row">
-                <div>
-                  <img src={education} className="w-5 py-2 "></img>
+                <p className="text-black text-3xl font-medium mb-2">
+                  Dr. {selectedDoctor?.name}
+                </p>
+                <div className="flex flex-row">
+                  <div>
+                    <img src={education} className="w-5 py-2 "></img>
+                  </div>
+                  <div className="ml-1">
+                    {selectedDoctor?.degree?.split(",")?.map((item) => (
+                      <p className="text-gray-600 text-xl mb-1">{item}</p>
+                    ))}
+                  </div>
                 </div>
-                <div className="ml-1">
-                  {selectedDoctor?.degree?.split(",")?.map((item) => (
-                    <p className="text-gray-600 text-xl mb-1">{item}</p>
-                  ))}
+                <p className="text-gray-600 text-xl mb-2">
+                  {selectedDoctor?.totalExperience} Years Experience
+                </p>
+
+                <div className="flex flex-row space-x-2">
+                  <div className="mt-2">
+                    <img
+                      src={home}
+                      style={{ minWidth: "15px", maxWidth: "16px" }}
+                    ></img>
+                  </div>
+                  <div className="">
+                    <p className="text-gray-600 text-xl ">
+                      {selectedDoctor?.address?.houseNo +
+                        " " +
+                        selectedDoctor?.address?.block +
+                        " " +
+                        selectedDoctor?.address?.area +
+                        ", " +
+                        selectedDoctor?.address?.district +
+                        ", " +
+                        selectedDoctor?.address?.state +
+                        " " +
+                        selectedDoctor?.address?.pinCode}
+                    </p>
+                  </div>
                 </div>
               </div>
-              <p className="text-gray-600 text-xl mb-2">
-                {selectedDoctor?.totalExperience} Years Experience
-              </p>
-
-              <div className="flex flex-row space-x-2">
-                <div className="mt-2">
-                  <img
-                    src={home}
-                    style={{ minWidth: "15px", maxWidth: "16px" }}
-                  ></img>
+            </div>
+            {/* --------------------------------right part-------------------------------- */}
+            {!otppage && (
+              <div className="flex flex-col  md:w-1/2 px-2">
+                <div className=" py-1 mb-2">
+                  <p className="text-lg font-medium text-black ">SPECIALITY</p>
+                  <div className="flex flex-wrap ">
+                    {selectedDoctor?.speciality?.map((item, index) =>
+                    {
+                      return (
+                        <p
+                          key={index}
+                          className="bg-white rounded-xl py-1 px-4 mx-2 my-1 "
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
                 </div>
-                <div className="">
-                  <p className="text-gray-600 text-xl ">
-                    {selectedDoctor?.address?.houseNo +
-                      " " +
-                      selectedDoctor?.address?.block +
-                      " " +
-                      selectedDoctor?.address?.area +
-                      ", " +
-                      selectedDoctor?.address?.district +
-                      ", " +
-                      selectedDoctor?.address?.state +
-                      " " +
-                      selectedDoctor?.address?.pinCode}
+                <div className=" py-1 mb-2">
+                  <p className="text-lg font-medium text-black">
+                    About The Doctor
+                  </p>
+                  <p className=" italic text-gray-600">
+                    Lorem ipsum dolor sit amet consectetur. Vitae dui elit vel
+                    justo facilisi praesent in et donec. Rutrum lorem consequat
+                    tempus fermentum egestas. At gravida enim proin blandit. Non
+                    et arcu arcu mauris augue massa.
                   </p>
                 </div>
-              </div>
-            </div>
-          </div>
-          {/* --------------------------------right part-------------------------------- */}
-          {!otppage && (
-            <div className="flex flex-col  md:w-1/2 px-2">
-              <div className=" py-1 mb-2">
-                <p className="text-lg font-medium text-black ">SPECIALITY</p>
-                <div className="flex flex-wrap ">
-                  {selectedDoctor?.speciality?.map((item, index) =>
-                  {
-                    return (
-                      <p
-                        key={index}
-                        className="bg-white rounded-xl py-1 px-4 mx-2 my-1 "
-                      >
-                        {item}
+
+                <div className=" py-1 mb-2">
+                  <p className="text-lg font-medium text-black">Timing</p>
+                  <div className="flex flex-row  place-content-between">
+                    <div className="flex flex-col ">
+                      <p className="text-gray-600 font-semibold">
+                        Mon - Thur :
                       </p>
-                    );
-                  })}
-                </div>
-              </div>
-              <div className=" py-1 mb-2">
-                <p className="text-lg font-medium text-black">
-                  About The Doctor
-                </p>
-                <p className=" italic text-gray-600">
-                  Lorem ipsum dolor sit amet consectetur. Vitae dui elit vel
-                  justo facilisi praesent in et donec. Rutrum lorem consequat
-                  tempus fermentum egestas. At gravida enim proin blandit. Non
-                  et arcu arcu mauris augue massa.
-                </p>
-              </div>
-
-              <div className=" py-1 mb-2">
-                <p className="text-lg font-medium text-black">Timing</p>
-                <div className="flex flex-row  place-content-between">
-                  <div className="flex flex-col ">
-                    <p className="text-gray-600 font-semibold">Mon - Thur :</p>
-                    <p className="text-gray-600">10:00 AM - 3:00 PM</p>
-                    <p className="text-gray-600">3:00 AM - 7:00 PM</p>
-                  </div>
-                  <div className="flex flex-col">
-                    <p className="text-gray-600 font-semibold">Mon - Thur :</p>
-                    <p className="text-gray-600">10:00 AM - 3:00 PM</p>
-                    <p className="text-gray-600">3:00 AM - 7:00 PM</p>
+                      <p className="text-gray-600">10:00 AM - 3:00 PM</p>
+                      <p className="text-gray-600">3:00 AM - 7:00 PM</p>
+                    </div>
+                    <div className="flex flex-col">
+                      <p className="text-gray-600 font-semibold">
+                        Mon - Thur :
+                      </p>
+                      <p className="text-gray-600">10:00 AM - 3:00 PM</p>
+                      <p className="text-gray-600">3:00 AM - 7:00 PM</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className=" py-1 mb-2">
-                <p className="text-lg font-medium text-black">Select service</p>
+                <div className=" py-1 mb-2">
+                  <p className="text-lg font-medium text-black">
+                    Select service
+                  </p>
 
-                <div className="flex flex-col mb-2">
-                  <div className="flex flex-col  bg-white p-1">
-                    <p className="flex place-content-between my-1">
-                      <span className="font-medium px-2">Consultation</span>{" "}
-                      <span className="font-bold px-2">Rs1000</span>
-                    </p>
-                    {!bookingslottoggle && !appointment && (
-                      <div>
-                        <p className="text-xs text-gray-500 px-2 my-1">
-                          Slot available for Tommorrow{" "}
-                        </p>
-                        <p className="flex flex-wrap space-x-1 ml-2 my-1">
-                          <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                            3:00 AM
+                  <div className="flex flex-col mb-2">
+                    <div className="flex flex-col  bg-white p-1 px-3">
+                      <p className="flex place-content-between my-1">
+                        <span className="font-medium px-2">Consultation</span>{" "}
+                        <span className="font-bold px-2">Rs1000</span>
+                      </p>
+                      {!bookingslottoggle && !appointment && (
+                        <div>
+                          <p className="text-xs text-gray-500 px-2 my-1">
+                            Slot available for Tommorrow{" "}
                           </p>
-                          <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                            3:00 AM
+                          <p className="flex flex-wrap space-x-1  my-1">
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
                           </p>
-                          <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                            3:00 AM
+                        </div>
+                      )}
+                      {appointment && (
+                        <div class="mx-2">
+                          <p class="font-medium text-gray-500 ">
+                            Date:{" "}
+                            {
+                              selectedDoctor?.slots[currentIndex].date.split(
+                                "T"
+                              )[0]
+                            }
                           </p>
-                          <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                            3:00 AM
+                          <p class="font-medium text-gray-500 mb-3">
+                            Time:
+                            {selectedDoctor?.slots[currentIndex].startTime}
                           </p>
-                        </p>
-                      </div>
-                    )}
-                    <div>
-                      {bookingslottoggle && (
-                        <div className="flex flex-col">
-                          <div className=" flex flex-col text-center space-y-2">
-                            <div class="flex flex-row border-2">
+                          <hr />
+                          <p class="mt-2">Mobile Number</p>
+                          <div class="flex flex-row">
+                            <img src={phonelogo} class="pl-1 pr-3"></img>
+                            <input
+                              class=" border my-1 placeholder-gray-500 p-1 pl-2"
+                              type="tel"
+                              id="phone-number"
+                              name="contactNumber"
+                              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                              required
+                              value={contactNumber}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <p class=" text-red-500 ">{mobileNumberError}</p>
+                          <div class="flex flex-row-reverse">
+                            {mobileNumberError.length === 0 ? (
                               <button
-                                className="text-white text-xs rounded-3xl  "
-                                onClick={goToPrev}
+                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                onClick={handleOtp}
+                                style={{ backgroundColor: " #89CFF0" }}
                               >
-                                <FaAngleLeft style={{ color: "black" }} />
+                                Send OTP
                               </button>
-                              <div className="flex flex-row overflow-x-auto mx-2 ">
-                                {bookingslot?.map((data, index) =>
-                                {
-                                  // console.log(data.date)
-                                  const { year, monthName, day, dayName } =
-                                    getYearMonthDay(data.date);
-                                  // console.log(year, monthName, day, dayName)
-                                  if (index == currentIndex)
-                                  {
-                                    return (
-                                      <div
-                                        key={index}
-                                        className="flex flex-col px-2"
-                                      >
-                                        <p>{monthName}</p>
-                                        <p className=" p-2 border-2 rounded-lg bg-blue-300">
-                                          {day}
-                                        </p>
-                                        <p>{dayName}</p>
-                                      </div>
-                                    );
-                                  } else
-                                  {
-                                    return (
-                                      <div
-                                        key={index}
-                                        className="flex flex-col px-2 hover:cursor-pointer"
-                                        onClick={() =>
-                                        {
-                                          handleDateClick(index);
-                                        }}
-                                      >
-                                        <p>{monthName}</p>
-                                        <p className=" p-2 border-2 rounded-lg bg-gray-200">
-                                          {day}
-                                        </p>
-                                        <p>{dayName}</p>
-                                      </div>
-                                    );
-                                  }
-                                })}
-                              </div>
+                            ) : (
                               <button
-                                className="text-white text-xs rounded-3xl"
-                                onClick={goToNext}
+                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                disabled
+                                onClick={handleOtp}
+                                style={{ backgroundColor: " #89CFF0" }}
                               >
-                                <FaAngleRight style={{ color: "black" }} />
+                                Send OTP
                               </button>
-                            </div>
-
-                            <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-44">
-                              {[...Array(numberOfRows)].map((_, rowIndex) =>
-                              {
-                                return (
-                                  <div
-                                    key={rowIndex}
-                                    className="flex space-x-2"
-                                  >
-                                    {bookingslot
-                                      .slice(
-                                        rowIndex * numberOfColumns,
-                                        (rowIndex + 1) * numberOfColumns
-                                      )
-                                      ?.map((data, index) =>
-                                      {
-                                        selectedschedule = selectedschedule + 1;
-                                        // console.log(selectedschedule)
-
-                                        if (
-                                          selectedschedule - 1 ===
-                                          currentIndex
-                                        )
-                                        {
-                                          return (
-                                            <div
-                                              key={index}
-                                              className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-300 text-gray-800"
-                                            >
-                                              {data.startTime}
-                                            </div>
-                                          );
-                                        } else
-                                        {
-                                          return (
-                                            <div
-                                              key={index}
-                                              className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                            >
-                                              {data.startTime}
-                                            </div>
-                                          );
-                                        }
-                                      })}
-                                  </div>
-                                );
-                              })}
-                            </div>
+                            )}
                           </div>
                         </div>
                       )}
-                    </div>
-                    <div className="flex flex-row-reverse my-1">
-                      {!bookingslottoggle && !appointment && (
-                        <button
-                          className="text-white text-xs rounded-3xl px-3 py-1 "
-                          onClick={() =>
-                          {
-                            showSlot();
-                          }}
-                          style={{ backgroundColor: " #89CFF0" }}
-                        >
-                          Book Slots
-                        </button>
-                      )}
-                      {bookingslottoggle && !appointment && (
-                        <div class="flex flex-row space-x-4 mt-3">
-                          <button
-                            className="text-white text-xs rounded-3xl px-3 py-1 "
-                            onClick={handleBookAppointment}
-                            style={{ backgroundColor: " #89CFF0" }}
-                          >
-                            Book Appointment
-                          </button>
+                      <div>
+                        {bookingslottoggle && (
+                          <div className="flex flex-col">
+                            <div className=" flex flex-col text-center space-y-2">
+                              <div class="flex flex-row border-2">
+                                <button
+                                  className="text-white text-xs rounded-3xl  "
+                                  onClick={goToPrev}
+                                >
+                                  <FaAngleLeft style={{ color: "black" }} />
+                                </button>
+                                <div className="flex flex-row overflow-x-auto mx-2 ">
+                                  {bookingslot?.map((data, index) =>
+                                  {
+                                    console.log(data);
+                                    const { year, monthName, day, dayName } =
+                                      getYearMonthDay(data.date);
+                                    // console.log(year, monthName, day, dayName)
+                                    if (data.isBooked == true)
+                                    {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2"
+                                          disabled
+                                        >
+                                          <p>{monthName}</p>
+                                          <p
+                                            className=" p-2 border-2 rounded-lg "
+                                            style={{
+                                              backgroundColor: "#89CFF0",
+                                            }}
+                                          >
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    } else if (index == currentIndex)
+                                    {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2"
+                                        >
+                                          <p>{monthName}</p>
+                                          <p className=" p-2 border-2 rounded-lg bg-blue-100">
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    } else
+                                    {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2 hover:cursor-pointer"
+                                          onClick={() =>
+                                          {
+                                            handleDateClick(index);
+                                          }}
+                                        >
+                                          <p>{monthName}</p>
+                                          <p className=" p-2 border-2 rounded-lg bg-gray-200">
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    }
+                                  })}
+                                </div>
+                                <button
+                                  className="text-white text-xs rounded-3xl"
+                                  onClick={goToNext}
+                                >
+                                  <FaAngleRight style={{ color: "black" }} />
+                                </button>
+                              </div>
+
+                              <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
+                                {[...Array(numberOfRows)].map((_, rowIndex) =>
+                                {
+                                  return (
+                                    <div
+                                      key={rowIndex}
+                                      className="flex space-x-2"
+                                    >
+                                      {bookingslot
+                                        .slice(
+                                          rowIndex * numberOfColumns,
+                                          (rowIndex + 1) * numberOfColumns
+                                        )
+                                        ?.map((data, index) =>
+                                        {
+                                          selectedschedule =
+                                            selectedschedule + 1;
+                                          index = selectedschedule - 1;
+                                          // console.log(selectedschedule)
+                                          if (data.isBooked == true)
+                                          {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
+                                                disabled
+                                                style={{
+                                                  backgroundColor: "#89CFF0",
+                                                }}
+                                              >
+                                                {data.startTime}
+                                              </div>
+                                            );
+                                          } else if (
+                                            selectedschedule - 1 ===
+                                            currentIndex
+                                          )
+                                          {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
+                                              >
+                                                {data.startTime}
+                                              </div>
+                                            );
+                                          } else
+                                          {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
+                                                onClick={() =>
+                                                {
+                                                  handleDateClick(index);
+                                                }}
+                                              >
+                                                {data.startTime}
+                                              </div>
+                                            );
+                                          }
+                                        })}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-row-reverse my-1">
+                        {!bookingslottoggle && !appointment && (
                           <button
                             className="text-white text-xs rounded-3xl px-3 py-1 "
                             onClick={() =>
@@ -630,45 +745,142 @@ export default function DoctorListUser({ searchTerm })
                             }}
                             style={{ backgroundColor: " #89CFF0" }}
                           >
-                            Go Back
+                            Book Slots
                           </button>
-                        </div>
-                      )}
+                        )}
+                        {bookingslottoggle && !appointment && (
+                          <div class="flex mx-auto space-x-4 mt-3">
+                            <button
+                              className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
+                              onClick={handleBookAppointment}
+                              style={{ backgroundColor: " #89CFF0" }}
+                            >
+                              Book Appointment
+                            </button>
+                            {/* <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                          Go Back
+                        </button> */}
+                          </div>
+                        )}
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          )}
-          {otppage && (
-            <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
-              <p className="text-3xl ">Personal Information</p>
-              <hr className="border my-2 " />
-              {/* ------------mobile Number------------ */}
-              <div className="mt-3 flex flex-row">
-                <p className="block text-black text-base font-semibold">
-                  Mobile Number :{contactNumber}
-                </p>
-              </div>
-              {/* -----------contact----------- */}
-              <div className="mt-3 flex flex-row">
-                <p className="block text-black text-base font-semibold">
-                  Date :{" "}
-                  {selectedDoctor?.slots[currentIndex]?.date?.split("T")[0]}
-                </p>
-              </div>
-              {/* -----------address----------- */}
-              <div className="mt-3 flex flex-row">
-                <p className="block text-black text-base font-semibold">
-                  Time :{selectedDoctor?.slots[currentIndex]?.startTime}
-                </p>
-                <p></p>
-              </div>
-              <hr class=" mt-3" />
+            )}
+            {otppage && (
+              <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
+                <p className="text-3xl ">Personal Information</p>
+                <hr className="border my-2 " />
+                {/* ------------mobile Number------------ */}
+                <div className="mt-3 flex flex-row">
+                  <p className="block text-black text-base font-semibold">
+                    Mobile Number :{contactNumber}
+                  </p>
+                </div>
+                {/* -----------contact----------- */}
+                <div className="mt-3 flex flex-row">
+                  <p className="block text-black text-base font-semibold">
+                    Date :{" "}
+                    {selectedDoctor?.slots[currentIndex]?.date?.split("T")[0]}
+                  </p>
+                </div>
+                {/* -----------address----------- */}
+                <div className="mt-3 flex flex-row">
+                  <p className="block text-black text-base font-semibold">
+                    Time :{selectedDoctor?.slots[currentIndex]?.startTime}
+                  </p>
+                  <p></p>
+                </div>
+                <hr class=" mt-3" />
 
-              {/* ----------------------------------------otp verification section---------------------------------------- */}
-            </div>
-          )}
+                {/* ----------------------------------------otp verification section---------------------------------------- */}
+                <div class="flex flex-col">
+                  <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
+                  <div
+                    class="bg-gray-300 flex flex-row rounded-lg"
+                    style={{ maxWidth: "11rem" }}
+                  >
+                    <img src={phonelogo} class="pl-5 pr-1"></img>
+                    <input
+                      className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
+                      type="number"
+                      id="mobileNo"
+                      name="mobileNo"
+                      value={contactNumber}
+                      style={{
+                        border: "",
+                        height: "45px",
+                        paddingLeft: "1.5%",
+                        maxWidth: "8rem",
+                      }}
+                    />
+                  </div>
+
+                  <div
+                    className="flex w-full my-3"
+                    style={{
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {otp.map((digit, index) => (
+                      <input
+                        key={index}
+                        ref={(input) => (otpInputs[index] = input)}
+                        type="text"
+                        className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleInputChange(e, index)}
+                        onKeyDown={(e) =>
+                        {
+                          if (e.key === "Backspace" && index > 0 && !digit)
+                          {
+                            otpInputs[index - 1].focus();
+                          }
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  <p
+                    style={{
+                      fontWeight: 400,
+                      fontSize: "16px",
+                      display: "flex",
+                      marginLeft: "40%",
+                    }}
+                  >
+                    <p
+                      className="timer"
+                      style={{ color: "#666", cursor: "pointer" }}
+                    >
+                      <text className="mx-2" style={{ color: "#000000" }}>
+                        {formatTime(seconds)} sec
+                      </text>{" "}
+                    </p>{" "}
+                  </p>
+                  <p class="text-gray-600">
+                    Otp will expire in 30 seconds
+                    <button
+                      onClick={handleOtp}
+                      class="font-medium underline text-black"
+                    >
+                      Resend
+                    </button>{" "}
+                  </p>
+                  <button
+                    className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+                    style={{ backgroundColor: "#89CFF0" }}
+                    onClick={verifyOTP}
+                  >
+                    Verify
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </Modal>
 
