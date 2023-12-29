@@ -613,7 +613,7 @@ export default function DoctorList({ searchTerm }) {
                                 <div className="flex flex-row overflow-x-auto mx-2 ">
 
                                   {
-                                    keys.map((item, index) => {
+                                    keys?.map((item, index) => {
                                       const { year, monthName, day, dayName } =
                                         getYearMonthDay(item);
                                       // console.log(index)
@@ -701,7 +701,7 @@ export default function DoctorList({ searchTerm }) {
                                 </button>
                               </div>
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                                {values[currentIndex].map((item, index) => {
+                                {values[currentIndex]?.map((item, index) => {
                                   const marginb = index === 0 ? 'mt-2 -mb-4' : ""
                                   if (index === currentTimeIndex) {
                                     return (
@@ -942,7 +942,7 @@ export default function DoctorList({ searchTerm }) {
                       overflow: "hidden",
                     }}
                   >
-                    {otp.map((digit, index) => (
+                    {otp?.map((digit, index) => (
                       <input
                         key={index}
                         ref={(input) => (otpInputs[index] = input)}
