@@ -347,7 +347,6 @@ export default function EditUserForm()
   {
     setUserDetails((prevUserDetails) => ({
       ...prevUserDetails,
-      // workingDays: e,
       ageType: e,
     }));
   };
@@ -361,36 +360,29 @@ export default function EditUserForm()
     }));
   };
 
+  const handleChange3 = (e) =>
+  {
+    console.log("HELLOOOOOOOO")
+
+
+    setAppointmentDetails((prevAppointmentDetails) => ({
+      ...prevAppointmentDetails,
+      patientId: e
+    }))
+
+  }
+
+  useEffect(() =>
+  {
+    localStorage.setItem("patientId", appointmentDetails?.patientId)
+    console.log("patientId", appointmentDetails?.patientId)
+  }, [appointmentDetails.patientId])
+
   const handleChange = (e) =>
   {
     const { name, value } = e.target;
 
-    // const error = validateField(name, value);
-    // setErrors({ ...errors, [name]: error });
-    if (name === "patientName")
-    {
-      setAppointmentDetails((prevAppointmentDetails) => ({
-        ...prevAppointmentDetails,
-        patientId: [...prevAppointmentDetails.patientId, value]
-      }))
-    }
-
-    if (name === "workingDays")
-    {
-      setUserDetails((prevUserDetails) => ({
-        ...prevUserDetails,
-        workingDays: [...prevUserDetails.workingDays, value],
-      }));
-    } else if (name === "workHourFrom" || name === "workHourTo")
-    {
-      setUserDetails((prevUserDetails) => ({
-        ...prevUserDetails,
-        workingHours: {
-          ...prevUserDetails.workingHours,
-          [name]: value,
-        },
-      }));
-    } else if (
+    if (
       [
         "houseNo",
         "floor",
@@ -462,7 +454,6 @@ export default function EditUserForm()
     } else
     {
       const token = localStorage.getItem("token");
-      const doctorId = localStorage.getItem("doctorId");
       if (!token)
       {
         console.error("No token found in local storage");
@@ -528,10 +519,10 @@ export default function EditUserForm()
         console.log("DATA FROM APPOINTMENT BOOKING", data)
         if (data.success === true)
         {
+          console.log("OPEN MODAL")
           onOpenModal();
         }
         console.log("Doctor updated successfully.");
-        navigate("/doctorlistuser");
       }
       console.log("DATA from response", data);
     }
@@ -556,14 +547,13 @@ export default function EditUserForm()
   updateUserimage(userDetails?.userPic);
 
   console.log("NEW USER", userDetails.newUser)
-
+  console.log("PATIENTS LIST", patientsList)
   return (
     <>
       <Modal
         open={open}
         onClose={onCloseModal}
         center
-        // doctor={selectedDoctor}
         styles={{
           modal: {
             backgroundColor: "#89CFF0",
@@ -659,17 +649,18 @@ export default function EditUserForm()
                       className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   ) : (
-                    <select
-                      className="h-11 block w-full placeholder-gray-400 rounded-lg border ps-4 bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    <Select
+                      className="h-11 block w-full placeholder-gray-400 rounded-lg border  bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       name="patientName"
-                      onChange={handleChange}
+                      onChange={handleChange3}
+                      placeholder="Select Member"
                     >
                       {patientsList?.map((patient) => (
-                        <option key={patient._id} value={patient._id}>
+                        <Select.Option key={patient._id} value={patient._id}>
                           {patient.name}
-                        </option>
+                        </Select.Option>
                       ))}
-                    </select>)}
+                    </Select>)}
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
             </div>
@@ -750,7 +741,6 @@ export default function EditUserForm()
                           id="ageType"
                           name="ageType"
                           value={userDetails?.ageType}
-                          // onChange={handleChange2}
                           placeholder="Select Age Type"
                           style={{ overflowY: "auto" }}
                           dropdownStyle={{
