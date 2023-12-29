@@ -366,6 +366,7 @@ export default function EditUserForm()
   useEffect(() =>
   {
     // Get patient's details
+    localStorage.setItem("patientId", appointmentDetails?.patientId)
     const fetchPatientDetails = async () =>
     {
       try
@@ -395,7 +396,7 @@ export default function EditUserForm()
           setNewUser(true)
         }
         setUserDetails(data?.data);
-        console.log("usser name$$$$$$$", data?.data.name);
+        console.log("usser name$$$$$$$", data?.data?.name);
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);
@@ -403,7 +404,7 @@ export default function EditUserForm()
     };
     fetchPatientDetails();
 
-  }, [patientId])
+  }, [appointmentDetails?.patientId])
 
   const handleChange = (e) =>
   {
@@ -415,7 +416,7 @@ export default function EditUserForm()
         ...prevAppointmentDetails,
         patientId: value
       }))
-      localStorage.setItem("patientId", appointmentDetails?.patientId)
+
     }
 
     if (name === "workingDays")
@@ -594,11 +595,11 @@ export default function EditUserForm()
 
 
   console.log("User DETAILS", userDetails);
-  updateUser(userDetails.name);
-  updateUserEmail(userDetails.email);
+  updateUser(userDetails?.name);
+  updateUserEmail(userDetails?.email);
   updateUserimage(userDetails?.userPic);
 
-  console.log("NEW USER", userDetails.newUser)
+  console.log("NEW USER", userDetails?.newUser)
   console.log("==========APPOINTMENT DETAILS========", appointmentDetails)
 
   return (
@@ -708,8 +709,8 @@ export default function EditUserForm()
                       onChange={handleChange}
                     >
                       {patientsList?.map((patient) => (
-                        <option key={patient._id} value={patient._id}>
-                          {patient.name}
+                        <option key={patient?._id} value={patient?._id}>
+                          {patient?.name}
                         </option>
                       ))}
                     </select>)}
