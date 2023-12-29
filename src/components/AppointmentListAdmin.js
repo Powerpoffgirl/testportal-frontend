@@ -322,7 +322,7 @@ export default function AppointmentListAdmin({ searchTerm }) {
                   />
                 ) : (
                   <AccountCircleIcon
-                    style={{ fontSize: "90px", color: "#A4A4A4" }}
+                    style={{ fontSize: "90px", color: "#B1DAED" }}
                   />
                 )}
 

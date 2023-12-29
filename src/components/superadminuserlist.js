@@ -6,10 +6,9 @@ import { Modal } from "react-responsive-modal";
 import AdminSidebar from "./adminSidebar";
 import { useNavigate } from "react-router-dom";
 import UserList from "./userList";
-import { Button, Popconfirm } from 'antd';
+import { Button, Popconfirm } from "antd";
 import { FaTrashAlt } from "react-icons/fa";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-
 
 export default function SuperAdminUserList({ searchTerm })
 {
@@ -21,7 +20,7 @@ export default function SuperAdminUserList({ searchTerm })
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
   const navigate = useNavigate();
-  const [filteredUsers, setFilteredUsers] = useState([usersList])
+  const [filteredUsers, setFilteredUsers] = useState([usersList]);
 
   const categories = [
     { name: "All", value: "1" },
@@ -31,7 +30,6 @@ export default function SuperAdminUserList({ searchTerm })
     { name: "Neurologist", value: "5" },
     { name: "Physiotherapist", value: "6" },
   ];
-
 
   useEffect(() =>
   {
@@ -72,8 +70,8 @@ export default function SuperAdminUserList({ searchTerm })
     if (usersList?.length > 0 && searchTerm)
     {
       const lowerCaseSearchTerm = searchTerm?.toLowerCase().trim();
-      const matchedPatients = usersList?.filter(p =>
-        p?.name?.toLowerCase()?.includes(lowerCaseSearchTerm)
+      const matchedPatients = usersList?.filter((p) =>
+        p?.contactNumber?.toLowerCase()?.includes(lowerCaseSearchTerm)
       );
       setFilteredUsers(matchedPatients);
     } else
@@ -83,6 +81,7 @@ export default function SuperAdminUserList({ searchTerm })
     }
   }, [usersList, searchTerm]);
 
+  console.log("FILTERED USERES", filteredUsers)
   const handleBookAppointment = (userId) =>
   {
     localStorage.setItem("userId", userId);
@@ -212,7 +211,6 @@ export default function SuperAdminUserList({ searchTerm })
           </div>
         </Modal> */}
 
-
       <div className="flex flex-col">
         {filteredUsers?.map((user) => (
           <div
@@ -229,7 +227,7 @@ export default function SuperAdminUserList({ searchTerm })
                   />
                 ) : (
                   <AccountCircleIcon
-                    style={{ fontSize: "90px", color: "#A4A4A4" }}
+                    style={{ fontSize: "90px", color: "#B1DAED" }}
                   />
                 )}
                 <div>
@@ -261,7 +259,12 @@ export default function SuperAdminUserList({ searchTerm })
                     Delete
                   </button>
                 </Popconfirm>
-                <button class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm" onClick={() => handleBookAppointment(user._id)}>Edit</button>
+                <button
+                  class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
+                  onClick={() => handleBookAppointment(user._id)}
+                >
+                  Edit
+                </button>
               </div>
             </div>
           </div>

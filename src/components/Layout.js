@@ -111,7 +111,7 @@ export default function Layout({
     { text: "Member’s List", to: "/patientlistuser" },
     { text: "Doctor’s List", to: "/doctorlistuser" },
     { text: "Appointment’s List", to: "/appointmentlistuser" },
-    { text: "Profile", to: "/edituserform" },
+    { text: "Profile", to: "/userprofile" },
     { text: "Support", to: "#" },
     { text: "Logout User", to: "/userlogin", onClick: handleLogout },
   ];

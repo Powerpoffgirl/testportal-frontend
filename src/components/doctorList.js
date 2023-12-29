@@ -114,15 +114,15 @@ export default function DoctorList({ searchTerm }) {
     setselectedDoctor(doctor);
     console.log(selectedDoctor);
     // console.log(selectedDoctor.degree.split(','))
-
     onOpenModal();
   };
 
   const handleBookAppointment = async () => {
-    console.log(selectedDoctor?.slots[currentIndex]);
+    console.log("date", keys[currentIndex]);
+    console.log("slot", values[currentIndex][currentTimeIndex].start);
     const bookslot = {
-      date: selectedDoctor?.slots[currentIndex].date.split("T")[0],
-      time: selectedDoctor?.slots[currentIndex].startTime,
+      date: keys[currentIndex],
+      time: values[currentIndex][currentTimeIndex].start,
     };
     console.log("selected doctor", selectedDoctor?._id);
     const response = await fetch(
@@ -147,9 +147,15 @@ export default function DoctorList({ searchTerm }) {
 
     showappointment();
     showSlot();
-    toast.success("Appointment Booked Successfully", {
-      position: "top-center",
-    });
+    if (data.success === true) {
+      toast.success("Slot booked successfully", {
+        // position: "top-center",
+      });
+    } else {
+      toast.error("Please book another slot", {
+        // position: "top-center",
+      });
+    }
   };
 
   const handleFilterDocotors = (item) => {
@@ -166,8 +172,8 @@ export default function DoctorList({ searchTerm }) {
   const [bookingslottoggle, setbookingslottoggle] = useState(false);
   const [appointment, setappointment] = useState(false);
   const [otppage, setotppage] = useState(false);
-
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
   const [contactNumber, setcontactNumber] = useState(null);
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -207,8 +213,10 @@ export default function DoctorList({ searchTerm }) {
     console.log("RESPONSE------", data);
     console.log("user id", data?.data?._id);
     localStorage.setItem("userId", data?.data?._id);
+    if (data.data.newUser === true) {
+      localStorage.setItem("patientId", data?.patient?._id);
+    }
 
-    // localStorage.setItem("token", data?.user?.token)
     setotppage(true);
   };
   const handleInputChange = (e, index) => {
@@ -255,10 +263,37 @@ export default function DoctorList({ searchTerm }) {
     }
   };
 
+  // processing for the booking slots
   const bookingslot = selectedDoctor.slots;
+  // console.log("current booking slots--------------------", selectedDoctor.slots)
+  // Declare an empty object
+  let processedSlots = {};
+  // Loop for the array elements
+  for (let i in bookingslot) {
+    let objTitle = bookingslot[i].date.split("T")[0];
+    // Use the title as the index
+    processedSlots[objTitle] = [];
+  }
+  // Loop to push unique object into array
+  // console.log("uniques dates ====", processedSlots)
+  for (let i in bookingslot) {
+    if (bookingslot[i].date.split("T")[0] in processedSlots) {
+      processedSlots[bookingslot[i].date.split("T")[0]].push({
+        start: bookingslot[i].startTime,
+        end: bookingslot[i].endTime,
+        isBooked: bookingslot[i].isBooked,
+        _id: bookingslot[i]._id,
+      });
+    }
+  }
 
-  const numberOfColumns = 4;
-  const numberOfRows = Math.ceil(bookingslot?.length / numberOfColumns);
+  const keys = Object.keys(processedSlots);
+  // console.log(keys)
+  const values = Object.values(processedSlots);
+  // console.log(values)
+
+  // const numberOfColumns = 4;
+  // const numberOfRows = Math.ceil(bookingslot?.length / numberOfColumns);
 
   function getYearMonthDay(dateString) {
     // Create a new Date object using the provided date string
@@ -294,8 +329,13 @@ export default function DoctorList({ searchTerm }) {
 
   const handleDateClick = (index) => {
     setCurrentIndex(index);
+    console.log(currentIndex);
   };
-
+  const handleTimeClick = (time) => {
+    // console.log(time)
+    setCurrentTimeIndex(time);
+    console.log(currentTimeIndex);
+  };
   const goToNext = () => {
     const isLastItem = currentIndex === bookingslot.length - 1;
     const nextIndex = isLastItem ? 0 : currentIndex + 1;
@@ -478,260 +518,438 @@ export default function DoctorList({ searchTerm }) {
                   <p className="text-lg font-medium text-black">
                     Select service
                   </p>
-                  <div className=" py-1 mb-2">
-                    <p className="text-lg font-medium text-black">
-                      Select service
-                    </p>
 
-                    <div className="flex flex-col mb-2">
-                      <div className="flex flex-col  bg-white p-1 px-3">
-                        <p className="flex place-content-between my-1">
-                          <span className="font-medium px-2">Consultation</span>{" "}
-                          <span className="font-bold px-2">Rs1000</span>
-                        </p>
-                        {!bookingslottoggle && !appointment && (
-                          <div>
-                            <p className="text-xs text-gray-500 px-2 my-1">
-                              Slot available for Tommorrow{" "}
-                            </p>
-                            <p className="flex flex-wrap space-x-1 ml-2 my-1">
-                              <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                                3:00 AM
-                              </p>
-                              <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                                3:00 AM
-                              </p>
-                              <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                                3:00 AM
-                              </p>
-                              <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                                3:00 AM
-                              </p>
-                            </p>
-                          </div>
-                        )}
-                        {appointment && (
-                          <div class="mx-2">
-                            <p class="font-medium text-gray-500 ">
-                              Date:{" "}
-                              {
-                                selectedDoctor?.slots[currentIndex].date.split(
-                                  "T"
-                                )[0]
-                              }
-                            </p>
-                            <p class="font-medium text-gray-500 mb-3">
-                              Time:
-                              {selectedDoctor?.slots[currentIndex].startTime}
-                            </p>
-                            <hr />
-                            <p class="mt-2">Mobile Number</p>
-                            <div class="flex flex-row">
-                              <img src={phonelogo} class="pl-1 pr-3"></img>
-                              <input
-                                class=" border my-1 placeholder-gray-500 p-1 pl-2"
-                                type="tel"
-                                id="phone-number"
-                                name="contactNumber"
-                                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
-                                required
-                                value={contactNumber}
-                                onChange={handleChange}
-                              />
-                            </div>
-                            <p class=" text-red-500 ">{mobileNumberError}</p>
-                            <div class="flex flex-row-reverse">
-                              {mobileNumberError.length === 0 ? (
-                                <button
-                                  className="text-white text-xs rounded-3xl px-3 py-1 "
-                                  onClick={handleOtp}
-                                  style={{ backgroundColor: " #89CFF0" }}
-                                >
-                                  Send OTP
-                                </button>
-                              ) : (
-                                <button
-                                  className="text-white text-xs rounded-3xl px-3 py-1 "
-                                  disabled
-                                  onClick={handleOtp}
-                                  style={{ backgroundColor: " #89CFF0" }}
-                                >
-                                  Send OTP
-                                </button>
-                              )}
-                            </div>
-                          </div>
-                        )}
+                  <div className="flex flex-col mb-2">
+                    <div className="flex flex-col  bg-white p-1 px-3">
+                      <p className="flex place-content-between my-1">
+                        <span className="font-medium px-2">Consultation</span>{" "}
+                        <span className="font-bold px-2">Rs1000</span>
+                      </p>
+                      {!bookingslottoggle && !appointment && (
                         <div>
-                          {bookingslottoggle && (
-                            <div className="flex flex-col">
-                              <div className=" flex flex-col text-center space-y-2">
-                                <div class="flex flex-row border-2">
-                                  <button
-                                    className="text-white text-xs rounded-3xl  "
-                                    onClick={goToPrev}
-                                  >
-                                    <FaAngleLeft style={{ color: "black" }} />
-                                  </button>
-                                  <div className="flex flex-row overflow-x-auto mx-2 ">
-                                    {bookingslot?.map((data, index) => {
-                                      console.log(data);
-                                      const { year, monthName, day, dayName } =
-                                        getYearMonthDay(data.date);
-                                      // console.log(year, monthName, day, dayName)
-                                      if (data.isBooked == true) {
-                                        return (
-                                          <div
-                                            key={index}
-                                            className="flex flex-col px-2"
-                                            disabled
-                                          >
-                                            <p>{monthName}</p>
-                                            <p
-                                              className=" p-2 border-2 rounded-lg "
-                                              style={{
-                                                backgroundColor: "#89CFF0",
-                                              }}
-                                            >
-                                              {day}
-                                            </p>
-                                            <p>{dayName}</p>
-                                          </div>
-                                        );
-                                      } else if (index == currentIndex) {
-                                        return (
-                                          <div
-                                            key={index}
-                                            className="flex flex-col px-2"
-                                          >
-                                            <p>{monthName}</p>
-                                            <p className=" p-2 border-2 rounded-lg bg-blue-100">
-                                              {day}
-                                            </p>
-                                            <p>{dayName}</p>
-                                          </div>
-                                        );
-                                      } else {
-                                        return (
-                                          <div
-                                            key={index}
-                                            className="flex flex-col px-2 hover:cursor-pointer"
-                                            onClick={() => {
-                                              handleDateClick(index);
-                                            }}
-                                          >
-                                            <p>{monthName}</p>
-                                            <p className=" p-2 border-2 rounded-lg bg-gray-200">
-                                              {day}
-                                            </p>
-                                            <p>{dayName}</p>
-                                          </div>
-                                        );
-                                      }
-                                    })}
-                                  </div>
-                                  <button
-                                    className="text-white text-xs rounded-3xl"
-                                    onClick={goToNext}
-                                  >
-                                    <FaAngleRight style={{ color: "black" }} />
-                                  </button>
-                                </div>
+                          <p className="text-xs text-gray-500 px-2 my-1">
+                            Slot available for Tommorrow{" "}
+                          </p>
+                          <p className="flex flex-row justify-between  my-1 mx-2">
+                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
+                              3:00 AM
+                            </p>
+                          </p>
+                        </div>
+                      )}
+                      {appointment && (
+                        <div class="mx-2">
+                          <p class="font-medium text-gray-500 ">
+                            Date:{" "}
+                            {
+                              selectedDoctor?.slots[currentIndex].date.split(
+                                "T"
+                              )[0]
+                            }
+                          </p>
+                          <p class="font-medium text-gray-500 mb-3">
+                            Time:
+                            {selectedDoctor?.slots[currentIndex].startTime}
+                          </p>
+                          <hr />
+                          <p class="mt-2">Mobile Number</p>
+                          <div class="flex flex-row">
+                            <img src={phonelogo} class="pl-1 pr-3"></img>
+                            <input
+                              class=" border my-1 placeholder-gray-500 p-1 pl-2"
+                              type="tel"
+                              id="phone-number"
+                              name="contactNumber"
+                              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                              required
+                              value={contactNumber}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <p class=" text-red-500 ">{mobileNumberError}</p>
+                          <div class="flex flex-row-reverse">
+                            {mobileNumberError.length === 0 ? (
+                              <button
+                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                onClick={handleOtp}
+                                style={{ backgroundColor: " #89CFF0" }}
+                              >
+                                Send OTP
+                              </button>
+                            ) : (
+                              <button
+                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                disabled
+                                onClick={handleOtp}
+                                style={{ backgroundColor: " #89CFF0" }}
+                              >
+                                Send OTP
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      <div>
+                        {bookingslottoggle && (
+                          <div className="flex flex-col">
+                            <div className=" flex flex-col text-center space-y-2">
+                              <div class="flex flex-row border-2">
+                                <button
+                                  className="text-white text-xs rounded-3xl mr-auto "
+                                  onClick={goToPrev}
+                                >
+                                  <FaAngleLeft style={{ color: "black" }} />
+                                </button>
+                                <div className="flex flex-row overflow-x-auto mx-2 ">
+                                  {keys.map((item, index) => {
+                                    const { year, monthName, day, dayName } =
+                                      getYearMonthDay(item);
+                                    // console.log(index)
+                                    const bg =
+                                      currentIndex === index
+                                        ? "bg-blue-200"
+                                        : "bg-gray-200";
+                                    return (
+                                      <div
+                                        key={index}
+                                        className="flex flex-col px-2"
+                                        onClick={() => {
+                                          handleDateClick(index);
+                                        }}
+                                      >
+                                        <p>{monthName}</p>
+                                        <p
+                                          className={` p-2 border-2 rounded-lg ${bg}`}
+                                        >
+                                          {day}
+                                        </p>
+                                        <p>{dayName}</p>
+                                      </div>
+                                    );
+                                  })}
 
-                                <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                                  {[...Array(numberOfRows)].map(
-                                    (_, rowIndex) => {
+                                  {/* {bookingslot?.map((data, index) => {
+                                    // console.log(data);
+                                    const { year, monthName, day, dayName } =
+                                      getYearMonthDay(data.date);
+                                    // console.log(year, monthName, day, dayName)
+                                    if (data.isBooked == true) {
                                       return (
                                         <div
-                                          key={rowIndex}
-                                          className="flex space-x-2"
+                                          key={index}
+                                          className="flex flex-col px-2"
+                                          disabled
                                         >
-                                          {bookingslot
-                                            .slice(
-                                              rowIndex * numberOfColumns,
-                                              (rowIndex + 1) * numberOfColumns
-                                            )
-                                            ?.map((data, index) => {
-                                              selectedschedule =
-                                                selectedschedule + 1;
-                                              index = selectedschedule - 1;
-                                              // console.log(selectedschedule)
-                                              if (data.isBooked == true) {
-                                                return (
-                                                  <div
-                                                    key={index}
-                                                    className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
-                                                    disabled
-                                                    style={{
-                                                      backgroundColor:
-                                                        "#89CFF0",
-                                                    }}
-                                                  >
-                                                    {data.startTime}
-                                                  </div>
-                                                );
-                                              } else if (
-                                                selectedschedule - 1 ===
-                                                currentIndex
-                                              ) {
-                                                return (
-                                                  <div
-                                                    key={index}
-                                                    className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
-                                                  >
-                                                    {data.startTime}
-                                                  </div>
-                                                );
-                                              } else {
-                                                return (
-                                                  <div
-                                                    key={index}
-                                                    className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                                    onClick={() => {
-                                                      handleDateClick(index);
-                                                    }}
-                                                  >
-                                                    {data.startTime}
-                                                  </div>
-                                                );
-                                              }
-                                            })}
+                                          <p>{monthName}</p>
+                                          <p
+                                            className=" p-2 border-2 rounded-lg "
+                                            style={{
+                                              backgroundColor: "#89CFF0",
+                                            }}
+                                          >
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    } else if (index == currentIndex) {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2"
+                                        >
+                                          <p>{monthName}</p>
+                                          <p className=" p-2 border-2 rounded-lg bg-blue-100">
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    } else {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2 hover:cursor-pointer"
+                                          onClick={() => {
+                                            handleDateClick(index);
+                                          }}
+                                        >
+                                          <p>{monthName}</p>
+                                          <p className=" p-2 border-2 rounded-lg bg-gray-200">
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
                                         </div>
                                       );
                                     }
-                                  )}
+                                  })} */}
                                 </div>
+                                <button
+                                  className="text-white text-xs rounded-3xl ml-auto"
+                                  onClick={goToNext}
+                                >
+                                  <FaAngleRight style={{ color: "black" }} />
+                                </button>
                               </div>
+                              <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
+                                {values[currentIndex]?.map((item, index) => {
+                                  const marginb =
+                                    index === 0 ? "mt-2 -mb-4" : "";
+                                  if (index === currentTimeIndex) {
+                                    return (
+                                      <div
+                                        key={index}
+                                        className={` w-1/3 px-2 mb-4 ${marginb}`}
+                                        disabled={item.isBooked}
+                                      >
+                                        <div
+                                          className={` rounded-3xl py-1 px-2 text-gray-800  bg-blue-200`}
+                                          onClick={() => {
+                                            handleTimeClick(index);
+                                          }}
+                                        >
+                                          {item.start}
+                                        </div>
+                                      </div>
+                                    );
+                                  } else if (item.isBooked == true) {
+                                    return (
+                                      <div
+                                        key={index}
+                                        className={` w-1/3 px-2 mb-4 ${marginb}`}
+                                        disabled
+                                      >
+                                        <div
+                                          className={` rounded-3xl py-1 px-2 text-gray-800   `}
+                                          style={{
+                                            backgroundColor: "#89CFF0",
+                                          }}
+                                        >
+                                          {item.start}
+                                        </div>
+                                      </div>
+                                    );
+                                  } else {
+                                    return (
+                                      <div
+                                        key={index}
+                                        className={` w-1/3 px-2 mb-4 ${marginb}`}
+                                        onClick={() => {
+                                          handleTimeClick(index);
+                                        }}
+                                      >
+                                        <div
+                                          className={` rounded-3xl py-1 px-2 text-gray-800 bg-gray-200  `}
+                                        >
+                                          {item.start}
+                                        </div>
+                                      </div>
+                                    );
+                                  }
+                                })}
+                              </div>
+
+                              {/* <div className="grid grid-cols-3 gap-4 space-y-2 my-2 overflow-y-scroll h-32 px-2">
+                                {values[currentIndex].map((item, index) => {
+                                  const bgClass = item.isBooked ? "bg-blue-300" : "bg-gray-200"; // Using Tailwind classes for background colors
+
+<<<<<<< HEAD
+      return (
+        <div
+          key={index}
+          className={`flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 ${bgClass}`}
+          disabled={item.isBooked}
+        >
+<<<<<<< HEAD
+  {
+    bookingslot
+      .slice(
+        rowIndex * numberOfColumns,
+        (rowIndex + 1) * numberOfColumns
+      )
+    ?.map((data, index) =>
+    {
+      selectedschedule =
+        selectedschedule + 1;
+      index = selectedschedule - 1;
+      // console.log(selectedschedule)
+      if (data.isBooked === true)
+      {
+        return (
+          <div
+            key={index}
+            className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
+            disabled
+            style={{
+              backgroundColor: "#89CFF0",
+            }}
+          >
+            {data.startTime}
+          </div>
+        );
+      } else if (
+        selectedschedule - 1 ===
+        currentIndex
+      )
+      {
+        return (
+          <div
+            key={index}
+            className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
+          >
+            {data.startTime}
+          </div>
+        );
+      } else
+      {
+        return (
+          <div
+            key={index}
+            className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
+            onClick={() =>
+            {
+              handleDateClick(index);
+            }}
+          >
+            {data.startTime}
+          </div>
+        );
+      }
+    })
+  }
+=======
+                                      {item.start}
+>>>>>>> 21f7ed7b32de4fa7ca8f064050ae262a6f1e758e
+                                    </div >
+=======
+                                  return (
+                                    <div
+                                      key={index}
+                                      className={`flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 ${bgClass}`}
+                                      disabled={item.isBooked}
+                                    >
+                                      {item.start}
+                                    </div>
+>>>>>>> b6940d3c753feb782e4f43283932b9a38ab49482
+                                  );
+})}
+{/* {values[currentIndex].map((item, index) => {
+                                  if (item.isBooked === true) {
+                                    return (
+                                      <div
+                                        key={index}
+                                        className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 bg-gray-200"
+                                        disabled
+                                        style={{
+                                          backgroundColor: "#89CFF0"
+                                        }}
+                                      >
+                                        {item.start}
+                                      </div>
+                                    )
+                                  } else {
+                                    return (
+                                      <div
+                                        key={index}
+                                        className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 bg-gray-200"
+                                        disabled
+                                        style={{
+                                        }}
+                                      >
+                                        {item.start}
+                                      </div>
+                                    )
+                                  }
+                                })} */}
+
+                              {/* {bookingslot
+                                          .slice(
+                                            rowIndex * numberOfColumns,
+                                            (rowIndex + 1) * numberOfColumns
+                                          )
+                                          ?.map((data, index) => {
+                                            selectedschedule =
+                                              selectedschedule + 1;
+                                            index = selectedschedule - 1;
+                                            // console.log(selectedschedule)
+                                            if (data.isBooked === true) {
+                                              return (
+                                                <div
+                                                  key={index}
+                                                  className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
+                                                  disabled
+                                                  style={{
+                                                    backgroundColor:
+                                                      "#89CFF0",
+                                                  }}
+                                                >
+                                                  {data.startTime}
+                                                </div>
+                                              );
+                                            } else if (
+                                              selectedschedule - 1 ===
+                                              currentIndex
+                                            ) {
+                                              return (
+                                                <div
+                                                  key={index}
+                                                  className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
+                                                >
+                                                  {data.startTime}
+                                                </div>
+                                              );
+                                            } else {
+                                              return (
+                                                <div
+                                                  key={index}
+                                                  className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
+                                                  onClick={() => {
+                                                    handleDateClick(index);
+                                                  }}
+                                                >
+                                                  {data.startTime}
+                                                </div>
+                                              );
+                                            }
+                                          })} */}
+
+                              {/* </div> */}
                             </div>
-                          )}
-                        </div>
-                        <div className="flex flex-row-reverse my-1">
-                          {!bookingslottoggle && !appointment && (
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-row-reverse my-1">
+                        {!bookingslottoggle && !appointment && (
+                          <button
+                            className="text-white text-xs rounded-3xl px-3 py-1 "
+                            onClick={() => {
+                              showSlot();
+                            }}
+                            style={{ backgroundColor: " #89CFF0" }}
+                          >
+                            Book Slots
+                          </button>
+                        )}
+                        {bookingslottoggle && !appointment && (
+                          <div class="flex mx-auto space-x-4 mt-3">
                             <button
-                              className="text-white text-xs rounded-3xl px-3 py-1 "
-                              onClick={() => {
-                                showSlot();
-                              }}
+                              className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
+                              onClick={handleBookAppointment}
                               style={{ backgroundColor: " #89CFF0" }}
                             >
-                              Book Slots
+                              Book Appointment
                             </button>
-                          )}
-                          {bookingslottoggle && !appointment && (
-                            <div class="flex mx-auto space-x-4 mt-3">
-                              <button
-                                className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
-                                onClick={handleBookAppointment}
-                                style={{ backgroundColor: " #89CFF0" }}
-                              >
-                                Book Appointment
-                              </button>
-                              {/* <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                            {/* <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
                           Go Back
                         </button> */}
-                            </div>
-                          )}
-                        </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -794,7 +1012,7 @@ export default function DoctorList({ searchTerm }) {
                       overflow: "hidden",
                     }}
                   >
-                    {otp.map((digit, index) => (
+                    {otp?.map((digit, index) => (
                       <input
                         key={index}
                         ref={(input) => (otpInputs[index] = input)}
@@ -828,6 +1046,15 @@ export default function DoctorList({ searchTerm }) {
                         {formatTime(seconds)} sec
                       </text>{" "}
                     </p>{" "}
+                  </p>
+                  <p class="text-gray-600">
+                    Otp will expire in 30 seconds
+                    <button
+                      onClick={handleOtp}
+                      class="font-medium underline text-black"
+                    >
+                      Resend
+                    </button>{" "}
                   </p>
                   <button
                     className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
