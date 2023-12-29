@@ -71,6 +71,7 @@ import SuperAdminUserEditForm from "./components/superadminusereditform";
 import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
 import SuperAdminOtp from "./components/superadminotp";
 import { ToastContainer } from "react-toastify";
+import UserProfile from "./components/userProfile";
 
 function App()
 {
@@ -513,8 +514,19 @@ function App()
             <Layout
               Component={EditUserForm}
               type="user"
-              headerTextTop={"Edit User's"}
-              headerTextBottom={"Form"}
+              headerTextTop={"Book"}
+              headerTextBottom={"Appointment"}
+            />
+          }
+        ></Route>
+        <Route
+          path="/userprofile"
+          element={
+            <Layout
+              Component={UserProfile}
+              type="user"
+              headerTextTop={"User"}
+              headerTextBottom={"Profile"}
             />
           }
         ></Route>
