@@ -235,7 +235,11 @@ export default function DoctorList({ searchTerm })
     console.log("RESPONSE------", data);
     console.log("user id", data?.data?._id);
     localStorage.setItem("userId", data?.data?._id);
-    localStorage.setItem("patientId", data?.patient?._id)
+    if (data.data.newUser === true)
+    {
+      localStorage.setItem("patientId", data?.patient?._id);
+    }
+
 
     // localStorage.setItem("token", data?.user?.token)
     setotppage(true);
@@ -705,7 +709,7 @@ export default function DoctorList({ searchTerm })
                                             selectedschedule + 1;
                                           index = selectedschedule - 1;
                                           // console.log(selectedschedule)
-                                          if (data.isBooked == true)
+                                          if (data.isBooked === true)
                                           {
                                             return (
                                               <div

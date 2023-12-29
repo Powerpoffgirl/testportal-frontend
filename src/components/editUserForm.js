@@ -288,6 +288,8 @@ export default function EditUserForm()
           console.error("No token found in local storage");
           return;
         }
+
+
         const response = await fetch(`${baseUrl}/api/v1/user/get_userDetails`, {
           method: "GET",
           headers: {
@@ -298,7 +300,7 @@ export default function EditUserForm()
 
         const data = await response.json();
         console.log("DATA from response", data);
-        if (data.data.newUser === true)
+        if (data?.data?.newUser === true)
         {
           setNewUser(true)
         }
@@ -361,18 +363,59 @@ export default function EditUserForm()
     }));
   };
 
+  useEffect(() =>
+  {
+    // Get patient's details
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("patientId")
+
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+
+
+        const response = await fetch(`${baseUrl}/api/v1/user/get_patientDetails/${patientId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
+
+        const data = await response.json();
+        console.log("DATA from Patients response", data);
+        if (data?.data?.newUser === true)
+        {
+          setNewUser(true)
+        }
+        setUserDetails(data?.data);
+        console.log("usser name$$$$$$$", data?.data.name);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchPatientDetails();
+
+  }, [patientId])
+
   const handleChange = (e) =>
   {
     const { name, value } = e.target;
 
-    // const error = validateField(name, value);
-    // setErrors({ ...errors, [name]: error });
     if (name === "patientName")
     {
       setAppointmentDetails((prevAppointmentDetails) => ({
         ...prevAppointmentDetails,
-        patientId: [...prevAppointmentDetails.patientId, value]
+        patientId: value
       }))
+      localStorage.setItem("patientId", appointmentDetails?.patientId)
     }
 
     if (name === "workingDays")
@@ -556,6 +599,7 @@ export default function EditUserForm()
   updateUserimage(userDetails?.userPic);
 
   console.log("NEW USER", userDetails.newUser)
+  console.log("==========APPOINTMENT DETAILS========", appointmentDetails)
 
   return (
     <>
@@ -563,7 +607,6 @@ export default function EditUserForm()
         open={open}
         onClose={onCloseModal}
         center
-        // doctor={selectedDoctor}
         styles={{
           modal: {
             backgroundColor: "#89CFF0",
