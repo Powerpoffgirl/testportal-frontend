@@ -143,12 +143,8 @@ export default function DoctorListUser({ searchTerm })
     const data = await response.json();
 
     console.log("slot booked", data);
-<<<<<<< HEAD
-    if (data.success === true) {
-=======
     if (data.success === true)
     {
->>>>>>> 21f7ed7b32de4fa7ca8f064050ae262a6f1e758e
       navigate("/edituserform");
     }
     localStorage.setItem(
@@ -336,12 +332,17 @@ export default function DoctorListUser({ searchTerm })
   var selectedschedule = 0;
   // console.log(selectedDoctor?.slots[currentIndex])
 
-  useEffect(() => {
-    if (resendClicked || firstTime) {
-      const intervalId = setInterval(() => {
-        if (seconds > 0) {
+  useEffect(() =>
+  {
+    if (resendClicked || firstTime)
+    {
+      const intervalId = setInterval(() =>
+      {
+        if (seconds > 0)
+        {
           setSeconds((prevSeconds) => prevSeconds - 1);
-        } else {
+        } else
+        {
           setFirstTime(false);
           setSeconds(90);
           setResendClicked(false);
@@ -351,7 +352,8 @@ export default function DoctorListUser({ searchTerm })
     }
   }, [seconds, resendClicked, firstTime]);
 
-  const formatTime = (time) => {
+  const formatTime = (time) =>
+  {
     const minutes = Math.floor(time / 60);
     const remainingSeconds = time % 60;
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
@@ -453,7 +455,8 @@ export default function DoctorListUser({ searchTerm })
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
                   <div className="flex flex-wrap ">
-                    {selectedDoctor?.speciality?.map((item, index) => {
+                    {selectedDoctor?.speciality?.map((item, index) =>
+                    {
                       return (
                         <p
                           key={index}
@@ -593,12 +596,14 @@ export default function DoctorListUser({ searchTerm })
                                   <FaAngleLeft style={{ color: "black" }} />
                                 </button>
                                 <div className="flex flex-row overflow-x-auto mx-2 ">
-                                  {bookingslot?.map((data, index) => {
+                                  {bookingslot?.map((data, index) =>
+                                  {
                                     console.log(data);
                                     const { year, monthName, day, dayName } =
                                       getYearMonthDay(data.date);
                                     // console.log(year, monthName, day, dayName)
-                                    if (data.isBooked == true) {
+                                    if (data.isBooked == true)
+                                    {
                                       return (
                                         <div
                                           key={index}
@@ -617,7 +622,8 @@ export default function DoctorListUser({ searchTerm })
                                           <p>{dayName}</p>
                                         </div>
                                       );
-                                    } else if (index == currentIndex) {
+                                    } else if (index == currentIndex)
+                                    {
                                       return (
                                         <div
                                           key={index}
@@ -630,12 +636,14 @@ export default function DoctorListUser({ searchTerm })
                                           <p>{dayName}</p>
                                         </div>
                                       );
-                                    } else {
+                                    } else
+                                    {
                                       return (
                                         <div
                                           key={index}
                                           className="flex flex-col px-2 hover:cursor-pointer"
-                                          onClick={() => {
+                                          onClick={() =>
+                                          {
                                             handleDateClick(index);
                                           }}
                                         >
@@ -658,7 +666,8 @@ export default function DoctorListUser({ searchTerm })
                               </div>
 
                               <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                                {[...Array(numberOfRows)].map((_, rowIndex) => {
+                                {[...Array(numberOfRows)].map((_, rowIndex) =>
+                                {
                                   return (
                                     <div
                                       key={rowIndex}
@@ -669,12 +678,14 @@ export default function DoctorListUser({ searchTerm })
                                           rowIndex * numberOfColumns,
                                           (rowIndex + 1) * numberOfColumns
                                         )
-                                        ?.map((data, index) => {
+                                        ?.map((data, index) =>
+                                        {
                                           selectedschedule =
                                             selectedschedule + 1;
                                           index = selectedschedule - 1;
                                           // console.log(selectedschedule)
-                                          if (data.isBooked == true) {
+                                          if (data.isBooked == true)
+                                          {
                                             return (
                                               <div
                                                 key={index}
@@ -690,7 +701,8 @@ export default function DoctorListUser({ searchTerm })
                                           } else if (
                                             selectedschedule - 1 ===
                                             currentIndex
-                                          ) {
+                                          )
+                                          {
                                             return (
                                               <div
                                                 key={index}
@@ -699,12 +711,14 @@ export default function DoctorListUser({ searchTerm })
                                                 {data.startTime}
                                               </div>
                                             );
-                                          } else {
+                                          } else
+                                          {
                                             return (
                                               <div
                                                 key={index}
                                                 className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                                onClick={() => {
+                                                onClick={() =>
+                                                {
                                                   handleDateClick(index);
                                                 }}
                                               >
@@ -819,8 +833,10 @@ export default function DoctorListUser({ searchTerm })
                         maxLength={1}
                         value={digit}
                         onChange={(e) => handleInputChange(e, index)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Backspace" && index > 0 && !digit) {
+                        onKeyDown={(e) =>
+                        {
+                          if (e.key === "Backspace" && index > 0 && !digit)
+                          {
                             otpInputs[index - 1].focus();
                           }
                         }}

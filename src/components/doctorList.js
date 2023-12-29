@@ -748,11 +748,6 @@ export default function DoctorList({ searchTerm })
                                   <FaAngleRight style={{ color: "black" }} />
                                 </button>
                               </div>
-<<<<<<< HEAD
-
-                              <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                                {[...Array(numberOfRows)].map((_, rowIndex) => {
-=======
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex]?.map((item, index) =>
                                 {
@@ -816,70 +811,76 @@ export default function DoctorList({ searchTerm })
                                 {values[currentIndex].map((item, index) => {
                                   const bgClass = item.isBooked ? "bg-blue-300" : "bg-gray-200"; // Using Tailwind classes for background colors
 
->>>>>>> 21f7ed7b32de4fa7ca8f064050ae262a6f1e758e
-                                  return (
-                                    <div
-                                      key={index}
-                                      className={`flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 ${bgClass}`}
-                                      disabled={item.isBooked}
-                                    >
+      return (
+        <div
+          key={index}
+          className={`flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 ${bgClass}`}
+          disabled={item.isBooked}
+        >
 <<<<<<< HEAD
-                                      {bookingslot
-                                        .slice(
-                                          rowIndex * numberOfColumns,
-                                          (rowIndex + 1) * numberOfColumns
-                                        )
-                                        ?.map((data, index) => {
-                                          selectedschedule =
-                                            selectedschedule + 1;
-                                          index = selectedschedule - 1;
-                                          // console.log(selectedschedule)
-                                          if (data.isBooked === true) {
-                                            return (
-                                              <div
-                                                key={index}
-                                                className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
-                                                disabled
-                                                style={{
-                                                  backgroundColor: "#89CFF0",
-                                                }}
-                                              >
-                                                {data.startTime}
-                                              </div>
-                                            );
-                                          } else if (
-                                            selectedschedule - 1 ===
-                                            currentIndex
-                                          ) {
-                                            return (
-                                              <div
-                                                key={index}
-                                                className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
-                                              >
-                                                {data.startTime}
-                                              </div>
-                                            );
-                                          } else {
-                                            return (
-                                              <div
-                                                key={index}
-                                                className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                                onClick={() => {
-                                                  handleDateClick(index);
-                                                }}
-                                              >
-                                                {data.startTime}
-                                              </div>
-                                            );
-                                          }
-                                        })}
+  {
+    bookingslot
+      .slice(
+        rowIndex * numberOfColumns,
+        (rowIndex + 1) * numberOfColumns
+      )
+    ?.map((data, index) =>
+    {
+      selectedschedule =
+        selectedschedule + 1;
+      index = selectedschedule - 1;
+      // console.log(selectedschedule)
+      if (data.isBooked === true)
+      {
+        return (
+          <div
+            key={index}
+            className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
+            disabled
+            style={{
+              backgroundColor: "#89CFF0",
+            }}
+          >
+            {data.startTime}
+          </div>
+        );
+      } else if (
+        selectedschedule - 1 ===
+        currentIndex
+      )
+      {
+        return (
+          <div
+            key={index}
+            className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
+          >
+            {data.startTime}
+          </div>
+        );
+      } else
+      {
+        return (
+          <div
+            key={index}
+            className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
+            onClick={() =>
+            {
+              handleDateClick(index);
+            }}
+          >
+            {data.startTime}
+          </div>
+        );
+      }
+    })
+  }
 =======
                                       {item.start}
 >>>>>>> 21f7ed7b32de4fa7ca8f064050ae262a6f1e758e
-                                    </div>
+                                    </div >
                                   );
-                                })}
-                                {/* {values[currentIndex].map((item, index) => {
+})}
+{/* {values[currentIndex].map((item, index) => {
                                   if (item.isBooked === true) {
                                     return (
                                       <div
