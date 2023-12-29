@@ -1042,9 +1042,9 @@ export default function PatientForm()
                 Process
               </button>
             </div>
-          </div>
-        </div>
-      </div>
+          </div >
+        </div >
+      </div >
     </>
   );
 }

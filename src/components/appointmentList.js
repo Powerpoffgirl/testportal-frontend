@@ -266,9 +266,9 @@ export default function AppointmentList({ searchTerm })
   console.log("PATIENT LISTS", patientsList);
   console.log("APPOINTMENT LIST", appointmentList);
 
-  updateUser(userDetailsName);
-  updateUserEmail(userDetailsEmail);
-  updateUserimage(userDetailsPic);
+  // updateUser(userDetailsName);
+  // updateUserEmail(userDetailsEmail);
+  // updateUserimage(userDetailsPic);
 
 
   return (
