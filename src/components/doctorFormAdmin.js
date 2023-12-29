@@ -25,12 +25,16 @@ export default function DoctorFormAdmin() {
 
   const [doctorDetails, setDoctorDetails] = useState({
     name: "",
+    registrationNo: "",
     email: "",
     contactNumber: "",
+    consultationFee: "",
+    about: "",
     workingDays: [],
     workingHours: {
       workHourFrom: "",
       workHourTo: "",
+      interval: "",
     },
     totalExperience: "",
     speciality: [],
@@ -272,7 +276,11 @@ export default function DoctorFormAdmin() {
     //   }));
     // }
 
-    if (name === "workHourFrom" || name === "workHourTo") {
+    if (
+      name === "workHourFrom" ||
+      name === "workHourTo" ||
+      name === "interval"
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -397,28 +405,30 @@ export default function DoctorFormAdmin() {
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
           <div className="mx-auto my-2">
-            <div className=" " >
-              <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
+            <div className=" ">
+              <div
+                className=" border w-36 mx-auto rounded-full"
+                style={{ backgroundColor: "#B1DAED" }}
+              >
                 {doctorImage || doctorDetails?.doctorPic ? (
                   <img
                     src={doctorImage || doctorDetails?.doctorPic}
                     alt="Avatar"
                     style={{
                       borderRadius: "50%",
-                      width: '130px',
-                      height: '130px'
+                      width: "130px",
+                      height: "130px",
                     }}
                   />
                 ) : (
                   <PermIdentityOutlinedIcon
-                    style={{ width: "auto", height: 'auto', color: 'white' }}
+                    style={{ width: "auto", height: "auto", color: "white" }}
                   />
                 )}
               </div>
             </div>
 
             <div className="flex flex-row mt-5 mb-3">
-
               <p className="block text-black text-lg font-semibold ">
                 Edit Profile Picture
                 <input
@@ -439,7 +449,6 @@ export default function DoctorFormAdmin() {
                 onClick={handleClick}
                 style={{
                   cursor: "pointer",
-
                 }}
               >
                 <FaAngleDown />
@@ -490,13 +499,14 @@ export default function DoctorFormAdmin() {
                   </MenuItem>
                 </Menu>
               </div>
-
             </div>
           </div>
           <hr />
 
           <div className="mt-4">
-            <p className="block text-black text-lg font-semibold" >Working Days</p>
+            <p className="block text-black text-lg font-semibold">
+              Working Days
+            </p>
             <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
               <Select
                 className="w-full border-none h-10"
@@ -505,7 +515,7 @@ export default function DoctorFormAdmin() {
                 name="workingDays"
                 onChange={handleChange1}
                 placeholder="Mon-Fri"
-              // Add other props as needed
+                // Add other props as needed
               >
                 {Daysdropdown.map((option) => (
                   <Select.Option key={option.value} value={option.value}>
@@ -514,11 +524,12 @@ export default function DoctorFormAdmin() {
                 ))}
               </Select>
             </div>
-
           </div>
 
           <div className="mt-3">
-            <p className="block text-black text-lg font-semibold">Working Hours</p>
+            <p className="block text-black text-lg font-semibold">
+              Working Hours
+            </p>
             <div className="flex flex-row-ml-2 mr-2">
               <div className="flex ">
                 <select
@@ -533,9 +544,7 @@ export default function DoctorFormAdmin() {
                   ))}
                 </select>
               </div>
-              <div className=" mt-2 text-lg font-medium">
-                to
-              </div>
+              <div className=" mt-2 text-lg font-medium">to</div>
               <div className="flex">
                 <select
                   className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -571,7 +580,7 @@ export default function DoctorFormAdmin() {
             )}
           </div>
 
-          <div className="mt-3" >
+          <div className="mt-3">
             <label
               for="specialist"
               className="block text-black text-lg font-semibold"
@@ -607,75 +616,126 @@ export default function DoctorFormAdmin() {
               onChange={handleChange}
               className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {errors.degree && (
-              <p className="text-red-500">{errors.degree}</p>
-            )}
+            {errors.degree && <p className="text-red-500">{errors.degree}</p>}
           </div>
-
-
-
         </div>
 
         {/* ----------------------------------right---------------------------------- */}
         <div className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3">
-          <p className="text-3xl " >Personal Information</p>
+          <p className="text-3xl ">Personal Information</p>
           <hr className="border my-2 " />
           {/* -------name------- */}
-          <div className="mt-3">
-            <label
-              for="name"
-              className="block text-black text-lg font-semibold"
-            >
-              Name
-            </label>
-            <input
-              type="text"
-              placeholder="Dr. Sneha Ahuja"
-              id="name"
-              name="name"
-              onChange={handleChange}
-              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-            />
-            {errors.name && <p className="text-red-500">{errors.name}</p>}
+          <div className="flex flex-row">
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="name"
+                className="block text-black text-lg font-semibold"
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                placeholder="Dr. Sneha Ahuja"
+                id="name"
+                name="name"
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.name && <p className="text-red-500">{errors.name}</p>}
+            </div>
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="name"
+                className="block text-black text-lg font-semibold"
+              >
+                Registration Number
+              </label>
+              <input
+                type="number"
+                // placeholder="Dr. Sneha Ahuja"
+                id="registrationNo"
+                name="registrationNo"
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
+            </div>
           </div>
           {/* ------------email------------ */}
-          <div className="mt-3">
-            <label
-              for="email"
-              className="block text-black text-lg font-semibold"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="snehaahuja1234@gmail.com"
-              onChange={handleChange}
-              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-            />
-            {errors.email && <p className="text-red-500">{errors.email}</p>}
+          <div className="flex flex-row">
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="email"
+                className="block text-black text-lg font-semibold"
+              >
+                Email
+              </label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                placeholder="snehaahuja1234@gmail.com"
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.name && <p className="text-red-500">{errors.name}</p>}
+            </div>
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="contact"
+                className="block text-black text-lg font-semibold"
+              >
+                Contact Number
+              </label>
+              <input
+                type="number"
+                placeholder="+91-8603678862"
+                id="contactNumber"
+                name="contactNumber"
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
+            </div>
           </div>
-          {/* -----------contact----------- */}
-          <div className="mt-3">
-            <label
-              for="contact"
-              className="block text-black text-lg font-semibold"
-            >
-              Contact Number
-            </label>
-            <input
-              type="number"
-              placeholder="+91-8603678862"
-              id="contactNumber"
-              name="contactNumber"
-              onChange={handleChange}
-              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-            />
-            {errors.contactNumber && (
-              <p className="text-red-500">{errors.contactNumber}</p>
-            )}
+
+          <div className="flex flex-row">
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="interval"
+                className="block text-black text-lg font-semibold"
+              >
+                Interval
+              </label>
+              <input
+                type="text"
+                id="interval"
+                name="interval"
+                // placeholder="snehaahuja1234@gmail.com"
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.name && <p className="text-red-500">{errors.name}</p>}
+            </div>
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="consultationFee"
+                className="block text-black text-lg font-semibold"
+              >
+                Consultation fees
+              </label>
+              <input
+                type="number"
+                // placeholder="+91-8603678862"
+                id="consultationFee"
+                name="consultationFee"
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
+            </div>
           </div>
+
           {/* -----------address----------- */}
           <div className="mt-3">
             <label
@@ -686,11 +746,8 @@ export default function DoctorFormAdmin() {
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
-
                 <div className="flex flex-row">
-
                   <div className="px-2 w-full sm:w-1/3 mt-3">
-
                     <input
                       type="text"
                       placeholder="House No."
@@ -702,7 +759,6 @@ export default function DoctorFormAdmin() {
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
-
                     <input
                       type="text"
                       id="floor"
@@ -713,7 +769,6 @@ export default function DoctorFormAdmin() {
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
-
                     <input
                       type="text"
                       id="block"
@@ -727,7 +782,6 @@ export default function DoctorFormAdmin() {
                     )}
                   </div>
                   <div className="px-2 w-full sm:w-1/2 mt-3">
-
                     <input
                       type="text"
                       id="pinCode"
@@ -743,7 +797,6 @@ export default function DoctorFormAdmin() {
                 </div>
 
                 <div className="px-2 w-full mt-3 ">
-
                   <input
                     type="text"
                     id="area"
@@ -752,14 +805,11 @@ export default function DoctorFormAdmin() {
                     placeholder="Area/Landmark"
                     className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
-                  {errors.area && (
-                    <p className="text-red-500">{errors.area}</p>
-                  )}
+                  {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
 
                 <div className="flex flex-row">
                   <div className="px-2 w-full sm:w-1/2 mt-3">
-
                     <input
                       type="text"
                       id="district"
@@ -774,7 +824,6 @@ export default function DoctorFormAdmin() {
                   </div>
 
                   <div className="px-2 w-full sm:w-1/2 mt-3">
-
                     <input
                       type="text"
                       id="state"
@@ -787,26 +836,42 @@ export default function DoctorFormAdmin() {
                       <p className="text-red-500">{errors.state}</p>
                     )}
                   </div>
-
                 </div>
-
               </div>
             </div>
           </div>
+
+          <div>
+            <label
+              htmlFor="about"
+              className="block text-black text-lg font-semibold"
+            >
+              About
+            </label>
+            <input
+              type="text"
+              id="about"
+              name="about"
+              onChange={handleChange}
+              className="block w-full h-24 placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.username && (
+              <p className="text-red-500">{errors.username}</p>
+            )}
+          </div>
           <div className="flex flex-row-reverse mt-5 my-2">
-            <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
-              backgroundColor: '#89CFF0'
-            }} onClick={handleRegister}>
+            <button
+              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              style={{
+                backgroundColor: "#89CFF0",
+              }}
+              onClick={handleRegister}
+            >
               Continue...
             </button>
           </div>
         </div>
-
-
-
-      </div >
-
-
+      </div>
 
       {/* <div className="flex flex-row">
         <div className=" w-full">

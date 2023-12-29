@@ -1,14 +1,24 @@
-import React, { useEffect, useState } from "react";
-import Header from "./header";
+import React, { useEffect, useState, useRef } from "react";
+import DoctorSidebar from "./doctorSidebar";
 import { useMediaQuery } from "react-responsive";
-import AdminSidebar from "./adminSidebar";
 import { Modal } from "react-responsive-modal";
+import UserSidebarWithoutLogin from "./UserSidebarWithoutLogin";
+import PatientHeader from "./patientHeader";
 import { useNavigate } from "react-router-dom";
 import one from "../assets/one.svg";
 import two from "../assets/two.svg";
 import three from "../assets/three.svg";
+import home from "../assets/home.svg";
+import education from "../assets/education.svg";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { ToastContainer, toast } from "react-toastify";
+import { FaAngleRight } from "react-icons/fa";
+import { FaAngleLeft } from "react-icons/fa";
+import phonelogo from "../assets/phone.svg";
+import close_button from "../assets/close_button.svg";
+import delete_button from "../assets/delete_button.svg";
+import edit_button from "../assets/edit_button.svg";
+import CloseIcon from "@mui/icons-material/Close";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -33,63 +43,56 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 export default function DoctorListAdmin({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [doctorsList, setDoctorsList] = useState([]);
-  const [selectedDoctor, setselectedDoctor] = useState();
-  const [isEditDoctorModalVisible, setEditDoctorModalVisible] = useState(false);
-  const [editDoctorId, setEditDoctorId] = useState(null);
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const [selectedDoctor, setselectedDoctor] = useState("");
   const [open, setOpen] = useState(false);
-  const navigate = useNavigate();
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
   const [filteredDoctors, setFilteredDoctors] = useState([doctorsList]);
-
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const navigate = useNavigate();
+  const [seconds, setSeconds] = useState(90);
+  const [resendClicked, setResendClicked] = useState(false);
+  const [firstTime, setFirstTime] = useState(true);
 
   const categories = [
-    { name: "All", value: "1" },
-    { name: "Cardiologist", value: "2" },
-    { name: "Therapist", value: "3" },
-    { name: "Pediatrician", value: "4" },
-    { name: "Neurologist", value: "5" },
-    { name: "Physiotherapist", value: "6" },
+    "All",
+    "General Medicine",
+    "Cardiology",
+    "Dermatology",
+    "Endocrinology",
+    "Urology",
   ];
 
   useEffect(() => {
-    const fetchDoctors = async () => {
+    localStorage.clear();
+  }, []);
+
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          console.error("No token found in local storage");
-          return;
-        }
-        const response = await fetch(`${baseUrl}/api/v1/admin/list_doctors`, {
+        const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "x-auth-token": token, // Replace with your actual token from the previous session
           },
         });
 
         const data = await response.json();
-
-        console.log("DATA from response", data?.data);
+        console.log("DATA from response", data);
         const verifiedDoctors = data.data.filter(
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-
-        if (data.message === "Permission denied") {
-          toast.error("Permission Denied");
-        }
       } catch (error) {
-        toast.error("Permission denied!!");
         console.error("There was an error verifying the OTP:", error);
       }
     };
-    fetchDoctors();
+    fetchDoctorDetails();
   }, [searchTerm]);
 
   useEffect(() => {
     // Check if there is a searchTerm and the doctorsList is not empty.
+
     if (doctorsList.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedDoctors = doctorsList.filter(
@@ -104,62 +107,243 @@ export default function DoctorListAdmin({ searchTerm }) {
     }
   }, [doctorsList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleEditDoctor = (doctorId) => {
+  const handleQRCode = (doctorId) => {
+    console.log("HELLO");
     localStorage.setItem("doctorId", doctorId);
-    navigate("/editdoctorformadmin");
-    console.log("Edit function");
+    const doctor = doctorsList?.find((doc) => doc._id === doctorId);
+    setselectedDoctor(doctor);
+    console.log(selectedDoctor);
+    // console.log(selectedDoctor.degree.split(','))
+
+    onOpenModal();
   };
 
-  const handleDeleteDoctor = async (doctorId) => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found in local storage");
-        return;
+  const handleBookAppointment = async () => {
+    console.log(selectedDoctor?.slots[currentIndex]);
+    const bookslot = {
+      date: selectedDoctor?.slots[currentIndex].date.split("T")[0],
+      time: selectedDoctor?.slots[currentIndex].startTime,
+    };
+    console.log("selected doctor", selectedDoctor?._id);
+    const response = await fetch(
+      `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookslot),
       }
+    );
+
+    const data = await response.json();
+
+    console.log("slot booked", data);
+    localStorage.setItem(
+      "appointment_date",
+      data?.doctorSlot?.date?.split("T")[0]
+    );
+    localStorage.setItem("appointment_time", data?.doctorSlot?.startTime);
+
+    showappointment();
+    showSlot();
+    if (data.success === true) {
+      toast.success("Slot booked successfully", {
+        // position: "top-center",
+      });
+    } else {
+      toast.error("Please book another slot", {
+        // position: "top-center",
+      });
+    }
+  };
+
+  const handleFilterDocotors = (item) => {
+    console.log("ITEM NAME IS================>", item);
+    if (item.toLowerCase() === "all") {
+      setFilteredDoctors(doctorsList);
+    } else {
+      const filteredDoctors = doctorsList.filter(
+        (doc) => doc.speciality === item
+      );
+      setFilteredDoctors(filteredDoctors);
+    }
+  };
+  const [bookingslottoggle, setbookingslottoggle] = useState(false);
+  const [appointment, setappointment] = useState(false);
+  const [otppage, setotppage] = useState(false);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [contactNumber, setcontactNumber] = useState(null);
+  const [mobileNumberError, setmobileNumberError] = useState("");
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+  const MAX_LENGTH = 6;
+  const otpInputs = [];
+
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+    console.log(value);
+    if (value.length != 10) {
+      setmobileNumberError("Please enter a valid number");
+    }
+    if (value.length == 10) {
+      setmobileNumberError("");
+    }
+    setcontactNumber(value);
+    console.log(contactNumber);
+  };
+
+  const showSlot = () => {
+    setbookingslottoggle(!bookingslottoggle);
+  };
+
+  const showappointment = () => {
+    setappointment(!appointment);
+  };
+
+  const handleOtp = async () => {
+    const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ contactNumber: contactNumber }),
+    });
+    const data = await response.json();
+    console.log("RESPONSE------", data);
+    console.log("user id", data?.data?._id);
+    localStorage.setItem("userId", data?.data?._id);
+    localStorage.setItem("patientId", data?.patient?._id);
+
+    // localStorage.setItem("token", data?.user?.token)
+    setotppage(true);
+  };
+  const handleInputChange = (e, index) => {
+    const value = e.target.value;
+
+    if (isNaN(value)) {
+      return; // Allow only numeric input
+    }
+
+    otp[index] = value;
+
+    if (index < MAX_LENGTH - 1 && value) {
+      otpInputs[index + 1].focus();
+    }
+
+    setOtp([...otp]);
+  };
+  const verifyOTP = async () => {
+    try {
+      const userId = localStorage.getItem("userId");
+
+      const otpString = otp.join("");
+
       const response = await fetch(
-        `${baseUrl}/api/v1/admin/delete_doctor/${doctorId}`,
+        `${baseUrl}/api/v1/user/verify_otp/${userId}`,
         {
-          method: "DELETE", // Use DELETE method
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "x-auth-token": token, // Use the stored token
           },
+          body: JSON.stringify({ otp: otpString }),
         }
       );
 
       const data = await response.json();
+      if (data.success === true) {
+        console.log("DATA from response", data);
 
-      if (data.message === "Permission denied") {
-        toast.error("Permission Denied");
-      }
-
-      if (response.ok) {
-        console.log("Doctor deleted successfully", data);
-        // Update the list in the UI by removing the deleted doctor
-        setDoctorsList((prevDoctorsList) =>
-          prevDoctorsList.filter((doctor) => doctor._id !== doctorId)
-        );
-      } else {
-        console.error("Failed to delete the doctor", data?.message);
+        localStorage.setItem("token", data?.data?.token);
+        navigate("/edituserform");
       }
     } catch (error) {
-      console.error("There was an error deleting the doctor:", error);
+      console.error("There was an error verifying the OTP:", error);
     }
   };
 
-  const findSelectedDoctor = async (doctorId) => {
-    console.log("DOCTOR ID", doctorId);
-    // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
-    const doctor = doctorsList?.find((doc) => doc._id === doctorId);
-    setselectedDoctor(doctor); // This will return the doctor object if found, otherwise undefined
-    onOpenModal();
+  const bookingslot = selectedDoctor.slots;
+
+  const numberOfColumns = 4;
+  const numberOfRows = Math.ceil(bookingslot?.length / numberOfColumns);
+
+  function getYearMonthDay(dateString) {
+    // Create a new Date object using the provided date string
+    const date = new Date(dateString);
+
+    // Get the year, month, day, and day of the week from the date
+    const year = date.getFullYear(); // Retrieves the year as a four-digit number
+    const month = date.getMonth() + 1; // getMonth() returns 0-11, so adding 1 for human-readable format
+    const day = date.getDate(); // Retrieves the day of the month
+    const dayOfWeek = date.getDay(); // Retrieves the day of the week (0-6)
+    // console.log(month)
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const dayName = dayNames[dayOfWeek];
+
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const monthName = monthNames[month - 1];
+
+    return { year, monthName, day, dayName };
+  }
+
+  const handleDateClick = (index) => {
+    setCurrentIndex(index);
   };
 
-  console.log("SEARCH TERM IN PARENT COMPONENT", searchTerm);
+  const goToNext = () => {
+    const isLastItem = currentIndex === bookingslot.length - 1;
+    const nextIndex = isLastItem ? 0 : currentIndex + 1;
+    setCurrentIndex(nextIndex);
+    console.log(currentIndex);
+  };
+
+  const goToPrev = () => {
+    const isFirstItem = currentIndex === 0;
+    const prevIndex = isFirstItem ? bookingslot.length - 1 : currentIndex - 1;
+    setCurrentIndex(prevIndex);
+    console.log(currentIndex);
+  };
+
+  var selectedschedule = 0;
+  // console.log(selectedDoctor?.slots[currentIndex])
+
+  useEffect(() => {
+    if (resendClicked || firstTime) {
+      const intervalId = setInterval(() => {
+        if (seconds > 0) {
+          setSeconds((prevSeconds) => prevSeconds - 1);
+        } else {
+          setFirstTime(false);
+          setSeconds(90);
+          setResendClicked(false);
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [seconds, resendClicked, firstTime]);
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60);
+    const remainingSeconds = time % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+  };
 
   return (
     <>
+      {/* ---------------------------------------------modal--------------------------------------------- */}
       <Modal
         open={open}
         onClose={onCloseModal}
@@ -167,257 +351,530 @@ export default function DoctorListAdmin({ searchTerm }) {
         doctor={selectedDoctor}
         styles={{
           modal: {
-            // Set your custom width here (e.g., '70%')
-            width: isTab ? "80%" : "70%",
-            backgroundColor: "#89CFF0",
+            width: isTab ? "94%" : "80%",
+            backgroundColor: "#E3F6FF",
             alignContent: "center",
+          },
+          closeButton: {
+            display: "none",
           },
         }}
       >
-        <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
-          <div className="flex flex-row w-[100%] justify-between">
-            <span className="flex flex-col justify-start">
-              <text
-                style={{
-                  fontWeight: 400,
-                  fontSize: !isTab ? "20px" : "16px",
-                  fontFamily: "Lato, sans-serif",
-                  color: "white",
-                }}
-              >
-                {selectedDoctor?.workingDays?.map((day) => (
-                  <span key={day}>{day.slice(0, 3)} </span>
-                ))}
-              </text>
-              <text
-                style={{
-                  fontWeight: 400,
-                  fontSize: !isTab ? "20px" : "16px",
-                  fontFamily: "Lato, sans-serif",
-                  color: "white",
-                }}
-              >
-                {selectedDoctor?.workingHours?.workHourFrom}:00 To{" "}
-                {selectedDoctor?.workingHours?.workHourTo}:00
-              </text>
-            </span>
-
-            <img
-              src={selectedDoctor?.doctorPic}
-              alt="Avatar"
-              style={{
-                borderRadius: "50%",
-                height: isTab ? "40px" : "123px",
-                width: isTab ? "40px" : "123px",
-                marginRight: "70px",
-              }}
-            ></img>
-
-            <span className="flex flex-col justify-start">
-              <text style={{ color: "#89CFF0" }}>Mon-Fri</text>
-              <text style={{ color: "#89CFF0" }}>10:00am-6:00pm</text>
-            </span>
+        <div class="flex flex-col ">
+          <div class="flex flex-row-reverse md:-mb-14  -mb-14 z-50">
+            <button onClick={onCloseModal}>
+              <img src={close_button} class="w-8 mb-1"></img>
+            </button>
+            <button>
+              <img src={delete_button} class="w-8"></img>
+            </button>
+            <button>
+              <img src={edit_button} class="w-8"></img>
+            </button>
           </div>
-          <text
-            className="ml-4 text-center mt-4"
-            style={{
-              fontSize: isTab ? "18px" : "26px",
-              fontWeight: 600,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-            }}
-          >
-            Dr. {selectedDoctor?.name}
-          </text>
-          <text
-            className="ml-4 text-center mt-2"
-            style={{
-              fontSize: isTab ? "14px" : "20px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-            }}
-          >
-            {selectedDoctor?.contactNumber}
-          </text>
+          <div className="flex md:flex-row p-2 pt-5 flex-col">
+            {/* ---------------------------left part--------------------------- */}
+            <div className="flex flex-col px-1 md:w-1/2">
+              <div className="">
+                {selectedDoctor?.doctorPic ? (
+                  <img
+                    src={selectedDoctor?.doctorPic}
+                    alt="doctor image"
+                    className=" h-80 w-full"
+                  ></img>
+                ) : (
+                  <AccountCircleIcon
+                    style={{ height: "100%", width: "100%", color: "#B1DAED" }}
+                  />
+                )}
+              </div>
+              <div className="flex flex-col  py-4 px-5 bg-white mt-1">
+                <p className="text-xs text-black font-medium mb-2">
+                  Registration No. :- 33256
+                </p>
 
-          <text
-            className="ml-4 text-center mt-2"
-            style={{
-              fontSize: isTab ? "12px" : "20px",
-              fontWeight: 400,
-              lineHeight: "24px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-              marginBottom: "2%",
-            }}
-          >
-            {selectedDoctor?.email}
-          </text>
-          <text
-            className="ml-4 text-center mt-2"
-            style={{
-              fontSize: isTab ? "16px" : "24px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "white",
-            }}
-          >
-            {selectedDoctor?.speciality}
-          </text>
-          <text
-            className="ml-4 text-center mt-2"
-            style={{
-              fontSize: isTab ? "14px" : "22px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "white",
-            }}
-          >
-            {selectedDoctor?.totalExperience} Years Experience
-          </text>
-          <text
-            className="ml-4 text-center mt-2"
-            style={{
-              fontSize: isTab ? "14px" : "20px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "white",
-            }}
-          >
-            {selectedDoctor?.degree}
-          </text>
-          <text
-            className="ml-4 text-center mt-2"
-            style={{
-              fontSize: isTab ? "14px" : "20px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-            }}
-          >
-            {selectedDoctor?.address?.houseNo +
-              " " +
-              selectedDoctor?.address?.block +
-              " " +
-              selectedDoctor?.address?.area +
-              ", " +
-              selectedDoctor?.address?.district +
-              ", " +
-              selectedDoctor?.address?.state +
-              " " +
-              selectedDoctor?.address?.pinCode}
-          </text>
+                <p className="text-black text-3xl font-medium mb-2">
+                  Dr. {selectedDoctor?.name}
+                </p>
+                <div className="flex flex-row">
+                  <div>
+                    <img src={education} className="w-5 py-2 "></img>
+                  </div>
+                  <div className="ml-1">
+                    {selectedDoctor?.degree?.split(",")?.map((item) => (
+                      <p className="text-gray-600 text-xl mb-1">{item}</p>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-600 text-xl mb-2">
+                  {selectedDoctor?.totalExperience} Years Experience
+                </p>
 
-          <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
-            <span
-              style={{
-                width: "25px",
-                height: "25px",
-              }}
-              onClick={() => handleEditDoctor(selectedDoctor?._id)}
-              dangerouslySetInnerHTML={{ __html: svg4 }}
-            ></span>
-            <span
-              style={{
-                width: "25px",
-                height: "25px",
-              }}
-              onClick={() => handleDeleteDoctor(selectedDoctor?._id)}
-              dangerouslySetInnerHTML={{ __html: svg5 }}
-            ></span>
-          </div>
-          <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
-            <span className="flex">
-              <span
-                className="mr-8"
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg1 }}
-              ></span>
-              <span
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg2 }}
-              ></span>
-            </span>
+                <div className="flex flex-row space-x-2">
+                  <div className="mt-2">
+                    <img
+                      src={home}
+                      style={{ minWidth: "15px", maxWidth: "16px" }}
+                    ></img>
+                  </div>
+                  <div className="">
+                    <p className="text-gray-600 text-xl ">
+                      {selectedDoctor?.address?.houseNo +
+                        " " +
+                        selectedDoctor?.address?.block +
+                        " " +
+                        selectedDoctor?.address?.area +
+                        ", " +
+                        selectedDoctor?.address?.district +
+                        ", " +
+                        selectedDoctor?.address?.state +
+                        " " +
+                        selectedDoctor?.address?.pinCode}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {/* --------------------------------right part-------------------------------- */}
+            {!otppage && (
+              <div className="flex flex-col  md:w-1/2 px-2">
+                <div className=" py-1 mb-2">
+                  <p className="text-lg font-medium text-black ">SPECIALITY</p>
+                  <div className="flex flex-wrap ">
+                    {selectedDoctor?.speciality?.map((item, index) => {
+                      return (
+                        <p
+                          key={index}
+                          className="bg-white rounded-xl py-1 px-4 mx-2 my-1 "
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className=" py-1 mb-2">
+                  <p className="text-lg font-medium text-black">
+                    About The Doctor
+                  </p>
+                  <p className=" italic text-gray-600">
+                    Lorem ipsum dolor sit amet consectetur. Vitae dui elit vel
+                    justo facilisi praesent in et donec. Rutrum lorem consequat
+                    tempus fermentum egestas. At gravida enim proin blandit. Non
+                    et arcu arcu mauris augue massa.
+                  </p>
+                </div>
 
-            <span className="flex">
-              <span
-                className="mr-8"
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg3 }}
-              ></span>
-              <text
-                style={{
-                  fontWeight: 400,
-                  fontSize: isTab ? "14px" : "20px",
-                  fontFamily: "Lato, sans-serif",
-                  color: "white",
-                }}
-              >
-                (4.5 Ratings)
-              </text>
-            </span>
+                <div className=" py-1 mb-2">
+                  <p className="text-lg font-medium text-black">Timing</p>
+                  <div className="flex flex-row  place-content-between">
+                    <div className="flex flex-col ">
+                      <p className="text-gray-600 font-semibold">
+                        Mon - Thur :
+                      </p>
+                      <p className="text-gray-600">10:00 AM - 3:00 PM</p>
+                      <p className="text-gray-600">3:00 AM - 7:00 PM</p>
+                    </div>
+                    <div className="flex flex-col">
+                      <p className="text-gray-600 font-semibold">
+                        Mon - Thur :
+                      </p>
+                      <p className="text-gray-600">10:00 AM - 3:00 PM</p>
+                      <p className="text-gray-600">3:00 AM - 7:00 PM</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className=" py-1 mb-2">
+                  <p className="text-lg font-medium text-black">
+                    Select service
+                  </p>
+
+                  <div className="flex flex-col mb-2">
+                    <div className="flex flex-col  bg-white p-1 px-3">
+                      <p className="flex place-content-between my-1">
+                        <span className="font-medium px-2">Consultation</span>{" "}
+                        <span className="font-bold px-2">Rs1000</span>
+                      </p>
+                      {!bookingslottoggle && !appointment && (
+                        <div>
+                          <p className="text-xs text-gray-500 px-2 my-1">
+                            Slot available for Tommorrow{" "}
+                          </p>
+                          <p className="flex flex-wrap space-x-1  my-1">
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                              3:00 AM
+                            </p>
+                          </p>
+                        </div>
+                      )}
+                      {appointment && (
+                        <div class="mx-2">
+                          <p class="font-medium text-gray-500 ">
+                            Date:{" "}
+                            {
+                              selectedDoctor?.slots[currentIndex].date.split(
+                                "T"
+                              )[0]
+                            }
+                          </p>
+                          <p class="font-medium text-gray-500 mb-3">
+                            Time:
+                            {selectedDoctor?.slots[currentIndex].startTime}
+                          </p>
+                          <hr />
+                          <p class="mt-2">Mobile Number</p>
+                          <div class="flex flex-row">
+                            <img src={phonelogo} class="pl-1 pr-3"></img>
+                            <input
+                              class=" border my-1 placeholder-gray-500 p-1 pl-2"
+                              type="tel"
+                              id="phone-number"
+                              name="contactNumber"
+                              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                              required
+                              value={contactNumber}
+                              onChange={handleChange}
+                            />
+                          </div>
+                          <p class=" text-red-500 ">{mobileNumberError}</p>
+                          <div class="flex flex-row-reverse">
+                            {mobileNumberError.length === 0 ? (
+                              <button
+                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                onClick={handleOtp}
+                                style={{ backgroundColor: " #89CFF0" }}
+                              >
+                                Send OTP
+                              </button>
+                            ) : (
+                              <button
+                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                disabled
+                                onClick={handleOtp}
+                                style={{ backgroundColor: " #89CFF0" }}
+                              >
+                                Send OTP
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      )}
+                      <div>
+                        {bookingslottoggle && (
+                          <div className="flex flex-col">
+                            <div className=" flex flex-col text-center space-y-2">
+                              <div class="flex flex-row border-2">
+                                <button
+                                  className="text-white text-xs rounded-3xl  "
+                                  onClick={goToPrev}
+                                >
+                                  <FaAngleLeft style={{ color: "black" }} />
+                                </button>
+                                <div className="flex flex-row overflow-x-auto mx-2 ">
+                                  {bookingslot?.map((data, index) => {
+                                    console.log(data);
+                                    const { year, monthName, day, dayName } =
+                                      getYearMonthDay(data.date);
+                                    // console.log(year, monthName, day, dayName)
+                                    if (data.isBooked == true) {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2"
+                                          disabled
+                                        >
+                                          <p>{monthName}</p>
+                                          <p
+                                            className=" p-2 border-2 rounded-lg "
+                                            style={{
+                                              backgroundColor: "#89CFF0",
+                                            }}
+                                          >
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    } else if (index == currentIndex) {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2"
+                                        >
+                                          <p>{monthName}</p>
+                                          <p className=" p-2 border-2 rounded-lg bg-blue-100">
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    } else {
+                                      return (
+                                        <div
+                                          key={index}
+                                          className="flex flex-col px-2 hover:cursor-pointer"
+                                          onClick={() => {
+                                            handleDateClick(index);
+                                          }}
+                                        >
+                                          <p>{monthName}</p>
+                                          <p className=" p-2 border-2 rounded-lg bg-gray-200">
+                                            {day}
+                                          </p>
+                                          <p>{dayName}</p>
+                                        </div>
+                                      );
+                                    }
+                                  })}
+                                </div>
+                                <button
+                                  className="text-white text-xs rounded-3xl"
+                                  onClick={goToNext}
+                                >
+                                  <FaAngleRight style={{ color: "black" }} />
+                                </button>
+                              </div>
+
+                              <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
+                                {[...Array(numberOfRows)].map((_, rowIndex) => {
+                                  return (
+                                    <div
+                                      key={rowIndex}
+                                      className="flex space-x-2"
+                                    >
+                                      {bookingslot
+                                        .slice(
+                                          rowIndex * numberOfColumns,
+                                          (rowIndex + 1) * numberOfColumns
+                                        )
+                                        ?.map((data, index) => {
+                                          selectedschedule =
+                                            selectedschedule + 1;
+                                          index = selectedschedule - 1;
+                                          // console.log(selectedschedule)
+                                          if (data.isBooked === true) {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
+                                                disabled
+                                                style={{
+                                                  backgroundColor: "#89CFF0",
+                                                }}
+                                              >
+                                                {data.startTime}
+                                              </div>
+                                            );
+                                          } else if (
+                                            selectedschedule - 1 ===
+                                            currentIndex
+                                          ) {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
+                                              >
+                                                {data.startTime}
+                                              </div>
+                                            );
+                                          } else {
+                                            return (
+                                              <div
+                                                key={index}
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
+                                                onClick={() => {
+                                                  handleDateClick(index);
+                                                }}
+                                              >
+                                                {data.startTime}
+                                              </div>
+                                            );
+                                          }
+                                        })}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex flex-row-reverse my-1">
+                        {!bookingslottoggle && !appointment && (
+                          <button
+                            className="text-white text-xs rounded-3xl px-3 py-1 "
+                            onClick={() => {
+                              showSlot();
+                            }}
+                            style={{ backgroundColor: " #89CFF0" }}
+                          >
+                            Book Slots
+                          </button>
+                        )}
+                        {/* {bookingslottoggle && !appointment && (
+                          <div class="flex mx-auto space-x-4 mt-3">
+                            <button
+                              className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
+                              onClick={handleBookAppointment}
+                              style={{ backgroundColor: " #89CFF0" }}
+                            >
+                              Book Appointment
+                            </button>
+                            <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
+                          Go Back
+                        </button>
+                          </div>
+                        )} */}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+            {/* {otppage && (
+              <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
+                <p className="text-3xl ">Personal Information</p>
+                <hr className="border my-2 " />
+                ------------mobile Number------------
+                <div className="mt-3 flex flex-row">
+                  <p className="block text-black text-base font-semibold">
+                    Mobile Number :{contactNumber}
+                  </p>
+                </div>
+                -----------contact-----------
+                <div className="mt-3 flex flex-row">
+                  <p className="block text-black text-base font-semibold">
+                    Date :{" "}
+                    {selectedDoctor?.slots[currentIndex]?.date?.split("T")[0]}
+                  </p>
+                </div>
+                -----------address-----------
+                <div className="mt-3 flex flex-row">
+                  <p className="block text-black text-base font-semibold">
+                    Time :{selectedDoctor?.slots[currentIndex]?.startTime}
+                  </p>
+                  <p></p>
+                </div>
+                <hr class=" mt-3" />
+
+                ----------------------------------------otp verification section----------------------------------------
+                <div class="flex flex-col">
+                  <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
+                  <div
+                    class="bg-gray-300 flex flex-row rounded-lg"
+                    style={{ maxWidth: "11rem" }}
+                  >
+                    <img src={phonelogo} class="pl-5 pr-1"></img>
+                    <input
+                      className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
+                      type="number"
+                      id="mobileNo"
+                      name="mobileNo"
+                      value={contactNumber}
+                      style={{
+                        border: "",
+                        height: "45px",
+                        paddingLeft: "1.5%",
+                        maxWidth: "8rem",
+                      }}
+                    />
+                  </div>
+
+                  <div
+                    className="flex w-full my-3"
+                    style={{
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {otp.map((digit, index) => (
+                      <input
+                        key={index}
+                        ref={(input) => (otpInputs[index] = input)}
+                        type="text"
+                        className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleInputChange(e, index)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Backspace" && index > 0 && !digit) {
+                            otpInputs[index - 1].focus();
+                          }
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  <p
+                    style={{
+                      fontWeight: 400,
+                      fontSize: "16px",
+                      display: "flex",
+                      marginLeft: "40%",
+                    }}
+                  >
+                    <p
+                      className="timer"
+                      style={{ color: "#666", cursor: "pointer" }}
+                    >
+                      <text className="mx-2" style={{ color: "#000000" }}>
+                        {formatTime(seconds)} sec
+                      </text>{" "}
+                    </p>{" "}
+                  </p>
+                  <p class="text-gray-600">
+                    Otp will expire in 30 seconds
+                    <button
+                      onClick={handleOtp}
+                      class="font-medium underline text-black"
+                    >
+                      Resend
+                    </button>{" "}
+                  </p>
+                  <button
+                    className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+                    style={{ backgroundColor: "#89CFF0" }}
+                    onClick={verifyOTP}
+                  >
+                    Verify
+                  </button>
+                </div>
+              </div>
+
+            )} */}
           </div>
         </div>
       </Modal>
+
       <div
         className="flex flex-col bg-customGreen"
         style={{
           width: "100%",
         }}
       >
-        <ToastContainer />
-        {/* <div
-          className="divWithHiddenScrollbar flex flex-row gap-4 "
-          style={{
-            overflowX: "auto",
-            position: "relative",
-            msOverflowStyle: "none", // IE and Edge
-            scrollbarWidth: "none", // Firefox
-          }}
-        >
-          {categories.map((items) => (
-            <span
-              className="bg-#E4FFF2; cursor-pointer px-8 hover:bg-customRed"
-              style={{
-                left: "2%",
-                height: "29px",
-                border: "1px solid #89CFF0",
-                borderRadius: "5px",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                fontFamily: "Lato, sans-serif",
-                fontWeight: 400,
-                fontSize: "20px",
-                lineHeight: "28.8px",
-                color: "#595959",
-              }}
-              key={items.value}
-            >
-              {items.name}
-            </span>
-          ))}
-        </div> */}
-
-        {/* Doctors Array Start */}
+        {/* -------------------------Doctors Array Start------------------------- */}
 
         <div style={{ marginTop: "10px" }}>
           {filteredDoctors?.map((doctor, index) => (
             <div
-              className="bg-white w-full p-4 mb-5"
-              onClick={() => findSelectedDoctor(doctor._id)}
+              className="bg-white w-full p-4 mb-5 hover:cursor-pointer"
+              onClick={() => handleQRCode(doctor._id)}
             >
               <div className="flex flex-row justify-between">
-                <div class="flex items-center gap-x-2">
+                <div className="flex items-center gap-x-2">
                   {doctor.doctorPic ? (
                     <img
-                      class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                      className="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
                       src={doctor.doctorPic}
                       alt={doctor.name}
                     />
@@ -427,14 +884,14 @@ export default function DoctorListAdmin({ searchTerm }) {
                     />
                   )}
                   <div>
-                    <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
+                    <h1 className=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
                       Dr. {doctor.name}
                     </h1>
 
-                    <p class=" text-gray-500 sm:text-sm text-xs ">
+                    <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.speciality}
                     </p>
-                    <p class=" text-gray-500 sm:text-sm text-xs ">
+                    <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience
                     </p>
                   </div>
@@ -477,7 +934,6 @@ export default function DoctorListAdmin({ searchTerm }) {
                   </div>
                 </div>
               </div>
-              <ToastContainer />
             </div>
           ))}
         </div>
