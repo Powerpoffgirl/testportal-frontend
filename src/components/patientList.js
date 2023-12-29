@@ -8,7 +8,7 @@ import { Popconfirm } from "antd";
 import { FaTrashAlt } from "react-icons/fa";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { ToastContainer, toast } from "react-toastify";
-import UserContext from './userContext';
+import UserContext from "./userContext";
 import "react-toastify/dist/ReactToastify.css";
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,9 +30,9 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function PatientList({ searchTerm })
-{
-  const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
+export default function PatientList({ searchTerm }) {
+  const { updateUser, updateUserEmail, updateUserimage } =
+    useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedPatient, setSelectedPatient] = useState();
@@ -47,15 +47,11 @@ export default function PatientList({ searchTerm })
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -73,19 +69,15 @@ export default function PatientList({ searchTerm })
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientsList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
-    const fetchAppointmentDetails = async () =>
-    {
-      try
-      {
+    const fetchAppointmentDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -103,25 +95,19 @@ export default function PatientList({ searchTerm })
         const data = await response.json();
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchAppointmentDetails();
   }, []);
 
-
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -142,38 +128,30 @@ export default function PatientList({ searchTerm })
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.doctorPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-
-  useEffect(() =>
-  {
-    if (patientsList?.length > 0 && searchTerm)
-    {
+  useEffect(() => {
+    if (patientsList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedPatients = patientsList.filter((p) =>
         p.name.toLowerCase().includes(lowerCaseSearchTerm)
       );
       setFilteredPatients(matchedPatients);
-    } else
-    {
+    } else {
       // If searchTerm is empty, show all patients
       setFilteredPatients(patientsList);
     }
   }, [patientsList, searchTerm]);
 
-  const handleDeletePatient = async (patientId) =>
-  {
-    try
-    {
+  const handleDeletePatient = async (patientId) => {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -190,25 +168,21 @@ export default function PatientList({ searchTerm })
 
       const data = await response.json();
 
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("Patient deleted successfully", data);
         // Update the list in the UI by removing the deleted doctor
         setPatientsList((prevPatientsList) =>
           prevPatientsList.filter((patient) => patient._id !== patientId)
         );
-      } else
-      {
+      } else {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting the doctor:", error);
     }
   };
 
-  const findSelectedDoctor = async (patientId) =>
-  {
+  const findSelectedDoctor = async (patientId) => {
     console.log("DOCTOR ID", patientId);
     // // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const patient = patientsList?.find((doc) => doc._id === patientId);
@@ -216,8 +190,7 @@ export default function PatientList({ searchTerm })
     onOpenModal();
   };
 
-  const handleEditPatient = (patientId) =>
-  {
+  const handleEditPatient = (patientId) => {
     localStorage.setItem("patientId", patientId);
     navigate("/editpatientform");
   };
@@ -227,8 +200,7 @@ export default function PatientList({ searchTerm })
 
   // }
 
-  const handleBookAppointment = (patientId) =>
-  {
+  const handleBookAppointment = (patientId) => {
     localStorage.setItem("patientId", patientId);
     navigate("/editappointment");
   };
@@ -273,7 +245,7 @@ export default function PatientList({ searchTerm })
               <AccountCircleIcon
                 style={{
                   fontSize: "90px",
-                  color: "#E3F6FF",
+                  color: "#B1DAED",
                   borderRadius: "50%",
                   height: isTab ? "40px" : "123px",
                   width: isTab ? "40px" : "123px",
@@ -348,7 +320,9 @@ export default function PatientList({ searchTerm })
                     alt={patient.name}
                   />
                 ) : (
-                  <AccountCircleIcon style={{ fontSize: '90px', color: "#B1DAED" }} />
+                  <AccountCircleIcon
+                    style={{ fontSize: "90px", color: "#B1DAED" }}
+                  />
                 )}
                 <div>
                   <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
