@@ -659,12 +659,8 @@ export default function DoctorList({ searchTerm })
                                 <div className="flex flex-row overflow-x-auto mx-2 ">
 
                                   {
-<<<<<<< HEAD
                                     keys.map((item, index) =>
                                     {
-=======
-                                    keys?.map((item, index) => {
->>>>>>> 5a7ad95c931adf4bc0df52e87b9dc47d0a69dd05
                                       const { year, monthName, day, dayName } =
                                         getYearMonthDay(item);
                                       // console.log(index)
@@ -753,12 +749,8 @@ export default function DoctorList({ searchTerm })
                                 </button>
                               </div>
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
-<<<<<<< HEAD
-                                {values[currentIndex].map((item, index) =>
+                                {values[currentIndex]?.map((item, index) =>
                                 {
-=======
-                                {values[currentIndex]?.map((item, index) => {
->>>>>>> 5a7ad95c931adf4bc0df52e87b9dc47d0a69dd05
                                   const marginb = index === 0 ? 'mt-2 -mb-4' : ""
                                   if (index === currentTimeIndex)
                                   {
@@ -811,8 +803,9 @@ export default function DoctorList({ searchTerm })
                                       </div>
                                     );
                                   }
-                                })}
-                              </div>
+                                })
+                                }
+                              </div >
 
                               {/* <div className="grid grid-cols-3 gap-4 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex].map((item, index) => {
@@ -909,10 +902,11 @@ export default function DoctorList({ searchTerm })
                                           })} */}
 
                               {/* </div> */}
-                            </div>
-                          </div>
-                        )}
-                      </div>
+                            </div >
+                          </div >
+                        )
+                        }
+                      </div >
                       <div className="flex flex-row-reverse my-1">
                         {!bookingslottoggle && !appointment && (
                           <button
@@ -941,126 +935,128 @@ export default function DoctorList({ searchTerm })
                           </div>
                         )}
                       </div>
-                    </div>
-                  </div>
-                </div>
+                    </div >
+                  </div >
+                </div >
 
-              </div>
+              </div >
             )}
-            {otppage && (
-              <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
-                <p className="text-3xl ">Personal Information</p>
-                <hr className="border my-2 " />
-                {/* ------------mobile Number------------ */}
-                <div className="mt-3 flex flex-row">
-                  <p className="block text-black text-base font-semibold">
-                    Mobile Number :{contactNumber}
-                  </p>
-                </div>
-                {/* -----------contact----------- */}
-                <div className="mt-3 flex flex-row">
-                  <p className="block text-black text-base font-semibold">
-                    Date :{" "}
-                    {selectedDoctor?.slots[currentIndex]?.date?.split("T")[0]}
-                  </p>
-                </div>
-                {/* -----------address----------- */}
-                <div className="mt-3 flex flex-row">
-                  <p className="block text-black text-base font-semibold">
-                    Time :{selectedDoctor?.slots[currentIndex]?.startTime}
-                  </p>
-                  <p></p>
-                </div>
-                <hr class=" mt-3" />
-
-                {/* ----------------------------------------otp verification section---------------------------------------- */}
-                <div class="flex flex-col">
-                  <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
-                  <div
-                    class="bg-gray-300 flex flex-row rounded-lg"
-                    style={{ maxWidth: "11rem" }}
-                  >
-                    <img src={phonelogo} class="pl-5 pr-1"></img>
-                    <input
-                      className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
-                      type="number"
-                      id="mobileNo"
-                      name="mobileNo"
-                      value={contactNumber}
-                      style={{
-                        border: "",
-                        height: "45px",
-                        paddingLeft: "1.5%",
-                        maxWidth: "8rem",
-                      }}
-                    />
+            {
+              otppage && (
+                <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
+                  <p className="text-3xl ">Personal Information</p>
+                  <hr className="border my-2 " />
+                  {/* ------------mobile Number------------ */}
+                  <div className="mt-3 flex flex-row">
+                    <p className="block text-black text-base font-semibold">
+                      Mobile Number :{contactNumber}
+                    </p>
                   </div>
+                  {/* -----------contact----------- */}
+                  <div className="mt-3 flex flex-row">
+                    <p className="block text-black text-base font-semibold">
+                      Date :{" "}
+                      {selectedDoctor?.slots[currentIndex]?.date?.split("T")[0]}
+                    </p>
+                  </div>
+                  {/* -----------address----------- */}
+                  <div className="mt-3 flex flex-row">
+                    <p className="block text-black text-base font-semibold">
+                      Time :{selectedDoctor?.slots[currentIndex]?.startTime}
+                    </p>
+                    <p></p>
+                  </div>
+                  <hr class=" mt-3" />
 
-                  <div
-                    className="flex w-full my-3"
-                    style={{
-                      position: "relative",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {otp?.map((digit, index) => (
+                  {/* ----------------------------------------otp verification section---------------------------------------- */}
+                  <div class="flex flex-col">
+                    <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
+                    <div
+                      class="bg-gray-300 flex flex-row rounded-lg"
+                      style={{ maxWidth: "11rem" }}
+                    >
+                      <img src={phonelogo} class="pl-5 pr-1"></img>
                       <input
-                        key={index}
-                        ref={(input) => (otpInputs[index] = input)}
-                        type="text"
-                        className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
-                        maxLength={1}
-                        value={digit}
-                        onChange={(e) => handleInputChange(e, index)}
-                        onKeyDown={(e) =>
-                        {
-                          if (e.key === "Backspace" && index > 0 && !digit)
-                          {
-                            otpInputs[index - 1].focus();
-                          }
+                        className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
+                        type="number"
+                        id="mobileNo"
+                        name="mobileNo"
+                        value={contactNumber}
+                        style={{
+                          border: "",
+                          height: "45px",
+                          paddingLeft: "1.5%",
+                          maxWidth: "8rem",
                         }}
                       />
-                    ))}
-                  </div>
+                    </div>
 
-                  <p
-                    style={{
-                      fontWeight: 400,
-                      fontSize: "16px",
-                      display: "flex",
-                      marginLeft: "40%",
-                    }}
-                  >
+                    <div
+                      className="flex w-full my-3"
+                      style={{
+                        position: "relative",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {otp?.map((digit, index) => (
+                        <input
+                          key={index}
+                          ref={(input) => (otpInputs[index] = input)}
+                          type="text"
+                          className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
+                          maxLength={1}
+                          value={digit}
+                          onChange={(e) => handleInputChange(e, index)}
+                          onKeyDown={(e) =>
+                          {
+                            if (e.key === "Backspace" && index > 0 && !digit)
+                            {
+                              otpInputs[index - 1].focus();
+                            }
+                          }}
+                        />
+                      ))}
+                    </div>
+
                     <p
-                      className="timer"
-                      style={{ color: "#666", cursor: "pointer" }}
+                      style={{
+                        fontWeight: 400,
+                        fontSize: "16px",
+                        display: "flex",
+                        marginLeft: "40%",
+                      }}
                     >
-                      <text className="mx-2" style={{ color: "#000000" }}>
-                        {formatTime(seconds)} sec
-                      </text>{" "}
-                    </p>{" "}
-                  </p>
-                  <p class="text-gray-600">
-                    Otp will expire in 30 seconds
+                      <p
+                        className="timer"
+                        style={{ color: "#666", cursor: "pointer" }}
+                      >
+                        <text className="mx-2" style={{ color: "#000000" }}>
+                          {formatTime(seconds)} sec
+                        </text>{" "}
+                      </p>{" "}
+                    </p>
+                    <p class="text-gray-600">
+                      Otp will expire in 30 seconds
+                      <button
+                        onClick={handleOtp}
+                        class="font-medium underline text-black"
+                      >
+                        Resend
+                      </button>{" "}
+                    </p>
                     <button
-                      onClick={handleOtp}
-                      class="font-medium underline text-black"
+                      className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+                      style={{ backgroundColor: "#89CFF0" }}
+                      onClick={verifyOTP}
                     >
-                      Resend
-                    </button>{" "}
-                  </p>
-                  <button
-                    className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-                    style={{ backgroundColor: "#89CFF0" }}
-                    onClick={verifyOTP}
-                  >
-                    Verify
-                  </button>
+                      Verify
+                    </button>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
+              )
+            }
+          </div >
+        </div >
       </Modal >
 
       <div
