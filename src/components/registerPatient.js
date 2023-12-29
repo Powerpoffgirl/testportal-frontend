@@ -25,56 +25,8 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-<<<<<<< HEAD
 export default function PatientForm()
 {
-    const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
-    let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-    const baseUrl = process.env.REACT_APP_BASE_URL;
-    const [selectedDoctor, setselectedDoctor] = useState();
-    const [isEditing, setIsEditing] = useState(false);
-    const [open1, setOpen1] = useState(false);
-    const onOpenModal = () => setOpen1(true);
-    const onCloseModal = () => setOpen1(false);
-    const navigate = useNavigate();
-    const [name, setName] = useState("");
-    const [nameError, setNameError] = useState("");
-    const [age, setAge] = useState("");
-    const [ageError, setAgeError] = useState("");
-    const [bodyWeight, setBodyWeight] = useState("");
-    const [bodyWeightError, setBodyWeightError] = useState("");
-    const [houseNo, setHouseNo] = useState("");
-    const [houseNoError, setHouseNoError] = useState("");
-    const [floor, setFloor] = useState("");
-    const [floorError, setFloorError] = useState("");
-    const [block, setBlock] = useState("");
-    const [blockError, setBlockError] = useState("");
-    const [area, setArea] = useState("");
-    const [areaError, setAreaError] = useState("");
-    const [pinCode, setPinCode] = useState("");
-    const [pinCodeError, setPinCodeError] = useState("");
-    const [district, setDistrict] = useState("");
-    const [districtError, setDistrictError] = useState("");
-    const [state, setState] = useState("");
-    const [stateError, setStateError] = useState("");
-    const [isHovered, setIsHovered] = useState(false);
-    const [isHovered1, setIsHovered1] = useState(false);
-    const [selectedFile, setSelectedFile] = useState(null);
-    const [patientImage, setPatientImage] = useState();
-    const fileInputRef = useRef(null);
-    const [doctorDetails, setDoctorDetails] = useState(null);
-    const [anchorEl, setAnchorEl] = useState(null);
-    const open = Boolean(anchorEl);
-    const [errors, setErrors] = useState({});
-    const [userImage, setUserImage] = useState();
-    const [userDetails, setUserDetails] = useState({ name: "" });
-    const [newPatientDetails, setNewPatientDetails] = useState({});
-    const [apiHitCounter, setApiHitCounter] = useState(1);
-    const [userDetailsName, setUserDetailsName] = useState();
-    const [userDetailsEmail, setUserDetailsEmail] = useState();
-    const [userDetailsPic, setUserDetailsPic] = useState();
-=======
-export default function PatientForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -116,22 +68,16 @@ export default function PatientForm() {
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [newPatientDetails, setNewPatientDetails] = useState({});
   const [apiHitCounter, setApiHitCounter] = useState(1);
->>>>>>> aa875c96e11d542461c4bd56d24b8085b96a141a
 
   const [searchTerm, setSearchTerm] = useState("");
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
 
-  const handleSearch = (event) => {
+  const handleSearch = (event) =>
+  {
     const searchTerm = event.target.value.toLowerCase();
 
-<<<<<<< HEAD
-    const handleSearch = (event) =>
-    {
-        const searchTerm = event?.target?.value?.toLowerCase();
-=======
     setSearchTerm(searchTerm);
->>>>>>> aa875c96e11d542461c4bd56d24b8085b96a141a
 
     const filtered = patients.filter((patient) =>
       patient.name.toLowerCase().includes(searchTerm)
@@ -140,22 +86,28 @@ export default function PatientForm() {
     setFilteredPatients(filtered);
   };
 
-  const handlepatientDetails = (patientId) => {
+  const handlepatientDetails = (patientId) =>
+  {
     localStorage.setItem("selectedPatientId", patientId);
     window.location.reload();
   };
 
-  const handleClearStorage = (patientId) => {
+  const handleClearStorage = (patientId) =>
+  {
     localStorage.removeItem("selectedPatientId");
     window.location.reload();
   };
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("selectedPatientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -170,327 +122,31 @@ export default function PatientForm() {
           }
         );
 
-<<<<<<< HEAD
-        setFilteredPatients(filtered);
-=======
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientDetails(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
->>>>>>> aa875c96e11d542461c4bd56d24b8085b96a141a
     };
     fetchPatientDetails();
   }, []);
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
 
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/doctorlogin`);
         }
-<<<<<<< HEAD
-        fetchPatientDetails()
-    }, [])
-
-
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
-                const token = localStorage.getItem("token");
-                const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
-                    console.error("No token found in local storage");
-                    return;
-                }
-                const response = await fetch(
-                    `${baseUrl}/api/v1/doctor/get_doctorDetails`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "x-auth-token": token, // Replace with your actual token from the previous session
-                        },
-                    }
-                );
-
-                const data = await response.json();
-                console.log("DATA from response", data);
-                setUserDetailsName(data?.data.name);
-                setUserDetailsEmail(data?.data.email);
-                setUserDetailsPic(data?.data.doctorPic);
-                console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
-                console.error("There was an error verifying the OTP:", error);
-            }
-        };
-        fetchUserDetails();
-    }, []);
-
-
-    const handleFileSelect = async (event) =>
-    {
-        const file = event.target.files[0];
-        if (file)
-        {
-            const token = localStorage.getItem("token");
-            const doctorId = localStorage.getItem("doctorId");
-            const formData = new FormData();
-            formData.append("doctorPic", file);
-
-            console.log("FORM DATA", formData);
-            try
-            {
-                const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
-                    method: "POST",
-                    headers: {
-                        "x-auth-token": token,
-                    },
-                    body: formData,
-                });
-
-                if (!response.ok)
-                {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                const data = await response.json();
-                console.log("Image uploaded successfully:", data);
-                setUserImage(data.profilePicImageUrl);
-                toast.success("Image uploaded successfully");
-
-                // Reset the file input
-                setSelectedFile(null);
-                fileInputRef.current.value = "";
-            } catch (error)
-            {
-                console.error("Error uploading image:", error);
-                toast.error("Error uploading image. Please try again.");
-            }
-        }
-    };
-
-    const [patientDetails, setPatientDetails] = useState({
-        name: "",
-        age: "",
-        ageType: "",
-        phoneNo: "",
-        email: "",
-        registrationNo: "",
-        address: {
-            houseNo: "",
-            floor: "",
-            block: "",
-            area: "",
-            pinCode: "",
-            district: "",
-            state: "",
-        },
-        gender: "",
-        doctorId: "",
-    });
-
-    const handleClick = (event) =>
-    {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () =>
-    {
-        setAnchorEl(null);
-    };
-
-    // const validateField = (name, value) => {
-    //   switch (name) {
-    //     case "name":
-    //       return value ? "" : "Name is required.";
-    //     case "age":
-    //       return /^[0-9]+$/.test(value) ? "" : "Age must be a number.";
-    //     case "bodyWeight":
-    //       return /^[0-9.]+$/.test(value) ? "" : "Body Weight must be a number.";
-    //     case "houseNo":
-    //       return /^[a-zA-Z\s]+$/.test(value) && value
-    //         ? ""
-    //         : "houseNo is required  ";
-    //     case "floor":
-    //       return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-    //     case "block":
-    //       return /^[a-zA-Z\s]+$/.test(value) && value
-    //         ? ""
-    //         : "Block is required  ";
-    //     case "area":
-    //       return /^[a-zA-Z\s]+$/.test(value) && value
-    //         ? ""
-    //         : "Area is required and must be a string ";
-    //     case "pinCode":
-    //       return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-    //     case "district":
-    //       return /^[a-zA-Z\s]+$/.test(value) && value
-    //         ? ""
-    //         : "District is required and must be a string ";
-    //     case "state":
-    //       return /^[a-zA-Z\s]+$/.test(value) && value
-    //         ? ""
-    //         : "State is required and must be a string ";
-    //     case "workHourFrom":
-    //       // Assuming time in HH:MM format, adjust as needed
-    //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-    //         ? ""
-    //         : "Invalid start time.";
-    //     case "workHourTo":
-    //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-    //         ? ""
-    //         : "Invalid end time.";
-    //     // Add more cases as needed for other fields
-    //     default:
-    //       return "";
-    //   }
-    // };
-
-    const AgeType = [
-        { label: "Year", value: "Year" },
-        { label: "Month", value: "Month" },
-        { label: "Day", value: "Day" },
-
-    ];
-
-    const Gender = [
-        { label: "Male", value: "Male" },
-        { label: "Female", value: "Female" },
-        { label: "Other", value: "Other" },
-
-    ];
-
-    const handleChange1 = (e) =>
-    {
-        setPatientDetails((prevDoctorDetails) => ({
-            ...prevDoctorDetails,
-            gender: e,
-        }));
-    };
-
-
-    const handleChange2 = (e) =>
-    {
-        setPatientDetails((prevDoctorDetails) => ({
-            ...prevDoctorDetails,
-            ageType: e,
-        }));
-    };
-
-
-
-    const handleChange = (e) =>
-    {
-        const { name, value } = e.target;
-
-        // const error = validateField(name, value);
-        // setErrors({ ...errors, [name]: error });
-        if (name === "gender")
-        {
-            setPatientDetails((prevPatientDetails) => ({
-                ...prevPatientDetails.gender,
-
-                [name]: value,
-            }));
-        } else if (name === "ageType")
-        {
-            setPatientDetails((prevPatientDetails) => ({
-                ...prevPatientDetails.ageType,
-                [name]: value,
-            }));
-
-        } else
-        {
-            setPatientDetails((prevPatientDetails) => ({
-                ...prevPatientDetails,
-                [name]: value,
-            }));
-        }
-
-
-        setPatientDetails((prevPatientDetails) => ({
-            ...prevPatientDetails,
-            patientPic: patientImage,
-            ...([
-                "houseNo",
-                "floor",
-                "block",
-                "area",
-                "pinCode",
-                "district",
-                "state",
-            ].includes(name)
-                ? {
-                    address: {
-                        ...prevPatientDetails.address,
-                        [name]: value,
-                    },
-                }
-                : { [name]: value }),
-        }));
-
-        if (
-            [
-                "houseNo",
-                "floor",
-                "block",
-                "area",
-                "pinCode",
-                "district",
-                "state",
-            ].includes(name)
-        )
-        {
-            setPatientDetails((prevPatientDetails) => ({
-                ...prevPatientDetails,
-                address: {
-                    ...prevPatientDetails.address,
-                    [name]: value,
-                },
-            }));
-        } else
-        {
-            setPatientDetails((prevPatientDetails) => ({
-                ...prevPatientDetails,
-                [name]: value,
-            }));
-        }
-        setIsEditing(true);
-    };
-
-    const handleRegister = async (e) =>
-    {
-        e.preventDefault();
-        const doctorId = localStorage.getItem("doctorId");
-
-        const newPatientDetails = {
-            name: patientDetails?.name,
-            age: patientDetails?.age.toString(),
-            ageType: patientDetails?.ageType,
-            gender: patientDetails?.gender,
-            email: patientDetails?.email,
-            phoneNo: patientDetails?.phoneNo.toString(),
-            registrationNo: patientDetails?.registrationNo,
-            address: {
-                houseNo: patientDetails?.address?.houseNo,
-                floor: patientDetails?.address?.floor,
-                block: patientDetails?.address?.block,
-                area: patientDetails?.address?.area,
-                pinCode: patientDetails?.address?.pinCode,
-                district: patientDetails?.address?.district,
-                state: patientDetails?.address?.state,
-=======
         const response = await fetch(
           `${baseUrl}/api/v1/doctor/list_labPatient`,
           {
@@ -498,7 +154,6 @@ export default function PatientForm() {
             headers: {
               "Content-Type": "application/json",
               "x-auth-token": token, // Replace with your actual token from the previous session
->>>>>>> aa875c96e11d542461c4bd56d24b8085b96a141a
             },
           }
         );
@@ -509,23 +164,27 @@ export default function PatientForm() {
           data?.data
         );
         setPatients(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -534,7 +193,8 @@ export default function PatientForm() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -546,7 +206,8 @@ export default function PatientForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -573,11 +234,13 @@ export default function PatientForm() {
     doctorId: "",
   });
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
@@ -640,37 +303,43 @@ export default function PatientForm() {
     { label: "Other", value: "Other" },
   ];
 
-  const handleChange1 = (e) => {
+  const handleChange1 = (e) =>
+  {
     setPatientDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       gender: e,
     }));
   };
 
-  const handleChange2 = (e) => {
+  const handleChange2 = (e) =>
+  {
     setPatientDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       ageType: e,
     }));
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
-    if (name === "gender") {
+    if (name === "gender")
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails.gender,
 
         [name]: value,
       }));
-    } else if (name === "ageType") {
+    } else if (name === "ageType")
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails.ageType,
         [name]: value,
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -690,11 +359,11 @@ export default function PatientForm() {
         "state",
       ].includes(name)
         ? {
-            address: {
-              ...prevPatientDetails.address,
-              [name]: value,
-            },
-          }
+          address: {
+            ...prevPatientDetails.address,
+            [name]: value,
+          },
+        }
         : { [name]: value }),
     }));
 
@@ -708,7 +377,8 @@ export default function PatientForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -716,7 +386,8 @@ export default function PatientForm() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -725,7 +396,8 @@ export default function PatientForm() {
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
     const doctorId = localStorage.getItem("doctorId");
 
@@ -749,22 +421,30 @@ export default function PatientForm() {
       doctorId: JSON.stringify(doctorId),
       // patientPic: userImage,
     };
-    if (newPatientDetails.name === "") {
+    if (newPatientDetails.name === "")
+    {
       toast.error("Please write name");
-    } else if (newPatientDetails.age === "") {
+    } else if (newPatientDetails.age === "")
+    {
       toast.error("Please write age");
-    } else if (newPatientDetails.bodyWeight === "") {
+    } else if (newPatientDetails.bodyWeight === "")
+    {
       toast.error("Please write body weight");
-    } else if (newPatientDetails.address?.pinCode === "") {
+    } else if (newPatientDetails.address?.pinCode === "")
+    {
       toast.error("Please write Pincode");
-    } else if (newPatientDetails.address?.district === "") {
+    } else if (newPatientDetails.address?.district === "")
+    {
       toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "") {
+    } else if (newPatientDetails.address?.state === "")
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       const doctorId = localStorage.getItem("doctorId");
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/userlogin`);
@@ -781,7 +461,8 @@ export default function PatientForm() {
         }
       );
       const data = await response.json();
-      if (data.success === true) {
+      if (data.success === true)
+      {
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
         localStorage.setItem("name", newPatientDetails.name);
@@ -797,7 +478,8 @@ export default function PatientForm() {
 
   console.log("PATIENT DETAILS", patientDetails);
 
-  const generatePatientId = () => {
+  const generatePatientId = () =>
+  {
     const currentDate = new Date();
     const year = currentDate.getFullYear().toString().substring(2);
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -850,27 +532,6 @@ export default function PatientForm() {
               <div className="cursor-pointer"></div>
             </div>
 
-<<<<<<< HEAD
-    updateUser(userDetailsName);
-    updateUserEmail(userDetailsEmail);
-    updateUserimage(userDetailsPic);
-
-    return (
-        <>
-            <Modal
-                open={open1}
-                onClose={onCloseModal}
-                center
-                doctor={selectedDoctor}
-                styles={{
-                    modal: {
-                        // Set your custom width here (e.g., '70%')
-                        width: isTab ? "80%" : "30%",
-                        backgroundColor: "#89CFF0",
-                        alignContent: "center",
-                    },
-                }}
-=======
             <div
               style={{
                 marginTop: "1px",
@@ -878,7 +539,6 @@ export default function PatientForm() {
                 position: "absolute",
                 fontWeight: 500,
               }}
->>>>>>> aa875c96e11d542461c4bd56d24b8085b96a141a
             >
               <p onChange={handleChange}>
                 Patient Id: {generatePatientId() + incrementedCounter}{" "}
@@ -939,108 +599,6 @@ export default function PatientForm() {
               </ul>
             </form>
 
-<<<<<<< HEAD
-                                            <MenuItem
-                                                style={{
-                                                    backgroundColor: "#89CFF0",
-                                                    color: isHovered1 ? "red" : "white",
-                                                }}
-                                                // onClick={handleRemoveProfilePicture}
-                                                onMouseEnter={() => setIsHovered1(true)}
-                                                onMouseLeave={() => setIsHovered1(false)}
-                                            >
-                                                <span style={{ marginRight: "8px" }}>
-                                                    <FaRegTrashAlt />
-                                                </span>
-                                                <span>Remove current picture</span>
-                                            </MenuItem>
-                                        </Menu>
-                                    </div>
-                                    <label
-                                        style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}
-                                    >
-                                        Edit Profile Picture
-                                    </label>
-                                    <input
-                                        id="files"
-                                        type="file"
-                                        ref={fileInputRef}
-                                        style={{ display: "none" }}
-                                        accept="image/*"
-                                        onChange={handleFileSelect}
-                                    />
-                                </div> */}
-                            </div>
-                        </div>
-
-
-                        <div style={{ marginTop: '1px', width: '20%', position: 'absolute', fontWeight: 500 }}>
-                            <p onChange={handleChange}>Patient Id: {generatePatientId() + incrementedCounter} </p>
-                        </div>
-
-
-
-                        <form>
-                            <label style={{ marginLeft: '540px', fontWeight: 500 }} htmlFor="default-search" >
-                                Search:
-                            </label>
-                            <div className="relative">
-                                <input
-                                    value={searchTerm}
-                                    onChange={handleSearch}
-                                    type="search"
-                                    id="default-search"
-                                    className="block p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                    placeholder="Search"
-                                    required
-                                    style={{ marginLeft: '600px', width: '44%', marginTop: '-30px' }}
-                                />
-                                <button
-                                    onClick={handleClearStorage}
-                                    className="absolute right-3 top-0 p-1.5 border border-gray-300 rounded-md bg-gray-100 text-gray-700 cursor-pointer hover:bg-gray-200"
-                                >
-                                    Clear
-                                </button>
-                            </div>
-                            <ul style={{ marginLeft: '600px', width: '34%', zIndex: 9999, position: 'absolute' }} className="divide-y divide-gray-200 bg-white whitespace-normal">
-                                {filteredPatients.map((patient) => (
-                                    <li key={patient.id} className="p-4">
-                                        <div onClick={() => handlepatientDetails(patient._id)}>
-                                            <div className="font-bold">{patient.name}</div>
-                                            <div className="text-sm" >
-                                                <span className="ml-2">Email: {patient.email}</span>
-                                                <span className="ml-2">Phone Number: {patient.phoneNo}</span>
-                                                {/* <span onClick={() => handlepatientDetails(patient._id)} className="ml-2">Pid: {patient._id}</span> */}
-                                            </div>
-                                        </div>
-                                    </li>
-                                ))}
-                            </ul>
-                        </form>
-
-
-                        <div class="grid grid-cols-1 w-full  gap-4 mt-10">
-
-
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="flex flex-col">
-                                    <label
-                                        class="block text-black text-lg font-semibold"
-                                        htmlFor="name"
-                                    >
-                                        Name
-                                    </label>
-                                    <input
-                                        class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        type="text"
-                                        id="name"
-                                        name="name"
-                                        value={patientDetails?.name}
-                                        onChange={handleChange}
-                                        style={{ marginLeft: -0.5 }}
-                                    />
-                                    {/* {errors.age && ( // Change 'errors.email' to 'errors.age'
-=======
             <div class="grid grid-cols-1 w-full  gap-4 mt-10">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="flex flex-col">
@@ -1060,7 +618,6 @@ export default function PatientForm() {
                     style={{ marginLeft: -0.5 }}
                   />
                   {/* {errors.age && ( // Change 'errors.email' to 'errors.age'
->>>>>>> aa875c96e11d542461c4bd56d24b8085b96a141a
                                         <p className="text-red-500">{errors.age}</p>
                                     )} */}
                 </div>
@@ -1153,9 +710,8 @@ export default function PatientForm() {
                       value={patientDetails?.email}
                       onChange={handleChange}
                       placeholder="1234"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        houseNoError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${houseNoError ? "border-red-500" : ""
+                        }`}
                     />
                     {houseNoError && (
                       <p className="text-red-500 text-sm mt-1">
@@ -1177,9 +733,8 @@ export default function PatientForm() {
                       value={patientDetails?.age}
                       onChange={handleChange}
                       placeholder="First Floor or 2nd"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        floorError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${floorError ? "border-red-500" : ""
+                        }`}
                     />
                     {floorError && (
                       <p className="text-red-500 text-sm mt-1">{floorError}</p>
@@ -1495,9 +1050,9 @@ export default function PatientForm() {
                 Process
               </button>
             </div>
-          </div>
-        </div>
-      </div>
+          </div >
+        </div >
+      </div >
     </>
   );
 }
