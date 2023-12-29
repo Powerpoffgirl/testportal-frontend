@@ -193,39 +193,35 @@ export default function UserProfile()
     {
         const { name, value } = e.target;
 
-
-        if (name === "workingDays")
+        if (
+            [
+                "houseNo",
+                "floor",
+                "block",
+                "area",
+                "pinCode",
+                "district",
+                "state",
+            ].includes(name)
+        )
         {
-            if (
-                [
-                    "houseNo",
-                    "floor",
-                    "block",
-                    "area",
-                    "pinCode",
-                    "district",
-                    "state",
-                ].includes(name)
-            )
-            {
-                setUserDetails((prevUserDetails) => ({
-                    ...prevUserDetails,
-                    address: {
-                        ...prevUserDetails.address,
-                        [name]: value,
-                    },
-                }));
-            } else
-            {
-                setUserDetails((prevUserDetails) => ({
-                    ...prevUserDetails,
+            setUserDetails((prevUserDetails) => ({
+                ...prevUserDetails,
+                address: {
+                    ...prevUserDetails.address,
                     [name]: value,
-                }));
-            }
+                },
+            }));
+        } else
+        {
+            setUserDetails((prevUserDetails) => ({
+                ...prevUserDetails,
+                [name]: value,
+            }));
+        }
 
-            setIsEditing(true);
-        };
-    }
+        setIsEditing(true);
+    };
 
     const handleUpdate = async (e) =>
     {
@@ -294,12 +290,8 @@ export default function UserProfile()
 
             if (data.success === true)
             {
-
-                if (data.success === true)
-                {
-                    onOpenModal();
-                }
-                console.log("Doctor updated successfully.");
+                toast.success("User details updated successfully")
+                // console.log("Doctor updated successfully.");
                 navigate("/doctorlistuser");
             }
             console.log("DATA from response", data);
@@ -479,6 +471,7 @@ export default function UserProfile()
                                 id="degree"
                                 name="degree"
                                 onChange={handleChange}
+                                value={userDetails.age}
                                 className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                             />
                             {errors.degree && (
@@ -506,6 +499,7 @@ export default function UserProfile()
                                     overflowY: "auto",
                                 }}
                             >
+
                                 {AgeType.map((option) => (
                                     <Select.Option
                                         key={option.value}
@@ -534,6 +528,7 @@ export default function UserProfile()
                             id="bodyWeight"
                             name="bodyWeight"
                             onChange={handleChange}
+                            value={userDetails.bodyWeight}
                             className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                         {errors.totalExperience && (
@@ -561,6 +556,7 @@ export default function UserProfile()
                             id="name"
                             name="name"
                             onChange={handleChange}
+                            value={userDetails.name}
                             className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                         {errors.name && <p className="text-red-500">{errors.name}</p>}
@@ -579,6 +575,7 @@ export default function UserProfile()
                             id="contactNumber"
                             name="contactNumber"
                             onChange={handleChange}
+                            value={userDetails.contactNumber}
                             className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                         {errors.contactNumber && (
@@ -606,7 +603,7 @@ export default function UserProfile()
                                             id="houseNo"
                                             name="houseNo"
                                             onChange={handleChange}
-                                            // placeholder="1234"
+                                            value={userDetails?.address?.houseNo}
                                             className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                     </div>
@@ -617,6 +614,7 @@ export default function UserProfile()
                                             id="floor"
                                             name="floor"
                                             onChange={handleChange}
+                                            value={userDetails?.address?.floor}
                                             placeholder="Floor"
                                             className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
@@ -629,6 +627,7 @@ export default function UserProfile()
                                             name="block"
                                             onChange={handleChange}
                                             placeholder="Block"
+                                            value={userDetails?.address?.block}
                                             className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
                                         {errors.block && (
@@ -642,6 +641,7 @@ export default function UserProfile()
                                             id="pinCode"
                                             name="pinCode"
                                             onChange={handleChange}
+                                            value={userDetails?.address?.pinCode}
                                             placeholder="Pin Code"
                                             className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
@@ -658,6 +658,7 @@ export default function UserProfile()
                                         id="area"
                                         name="area"
                                         onChange={handleChange}
+                                        value={userDetails?.address?.area}
                                         placeholder="Area/Landmark"
                                         className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                     />
@@ -674,6 +675,7 @@ export default function UserProfile()
                                             id="district"
                                             name="district"
                                             onChange={handleChange}
+                                            value={userDetails?.address?.district}
                                             placeholder="District"
                                             className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
@@ -689,6 +691,7 @@ export default function UserProfile()
                                             id="state"
                                             name="state"
                                             onChange={handleChange}
+                                            value={userDetails?.address?.state}
                                             placeholder="State"
                                             className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                         />
@@ -706,7 +709,7 @@ export default function UserProfile()
                         <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
                             backgroundColor: '#89CFF0'
                         }}
-                        // onClick={handleRegister}
+                            onClick={handleUpdate}
                         >
                             Continue...
                         </button>

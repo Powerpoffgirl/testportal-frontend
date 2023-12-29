@@ -519,8 +519,9 @@ export default function EditUserForm()
         console.log("DATA FROM APPOINTMENT BOOKING", data)
         if (data.success === true)
         {
-          console.log("OPEN MODAL")
-          onOpenModal();
+          toast.success("Appointment booked successfully")
+          // console.log("Doctor updated successfully.");
+          navigate("/appointmentlistuser");
         }
         console.log("Doctor updated successfully.");
       }
