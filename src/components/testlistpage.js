@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Flex, Row, Select } from "antd";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 // import Modal from "react-responsive-modal";
+import UserContext from './userContext';
 import { ToastContainer, toast } from "react-toastify";
 
 import { Table } from "./table";
@@ -11,83 +12,65 @@ import { Modal } from "./tableModal";
 
 export default function TestListPage()
 {
+    const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [rowNumber, setRowNumber] = useState();
-    // const [modalOpen, setModalOpen] = useState(false);
-    // const [modalContent, setModalContent] = useState('');
-    // const onOpenModal = () => setOpen(true);
-    // const onCloseModall = () => setOpen(false);
-    // const [open, setOpen] = useState(false);
-    // const [test, setTest] = useState({
-    //     testName: "",
-    //     testCode: "",
-    //     department: "",
-    //     sampleType: "",
-    //     costOfDiagnosticTest: "",
-    //     patientId: ""
-    // })
-    // const [selectedMethod, setSelectedMethod] = useState(null);
+    const [userDetailsName, setUserDetailsName] = useState();
+    const [userDetailsEmail, setUserDetailsEmail] = useState();
+    const [userDetailsPic, setUserDetailsPic] = useState();
 
-    // const handleMethodClick = (method) =>
-    // {
-    //     setSelectedMethod(method);
-    // };
 
-    // // change data to tests ===> Plural test
-    // const [data, setData] = useState([
-    //     { id: 1, test: 'Viral Load', testCode: 'Hiv', department: 'Molucular Test', sampleType: 'serum', cost: '$50', isEditing: false },
-    //     { id: 2, test: 'Vitamin D3', testCode: 'vitamin d3', department: 'Immuinio', sampleType: 'serum', cost: '$75', isEditing: false },
-    //     { id: 3, test: 'Viral Load', testCode: 'Hiv', department: 'Molucular Test', sampleType: 'serum', cost: '$50', isEditing: false },
-    //     { id: 4, test: 'Vitamin D3', testCode: 'vitamin d3', department: 'Immuinio', sampleType: 'serum', cost: '$75', isEditing: false },
-    // ]);
-    // const addRow = () =>
-    // {
-    //     setData((prevData) => [
-    //         ...prevData,
-    //         { id: Date.now(), test: '', testCode: '', department: '', sampleType: '', cost: '', isEditing: true },
-    //     ]);
-    // };
 
-    // const editRow = (id) =>
-    // {
-    //     setData((prevData) =>
-    //         prevData.map((row) =>
-    //             row.id === id ? { ...row, isEditing: !row.isEditing } : row
-    //         )
-    //     );
-    // };
+    useEffect(() =>
+    {
+        const fetchUserDetails = async () =>
+        {
+            try
+            {
+                const token = localStorage.getItem("token");
+                const patientId = localStorage.getItem("patientId");
+                if (!token)
+                {
+                    console.error("No token found in local storage");
+                    return;
+                }
+                const response = await fetch(
+                    `${baseUrl}/api/v1/doctor/get_doctorDetails`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "x-auth-token": token, // Replace with your actual token from the previous session
+                        },
+                    }
+                );
 
-    // const saveRow = (id, newData) =>
-    // {
-    //     setData((prevData) =>
-    //         prevData.map((row) =>
-    //             row.id === id ? { ...row, ...newData, isEditing: false } : row
-    //         )
-    //     );
-    // }
+                const data = await response.json();
+                console.log("DATA from response", data);
+                setUserDetailsName(data?.data.name);
+                setUserDetailsEmail(data?.data.email);
+                setUserDetailsPic(data?.data.doctorPic);
+                console.log("usser name$$$$$$$", data?.data.name);
+            } catch (error)
+            {
+                console.error("There was an error verifying the OTP:", error);
+            }
+        };
+        fetchUserDetails();
+    }, []);
 
-    // const handleEditChange = (id, field, value) =>
-    // {
-    //     setData((prevData) =>
-    //         prevData.map((row) =>
-    //             row.id === id ? { ...row, [field]: value } : row
-    //         )
-    //     );
-    // };
-
-    //new table part start from here
     const [modalOpen, setModalOpen] = useState(false);
     const [rows, setRows] = useState([
-        {
-            _id: "empty",
-            testName: "Empty",
-            testCode: "Empty",
-            department: "Empty",
-            sampleType: "Empty",
-            costOfDiagnosticTest: "$0",
-        },
+        // {
+        //     _id: "empty",
+        //     testName: "Empty",
+        //     testCode: "Empty",
+        //     department: "Empty",
+        //     sampleType: "Empty",
+        //     costOfDiagnosticTest: "$0",
+        // },
 
     ]);
     const [rowToEdit, setRowToEdit] = useState(null);
@@ -136,7 +119,7 @@ export default function TestListPage()
 
     const handleSubmit = (newRow) =>
     {
-        setRowToEdit(null);
+
         setRows((prevRows) =>
         {
             if (rowToEdit === null)
@@ -144,10 +127,10 @@ export default function TestListPage()
                 const updatedRows = [...prevRows, newRow];
                 const newRowNumber = updatedRows.length - 1;
                 setRowNumber(newRowNumber);
+
                 return updatedRows;
             } else
             {
-
                 const EditDetails = async () =>
                 {
                     try
@@ -161,7 +144,7 @@ export default function TestListPage()
                             return;
                         }
 
-                        const lastItem = rows[rowNumber];
+                        const lastItem = rows[rowToEdit];
 
 
                         const response = await fetch(`${baseUrl}/api/v1/doctor/update_testBooking/${rows[rowToEdit]._id}`, {
@@ -171,11 +154,11 @@ export default function TestListPage()
                                 "x-auth-token": token,
                             },
                             body: JSON.stringify({
-                                testName: lastItem.testName,
+                                testName: lastItem.test,
                                 testCode: lastItem.testCode,
                                 department: lastItem.department,
                                 sampleType: lastItem.sampleType,
-                                costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
+                                costOfDiagnosticTest: lastItem.cost,
                                 patientId: patientId,
                             }),
                         });
@@ -190,62 +173,68 @@ export default function TestListPage()
                     }
                 };
                 EditDetails();
-
                 return prevRows.map((currRow, idx) =>
                     idx !== rowToEdit ? currRow : newRow
                 );
 
             }
         });
-        submitDetails();
+        setRowToEdit(null);
+        window.location.reload();
     };
 
-
-
-
-
-    const submitDetails = async () =>
+    useEffect(() =>
     {
-        try
-        {
-            const token = localStorage.getItem("token");
-            const patientId = localStorage.getItem("selectedPatientId");
 
-            if (!token)
+        const submitDetails = async () =>
+        {
+            try
             {
-                console.error("No token found in local storage");
-                return;
+                const token = localStorage.getItem("token");
+                const patientId = localStorage.getItem("selectedPatientId");
+
+                if (!token)
+                {
+                    console.error("No token found in local storage");
+                    return;
+                }
+
+                const lastItem = rows[rows.length - 1];
+
+                console.log("last Item -------", lastItem)
+
+                const response = await fetch(`${baseUrl}/api/v1/doctor/create_testBooking`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-auth-token": token,
+                    },
+                    body: JSON.stringify({
+                        testName: lastItem.test,
+                        testCode: lastItem.testCode,
+                        department: lastItem.department,
+                        sampleType: lastItem.sampleType,
+                        costOfDiagnosticTest: lastItem.cost,
+                        patientId: patientId,
+                    }),
+                });
+
+                const responseData = await response.json();
+                console.log("DATA from response", responseData);
+                // Handle responseData as needed (maybe update state?)
+
+            } catch (error)
+            {
+                console.error("There was an error verifying the OTP:", error);
             }
+        };
 
-            const lastItem = rows[rowNumber];
+        submitDetails();
 
-            console.log("last Item -------", lastItem)
+    }, [rows])
 
-            const response = await fetch(`${baseUrl}/api/v1/doctor/create_testBooking`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-auth-token": token,
-                },
-                body: JSON.stringify({
-                    testName: lastItem.test,
-                    testCode: lastItem.testCode,
-                    department: lastItem.department,
-                    sampleType: lastItem.sampleType,
-                    costOfDiagnosticTest: lastItem.cost,
-                    patientId: patientId,
-                }),
-            });
 
-            const responseData = await response.json();
-            console.log("DATA from response", responseData);
-            // Handle responseData as needed (maybe update state?)
 
-        } catch (error)
-        {
-            console.error("There was an error verifying the OTP:", error);
-        }
-    };
 
     useEffect(() =>
     {
@@ -286,7 +275,9 @@ export default function TestListPage()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
+    updateUser(userDetailsName);
+    updateUserEmail(userDetailsEmail);
+    updateUserimage(userDetailsPic);
 
     return (
         <>
@@ -310,7 +301,7 @@ export default function TestListPage()
                                 deleteRow={handleDeleteRow}
                                 editRow={handleEditRow}
                             />
-                            <div style={{ display: 'flex', alignItems: "center", justifyContent: 'center', marginTop: 50 }}>
+                            <div style={{ display: 'flex', alignItems: "center", justifyContent: 'center', marginTop: 20 }}>
                                 <button onClick={() => setModalOpen(true)} style={{ color: 'white', height: 30, width: 60, backgroundColor: "#89CFF0", borderRadius: 10 }}>
                                     Add
                                 </button>

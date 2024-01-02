@@ -241,12 +241,12 @@ export default function Layout({
               />
             )}
 
-            <div>
+            <div className="overflow-x-auto">
               <h1 class="text-xl font-semibold text-white capitalize">
                 {type === "doctor" ? "Dr. " + userName : userName}
               </h1>
 
-              <div class="truncate">
+              <div class="truncate overflow-x-auto">
                 <p class="text-white text-base truncate">
                   {userEmail}
                 </p>

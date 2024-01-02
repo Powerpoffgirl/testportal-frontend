@@ -1,18 +1,18 @@
 .table-wrapper {
   width: 100%;
-  overflow-x: auto; /* Add this to enable horizontal scrolling for small screens */
+  overflow-x: auto;
 }
 
 .table {
   display: block;
-  overflow: hidden;
+  overflow: auto;
   table-layout: fixed;
   border-collapse: collapse;
   /* box-shadow: 0px 10px 10px #ccc; */
   border-radius: 10px;
   white-space: nowrap;
   width: 100%;
-  max-width: 80%;
+  max-width: 100%;
   margin: auto;
   overflow-x: auto;
 }
@@ -71,4 +71,79 @@
 
 .delete-btn {
   color: #e10d05;
+}
+
+@media only screen and (max-width: 768px) {
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+
+  .expand {
+    width: 30%;
+  }
+  .table {
+    width: 60%;
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    margin-left: -1px;
+  }
+}
+
+@media only screen and (max-width: 430px) {
+  .table th,
+  .table td {
+    padding: 0.3rem;
+  }
+
+  .expand {
+    width: 20%;
+  }
+
+  .table {
+    width: 70%;
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    margin-left: -1px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .table th,
+  .table td {
+    padding: 0.3rem;
+  }
+
+  .expand {
+    width: 20%;
+  }
+
+  .table {
+    width: 45%;
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    margin-left: -1px;
+  }
+}
+
+@media only screen and (max-width: 325px) {
+  .table th,
+  .table td {
+    padding: 0.3rem;
+  }
+
+  .expand {
+    width: 20%;
+  }
+
+  .table {
+    width: 44%;
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    margin-left: -1px;
+  }
 }

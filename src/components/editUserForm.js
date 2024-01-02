@@ -475,10 +475,19 @@ export default function EditUserForm() {
           }
         );
         const data = await response.json();
+<<<<<<< HEAD
         console.log("DATA FROM APPOINTMENT BOOKING", data);
         if (data.success === true) {
           console.log("OPEN MODAL");
           onOpenModal();
+=======
+        console.log("DATA FROM APPOINTMENT BOOKING", data)
+        if (data.success === true)
+        {
+          toast.success("Appointment booked successfully")
+          // console.log("Doctor updated successfully.");
+          navigate("/appointmentlistuser");
+>>>>>>> 6f6d91aa25a02d8b617a8280c98bf3380f7741cc
         }
         console.log("Doctor updated successfully.");
       }
