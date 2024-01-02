@@ -15,8 +15,7 @@ import { Select } from "antd";
 
 
 
-export default function UserProfile()
-{
+export default function UserProfile() {
     const { updateUser, updateUserEmail, updateUserimage } =
         useContext(UserContext);
 
@@ -55,25 +54,21 @@ export default function UserProfile()
         patientPic: "",
     });
 
-    const handleNewProfilePictureClick = async () =>
-    {
+    const handleNewProfilePictureClick = async () => {
         // This will trigger the hidden file input to open the file dialog
         await fileInputRef.current.click();
     };
 
-    const handleFileSelect = async (event) =>
-    {
+    const handleFileSelect = async (event) => {
         const file = event.target.files[0];
-        if (file)
-        {
+        if (file) {
             const token = localStorage.getItem("token");
             const doctorId = localStorage.getItem("doctorId");
             const formData = new FormData();
             formData.append("doctorPic", file);
 
             console.log("FORM DATA", formData);
-            try
-            {
+            try {
                 const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
                     method: "POST",
                     headers: {
@@ -82,8 +77,7 @@ export default function UserProfile()
                     body: formData,
                 });
 
-                if (!response.ok)
-                {
+                if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
@@ -95,8 +89,7 @@ export default function UserProfile()
                 // Reset the file input
                 setSelectedFile(null);
                 fileInputRef.current.value = "";
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("Error uploading image:", error);
                 toast.error("Error uploading image. Please try again.");
             }
@@ -108,16 +101,12 @@ export default function UserProfile()
     const fileInputRef = useRef(null);
     const [isEditing, setIsEditing] = useState(false);
 
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -133,44 +122,37 @@ export default function UserProfile()
 
                 const data = await response.json();
                 console.log("DATA from response", data);
-                if (data?.data?.newUser === true)
-                {
+                if (data?.data?.newUser === true) {
                     setNewUser(true)
                 }
                 setUserDetails(data?.data);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
         fetchUserDetails();
     }, []);
 
-    const handleClick = (event) =>
-    {
+    const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () =>
-    {
+    const handleClose = () => {
         setAnchorEl(null);
     };
 
-    const handleToggleEdit = () =>
-    {
+    const handleToggleEdit = () => {
         setIsEditing(!isEditing);
     };
 
     // Function to handle profile picture removal
-    const handleRemoveProfilePicture = () =>
-    {
+    const handleRemoveProfilePicture = () => {
         // Logic to handle removing the current profile picture
         handleClose();
     };
 
-    const handleChange2 = (e) =>
-    {
+    const handleChange2 = (e) => {
         setUserDetails((prevUserDetails) => ({
             ...prevUserDetails,
             // workingDays: e,
@@ -178,8 +160,7 @@ export default function UserProfile()
         }));
     };
 
-    const handleChange1 = (e) =>
-    {
+    const handleChange1 = (e) => {
         setUserDetails((prevUserDetails) => ({
             ...prevUserDetails,
             gender: e,
@@ -189,8 +170,7 @@ export default function UserProfile()
 
 
 
-    const handleChange = (e) =>
-    {
+    const handleChange = (e) => {
         const { name, value } = e.target;
 
         if (
@@ -203,8 +183,7 @@ export default function UserProfile()
                 "district",
                 "state",
             ].includes(name)
-        )
-        {
+        ) {
             setUserDetails((prevUserDetails) => ({
                 ...prevUserDetails,
                 address: {
@@ -212,8 +191,7 @@ export default function UserProfile()
                     [name]: value,
                 },
             }));
-        } else
-        {
+        } else {
             setUserDetails((prevUserDetails) => ({
                 ...prevUserDetails,
                 [name]: value,
@@ -223,8 +201,7 @@ export default function UserProfile()
         setIsEditing(true);
     };
 
-    const handleUpdate = async (e) =>
-    {
+    const handleUpdate = async (e) => {
         e.preventDefault();
         const newUserDetails = {
             name: userDetails?.name,
@@ -244,30 +221,22 @@ export default function UserProfile()
             },
             userPic: userImage,
         };
-        if (newUserDetails.name === "")
-        {
+        if (newUserDetails.name === "") {
             toast.error("Please write name");
-        } else if (newUserDetails.email === "")
-        {
+        } else if (newUserDetails.email === "") {
             toast.error("Please write email");
-        } else if (newUserDetails.contactNumber === "")
-        {
+        } else if (newUserDetails.contactNumber === "") {
             toast.error("Please write contact number");
-        } else if (newUserDetails.address?.pinCode === "")
-        {
+        } else if (newUserDetails.address?.pinCode === "") {
             toast.error("Please write Pincode");
-        } else if (newUserDetails.address?.district === "")
-        {
+        } else if (newUserDetails.address?.district === "") {
             toast.error("Please write district");
-        } else if (newUserDetails.address?.state === "")
-        {
+        } else if (newUserDetails.address?.state === "") {
             toast.error("Please write state");
-        } else
-        {
+        } else {
             const token = localStorage.getItem("token");
             const doctorId = localStorage.getItem("doctorId");
-            if (!token)
-            {
+            if (!token) {
                 console.error("No token found in local storage");
                 localStorage.clear();
                 navigate("/userlogin");
@@ -282,14 +251,12 @@ export default function UserProfile()
             });
             const data = await response.json();
 
-            if (data.statusCode === 400)
-            {
+            if (data.statusCode === 400) {
                 toast.error("Please fill the details");
             }
 
 
-            if (data.success === true)
-            {
+            if (data.success === true) {
                 toast.success("User details updated successfully")
                 // console.log("Doctor updated successfully.");
                 navigate("/doctorlistuser");
@@ -388,8 +355,7 @@ export default function UserProfile()
                                             backgroundColor: "#89CFF0",
                                             color: isHovered ? "red" : "white",
                                         }}
-                                        onClick={() =>
-                                        {
+                                        onClick={() => {
                                             handleClose();
                                         }}
                                         onMouseEnter={() => setIsHovered(true)}
