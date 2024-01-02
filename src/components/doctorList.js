@@ -974,17 +974,17 @@ export default function DoctorList({ searchTerm })
                       marginLeft: "40%",
                     }}
                   >
-                    <p
+
+                  </p>
+                  <p class="text-gray-600">
+                    Otp will expire in<span
                       className="timer"
                       style={{ color: "#666", cursor: "pointer" }}
                     >
                       <text className="mx-2" style={{ color: "#000000" }}>
                         {formatTime(seconds)} sec
-                      </text>{" "}
-                    </p>{" "}
-                  </p>
-                  <p class="text-gray-600">
-                    Otp will expire in 30 seconds
+                      </text>
+                    </span>
                     <button
                       onClick={handleOtp}
                       class="font-medium underline text-black"
