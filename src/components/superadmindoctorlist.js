@@ -398,7 +398,7 @@ export default function SuperAdminDoctorList({ searchTerm }) {
                     </h1>
 
                     <p class=" text-gray-500 sm:text-sm text-xs ">
-                      {doctor.speciality}
+                      {doctor?.speciality?.join(", ")}
                     </p>
                     <p class=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience

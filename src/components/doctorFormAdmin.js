@@ -364,6 +364,8 @@ export default function DoctorFormAdmin() {
 
       if (data.statusCode === 400) {
         toast.error("Please fill the details");
+      } else {
+        toast.error("Contact number already registered");
       }
 
       if (data.message === "Permission denied") {

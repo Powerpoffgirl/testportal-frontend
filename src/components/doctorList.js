@@ -147,6 +147,7 @@ export default function DoctorList({ searchTerm }) {
 
     showappointment();
     showSlot();
+
     if (data.success === true) {
       toast.success("Slot booked successfully", {
         // position: "top-center",
@@ -469,18 +470,21 @@ export default function DoctorList({ searchTerm }) {
               <div className="flex flex-col  md:w-1/2 px-2">
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
-                  <div className="flex flex-wrap ">
+                  <div className="flex flex-wrap">
                     {selectedDoctor?.speciality?.map((item, index) => {
+                      const formattedSpeciality = item.replace(/([a-z])([A-Z])/g, '$1 $2'); // Split at capital letters
+
                       return (
                         <p
                           key={index}
-                          className="bg-white rounded-xl py-1 px-4 mx-2 my-1 "
+                          className="bg-white rounded-xl py-1 px-4 mx-2 my-1 space-between-words"
                         >
-                          {item}
+                          {formattedSpeciality}
                         </p>
                       );
                     })}
                   </div>
+
                 </div>
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black">
@@ -699,8 +703,8 @@ export default function DoctorList({ searchTerm }) {
                               </div>
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex]?.map((item, index) => {
-                                  console.log(index)
-                                  const marginb = index == 0 ? "  mt-2 -mb-2" : ""
+                                  const marginb =
+                                    index === 0 ? "mt-2 -mb-4" : "";
                                   if (index === currentTimeIndex) {
                                     return (
                                       <div
@@ -767,7 +771,7 @@ export default function DoctorList({ searchTerm }) {
                             }}
                             style={{ backgroundColor: " #89CFF0" }}
                           >
-                            Book Slots
+                            Show Slots
                           </button>
                         )}
                         {bookingslottoggle && !appointment && (
@@ -937,7 +941,7 @@ export default function DoctorList({ searchTerm }) {
                     </h1>
 
                     <p className=" text-gray-500 sm:text-sm text-xs ">
-                      {doctor.speciality}
+                      {doctor?.speciality?.join(", ")}
                     </p>
                     <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience

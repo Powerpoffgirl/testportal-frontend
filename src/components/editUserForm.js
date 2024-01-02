@@ -135,11 +135,11 @@ export default function EditUserForm() {
   const [doctorDetails, setDoctorDetails] = useState(null);
   const onOpenModal = () => setOpen1(true);
   const onCloseModal = () => setOpen1(false);
-  const appointmentDate = localStorage.getItem("appointment_date")
-  const appointmentTime = localStorage.getItem("appointment_time")
+  const appointmentDate = localStorage.getItem("appointment_date");
+  const appointmentTime = localStorage.getItem("appointment_time");
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [floorError, setFloorError] = useState("");
-  const [newUser, setNewUser] = useState(false)
+  const [newUser, setNewUser] = useState(false);
 
   const [appointmentDetails, setAppointmentDetails] = useState({
     doctorId: localStorage.getItem("doctorId"),
@@ -152,7 +152,7 @@ export default function EditUserForm() {
     diseases: [],
   });
 
-  const patientId = localStorage.getItem("patientId")
+  const patientId = localStorage.getItem("patientId");
   const [patientDetails, setPatientDetails] = useState({
     name: "",
     age: "",
@@ -168,7 +168,6 @@ export default function EditUserForm() {
     },
     patientPic: "",
   });
-
 
   useEffect(() => {
     const fetchPatientList = async () => {
@@ -198,10 +197,9 @@ export default function EditUserForm() {
     };
 
     fetchPatientList();
-
   }, []);
 
-  console.log("DATE TIME", appointmentDate, appointmentTime)
+  console.log("DATE TIME", appointmentDate, appointmentTime);
   const handleChangeIssues = (values) => {
     setAppointmentDetails((prevAppointmentDetails) => ({
       ...prevAppointmentDetails,
@@ -340,10 +338,9 @@ export default function EditUserForm() {
 
     setAppointmentDetails((prevAppointmentDetails) => ({
       ...prevAppointmentDetails,
-      patientId: e
-    }))
-
-  }
+      patientId: e,
+    }));
+  };
 
   useEffect(() => {
     localStorage.setItem("patientId", appointmentDetails?.patientId)
@@ -433,32 +430,35 @@ export default function EditUserForm() {
       if (data.statusCode === 400) {
         toast.error("Please fill the details");
       }
-      const response1 = await fetch(`${baseUrl}/api/v1/user/update_patient/${patientId}`, {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify({
-          name: userDetails?.name,
-          age: userDetails?.age,
-          ageType: userDetails?.ageType,
-          gender: userDetails?.gender,
-          bodyWeight: userDetails?.bodyWeight,
-          address: {
-            houseNo: userDetails?.address?.houseNo,
-            floor: userDetails?.address?.floor,
-            block: userDetails?.address?.block,
-            area: userDetails?.address?.area,
-            pinCode: userDetails?.address?.pinCode,
-            district: userDetails?.address?.district,
-            state: userDetails?.address?.state,
+      const response1 = await fetch(
+        `${baseUrl}/api/v1/user/update_patient/${patientId}`,
+        {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
           },
-          patientPic: userImage,
-        }),
-      });
+          body: JSON.stringify({
+            name: userDetails?.name,
+            age: userDetails?.age,
+            ageType: userDetails?.ageType,
+            gender: userDetails?.gender,
+            bodyWeight: userDetails?.bodyWeight,
+            address: {
+              houseNo: userDetails?.address?.houseNo,
+              floor: userDetails?.address?.floor,
+              block: userDetails?.address?.block,
+              area: userDetails?.address?.area,
+              pinCode: userDetails?.address?.pinCode,
+              district: userDetails?.address?.district,
+              state: userDetails?.address?.state,
+            },
+            patientPic: userImage,
+          }),
+        }
+      );
       const data1 = await response1.json();
-      console.log("PATIENT UPDATED SUCCESSFULLY", data1)
+      console.log("PATIENT UPDATED SUCCESSFULLY", data1);
 
       if (data.success === true) {
         console.log("====================APPOINTMENT DETAILS=====================", appointmentDetails)
@@ -474,17 +474,22 @@ export default function EditUserForm() {
           }
         );
         const data = await response.json();
-        console.log("DATA FROM APPOINTMENT BOOKING", data)
+        console.log("DATA FROM APPOINTMENT BOOKING", data);
         if (data.success === true) {
-          toast.success("Appointment booked successfully")
-          // console.log("Doctor updated successfully.");
-          navigate("/appointmentlistuser");
+          console.log("OPEN MODAL");
+          onOpenModal();
+          console.log("DATA FROM APPOINTMENT BOOKING", data)
+          if (data.success === true) {
+            toast.success("Appointment booked successfully")
+            // console.log("Doctor updated successfully.");
+            navigate("/appointmentlistuser");
+          }
+          console.log("Doctor updated successfully.");
         }
-        console.log("Doctor updated successfully.");
+        console.log("DATA from response", data);
       }
-      console.log("DATA from response", data);
-    }
-  };
+    };
+  }
 
   const AgeType = [
     { label: "Year", value: "Year" },
@@ -498,14 +503,13 @@ export default function EditUserForm() {
     { label: "Other", value: "Other" },
   ];
 
-
   console.log("User DETAILS", userDetails);
   updateUser(userDetails.name);
   updateUserEmail(userDetails.email);
   updateUserimage(userDetails?.userPic);
 
-  console.log("NEW USER", userDetails.newUser)
-  console.log("PATIENTS LIST", patientsList)
+  console.log("NEW USER", userDetails.newUser);
+  console.log("PATIENTS LIST", patientsList);
   return (
     <>
       <Modal
@@ -582,7 +586,6 @@ export default function EditUserForm() {
 
       <div className="flex ">
         <div className="shadow-md bg-white flex flex-col w-full  p-6 my-5 mr-4">
-
           <p className="text-3xl ml-4">Appointment Details</p>
           <hr className="border my-2 " />
           {/* 1st flex-box */}
@@ -596,29 +599,29 @@ export default function EditUserForm() {
                 >
                   Name
                 </label>
-                {
-                  (patientsList?.length === 0 || userDetails?.newUser === true) ? (
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      placeholder="Enter Name"
-                      onChange={handleChange}
-                      className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                  ) : (
-                    <Select
-                      className="h-11 block w-full placeholder-gray-400 rounded-lg border  bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      name="patientName"
-                      onChange={handleChange3}
-                      placeholder="Select Member"
-                    >
-                      {patientsList?.map((patient) => (
-                        <Select.Option key={patient._id} value={patient._id}>
-                          {patient.name}
-                        </Select.Option>
-                      ))}
-                    </Select>)}
+                {patientsList?.length === 0 || userDetails?.newUser === true ? (
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter Name"
+                    onChange={handleChange}
+                    className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  />
+                ) : (
+                  <Select
+                    className="h-11 block w-full placeholder-gray-400 rounded-lg border  bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    name="patientName"
+                    onChange={handleChange3}
+                    placeholder="Select Member"
+                  >
+                    {patientsList?.map((patient) => (
+                      <Select.Option key={patient._id} value={patient._id}>
+                        {patient.name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                )}
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
             </div>
@@ -634,25 +637,24 @@ export default function EditUserForm() {
                     >
                       Age
                     </label>
-                    {
-                      (patientsList?.length === 0 || userDetails?.newUser === true) ? (
-                        <input
-                          type="text"
-                          id="age"
-                          name="age"
-                          onChange={handleChange}
-                          className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="age"
-                          name="age"
-                          value={userDetails?.age}
-                          className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )
-                    }
+                    {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                      <input
+                        type="text"
+                        id="age"
+                        name="age"
+                        onChange={handleChange}
+                        className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        id="age"
+                        name="age"
+                        value={userDetails?.age}
+                        className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
 
                     {floorError && (
                       <p className="text-red-500 text-sm mt-1">{floorError}</p>
@@ -667,62 +669,58 @@ export default function EditUserForm() {
                     >
                       Age Type
                     </label>
-                    {
-                      (patientsList?.length === 0 || userDetails?.newUser === true) ? (
-                        <Select
-                          className="border rounded-lg h-11"
-                          popupClassName="no-border-dropdown-menu"
-                          id="ageType"
-                          name="ageType"
-                          // value={userDetails?.ageType}
-                          onChange={handleChange2}
-                          placeholder="Select Age Type"
-                          style={{ overflowY: "auto" }}
-                          dropdownStyle={{
-                            maxHeight: "300px",
-                            overflowY: "auto",
-                          }}
-                        >
-                          {AgeType.map((option) => (
-                            <Select.Option
-                              key={option.value}
-                              value={option.value}
-                            >
-                              {option.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      ) : (
-                        <Select
-                          className="border rounded-lg h-11"
-                          popupClassName="no-border-dropdown-menu"
-                          id="ageType"
-                          name="ageType"
-                          value={userDetails?.ageType}
-                          placeholder="Select Age Type"
-                          style={{ overflowY: "auto" }}
-                          dropdownStyle={{
-                            maxHeight: "300px",
-                            overflowY: "auto",
-                          }}
-                        >
-                          {AgeType.map((option) => (
-                            <Select.Option
-                              key={option.value}
-                              value={option.value}
-                            >
-                              {option.label}
-                            </Select.Option>
-                          ))}
-                        </Select>
-                      )
-                    }
-
+                    {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                      <Select
+                        className="border rounded-lg h-11"
+                        popupClassName="no-border-dropdown-menu"
+                        id="ageType"
+                        name="ageType"
+                        // value={userDetails?.ageType}
+                        onChange={handleChange2}
+                        placeholder="Select Age Type"
+                        style={{ overflowY: "auto" }}
+                        dropdownStyle={{
+                          maxHeight: "300px",
+                          overflowY: "auto",
+                        }}
+                      >
+                        {AgeType.map((option) => (
+                          <Select.Option
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    ) : (
+                      <Select
+                        className="border rounded-lg h-11"
+                        popupClassName="no-border-dropdown-menu"
+                        id="ageType"
+                        name="ageType"
+                        value={userDetails?.ageType}
+                        placeholder="Select Age Type"
+                        style={{ overflowY: "auto" }}
+                        dropdownStyle={{
+                          maxHeight: "300px",
+                          overflowY: "auto",
+                        }}
+                      >
+                        {AgeType.map((option) => (
+                          <Select.Option
+                            key={option.value}
+                            value={option.value}
+                          >
+                            {option.label}
+                          </Select.Option>
+                        ))}
+                      </Select>
+                    )}
                   </div>
-
                 </div>
                 <div className="Tabview:w-1/3 Tabview:px-2">
-
                   <div className="mt-3 flex flex-col">
                     <label
                       className="block text-lg font-semibold text-black font-lato"
@@ -730,7 +728,8 @@ export default function EditUserForm() {
                     >
                       Gender
                     </label>
-                    {(patientsList?.length === 0 || userDetails?.newUser === true) ? (
+                    {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
                       <Select
                         className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
@@ -776,12 +775,8 @@ export default function EditUserForm() {
                           </Select.Option>
                         ))}
                       </Select>
-                    )
-
-                    }
-
+                    )}
                   </div>
-
                 </div>
               </div>
             </div>
@@ -797,25 +792,23 @@ export default function EditUserForm() {
                 >
                   Body Weight
                 </label>
-                {
-                  (patientsList?.length === 0 || userDetails?.newUser === true) ? (
-                    <input
-                      type="text"
-                      id="bodyWeight"
-                      name="bodyWeight"
-                      onChange={handleChange}
-                      className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                  ) : (
-                    <input
-                      type="text"
-                      id="bodyWeight"
-                      name="bodyWeight"
-                      value={userDetails?.bodyWeight}
-                      className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                  )
-                }
+                {patientsList?.length === 0 || userDetails?.newUser === true ? (
+                  <input
+                    type="text"
+                    id="bodyWeight"
+                    name="bodyWeight"
+                    onChange={handleChange}
+                    className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  />
+                ) : (
+                  <input
+                    type="text"
+                    id="bodyWeight"
+                    name="bodyWeight"
+                    value={userDetails?.bodyWeight}
+                    className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  />
+                )}
 
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
               </div>
@@ -975,102 +968,96 @@ export default function EditUserForm() {
               <div className="flex flex-col ">
                 <div className="flex flex-row">
                   <div className="px-2 w-1/4  mt-3">
-                    {
-                      (patientsList?.length === 0 || userDetails?.newUser === true) ? (
-                        <input
-                          type="text"
-                          placeholder="House No."
-                          id="houseNo"
-                          name="houseNo"
-                          onChange={handleChange}
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          placeholder="House No."
-                          id="houseNo"
-                          name="houseNo"
-                          value={userDetails?.address?.houseNo}
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )
-                    }
-
+                    {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                      <input
+                        type="text"
+                        placeholder="House No."
+                        id="houseNo"
+                        name="houseNo"
+                        onChange={handleChange}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        placeholder="House No."
+                        id="houseNo"
+                        name="houseNo"
+                        value={userDetails?.address?.houseNo}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
                   </div>
                   <div className="px-2 w-1/4 mt-3">
-                    {
-                      (patientsList?.length === 0 || userDetails?.newUser === true) ? (
-                        <input
-                          type="text"
-                          id="floor"
-                          name="floor"
-                          onChange={handleChange}
-                          placeholder="Floor"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="floor"
-                          name="floor"
-                          value={userDetails?.address?.floor}
-                          placeholder="Floor"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )
-                    }
-
+                    {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                      <input
+                        type="text"
+                        id="floor"
+                        name="floor"
+                        onChange={handleChange}
+                        placeholder="Floor"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        id="floor"
+                        name="floor"
+                        value={userDetails?.address?.floor}
+                        placeholder="Floor"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
                   </div>
                   <div className="px-2 w-1/4 mt-3">
-                    {
-                      (patientsList?.length === 0 || userDetails?.newUser === true) ? (
-                        <input
-                          type="text"
-                          id="block"
-                          name="block"
-                          onChange={handleChange}
-                          placeholder="Block"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="block"
-                          name="block"
-                          value={userDetails?.address?.block}
-                          placeholder="Block"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )
-                    }
+                    {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                      <input
+                        type="text"
+                        id="block"
+                        name="block"
+                        onChange={handleChange}
+                        placeholder="Block"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        id="block"
+                        name="block"
+                        value={userDetails?.address?.block}
+                        placeholder="Block"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
 
                     {errors.block && (
                       <p className="text-red-500">{errors.block}</p>
                     )}
                   </div>
                   <div className="px-2 w-1/4 mt-3">
-                    {
-                      (patientsList?.length === 0 || userDetails?.newUser === true) ? (
-                        <input
-                          type="number"
-                          id="pinCode"
-                          name="pinCode"
-                          onChange={handleChange}
-                          placeholder="Pin Code"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="number"
-                          id="pinCode"
-                          name="pinCode"
-                          value={userDetails?.address?.pinCode}
-                          placeholder="Pin Code"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )
-                    }
+                    {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                      <input
+                        type="number"
+                        id="pinCode"
+                        name="pinCode"
+                        onChange={handleChange}
+                        placeholder="Pin Code"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="number"
+                        id="pinCode"
+                        name="pinCode"
+                        value={userDetails?.address?.pinCode}
+                        placeholder="Pin Code"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
 
                     {errors.pinCode && (
                       <p className="text-red-500">{errors.pinCode}</p>
@@ -1079,46 +1066,52 @@ export default function EditUserForm() {
                 </div>
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
-                  {
-                    (patientsList?.length === 0 || userDetails?.newUser === true) ? (<input
+                  {patientsList?.length === 0 ||
+                    userDetails?.newUser === true ? (
+                    <input
                       type="text"
                       id="area"
                       name="area"
                       onChange={handleChange}
                       placeholder="Area/Landmark"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />) : (<input
+                    />
+                  ) : (
+                    <input
                       type="text"
                       id="area"
                       name="area"
                       value={userDetails?.address?.area}
                       placeholder="Area/Landmark"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />)
-                  }
+                    />
+                  )}
 
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
 
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
-                    {
-                      (patientsList?.length === 0 || userDetails?.newUser === true) ? (<input
+                    {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                      <input
                         type="text"
                         id="district"
                         name="district"
                         onChange={handleChange}
                         placeholder="District"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />) : (<input
+                      />
+                    ) : (
+                      <input
                         type="text"
                         id="district"
                         name="district"
                         value={userDetails?.address?.district}
                         placeholder="District"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />)
-                    }
+                      />
+                    )}
 
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
@@ -1126,23 +1119,26 @@ export default function EditUserForm() {
                   </div>
 
                   <div className="px-2 w-1/2 mt-3">
-                    {
-                      (patientsList?.length === 0 || userDetails?.newUser === true) ? (<input
+                    {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                      <input
                         type="text"
                         id="state"
                         name="state"
                         onChange={handleChange}
                         placeholder="State"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />) : (<input
+                      />
+                    ) : (
+                      <input
                         type="text"
                         id="state"
                         name="state"
                         value={userDetails?.address?.state}
                         placeholder="State"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />)
-                    }
+                      />
+                    )}
 
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>

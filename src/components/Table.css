@@ -5,7 +5,7 @@
 
 .table {
   display: block;
-  overflow: hidden;
+  overflow: auto;
   table-layout: fixed;
   border-collapse: collapse;
   /* box-shadow: 0px 10px 10px #ccc; */
@@ -81,5 +81,69 @@
 
   .expand {
     width: 30%;
+  }
+  .table {
+    width: 60%;
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    margin-left: -1px;
+  }
+}
+
+@media only screen and (max-width: 430px) {
+  .table th,
+  .table td {
+    padding: 0.3rem;
+  }
+
+  .expand {
+    width: 20%;
+  }
+
+  .table {
+    width: 70%;
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    margin-left: -1px;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .table th,
+  .table td {
+    padding: 0.3rem;
+  }
+
+  .expand {
+    width: 20%;
+  }
+
+  .table {
+    width: 45%;
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    margin-left: -1px;
+  }
+}
+
+@media only screen and (max-width: 325px) {
+  .table th,
+  .table td {
+    padding: 0.3rem;
+  }
+
+  .expand {
+    width: 20%;
+  }
+
+  .table {
+    width: 44%;
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    margin-left: -1px;
   }
 }

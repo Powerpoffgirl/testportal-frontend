@@ -20,6 +20,15 @@ export default function EditAdminForm() {
   const [adminImage, setAdminImage] = useState();
   const [errors, setErrors] = useState({});
 
+  const [adminDetails, setAdminDetails] = useState({
+    permissions: {
+      view: false,
+      create: false,
+      remove: false,
+      edit: false,
+    },
+  });
+
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -472,6 +481,92 @@ export default function EditAdminForm() {
                 {errors.contactNumber && (
                   <p className="text-red-500">{errors.contactNumber}</p>
                 )}
+              </div>
+
+              <div className="flex flex-row items-start pt-4 gap-4">
+                <div className="flex flex-col mr-2 ">
+                  <label
+                    style={{ marginRight: "10px" }}
+                    className="mx-2 text-lg font-normal text-black font-lato font-semibold"
+                    htmlFor="Permission"
+                  >
+                    Permission
+                  </label>
+                  {/* Input for Age */}
+                  {/* ... */}
+                </div>
+
+                <div
+                  className="flex flex-row flex-grow "
+                  style={{ justifyContent: "space-around" }}
+                >
+                  {/* Permissions */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <label style={{ marginRight: "15px" }}>View:</label>
+                    <input
+                      type="checkbox"
+                      name="view"
+                      checked={adminDetails.permissions.view}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <label style={{ marginRight: "15px" }}>Create:</label>
+                    <input
+                      type="checkbox"
+                      name="create"
+                      checked={adminDetails.permissions.create}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <label style={{ marginRight: "15px" }}>Remove:</label>
+                    <input
+                      type="checkbox"
+                      name="remove"
+                      checked={adminDetails.permissions.remove}
+                      onChange={handleChange}
+                    />
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      marginRight: "10px",
+                    }}
+                  >
+                    <label style={{ marginRight: "15px" }}>Edit:</label>
+                    <input
+                      type="checkbox"
+                      name="edit"
+                      checked={adminDetails.permissions.edit}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {/* Error handling or displaying selected action */}
+                  {/* {action && <p>Selected Action: {action}</p>} */}
+                </div>
               </div>
 
               <div>
