@@ -458,8 +458,8 @@ export default function UserProfile()
                     </div>
 
 
-                    <div className="flex gap-2">
-                        <div className="mt-3">
+                    <div className="flex flex-row gap-2">
+                        <div className="mt-3 flex flex-col w-1/2">
                             <label
                                 for="degree"
                                 className="block text-black text-lg font-semibold"
@@ -478,7 +478,7 @@ export default function UserProfile()
                                 <p className="text-red-500">{errors.degree}</p>
                             )}
                         </div>
-                        <div className="mt-3">
+                        <div className="mt-3 flex flex-col w-1/2">
                             <label
                                 for="degree"
                                 className="block text-black text-lg font-semibold"
@@ -491,7 +491,7 @@ export default function UserProfile()
                                 id="ageType"
                                 name="ageType"
                                 value={userDetails?.ageType}
-                                // onChange={handleChange2}
+                                onChange={handleChange2}
                                 placeholder="Select Age Type"
                                 style={{ overflowY: "auto" }}
                                 dropdownStyle={{
