@@ -26,6 +26,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 </svg>`;
 
 export default function PatientForm() {
+  const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -67,13 +68,17 @@ export default function PatientForm() {
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [newPatientDetails, setNewPatientDetails] = useState({});
   const [apiHitCounter, setApiHitCounter] = useState(1);
+  const [userDetailsName, setUserDetailsName] = useState();
+  const [userDetailsEmail, setUserDetailsEmail] = useState();
+  const [userDetailsPic, setUserDetailsPic] = useState();
+
 
   const [searchTerm, setSearchTerm] = useState("");
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
 
   const handleSearch = (event) => {
-    const searchTerm = event.target.value.toLowerCase();
+    const searchTerm = event?.target?.value?.toLowerCase();
 
     setSearchTerm(searchTerm);
 
@@ -93,6 +98,39 @@ export default function PatientForm() {
     localStorage.removeItem("selectedPatientId");
     window.location.reload();
   };
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("patientId");
+        if (!token) {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(
+          `${baseUrl}/api/v1/doctor/get_doctorDetails`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log("DATA from response", data);
+        setUserDetailsName(data?.data.name);
+        setUserDetailsEmail(data?.data.email);
+        setUserDetailsPic(data?.data.doctorPic);
+        console.log("usser name$$$$$$$", data?.data.name);
+      } catch (error) {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchUserDetails();
+  }, []);
 
   useEffect(() => {
     const fetchPatientDetails = async () => {
@@ -449,6 +487,10 @@ export default function PatientForm() {
 
   const incrementedCounter = String(apiHitCounter).padStart(3, "0");
 
+  updateUser(userDetailsName);
+  updateUserEmail(userDetailsEmail);
+  updateUserimage(userDetailsPic);
+
   return (
     <>
       <Modal
@@ -535,24 +577,16 @@ export default function PatientForm() {
                   Clear
                 </button>
               </div>
-              <ul
-                style={{ marginLeft: "600px", width: "44%", zIndex: 100 }}
-                className="divide-y divide-gray-200 bg-white"
-              >
+              <ul style={{ marginLeft: '600px', width: '34%', zIndex: 9999, position: 'absolute' }} className="divide-y divide-gray-200 bg-white whitespace-normal">
                 {filteredPatients.map((patient) => (
                   <li key={patient.id} className="p-4">
-                    <div className="font-bold">{patient.name}</div>
-                    <div className="text-sm">
-                      <span className="ml-2">Email: {patient.email}</span>
-                      <span className="ml-2">
-                        Phone Number: {patient.phoneNo}
-                      </span>
-                      <span
-                        onClick={handlepatientDetails(patient._id)}
-                        className="ml-2"
-                      >
-                        Pid: {patient._id}
-                      </span>
+                    <div onClick={() => handlepatientDetails(patient._id)}>
+                      <div className="font-bold">{patient.name}</div>
+                      <div className="text-sm" >
+                        <span className="ml-2">Email: {patient.email}</span>
+                        <span className="ml-2">Phone Number: {patient.phoneNo}</span>
+                        {/* <span onClick={() => handlepatientDetails(patient._id)} className="ml-2">Pid: {patient._id}</span> */}
+                      </div>
                     </div>
                   </li>
                 ))}
@@ -1010,9 +1044,9 @@ export default function PatientForm() {
                 Process
               </button>
             </div>
-          </div >
-        </div >
-      </div >
+          </div>
+        </div>
+      </div>
     </>
   );
 }
