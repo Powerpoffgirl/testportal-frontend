@@ -96,8 +96,9 @@ export default function PatientListAdmin({ searchTerm }) {
 
       if (data.message === "Permission denied") {
         toast.error("Permission Denied");
+      } else {
+        toast.success("Deleted successfully");
       }
-
       if (response.ok) {
         console.log("Patient deleted successfully", data);
         // Update the list in the UI by removing the deleted doctor

@@ -148,7 +148,7 @@ export default function DoctorList({ searchTerm }) {
     showappointment();
     showSlot();
     if (data.success === true) {
-      toast.success("Slot booked successfully", {
+      toast.success("Slot selected successfully", {
         // position: "top-center",
       });
     } else {
@@ -933,7 +933,7 @@ export default function DoctorList({ searchTerm }) {
                             }}
                             style={{ backgroundColor: " #89CFF0" }}
                           >
-                            Book Slots
+                            Show Slots
                           </button>
                         )}
                         {bookingslottoggle && !appointment && (
@@ -1103,7 +1103,7 @@ export default function DoctorList({ searchTerm }) {
                     </h1>
 
                     <p className=" text-gray-500 sm:text-sm text-xs ">
-                      {doctor.speciality}
+                      {doctor?.speciality?.join(", ")}
                     </p>
                     <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience
