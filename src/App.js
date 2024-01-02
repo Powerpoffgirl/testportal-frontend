@@ -603,7 +603,13 @@ function App()
             />
           }
         ></Route>
-        <Route path="/doctorlist" element={<DoctorList />}></Route>
+        <Route path="/doctorlist"
+          element={<Layout
+            Component={DoctorList}
+            type="user"
+            headerTextTop={"Doctor's"}
+            headerTextBottom={"List"}
+          />}></Route>
         <Route path="/userlistadmin" element={<UserList></UserList>}></Route>
         <Route
           path="/doctorlistuser"
