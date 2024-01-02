@@ -555,7 +555,7 @@ export default function PatientForm() {
 
 
           <div className="flex gap-2">
-            <div className="mt-3">
+            <div className="mt-3 w-1/2 flex flex-col">
               <label
                 for="age"
                 className="block text-black text-lg font-semibold"
@@ -573,7 +573,7 @@ export default function PatientForm() {
                 <p className="text-red-500">{errors.degree}</p>
               )}
             </div>
-            <div className="mt-3">
+            <div className="mt-3 w-1/2 flex flex-col">
               <label
                 for="ageType"
                 className="block text-black text-lg font-semibold"

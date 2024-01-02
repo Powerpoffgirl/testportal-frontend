@@ -163,14 +163,14 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
   return (
     <>
-      <div style={{ margin: 0, minHeight: "100vh", width: "100%" }}>
-        <div className="MainContainer" style={{ width: "100%" }}>
+      <div style={{ margin: 0, minHeight: "100vh" }}>
+        <div className="MainContainer flex lg:flex-row flex-col" style={{ width: '100%' }}>
           {/* --------------------left side-------------------- */}
-          <div className="Right_side w-3/12 p-6"
+          <div className="Right_side mb-3  lg:min-h-3/4 lg:w-3/12 p-6 mr-5"
             style={{
               boxSizing: "border-box",
-              height: "75vh",
-              float: "left",
+              // height: "75vh",
+              // float: "left",
               backgroundColor: "white",
               borderRadius: 20,
             }}
@@ -263,7 +263,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
             </div> */}
           </div>
           {/* --------------------right side-------------------- */}
-          <div className="Left_side w-8/12 p-6 mr-10 -ml-3 "
+          <div className="Left_side lg:w-8/12 p-6   "
             style={{
               boxSizing: "border-box ",
               height: "75vh",
@@ -432,180 +432,181 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                 </div>
               </div>
             </form>
+            <div class="flex lg:flex-row">
 
-            <div
-              className="Absolute_left"
-              style={{
-                width: "30%",
-                float: "left",
-                height: "30vh",
-                borderRight: "0.5px solid #D3D3D3",
-                overflowY: 'auto'
-              }}
-            >
+              <div
+                className="Absolute_left"
+                style={{
+                  width: "30%",
+                  float: "left",
+                  height: "30vh",
+                  borderRight: "0.5px solid #D3D3D3",
+                  overflowY: 'auto'
+                }}
+              >
 
-              <p style={{ color: "gray" }}>Summary</p>
+                <p style={{ color: "gray" }}>Summary</p>
 
-              <div style={{ marginRight: 10 }}  >
+                <div style={{ marginRight: 10 }}  >
 
-                <table style={{ borderCollapse: 'collapse' }} className="border-collapse w-full">
-                  <thead>
-                    <tr>
-                      <th style={{ border: '1px solid #ddd' }} className="border p-2 text-left">Test </th>
-                      <th style={{ border: '1px solid #ddd' }} className="border p-2  text-left">Price</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableData.map((row, index) => (
-                      <tr key={index}>
-                        <td style={{ border: '1px solid #ddd' }} className="border p-2  text-left">{row.testPackage}</td>
-                        <td style={{ border: '1px solid #ddd' }} className="border p-2 text-left">{row.price}</td>
+                  <table style={{ borderCollapse: 'collapse' }} className="border-collapse w-full">
+                    <thead>
+                      <tr>
+                        <th style={{ border: '1px solid #ddd' }} className="border p-2 text-left">Test </th>
+                        <th style={{ border: '1px solid #ddd' }} className="border p-2  text-left">Price</th>
                       </tr>
-                    ))}
-                    <tr >
-                      <td style={{ border: '1px solid #ddd' }} className="border p-2 font-bold  text-left">Total Price</td>
-                      <td style={{ border: '1px solid #ddd' }} className="border p-2 font-bold  text-left">{calculateTotalPrice()}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody>
+                      {tableData.map((row, index) => (
+                        <tr key={index}>
+                          <td style={{ border: '1px solid #ddd' }} className="border p-2  text-left">{row.testPackage}</td>
+                          <td style={{ border: '1px solid #ddd' }} className="border p-2 text-left">{row.price}</td>
+                        </tr>
+                      ))}
+                      <tr >
+                        <td style={{ border: '1px solid #ddd' }} className="border p-2 font-bold  text-left">Total Price</td>
+                        <td style={{ border: '1px solid #ddd' }} className="border p-2 font-bold  text-left">{calculateTotalPrice()}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
 
-            </div>
-
-            <div
-              className="Absolute_left"
-              style={{
-                width: "35%",
-                float: "left",
-                height: "30vh",
-                borderRight: "0.5px solid #D3D3D3",
-                padding: '10px'
-
-              }}
-            >
-              <div style={{ width: "50%", float: "left", display: 'flex', flexDirection: 'column', }}>
-                <label style={{ fontSize: 12 }}>Discount (%) </label>
-                <input
-                  type="text"
-                  style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
-                  disabled={true}
-                  value={0}
-                />
-              </div>
-
-              <div style={{ width: "50%", float: "right", display: 'flex', flexDirection: 'column' }}>
-                <label style={{ fontSize: 12 }}>Discount (%) </label>
-                <input
-                  type="text"
-                  style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
-                  disabled={true}
-                  value={0}
-                />
               </div>
 
               <div
+                className="Absolute_left"
                 style={{
-                  marginTop: "60px",
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
-                <p style={{ color: "gray", marginRight: "160px" }}>Amount</p>
-                <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
-              </div>
+                  width: "35%",
+                  float: "left",
+                  height: "30vh",
+                  borderRight: "0.5px solid #D3D3D3",
+                  padding: '10px'
 
-              <div
-                style={{
-                  marginTop: "15px",
-                  display: "flex",
-                  flexDirection: "row",
                 }}
               >
-                <p style={{ color: "gray", marginRight: "155px" }}>Discount</p>
-                <p style={{ color: "black" }}>0</p>
-              </div>
+                <div style={{ width: "50%", float: "left", display: 'flex', flexDirection: 'column', }}>
+                  <label style={{ fontSize: 12 }}>Discount (%) </label>
+                  <input
+                    type="text"
+                    style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
+                    disabled={true}
+                    value={0}
+                  />
+                </div>
 
-              <div
-                style={{
-                  marginTop: "15px",
-                  display: "flex",
-                  flexDirection: "row",
-                }}
-              >
-                <p
+                <div style={{ width: "50%", float: "right", display: 'flex', flexDirection: 'column' }}>
+                  <label style={{ fontSize: 12 }}>Discount (%) </label>
+                  <input
+                    type="text"
+                    style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
+                    disabled={true}
+                    value={0}
+                  />
+                </div>
+
+                <div
                   style={{
-                    color: "black",
-                    marginRight: "120px",
-                    fontWeight: 500,
+                    marginTop: "60px",
+                    display: "flex",
+                    flexDirection: "row",
                   }}
                 >
-                  Total Amount
-                </p>
-                <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
-              </div>
-            </div>
+                  <p style={{ color: "gray", marginRight: "160px" }}>Amount</p>
+                  <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
+                </div>
 
-            <div
-
-              className="middle"
-              style={{
-                width: "30%",
-                height: "30vh",
-                float: "left",
-                // borderRight: "0.5px solid #D3D3D3",
-              }}
-            >
-              <div style={{ width: "100%", marginLeft: "30px" }}>
-                <input type="checkbox" disabled={true}
-                  checked={true} />
-                <label>Due Payment</label>
-              </div>
-
-              <div style={{ marginTop: "15px" }}>
-                <p
+                <div
                   style={{
-                    color: "gray",
-                    marginRight: "100px",
-                    marginLeft: "20px",
+                    marginTop: "15px",
+                    display: "flex",
+                    flexDirection: "row",
                   }}
                 >
-                  Paid Amount
-                </p>
-                <input
-                  type="text"
+                  <p style={{ color: "gray", marginRight: "155px" }}>Discount</p>
+                  <p style={{ color: "black" }}>0</p>
+                </div>
+
+                <div
                   style={{
-                    border: "1px solid gray",
-                    width: "50%",
-                    marginLeft: "20px",
-                    textAlign: "center"
+                    marginTop: "15px",
+                    display: "flex",
+                    flexDirection: "row",
                   }}
-                  disabled={true}
-                  value={0}
-                />
+                >
+                  <p
+                    style={{
+                      color: "black",
+                      marginRight: "120px",
+                      fontWeight: 500,
+                    }}
+                  >
+                    Total Amount
+                  </p>
+                  <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
+                </div>
               </div>
 
               <div
+
+                className="middle"
                 style={{
-                  marginTop: "15px",
-                  display: "flex",
-                  flexDirection: "row",
+                  width: "30%",
+                  height: "30vh",
+                  float: "left",
+                  // borderRight: "0.5px solid #D3D3D3",
                 }}
               >
-                <p
+                <div style={{ width: "100%", marginLeft: "30px" }}>
+                  <input type="checkbox" disabled={true}
+                    checked={true} />
+                  <label>Due Payment</label>
+                </div>
+
+                <div style={{ marginTop: "15px" }}>
+                  <p
+                    style={{
+                      color: "gray",
+                      marginRight: "100px",
+                      marginLeft: "20px",
+                    }}
+                  >
+                    Paid Amount
+                  </p>
+                  <input
+                    type="text"
+                    style={{
+                      border: "1px solid gray",
+                      width: "50%",
+                      marginLeft: "20px",
+                      textAlign: "center"
+                    }}
+                    disabled={true}
+                    value={0}
+                  />
+                </div>
+
+                <div
                   style={{
-                    color: "black",
-                    marginRight: "80px",
-                    fontWeight: 500,
-                    marginLeft: "20px",
-                    marginTop: '43px'
+                    marginTop: "15px",
+                    display: "flex",
+                    flexDirection: "row",
                   }}
                 >
-                  Due Amount
-                </p>
-                <p style={{ color: "black", marginTop: '43px' }}>{calculateTotalPrice()}</p>
+                  <p
+                    style={{
+                      color: "black",
+                      marginRight: "80px",
+                      fontWeight: 500,
+                      marginLeft: "20px",
+                      marginTop: '43px'
+                    }}
+                  >
+                    Due Amount
+                  </p>
+                  <p style={{ color: "black", marginTop: '43px' }}>{calculateTotalPrice()}</p>
+                </div>
               </div>
             </div>
-
             {/* <div className="Absolute_Right">
               <div style={{ margin: "20px", marginBottom: "10px" }}>
                 <label style={{ marginLeft: "20px" }}>Payment Method</label>

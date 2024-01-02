@@ -704,7 +704,7 @@ export default function DoctorList({ searchTerm }) {
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex]?.map((item, index) => {
                                   const marginb =
-                                    index === 0 ? "mt-2 -mb-4" : "";
+                                    index == 0 ? " mt-2 -mb-5" : "";
                                   if (index === currentTimeIndex) {
                                     return (
                                       <div
