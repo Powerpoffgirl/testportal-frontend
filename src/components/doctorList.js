@@ -158,14 +158,9 @@ export default function DoctorList({ searchTerm })
 
     showappointment();
     showSlot();
-<<<<<<< HEAD
-    if (data.success === true) {
-      toast.success("Slot selected successfully", {
-=======
     if (data.success === true)
     {
-      toast.success("Slot booked successfully", {
->>>>>>> 6f6d91aa25a02d8b617a8280c98bf3380f7741cc
+      toast.success("Slot selected successfully", {
         // position: "top-center",
       });
     } else
