@@ -91,8 +91,9 @@ export default function PatientForm() {
         }
 
         const data = await response.json();
-        console.log("Image uploaded successfully:", data);
-        setUserImage(data.profilePicImageUrl);
+        console.log("Image uploaded successfully:", data?.profilePicImageUrl);
+        setUserImage(data?.profilePicImageUrl);
+        console.log("userimage---------------", userImage)
         toast.success("Image uploaded successfully");
 
         // Reset the file input
@@ -118,6 +119,8 @@ export default function PatientForm() {
       district: "",
       state: "",
     },
+    ageType: '',
+    gender: '',
     patientPic: "",
   });
 
@@ -141,19 +144,32 @@ export default function PatientForm() {
     }),
   ];
 
+  // const handleChange1 = (e) => {
+  //   setDoctorDetails((prevDoctorDetails) => ({
+  //     ...prevDoctorDetails,
+  //     workingDays: e,
+  //     // speciality: e,
+  //   }));
+  // };
+
+  // const handleChange2 = (e) => {
+  //   setDoctorDetails((prevDoctorDetails) => ({
+  //     ...prevDoctorDetails,
+  //     // workingDays: e,
+  //     speciality: e,
+  //   }));
+  // };
+
   const handleChange1 = (e) => {
-    setDoctorDetails((prevDoctorDetails) => ({
-      ...prevDoctorDetails,
-      workingDays: e,
-      // speciality: e,
+    setPatientDetails((prevPatientDetails) => ({
+      ...prevPatientDetails,
+      gender: e,
     }));
   };
-
   const handleChange2 = (e) => {
-    setDoctorDetails((prevDoctorDetails) => ({
-      ...prevDoctorDetails,
-      // workingDays: e,
-      speciality: e,
+    setPatientDetails((prevPatientDetails) => ({
+      ...prevPatientDetails,
+      ageType: e,
     }));
   };
 
@@ -349,6 +365,8 @@ export default function PatientForm() {
         state: patientDetails?.address?.state,
       },
       patientPic: userImage,
+      gender: patientDetails?.gender,
+      ageType: patientDetails?.ageType
     };
     if (newPatientDetails.name === "") {
       toast.error("Please write name");
@@ -512,6 +530,7 @@ export default function PatientForm() {
               popupClassName="no-border-dropdown-menu"
               id="gender"
               name="gender"
+              onChange={handleChange1}
               value={userDetails?.gender}
               placeholder="Select Gender"
               style={{ overflowY: "auto" }}
@@ -538,15 +557,15 @@ export default function PatientForm() {
           <div className="flex gap-2">
             <div className="mt-3">
               <label
-                for="degree"
+                for="age"
                 className="block text-black text-lg font-semibold"
               >
                 Age
               </label>
               <input
                 type="text"
-                id="degree"
-                name="degree"
+                id="age"
+                name="age"
                 onChange={handleChange}
                 className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
@@ -556,7 +575,7 @@ export default function PatientForm() {
             </div>
             <div className="mt-3">
               <label
-                for="degree"
+                for="ageType"
                 className="block text-black text-lg font-semibold"
               >
                 Age Type
@@ -567,7 +586,7 @@ export default function PatientForm() {
                 id="ageType"
                 name="ageType"
                 value={userDetails?.ageType}
-                // onChange={handleChange2}
+                onChange={handleChange2}
                 placeholder="Select Age Type"
                 style={{ overflowY: "auto" }}
                 dropdownStyle={{
@@ -775,7 +794,7 @@ export default function PatientForm() {
             <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
               backgroundColor: '#89CFF0'
             }}
-            // onClick={handleRegister}
+              onClick={handleRegister}
             >
               Continue...
             </button>

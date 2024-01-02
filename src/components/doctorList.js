@@ -699,13 +699,13 @@ export default function DoctorList({ searchTerm }) {
                               </div>
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex]?.map((item, index) => {
-                                  const marginb =
-                                    index === 0 ? "mt-2 -mb-4" : "";
+                                  console.log(index)
+                                  const marginb = index == 0 ? "  mt-2 -mb-2" : ""
                                   if (index === currentTimeIndex) {
                                     return (
                                       <div
                                         key={index}
-                                        className={` w-1/3 px-2 mb-4 ${marginb}`}
+                                        className={` w-1/3 px-2 mb-4 ${marginb} `}
                                         disabled={item.isBooked}
                                       >
                                         <div
@@ -754,172 +754,6 @@ export default function DoctorList({ searchTerm }) {
                                   }
                                 })}
                               </div>
-
-                              {/* <div className="grid grid-cols-3 gap-4 space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                                {values[currentIndex].map((item, index) => {
-                                  const bgClass = item.isBooked ? "bg-blue-300" : "bg-gray-200"; // Using Tailwind classes for background colors
-
-<<<<<<< HEAD
-      return (
-        <div
-          key={index}
-          className={`flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 ${bgClass}`}
-          disabled={item.isBooked}
-        >
-<<<<<<< HEAD
-  {
-    bookingslot
-      .slice(
-        rowIndex * numberOfColumns,
-        (rowIndex + 1) * numberOfColumns
-      )
-    ?.map((data, index) =>
-    {
-      selectedschedule =
-        selectedschedule + 1;
-      index = selectedschedule - 1;
-      // console.log(selectedschedule)
-      if (data.isBooked === true)
-      {
-        return (
-          <div
-            key={index}
-            className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
-            disabled
-            style={{
-              backgroundColor: "#89CFF0",
-            }}
-          >
-            {data.startTime}
-          </div>
-        );
-      } else if (
-        selectedschedule - 1 ===
-        currentIndex
-      )
-      {
-        return (
-          <div
-            key={index}
-            className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
-          >
-            {data.startTime}
-          </div>
-        );
-      } else
-      {
-        return (
-          <div
-            key={index}
-            className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-            onClick={() =>
-            {
-              handleDateClick(index);
-            }}
-          >
-            {data.startTime}
-          </div>
-        );
-      }
-    })
-  }
-=======
-                                      {item.start}
->>>>>>> 21f7ed7b32de4fa7ca8f064050ae262a6f1e758e
-                                    </div >
-=======
-                                  return (
-                                    <div
-                                      key={index}
-                                      className={`flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 ${bgClass}`}
-                                      disabled={item.isBooked}
-                                    >
-                                      {item.start}
-                                    </div>
->>>>>>> b6940d3c753feb782e4f43283932b9a38ab49482
-                                  );
-})}
-{/* {values[currentIndex].map((item, index) => {
-                                  if (item.isBooked === true) {
-                                    return (
-                                      <div
-                                        key={index}
-                                        className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 bg-gray-200"
-                                        disabled
-                                        style={{
-                                          backgroundColor: "#89CFF0"
-                                        }}
-                                      >
-                                        {item.start}
-                                      </div>
-                                    )
-                                  } else {
-                                    return (
-                                      <div
-                                        key={index}
-                                        className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800 bg-gray-200"
-                                        disabled
-                                        style={{
-                                        }}
-                                      >
-                                        {item.start}
-                                      </div>
-                                    )
-                                  }
-                                })} */}
-
-                              {/* {bookingslot
-                                          .slice(
-                                            rowIndex * numberOfColumns,
-                                            (rowIndex + 1) * numberOfColumns
-                                          )
-                                          ?.map((data, index) => {
-                                            selectedschedule =
-                                              selectedschedule + 1;
-                                            index = selectedschedule - 1;
-                                            // console.log(selectedschedule)
-                                            if (data.isBooked === true) {
-                                              return (
-                                                <div
-                                                  key={index}
-                                                  className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
-                                                  disabled
-                                                  style={{
-                                                    backgroundColor:
-                                                      "#89CFF0",
-                                                  }}
-                                                >
-                                                  {data.startTime}
-                                                </div>
-                                              );
-                                            } else if (
-                                              selectedschedule - 1 ===
-                                              currentIndex
-                                            ) {
-                                              return (
-                                                <div
-                                                  key={index}
-                                                  className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
-                                                >
-                                                  {data.startTime}
-                                                </div>
-                                              );
-                                            } else {
-                                              return (
-                                                <div
-                                                  key={index}
-                                                  className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                                  onClick={() => {
-                                                    handleDateClick(index);
-                                                  }}
-                                                >
-                                                  {data.startTime}
-                                                </div>
-                                              );
-                                            }
-                                          })} */}
-
-                              {/* </div> */}
                             </div>
                           </div>
                         )}
@@ -1155,3 +989,8 @@ export default function DoctorList({ searchTerm }) {
     </>
   );
 }
+
+
+
+
+

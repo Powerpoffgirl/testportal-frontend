@@ -7,8 +7,7 @@ import Modal from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 import { MdOutlineDelete } from "react-icons/md";
 
-export default function BillingPage({ name, contactNo, gender, age })
-{
+export default function BillingPage({ name, contactNo, gender, age }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -31,13 +30,11 @@ export default function BillingPage({ name, contactNo, gender, age })
 
   const [selectedMethod, setSelectedMethod] = useState(null);
 
-  const handleMethodClick = (method) =>
-  {
+  const handleMethodClick = (method) => {
     setSelectedMethod(method);
   };
 
-  const handleSearch = (event) =>
-  {
+  const handleSearch = (event) => {
     const searchTerm = event?.target?.value?.toLowerCase();
 
     setSearchTerm(searchTerm);
@@ -52,16 +49,12 @@ export default function BillingPage({ name, contactNo, gender, age })
   };
 
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
 
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           localStorage.clear()
           navigate(`/doctorlogin`)
@@ -78,8 +71,7 @@ export default function BillingPage({ name, contactNo, gender, age })
         console.log("DATA from USE EFFECT response List Lab Patient", data?.data)
         setTests(data?.data);
 
-      } catch (error)
-      {
+      } catch (error) {
         console.error('There was an error verifying the OTP:', error);
       }
     }
@@ -93,8 +85,7 @@ export default function BillingPage({ name, contactNo, gender, age })
 
 
 
-  const handleTestAdd = (testId, cost) => () =>
-  {
+  const handleTestAdd = (testId, cost) => () => {
 
     const testToAdd = {
       testPackage: testId,
@@ -114,8 +105,7 @@ export default function BillingPage({ name, contactNo, gender, age })
 
 
 
-  const deleteRow = (index) =>
-  {
+  const deleteRow = (index) => {
 
     const updatedTableData = [...tableData];
 
@@ -124,17 +114,14 @@ export default function BillingPage({ name, contactNo, gender, age })
 
     setTableData(updatedTableData);
   }
-  const addRow = () =>
-  {
+  const addRow = () => {
     setTableData([...tableData, { testPackage: '-', price: '-', action: '-' }]);
   };
 
-  const calculateTotalPrice = () =>
-  {
+  const calculateTotalPrice = () => {
     let totalPrice = 0;
 
-    tableData.forEach((row) =>
-    {
+    tableData.forEach((row) => {
       // Assuming price is a number, you might need to parse it if it's a string
       totalPrice += row.price
     });
@@ -142,8 +129,7 @@ export default function BillingPage({ name, contactNo, gender, age })
     return totalPrice;
   };
 
-  const getTestNames = () =>
-  {
+  const getTestNames = () => {
     return tableData.map((row) => row.testPackage).join(', ');
   };
 
@@ -164,8 +150,7 @@ export default function BillingPage({ name, contactNo, gender, age })
 
 
 
-  const Toggle = (e) =>
-  {
+  const Toggle = (e) => {
 
     e.preventDefault();
 
@@ -180,15 +165,13 @@ export default function BillingPage({ name, contactNo, gender, age })
     <>
       <div style={{ margin: 0, minHeight: "100vh", width: "100%" }}>
         <div className="MainContainer" style={{ width: "100%" }}>
-          <div
-            className="Right_side"
+          {/* --------------------left side-------------------- */}
+          <div className="Right_side w-3/12 p-6"
             style={{
               boxSizing: "border-box",
-              width: "25%",
               height: "75vh",
               float: "left",
               backgroundColor: "white",
-              padding: "20px",
               borderRadius: 20,
             }}
           >
@@ -279,17 +262,14 @@ export default function BillingPage({ name, contactNo, gender, age })
               <p style={{ color: "black" }}>Self</p>
             </div> */}
           </div>
-
-          <div
-            className="Left_side"
+          {/* --------------------right side-------------------- */}
+          <div className="Left_side w-8/12 p-6 mr-10 -ml-3 "
             style={{
-              boxSizing: "border-box",
-              width: "72%",
+              boxSizing: "border-box ",
               height: "75vh",
               float: "right",
               borderRadius: 20,
               backgroundColor: "white",
-              padding: "20px",
             }}
           >
             <div style={{ height: '45%', overflowY: 'auto' }}>
