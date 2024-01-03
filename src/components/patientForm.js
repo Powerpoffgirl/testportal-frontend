@@ -371,12 +371,18 @@ export default function PatientForm() {
       ageType: patientDetails?.ageType,
     };
 
-    if (newPatientDetails.name === "") {
-      toast.error("Please write name");
+    if (newPatientDetails.gender === "") {
+      toast.error("Please write gender");
     } else if (newPatientDetails.age === "") {
       toast.error("Please write age");
+    } else if (newPatientDetails.ageType === "") {
+      toast.error("Please write ageType");
     } else if (newPatientDetails.bodyWeight === "") {
-      toast.error("Please write body weight");
+      toast.error("Please write bodyWeight");
+    } else if (newPatientDetails.name === "") {
+      toast.error("Please write name");
+    } else if (newPatientDetails.contactNumber === "") {
+      toast.error("Please write contactNumber");
     } else if (newPatientDetails.address?.pinCode === "") {
       toast.error("Please write Pincode");
     } else if (newPatientDetails.address?.district === "") {

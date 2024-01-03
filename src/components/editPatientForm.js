@@ -216,30 +216,54 @@ export default function EditPatientForm() {
       localStorage.clear();
       navigate(`/userlogin`);
     }
-    const response = await fetch(
-      `${baseUrl}/api/v1/user/update_patient/${patientId}`,
-      {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify({
-          age: patientDetails.age,
-          bodyWeight: patientDetails.bodyWeight,
-          name: patientDetails.name,
-          contactNumber: patientDetails.contactNumber,
-          address: patientDetails.address,
-          patientPic: userImage,
-        }),
+
+    const newPatientDetails = {
+      age: patientDetails.age,
+      bodyWeight: patientDetails.bodyWeight,
+      name: patientDetails.name,
+      contactNumber: patientDetails.contactNumber,
+      address: patientDetails.address,
+      patientPic: userImage,
+    };
+
+    if (newPatientDetails.gender === "") {
+      toast.error("Please write gender");
+    } else if (newPatientDetails.age === "") {
+      toast.error("Please write age");
+    } else if (newPatientDetails.ageType === "") {
+      toast.error("Please write ageType");
+    } else if (newPatientDetails.bodyWeight === "") {
+      toast.error("Please write bodyWeight");
+    } else if (newPatientDetails.name === "") {
+      toast.error("Please write name");
+    } else if (newPatientDetails.contactNumber === "") {
+      toast.error("Please write contactNumber");
+    } else if (newPatientDetails.address?.pinCode === "") {
+      toast.error("Please write Pincode");
+    } else if (newPatientDetails.address?.district === "") {
+      toast.error("Please write district");
+    } else if (newPatientDetails.address?.state === "") {
+      toast.error("Please write state");
+    } else {
+      const response = await fetch(
+        `${baseUrl}/api/v1/user/update_patient/${patientId}`,
+        {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+          body: JSON.stringify(newPatientDetails),
+        }
+      );
+      const data = await response.json();
+      if (data.success === true) {
+        onOpenModal();
+        localStorage.setItem("id", data.data._id);
+        toast.success("Member's form booked");
       }
-    );
-    const data = await response.json();
-    if (data.success === true) {
-      onOpenModal();
-      localStorage.setItem("id", data.data._id);
+      console.log("DATA from response", data);
     }
-    console.log("DATA from response", data);
   };
 
   console.log("PATIENT DETAILS", patientDetails);
@@ -642,7 +666,7 @@ export default function EditPatientForm() {
               style={{
                 backgroundColor: "#89CFF0",
               }}
-              // onClick={handleRegister}
+              onClick={handleRegister}
             >
               Continue...
             </button>
