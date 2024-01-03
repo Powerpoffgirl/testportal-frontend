@@ -413,7 +413,7 @@ export default function EditDoctorForm() {
   return (
     <>
       <div className="flex flex-row">
-        <div></div>
+
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div className="flex  flex-col items-center justify-center w-full">
@@ -603,7 +603,7 @@ export default function EditDoctorForm() {
                       onChange={handleChange1}
                       placeholder="Select Working Days"
                       value={doctorDetails?.workingDays}
-                      // Add other props as needed
+                    // Add other props as needed
                     >
                       {Daysdropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
