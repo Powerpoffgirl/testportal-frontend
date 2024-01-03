@@ -265,8 +265,21 @@ export default function DoctorList({ searchTerm }) {
   };
 
   function abbreviateAndCombineDays(days) {
+<<<<<<< HEAD
+    const weekDays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    const dayIndexes = days.map((day) => weekDays.indexOf(day));
+=======
     const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     const dayIndexes = days.map(day => weekDays.indexOf(day));
+>>>>>>> 61187658d3333b78f01916b90b475e3a0e260e7c
     let combinedDays = [];
     let i = 0;
 
@@ -274,7 +287,14 @@ export default function DoctorList({ searchTerm }) {
       let startDay = weekDays[dayIndexes[i]].substring(0, 3);
       let endDayIndex = i;
 
+<<<<<<< HEAD
+      while (
+        endDayIndex < dayIndexes.length - 1 &&
+        dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1
+      ) {
+=======
       while (endDayIndex < dayIndexes.length - 1 && dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1) {
+>>>>>>> 61187658d3333b78f01916b90b475e3a0e260e7c
         endDayIndex++;
       }
 
@@ -289,7 +309,7 @@ export default function DoctorList({ searchTerm }) {
       i = endDayIndex + 1;
     }
 
-    return combinedDays.join(' ');
+    return combinedDays.join(" ");
   }
 
   // processing for the booking slots
@@ -350,7 +370,14 @@ export default function DoctorList({ searchTerm }) {
     return { year, monthName, day, dayName };
   }
 
+<<<<<<< HEAD
+  const workingDays =
+    selectedDoctor && selectedDoctor.workingDays
+      ? abbreviateAndCombineDays(selectedDoctor.workingDays)
+      : "";
+=======
   const workingDays = selectedDoctor && selectedDoctor.workingDays ? abbreviateAndCombineDays(selectedDoctor.workingDays) : '';
+>>>>>>> 61187658d3333b78f01916b90b475e3a0e260e7c
 
   const handleDateClick = (index) => {
     setCurrentIndex(index);
@@ -522,37 +549,45 @@ export default function DoctorList({ searchTerm }) {
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black">Timing</p>
                   <div className="flex flex-row  place-content-between">
-                    {workingDays.split(' ')[0] && (
+                    {workingDays.split(" ")[0] && (
                       <div className="flex flex-col">
                         <p className="text-gray-600 font-semibold">
-                          {workingDays.split(' ')[0]}:
+                          {workingDays.split(" ")[0]}:
                         </p>
-                        <p className="text-gray-600">{selectedDoctor?.workingHours?.workHourFrom} - {selectedDoctor?.workingHours?.workHourTo}</p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
                         {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
                       </div>
                     )}
-                    {workingDays.split(' ')[1] && (
+                    {workingDays.split(" ")[1] && (
                       <div className="flex flex-col">
                         <p className="text-gray-600 font-semibold">
-                          {workingDays.split(' ')[1]}:
+                          {workingDays.split(" ")[1]}:
                         </p>
-                        <p className="text-gray-600">{selectedDoctor?.workingHours?.workHourFrom} - {selectedDoctor?.workingHours?.workHourTo}</p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
                         {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
                       </div>
                     )}
                   </div>
                   <div className="flex flex-row place-content-between">
-                    {workingDays.split(' ')[2] && (
+                    {workingDays.split(" ")[2] && (
                       <div className="flex flex-col">
                         <p className="text-gray-600 font-semibold">
-                          {workingDays.split(' ')[2]}:
+                          {workingDays.split(" ")[2]}:
                         </p>
-                        <p className="text-gray-600">{selectedDoctor?.workingHours?.workHourFrom} - {selectedDoctor?.workingHours?.workHourTo}</p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
                         {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
                       </div>
                     )}
                   </div>
-
                 </div>
 
                 <div className=" py-1 mb-2">
@@ -564,7 +599,9 @@ export default function DoctorList({ searchTerm }) {
                     <div className="flex flex-col  bg-white p-1 px-3">
                       <p className="flex place-content-between my-1">
                         <span className="font-medium px-2">Consultation</span>{" "}
-                        <span className="font-bold px-2">Rs {selectedDoctor.consultationFee}</span>
+                        <span className="font-bold px-2">
+                          Rs {selectedDoctor.consultationFee}
+                        </span>
                       </p>
                       {!bookingslottoggle && !appointment && (
                         <div>
@@ -741,7 +778,11 @@ export default function DoctorList({ searchTerm }) {
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex]?.map((item, index) => {
                                   const marginb =
+<<<<<<< HEAD
+                                    index == 0 ? " mt-2 -mb-5" : "";
+=======
                                     index == 0 ? " mt-2 -mb-4" : "";
+>>>>>>> 61187658d3333b78f01916b90b475e3a0e260e7c
                                   if (index === currentTimeIndex) {
                                     return (
                                       <div
@@ -912,11 +953,10 @@ export default function DoctorList({ searchTerm }) {
                       display: "flex",
                       marginLeft: "40%",
                     }}
-                  >
-
-                  </p>
+                  ></p>
                   <p class="text-gray-600">
-                    Otp will expire in<span
+                    Otp will expire in
+                    <span
                       className="timer"
                       style={{ color: "#666", cursor: "pointer" }}
                     >
@@ -1030,8 +1070,3 @@ export default function DoctorList({ searchTerm }) {
     </>
   );
 }
-
-
-
-
-
