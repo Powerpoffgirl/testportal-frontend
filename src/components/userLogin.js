@@ -9,7 +9,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import "react-datepicker/dist/react-datepicker.min.css";
 
-export default function UserLogin() {
+export default function UserLogin()
+{
   let isTab = useMediaQuery({ query: "(max-width: 640px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -26,45 +27,54 @@ export default function UserLogin() {
   const [checkboxerror, setCheckboxerror] = useState();
   const [isValidNumber, setIsValidNumber] = useState(true);
 
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange = (event) =>
+  {
     setIsChecked(event.target.checked);
   };
 
-  const handleMobileNumberChange = (e) => {
+  const handleMobileNumberChange = (e) =>
+  {
     const number = e.target.value;
     const isValidNumber = validateMobileNumber(number);
     setIsValid(isValidNumber);
     setContactNumber(number);
     setIsValidNumber(isValidNumber);
-    if (isValidNumber || number === "") {
+    if (isValidNumber || number === "")
+    {
       setContactNumber(number);
     }
   };
 
-  const validateMobileNumber = (number) => {
+  const validateMobileNumber = (number) =>
+  {
     const isValidFormat = /^\d{0,10}$/.test(number); // Validates up to 10 digits
     return isValidFormat;
   };
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e) =>
+  {
     const enteredPassword = e.target.value;
     setPassword(enteredPassword);
 
     // Password validation
-    if (enteredPassword.trim().length < 6) {
+    if (enteredPassword.trim().length < 6)
+    {
       setPasswordError("Password should be at least 6 characters");
-    } else {
+    } else
+    {
       setPasswordError("");
     }
   };
 
-  const handleForgetPassword = async (e) => {
+  const handleForgetPassword = async (e) =>
+  {
     e.preventDefault();
     const requestBody = {
       contactNumber: contactNumber,
     };
     const apiUrl = `${baseUrl}/api/v1/user/send_otp`;
 
-    try {
+    try
+    {
       // Send the POST request
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -79,31 +89,38 @@ export default function UserLogin() {
       const data = await response.json();
 
       // Check the response status
-      if (response.ok) {
+      if (response.ok)
+      {
         console.log("OTP sent successfully", data);
         localStorage.setItem("contactNumber", contactNumber);
         navigate("/otpverify");
-      } else {
+      } else
+      {
         console.error("Error sending OTP:", data);
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("Error during the API call:", error);
     }
   };
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     const doctor = location?.state;
     setSelectedDoctor(doctor?.doctor);
     console.log("SELECTED DOCTOR", selectedDoctor);
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) =>
+  {
     e.preventDefault();
 
-    if (!isChecked) {
+    if (!isChecked)
+    {
       setCheckboxerror("Please select the Checkbox");
     }
-    if (isValid && isChecked) {
+    if (isValid && isChecked)
+    {
       const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
         method: "post",
         headers: {
@@ -114,12 +131,15 @@ export default function UserLogin() {
         }),
       });
       const data = await response.json();
-      console.log("DATA FROM RESPONSE", data);
-      if (data?.user?._id) {
+      console.log("=========eeeeeeeeee==============DATA FROM RESPONSE===================", data);
+      localStorage.setItem("patientId", data?.patient?._id)
+      if (data?.user?._id)
+      {
         localStorage.setItem("userId", data?.user?._id);
         localStorage.setItem("name", data?.user?.name);
         localStorage.setItem("userContactNumber", data?.user?.email);
-      } else {
+      } else
+      {
         localStorage.setItem("userId", data?.data?._id);
       }
       localStorage.setItem("contactNumber", contactNumber);
