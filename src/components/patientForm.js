@@ -303,11 +303,11 @@ export default function PatientForm() {
         "state",
       ].includes(name)
         ? {
-          address: {
-            ...prevPatientDetails.address,
-            [name]: value,
-          },
-        }
+            address: {
+              ...prevPatientDetails.address,
+              [name]: value,
+            },
+          }
         : { [name]: value }),
     }));
 
@@ -378,45 +378,37 @@ export default function PatientForm() {
     } else if (newPatientDetails.bodyWeight === "") {
       toast.error("Please write body weight");
     } else if (newPatientDetails.address?.pinCode === "") {
-      if (newPatientDetails.name === "") {
-        toast.error("Please write name");
-      } else if (newPatientDetails.age === "") {
-        toast.error("Please write age");
-      } else if (newPatientDetails.bodyWeight === "") {
-        toast.error("Please write body weight");
-      } else if (newPatientDetails.address?.pinCode === "") {
-        toast.error("Please write Pincode");
-      } else if (newPatientDetails.address?.district === "") {
-        toast.error("Please write district");
-      } else if (newPatientDetails.address?.state === "") {
-        toast.error("Please write state");
-      } else {
-        const doctorId = localStorage.getItem("doctorId");
-        const token = localStorage.getItem("token");
-        if (!token) {
-          console.error("No token found in local storage");
-          localStorage.clear();
-          navigate(`/userlogin`);
-        }
-        const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token,
-          },
-          body: JSON.stringify(newPatientDetails),
-        });
-        const data = await response.json();
-        if (data.success === true) {
-          // navigate("/otp")
-          onOpenModal();
-          localStorage.setItem("patientId", data.data._id);
-
-          // Display "Member's form booked" toast message
-          toast.success("Member details updated!");
-        }
-        console.log("DATA from response", data);
+      toast.error("Please write Pincode");
+    } else if (newPatientDetails.address?.district === "") {
+      toast.error("Please write district");
+    } else if (newPatientDetails.address?.state === "") {
+      toast.error("Please write state");
+    } else {
+      const doctorId = localStorage.getItem("doctorId");
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in local storage");
+        localStorage.clear();
+        navigate(`/userlogin`);
       }
+      const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(newPatientDetails),
+      });
+      const data = await response.json();
+      if (data.success === true) {
+        // navigate("/otp")
+        onOpenModal();
+        localStorage.setItem("patientId", data.data._id);
+
+        // Display "Member's form booked" toast message
+        toast.success("Member details updated!");
+      }
+      console.log("DATA from response", data);
     }
   };
 
@@ -428,45 +420,32 @@ export default function PatientForm() {
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
           <div className="mx-auto my-2">
-            <div className=" " >
-
-              <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
-
-                {userImage || userDetails?.userPic ? (
-                  <div aria-controls="profile-pic-menu"
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={handleClick} >
-                    <img
-                      src={userDetails?.userPic || userImage}
-                      alt={userDetails?.name}
-                      style={{
-                        borderRadius: "50%",
-                        width: '145px',
-                        height: '145px',
-                        cursor: 'pointer'
-                      }}
-
-
-                    />
-                  </div>
+            <div className=" ">
+              <div
+                className=" border w-36 mx-auto rounded-full"
+                style={{ backgroundColor: "#B1DAED" }}
+              >
+                {userDetails?.userPic ? (
+                  <img
+                    src={userDetails?.userPic}
+                    alt={userDetails?.name}
+                    style={{
+                      borderRadius: "50%",
+                      width: "130px",
+                      height: "130px",
+                    }}
+                  />
                 ) : (
                   <PermIdentityOutlinedIcon
-                    style={{ width: "auto", height: 'auto', color: 'white', cursor: 'pointer' }}
-                    aria-controls="profile-pic-menu"
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={handleClick}
-
+                    style={{ width: "auto", height: "auto", color: "white" }}
                   />
                 )}
               </div>
             </div>
 
             <div className="flex flex-row mt-5 mb-3">
-
               <p className="block text-black text-lg font-semibold ">
-
+                Edit Profile Picture
                 <input
                   id="files"
                   type="file"
@@ -485,11 +464,11 @@ export default function PatientForm() {
                 onClick={handleClick}
                 style={{
                   cursor: "pointer",
-
                 }}
               >
-                {/* <FaAngleDown /> */}
+                <FaAngleDown />
               </p>
+
               <div style={{ backgroundColor: "#89CFF0" }}>
                 <Menu
                   id="profile-pic-menu"
