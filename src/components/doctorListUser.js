@@ -36,7 +36,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 </svg>`;
 
 export default function DoctorListUser({ searchTerm }) {
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState("");
@@ -87,12 +87,12 @@ export default function DoctorListUser({ searchTerm }) {
 
   useEffect(() => {
     // Check if there is a searchTerm and the doctorsList is not empty.
-    if (doctorsList.length > 0 && searchTerm) {
-      const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
-      const matchedDoctors = doctorsList.filter(
+    if (doctorsList?.length > 0 && searchTerm) {
+      const lowerCaseSearchTerm = searchTerm?.toLowerCase()?.trim();
+      const matchedDoctors = doctorsList?.filter(
         (doctor) =>
-          doctor.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-          doctor.speciality.toLowerCase().includes(lowerCaseSearchTerm)
+          doctor?.name?.toLowerCase()?.includes(lowerCaseSearchTerm) ||
+          doctor?.speciality?.toLowerCase()?.includes(lowerCaseSearchTerm)
       );
       setFilteredDoctors(matchedDoctors);
     } else {
@@ -481,7 +481,7 @@ export default function DoctorListUser({ searchTerm }) {
                             Slot available for Tommorrow{" "}
                           </p>
                           <p className="flex flex-wrap space-x-1  my-1">
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
+                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800  ">
                               3:00 AM
                             </p>
                             <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
@@ -857,8 +857,12 @@ export default function DoctorListUser({ searchTerm }) {
                       alt={doctor.name}
                     />
                   ) : (
+
                     <AccountCircleIcon
-                      style={{ fontSize: "90px", color: "#B1DAED" }}
+                      style={{
+                        color: "#B1DAED",
+                        fontSize: isTab ? "45px" : "90px"
+                      }}
                     />
                   )}
                   <div>
@@ -866,8 +870,9 @@ export default function DoctorListUser({ searchTerm }) {
                       Dr. {doctor.name}
                     </h1>
 
-                    <p className=" text-gray-500 sm:text-sm text-xs ">
-                      {doctor?.speciality?.join(", ")}
+                    <p className=" text-gray-500 sm:text-sm text-xs flex flex-row">
+                      {/* {doctor?.speciality?.join(", ")} */}
+                      {doctor?.speciality?.slice(0, 2).join(", ")}<p class="text-black font-bold">...more</p>
                     </p>
                     <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience
