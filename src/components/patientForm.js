@@ -286,11 +286,11 @@ export default function PatientForm() {
         "state",
       ].includes(name)
         ? {
-          address: {
-            ...prevPatientDetails.address,
-            [name]: value,
-          },
-        }
+            address: {
+              ...prevPatientDetails.address,
+              [name]: value,
+            },
+          }
         : { [name]: value }),
     }));
 
@@ -390,20 +390,17 @@ export default function PatientForm() {
 
   console.log("PATIENT DETAILS", patientDetails);
 
-
-
-
   return (
     <>
-
-
-
       <div className="flex flex-col -ml-7  lg:flex-row">
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
           <div className="mx-auto my-2">
-            <div className=" " >
-              <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
+            <div className=" ">
+              <div
+                className=" border w-36 mx-auto rounded-full"
+                style={{ backgroundColor: "#B1DAED" }}
+              >
                 {/* {doctorImage || doctorDetails?.doctorPic ? (
                                 <img
                                     src={doctorImage || doctorDetails?.doctorPic}
@@ -416,14 +413,13 @@ export default function PatientForm() {
                                 />
                             ) : ( */}
                 <PermIdentityOutlinedIcon
-                  style={{ width: "auto", height: 'auto', color: 'white' }}
+                  style={{ width: "auto", height: "auto", color: "white" }}
                 />
                 {/* )} */}
               </div>
             </div>
 
             <div className="flex flex-row mt-5 mb-3">
-
               <p className="block text-black text-lg font-semibold ">
                 Edit Profile Picture
                 <input
@@ -444,7 +440,6 @@ export default function PatientForm() {
                 onClick={handleClick}
                 style={{
                   cursor: "pointer",
-
                 }}
               >
                 <FaAngleDown />
@@ -495,7 +490,6 @@ export default function PatientForm() {
                   </MenuItem>
                 </Menu>
               </div>
-
             </div>
           </div>
           <hr />
@@ -521,10 +515,7 @@ export default function PatientForm() {
               }}
             >
               {Gender.map((option) => (
-                <Select.Option
-                  key={option.value}
-                  value={option.value}
-                >
+                <Select.Option key={option.value} value={option.value}>
                   {option.label}
                 </Select.Option>
               ))}
@@ -534,29 +525,26 @@ export default function PatientForm() {
             )}
           </div>
 
-
           <div className="flex gap-2">
             <div className="mt-3">
               <label
-                for="degree"
+                for="age"
                 className="block text-black text-lg font-semibold"
               >
                 Age
               </label>
               <input
                 type="text"
-                id="degree"
-                name="degree"
+                id="age"
+                name="age"
                 onChange={handleChange}
                 className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
-              {errors.degree && (
-                <p className="text-red-500">{errors.degree}</p>
-              )}
+              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
             <div className="mt-3">
               <label
-                for="degree"
+                for="agetype"
                 className="block text-black text-lg font-semibold"
               >
                 Age Type
@@ -576,19 +564,13 @@ export default function PatientForm() {
                 }}
               >
                 {AgeType.map((option) => (
-                  <Select.Option
-                    key={option.value}
-                    value={option.value}
-                  >
+                  <Select.Option key={option.value} value={option.value}>
                     {option.label}
                   </Select.Option>
                 ))}
               </Select>
-              {errors.degree && (
-                <p className="text-red-500">{errors.degree}</p>
-              )}
+              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
-
           </div>
 
           <div className=" mt-3">
@@ -609,13 +591,11 @@ export default function PatientForm() {
               <p className="text-red-500">{errors.totalExperience}</p>
             )}
           </div>
-
-
         </div>
 
         {/* ----------------------------------right---------------------------------- */}
         <div className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3">
-          <p className="text-3xl " >Appointment Details</p>
+          <p className="text-3xl ">Personal Information</p>
           <hr className="border my-2 " />
           {/* -------name------- */}
           <div className="mt-3">
@@ -664,11 +644,8 @@ export default function PatientForm() {
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
-
                 <div className="flex flex-row">
-
                   <div className="px-2 w-full sm:w-1/3 mt-3">
-
                     <input
                       type="text"
                       placeholder="House No."
@@ -680,7 +657,6 @@ export default function PatientForm() {
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
-
                     <input
                       type="text"
                       id="floor"
@@ -691,7 +667,6 @@ export default function PatientForm() {
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
-
                     <input
                       type="text"
                       id="block"
@@ -705,7 +680,6 @@ export default function PatientForm() {
                     )}
                   </div>
                   <div className="px-2 w-full sm:w-1/2 mt-3">
-
                     <input
                       type="text"
                       id="pinCode"
@@ -721,7 +695,6 @@ export default function PatientForm() {
                 </div>
 
                 <div className="px-2 w-full mt-3 ">
-
                   <input
                     type="text"
                     id="area"
@@ -730,14 +703,11 @@ export default function PatientForm() {
                     placeholder="Area/Landmark"
                     className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
-                  {errors.area && (
-                    <p className="text-red-500">{errors.area}</p>
-                  )}
+                  {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
 
                 <div className="flex flex-row">
                   <div className="px-2 w-full sm:w-1/2 mt-3">
-
                     <input
                       type="text"
                       id="district"
@@ -752,7 +722,6 @@ export default function PatientForm() {
                   </div>
 
                   <div className="px-2 w-full sm:w-1/2 mt-3">
-
                     <input
                       type="text"
                       id="state"
@@ -765,25 +734,23 @@ export default function PatientForm() {
                       <p className="text-red-500">{errors.state}</p>
                     )}
                   </div>
-
                 </div>
-
               </div>
             </div>
           </div>
           <div className="flex flex-row-reverse mt-5 my-2">
-            <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
-              backgroundColor: '#89CFF0'
-            }}
-            // onClick={handleRegister}
+            <button
+              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              style={{
+                backgroundColor: "#89CFF0",
+              }}
+              // onClick={handleRegister}
             >
               Continue...
             </button>
           </div>
         </div>
-      </div >
-
-
+      </div>
 
       {/* <div className="flex flex-row">
         <div className=" w-full">

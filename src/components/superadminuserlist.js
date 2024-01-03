@@ -9,9 +9,9 @@ import UserList from "./userList";
 import { Button, Popconfirm } from "antd";
 import { FaTrashAlt } from "react-icons/fa";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { toast } from "react-toastify";
 
-export default function SuperAdminUserList({ searchTerm })
-{
+export default function SuperAdminUserList({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [usersList, setUsersList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -31,15 +31,11 @@ export default function SuperAdminUserList({ searchTerm })
     { name: "Physiotherapist", value: "6" },
   ];
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -57,44 +53,36 @@ export default function SuperAdminUserList({ searchTerm })
         const data = await response.json();
         console.log("DATA from response", data);
         setUsersList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  useEffect(() =>
-  {
-    if (usersList?.length > 0 && searchTerm)
-    {
+  useEffect(() => {
+    if (usersList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm?.toLowerCase().trim();
       const matchedPatients = usersList?.filter((p) =>
         p?.contactNumber?.toLowerCase()?.includes(lowerCaseSearchTerm)
       );
       setFilteredUsers(matchedPatients);
-    } else
-    {
+    } else {
       // If searchTerm is empty, show all patients
       setFilteredUsers(usersList);
     }
   }, [usersList, searchTerm]);
 
-  console.log("FILTERED USERES", filteredUsers)
-  const handleBookAppointment = (userId) =>
-  {
+  console.log("FILTERED USERES", filteredUsers);
+  const handleBookAppointment = (userId) => {
     localStorage.setItem("userId", userId);
     navigate("/superadminusereditform");
   };
 
-  const handleDeletePatient = async (userId) =>
-  {
-    try
-    {
+  const handleDeletePatient = async (userId) => {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -111,23 +99,22 @@ export default function SuperAdminUserList({ searchTerm })
 
       const data = await response.json();
 
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("Patient deleted successfully", data);
         // Update the list in the UI by removing the deleted doctor
         setUsersList((prevPatientsList) =>
           prevPatientsList.filter((patient) => patient._id !== userId)
         );
-      } else
-      {
+
+        // Show toast message for successful deletion
+        toast.success("User deleted successfully");
+      } else {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting the doctor:", error);
     }
   };
-
   console.log("USER LIST", usersList);
   return (
     <>
@@ -215,7 +202,7 @@ export default function SuperAdminUserList({ searchTerm })
         {filteredUsers?.map((user) => (
           <div
             className="bg-white w-full p-4 sm:px-5 px-1 mb-5"
-          // onClick={() => findSelectedDoctor(patient._id)}
+            // onClick={() => findSelectedDoctor(patient._id)}
           >
             <div className="flex flex-row justify-start items-center">
               <div class="flex items-center gap-x-2">
