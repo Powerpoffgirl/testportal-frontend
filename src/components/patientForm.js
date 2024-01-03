@@ -444,45 +444,32 @@ export default function PatientForm()
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
           <div className="mx-auto my-2">
-            <div className=" " >
-
-              <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
-
-                {userImage || userDetails?.userPic ? (
-                  <div aria-controls="profile-pic-menu"
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={handleClick} >
-                    <img
-                      src={userDetails?.userPic || userImage}
-                      alt={userDetails?.name}
-                      style={{
-                        borderRadius: "50%",
-                        width: '145px',
-                        height: '145px',
-                        cursor: 'pointer'
-                      }}
-
-
-                    />
-                  </div>
+            <div className=" ">
+              <div
+                className=" border w-36 mx-auto rounded-full"
+                style={{ backgroundColor: "#B1DAED" }}
+              >
+                {userDetails?.userPic ? (
+                  <img
+                    src={userDetails?.userPic}
+                    alt={userDetails?.name}
+                    style={{
+                      borderRadius: "50%",
+                      width: "130px",
+                      height: "130px",
+                    }}
+                  />
                 ) : (
                   <PermIdentityOutlinedIcon
-                    style={{ width: "auto", height: 'auto', color: 'white', cursor: 'pointer' }}
-                    aria-controls="profile-pic-menu"
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={handleClick}
-
+                    style={{ width: "auto", height: "auto", color: "white" }}
                   />
                 )}
               </div>
             </div>
 
             <div className="flex flex-row mt-5 mb-3">
-
               <p className="block text-black text-lg font-semibold ">
-
+                Edit Profile Picture
                 <input
                   id="files"
                   type="file"
@@ -501,11 +488,11 @@ export default function PatientForm()
                 onClick={handleClick}
                 style={{
                   cursor: "pointer",
-
                 }}
               >
-                {/* <FaAngleDown /> */}
+                <FaAngleDown />
               </p>
+
               <div style={{ backgroundColor: "#89CFF0" }}>
                 <Menu
                   id="profile-pic-menu"

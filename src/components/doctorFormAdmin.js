@@ -563,7 +563,7 @@ export default function DoctorFormAdmin()
             </p>
             <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
               <Select
-                className="w-full border-none h-10"
+                className="w-full border-none h-10 overflow-y-scroll"
                 mode="multiple"
                 id="workingDays"
                 name="workingDays"
@@ -641,19 +641,29 @@ export default function DoctorFormAdmin()
             >
               Specialist
             </label>
-            <Select
-              className="w-full border-none h-10"
-              id="speciality"
-              name="speciality"
-              mode="multiple"
-              onChange={handleChange2}
-            >
-              {SpecialtiesDropdown.map((option) => (
-                <Select.Option key={option.value} value={option.value}>
-                  {option.label}
-                </Select.Option>
-              ))}
-            </Select>
+            <style>
+              {`
+          .ant-select-selector {
+            border-color: white !important;
+          }
+        `}
+            </style>
+
+            <div class="border rounded-lg border-[#89CFF0]">
+              <Select
+                className="w-full border-none h-10 overflow-y-scroll "
+                id="speciality"
+                name="speciality"
+                mode="multiple"
+                onChange={handleChange2}
+              >
+                {SpecialtiesDropdown.map((option) => (
+                  <Select.Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>
           </div>
 
           <div className="mt-3">
@@ -689,7 +699,7 @@ export default function DoctorFormAdmin()
               </label>
               <input
                 type="text"
-                placeholder="Dr. Sneha Ahuja"
+                placeholder=""
                 id="name"
                 name="name"
                 onChange={handleChange}
@@ -728,7 +738,7 @@ export default function DoctorFormAdmin()
                 type="text"
                 id="email"
                 name="email"
-                placeholder="snehaahuja1234@gmail.com"
+                placeholder=""
                 onChange={handleChange}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
@@ -743,7 +753,7 @@ export default function DoctorFormAdmin()
               </label>
               <input
                 type="number"
-                placeholder="+91-8603678862"
+                placeholder=""
                 id="contactNumber"
                 name="contactNumber"
                 onChange={handleChange}
