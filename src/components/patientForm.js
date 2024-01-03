@@ -303,11 +303,11 @@ export default function PatientForm() {
         "state",
       ].includes(name)
         ? {
-            address: {
-              ...prevPatientDetails.address,
-              [name]: value,
-            },
-          }
+          address: {
+            ...prevPatientDetails.address,
+            [name]: value,
+          },
+        }
         : { [name]: value }),
     }));
 
@@ -378,6 +378,7 @@ export default function PatientForm() {
     } else if (newPatientDetails.bodyWeight === "") {
       toast.error("Please write body weight");
     } else if (newPatientDetails.address?.pinCode === "") {
+<<<<<<< HEAD
       toast.error("Please write Pincode");
     } else if (newPatientDetails.address?.district === "") {
       toast.error("Please write district");
@@ -407,8 +408,47 @@ export default function PatientForm() {
 
         // Display "Member's form booked" toast message
         toast.success("Member details updated!");
+=======
+      if (newPatientDetails.name === "") {
+        toast.error("Please write name");
+      } else if (newPatientDetails.age === "") {
+        toast.error("Please write age");
+      } else if (newPatientDetails.bodyWeight === "") {
+        toast.error("Please write body weight");
+      } else if (newPatientDetails.address?.pinCode === "") {
+        toast.error("Please write Pincode");
+      } else if (newPatientDetails.address?.district === "") {
+        toast.error("Please write district");
+      } else if (newPatientDetails.address?.state === "") {
+        toast.error("Please write state");
+      } else {
+        const doctorId = localStorage.getItem("doctorId");
+        const token = localStorage.getItem("token");
+        if (!token) {
+          console.error("No token found in local storage");
+          localStorage.clear();
+          navigate(`/userlogin`);
+        }
+        const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+          body: JSON.stringify(newPatientDetails),
+        });
+        const data = await response.json();
+        if (data.success === true) {
+          // navigate("/otp")
+          onOpenModal();
+          localStorage.setItem("patientId", data.data._id);
+
+          // Display "Member's form booked" toast message
+          toast.success("Member details updated!");
+        }
+        console.log("DATA from response", data);
+>>>>>>> d1e87f961fa180e0d550d5b6e52e1dd67b192101
       }
-      console.log("DATA from response", data);
     }
   };
 
