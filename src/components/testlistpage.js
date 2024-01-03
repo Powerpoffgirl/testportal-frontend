@@ -12,8 +12,10 @@ import { Modal } from "./tableModal";
 
 export default function TestListPage()
 {
+
     const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+    let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [rowNumber, setRowNumber] = useState();
@@ -301,7 +303,7 @@ export default function TestListPage()
                                 deleteRow={handleDeleteRow}
                                 editRow={handleEditRow}
                             />
-                            <div style={{ display: 'flex', alignItems: "center", justifyContent: 'center', marginTop: 20 }}>
+                            <div style={{ display: 'flex', alignItems: "center", justifyContent: 'center', marginTop: 20, marginLeft: isTab1 ? -200 : null, marginBottom: isTab1 ? -500 : null }}>
                                 <button onClick={() => setModalOpen(true)} style={{ color: 'white', height: 30, width: 60, backgroundColor: "#89CFF0", borderRadius: 10 }}>
                                     Add
                                 </button>

@@ -118,11 +118,10 @@ const SymptomsDropdown = [
   { label: "Snoring", value: "Snoring" },
 ];
 
-export default function EditUserForm() {
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+export default function EditUserForm()
+{
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
-
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
@@ -143,7 +142,7 @@ export default function EditUserForm() {
 
   const [appointmentDetails, setAppointmentDetails] = useState({
     doctorId: localStorage.getItem("doctorId"),
-    patientId: localStorage.getItem("patientId"),
+    patientId: "",
     appointmentDate: {
       date: localStorage.getItem("appointment_date"),
       time: localStorage.getItem("appointment_time"),
@@ -152,10 +151,12 @@ export default function EditUserForm() {
     diseases: [],
   });
 
-  const patientId = localStorage.getItem("patientId");
+  // const patientId = localStorage.getItem("patientId");
   const [patientDetails, setPatientDetails] = useState({
     name: "",
     age: "",
+    ageType: "",
+    gender: "",
     bodyWeight: "",
     address: {
       houseNo: "",
@@ -169,11 +170,15 @@ export default function EditUserForm() {
     patientPic: "",
   });
 
-  useEffect(() => {
-    const fetchPatientList = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientList = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -191,7 +196,8 @@ export default function EditUserForm() {
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientsList(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -200,34 +206,40 @@ export default function EditUserForm() {
   }, []);
 
   console.log("DATE TIME", appointmentDate, appointmentTime);
-  const handleChangeIssues = (values) => {
+  const handleChangeIssues = (values) =>
+  {
     setAppointmentDetails((prevAppointmentDetails) => ({
       ...prevAppointmentDetails,
       issues: values,
     }));
   };
 
-  const handleChangeDiseases = (values) => {
+  const handleChangeDiseases = (values) =>
+  {
     setAppointmentDetails((prevAppointmentDetails) => ({
       ...prevAppointmentDetails,
       diseases: values,
     }));
   };
-  const handleNewProfilePictureClick = async () => {
+  const handleNewProfilePictureClick = async () =>
+  {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -236,7 +248,8 @@ export default function EditUserForm() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -248,7 +261,8 @@ export default function EditUserForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -260,12 +274,16 @@ export default function EditUserForm() {
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -279,75 +297,84 @@ export default function EditUserForm() {
 
         const data = await response.json();
         console.log("DATA from response", data);
-        if (data.data.newUser === true) {
+        if (data.data.newUser === true)
+        {
           setNewUser(true)
         }
         setUserDetails(data?.data);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
+
+
   }, []);
 
-  const handleClick = (event) => {
+
+
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
-  const handleToggleEdit = () => {
+  const handleToggleEdit = () =>
+  {
     setIsEditing(!isEditing);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = () =>
+  {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) => {
+    ...Array.from({ length: 24 }, (v, i) =>
+    {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange2 = (e) => {
+  const handleChange2 = (e) =>
+  {
     setUserDetails((prevUserDetails) => ({
       ...prevUserDetails,
       ageType: e,
     }));
   };
 
-  const handleChange1 = (e) => {
+  const handleChange1 = (e) =>
+  {
     setUserDetails((prevUserDetails) => ({
       ...prevUserDetails,
       gender: e,
-      // speciality: e,
     }));
   };
 
-  const handleChange3 = (e) => {
+  const handleChange3 = (e) =>
+  {
     console.log("HELLOOOOOOOO")
-
-
     setAppointmentDetails((prevAppointmentDetails) => ({
       ...prevAppointmentDetails,
       patientId: e,
     }));
+
+    localStorage.setItem("patientId", e)
   };
 
-  useEffect(() => {
-    localStorage.setItem("patientId", appointmentDetails?.patientId)
-    console.log("patientId", appointmentDetails?.patientId)
-  }, [appointmentDetails.patientId])
-
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
     if (
@@ -360,7 +387,8 @@ export default function EditUserForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         address: {
@@ -368,7 +396,8 @@ export default function EditUserForm() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         [name]: value,
@@ -378,8 +407,10 @@ export default function EditUserForm() {
     setIsEditing(true);
   };
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e) =>
+  {
     e.preventDefault();
+
     const newUserDetails = {
       name: userDetails?.name,
       contactNumber: userDetails?.contactNumber,
@@ -398,98 +429,155 @@ export default function EditUserForm() {
       },
       userPic: userImage,
     };
-    if (newUserDetails.name === "") {
+    if (newUserDetails.name === "")
+    {
       toast.error("Please write name");
-    } else if (newUserDetails.email === "") {
+    } else if (newUserDetails.email === "")
+    {
       toast.error("Please write email");
-    } else if (newUserDetails.contactNumber === "") {
+    } else if (newUserDetails.contactNumber === "")
+    {
       toast.error("Please write contact number");
-    } else if (newUserDetails.address?.pinCode === "") {
+    } else if (newUserDetails.address?.pinCode === "")
+    {
       toast.error("Please write Pincode");
-    } else if (newUserDetails.address?.district === "") {
+    } else if (newUserDetails.address?.district === "")
+    {
       toast.error("Please write district");
-    } else if (newUserDetails.address?.state === "") {
+    } else if (newUserDetails.address?.state === "")
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found in local storage");
-        localStorage.clear();
-        navigate("/userlogin");
-      }
-      const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(newUserDetails),
-      });
-      const data = await response.json();
-
-      if (data.statusCode === 400) {
-        toast.error("Please fill the details");
-      }
-      const response1 = await fetch(
-        `${baseUrl}/api/v1/user/update_patient/${patientId}`,
+      const patientId = localStorage.getItem("patientId")
+      if (newUser)
+      {
+        if (!token)
         {
+          console.error("No token found in local storage");
+          localStorage.clear();
+          navigate("/userlogin");
+        }
+        const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
           method: "put",
           headers: {
             "Content-Type": "application/json",
             "x-auth-token": token,
           },
-          body: JSON.stringify({
-            name: userDetails?.name,
-            age: userDetails?.age,
-            ageType: userDetails?.ageType,
-            gender: userDetails?.gender,
-            bodyWeight: userDetails?.bodyWeight,
-            address: {
-              houseNo: userDetails?.address?.houseNo,
-              floor: userDetails?.address?.floor,
-              block: userDetails?.address?.block,
-              area: userDetails?.address?.area,
-              pinCode: userDetails?.address?.pinCode,
-              district: userDetails?.address?.district,
-              state: userDetails?.address?.state,
-            },
-            patientPic: userImage,
-          }),
-        }
-      );
-      const data1 = await response1.json();
-      console.log("PATIENT UPDATED SUCCESSFULLY", data1);
+          body: JSON.stringify(newUserDetails),
+        });
+        const data = await response.json();
 
-      if (data.success === true) {
-        console.log("====================APPOINTMENT DETAILS=====================", appointmentDetails)
-        const response = await fetch(
-          `${baseUrl}/api/v1/user/create_appointment`,
+        if (data.statusCode === 400)
+        {
+          toast.error("Please fill the details");
+        }
+
+        const response1 = await fetch(
+          `${baseUrl}/api/v1/user/update_patient/${patientId}`,
           {
-            method: "post",
+            method: "put",
             headers: {
               "Content-Type": "application/json",
               "x-auth-token": token,
             },
-            body: JSON.stringify(appointmentDetails),
+            body: JSON.stringify({
+              name: userDetails?.name,
+              age: userDetails?.age,
+              ageType: userDetails?.ageType,
+              gender: userDetails?.gender,
+              bodyWeight: userDetails?.bodyWeight,
+              address: {
+                houseNo: userDetails?.address?.houseNo,
+                floor: userDetails?.address?.floor,
+                block: userDetails?.address?.block,
+                area: userDetails?.address?.area,
+                pinCode: userDetails?.address?.pinCode,
+                district: userDetails?.address?.district,
+                state: userDetails?.address?.state,
+              },
+              patientPic: userImage,
+            }),
           }
         );
-        const data = await response.json();
-        console.log("DATA FROM APPOINTMENT BOOKING", data);
-        if (data.success === true) {
-          console.log("OPEN MODAL");
-          onOpenModal();
-          console.log("DATA FROM APPOINTMENT BOOKING", data)
-          if (data.success === true) {
-            toast.success("Appointment booked successfully")
-            // console.log("Doctor updated successfully.");
-            navigate("/appointmentlistuser");
-          }
-          console.log("Doctor updated successfully.");
-        }
-        console.log("DATA from response", data);
+        const data1 = await response1.json();
+        console.log("PATIENT UPDATED SUCCESSFULLY", data1);
       }
+
+
+
+
+      // if (data.success === true)
+      // {
+      console.log("====================APPOINTMENT DETAILS=====================", appointmentDetails)
+      const response = await fetch(
+        `${baseUrl}/api/v1/user/create_appointment`,
+        {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+          body: JSON.stringify(appointmentDetails),
+        }
+      );
+      const data = await response.json();
+      console.log("DATA FROM APPOINTMENT BOOKING", data);
+      if (data.success === true)
+      {
+        console.log("OPEN MODAL");
+        onOpenModal();
+        console.log("DATA FROM APPOINTMENT BOOKING", data)
+        if (data.success === true)
+        {
+          toast.success("Appointment booked successfully")
+          // console.log("Doctor updated successfully.");
+          navigate("/appointmentlistuser");
+        }
+        console.log("Doctor updated successfully.");
+      }
+      console.log("DATA from response", data);
+      // }
     };
   }
+
+  useEffect(() =>
+  {
+    localStorage.setItem("patientId", appointmentDetails?.patientId)
+
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("patientId");
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(`${baseUrl}/api/v1/user/get_patientDetails/${patientId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
+
+        const data = await response.json();
+        console.log("DATA from PAITIENTS response", data);
+        console.log("SELECTED PATIENT DETAILS=================", data?.data)
+        setPatientDetails(data?.data);
+        localStorage.setItem("patientId", patientId)
+        console.log("################PATIENT NAME$$$$$$$", data?.data.name);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchPatientDetails();
+  }, [appointmentDetails?.patientId])
 
   const AgeType = [
     { label: "Year", value: "Year" },
@@ -510,6 +598,8 @@ export default function EditUserForm() {
 
   console.log("NEW USER", userDetails.newUser);
   console.log("PATIENTS LIST", patientsList);
+  console.log("PATIENT DETAILS", patientDetails)
+
   return (
     <>
       <Modal
@@ -651,7 +741,7 @@ export default function EditUserForm() {
                         type="text"
                         id="age"
                         name="age"
-                        value={userDetails?.age}
+                        value={patientDetails?.age}
                         className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
@@ -676,7 +766,6 @@ export default function EditUserForm() {
                         popupClassName="no-border-dropdown-menu"
                         id="ageType"
                         name="ageType"
-                        // value={userDetails?.ageType}
                         onChange={handleChange2}
                         placeholder="Select Age Type"
                         style={{ overflowY: "auto" }}
@@ -700,7 +789,7 @@ export default function EditUserForm() {
                         popupClassName="no-border-dropdown-menu"
                         id="ageType"
                         name="ageType"
-                        value={userDetails?.ageType}
+                        value={patientDetails?.ageType}
                         placeholder="Select Age Type"
                         style={{ overflowY: "auto" }}
                         dropdownStyle={{
@@ -758,7 +847,7 @@ export default function EditUserForm() {
                         popupClassName="no-border-dropdown-menu"
                         id="gender"
                         name="gender"
-                        value={userDetails?.gender}
+                        value={patientDetails?.gender}
                         placeholder="Select Gender"
                         style={{ overflowY: "auto" }}
                         dropdownStyle={{
@@ -805,7 +894,7 @@ export default function EditUserForm() {
                     type="text"
                     id="bodyWeight"
                     name="bodyWeight"
-                    value={userDetails?.bodyWeight}
+                    value={patientDetails?.bodyWeight}
                     className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                 )}
@@ -877,21 +966,25 @@ export default function EditUserForm() {
                     id="issues"
                     name="issues"
                     onChange={handleChangeIssues}
-                    onInputKeyDown={(e) => {
+                    onInputKeyDown={(e) =>
+                    {
 
-                      if (e.key === 'Enter') {
+                      if (e.key === 'Enter')
+                      {
                         e.preventDefault();
                         let inputValue = e.target.value.trim();
-                        if (inputValue) {
-                          handleChangeDiseases([...appointmentDetails.diseases, inputValue]);
-                          setTimeout(() => {
+                        if (inputValue)
+                        {
+                          handleChangeIssues([...appointmentDetails?.issues, inputValue]);
+                          setTimeout(() =>
+                          {
                             e.target.value = '';
                             inputValue = '';
                           }, 0);
                         }
                       }
                     }}
-                    value={patientDetails.issues}
+                    value={patientDetails?.issues}
                     placeholder="Select Issues"
 
                     dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
@@ -923,21 +1016,25 @@ export default function EditUserForm() {
                   id="diseases"
                   name="diseases"
                   onChange={handleChangeDiseases}
-                  onInputKeyDown={(e) => {
+                  onInputKeyDown={(e) =>
+                  {
 
-                    if (e.key === 'Enter') {
+                    if (e.key === 'Enter')
+                    {
                       e.preventDefault();
-                      let inputValue = e.target.value.trim();
-                      if (inputValue) {
-                        handleChangeDiseases([...appointmentDetails.diseases, inputValue]);
-                        setTimeout(() => {
+                      let inputValue = e?.target?.value?.trim();
+                      if (inputValue)
+                      {
+                        handleChangeDiseases([...appointmentDetails?.diseases, inputValue]);
+                        setTimeout(() =>
+                        {
                           e.target.value = '';
                           inputValue = '';
                         }, 0);
                       }
                     }
                   }}
-                  value={patientDetails.diseases}
+                  value={patientDetails?.diseases}
                   placeholder="Select Disease"
                   style={{ overflowY: "auto" }}
                   dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
@@ -984,7 +1081,7 @@ export default function EditUserForm() {
                         placeholder="House No."
                         id="houseNo"
                         name="houseNo"
-                        value={userDetails?.address?.houseNo}
+                        value={patientDetails?.address?.houseNo}
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
@@ -1005,7 +1102,7 @@ export default function EditUserForm() {
                         type="text"
                         id="floor"
                         name="floor"
-                        value={userDetails?.address?.floor}
+                        value={patientDetails?.address?.floor}
                         placeholder="Floor"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -1027,7 +1124,7 @@ export default function EditUserForm() {
                         type="text"
                         id="block"
                         name="block"
-                        value={userDetails?.address?.block}
+                        value={patientDetails?.address?.block}
                         placeholder="Block"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -1053,7 +1150,7 @@ export default function EditUserForm() {
                         type="number"
                         id="pinCode"
                         name="pinCode"
-                        value={userDetails?.address?.pinCode}
+                        value={patientDetails?.address?.pinCode}
                         placeholder="Pin Code"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -1081,7 +1178,7 @@ export default function EditUserForm() {
                       type="text"
                       id="area"
                       name="area"
-                      value={userDetails?.address?.area}
+                      value={patientDetails?.address?.area}
                       placeholder="Area/Landmark"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
@@ -1107,7 +1204,7 @@ export default function EditUserForm() {
                         type="text"
                         id="district"
                         name="district"
-                        value={userDetails?.address?.district}
+                        value={patientDetails?.address?.district}
                         placeholder="District"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -1134,7 +1231,7 @@ export default function EditUserForm() {
                         type="text"
                         id="state"
                         name="state"
-                        value={userDetails?.address?.state}
+                        value={patientDetails?.address?.state}
                         placeholder="State"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
