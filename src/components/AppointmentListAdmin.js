@@ -68,7 +68,13 @@ export default function AppointmentListAdmin({ searchTerm }) {
           toast.error("Permission Denied");
         }
         console.log("DATA from response", data);
-        setAppointmentList(data?.data);
+        const filteredAppointmentList = data?.data.filter(
+          (appointment) =>
+            appointment.date !== "" &&
+            appointment.name !== "" &&
+            appointment.patientname !== ""
+        );
+        setAppointmentList(filteredAppointmentList);
       } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
@@ -146,10 +152,6 @@ export default function AppointmentListAdmin({ searchTerm }) {
     }
   };
 
-  function formatDate(dateString) {
-    const parts = dateString.split("-");
-    return `${parts[2]}.${parts[1]}.${parts[0]}`;
-  }
   console.log("APPOINTMENT LISTS", appointmentList, selectedAppointment);
 
   const findSelectedDoctor = async (appointmentId) => {
@@ -372,10 +374,11 @@ export default function AppointmentListAdmin({ searchTerm }) {
                     <p class="text-gray-500 sm:text-sm text-xs">
                       Date & Time:<span className="ms-2"></span>
                     </p>
-                    {appointment?.appointmentDate?.date
-                      .split("-")
-                      .reverse()
-                      .join("-")}
+                    {
+                      appointment?.appointmentDate?.date
+                      // .split("-")
+                      // .reverse()
+                    }
                     <br />
                     {appointment?.appointmentDate?.time}
                   </h1>
