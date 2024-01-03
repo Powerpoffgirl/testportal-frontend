@@ -371,6 +371,7 @@ export default function PatientForm() {
       ageType: patientDetails?.ageType,
     };
 
+<<<<<<< HEAD
     if (newPatientDetails.name === "") {
       toast.error("Please write name");
     } else if (newPatientDetails.age === "") {
@@ -378,6 +379,19 @@ export default function PatientForm() {
     } else if (newPatientDetails.bodyWeight === "") {
       toast.error("Please write body weight");
     } else if (newPatientDetails.address?.pinCode === "") {
+=======
+    if (newPatientDetails.name === "")
+    {
+      toast.error("Please write name");
+    } else if (newPatientDetails.age === "")
+    {
+      toast.error("Please write age");
+    } else if (newPatientDetails.bodyWeight === "")
+    {
+      toast.error("Please write body weight");
+    } else if (newPatientDetails.address?.pinCode === "")
+    {
+>>>>>>> 55ce85cca357af5a940b8a8bb4de7065d94a4a94
       toast.error("Please write Pincode");
     } else if (newPatientDetails.address?.district === "") {
       toast.error("Please write district");
@@ -406,7 +420,7 @@ export default function PatientForm() {
         localStorage.setItem("patientId", data.data._id);
 
         // Display "Member's form booked" toast message
-        toast.success("Member's form booked");
+        toast.success("Member details updated!");
       }
       console.log("DATA from response", data);
     }
@@ -420,32 +434,45 @@ export default function PatientForm() {
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
           <div className="mx-auto my-2">
-            <div className=" ">
-              <div
-                className=" border w-36 mx-auto rounded-full"
-                style={{ backgroundColor: "#B1DAED" }}
-              >
-                {userDetails?.userPic ? (
-                  <img
-                    src={userDetails?.userPic}
-                    alt={userDetails?.name}
-                    style={{
-                      borderRadius: "50%",
-                      width: "130px",
-                      height: "130px",
-                    }}
-                  />
+            <div className=" " >
+
+              <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
+
+                {userImage || userDetails?.userPic ? (
+                  <div aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick} >
+                    <img
+                      src={userDetails?.userPic || userImage}
+                      alt={userDetails?.name}
+                      style={{
+                        borderRadius: "50%",
+                        width: '145px',
+                        height: '145px',
+                        cursor: 'pointer'
+                      }}
+
+
+                    />
+                  </div>
                 ) : (
                   <PermIdentityOutlinedIcon
-                    style={{ width: "auto", height: "auto", color: "white" }}
+                    style={{ width: "auto", height: 'auto', color: 'white', cursor: 'pointer' }}
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+
                   />
                 )}
               </div>
             </div>
 
             <div className="flex flex-row mt-5 mb-3">
+
               <p className="block text-black text-lg font-semibold ">
-                Edit Profile Picture
+
                 <input
                   id="files"
                   type="file"
@@ -464,11 +491,11 @@ export default function PatientForm() {
                 onClick={handleClick}
                 style={{
                   cursor: "pointer",
+
                 }}
               >
-                <FaAngleDown />
+                {/* <FaAngleDown /> */}
               </p>
-
               <div style={{ backgroundColor: "#89CFF0" }}>
                 <Menu
                   id="profile-pic-menu"
