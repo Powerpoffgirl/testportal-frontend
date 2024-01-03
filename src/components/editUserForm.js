@@ -501,13 +501,6 @@ export default function EditUserForm()
             }),
           }
         );
-<<<<<<< HEAD
-        const data = await response.json();
-        console.log("DATA FROM APPOINTMENT BOOKING", data);
-        if (data.success === true) {
-          console.log("OPEN MODAL");
-          onOpenModal();
-=======
         const data1 = await response1.json();
         console.log("PATIENT UPDATED SUCCESSFULLY", data1);
       }
@@ -541,7 +534,6 @@ export default function EditUserForm()
           toast.success("Appointment booked successfully")
           // console.log("Doctor updated successfully.");
           navigate("/appointmentlistuser");
->>>>>>> 42c13ad354278e18284284d1c07ca0d693ff8739
         }
         console.log("Doctor updated successfully.");
       }
