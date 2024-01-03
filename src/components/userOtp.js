@@ -5,7 +5,7 @@ import { ToastContainer, toast } from "react-toastify";
 import { FaPhoneAlt } from "react-icons/fa";
 import { LuRefreshCcw } from "react-icons/lu";
 import "./userLogin.css";
-import { Tooltip } from 'antd';
+import { Tooltip } from "antd";
 
 const UserOTP = () =>
 {
@@ -56,16 +56,18 @@ const UserOTP = () =>
       const data = await response.json();
 
       // Check the response status
+      console.log("==========================DATA===================", data)
       if (response.ok)
       {
         console.log("OTP sent successfully", data);
+
         setResendClicked(true);
         setSeconds(90);
-        toast.success('Otp sent !!');
+        toast.success("Otp sent !!");
       } else
       {
         console.error("Error sending OTP:", data);
-        toast.error('Error sending Otp');
+        toast.error("Error sending Otp");
       }
     } catch (error)
     {
@@ -81,11 +83,9 @@ const UserOTP = () =>
     {
       setOtp(value);
     }
-
   };
 
-  console.log("otp output$$$$$$$$$$$", otp)
-
+  console.log("otp output$$$$$$$$$$$", otp);
 
   const verifyOTP = async () =>
   {
@@ -114,9 +114,10 @@ const UserOTP = () =>
         localStorage.setItem("pic", data?.data?.data?.userPic);
         console.log("token", data?.data?.token);
         console.log("======NEW USER=======", data?.data?.data?.newUser);
+
         if (data?.data?.data?.newUser)
         {
-          navigate("/edituserform", { state: { user: user } });
+          navigate("/userprofile", { state: { user: user } });
         } else if (doctorName)
         {
           navigate("/bookappointment", { state: { user: user } });
@@ -188,8 +189,10 @@ const UserOTP = () =>
 
   return (
     <>
-      <div className="login"
-        style={{ backgroundColor: "white", fontWeight: "700" }}>
+      <div
+        className="login"
+        style={{ backgroundColor: "white", fontWeight: "700" }}
+      >
         <div className="left_side">
           <h1 className="left_heading">
             Welcome To <br /> Doctalk'S{" "}
@@ -224,15 +227,29 @@ const UserOTP = () =>
             />
             <p className="error_message">{otperror}</p>
           </div>
-          <p style={{ fontWeight: 400, fontSize: '16px', display: "flex", marginLeft: "40%" }}>
-            <p className="timer" style={{ color: "#666", cursor: 'pointer' }}>
+          <p
+            style={{
+              fontWeight: 400,
+              fontSize: "16px",
+              display: "flex",
+              marginLeft: "40%",
+            }}
+          >
+            <p className="timer" style={{ color: "#666", cursor: "pointer" }}>
               <text className="mx-2" style={{ color: "#000000" }}>
                 {formatTime(seconds)} sec
               </text>{" "}
             </p>{" "}
           </p>
 
-          <button style={{ marginTop: '10px' }} className="button1" onClick={verifyOTP}> Verify OTP</button>
+          <button
+            style={{ marginTop: "10px" }}
+            className="button1"
+            onClick={verifyOTP}
+          >
+            {" "}
+            Verify OTP
+          </button>
         </div>
         <ToastContainer />
       </div>

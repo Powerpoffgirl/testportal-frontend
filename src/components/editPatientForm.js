@@ -43,6 +43,7 @@ export default function EditPatientForm() {
 
   const [patientDetails, setPatientDetails] = useState({
     name: "",
+    contactNumber: "",
     age: "",
     ageType: "",
     gender: "",
@@ -227,6 +228,7 @@ export default function EditPatientForm() {
           age: patientDetails.age,
           bodyWeight: patientDetails.bodyWeight,
           name: patientDetails.name,
+          contactNumber: patientDetails.contactNumber,
           address: patientDetails.address,
           patientPic: userImage,
         }),
@@ -506,7 +508,7 @@ export default function EditPatientForm() {
           {/* -----------contact----------- */}
           <div className="mt-3">
             <label
-              for="contact"
+              htmlFor="contactNumber"
               className="block text-black text-lg font-semibold"
             >
               Contact Number
@@ -517,7 +519,7 @@ export default function EditPatientForm() {
               name="contactNumber"
               onChange={handleChange}
               value={patientDetails?.contactNumber}
-              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.contactNumber && (
               <p className="text-red-500">{errors.contactNumber}</p>

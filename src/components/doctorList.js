@@ -265,8 +265,16 @@ export default function DoctorList({ searchTerm }) {
   };
 
   function abbreviateAndCombineDays(days) {
-    const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const dayIndexes = days.map(day => weekDays.indexOf(day));
+    const weekDays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    const dayIndexes = days.map((day) => weekDays.indexOf(day));
     let combinedDays = [];
     let i = 0;
 
@@ -274,7 +282,10 @@ export default function DoctorList({ searchTerm }) {
       let startDay = weekDays[dayIndexes[i]].substring(0, 3);
       let endDayIndex = i;
 
-      while (endDayIndex < dayIndexes.length - 1 && dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1) {
+      while (
+        endDayIndex < dayIndexes.length - 1 &&
+        dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1
+      ) {
         endDayIndex++;
       }
 
@@ -289,7 +300,7 @@ export default function DoctorList({ searchTerm }) {
       i = endDayIndex + 1;
     }
 
-    return combinedDays.join(' ');
+    return combinedDays.join(" ");
   }
 
   // processing for the booking slots
@@ -350,7 +361,10 @@ export default function DoctorList({ searchTerm }) {
     return { year, monthName, day, dayName };
   }
 
-  const workingDays = selectedDoctor && selectedDoctor.workingDays ? abbreviateAndCombineDays(selectedDoctor.workingDays) : '';
+  const workingDays =
+    selectedDoctor && selectedDoctor.workingDays
+      ? abbreviateAndCombineDays(selectedDoctor.workingDays)
+      : "";
 
   const handleDateClick = (index) => {
     setCurrentIndex(index);
@@ -496,7 +510,10 @@ export default function DoctorList({ searchTerm }) {
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
                   <div className="flex flex-wrap">
                     {selectedDoctor?.speciality?.map((item, index) => {
-                      const formattedSpeciality = item.replace(/([a-z])([A-Z])/g, '$1 $2'); // Split at capital letters
+                      const formattedSpeciality = item.replace(
+                        /([a-z])([A-Z])/g,
+                        "$1 $2"
+                      ); // Split at capital letters
 
                       return (
                         <p
@@ -508,7 +525,6 @@ export default function DoctorList({ searchTerm }) {
                       );
                     })}
                   </div>
-
                 </div>
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black">
@@ -522,37 +538,45 @@ export default function DoctorList({ searchTerm }) {
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black">Timing</p>
                   <div className="flex flex-row  place-content-between">
-                    {workingDays.split(' ')[0] && (
+                    {workingDays.split(" ")[0] && (
                       <div className="flex flex-col">
                         <p className="text-gray-600 font-semibold">
-                          {workingDays.split(' ')[0]}:
+                          {workingDays.split(" ")[0]}:
                         </p>
-                        <p className="text-gray-600">{selectedDoctor?.workingHours?.workHourFrom} - {selectedDoctor?.workingHours?.workHourTo}</p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
                         {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
                       </div>
                     )}
-                    {workingDays.split(' ')[1] && (
+                    {workingDays.split(" ")[1] && (
                       <div className="flex flex-col">
                         <p className="text-gray-600 font-semibold">
-                          {workingDays.split(' ')[1]}:
+                          {workingDays.split(" ")[1]}:
                         </p>
-                        <p className="text-gray-600">{selectedDoctor?.workingHours?.workHourFrom} - {selectedDoctor?.workingHours?.workHourTo}</p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
                         {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
                       </div>
                     )}
                   </div>
                   <div className="flex flex-row place-content-between">
-                    {workingDays.split(' ')[2] && (
+                    {workingDays.split(" ")[2] && (
                       <div className="flex flex-col">
                         <p className="text-gray-600 font-semibold">
-                          {workingDays.split(' ')[2]}:
+                          {workingDays.split(" ")[2]}:
                         </p>
-                        <p className="text-gray-600">{selectedDoctor?.workingHours?.workHourFrom} - {selectedDoctor?.workingHours?.workHourTo}</p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
                         {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
                       </div>
                     )}
                   </div>
-
                 </div>
 
                 <div className=" py-1 mb-2">
@@ -564,7 +588,9 @@ export default function DoctorList({ searchTerm }) {
                     <div className="flex flex-col  bg-white p-1 px-3">
                       <p className="flex place-content-between my-1">
                         <span className="font-medium px-2">Consultation</span>{" "}
-                        <span className="font-bold px-2">Rs {selectedDoctor.consultationFee}</span>
+                        <span className="font-bold px-2">
+                          Rs {selectedDoctor.consultationFee}
+                        </span>
                       </p>
                       {!bookingslottoggle && !appointment && (
                         <div>
@@ -912,11 +938,10 @@ export default function DoctorList({ searchTerm }) {
                       display: "flex",
                       marginLeft: "40%",
                     }}
-                  >
-
-                  </p>
+                  ></p>
                   <p class="text-gray-600">
-                    Otp will expire in<span
+                    Otp will expire in
+                    <span
                       className="timer"
                       style={{ color: "#666", cursor: "pointer" }}
                     >
@@ -1030,8 +1055,3 @@ export default function DoctorList({ searchTerm }) {
     </>
   );
 }
-
-
-
-
-

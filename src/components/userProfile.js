@@ -11,7 +11,9 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 import UserContext from "./userContext";
-import { Select } from "antd";
+import { Flex, Select } from "antd";
+import { IoTrashOutline } from "react-icons/io5";
+import { Popconfirm } from "antd";
 
 
 
@@ -187,6 +189,35 @@ export default function UserProfile()
         }));
     };
 
+    const handleDelete = async () =>
+    {
+
+        const token = localStorage.getItem("token");
+        const doctorId = localStorage.getItem("doctorId");
+        if (!token)
+        {
+            console.error("No token found in local storage");
+            localStorage.clear();
+            navigate("/userlogin");
+        }
+        const response = await fetch(`${baseUrl}/api/v1/user/delete_user`, {
+            method: "delete",
+            headers: {
+                "Content-Type": "application/json",
+                "x-auth-token": token,
+            },
+        });
+        const data = await response.json();
+
+        if (data.success === true)
+        {
+            toast.success("User Deleted successfully")
+            navigate("/userlogin");
+        }
+        console.log("DATA from response", data);
+
+
+    }
 
 
     const handleChange = (e) =>
@@ -244,6 +275,8 @@ export default function UserProfile()
             },
             userPic: userImage,
         };
+        console.log("New User", newUserDetails)
+
         if (newUserDetails.name === "")
         {
             toast.error("Please write name");
@@ -286,8 +319,6 @@ export default function UserProfile()
             {
                 toast.error("Please fill the details");
             }
-
-
             if (data.success === true)
             {
                 toast.success("User details updated successfully")
@@ -295,6 +326,35 @@ export default function UserProfile()
                 navigate("/doctorlistuser");
             }
             console.log("DATA from response", data);
+            const response1 = await fetch(
+                `${baseUrl}/api/v1/user/update_patient/${patientId}`,
+                {
+                    method: "put",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-auth-token": token,
+                    },
+                    body: JSON.stringify({
+                        name: userDetails?.name,
+                        age: userDetails?.age,
+                        ageType: userDetails?.ageType,
+                        gender: userDetails?.gender,
+                        bodyWeight: userDetails?.bodyWeight,
+                        address: {
+                            houseNo: userDetails?.address?.houseNo,
+                            floor: userDetails?.address?.floor,
+                            block: userDetails?.address?.block,
+                            area: userDetails?.address?.area,
+                            pinCode: userDetails?.address?.pinCode,
+                            district: userDetails?.address?.district,
+                            state: userDetails?.address?.state,
+                        },
+                        patientPic: userImage,
+                    }),
+                }
+            );
+            const data1 = await response1.json();
+            console.log("PATIENT UPDATED SUCCESSFULLY", data1);
         }
     };
 
@@ -323,8 +383,29 @@ export default function UserProfile()
             <div className="flex flex-col -ml-7  lg:flex-row">
                 {/* --------------left-------------- */}
                 <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+                    <div className=" flex items-end justify-end w-100%">
+                        <Popconfirm
+                            title="Delete the Profile"
+                            description="Are you sure to delete this Profile?"
+                            okText="Delete"
+                            cancelText="No"
+                            className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                            onConfirm={handleDelete}
+                        >
+                            <button className=" items-end btn btn-primary border rounded-3xl text-white" style={{
+                                backgroundColor: '#89CFF0'
+                            }}
+
+                            >
+                                <IoTrashOutline />
+                            </button>
+                        </Popconfirm>
+                    </div>
                     <div className="mx-auto my-2">
+
+
                         <div className=" " >
+
                             <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
                                 {userDetails?.userPic ? (
                                     <img
@@ -436,6 +517,7 @@ export default function UserProfile()
                             id="gender"
                             name="gender"
                             value={userDetails?.gender}
+                            onChange={handleChange1}
                             placeholder="Select Gender"
                             style={{ overflowY: "auto" }}
                             dropdownStyle={{
@@ -468,8 +550,8 @@ export default function UserProfile()
                             </label>
                             <input
                                 type="text"
-                                id="degree"
-                                name="degree"
+                                id="age"
+                                name="age"
                                 onChange={handleChange}
                                 value={userDetails.age}
                                 className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -535,6 +617,16 @@ export default function UserProfile()
                             <p className="text-red-500">{errors.totalExperience}</p>
                         )}
                     </div>
+
+                    {/* <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", marginTop: '20px' }}>
+                        <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
+                            backgroundColor: '#89CFF0'
+                        }}
+                            onClick={handleDelete}
+                        >
+                            Delete Profile
+                        </button>
+                    </div> */}
 
 
                 </div >

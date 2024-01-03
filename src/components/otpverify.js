@@ -169,6 +169,7 @@ export default function OtpVerify() {
       );
 
       const data = await response.json();
+      console.log("data", data.data);
       if (data.success === true) {
         navigate("/forgetpassword");
       }
