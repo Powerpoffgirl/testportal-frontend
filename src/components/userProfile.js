@@ -12,6 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 import UserContext from "./userContext";
 import { Flex, Select } from "antd";
+import { IoTrashOutline } from "react-icons/io5";
+import { Popconfirm } from "antd";
 
 
 
@@ -209,7 +211,7 @@ export default function UserProfile()
 
         if (data.success === true)
         {
-            toast.success("User Delete successfully")
+            toast.success("User Deleted successfully")
             navigate("/userlogin");
         }
         console.log("DATA from response", data);
@@ -354,8 +356,29 @@ export default function UserProfile()
             <div className="flex flex-col -ml-7  lg:flex-row">
                 {/* --------------left-------------- */}
                 <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+                    <div className=" flex items-end justify-end w-100%">
+                        <Popconfirm
+                            title="Delete the Profile"
+                            description="Are you sure to delete this Profile?"
+                            okText="Delete"
+                            cancelText="No"
+                            className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                            onConfirm={handleDelete}
+                        >
+                            <button className=" items-end btn btn-primary border rounded-3xl text-white" style={{
+                                backgroundColor: '#89CFF0'
+                            }}
+
+                            >
+                                <IoTrashOutline />
+                            </button>
+                        </Popconfirm>
+                    </div>
                     <div className="mx-auto my-2">
+
+
                         <div className=" " >
+
                             <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
                                 {userDetails?.userPic ? (
                                     <img
@@ -568,7 +591,7 @@ export default function UserProfile()
                         )}
                     </div>
 
-                    <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", marginTop: '20px' }}>
+                    {/* <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", marginTop: '20px' }}>
                         <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
                             backgroundColor: '#89CFF0'
                         }}
@@ -576,7 +599,7 @@ export default function UserProfile()
                         >
                             Delete Profile
                         </button>
-                    </div>
+                    </div> */}
 
 
                 </div >
