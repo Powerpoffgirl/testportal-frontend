@@ -16,6 +16,8 @@ import { IoTrashOutline } from "react-icons/io5";
 import { Popconfirm } from "antd";
 import delete_button from "../assets/delete_button.svg";
 
+
+
 export default function UserProfile()
 {
     const { updateUser, updateUserEmail, updateUserimage } =
@@ -35,9 +37,11 @@ export default function UserProfile()
     const onCloseModal = () => setOpen1(false);
     const [userDetails, setUserDetails] = useState({ name: "" });
     const [floorError, setFloorError] = useState("");
-    const [newUser, setNewUser] = useState(false);
+    const [newUser, setNewUser] = useState(false)
 
-    const patientId = localStorage.getItem("patientId");
+
+
+    const patientId = localStorage.getItem("patientId")
     const [patientDetails, setPatientDetails] = useState({
         name: "",
         age: "",
@@ -121,6 +125,7 @@ export default function UserProfile()
                     return;
                 }
 
+
                 const response = await fetch(`${baseUrl}/api/v1/user/get_userDetails`, {
                     method: "GET",
                     headers: {
@@ -129,19 +134,11 @@ export default function UserProfile()
                     },
                 });
 
-<<<<<<< HEAD
                 const data = await response.json();
-=======
-        if (data.success === true)
-        {
-            toast.success("User Deleted successfully")
-            navigate("/userlogin");
-        }
->>>>>>> 5a4dee948fd8cd448611e8a709e425e7fdccd624
                 console.log("DATA from response", data);
                 if (data?.data?.newUser === true)
                 {
-                    setNewUser(true);
+                    setNewUser(true)
                 }
                 setUserDetails(data?.data);
                 console.log("usser name$$$$$$$", data?.data.name);
@@ -195,6 +192,7 @@ export default function UserProfile()
 
     const handleDelete = async () =>
     {
+
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem("doctorId");
         if (!token)
@@ -214,11 +212,14 @@ export default function UserProfile()
 
         if (data.success === true)
         {
-            toast.success("User Delete successfully");
+            toast.success("User Deleted successfully")
             navigate("/userlogin");
         }
         console.log("DATA from response", data);
-    };
+
+
+    }
+
 
     const handleChange = (e) =>
     {
@@ -275,7 +276,8 @@ export default function UserProfile()
             },
             userPic: userImage,
         };
-        console.log("newuserdetails", newUserDetails.newUserDetails);
+        console.log("New User", newUserDetails)
+
         if (newUserDetails.name === "")
         {
             toast.error("Please write name");
@@ -318,14 +320,42 @@ export default function UserProfile()
             {
                 toast.error("Please fill the details");
             }
-
             if (data.success === true)
             {
-                toast.success("User details updated successfully");
+                toast.success("User details updated successfully")
                 // console.log("Doctor updated successfully.");
                 navigate("/doctorlistuser");
             }
             console.log("DATA from response", data);
+            const response1 = await fetch(
+                `${baseUrl}/api/v1/user/update_patient/${patientId}`,
+                {
+                    method: "put",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-auth-token": token,
+                    },
+                    body: JSON.stringify({
+                        name: userDetails?.name,
+                        age: userDetails?.age,
+                        ageType: userDetails?.ageType,
+                        gender: userDetails?.gender,
+                        bodyWeight: userDetails?.bodyWeight,
+                        address: {
+                            houseNo: userDetails?.address?.houseNo,
+                            floor: userDetails?.address?.floor,
+                            block: userDetails?.address?.block,
+                            area: userDetails?.address?.area,
+                            pinCode: userDetails?.address?.pinCode,
+                            district: userDetails?.address?.district,
+                            state: userDetails?.address?.state,
+                        },
+                        patientPic: userImage,
+                    }),
+                }
+            );
+            const data1 = await response1.json();
+            console.log("PATIENT UPDATED SUCCESSFULLY", data1);
         }
     };
 
@@ -341,45 +371,75 @@ export default function UserProfile()
         { label: "Other", value: "Other" },
     ];
 
+
     console.log("User DETAILS", userDetails);
     updateUser(userDetails?.name);
     updateUserEmail(userDetails?.email);
     updateUserimage(userDetails?.userPic);
 
-    console.log("NEW USER", userDetails?.newUser);
+    console.log("NEW USER", userDetails?.newUser)
 
     return (
         <>
             <div className="flex flex-col -ml-7  lg:flex-row">
                 {/* --------------left-------------- */}
                 <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+                    <div className=" flex items-end justify-end w-100% " style={{ marginRight: -40, marginTop: -20 }}>
+                        <Popconfirm
+                            title="Delete the Profile"
+                            description="Are you sure to delete this Profile?"
+                            okText="Delete"
+                            cancelText="No"
+                            className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
+                            onConfirm={handleDelete}
+                        >
+                            <button onClick={onCloseModal}>
+                                <img src={delete_button} alt="df" class="w-8 mb-1"></img>
+                            </button>
+                        </Popconfirm>
+                    </div>
                     <div className="mx-auto my-2">
-                        <div className=" ">
-                            <div
-                                className=" border w-36 mx-auto rounded-full"
-                                style={{ backgroundColor: "#B1DAED" }}
-                            >
-                                {userDetails?.userPic ? (
-                                    <img
-                                        src={userDetails?.userPic}
-                                        alt={userDetails?.name}
-                                        style={{
-                                            borderRadius: "50%",
-                                            width: "145px",
-                                            height: "145px",
-                                        }}
-                                    />
+
+
+                        <div className=" " >
+
+                            <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
+
+                                {userImage || userDetails?.userPic ? (
+                                    <div aria-controls="profile-pic-menu"
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? "true" : undefined}
+                                        onClick={handleClick} >
+                                        <img
+                                            src={userDetails?.userPic || userImage}
+                                            alt={userDetails?.name}
+                                            style={{
+                                                borderRadius: "50%",
+                                                width: '145px',
+                                                height: '145px',
+                                                cursor: 'pointer'
+                                            }}
+
+
+                                        />
+                                    </div>
                                 ) : (
                                     <PermIdentityOutlinedIcon
-                                        style={{ width: "auto", height: "auto", color: "white" }}
+                                        style={{ width: "auto", height: 'auto', color: 'white', cursor: 'pointer' }}
+                                        aria-controls="profile-pic-menu"
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? "true" : undefined}
+                                        onClick={handleClick}
+
                                     />
                                 )}
                             </div>
                         </div>
 
                         <div className="flex flex-row mt-5 mb-3">
+
                             <p className="block text-black text-lg font-semibold ">
-                                Edit Profile Picture
+
                                 <input
                                     id="files"
                                     type="file"
@@ -398,9 +458,10 @@ export default function UserProfile()
                                 onClick={handleClick}
                                 style={{
                                     cursor: "pointer",
+
                                 }}
                             >
-                                <FaAngleDown />
+                                {/* <FaAngleDown /> */}
                             </p>
 
                             <div style={{ backgroundColor: "#89CFF0" }}>
@@ -449,8 +510,9 @@ export default function UserProfile()
                                     </MenuItem>
                                 </Menu>
                             </div>
+
                         </div>
-                    </div>
+                    </div >
                     <hr />
 
                     <div className=" mt-3">
@@ -466,6 +528,7 @@ export default function UserProfile()
                             id="gender"
                             name="gender"
                             value={userDetails?.gender}
+                            onChange={handleChange1}
                             placeholder="Select Gender"
                             style={{ overflowY: "auto" }}
                             dropdownStyle={{
@@ -474,7 +537,10 @@ export default function UserProfile()
                             }}
                         >
                             {Gender.map((option) => (
-                                <Select.Option key={option.value} value={option.value}>
+                                <Select.Option
+                                    key={option.value}
+                                    value={option.value}
+                                >
                                     {option.label}
                                 </Select.Option>
                             ))}
@@ -484,23 +550,26 @@ export default function UserProfile()
                         )}
                     </div>
 
+
                     <div className="flex flex-row gap-2">
                         <div className="mt-3 flex flex-col w-1/2">
                             <label
-                                for="age"
+                                for="degree"
                                 className="block text-black text-lg font-semibold"
                             >
                                 Age
                             </label>
                             <input
-                                type="number"
-                                id="degree"
-                                name="degree"
+                                type="text"
+                                id="age"
+                                name="age"
                                 onChange={handleChange}
-                                value={userDetails?.age}
+                                value={userDetails.age}
                                 className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                             />
-                            {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+                            {errors.degree && (
+                                <p className="text-red-500">{errors.degree}</p>
+                            )}
                         </div>
                         <div className="mt-3 flex flex-col w-1/2">
                             <label
@@ -523,14 +592,21 @@ export default function UserProfile()
                                     overflowY: "auto",
                                 }}
                             >
+
                                 {AgeType.map((option) => (
-                                    <Select.Option key={option.value} value={option.value}>
+                                    <Select.Option
+                                        key={option.value}
+                                        value={option.value}
+                                    >
                                         {option.label}
                                     </Select.Option>
                                 ))}
                             </Select>
-                            {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+                            {errors.degree && (
+                                <p className="text-red-500">{errors.degree}</p>
+                            )}
                         </div>
+
                     </div>
 
                     <div className=" mt-3">
@@ -553,32 +629,22 @@ export default function UserProfile()
                         )}
                     </div>
 
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            marginTop: "20px",
+                    {/* <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", marginTop: '20px' }}>
+                        <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
+                            backgroundColor: '#89CFF0'
                         }}
-                    >
-                        <button
-                            className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-                            style={{
-                                backgroundColor: "#89CFF0",
-                            }}
                             onClick={handleDelete}
                         >
                             Delete Profile
                         </button>
-                    </div>
-                </div>
+                    </div> */}
+
+
+                </div >
 
                 {/* ----------------------------------right---------------------------------- */}
-                <div
-                    div
-                    className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3"
-                >
-                    <p className="text-3xl ">Personal Information</p>
+                < div div className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3" >
+                    <p className="text-3xl " >Personal Information</p>
                     <hr className="border my-2 " />
                     {/* -------name------- */}
                     <div className="mt-3">
@@ -629,8 +695,11 @@ export default function UserProfile()
                         </label>
                         <div className="p-3 pb-5 border shadow-lg rounded-md">
                             <div className="flex flex-col ">
+
                                 <div className="flex flex-row">
+
                                     <div className="px-2 w-full sm:w-1/3 mt-3">
+
                                         <input
                                             type="text"
                                             placeholder="House No."
@@ -642,6 +711,7 @@ export default function UserProfile()
                                         />
                                     </div>
                                     <div className="px-2 w-full sm:w-1/3 mt-3">
+
                                         <input
                                             type="text"
                                             id="floor"
@@ -653,6 +723,7 @@ export default function UserProfile()
                                         />
                                     </div>
                                     <div className="px-2 w-full sm:w-1/3 mt-3">
+
                                         <input
                                             type="text"
                                             id="block"
@@ -667,6 +738,7 @@ export default function UserProfile()
                                         )}
                                     </div>
                                     <div className="px-2 w-full sm:w-1/2 mt-3">
+
                                         <input
                                             type="text"
                                             id="pinCode"
@@ -683,6 +755,7 @@ export default function UserProfile()
                                 </div>
 
                                 <div className="px-2 w-full mt-3 ">
+
                                     <input
                                         type="text"
                                         id="area"
@@ -692,11 +765,14 @@ export default function UserProfile()
                                         placeholder="Area/Landmark"
                                         className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                                     />
-                                    {errors.area && <p className="text-red-500">{errors.area}</p>}
+                                    {errors.area && (
+                                        <p className="text-red-500">{errors.area}</p>
+                                    )}
                                 </div>
 
                                 <div className="flex flex-row">
                                     <div className="px-2 w-full sm:w-1/2 mt-3">
+
                                         <input
                                             type="text"
                                             id="district"
@@ -712,6 +788,7 @@ export default function UserProfile()
                                     </div>
 
                                     <div className="px-2 w-full sm:w-1/2 mt-3">
+
                                         <input
                                             type="text"
                                             id="state"
@@ -725,23 +802,23 @@ export default function UserProfile()
                                             <p className="text-red-500">{errors.state}</p>
                                         )}
                                     </div>
+
                                 </div>
+
                             </div>
                         </div>
                     </div>
                     <div className="flex flex-row-reverse mt-5 my-2">
-                        <button
-                            className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-                            style={{
-                                backgroundColor: "#89CFF0",
-                            }}
+                        <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
+                            backgroundColor: '#89CFF0'
+                        }}
                             onClick={handleUpdate}
                         >
                             Continue...
                         </button>
                     </div>
-                </div>
-            </div>
+                </ div>
+            </div >
         </>
     );
 }
