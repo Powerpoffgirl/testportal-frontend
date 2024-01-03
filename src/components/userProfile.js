@@ -11,7 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 import UserContext from "./userContext";
-import { Select } from "antd";
+import { Flex, Select } from "antd";
 
 
 
@@ -187,6 +187,35 @@ export default function UserProfile()
         }));
     };
 
+    const handleDelete = async () =>
+    {
+
+        const token = localStorage.getItem("token");
+        const doctorId = localStorage.getItem("doctorId");
+        if (!token)
+        {
+            console.error("No token found in local storage");
+            localStorage.clear();
+            navigate("/userlogin");
+        }
+        const response = await fetch(`${baseUrl}/api/v1/user/delete_user`, {
+            method: "delete",
+            headers: {
+                "Content-Type": "application/json",
+                "x-auth-token": token,
+            },
+        });
+        const data = await response.json();
+
+        if (data.success === true)
+        {
+            toast.success("User Delete successfully")
+            navigate("/userlogin");
+        }
+        console.log("DATA from response", data);
+
+
+    }
 
 
     const handleChange = (e) =>
@@ -534,6 +563,16 @@ export default function UserProfile()
                         {errors.totalExperience && (
                             <p className="text-red-500">{errors.totalExperience}</p>
                         )}
+                    </div>
+
+                    <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", marginTop: '20px' }}>
+                        <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
+                            backgroundColor: '#89CFF0'
+                        }}
+                            onClick={handleDelete}
+                        >
+                            Delete Profile
+                        </button>
                     </div>
 
 
