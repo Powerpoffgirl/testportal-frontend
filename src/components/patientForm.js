@@ -386,6 +386,7 @@ export default function PatientForm()
       ageType: patientDetails?.ageType,
     };
 
+<<<<<<< HEAD
     if (newPatientDetails.name === "")
     {
       toast.error("Please write name");
@@ -397,6 +398,15 @@ export default function PatientForm()
       toast.error("Please write body weight");
     } else if (newPatientDetails.address?.pinCode === "")
     {
+=======
+    if (newPatientDetails.name === "") {
+      toast.error("Please write name");
+    } else if (newPatientDetails.age === "") {
+      toast.error("Please write age");
+    } else if (newPatientDetails.bodyWeight === "") {
+      toast.error("Please write body weight");
+    } else if (newPatientDetails.address?.pinCode === "") {
+>>>>>>> b190f20bfd29011a0357cc4579691740e2c12807
       toast.error("Please write Pincode");
     } else if (newPatientDetails.address?.district === "")
     {
