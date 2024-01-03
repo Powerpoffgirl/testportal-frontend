@@ -134,6 +134,14 @@ export default function EditDoctorForm() {
     }),
   ];
 
+  const handleChange2 = (e) => {
+    setDoctorDetails((prevDoctorDetails) => ({
+      ...prevDoctorDetails,
+      // workingDays: e,
+      speciality: e,
+    }));
+  };
+
   // const validateField = (name, value) =>
   // {
   //     switch (name)
@@ -236,12 +244,17 @@ export default function EditDoctorForm() {
     // Check if the token exists
     const newDoctorDetails = {
       name: doctorDetails?.name,
+      about: doctorDetails?.about,
+      consultationFee: doctorDetails?.consultationFee,
+      // registrationNo: doctorDetails?.registrationNo,
+
       // email: doctorDetails?.email, // Added email field
       // contactNumber: doctorDetails?.contactNumber, // Added contactNumber field
       workingDays: doctorDetails?.workingDays, // Added workingDays field
       workingHours: {
         workHourFrom: doctorDetails?.workingHours?.workHourFrom,
         workHourTo: doctorDetails?.workingHours?.workHourTo,
+        interval: doctorDetails?.interval,
       },
       totalExperience: doctorDetails?.totalExperience,
       speciality: doctorDetails?.speciality,
@@ -404,6 +417,90 @@ export default function EditDoctorForm() {
     });
   };
 
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    // Check if the token exists
+    if (doctorDetails.name === "") {
+      toast.error("Please write name");
+    } else if (doctorDetails.email === "") {
+      toast.error("Please write email");
+    } else if (doctorDetails.contactNumber === "") {
+      toast.error("Please write contact number");
+    } else if (doctorDetails.totalExperience === "") {
+      toast.error("Please write total experience");
+    } else if (doctorDetails.degree === "") {
+      toast.error("Please write degree");
+    } else if (doctorDetails.address.pinCode === "") {
+      toast.error("Please write Pincode");
+    } else if (doctorDetails.address.district === "") {
+      toast.error("Please write district");
+    } else if (doctorDetails.address.state === "") {
+      toast.error("Please write state");
+    } else {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found in local storage");
+        localStorage.clear();
+        navigate(`/adminlogin`);
+      }
+
+      const isEmpty = Object.values(doctorDetails).some(
+        (value) => value === ""
+      );
+
+      if (isEmpty || isEditing === false) {
+        toast.error("Please fill the fields or Update");
+        setIsEditing(false);
+        return;
+      }
+
+      const response = await fetch(`${baseUrl}/api/v1/admin/register_doctor`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(doctorDetails),
+      });
+      const data = await response.json();
+
+      if (data.statusCode === 400) {
+        toast.error("Please fill the details");
+      } else {
+        toast.error("Contact number already registered");
+      }
+
+      if (data.message === "Permission denied") {
+        toast.error("Permission Denied");
+      }
+
+      if (data.statusCode === 500) {
+        toast.error("Enter Unique Values or Values already Exist ");
+      }
+
+      if (data.success === true) {
+        navigate("/otp", {
+          state: { contactNumber: doctorDetails.contactNumber },
+        });
+        localStorage.setItem("id", data.data._id);
+      }
+      console.log("DATA from response", data);
+    }
+
+    const handleDelete = (workingDay) => {
+      console.log("delete", workingDay);
+      const days = doctorDetails.workingDays.filter(
+        (doctorDetail) => doctorDetail !== workingDay
+      );
+
+      // Assuming you want to update the doctorDetails state after filtering
+      setDoctorDetails({
+        ...doctorDetails,
+        workingDays: days,
+      });
+    };
+  };
+
   console.log("DOCTOR DETAILS", doctorDetails);
 
   updateUser(doctorDetails?.name);
@@ -412,464 +509,521 @@ export default function EditDoctorForm() {
 
   return (
     <>
-      <div className="flex flex-row">
-
-        <div className=" w-full">
-          <div className="mt-6 p-2">
-            <div className="flex  flex-col items-center justify-center w-full">
-              <div className="cursor-pointer">
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
+      <div className="flex flex-col -ml-7  lg:flex-row">
+        {/* --------------left-------------- */}
+        <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+          <div className="mx-auto my-2">
+            <div className=" ">
+              <div
+                className=" border w-36 mx-auto rounded-full"
+                style={{ backgroundColor: "#B1DAED" }}
+              >
+                {doctorDetails?.doctorPic ? (
                   <div
-                    style={{
-                      backgroundColor: "#FFFFFF",
-                      width: "90px",
-                      height: "90px",
-                      borderRadius: "50%",
-                      alignItems: "center",
-                      display: "flex",
-                      flexDirection: "row",
-                      justifyContent: "space-evenly",
-                      color: "#A4A4A4",
-                    }}
-                  >
-                    {doctorImage || doctorDetails?.doctorPic ? (
-                      <img
-                        src={doctorImage || doctorDetails?.doctorPic}
-                        alt="Avatar"
-                        style={{
-                          borderRadius: "50%",
-                        }}
-                      />
-                    ) : (
-                      <PermIdentityOutlinedIcon
-                        style={{ width: "70px", height: "70px" }}
-                      />
-                    )}
-                  </div>
-                  <p
                     aria-controls="profile-pic-menu"
                     aria-haspopup="true"
                     aria-expanded={open ? "true" : undefined}
                     onClick={handleClick}
-                    style={{
-                      cursor: "pointer",
-                      marginLeft: 37,
-                      marginTop: -20,
-                    }}
                   >
-                    <MdEdit />
-                  </p>
-                  <div style={{ backgroundColor: "#89CFF0" }}>
-                    <Menu
-                      id="profile-pic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={handleClose}
-                      MenuListProps={{
-                        "aria-labelledby": "edit-profile-pic-text",
-                        style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
+                    <img
+                      src={doctorDetails?.doctorPic}
+                      alt={doctorDetails?.name}
+                      style={{
+                        borderRadius: "50%",
+                        width: "145px",
+                        height: "145px",
+                        cursor: "pointer",
                       }}
-                    >
-                      <MenuItem
-                        style={{
-                          backgroundColor: "#89CFF0",
-                          color: isHovered ? "red" : "white",
-                        }}
-                        onClick={() => {
-                          handleClose();
-                        }}
-                        onMouseEnter={() => setIsHovered(true)}
-                        onMouseLeave={() => setIsHovered(false)}
-                      >
-                        {" "}
-                        <span style={{ marginRight: "8px" }}>
-                          <HiOutlineUserAdd />
-                        </span>
-                        <label htmlFor="files">New profile picture</label>
-                      </MenuItem>
-
-                      <MenuItem
-                        style={{
-                          backgroundColor: "#89CFF0",
-                          color: isHovered1 ? "red" : "white",
-                        }}
-                        // onClick={handleRemoveProfilePicture}
-                        onMouseEnter={() => setIsHovered1(true)}
-                        onMouseLeave={() => setIsHovered1(false)}
-                      >
-                        <span style={{ marginRight: "8px" }}>
-                          <FaRegTrashAlt />
-                        </span>
-                        <span>Remove current picture</span>
-                      </MenuItem>
-                    </Menu>
+                    />
                   </div>
-                  <label
-                    style={{ marginLeft: -17, marginTop: 5, fontWeight: "600" }}
-                  >
-                    Edit Profile Picture
-                  </label>
-                  <input
-                    id="files"
-                    type="file"
-                    ref={fileInputRef}
-                    style={{ display: "none" }}
-                    accept="image/*"
-                    onChange={handleFileSelect}
+                ) : (
+                  <PermIdentityOutlinedIcon
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                      color: "white",
+                      cursor: "pointer",
+                    }}
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
                   />
-                </div>
-              </div>
-            </div>
-            {/* <div>
-                            <button onClick={handleNewProfilePicture}>Upload</button>
-                        </div> */}
-            <div class="grid grid-cols-1 w-full gap-4">
-              <div>
-                <label
-                  for="name"
-                  class="block text-black text-lg font-semibold"
-                >
-                  Dr. Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="Smita Singh"
-                  id="name"
-                  name="name"
-                  value={doctorDetails?.name}
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
-                {errors.name && <p className="text-red-500">{errors.name}</p>}
-              </div>
-              <div>
-                <label
-                  for="email"
-                  class="block text-black text-lg font-semibold"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  placeholder="smitasingh1234@gmail.com"
-                  id="email"
-                  name="email"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                  value={doctorDetails?.email}
-                />
-                {errors.email && <p className="text-red-500">{errors.email}</p>}
-              </div>
-              <div>
-                <label
-                  for="contact"
-                  class="block text-black text-lg font-semibold"
-                >
-                  Contact Number
-                </label>
-                <input
-                  type="number"
-                  placeholder="+91-8603678852"
-                  id="contactNumber"
-                  name="contactNumber"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                  value={doctorDetails?.contactNumber}
-                />
-                {errors.contactNumber && (
-                  <p className="text-red-500">{errors.contactNumber}</p>
                 )}
               </div>
-
-              <div className="flex justify-between space-x-4">
-                <div className="flex-1">
-                  <label
-                    htmlFor="workingDays"
-                    className="block text-black text-lg font-semibold"
-                  >
-                    Working Days
-                  </label>
-                  <div className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
-                    <Select
-                      className="w-full border-none h-11"
-                      mode="multiple"
-                      id="workingDays"
-                      name="workingDays"
-                      onChange={handleChange1}
-                      placeholder="Select Working Days"
-                      value={doctorDetails?.workingDays}
-                    // Add other props as needed
-                    >
-                      {Daysdropdown.map((option) => (
-                        <Select.Option key={option.value} value={option.value}>
-                          {option.label}
-                        </Select.Option>
-                      ))}
-                    </Select>
-                  </div>
-                </div>
-
-                <div className="flex-1" style={{ marginRight: "10px" }}>
-                  <label className="block text-black text-lg font-semibold">
-                    Working Hours
-                  </label>
-                  <div className="flex space-x-2">
-                    <div className="flex-1">
-                      <select
-                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        name="workHourFrom"
-                        onChange={handleChange}
-                        value={doctorDetails?.workingHours?.workHourFrom}
-                      >
-                        {TimeDropdown.map((time) => (
-                          <option key={time.value} value={time.value}>
-                            {time.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-
-                    <div className="flex-1">
-                      <select
-                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        name="workHourTo"
-                        onChange={handleChange}
-                        value={doctorDetails?.workingHours?.workHourTo}
-                      >
-                        {TimeDropdown.map((time) => (
-                          <option key={time.value} value={time.value}>
-                            {time.label}
-                          </option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="flex justify-between space-x-4">
-                <div class="flex-1">
-                  <label
-                    for="total-experience"
-                    class="block text-black text-lg font-semibold"
-                  >
-                    Total Experience
-                  </label>
-                  <input
-                    type="text"
-                    id="total-experience"
-                    name="totalExperience"
-                    value={doctorDetails?.totalExperience}
-                    onChange={handleChange}
-                    class="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                  />
-                  {errors.totalExperience && (
-                    <p className="text-red-500">{errors.totalExperience}</p>
-                  )}
-                </div>
-                <div class="flex-1" style={{ marginRight: "10px" }}>
-                  <label
-                    for="specialist"
-                    class="block text-black text-lg font-semibold"
-                  >
-                    Specialist
-                  </label>
-                  <select
-                    className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    id="speciality"
-                    name="speciality"
-                    onChange={handleChange}
-                  >
-                    {SpecialtiesDropdown.map(({ label, value }) => (
-                      <option key={value} value={value}>
-                        {label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label
-                  for="degree"
-                  class="block text-black text-lg font-semibold"
-                >
-                  Degree
-                </label>
-                <input
-                  type="text"
-                  id="degree"
-                  name="degree"
-                  value={doctorDetails?.degree}
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
-                {errors.degree && (
-                  <p className="text-red-500">{errors.degree}</p>
-                )}
-              </div>
-
-              <div>
-                <label
-                  for="houseNo"
-                  class="block text-black text-lg font-semibold"
-                >
-                  Address
-                </label>
-                <div class="p-3 pb-5 border border-[#89CFF0]">
-                  <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-                    <div class="px-2 w-full sm:w-1/3">
-                      <label
-                        for="houseNo"
-                        class="block text-black text-lg font-semibold"
-                      >
-                        House No
-                      </label>
-                      <input
-                        type="text"
-                        id="houseNo"
-                        name="houseNo"
-                        value={doctorDetails?.address?.houseNo}
-                        onChange={handleChange}
-                        placeholder="1234"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />
-                    </div>
-                    <div class="px-2 w-full sm:w-1/3">
-                      <label
-                        for="floor"
-                        class="block text-black text-lg font-semibold"
-                      >
-                        Floor
-                      </label>
-                      <input
-                        type="text"
-                        id="floor"
-                        name="floor"
-                        value={doctorDetails?.address?.floor}
-                        onChange={handleChange}
-                        placeholder="2nd"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />
-                    </div>
-                    <div class="px-2 w-full sm:w-1/3">
-                      <label
-                        for="block"
-                        class="block text-black text-lg font-semibold"
-                      >
-                        Block
-                      </label>
-                      <input
-                        type="text"
-                        id="block"
-                        name="block"
-                        value={doctorDetails?.address?.block}
-                        onChange={handleChange}
-                        placeholder="A"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />
-                      {errors.block && (
-                        <p className="text-red-500">{errors.block}</p>
-                      )}
-                    </div>
-                    <div class="px-2 w-full sm:w-1/2">
-                      <label
-                        for="area"
-                        class="block text-black text-lg font-semibold"
-                      >
-                        Area
-                      </label>
-                      <input
-                        type="text"
-                        id="area"
-                        name="area"
-                        value={doctorDetails?.address?.area}
-                        onChange={handleChange}
-                        placeholder="Green Park"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />
-                      {errors.area && (
-                        <p className="text-red-500">{errors.area}</p>
-                      )}
-                    </div>
-                    <div class="px-2 w-full sm:w-1/2">
-                      <label
-                        for="pincode"
-                        class="block text-black text-lg font-semibold"
-                      >
-                        Pincode
-                      </label>
-                      <input
-                        type="text"
-                        id="pinCode"
-                        name="pinCode"
-                        onChange={handleChange}
-                        value={doctorDetails?.address?.pinCode}
-                        placeholder="110016"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />
-                      {errors.pinCode && (
-                        <p className="text-red-500">{errors.pinCode}</p>
-                      )}
-                    </div>
-                    <div class="px-2 w-full sm:w-1/2">
-                      <label
-                        for="district"
-                        class="block text-black text-lg font-semibold"
-                      >
-                        District
-                      </label>
-                      <input
-                        type="text"
-                        id="district"
-                        name="district"
-                        value={doctorDetails?.address?.district}
-                        onChange={handleChange}
-                        placeholder="South Delhi"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />
-                      {errors.district && (
-                        <p className="text-red-500">{errors.district}</p>
-                      )}
-                    </div>
-                    <div class="px-2 w-full sm:w-1/2">
-                      <label
-                        for="state"
-                        class="block text-black text-lg font-semibold"
-                      >
-                        State
-                      </label>
-                      <input
-                        type="text"
-                        id="state"
-                        name="state"
-                        value={doctorDetails?.address?.state}
-                        onChange={handleChange}
-                        placeholder="Delhi"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      />
-                      {errors.state && (
-                        <p className="text-red-500">{errors.state}</p>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
-            <div className="mt-10 w-100 items-center justify-center text-center">
-              <button
-                className="rounded-full justify-center px-9 py-2 bg-[#89CFF0] text-white"
-                onClick={handleUpdate}
+
+            <div className="flex flex-row mt-5 mb-3">
+              <p className="block text-black text-lg font-semibold ">
+                <input
+                  id="files"
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                />
+              </p>
+
+              <p
+                className="mt-2 ml-3"
+                aria-controls="profile-pic-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                style={{
+                  cursor: "pointer",
+                }}
               >
-                Process
-              </button>
+                {/* <FaAngleDown /> */}
+              </p>
+
+              <div style={{ backgroundColor: "#89CFF0" }}>
+                <Menu
+                  id="profile-pic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "edit-profile-pic-text",
+                    style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
+                  }}
+                >
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered ? "red" : "white",
+                    }}
+                    onClick={() => {
+                      handleClose();
+                    }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    {" "}
+                    <span style={{ marginRight: "8px" }}>
+                      <HiOutlineUserAdd />
+                    </span>
+                    <label htmlFor="files">New profile picture</label>
+                  </MenuItem>
+
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered1 ? "red" : "white",
+                    }}
+                    // onClick={handleRemoveProfilePicture}
+                    onMouseEnter={() => setIsHovered1(true)}
+                    onMouseLeave={() => setIsHovered1(false)}
+                  >
+                    <span style={{ marginRight: "8px" }}>
+                      <FaRegTrashAlt />
+                    </span>
+                    <span>Remove current picture</span>
+                  </MenuItem>
+                </Menu>
+              </div>
             </div>
           </div>
-          <ToastContainer />
+          <hr />
+
+          <div className="mt-4">
+            <p className="block text-black text-lg font-semibold">
+              Working Days
+            </p>
+            <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+              <Select
+                className="w-full border-none h-10 overflow-y-scroll"
+                mode="multiple"
+                id="workingDays"
+                name="workingDays"
+                value={doctorDetails?.workingDays}
+                onChange={handleChange1}
+                placeholder="Mon-Fri"
+                // Add other props as needed
+              >
+                {Daysdropdown.map((option) => (
+                  <Select.Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>
+          </div>
+
+          <div className="mt-3">
+            <p className="block text-black text-lg font-semibold">
+              Working Hours
+            </p>
+            <div className="flex flex-row-ml-2 mr-2">
+              <div className="flex ">
+                <select
+                  className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  name="workHourFrom"
+                  value={doctorDetails?.workingHours?.workHourFrom}
+                  onChange={handleChange}
+                >
+                  {TimeDropdown.map((time) => (
+                    <option key={time.value} value={time.value}>
+                      {time.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className=" mt-2 text-lg font-medium">to</div>
+              <div className="flex">
+                <select
+                  className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  name="workHourTo"
+                  value={doctorDetails?.workingHours?.workHourTo}
+                  onChange={handleChange}
+                >
+                  {TimeDropdown.map((time) => (
+                    <option key={time.value} value={time.value}>
+                      {time.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div className=" mt-3">
+            <label
+              for="total-experience"
+              className="block text-black text-lg font-semibold"
+            >
+              Total Experience
+            </label>
+            <input
+              type="text"
+              id="total-experience"
+              name="totalExperience"
+              value={doctorDetails?.totalExperience}
+              onChange={handleChange}
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.totalExperience && (
+              <p className="text-red-500">{errors.totalExperience}</p>
+            )}
+          </div>
+
+          <div className="mt-3">
+            <label
+              for="specialist"
+              className="block text-black text-lg font-semibold"
+            >
+              Specialist
+            </label>
+            <style>
+              {`
+          .ant-select-selector {
+            border-color: white !important;
+          }
+        `}
+            </style>
+
+            <div class="border rounded-lg border-[#89CFF0]">
+              <Select
+                className="w-full border-none h-10 overflow-y-scroll "
+                id="speciality"
+                name="speciality"
+                value={doctorDetails?.speciality}
+                mode="multiple"
+                onChange={handleChange2}
+              >
+                {SpecialtiesDropdown.map((option) => (
+                  <Select.Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>
+          </div>
+
+          <div className="mt-3">
+            <label
+              for="degree"
+              className="block text-black text-lg font-semibold"
+            >
+              Degree
+            </label>
+            <input
+              type="text"
+              id="degree"
+              name="degree"
+              value={doctorDetails?.degree}
+              onChange={handleChange}
+              className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+          </div>
+        </div>
+
+        {/* ----------------------------------right---------------------------------- */}
+        <div className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3">
+          <p className="text-3xl ">Personal Information</p>
+          <hr className="border my-2 " />
+          {/* -------name------- */}
+          <div className="flex flex-row">
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="name"
+                className="block text-black text-lg font-semibold"
+              >
+                Name
+              </label>
+              <input
+                type="text"
+                placeholder=""
+                id="name"
+                name="name"
+                value={doctorDetails?.name}
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.name && <p className="text-red-500">{errors.name}</p>}
+            </div>
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="name"
+                className="block text-black text-lg font-semibold"
+              >
+                Registration Number
+              </label>
+              <input
+                type="number"
+                // placeholder="Dr. Sneha Ahuja"
+                id="registrationNo"
+                name="registrationNo"
+                value={doctorDetails?.registrationNo}
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
+            </div>
+          </div>
+          {/* ------------email------------ */}
+          <div className="flex flex-row">
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="email"
+                className="block text-black text-lg font-semibold"
+              >
+                Email
+              </label>
+              <input
+                type="text"
+                id="email"
+                name="email"
+                value={doctorDetails?.email}
+                placeholder=""
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.name && <p className="text-red-500">{errors.name}</p>}
+            </div>
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="contact"
+                className="block text-black text-lg font-semibold"
+              >
+                Contact Number
+              </label>
+              <input
+                type="number"
+                placeholder=""
+                id="contactNumber"
+                name="contactNumber"
+                value={doctorDetails?.contactNumber}
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
+            </div>
+          </div>
+
+          <div className="flex flex-row">
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="interval"
+                className="block text-black text-lg font-semibold"
+              >
+                Interval
+              </label>
+              <input
+                type="text"
+                id="interval"
+                name="interval"
+                value={doctorDetails?.workingHours?.interval}
+                // placeholder="snehaahuja1234@gmail.com"
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.name && <p className="text-red-500">{errors.name}</p>}
+            </div>
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="consultationFee"
+                className="block text-black text-lg font-semibold"
+              >
+                Consultation fees
+              </label>
+              <input
+                type="number"
+                // placeholder="+91-8603678862"
+                id="consultationFee"
+                name="consultationFee"
+                value={doctorDetails?.consultationFee}
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
+            </div>
+          </div>
+
+          {/* -----------address----------- */}
+          <div className="mt-3">
+            <label
+              for="houseNo"
+              className="block text-black text-lg font-semibold"
+            >
+              Address
+            </label>
+            <div className="p-3 pb-5 border shadow-lg rounded-md">
+              <div className="flex flex-col ">
+                <div className="flex flex-row">
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      placeholder="House No."
+                      id="houseNo"
+                      name="houseNo"
+                      value={doctorDetails?.address?.houseNo}
+                      onChange={handleChange}
+                      // placeholder="1234"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      id="floor"
+                      name="floor"
+                      value={doctorDetails?.address?.floor}
+                      onChange={handleChange}
+                      placeholder="Floor"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      id="block"
+                      name="block"
+                      value={doctorDetails?.address?.block}
+                      onChange={handleChange}
+                      placeholder="Block"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.block && (
+                      <p className="text-red-500">{errors.block}</p>
+                    )}
+                  </div>
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="pinCode"
+                      name="pinCode"
+                      value={doctorDetails?.address?.pinCode}
+                      onChange={handleChange}
+                      placeholder="Pin Code"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.pinCode && (
+                      <p className="text-red-500">{errors.pinCode}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="px-2 w-full mt-3 ">
+                  <input
+                    type="text"
+                    id="area"
+                    name="area"
+                    value={doctorDetails?.address?.area}
+                    onChange={handleChange}
+                    placeholder="Area/Landmark"
+                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  />
+                  {errors.area && <p className="text-red-500">{errors.area}</p>}
+                </div>
+
+                <div className="flex flex-row">
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="district"
+                      name="district"
+                      value={doctorDetails?.address?.district}
+                      onChange={handleChange}
+                      placeholder="District"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.district && (
+                      <p className="text-red-500">{errors.district}</p>
+                    )}
+                  </div>
+
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="state"
+                      name="state"
+                      value={doctorDetails?.address?.state}
+                      onChange={handleChange}
+                      placeholder="State"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.state && (
+                      <p className="text-red-500">{errors.state}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="about"
+              className="block text-black text-lg font-semibold"
+            >
+              About
+            </label>
+            <input
+              type="text"
+              id="about"
+              name="about"
+              value={doctorDetails?.about}
+              onChange={handleChange}
+              className="block w-full h-24 placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.username && (
+              <p className="text-red-500">{errors.username}</p>
+            )}
+          </div>
+          <div className="flex flex-row-reverse mt-5 my-2">
+            <button
+              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              style={{
+                backgroundColor: "#89CFF0",
+              }}
+              onClick={handleUpdate}
+            >
+              Continue...
+            </button>
+          </div>
         </div>
       </div>
     </>
