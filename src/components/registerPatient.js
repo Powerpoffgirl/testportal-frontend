@@ -620,7 +620,7 @@ export default function PatientForm()
               }}
             >
               <p onChange={handleChange} >
-                Patient Id:{incrementedId}
+                Patient Id: {patientDetails ? patientDetails.registrationNo : incrementedId}
               </p>
             </div>
 
