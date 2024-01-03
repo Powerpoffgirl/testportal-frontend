@@ -163,15 +163,13 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
   return (
     <>
-      <div style={{ margin: 0, minHeight: "100vh" }}>
-        <div className="MainContainer flex lg:flex-row flex-col" style={{ width: '100%' }}>
+      <div class="flex">
+        <div className="MainContainer flex lg:flex-row flex-col w-full" >
           {/* --------------------left side-------------------- */}
-          <div className="Right_side mb-3  lg:min-h-3/4 lg:w-3/12 p-6 mr-5"
+          <div className=" mb-3 flex flex-col w-full lg:min-h-3/4 lg:w-3/12 p-6 mr-5 bg-white "
             style={{
-              boxSizing: "border-box",
               // height: "75vh",
               // float: "left",
-              backgroundColor: "white",
               borderRadius: 20,
             }}
           >
@@ -185,34 +183,38 @@ export default function BillingPage({ name, contactNo, gender, age }) {
               2312119001
             </p>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                marginTop: "10px",
-              }}
-            >
-              <div style={{ color: "gray", fontWeight: 500, width: "45%" }}>
-                Gender
+            <div class="flex flex-row mt-3 space-x-5" >
+              <div>
+                <div style={{ color: "gray", fontWeight: 500, }}>
+                  Gender
+                </div>
+                <div style={{ color: "black", fontWeight: 500 }}>
+                  {localStorage.getItem("gender")}
+                </div>
               </div>
-              <div style={{ color: "gray", fontWeight: 500, width: "45%" }}>
-                Age
+              <div>
+                <div style={{ color: "gray", fontWeight: 500, }}>
+                  Age
+                </div>
+                <div style={{ color: "black", fontWeight: 500 }}>
+                  {localStorage.getItem("age")}
+                </div>
               </div>
             </div>
-            <div
+            {/* <div
               style={{
                 display: "flex",
                 flexDirection: "row",
                 marginTop: "5px",
               }}
             >
-              <div style={{ color: "black", fontWeight: 500, width: "45%" }}>
+              <div style={{ color: "black", fontWeight: 500 }}>
                 {localStorage.getItem("gender")}
               </div>
-              <div style={{ color: "black", fontWeight: 500, width: "45%" }}>
+              <div style={{ color: "black", fontWeight: 500 }}>
                 {localStorage.getItem("age")}
               </div>
-            </div>
+            </div> */}
 
             <div style={{ marginTop: "5px" }}>
               <p style={{ color: "gray" }}>Contact number</p>
@@ -263,18 +265,19 @@ export default function BillingPage({ name, contactNo, gender, age }) {
             </div> */}
           </div>
           {/* --------------------right side-------------------- */}
-          <div className="Left_side lg:w-8/12 p-6   "
+          <div className=" lg:w-8/12 p-6 w-full bg-white lg:min-h-3/4"
             style={{
               boxSizing: "border-box ",
-              height: "75vh",
-              float: "right",
+              // height: "75vh",
+              // float: "right",
               borderRadius: 20,
-              backgroundColor: "white",
+              // backgroundColor: "white",
             }}
           >
-            <div style={{ height: '45%', overflowY: 'auto' }}>
-              <div className="relative overflow-x-auto">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            {/* table */}
+            <div style={{ overflowY: 'auto' }}>
+              <div className=" overflow-x-auto mb-10">
+                <table className=" text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 w-full">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
                       <th scope="col" className="px-6 py-3">
@@ -383,7 +386,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                     </li>
                   </ul>
                 </div>
-                <div class="relative w-full">
+                <div class="relative w-full ">
                   <input
                     value={searchTerm}
                     onChange={handleSearch}
@@ -432,15 +435,10 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                 </div>
               </div>
             </form>
-            <div class="flex lg:flex-row">
-
-              <div
-                className="Absolute_left"
+            <div class="flex xl:flex-row flex-col">
+              {/* ------------1st------------ */}
+              <div className="xl:w-1/3 w-full  xl:border-r border-gray-300"
                 style={{
-                  width: "30%",
-                  float: "left",
-                  height: "30vh",
-                  borderRight: "0.5px solid #D3D3D3",
                   overflowY: 'auto'
                 }}
               >
@@ -472,14 +470,9 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                 </div>
 
               </div>
-
-              <div
-                className="Absolute_left"
+              {/* ------------2nd------------ */}
+              <div className="Absolute_left xl:w-1/3 w-full mt-3 xl:border-r border-gray-300"
                 style={{
-                  width: "35%",
-                  float: "left",
-                  height: "30vh",
-                  borderRight: "0.5px solid #D3D3D3",
                   padding: '10px'
 
                 }}
@@ -497,6 +490,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                 <div style={{ width: "50%", float: "right", display: 'flex', flexDirection: 'column' }}>
                   <label style={{ fontSize: 12 }}>Discount (%) </label>
                   <input
+
                     type="text"
                     style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
                     disabled={true}
@@ -511,7 +505,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                     flexDirection: "row",
                   }}
                 >
-                  <p style={{ color: "gray", marginRight: "160px" }}>Amount</p>
+                  <p style={{ color: "gray", marginRight: "43%" }}>Amount</p>
                   <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
                 </div>
 
@@ -522,7 +516,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                     flexDirection: "row",
                   }}
                 >
-                  <p style={{ color: "gray", marginRight: "155px" }}>Discount</p>
+                  <p style={{ color: "gray", marginRight: "43%" }}>Discount</p>
                   <p style={{ color: "black" }}>0</p>
                 </div>
 
@@ -536,7 +530,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                   <p
                     style={{
                       color: "black",
-                      marginRight: "120px",
+                      marginRight: "30%",
                       fontWeight: 500,
                     }}
                   >
@@ -545,14 +539,12 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                   <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
                 </div>
               </div>
-
-              <div
-
-                className="middle"
+              {/* ------------3rd------------ */}
+              <div className="middle xl:w-1/3 w-full"
                 style={{
-                  width: "30%",
+                  // width: "30%",
                   height: "30vh",
-                  float: "left",
+                  // float: "left",
                   // borderRight: "0.5px solid #D3D3D3",
                 }}
               >
@@ -595,7 +587,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                   <p
                     style={{
                       color: "black",
-                      marginRight: "80px",
+                      marginRight: "20%",
                       fontWeight: 500,
                       marginLeft: "20px",
                       marginTop: '43px'

@@ -617,7 +617,7 @@ export default function DoctorList({ searchTerm }) {
                                     // console.log(index)
                                     const bg =
                                       currentIndex === index
-                                        ? "bg-blue-200"
+                                        ? "bg-[#B6E2F7]"
                                         : "bg-gray-200";
                                     return (
                                       <div
@@ -704,7 +704,7 @@ export default function DoctorList({ searchTerm }) {
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex]?.map((item, index) => {
                                   const marginb =
-                                    index == 0 ? " mt-2 -mb-5" : "";
+                                    index == 0 ? " mt-2 -mb-4" : "";
                                   if (index === currentTimeIndex) {
                                     return (
                                       <div
@@ -713,7 +713,8 @@ export default function DoctorList({ searchTerm }) {
                                         disabled={item.isBooked}
                                       >
                                         <div
-                                          className={` rounded-3xl py-1 px-2 text-gray-800  bg-blue-200`}
+                                          className={` rounded-3xl py-1 px-2 text-gray-800  bg-[#B6E2F7]`}
+
                                           onClick={() => {
                                             handleTimeClick(index);
                                           }}
