@@ -2,8 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
-import { Menu, MenuItem } from "@mui/material";
 import { MdEdit } from "react-icons/md";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
@@ -23,7 +24,8 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function EditPatientForm() {
+export default function EditPatientForm()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -60,12 +62,16 @@ export default function EditPatientForm() {
     patientPic: "",
   });
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -83,23 +89,27 @@ export default function EditPatientForm() {
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientDetails(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -108,7 +118,8 @@ export default function EditPatientForm() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -120,23 +131,27 @@ export default function EditPatientForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const handleNewProfilePictureClick = async () => {
+  const handleNewProfilePictureClick = async () =>
+  {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
@@ -151,17 +166,20 @@ export default function EditPatientForm() {
     { label: "Other", value: "Other" },
   ];
 
-  const handleToggleEdit = () => {
+  const handleToggleEdit = () =>
+  {
     setIsEditing(!isEditing);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = () =>
+  {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
     if (
@@ -174,7 +192,8 @@ export default function EditPatientForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -182,7 +201,8 @@ export default function EditPatientForm() {
           [name]: value,
         },
       }));
-    } else if (["issues"].includes(name)) {
+    } else if (["issues"].includes(name))
+    {
       // Assuming the value is an array or a string to be added to the array
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
@@ -190,7 +210,8 @@ export default function EditPatientForm() {
           ? value
           : [...prevPatientDetails[name], value],
       }));
-    } else if (["diseases"].includes(name)) {
+    } else if (["diseases"].includes(name))
+    {
       // Assuming the value is an array or a string to be added to the array
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
@@ -198,7 +219,8 @@ export default function EditPatientForm() {
           ? value
           : [...prevPatientDetails[name], value],
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -206,12 +228,14 @@ export default function EditPatientForm() {
     }
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
     // Check if the token exists
     const token = localStorage.getItem("token");
     const patientId = localStorage.getItem("patientId");
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       localStorage.clear();
       navigate(`/userlogin`);
@@ -226,25 +250,35 @@ export default function EditPatientForm() {
       patientPic: userImage,
     };
 
-    if (newPatientDetails.gender === "") {
+    if (newPatientDetails.gender === "")
+    {
       toast.error("Please write gender");
-    } else if (newPatientDetails.age === "") {
+    } else if (newPatientDetails.age === "")
+    {
       toast.error("Please write age");
-    } else if (newPatientDetails.ageType === "") {
+    } else if (newPatientDetails.ageType === "")
+    {
       toast.error("Please write ageType");
-    } else if (newPatientDetails.bodyWeight === "") {
+    } else if (newPatientDetails.bodyWeight === "")
+    {
       toast.error("Please write bodyWeight");
-    } else if (newPatientDetails.name === "") {
+    } else if (newPatientDetails.name === "")
+    {
       toast.error("Please write name");
-    } else if (newPatientDetails.contactNumber === "") {
+    } else if (newPatientDetails.contactNumber === "")
+    {
       toast.error("Please write contactNumber");
-    } else if (newPatientDetails.address?.pinCode === "") {
+    } else if (newPatientDetails.address?.pinCode === "")
+    {
       toast.error("Please write Pincode");
-    } else if (newPatientDetails.address?.district === "") {
+    } else if (newPatientDetails.address?.district === "")
+    {
       toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "") {
+    } else if (newPatientDetails.address?.state === "")
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       const response = await fetch(
         `${baseUrl}/api/v1/user/update_patient/${patientId}`,
         {
@@ -257,7 +291,8 @@ export default function EditPatientForm() {
         }
       );
       const data = await response.json();
-      if (data.success === true) {
+      if (data.success === true)
+      {
         onOpenModal();
         localStorage.setItem("id", data.data._id);
         toast.success("Member's form booked");
@@ -307,32 +342,45 @@ export default function EditPatientForm() {
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
           <div className="mx-auto my-2">
-            <div className=" ">
-              <div
-                className=" border w-36 mx-auto rounded-full"
-                style={{ backgroundColor: "#B1DAED" }}
-              >
-                {/* {doctorImage || doctorDetails?.doctorPic ? (
-                                <img
-                                    src={doctorImage || doctorDetails?.doctorPic}
-                                    alt="Avatar"
-                                    style={{
-                                        borderRadius: "50%",
-                                        width: '130px',
-                                        height: '130px'
-                                    }}
-                                />
-                            ) : ( */}
-                <PermIdentityOutlinedIcon
-                  style={{ width: "auto", height: "auto", color: "white" }}
-                />
-                {/* )} */}
+            <div className=" " >
+
+              <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
+
+                {userImage || patientDetails?.patientPic ? (
+                  <div aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open1 ? "true" : undefined}
+                    onClick={handleClick} >
+                    <img
+                      src={patientDetails?.patientPic || userImage}
+                      alt={patientDetails?.name}
+                      style={{
+                        borderRadius: "50%",
+                        width: '145px',
+                        height: '145px',
+                        cursor: 'pointer'
+                      }}
+
+
+                    />
+                  </div>
+                ) : (
+                  <PermIdentityOutlinedIcon
+                    style={{ width: "auto", height: 'auto', color: 'white', cursor: 'pointer' }}
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open1 ? "true" : undefined}
+                    onClick={handleClick}
+
+                  />
+                )}
               </div>
             </div>
 
             <div className="flex flex-row mt-5 mb-3">
+
               <p className="block text-black text-lg font-semibold ">
-                Edit Profile Picture
+
                 <input
                   id="files"
                   type="file"
@@ -347,20 +395,20 @@ export default function EditPatientForm() {
                 className="mt-2 ml-3"
                 aria-controls="profile-pic-menu"
                 aria-haspopup="true"
-                aria-expanded={open ? "true" : undefined}
+                aria-expanded={open1 ? "true" : undefined}
                 onClick={handleClick}
                 style={{
                   cursor: "pointer",
+
                 }}
               >
-                <FaAngleDown />
+                {/* <FaAngleDown /> */}
               </p>
-
               <div style={{ backgroundColor: "#89CFF0" }}>
                 <Menu
                   id="profile-pic-menu"
                   anchorEl={anchorEl}
-                  open={open}
+                  open={open1}
                   onClose={handleClose}
                   MenuListProps={{
                     "aria-labelledby": "edit-profile-pic-text",
@@ -372,7 +420,8 @@ export default function EditPatientForm() {
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() => {
+                    onClick={() =>
+                    {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}

@@ -362,15 +362,23 @@ export default function UserProfile() {
                 style={{ backgroundColor: "#B1DAED" }}
               >
                 {userImage || userDetails?.userPic ? (
-                  <img
-                    src={userDetails?.userPic || userImage}
-                    alt={userDetails?.name}
-                    style={{
-                      borderRadius: "50%",
-                      width: "145px",
-                      height: "145px",
-                    }}
-                  />
+                  <div
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  >
+                    <img
+                      src={userDetails?.userPic || userImage}
+                      alt={userDetails?.name}
+                      style={{
+                        borderRadius: "50%",
+                        width: "145px",
+                        height: "145px",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </div>
                 ) : (
                   <PermIdentityOutlinedIcon
                     style={{
@@ -390,7 +398,6 @@ export default function UserProfile() {
 
             <div className="flex flex-row mt-5 mb-3">
               <p className="block text-black text-lg font-semibold ">
-                Edit Profile Picture
                 <input
                   id="files"
                   type="file"
@@ -411,7 +418,7 @@ export default function UserProfile() {
                   cursor: "pointer",
                 }}
               >
-                <FaAngleDown />
+                {/* <FaAngleDown /> */}
               </p>
 
               <div style={{ backgroundColor: "#89CFF0" }}>
