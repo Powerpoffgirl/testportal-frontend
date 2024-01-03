@@ -14,6 +14,7 @@ import UserContext from "./userContext";
 import { Flex, Select } from "antd";
 import { IoTrashOutline } from "react-icons/io5";
 import { Popconfirm } from "antd";
+import delete_button from "../assets/delete_button.svg";
 
 
 
@@ -354,21 +355,17 @@ export default function UserProfile()
             <div className="flex flex-col -ml-7  lg:flex-row">
                 {/* --------------left-------------- */}
                 <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
-                    <div className=" flex items-end justify-end w-100%">
+                    <div className=" flex items-end justify-end w-100% " style={{ marginRight: -40, marginTop: -20 }}>
                         <Popconfirm
                             title="Delete the Profile"
                             description="Are you sure to delete this Profile?"
                             okText="Delete"
                             cancelText="No"
-                            className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                            className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
                             onConfirm={handleDelete}
                         >
-                            <button className=" items-end btn btn-primary border rounded-3xl text-white" style={{
-                                backgroundColor: '#89CFF0'
-                            }}
-
-                            >
-                                <IoTrashOutline />
+                            <button onClick={onCloseModal}>
+                                <img src={delete_button} alt="df" class="w-8 mb-1"></img>
                             </button>
                         </Popconfirm>
                     </div>
@@ -378,19 +375,26 @@ export default function UserProfile()
                         <div className=" " >
 
                             <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
-                                {userDetails?.userPic ? (
+
+                                {userImage || userDetails?.userPic ? (
                                     <img
-                                        src={userDetails?.userPic}
+                                        src={userDetails?.userPic || userImage}
                                         alt={userDetails?.name}
                                         style={{
                                             borderRadius: "50%",
                                             width: '145px',
                                             height: '145px'
                                         }}
+
                                     />
                                 ) : (
                                     <PermIdentityOutlinedIcon
-                                        style={{ width: "auto", height: 'auto', color: 'white' }}
+                                        style={{ width: "auto", height: 'auto', color: 'white', cursor: 'pointer' }}
+                                        aria-controls="profile-pic-menu"
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? "true" : undefined}
+                                        onClick={handleClick}
+
                                     />
                                 )}
                             </div>
