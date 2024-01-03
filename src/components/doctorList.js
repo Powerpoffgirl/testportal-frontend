@@ -265,7 +265,6 @@ export default function DoctorList({ searchTerm }) {
   };
 
   function abbreviateAndCombineDays(days) {
-<<<<<<< HEAD
     const weekDays = [
       "Monday",
       "Tuesday",
@@ -276,10 +275,6 @@ export default function DoctorList({ searchTerm }) {
       "Sunday",
     ];
     const dayIndexes = days.map((day) => weekDays.indexOf(day));
-=======
-    const weekDays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-    const dayIndexes = days.map(day => weekDays.indexOf(day));
->>>>>>> 61187658d3333b78f01916b90b475e3a0e260e7c
     let combinedDays = [];
     let i = 0;
 
@@ -287,14 +282,10 @@ export default function DoctorList({ searchTerm }) {
       let startDay = weekDays[dayIndexes[i]].substring(0, 3);
       let endDayIndex = i;
 
-<<<<<<< HEAD
       while (
         endDayIndex < dayIndexes.length - 1 &&
         dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1
       ) {
-=======
-      while (endDayIndex < dayIndexes.length - 1 && dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1) {
->>>>>>> 61187658d3333b78f01916b90b475e3a0e260e7c
         endDayIndex++;
       }
 
@@ -370,14 +361,10 @@ export default function DoctorList({ searchTerm }) {
     return { year, monthName, day, dayName };
   }
 
-<<<<<<< HEAD
   const workingDays =
     selectedDoctor && selectedDoctor.workingDays
       ? abbreviateAndCombineDays(selectedDoctor.workingDays)
       : "";
-=======
-  const workingDays = selectedDoctor && selectedDoctor.workingDays ? abbreviateAndCombineDays(selectedDoctor.workingDays) : '';
->>>>>>> 61187658d3333b78f01916b90b475e3a0e260e7c
 
   const handleDateClick = (index) => {
     setCurrentIndex(index);
@@ -523,7 +510,10 @@ export default function DoctorList({ searchTerm }) {
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
                   <div className="flex flex-wrap">
                     {selectedDoctor?.speciality?.map((item, index) => {
-                      const formattedSpeciality = item.replace(/([a-z])([A-Z])/g, '$1 $2'); // Split at capital letters
+                      const formattedSpeciality = item.replace(
+                        /([a-z])([A-Z])/g,
+                        "$1 $2"
+                      ); // Split at capital letters
 
                       return (
                         <p
@@ -535,7 +525,6 @@ export default function DoctorList({ searchTerm }) {
                       );
                     })}
                   </div>
-
                 </div>
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black">
@@ -778,11 +767,7 @@ export default function DoctorList({ searchTerm }) {
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex]?.map((item, index) => {
                                   const marginb =
-<<<<<<< HEAD
-                                    index == 0 ? " mt-2 -mb-5" : "";
-=======
                                     index == 0 ? " mt-2 -mb-4" : "";
->>>>>>> 61187658d3333b78f01916b90b475e3a0e260e7c
                                   if (index === currentTimeIndex) {
                                     return (
                                       <div
