@@ -273,6 +273,8 @@ export default function UserProfile()
             },
             userPic: userImage,
         };
+        console.log("New User", newUserDetails)
+
         if (newUserDetails.name === "")
         {
             toast.error("Please write name");
@@ -465,6 +467,7 @@ export default function UserProfile()
                             id="gender"
                             name="gender"
                             value={userDetails?.gender}
+                            onChange={handleChange1}
                             placeholder="Select Gender"
                             style={{ overflowY: "auto" }}
                             dropdownStyle={{
@@ -497,8 +500,8 @@ export default function UserProfile()
                             </label>
                             <input
                                 type="text"
-                                id="degree"
-                                name="degree"
+                                id="age"
+                                name="age"
                                 onChange={handleChange}
                                 value={userDetails.age}
                                 className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
