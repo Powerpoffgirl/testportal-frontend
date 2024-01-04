@@ -291,6 +291,11 @@ export default function DoctorListUser({ searchTerm }) {
     return { year, monthName, day, dayName };
   }
 
+  const workingDays =
+    selectedDoctor && selectedDoctor.workingDays
+      ? abbreviateAndCombineDays(selectedDoctor.workingDays)
+      : "";
+
   const handleDateClick = (index) => {
     setCurrentIndex(index);
   };
@@ -311,6 +316,45 @@ export default function DoctorListUser({ searchTerm }) {
 
   var selectedschedule = 0;
   // console.log(selectedDoctor?.slots[currentIndex])
+
+  function abbreviateAndCombineDays(days) {
+    const weekDays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    const dayIndexes = days.map((day) => weekDays.indexOf(day));
+    let combinedDays = [];
+    let i = 0;
+
+    while (i < dayIndexes.length) {
+      let startDay = weekDays[dayIndexes[i]].substring(0, 3);
+      let endDayIndex = i;
+
+      while (
+        endDayIndex < dayIndexes.length - 1 &&
+        dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1
+      ) {
+        endDayIndex++;
+      }
+
+      let endDay = weekDays[dayIndexes[endDayIndex]].substring(0, 3);
+
+      if (i === endDayIndex) {
+        combinedDays.push(startDay);
+      } else {
+        combinedDays.push(`${startDay}-${endDay}`);
+      }
+
+      i = endDayIndex + 1;
+    }
+
+    return combinedDays.join(" ");
+  }
 
   useEffect(() => {
     if (resendClicked || firstTime) {
@@ -446,30 +490,51 @@ export default function DoctorListUser({ searchTerm }) {
                     About The Doctor
                   </p>
                   <p className=" italic text-gray-600">
-                    Lorem ipsum dolor sit amet consectetur. Vitae dui elit vel
-                    justo facilisi praesent in et donec. Rutrum lorem consequat
-                    tempus fermentum egestas. At gravida enim proin blandit. Non
-                    et arcu arcu mauris augue massa.
+                    {selectedDoctor?.about}
                   </p>
                 </div>
 
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black">Timing</p>
                   <div className="flex flex-row  place-content-between">
-                    <div className="flex flex-col ">
-                      <p className="text-gray-600 font-semibold">
-                        Mon - Thur :
-                      </p>
-                      <p className="text-gray-600">10:00 AM - 3:00 PM</p>
-                      <p className="text-gray-600">3:00 AM - 7:00 PM</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-gray-600 font-semibold">
-                        Mon - Thur :
-                      </p>
-                      <p className="text-gray-600">10:00 AM - 3:00 PM</p>
-                      <p className="text-gray-600">3:00 AM - 7:00 PM</p>
-                    </div>
+                    {workingDays.split(" ")[0] && (
+                      <div className="flex flex-col">
+                        <p className="text-gray-600 font-semibold">
+                          {workingDays.split(" ")[0]}:
+                        </p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
+                        {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
+                      </div>
+                    )}
+                    {workingDays.split(" ")[1] && (
+                      <div className="flex flex-col">
+                        <p className="text-gray-600 font-semibold">
+                          {workingDays.split(" ")[1]}:
+                        </p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
+                        {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-row place-content-between">
+                    {workingDays.split(" ")[2] && (
+                      <div className="flex flex-col">
+                        <p className="text-gray-600 font-semibold">
+                          {workingDays.split(" ")[2]}:
+                        </p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
+                        {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -600,7 +665,7 @@ export default function DoctorListUser({ searchTerm }) {
                                           className="flex flex-col px-2"
                                         >
                                           <p>{monthName}</p>
-                                          <p className=" p-2 border-2 rounded-lg bg-blue-200">
+                                          <p className=" p-2 border-2 rounded-lg bg-[#B3E7FB]">
                                             {day}
                                           </p>
                                           <p>{dayName}</p>
@@ -670,7 +735,7 @@ export default function DoctorListUser({ searchTerm }) {
                                             return (
                                               <div
                                                 key={index}
-                                                className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-200 text-gray-800"
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2 bg-[#B3E7FB] text-gray-800"
                                               >
                                                 {data.startTime}
                                               </div>
