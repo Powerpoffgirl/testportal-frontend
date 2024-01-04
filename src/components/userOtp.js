@@ -114,7 +114,7 @@ const UserOTP = () =>
         localStorage.setItem("pic", data?.data?.data?.userPic);
         console.log("token", data?.data?.token);
         console.log("======NEW USER=======", data?.data?.data?.newUser);
-        localStorage.setItem("patientId", data?.patient?._id)
+        localStorage.setItem("patientId", data?.patient?._id);
         if (data?.data?.data?.newUser)
         {
           navigate("/userprofile", { state: { user: user } });
