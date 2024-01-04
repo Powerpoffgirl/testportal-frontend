@@ -687,13 +687,21 @@ export default function PatientForm()
           </div>
           <hr />
 
-          <div className=" mt-3">
-            <label
-              for="total-experience"
-              className="block text-black text-lg font-semibold"
-            >
-              Search
-            </label>
+          <div className=" mt-3 relative">
+            <div style={{ display: 'flex', flexDirection: 'row', gap: 170, marginBottom: 2 }}>
+              <label
+                for="total-experience"
+                className="block text-black text-lg font-semibold"
+              >
+                Search
+              </label>
+              <button
+                onClick={handleClearStorage}
+                className="block text-black text-sm font-semibold"
+              >
+                Clear
+              </button>
+            </div>
             <input
               value={searchTerm}
               onChange={handleSearch}
@@ -701,9 +709,30 @@ export default function PatientForm()
               id="default-search"
               className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {errors.totalExperience && (
-              <p className="text-red-500">{errors.totalExperience}</p>
-            )}
+            <ul
+              style={{
+
+                width: "100%",
+                zIndex: 9999,
+                position: "absolute",
+              }}
+              className="divide-y divide-gray-200 bg-white whitespace-normal"
+            >
+              {filteredPatients.map((patient) => (
+                <li key={patient.id} className="p-4">
+                  <div onClick={() => handlepatientDetails(patient._id)}>
+                    <div className="font-bold">{patient.name}</div>
+                    <div className="text-sm">
+                      <span className="ml-2">Email: {patient.email}</span>
+                      <span className="ml-2">
+                        Phone Number: {patient.phoneNo}
+                      </span>
+
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <div className=" mt-3">
@@ -787,25 +816,7 @@ export default function PatientForm()
             </div>
           </div>
 
-          <div className=" mt-3">
-            <label
-              for="total-experience"
-              className="block text-black text-lg font-semibold"
-            >
-              Body Weight
-            </label>
-            <input
-              type="text"
-              id="bodyWeight"
-              name="bodyWeight"
-              onChange={handleChange}
-              value={patientDetails?.bodyWeight}
-              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-            />
-            {errors.totalExperience && (
-              <p className="text-red-500">{errors.totalExperience}</p>
-            )}
-          </div>
+
 
           {/* <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", marginTop: '20px' }}>
                         <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
