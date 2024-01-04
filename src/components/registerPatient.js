@@ -12,7 +12,7 @@ import { MdEdit } from "react-icons/md";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { Flex, Select } from "antd";
 import { IoIosSearch } from "react-icons/io";
-import UserContext from './userContext';
+import UserContext from "./userContext";
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#89CFF0"/>
@@ -25,9 +25,9 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm()
-{
-  const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
+export default function PatientForm() {
+  const { updateUser, updateUserEmail, updateUserimage } =
+    useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -75,13 +75,11 @@ export default function PatientForm()
   const [userDetailsPic, setUserDetailsPic] = useState();
   const [registrationId, setRegistrationId] = useState(240301000);
 
-
   const [searchTerm, setSearchTerm] = useState("");
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
 
-  const handleSearch = (event) =>
-  {
+  const handleSearch = (event) => {
     const searchTerm = event?.target?.value?.toLowerCase();
 
     setSearchTerm(searchTerm);
@@ -93,28 +91,22 @@ export default function PatientForm()
     setFilteredPatients(filtered);
   };
 
-  const handlepatientDetails = (patientId) =>
-  {
+  const handlepatientDetails = (patientId) => {
     localStorage.setItem("selectedPatientId", patientId);
     window.location.reload();
   };
 
-  const handleClearStorage = (patientId) =>
-  {
+  const handleClearStorage = (patientId) => {
     localStorage.removeItem("selectedPatientId");
     window.location.reload();
   };
 
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -135,24 +127,19 @@ export default function PatientForm()
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.doctorPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("selectedPatientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -170,25 +157,19 @@ export default function PatientForm()
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientDetails(data?.data);
-
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
 
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/doctorlogin`);
@@ -213,27 +194,23 @@ export default function PatientForm()
         const registrationIds = data?.data[0].registrationNo;
         setRegistrationId(data?.data[0].registrationNo);
         console.log("regis id ++++++++++++++++++++++++++", registrationId);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -242,8 +219,7 @@ export default function PatientForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -255,8 +231,7 @@ export default function PatientForm()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -265,19 +240,17 @@ export default function PatientForm()
 
   let counter = 0;
 
-  const generatePatientId = () =>
-  {
+  const generatePatientId = () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear().toString().substring(2);
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");
     const day = String(currentDate.getDate()).padStart(2, "0");
     const incrementedCounter = counter++;
-    let patientId = `${year}${month}${day}${incrementedCounter}`
+    let patientId = `${year}${month}${day}${incrementedCounter}`;
     return patientId;
   };
 
   // const incrementedCounter = String(apiHitCounter).padStart(3, "0");
-
 
   const [patientDetails, setPatientDetails] = useState({
     name: "",
@@ -299,13 +272,11 @@ export default function PatientForm()
     doctorId: "",
   });
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -368,43 +339,37 @@ export default function PatientForm()
     { label: "Other", value: "Other" },
   ];
 
-  const handleChange1 = (e) =>
-  {
+  const handleChange1 = (e) => {
     setPatientDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       gender: e,
     }));
   };
 
-  const handleChange2 = (e) =>
-  {
+  const handleChange2 = (e) => {
     setPatientDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       ageType: e,
     }));
   };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
-    if (name === "gender")
-    {
+    if (name === "gender") {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails.gender,
 
         [name]: value,
       }));
-    } else if (name === "ageType")
-    {
+    } else if (name === "ageType") {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails.ageType,
         [name]: value,
       }));
-    } else
-    {
+    } else {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -424,11 +389,11 @@ export default function PatientForm()
         "state",
       ].includes(name)
         ? {
-          address: {
-            ...prevPatientDetails.address,
-            [name]: value,
-          },
-        }
+            address: {
+              ...prevPatientDetails.address,
+              [name]: value,
+            },
+          }
         : { [name]: value }),
     }));
 
@@ -442,8 +407,7 @@ export default function PatientForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -451,8 +415,7 @@ export default function PatientForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -461,8 +424,7 @@ export default function PatientForm()
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const doctorId = localStorage.getItem("doctorId");
 
@@ -487,30 +449,22 @@ export default function PatientForm()
       doctorId: JSON.stringify(doctorId),
       // patientPic: userImage,
     };
-    if (newPatientDetails.name === "")
-    {
+    if (newPatientDetails.name === "") {
       toast.error("Please write name");
-    } else if (newPatientDetails.age === "")
-    {
+    } else if (newPatientDetails.age === "") {
       toast.error("Please write age");
-    } else if (newPatientDetails.bodyWeight === "")
-    {
+    } else if (newPatientDetails.bodyWeight === "") {
       toast.error("Please write body weight");
-    } else if (newPatientDetails.address?.pinCode === "")
-    {
+    } else if (newPatientDetails.address?.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (newPatientDetails.address?.district === "")
-    {
+    } else if (newPatientDetails.address?.district === "") {
       toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "")
-    {
+    } else if (newPatientDetails.address?.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       const doctorId = localStorage.getItem("doctorId");
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/userlogin`);
@@ -527,8 +481,7 @@ export default function PatientForm()
         }
       );
       const data = await response.json();
-      if (data.success === true)
-      {
+      if (data.success === true) {
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
         localStorage.setItem("name", newPatientDetails.name);
@@ -542,7 +495,6 @@ export default function PatientForm()
   };
 
   console.log("PATIENT DETAILS", patientDetails);
-
 
   updateUser(userDetailsName);
   updateUserEmail(userDetailsEmail);
@@ -559,13 +511,9 @@ export default function PatientForm()
 
   //   incrementLastDigit();
 
-
   // }, []);
 
   const incrementedId = parseInt(registrationId, 10) + 1;
-
-
-
 
   return (
     <>
@@ -616,22 +564,31 @@ export default function PatientForm()
                 width: "20%",
                 position: "absolute",
                 fontWeight: 500,
-
               }}
             >
-              <p onChange={handleChange} >
-                Patient Id: {patientDetails ? patientDetails.registrationNo : incrementedId}
+              <p onChange={handleChange}>
+                Patient Id:{" "}
+                {patientDetails ? patientDetails.registrationNo : incrementedId}
               </p>
             </div>
 
-            <form style={{ display: 'flex', flexDirection: isTab1 ? 'column' : 'row' }}>
+            <form
+              style={{
+                display: "flex",
+                flexDirection: isTab1 ? "column" : "row",
+              }}
+            >
               <label
-                style={{ marginLeft: isTab1 ? '0px' : "540px", marginTop: isTab1 ? '20px' : null, fontWeight: 500 }}
+                style={{
+                  marginLeft: isTab1 ? "0px" : "540px",
+                  marginTop: isTab1 ? "20px" : null,
+                  fontWeight: 500,
+                }}
                 htmlFor="default-search"
               >
                 Search:
               </label>
-              <div className="relative h-10 " style={{ width: '100%' }}>
+              <div className="relative h-10 " style={{ width: "100%" }}>
                 <input
                   value={searchTerm}
                   onChange={handleSearch}
@@ -640,30 +597,40 @@ export default function PatientForm()
                   className="block p-2 ps-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                   placeholder="Search"
                   required
-                  style={{ width: isTab1 ? '60%' : '80%' }}
-                // style={{
-                //   marginLeft: isTab1 ? "150px" : "600px",
-                //   width: isTab1 ? '27%' : "44%",
-                //   marginTop: "-30px",
-                //   zIndex: 200,
-                // }}
+                  style={{ width: isTab1 ? "60%" : "80%" }}
+                  // style={{
+                  //   marginLeft: isTab1 ? "150px" : "600px",
+                  //   width: isTab1 ? '27%' : "44%",
+                  //   marginTop: "-30px",
+                  //   zIndex: 200,
+                  // }}
                 />
                 <button
                   onClick={handleClearStorage}
                   className="absolute right-16 top-0 p-1.5 border border-gray-300 rounded-md bg-gray-100 text-gray-700 cursor-pointer hover:bg-gray-200"
-
                 >
                   Clear
                 </button>
               </div>
-              <ul style={{ marginLeft: '600px', width: '30%', zIndex: 9999, position: 'absolute', marginTop: '42px' }} className="divide-y divide-gray-200 bg-white whitespace-normal">
+              <ul
+                style={{
+                  marginLeft: "600px",
+                  width: "30%",
+                  zIndex: 9999,
+                  position: "absolute",
+                  marginTop: "42px",
+                }}
+                className="divide-y divide-gray-200 bg-white whitespace-normal"
+              >
                 {filteredPatients.map((patient) => (
                   <li key={patient.id} className="p-4">
                     <div onClick={() => handlepatientDetails(patient._id)}>
                       <div className="font-bold">{patient.name}</div>
-                      <div className="text-sm" >
+                      <div className="text-sm">
                         <span className="ml-2">Email: {patient.email}</span>
-                        <span className="ml-2">Phone Number: {patient.phoneNo}</span>
+                        <span className="ml-2">
+                          Phone Number: {patient.phoneNo}
+                        </span>
                         {/* <span onClick={() => handlepatientDetails(patient._id)} className="ml-2">Pid: {patient._id}</span> */}
                       </div>
                     </div>
@@ -688,7 +655,7 @@ export default function PatientForm()
                     name="name"
                     value={patientDetails?.name}
                     onChange={handleChange}
-                    style={{ marginLeft: -0.5, width: '100%' }}
+                    style={{ marginLeft: -0.5, width: "100%" }}
                   />
                   {/* {errors.age && ( // Change 'errors.email' to 'errors.age'
                                         <p className="text-red-500">{errors.age}</p>
@@ -709,7 +676,7 @@ export default function PatientForm()
                     name="phoneNo"
                     value={patientDetails?.phoneNo}
                     onChange={handleChange}
-                    style={{ marginLeft: -0.5, width: '100%' }}
+                    style={{ marginLeft: -0.5, width: "100%" }}
                   />
                   {errors.age && ( // Change 'errors.email' to 'errors.age'
                     <p className="text-red-500">{errors.age}</p>
@@ -783,9 +750,10 @@ export default function PatientForm()
                       value={patientDetails?.email}
                       onChange={handleChange}
                       placeholder="1234"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${houseNoError ? "border-red-500" : ""
-                        }`}
-                      style={{ width: '100%' }}
+                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        houseNoError ? "border-red-500" : ""
+                      }`}
+                      style={{ width: "100%" }}
                     />
                     {houseNoError && (
                       <p className="text-red-500 text-sm mt-1">
@@ -807,9 +775,10 @@ export default function PatientForm()
                       value={patientDetails?.age}
                       onChange={handleChange}
                       placeholder="First Floor or 2nd"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${floorError ? "border-red-500" : ""
-                        }`}
-                      style={{ width: '100%' }}
+                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
+                        floorError ? "border-red-500" : ""
+                      }`}
+                      style={{ width: "100%" }}
                     />
                     {floorError && (
                       <p className="text-red-500 text-sm mt-1">{floorError}</p>
@@ -832,7 +801,7 @@ export default function PatientForm()
                         value={patientDetails?.ageType}
                         onChange={handleChange2}
                         placeholder="Select Age Type"
-                        style={{ overflowY: "auto", width: '100%' }}
+                        style={{ overflowY: "auto", width: "100%" }}
                         dropdownStyle={{
                           maxHeight: "300px",
                           overflowY: "auto",
@@ -866,7 +835,7 @@ export default function PatientForm()
                         value={patientDetails?.gender}
                         onChange={handleChange1}
                         placeholder="Select Gender Type"
-                        style={{ overflowY: "auto", width: '100%' }}
+                        style={{ overflowY: "auto", width: "100%" }}
                         dropdownStyle={{
                           maxHeight: "300px",
                           overflowY: "auto",
@@ -907,7 +876,7 @@ export default function PatientForm()
                             placeholder="1234"
                             className="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                             value={patientDetails?.address?.houseNo}
-                            style={{ width: '100%' }}
+                            style={{ width: "100%" }}
                           />
                         </div>
                         <div class="px-2 w-full sm:w-1/3">
@@ -925,7 +894,7 @@ export default function PatientForm()
                             placeholder="2nd"
                             class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                             value={patientDetails?.address?.floor}
-                            style={{ width: '100%' }}
+                            style={{ width: "100%" }}
                           />
                         </div>
                         <div class="px-2 w-full sm:w-1/3">
@@ -943,7 +912,7 @@ export default function PatientForm()
                             placeholder="A"
                             class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                             value={patientDetails?.address?.block}
-                            style={{ width: '100%' }}
+                            style={{ width: "100%" }}
                           />
                           {errors.block && (
                             <p className="text-red-500">{errors.block}</p>
@@ -964,7 +933,7 @@ export default function PatientForm()
                             placeholder="Green Park"
                             class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                             value={patientDetails?.address?.area}
-                            style={{ width: '100%' }}
+                            style={{ width: "100%" }}
                           />
                           {errors.area && (
                             <p className="text-red-500">{errors.area}</p>
@@ -985,7 +954,7 @@ export default function PatientForm()
                             placeholder="110016"
                             class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                             value={patientDetails?.address?.pinCode}
-                            style={{ width: '100%' }}
+                            style={{ width: "100%" }}
                           />
                           {errors.pinCode && (
                             <p className="text-red-500">{errors.pinCode}</p>
@@ -1006,7 +975,7 @@ export default function PatientForm()
                             placeholder="South Delhi"
                             class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                             value={patientDetails?.address?.district}
-                            style={{ width: '100%' }}
+                            style={{ width: "100%" }}
                           />
                           {errors.district && (
                             <p className="text-red-500">{errors.district}</p>
@@ -1027,7 +996,7 @@ export default function PatientForm()
                             placeholder="Delhi"
                             class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                             value={patientDetails?.address?.state}
-                            style={{ width: '100%' }}
+                            style={{ width: "100%" }}
                           />
                           {errors.state && (
                             <p className="text-red-500">{errors.state}</p>
@@ -1124,7 +1093,7 @@ export default function PatientForm()
                 {/* </div> */}
               </div>
             </div>
-            <div className="mt-10 w-100 items-center justify-center text-center" >
+            <div className="mt-10 w-100 items-center justify-center text-center">
               <button
                 className="rounded-full justify-center items-center px-9 py-2 bg-[#89CFF0] text-white"
                 onClick={handleRegister}
@@ -1134,7 +1103,7 @@ export default function PatientForm()
             </div>
           </div>
         </div>
-      </div >
+      </div>
     </>
   );
 }

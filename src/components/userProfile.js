@@ -243,14 +243,22 @@ export default function UserProfile() {
     };
     console.log("New User", newUserDetails);
 
-    if (newUserDetails.name === "") {
+    if (newUserDetails.gender === "") {
+      toast.error("Please write gender");
+    } else if (newUserDetails.age === "") {
+      toast.error("Please write age");
+    } else if (newUserDetails.ageType === "") {
+      toast.error("Please write ageType");
+    } else if (newUserDetails.bodyWeight === "") {
+      toast.error("Please write bodyWeight");
+    } else if (newUserDetails.name === "") {
       toast.error("Please write name");
-    } else if (newUserDetails.email === "") {
-      toast.error("Please write email");
     } else if (newUserDetails.contactNumber === "") {
-      toast.error("Please write contact number");
-    } else if (newUserDetails.address?.pinCode === "") {
+      toast.error("Please write contactNumber");
+    } else if (!newUserDetails.address?.pinCode) {
       toast.error("Please write Pincode");
+    } else if (!/^\d{6}$/.test(newUserDetails.address?.pinCode)) {
+      toast.error("Please enter a valid 6-digit PIN code");
     } else if (newUserDetails.address?.district === "") {
       toast.error("Please write district");
     } else if (newUserDetails.address?.state === "") {
