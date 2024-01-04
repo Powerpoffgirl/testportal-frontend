@@ -7,7 +7,8 @@ import Modal from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 import { MdOutlineDelete } from "react-icons/md";
 
-export default function BillingPage({ name, contactNo, gender, age }) {
+export default function BillingPage({ name, contactNo, gender, age })
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -30,11 +31,13 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
   const [selectedMethod, setSelectedMethod] = useState(null);
 
-  const handleMethodClick = (method) => {
+  const handleMethodClick = (method) =>
+  {
     setSelectedMethod(method);
   };
 
-  const handleSearch = (event) => {
+  const handleSearch = (event) =>
+  {
     const searchTerm = event?.target?.value?.toLowerCase();
 
     setSearchTerm(searchTerm);
@@ -49,12 +52,16 @@ export default function BillingPage({ name, contactNo, gender, age }) {
   };
 
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
 
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           localStorage.clear()
           navigate(`/doctorlogin`)
@@ -71,7 +78,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
         console.log("DATA from USE EFFECT response List Lab Patient", data?.data)
         setTests(data?.data);
 
-      } catch (error) {
+      } catch (error)
+      {
         console.error('There was an error verifying the OTP:', error);
       }
     }
@@ -85,7 +93,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
 
 
-  const handleTestAdd = (testId, cost) => () => {
+  const handleTestAdd = (testId, cost) => () =>
+  {
 
     const testToAdd = {
       testPackage: testId,
@@ -105,7 +114,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
 
 
-  const deleteRow = (index) => {
+  const deleteRow = (index) =>
+  {
 
     const updatedTableData = [...tableData];
 
@@ -114,14 +124,17 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
     setTableData(updatedTableData);
   }
-  const addRow = () => {
+  const addRow = () =>
+  {
     setTableData([...tableData, { testPackage: '-', price: '-', action: '-' }]);
   };
 
-  const calculateTotalPrice = () => {
+  const calculateTotalPrice = () =>
+  {
     let totalPrice = 0;
 
-    tableData.forEach((row) => {
+    tableData.forEach((row) =>
+    {
       // Assuming price is a number, you might need to parse it if it's a string
       totalPrice += row.price
     });
@@ -129,7 +142,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     return totalPrice;
   };
 
-  const getTestNames = () => {
+  const getTestNames = () =>
+  {
     return tableData.map((row) => row.testPackage).join(', ');
   };
 
@@ -150,7 +164,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
 
 
-  const Toggle = (e) => {
+  const Toggle = (e) =>
+  {
 
     e.preventDefault();
 
@@ -280,13 +295,13 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                 <table className=" text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400 w-full">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                     <tr>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
                         Test/package
                       </th>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
                         Price
                       </th>
-                      <th scope="col" className="px-6 py-3">
+                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
                         Action
                       </th>
                     </tr>
@@ -296,11 +311,11 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                       <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                         <th
                           scope="row"
-                          className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                          className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap dark:text-white"
                         >
                           {row.testPackage}
                         </th>
-                        <td className="px-6 py-4">{row.price}</td>
+                        <td className="px-6 py-4 text-sm">{row.price}</td>
                         <td className="px-6 py-4">
                           <button onClick={() => deleteRow(index)}><MdOutlineDelete size={25} color="red" /></button>
                         </td>
@@ -438,9 +453,9 @@ export default function BillingPage({ name, contactNo, gender, age }) {
             <div class="flex xl:flex-row flex-col">
               {/* ------------1st------------ */}
               <div className="xl:w-1/3 w-full  xl:border-r border-gray-300"
-                style={{
-                  overflowY: 'auto'
-                }}
+              // style={{
+              //   overflowY: 'auto'
+              // }}
               >
 
                 <p style={{ color: "gray" }}>Summary</p>
@@ -477,67 +492,30 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
                 }}
               >
-                <div style={{ width: "50%", float: "left", display: 'flex', flexDirection: 'column', }}>
-                  <label style={{ fontSize: 12 }}>Discount (%) </label>
-                  <input
-                    type="text"
-                    style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
-                    disabled={true}
-                    value={0}
-                  />
-                </div>
+                <table style={{ borderCollapse: 'collapse' }} className="border-collapse w-full">
+                  <thead>
+                    <tr>
+                      <th style={{ border: '1px solid #ddd' }} className="border p-2 text-left">Discount (%)  </th>
+                      <th style={{ border: '1px solid #ddd' }} className="border p-2  text-left">Discount (%) </th>
+                    </tr>
+                  </thead>
+                  <tbody>
 
-                <div style={{ width: "50%", float: "right", display: 'flex', flexDirection: 'column' }}>
-                  <label style={{ fontSize: 12 }}>Discount (%) </label>
-                  <input
+                    <tr>
+                      <td style={{ border: '1px solid #ddd' }} className="border p-2  text-left">Amount</td>
+                      <td style={{ border: '1px solid #ddd' }} className="border p-2 text-left">{calculateTotalPrice()}</td>
+                    </tr>
+                    <tr>
+                      <td style={{ border: '1px solid #ddd' }} className="border p-2  text-left">Discount</td>
+                      <td style={{ border: '1px solid #ddd' }} className="border p-2 text-left">0</td>
+                    </tr>
 
-                    type="text"
-                    style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
-                    disabled={true}
-                    value={0}
-                  />
-                </div>
-
-                <div
-                  style={{
-                    marginTop: "60px",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <p style={{ color: "gray", marginRight: "43%" }}>Amount</p>
-                  <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
-                </div>
-
-                <div
-                  style={{
-                    marginTop: "15px",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <p style={{ color: "gray", marginRight: "43%" }}>Discount</p>
-                  <p style={{ color: "black" }}>0</p>
-                </div>
-
-                <div
-                  style={{
-                    marginTop: "15px",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <p
-                    style={{
-                      color: "black",
-                      marginRight: "30%",
-                      fontWeight: 500,
-                    }}
-                  >
-                    Total Amount
-                  </p>
-                  <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
-                </div>
+                    <tr >
+                      <td style={{ border: '1px solid #ddd' }} className="border p-2 font-bold  text-left">Total Amount</td>
+                      <td style={{ border: '1px solid #ddd' }} className="border p-2 font-bold  text-left">{calculateTotalPrice()}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
               {/* ------------3rd------------ */}
               <div className="middle xl:w-1/3 w-full"
@@ -548,7 +526,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                   // borderRight: "0.5px solid #D3D3D3",
                 }}
               >
-                <div style={{ width: "100%", marginLeft: "30px" }}>
+                <div style={{ width: "100%", marginLeft: "30px", marginTop: 20 }}>
                   <input type="checkbox" disabled={true}
                     checked={true} />
                   <label>Due Payment</label>
@@ -590,12 +568,13 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                       marginRight: "20%",
                       fontWeight: 500,
                       marginLeft: "20px",
-                      marginTop: '43px'
+                      marginTop: '33px'
+
                     }}
                   >
                     Due Amount
                   </p>
-                  <p style={{ color: "black", marginTop: '43px' }}>{calculateTotalPrice()}</p>
+                  <p style={{ color: "black", marginTop: '33px' }}>{calculateTotalPrice()}</p>
                 </div>
               </div>
             </div>
