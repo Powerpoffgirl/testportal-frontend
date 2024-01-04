@@ -25,8 +25,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm()
-{
+export default function PatientForm() {
   const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
@@ -80,8 +79,7 @@ export default function PatientForm()
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
 
-  const handleSearch = (event) =>
-  {
+  const handleSearch = (event) => {
     const searchTerm = event?.target?.value?.toLowerCase();
 
     setSearchTerm(searchTerm);
@@ -93,28 +91,22 @@ export default function PatientForm()
     setFilteredPatients(filtered);
   };
 
-  const handlepatientDetails = (patientId) =>
-  {
+  const handlepatientDetails = (patientId) => {
     localStorage.setItem("selectedPatientId", patientId);
     window.location.reload();
   };
 
-  const handleClearStorage = (patientId) =>
-  {
+  const handleClearStorage = (patientId) => {
     localStorage.removeItem("selectedPatientId");
     window.location.reload();
   };
 
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -135,24 +127,19 @@ export default function PatientForm()
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.doctorPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("selectedPatientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -171,24 +158,19 @@ export default function PatientForm()
         console.log("DATA from response", data);
         setPatientDetails(data?.data);
 
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
 
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/doctorlogin`);
@@ -213,27 +195,23 @@ export default function PatientForm()
         const registrationIds = data?.data[0].registrationNo;
         setRegistrationId(data?.data[0].registrationNo);
         console.log("regis id ++++++++++++++++++++++++++", registrationId);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -242,8 +220,7 @@ export default function PatientForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -255,8 +232,7 @@ export default function PatientForm()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -265,8 +241,7 @@ export default function PatientForm()
 
   let counter = 0;
 
-  const generatePatientId = () =>
-  {
+  const generatePatientId = () => {
     const currentDate = new Date();
     const year = currentDate.getFullYear().toString().substring(2);
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -299,13 +274,11 @@ export default function PatientForm()
     doctorId: "",
   });
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
@@ -368,43 +341,37 @@ export default function PatientForm()
     { label: "Other", value: "Other" },
   ];
 
-  const handleChange1 = (e) =>
-  {
+  const handleChange1 = (e) => {
     setPatientDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       gender: e,
     }));
   };
 
-  const handleChange2 = (e) =>
-  {
+  const handleChange2 = (e) => {
     setPatientDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       ageType: e,
     }));
   };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
-    if (name === "gender")
-    {
+    if (name === "gender") {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails.gender,
 
         [name]: value,
       }));
-    } else if (name === "ageType")
-    {
+    } else if (name === "ageType") {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails.ageType,
         [name]: value,
       }));
-    } else
-    {
+    } else {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -442,8 +409,7 @@ export default function PatientForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -451,8 +417,7 @@ export default function PatientForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -461,8 +426,7 @@ export default function PatientForm()
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
     const doctorId = localStorage.getItem("doctorId");
 
@@ -487,30 +451,22 @@ export default function PatientForm()
       doctorId: JSON.stringify(doctorId),
       // patientPic: userImage,
     };
-    if (newPatientDetails.name === "")
-    {
+    if (newPatientDetails.name === "") {
       toast.error("Please write name");
-    } else if (newPatientDetails.age === "")
-    {
+    } else if (newPatientDetails.age === "") {
       toast.error("Please write age");
-    } else if (newPatientDetails.bodyWeight === "")
-    {
+    } else if (newPatientDetails.bodyWeight === "") {
       toast.error("Please write body weight");
-    } else if (newPatientDetails.address?.pinCode === "")
-    {
+    } else if (newPatientDetails.address?.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (newPatientDetails.address?.district === "")
-    {
+    } else if (newPatientDetails.address?.district === "") {
       toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "")
-    {
+    } else if (newPatientDetails.address?.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       const doctorId = localStorage.getItem("doctorId");
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/userlogin`);
@@ -527,8 +483,7 @@ export default function PatientForm()
         }
       );
       const data = await response.json();
-      if (data.success === true)
-      {
+      if (data.success === true) {
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
         localStorage.setItem("name", newPatientDetails.name);
