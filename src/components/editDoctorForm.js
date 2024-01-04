@@ -12,8 +12,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { Select } from "antd";
 import { MdEdit } from "react-icons/md";
 import UserContext from "./userContext";
+import { Popconfirm } from "antd";
+import delete_button from "../assets/delete_button.svg";
 
-export default function EditDoctorForm() {
+export default function EditDoctorForm()
+{
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -30,16 +33,19 @@ export default function EditDoctorForm() {
   const [errors, setErrors] = useState({});
   const [value, setValue] = useState("");
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -48,7 +54,8 @@ export default function EditDoctorForm() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -60,7 +67,8 @@ export default function EditDoctorForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -82,12 +90,16 @@ export default function EditDoctorForm() {
   const open = Boolean(anchorEl);
   const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    const fetchDoctorDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchDoctorDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem("doctorId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -105,36 +117,42 @@ export default function EditDoctorForm() {
         const data = await response.json();
         console.log("DATA from USE EFFECT response", data?.data);
         setDoctorDetails(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = () =>
+  {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) => {
+    ...Array.from({ length: 24 }, (v, i) =>
+    {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange2 = (e) => {
+  const handleChange2 = (e) =>
+  {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       // workingDays: e,
@@ -189,18 +207,21 @@ export default function EditDoctorForm() {
   //     }
   // };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
 
-    if (name === "workingDays") {
+    if (name === "workingDays")
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingDays: [...prevDoctorDetails?.workingDays, value],
       }));
-    } else if (name === "workHourFrom" || name === "workHourTo") {
+    } else if (name === "workHourFrom" || name === "workHourTo")
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -218,7 +239,8 @@ export default function EditDoctorForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -226,7 +248,8 @@ export default function EditDoctorForm() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -235,11 +258,13 @@ export default function EditDoctorForm() {
     setIsEditing(true);
   };
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     setIsEditing(true);
   }, [doctorDetails]);
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e) =>
+  {
     e.preventDefault();
     // Check if the token exists
     const newDoctorDetails = {
@@ -270,29 +295,41 @@ export default function EditDoctorForm() {
       },
       doctorPic: doctorImage,
     };
-    if (newDoctorDetails.name === "") {
+    if (newDoctorDetails.name === "")
+    {
       toast.error("Please write Dr. name");
-    } else if (newDoctorDetails.email === "") {
+    } else if (newDoctorDetails.email === "")
+    {
       toast.error("Please write Email");
-    } else if (newDoctorDetails.contactNumber === "") {
+    } else if (newDoctorDetails.contactNumber === "")
+    {
       toast.error("Please write contact number");
-    } else if (newDoctorDetails.workingDays === "") {
+    } else if (newDoctorDetails.workingDays === "")
+    {
       toast.error("Please write working days");
-    } else if (newDoctorDetails.workingHours === "") {
+    } else if (newDoctorDetails.workingHours === "")
+    {
       toast.error("Please write working hours");
-    } else if (newDoctorDetails.totalExperience === "") {
+    } else if (newDoctorDetails.totalExperience === "")
+    {
       toast.error("Please write total experience");
-    } else if (newDoctorDetails.speciality === "") {
+    } else if (newDoctorDetails.speciality === "")
+    {
       toast.error("Please write speciality");
-    } else if (newDoctorDetails.degree === "") {
+    } else if (newDoctorDetails.degree === "")
+    {
       toast.error("Please write degree");
-    } else if (newDoctorDetails.address?.pinCode === "") {
+    } else if (newDoctorDetails.address?.pinCode === "")
+    {
       toast.error("Please write Pincode");
-    } else if (newDoctorDetails.address?.district === "") {
+    } else if (newDoctorDetails.address?.district === "")
+    {
       toast.error("Please write district");
-    } else if (newDoctorDetails.address?.state === "") {
+    } else if (newDoctorDetails.address?.state === "")
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       console.log("New DOCTOR DETAILS", newDoctorDetails);
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
@@ -301,13 +338,15 @@ export default function EditDoctorForm() {
         (value) => value === ""
       );
 
-      if (isEmpty || isEditing === false) {
+      if (isEmpty || isEditing === false)
+      {
         toast.error("Please fill the fields or Update");
         setIsEditing(false);
         return;
       }
 
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/doctorlogin`);
@@ -326,7 +365,8 @@ export default function EditDoctorForm() {
       // if (data.statusCode === 400) {
       //   toast.error("Please fill the details");
       // }
-      if (data.success === true) {
+      if (data.success === true)
+      {
         console.log("Doctor updated successfully.");
 
         toast.success("Doctor updated successfully.");
@@ -339,7 +379,8 @@ export default function EditDoctorForm() {
     }
   };
 
-  const handleChange1 = (value) => {
+  const handleChange1 = (value) =>
+  {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: value, // directly set the value, which is the updated array of working days
@@ -404,7 +445,35 @@ export default function EditDoctorForm() {
     value: specialty,
   }));
 
-  const handleDelete = (workingDay) => {
+  const handleDeleteDoctor = async () =>
+  {
+    const token = localStorage.getItem("token");
+    const doctorId = localStorage.getItem("doctorId");
+    if (!token)
+    {
+      console.error("No token found in local storage");
+      localStorage.clear();
+      navigate("/userlogin");
+    }
+    const response = await fetch(`${baseUrl}/api/v1/doctor/delete_doctor`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+    });
+    const data = await response.json();
+
+    if (data.success === true)
+    {
+      toast.success("Doctor Deleted successfully");
+      navigate("/doctorlogin");
+    }
+    console.log("DATA from response", data);
+  };
+
+  const handleDelete = (workingDay) =>
+  {
     console.log("delete", workingDay);
     const days = doctorDetails.workingDays.filter(
       (doctorDetail) => doctorDetail !== workingDay
@@ -417,28 +486,41 @@ export default function EditDoctorForm() {
     });
   };
 
-  const handleRegister = async (e) => {
+
+
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
     // Check if the token exists
-    if (doctorDetails.name === "") {
+    if (doctorDetails.name === "")
+    {
       toast.error("Please write name");
-    } else if (doctorDetails.email === "") {
+    } else if (doctorDetails.email === "")
+    {
       toast.error("Please write email");
-    } else if (doctorDetails.contactNumber === "") {
+    } else if (doctorDetails.contactNumber === "")
+    {
       toast.error("Please write contact number");
-    } else if (doctorDetails.totalExperience === "") {
+    } else if (doctorDetails.totalExperience === "")
+    {
       toast.error("Please write total experience");
-    } else if (doctorDetails.degree === "") {
+    } else if (doctorDetails.degree === "")
+    {
       toast.error("Please write degree");
-    } else if (doctorDetails.address.pinCode === "") {
+    } else if (doctorDetails.address.pinCode === "")
+    {
       toast.error("Please write Pincode");
-    } else if (doctorDetails.address.district === "") {
+    } else if (doctorDetails.address.district === "")
+    {
       toast.error("Please write district");
-    } else if (doctorDetails.address.state === "") {
+    } else if (doctorDetails.address.state === "")
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/adminlogin`);
@@ -448,7 +530,8 @@ export default function EditDoctorForm() {
         (value) => value === ""
       );
 
-      if (isEmpty || isEditing === false) {
+      if (isEmpty || isEditing === false)
+      {
         toast.error("Please fill the fields or Update");
         setIsEditing(false);
         return;
@@ -464,21 +547,26 @@ export default function EditDoctorForm() {
       });
       const data = await response.json();
 
-      if (data.statusCode === 400) {
+      if (data.statusCode === 400)
+      {
         toast.error("Please fill the details");
-      } else {
+      } else
+      {
         toast.error("Contact number already registered");
       }
 
-      if (data.message === "Permission denied") {
+      if (data.message === "Permission denied")
+      {
         toast.error("Permission Denied");
       }
 
-      if (data.statusCode === 500) {
+      if (data.statusCode === 500)
+      {
         toast.error("Enter Unique Values or Values already Exist ");
       }
 
-      if (data.success === true) {
+      if (data.success === true)
+      {
         navigate("/otp", {
           state: { contactNumber: doctorDetails.contactNumber },
         });
@@ -487,7 +575,8 @@ export default function EditDoctorForm() {
       console.log("DATA from response", data);
     }
 
-    const handleDelete = (workingDay) => {
+    const handleDelete = (workingDay) =>
+    {
       console.log("delete", workingDay);
       const days = doctorDetails.workingDays.filter(
         (doctorDetail) => doctorDetail !== workingDay
@@ -512,13 +601,30 @@ export default function EditDoctorForm() {
       <div className="flex flex-col -ml-7  lg:flex-row">
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+          <div
+            className=" flex items-end justify-end w-100% "
+            style={{ marginRight: -40, marginTop: -20 }}
+          >
+            <Popconfirm
+              title="Delete the Profile"
+              description="Are you sure to delete this Profile?"
+              okText="Delete"
+              cancelText="No"
+              className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
+              onConfirm={handleDeleteDoctor}
+            >
+              <button onClick={onCloseModal}>
+                <img src={delete_button} alt="df" class="w-8 mb-1"></img>
+              </button>
+            </Popconfirm>
+          </div>
           <div className="mx-auto my-2">
             <div className=" ">
               <div
                 className=" border w-36 mx-auto rounded-full"
                 style={{ backgroundColor: "#B1DAED" }}
               >
-                {doctorDetails?.doctorPic ? (
+                {doctorImage || doctorDetails?.doctorPic ? (
                   <div
                     aria-controls="profile-pic-menu"
                     aria-haspopup="true"
@@ -526,7 +632,7 @@ export default function EditDoctorForm() {
                     onClick={handleClick}
                   >
                     <img
-                      src={doctorDetails?.doctorPic}
+                      src={doctorImage || doctorDetails?.doctorPic}
                       alt={doctorDetails?.name}
                       style={{
                         borderRadius: "50%",
@@ -594,7 +700,8 @@ export default function EditDoctorForm() {
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() => {
+                    onClick={() =>
+                    {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -640,7 +747,7 @@ export default function EditDoctorForm() {
                 value={doctorDetails?.workingDays}
                 onChange={handleChange1}
                 placeholder="Mon-Fri"
-                // Add other props as needed
+              // Add other props as needed
               >
                 {Daysdropdown.map((option) => (
                   <Select.Option key={option.value} value={option.value}>

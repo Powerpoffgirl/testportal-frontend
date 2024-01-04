@@ -25,7 +25,8 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm() {
+export default function PatientForm()
+{
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -79,7 +80,8 @@ export default function PatientForm() {
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
 
-  const handleSearch = (event) => {
+  const handleSearch = (event) =>
+  {
     const searchTerm = event?.target?.value?.toLowerCase();
 
     setSearchTerm(searchTerm);
@@ -91,22 +93,28 @@ export default function PatientForm() {
     setFilteredPatients(filtered);
   };
 
-  const handlepatientDetails = (patientId) => {
+  const handlepatientDetails = (patientId) =>
+  {
     localStorage.setItem("selectedPatientId", patientId);
     window.location.reload();
   };
 
-  const handleClearStorage = (patientId) => {
+  const handleClearStorage = (patientId) =>
+  {
     localStorage.removeItem("selectedPatientId");
     window.location.reload();
   };
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -127,19 +135,24 @@ export default function PatientForm() {
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.doctorPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("selectedPatientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -157,19 +170,24 @@ export default function PatientForm() {
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientDetails(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
 
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/doctorlogin`);
@@ -194,23 +212,27 @@ export default function PatientForm() {
         const registrationIds = data?.data[0].registrationNo;
         setRegistrationId(data?.data[0].registrationNo);
         console.log("regis id ++++++++++++++++++++++++++", registrationId);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -219,7 +241,8 @@ export default function PatientForm() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -231,7 +254,8 @@ export default function PatientForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -240,7 +264,8 @@ export default function PatientForm() {
 
   let counter = 0;
 
-  const generatePatientId = () => {
+  const generatePatientId = () =>
+  {
     const currentDate = new Date();
     const year = currentDate.getFullYear().toString().substring(2);
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -272,11 +297,13 @@ export default function PatientForm() {
     doctorId: "",
   });
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
@@ -339,37 +366,43 @@ export default function PatientForm() {
     { label: "Other", value: "Other" },
   ];
 
-  const handleChange1 = (e) => {
+  const handleChange1 = (e) =>
+  {
     setPatientDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       gender: e,
     }));
   };
 
-  const handleChange2 = (e) => {
+  const handleChange2 = (e) =>
+  {
     setPatientDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       ageType: e,
     }));
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
-    if (name === "gender") {
+    if (name === "gender")
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails.gender,
 
         [name]: value,
       }));
-    } else if (name === "ageType") {
+    } else if (name === "ageType")
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails.ageType,
         [name]: value,
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -389,11 +422,11 @@ export default function PatientForm() {
         "state",
       ].includes(name)
         ? {
-            address: {
-              ...prevPatientDetails.address,
-              [name]: value,
-            },
-          }
+          address: {
+            ...prevPatientDetails.address,
+            [name]: value,
+          },
+        }
         : { [name]: value }),
     }));
 
@@ -407,7 +440,8 @@ export default function PatientForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -415,7 +449,8 @@ export default function PatientForm() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -424,7 +459,8 @@ export default function PatientForm() {
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
     const doctorId = localStorage.getItem("doctorId");
 
@@ -449,22 +485,30 @@ export default function PatientForm() {
       doctorId: JSON.stringify(doctorId),
       // patientPic: userImage,
     };
-    if (newPatientDetails.name === "") {
+    if (newPatientDetails.name === "")
+    {
       toast.error("Please write name");
-    } else if (newPatientDetails.age === "") {
+    } else if (newPatientDetails.age === "")
+    {
       toast.error("Please write age");
-    } else if (newPatientDetails.bodyWeight === "") {
+    } else if (newPatientDetails.bodyWeight === "")
+    {
       toast.error("Please write body weight");
-    } else if (newPatientDetails.address?.pinCode === "") {
+    } else if (newPatientDetails.address?.pinCode === "")
+    {
       toast.error("Please write Pincode");
-    } else if (newPatientDetails.address?.district === "") {
+    } else if (newPatientDetails.address?.district === "")
+    {
       toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "") {
+    } else if (newPatientDetails.address?.state === "")
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       const doctorId = localStorage.getItem("doctorId");
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/userlogin`);
@@ -481,7 +525,8 @@ export default function PatientForm() {
         }
       );
       const data = await response.json();
-      if (data.success === true) {
+      if (data.success === true)
+      {
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
         localStorage.setItem("name", newPatientDetails.name);
@@ -517,39 +562,461 @@ export default function PatientForm() {
 
   return (
     <>
-      <Modal
-        open={open1}
-        onClose={onCloseModal}
-        center
-        doctor={selectedDoctor}
-        styles={{
-          modal: {
-            // Set your custom width here (e.g., '70%')
-            width: isTab ? "80%" : "30%",
-            backgroundColor: "#89CFF0",
-            alignContent: "center",
-          },
-        }}
-      >
-        <div className="flex flex-col bg-customRed p-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
-          <text
-            className="text-center mt-4 mb-4"
-            style={{
-              fontSize: isTab ? "14px" : "20px",
-              fontWeight: 600,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-            }}
-          >
-            Member's Details is Saved.
-            <br />
-            Go to Member's list to book an Appointment.
-          </text>
-        </div>
-      </Modal>
 
-      <div className="flex flex-row">
+
+
+      <div className="flex flex-col -ml-7  lg:flex-row">
+        {/* --------------left-------------- */}
+        <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+
+
+
+          <div className="mx-auto my-2">
+            <div className=" ">
+              <div
+                className=" border w-36 mx-auto rounded-full"
+                style={{ backgroundColor: "#B1DAED" }}
+              >
+                {userImage || userDetails?.userPic ? (
+                  <div
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  >
+                    <img
+                      src={userDetails?.userPic || userImage}
+                      alt={userDetails?.name}
+                      style={{
+                        borderRadius: "50%",
+                        width: "145px",
+                        height: "145px",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <PermIdentityOutlinedIcon
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                      color: "white",
+                      cursor: "pointer",
+                    }}
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-row mt-5 mb-3">
+              <p className="block text-black text-lg font-semibold ">
+                <input
+                  id="files"
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                />
+              </p>
+
+              <p
+                className="mt-2 ml-3"
+                aria-controls="profile-pic-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                style={{
+                  cursor: "pointer",
+                }}
+              >
+                {/* <FaAngleDown /> */}
+              </p>
+
+              <div style={{ backgroundColor: "#89CFF0" }}>
+                <Menu
+                  id="profile-pic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "edit-profile-pic-text",
+                    style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
+                  }}
+                >
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered ? "red" : "white",
+                    }}
+                    onClick={() =>
+                    {
+                      handleClose();
+                    }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    {" "}
+                    <span style={{ marginRight: "8px" }}>
+                      <HiOutlineUserAdd />
+                    </span>
+                    <label htmlFor="files">New profile picture</label>
+                  </MenuItem>
+
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered1 ? "red" : "white",
+                    }}
+                    // onClick={handleRemoveProfilePicture}
+                    onMouseEnter={() => setIsHovered1(true)}
+                    onMouseLeave={() => setIsHovered1(false)}
+                  >
+                    <span style={{ marginRight: "8px" }}>
+                      <FaRegTrashAlt />
+                    </span>
+                    <span>Remove current picture</span>
+                  </MenuItem>
+                </Menu>
+              </div>
+            </div>
+          </div>
+          <hr />
+
+          <div className=" mt-3">
+            <label
+              for="total-experience"
+              className="block text-black text-lg font-semibold"
+            >
+              Search
+            </label>
+            <input
+              value={searchTerm}
+              onChange={handleSearch}
+              type="search"
+              id="default-search"
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.totalExperience && (
+              <p className="text-red-500">{errors.totalExperience}</p>
+            )}
+          </div>
+
+          <div className=" mt-3">
+            <label
+              for="total-experience"
+              className="block text-black text-lg font-semibold"
+            >
+              Gender
+            </label>
+            <Select
+              className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70   bg-white  text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              popupClassName="no-border-dropdown-menu"
+              id="gender"
+              name="gender"
+              value={patientDetails?.gender}
+              onChange={handleChange1}
+              placeholder="Select Gender"
+              style={{ overflowY: "auto" }}
+              dropdownStyle={{
+                maxHeight: "300px",
+                overflowY: "auto",
+              }}
+            >
+              {Gender.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
+            {errors.totalExperience && (
+              <p className="text-red-500">{errors.totalExperience}</p>
+            )}
+          </div>
+
+          <div className="flex flex-row gap-2">
+            <div className="mt-3 flex flex-col w-1/2">
+              <label
+                for="degree"
+                className="block text-black text-lg font-semibold"
+              >
+                Age
+              </label>
+              <input
+                type="text"
+                id="age"
+                name="age"
+                onChange={handleChange}
+                value={patientDetails?.age}
+                className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+            </div>
+            <div className="mt-3 flex flex-col w-1/2">
+              <label
+                for="degree"
+                className="block text-black text-lg font-semibold"
+              >
+                Age Type
+              </label>
+              <Select
+                className="border rounded-lg h-11"
+                popupClassName="no-border-dropdown-menu"
+                id="ageType"
+                name="ageType"
+                value={patientDetails?.ageType}
+                onChange={handleChange2}
+                placeholder="Select Age Type"
+                style={{ overflowY: "auto" }}
+                dropdownStyle={{
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                }}
+              >
+                {AgeType.map((option) => (
+                  <Select.Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Select.Option>
+                ))}
+              </Select>
+              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+            </div>
+          </div>
+
+          <div className=" mt-3">
+            <label
+              for="total-experience"
+              className="block text-black text-lg font-semibold"
+            >
+              Body Weight
+            </label>
+            <input
+              type="text"
+              id="bodyWeight"
+              name="bodyWeight"
+              onChange={handleChange}
+              value={patientDetails?.bodyWeight}
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.totalExperience && (
+              <p className="text-red-500">{errors.totalExperience}</p>
+            )}
+          </div>
+
+          {/* <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", marginTop: '20px' }}>
+                        <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
+                            backgroundColor: '#89CFF0'
+                        }}
+                            onClick={handleDelete}
+                        >
+                            Delete Profile
+                        </button>
+                    </div> */}
+        </div>
+
+        {/* ----------------------------------right---------------------------------- */}
+        <div
+          div
+          className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3"
+        >
+          <div style={{ display: 'flex', flexDirection: 'row', gap: 400 }}>
+            <p className="text-3xl ">Personal Information</p>
+            <p className="mt-2" onChange={handleChange}>
+              Patient Id:{" "}
+              {patientDetails ? patientDetails.registrationNo : incrementedId}
+            </p>
+          </div>
+          <hr className="border my-2 " />
+          {/* -------name------- */}
+          <div className="mt-3">
+            <label
+              for="name"
+              className="block text-black text-lg font-semibold"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={patientDetails?.name}
+              onChange={handleChange}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.name && <p className="text-red-500">{errors.name}</p>}
+          </div>
+
+          {/* -----------contact----------- */}
+          <div className="mt-3">
+            <label
+              for="contact"
+              className="block text-black text-lg font-semibold"
+            >
+              Contact Number
+            </label>
+            <input
+              type="number"
+              id="contactNumber"
+              name="contactNumber"
+              onChange={handleChange}
+              value={patientDetails?.phoneNo}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.contactNumber && (
+              <p className="text-red-500">{errors.contactNumber}</p>
+            )}
+          </div>
+
+
+          {/* -----------Email----------- */}
+          <div className="mt-3">
+            <label
+              for="email"
+              className="block text-black text-lg font-semibold"
+            >
+              Email
+            </label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              onChange={handleChange}
+              value={patientDetails?.email}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.contactNumber && (
+              <p className="text-red-500">{errors.contactNumber}</p>
+            )}
+          </div>
+          {/* -----------address----------- */}
+          <div className="mt-3">
+            <label
+              for="houseNo"
+              className="block text-black text-lg font-semibold"
+            >
+              Address
+            </label>
+            <div className="p-3 pb-5 border shadow-lg rounded-md">
+              <div className="flex flex-col ">
+                <div className="flex flex-row">
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      placeholder="House No."
+                      id="houseNo"
+                      name="houseNo"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.houseNo}
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      id="floor"
+                      name="floor"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.floor}
+                      placeholder="Floor"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      id="block"
+                      name="block"
+                      onChange={handleChange}
+                      placeholder="Block"
+                      value={patientDetails?.address?.block}
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.block && (
+                      <p className="text-red-500">{errors.block}</p>
+                    )}
+                  </div>
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="pinCode"
+                      name="pinCode"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.pinCode}
+                      placeholder="Pin Code"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.pinCode && (
+                      <p className="text-red-500">{errors.pinCode}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="px-2 w-full mt-3 ">
+                  <input
+                    type="text"
+                    id="area"
+                    name="area"
+                    onChange={handleChange}
+                    value={patientDetails?.address?.area}
+                    placeholder="Area/Landmark"
+                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  />
+                  {errors.area && <p className="text-red-500">{errors.area}</p>}
+                </div>
+
+                <div className="flex flex-row">
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="district"
+                      name="district"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.district}
+                      placeholder="District"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.district && (
+                      <p className="text-red-500">{errors.district}</p>
+                    )}
+                  </div>
+
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="state"
+                      name="state"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.state}
+                      placeholder="State"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.state && (
+                      <p className="text-red-500">{errors.state}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-row-reverse mt-5 my-2">
+            <button
+              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              style={{
+                backgroundColor: "#89CFF0",
+              }}
+              onClick={handleRegister}
+            >
+              Continue...
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* <div className="flex flex-row">
         <ToastContainer />
         <div></div>
         <div className=" w-full">
@@ -598,12 +1065,7 @@ export default function PatientForm() {
                   placeholder="Search"
                   required
                   style={{ width: isTab1 ? "60%" : "80%" }}
-                  // style={{
-                  //   marginLeft: isTab1 ? "150px" : "600px",
-                  //   width: isTab1 ? '27%' : "44%",
-                  //   marginTop: "-30px",
-                  //   zIndex: 200,
-                  // }}
+              
                 />
                 <button
                   onClick={handleClearStorage}
@@ -631,7 +1093,7 @@ export default function PatientForm() {
                         <span className="ml-2">
                           Phone Number: {patient.phoneNo}
                         </span>
-                        {/* <span onClick={() => handlepatientDetails(patient._id)} className="ml-2">Pid: {patient._id}</span> */}
+
                       </div>
                     </div>
                   </li>
@@ -657,9 +1119,7 @@ export default function PatientForm() {
                     onChange={handleChange}
                     style={{ marginLeft: -0.5, width: "100%" }}
                   />
-                  {/* {errors.age && ( // Change 'errors.email' to 'errors.age'
-                                        <p className="text-red-500">{errors.age}</p>
-                                    )} */}
+
                 </div>
 
                 <div className="flex flex-col">
@@ -685,56 +1145,8 @@ export default function PatientForm() {
               </div>
             </div>
             <div class="grid grid-cols-1 w-full  gap-4">
-              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="flex flex-col">
-                                    <label
-                                        class="block text-black text-lg font-semibold"
-                                        htmlFor="age"
-                                    >
-                                        Phone No
-                                    </label>
-                                    <input
-                                        class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        type="text"
-                                        id="age"
-                                        name="age"
-                                        value={patientDetails.age}
-                                        onChange={handleChange}
-                                        style={{ marginLeft: -0.5 }}
-                                    />
-                                    {errors.age && ( // Change 'errors.email' to 'errors.age'
-                                        <p className="text-red-500">{errors.age}</p>
-                                    )}
-                                </div>
-                                <div className="flex flex-col">
-                                    <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Gender</h3>
-                                    <ul style={{ marginTop: '-13px' }} class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-[#89CFF0] rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div class="flex items-center ps-3">
-                                                <input id="horizontal-list-radio-license" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label for="horizontal-list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Male </label>
-                                            </div>
-                                        </li>
-                                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div class="flex items-center ps-3">
-                                                <input id="horizontal-list-radio-id" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label for="horizontal-list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Female</label>
-                                            </div>
-                                        </li>
-                                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div class="flex items-center ps-3">
-                                                <input id="horizontal-list-radio-military" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Other</label>
-                                            </div>
-                                        </li>
-                                    </ul>
-
-                                </div>
-
-                            </div> */}
-
               <div>
-                {/* <div class="p-3 pb-5"> */}
+
                 <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
                   <div className="px-2 w-full sm:w-1/2">
                     <label
@@ -750,9 +1162,8 @@ export default function PatientForm() {
                       value={patientDetails?.email}
                       onChange={handleChange}
                       placeholder="1234"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        houseNoError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${houseNoError ? "border-red-500" : ""
+                        }`}
                       style={{ width: "100%" }}
                     />
                     {houseNoError && (
@@ -775,9 +1186,8 @@ export default function PatientForm() {
                       value={patientDetails?.age}
                       onChange={handleChange}
                       placeholder="First Floor or 2nd"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${
-                        floorError ? "border-red-500" : ""
-                      }`}
+                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${floorError ? "border-red-500" : ""
+                        }`}
                       style={{ width: "100%" }}
                     />
                     {floorError && (
@@ -1005,92 +1415,8 @@ export default function PatientForm() {
                       </div>
                     </div>
                   </div>
-                  {/* <div className="px-2 w-full sm:w-1/2">
-                                            <label
-                                                htmlFor="area"
-                                                className="block text-black text-lg font-semibold"
-                                            >
-                                                Area
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="area"
-                                                name="area"
-                                                value={patientDetails.area}
-                                                onChange={handleChange}
-                                                placeholder="Green Park"
-                                                className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${areaError ? "border-red-500" : ""
-                                                    }`}
-                                            />
-                                            {errors.area && (
-                                                <p className="text-red-500">{errors.area}</p>
-                                            )}
-                                        </div>{" "}
-                                        <div className="px-2 w-full sm:w-1/2">
-                                            <label
-                                                htmlFor="pinCode"
-                                                className="block text-black text-lg font-semibold"
-                                            >
-                                                Pincode
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="pinCode"
-                                                name="pinCode"
-                                                value={patientDetails?.address?.pinCode}
-                                                onChange={handleChange}
-                                                placeholder="110016"
-                                                className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${pinCodeError ? "border-red-500" : ""
-                                                    }`}
-                                            />
-                                            {errors.pinCode && (
-                                                <p className="text-red-500">{errors.pinCode}</p>
-                                            )}
-                                        </div>{" "}
-                                        <div className="px-2 w-full sm:w-1/2">
-                                            <label
-                                                htmlFor="district"
-                                                className="block text-black text-lg font-semibold"
-                                            >
-                                                District
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="district"
-                                                name="district"
-                                                value={patientDetails?.address?.district}
-                                                onChange={handleChange}
-                                                placeholder="South Delhi"
-                                                className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${districtError ? "border-red-500" : ""
-                                                    }`}
-                                            />
-                                            {errors.district && (
-                                                <p className="text-red-500">{errors.district}</p>
-                                            )}
-                                        </div>{" "}
-                                        <div className="px-2 w-full sm:w-1/2">
-                                            <label
-                                                htmlFor="state"
-                                                className="block text-black text-lg font-semibold"
-                                            >
-                                                State
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="state"
-                                                name="state"
-                                                value={patientDetails?.address?.state}
-                                                onChange={handleChange}
-                                                placeholder="Delhi"
-                                                className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${stateError ? "border-red-500" : ""
-                                                    }`}
-                                            />
-                                            {errors.state && (
-                                                <p className="text-red-500">{errors.state}</p>
-                                            )}
-                                        </div>{" "} */}
                 </div>
-                {/* </div> */}
+
               </div>
             </div>
             <div className="mt-10 w-100 items-center justify-center text-center">
@@ -1103,7 +1429,7 @@ export default function PatientForm() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
