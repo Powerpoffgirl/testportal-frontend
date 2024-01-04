@@ -246,10 +246,12 @@ export default function EditDoctorForm() {
       name: doctorDetails?.name,
       about: doctorDetails?.about,
       consultationFee: doctorDetails?.consultationFee,
-      // registrationNo: doctorDetails?.registrationNo,
+      registrationNo: doctorDetails?.registrationNo,
 
       // email: doctorDetails?.email, // Added email field
       // contactNumber: doctorDetails?.contactNumber, // Added contactNumber field
+
+      consultationFee: doctorDetails?.consultationFee,
       workingDays: doctorDetails?.workingDays, // Added workingDays field
       workingHours: {
         workHourFrom: doctorDetails?.workingHours?.workHourFrom,
@@ -257,8 +259,9 @@ export default function EditDoctorForm() {
         interval: doctorDetails?.interval,
       },
       totalExperience: doctorDetails?.totalExperience,
-      speciality: doctorDetails?.speciality,
       degree: doctorDetails?.degree,
+      speciality: doctorDetails?.speciality,
+
       address: {
         houseNo: doctorDetails?.address?.houseNo,
         floor: doctorDetails?.address?.floor,
@@ -272,10 +275,14 @@ export default function EditDoctorForm() {
     };
     if (newDoctorDetails.name === "") {
       toast.error("Please write Dr. name");
+    } else if (newDoctorDetails.registrationNo === "") {
+      toast.error("please write registrationNo");
     } else if (newDoctorDetails.email === "") {
       toast.error("Please write Email");
     } else if (newDoctorDetails.contactNumber === "") {
       toast.error("Please write contact number");
+    } else if (newDoctorDetails.workingHours?.interval === "") {
+      toast.error("please write interval");
     } else if (newDoctorDetails.workingDays === "") {
       toast.error("Please write working days");
     } else if (newDoctorDetails.workingHours === "") {
@@ -283,11 +290,13 @@ export default function EditDoctorForm() {
     } else if (newDoctorDetails.totalExperience === "") {
       toast.error("Please write total experience");
     } else if (newDoctorDetails.speciality === "") {
-      toast.error("Please write speciality");
+      toast.error("Please select a speciality");
     } else if (newDoctorDetails.degree === "") {
       toast.error("Please write degree");
-    } else if (newDoctorDetails.address?.pinCode === "") {
+    } else if (!newDoctorDetails.address?.pinCode) {
       toast.error("Please write Pincode");
+    } else if (!/^\d{6}$/.test(newDoctorDetails.address?.pinCode)) {
+      toast.error("Please enter a valid 6-digit PIN code");
     } else if (newDoctorDetails.address?.district === "") {
       toast.error("Please write district");
     } else if (newDoctorDetails.address?.state === "") {
