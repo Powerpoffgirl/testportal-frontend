@@ -90,7 +90,7 @@
     margin-left: -1px;
   }
 } */
-@media only screen and (max-width: 1000px) {
+@media only screen and (max-width: 900px) {
   .table th,
   .table td {
     padding: 0.5rem;
@@ -100,7 +100,7 @@
     width: 30%;
   }
   .table {
-    width: 85%;
+    width: 80%;
     max-width: 100%;
     margin: auto;
     overflow-x: auto;
@@ -108,7 +108,7 @@
   }
 }
 
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 765px) {
   .table th,
   .table td {
     padding: 0.5rem;
