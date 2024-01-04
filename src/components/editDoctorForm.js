@@ -489,8 +489,6 @@ export default function EditDoctorForm()
     });
   };
 
-
-
   const handleRegister = async (e) =>
   {
     e.preventDefault();
