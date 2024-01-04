@@ -739,7 +739,7 @@ export default function EditAdminForm()
                 <input
                   type="checkbox"
                   name="view"
-                  checked={adminDetails.permissions.view}
+                  checked={doctorDetails?.permissions.view}
                   onChange={handleChange}
                 />
               </div>
@@ -755,7 +755,7 @@ export default function EditAdminForm()
                 <input
                   type="checkbox"
                   name="create"
-                  checked={adminDetails.permissions.create}
+                  checked={doctorDetails?.permissions.create}
                   onChange={handleChange}
                 />
               </div>
@@ -771,7 +771,7 @@ export default function EditAdminForm()
                 <input
                   type="checkbox"
                   name="remove"
-                  checked={adminDetails.permissions.remove}
+                  checked={doctorDetails?.permissions.remove}
                   onChange={handleChange}
                 />
               </div>
@@ -787,7 +787,7 @@ export default function EditAdminForm()
                 <input
                   type="checkbox"
                   name="edit"
-                  checked={adminDetails.permissions.edit}
+                  checked={doctorDetails?.permissions.edit}
                   onChange={handleChange}
                 />
               </div>
