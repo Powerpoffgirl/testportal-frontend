@@ -301,26 +301,14 @@ export default function EditDoctorForm()
     if (newDoctorDetails.name === "")
     {
       toast.error("Please write Dr. name");
-<<<<<<< HEAD
-    } else if (newDoctorDetails.registrationNo === "") {
-      toast.error("please write registrationNo");
-    } else if (newDoctorDetails.email === "") {
-=======
     } else if (newDoctorDetails.email === "")
     {
->>>>>>> d41960488e745ed6e74cb23aecbc9870740575a8
       toast.error("Please write Email");
     } else if (newDoctorDetails.contactNumber === "")
     {
       toast.error("Please write contact number");
-<<<<<<< HEAD
-    } else if (newDoctorDetails.workingHours?.interval === "") {
-      toast.error("please write interval");
-    } else if (newDoctorDetails.workingDays === "") {
-=======
     } else if (newDoctorDetails.workingDays === "")
     {
->>>>>>> d41960488e745ed6e74cb23aecbc9870740575a8
       toast.error("Please write working days");
     } else if (newDoctorDetails.workingHours === "")
     {
@@ -328,17 +316,6 @@ export default function EditDoctorForm()
     } else if (newDoctorDetails.totalExperience === "")
     {
       toast.error("Please write total experience");
-<<<<<<< HEAD
-    } else if (newDoctorDetails.speciality === "") {
-      toast.error("Please select a speciality");
-    } else if (newDoctorDetails.degree === "") {
-      toast.error("Please write degree");
-    } else if (!newDoctorDetails.address?.pinCode) {
-      toast.error("Please write Pincode");
-    } else if (!/^\d{6}$/.test(newDoctorDetails.address?.pinCode)) {
-      toast.error("Please enter a valid 6-digit PIN code");
-    } else if (newDoctorDetails.address?.district === "") {
-=======
     } else if (newDoctorDetails.speciality === "")
     {
       toast.error("Please write speciality");
@@ -350,7 +327,6 @@ export default function EditDoctorForm()
       toast.error("Please write Pincode");
     } else if (newDoctorDetails.address?.district === "")
     {
->>>>>>> d41960488e745ed6e74cb23aecbc9870740575a8
       toast.error("Please write district");
     } else if (newDoctorDetails.address?.state === "")
     {
