@@ -144,7 +144,7 @@ export default function PatientListUser({ searchTerm }) {
       if (response.ok) {
         console.log("Patient deleted successfully", data);
         // Update the list in the UI by removing the deleted doctor
-        toast.success("Patient Deleted!");
+        toast.success("Appointment Deleted!");
         setPatientsList((prevPatientsList) =>
           prevPatientsList.filter((patient) => patient._id !== patientId)
         );

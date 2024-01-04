@@ -35,8 +35,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function DoctorListUser({ searchTerm })
-{
+export default function DoctorListUser({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -63,12 +62,9 @@ export default function DoctorListUser({ searchTerm })
   //   localStorage.clear();
   // }, []);
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
           method: "GET",
           headers: {
@@ -82,43 +78,39 @@ export default function DoctorListUser({ searchTerm })
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, [searchTerm]);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     // Check if there is a searchTerm and the doctorsList is not empty.
-    if (doctorsList?.length > 0 && searchTerm)
-    {
+    if (doctorsList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
-      const matchedDoctors = doctorsList.filter(doctor =>
-      {
+      const matchedDoctors = doctorsList.filter((doctor) => {
         // Check if the doctor's name includes the searchTerm
-        const nameMatch = doctor.name?.toLowerCase().includes(lowerCaseSearchTerm);
+        const nameMatch = doctor.name
+          ?.toLowerCase()
+          .includes(lowerCaseSearchTerm);
 
         // Check if any of the doctor's specialities include the searchTerm
-        const specialityMatch = doctor.speciality?.some(speciality =>
+        const specialityMatch = doctor.speciality?.some((speciality) =>
           speciality.toLowerCase().includes(lowerCaseSearchTerm)
         );
 
         return nameMatch || specialityMatch;
       });
       setFilteredDoctors(matchedDoctors);
-    } else
-    {
+    } else {
       // If no searchTerm or doctorsList is empty, use the original list.
       setFilteredDoctors(doctorsList);
     }
   }, [doctorsList, searchTerm]);
   // Include all dependencies in the dependency array
 
-  const handleQRCode = (doctorId) =>
-  {
+  const handleQRCode = (doctorId) => {
     console.log("HELLO");
     localStorage.setItem("doctorId", doctorId);
     const doctor = doctorsList?.find((doc) => doc._id === doctorId);
@@ -129,8 +121,7 @@ export default function DoctorListUser({ searchTerm })
     onOpenModal();
   };
 
-  const handleBookAppointment = async () =>
-  {
+  const handleBookAppointment = async () => {
     console.log(selectedDoctor?.slots[currentIndex]);
     const bookslot = {
       date: selectedDoctor?.slots[currentIndex].date.split("T")[0],
@@ -151,8 +142,7 @@ export default function DoctorListUser({ searchTerm })
     const data = await response.json();
 
     console.log("slot booked", data);
-    if (data.success === true)
-    {
+    if (data.success === true) {
       navigate("/edituserform");
     }
     localStorage.setItem(
@@ -165,14 +155,11 @@ export default function DoctorListUser({ searchTerm })
     showSlot();
   };
 
-  const handleFilterDocotors = (item) =>
-  {
+  const handleFilterDocotors = (item) => {
     console.log("ITEM NAME IS================>", item);
-    if (item.toLowerCase() === "all")
-    {
+    if (item.toLowerCase() === "all") {
       setFilteredDoctors(doctorsList);
-    } else
-    {
+    } else {
       const filteredDoctors = doctorsList.filter(
         (doc) => doc.speciality === item
       );
@@ -191,26 +178,22 @@ export default function DoctorListUser({ searchTerm })
   const MAX_LENGTH = 6;
   const otpInputs = [];
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     let { name, value } = e.target;
     console.log(value);
     setcontactNumber(value);
     console.log(contactNumber);
   };
 
-  const showSlot = () =>
-  {
+  const showSlot = () => {
     setbookingslottoggle(!bookingslottoggle);
   };
 
-  const showappointment = () =>
-  {
+  const showappointment = () => {
     setappointment(!appointment);
   };
 
-  const handleOtp = async () =>
-  {
+  const handleOtp = async () => {
     const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
       method: "post",
       headers: {
@@ -226,29 +209,24 @@ export default function DoctorListUser({ searchTerm })
     // localStorage.setItem("token", data?.user?.token)
     setotppage(true);
   };
-  const handleInputChange = (e, index) =>
-  {
+  const handleInputChange = (e, index) => {
     const value = e.target.value;
 
-    if (isNaN(value))
-    {
+    if (isNaN(value)) {
       return; // Allow only numeric input
     }
 
     otp[index] = value;
 
-    if (index < MAX_LENGTH - 1 && value)
-    {
+    if (index < MAX_LENGTH - 1 && value) {
       otpInputs[index + 1].focus();
     }
 
     setOtp([...otp]);
   };
 
-  const verifyOTP = async () =>
-  {
-    try
-    {
+  const verifyOTP = async () => {
+    try {
       const userId = localStorage.getItem("userId");
 
       const otpString = otp.join("");
@@ -265,15 +243,13 @@ export default function DoctorListUser({ searchTerm })
       );
 
       const data = await response.json();
-      if (data.success === true)
-      {
+      if (data.success === true) {
         console.log("DATA from response", data);
 
         localStorage.setItem("token", data?.data?.token);
         navigate("/edituserform");
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error verifying the OTP:", error);
     }
   };
@@ -283,8 +259,7 @@ export default function DoctorListUser({ searchTerm })
   const numberOfColumns = 4;
   const numberOfRows = Math.ceil(bookingslot?.length / numberOfColumns);
 
-  function getYearMonthDay(dateString)
-  {
+  function getYearMonthDay(dateString) {
     // Create a new Date object using the provided date string
     const date = new Date(dateString);
 
@@ -316,21 +291,18 @@ export default function DoctorListUser({ searchTerm })
     return { year, monthName, day, dayName };
   }
 
-  const handleDateClick = (index) =>
-  {
+  const handleDateClick = (index) => {
     setCurrentIndex(index);
   };
 
-  const goToNext = () =>
-  {
+  const goToNext = () => {
     const isLastItem = currentIndex === bookingslot.length - 1;
     const nextIndex = isLastItem ? 0 : currentIndex + 1;
     setCurrentIndex(nextIndex);
     console.log(currentIndex);
   };
 
-  const goToPrev = () =>
-  {
+  const goToPrev = () => {
     const isFirstItem = currentIndex === 0;
     const prevIndex = isFirstItem ? bookingslot.length - 1 : currentIndex - 1;
     setCurrentIndex(prevIndex);
@@ -340,17 +312,12 @@ export default function DoctorListUser({ searchTerm })
   var selectedschedule = 0;
   // console.log(selectedDoctor?.slots[currentIndex])
 
-  useEffect(() =>
-  {
-    if (resendClicked || firstTime)
-    {
-      const intervalId = setInterval(() =>
-      {
-        if (seconds > 0)
-        {
+  useEffect(() => {
+    if (resendClicked || firstTime) {
+      const intervalId = setInterval(() => {
+        if (seconds > 0) {
           setSeconds((prevSeconds) => prevSeconds - 1);
-        } else
-        {
+        } else {
           setFirstTime(false);
           setSeconds(90);
           setResendClicked(false);
@@ -360,8 +327,7 @@ export default function DoctorListUser({ searchTerm })
     }
   }, [seconds, resendClicked, firstTime]);
 
-  const formatTime = (time) =>
-  {
+  const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const remainingSeconds = time % 60;
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
@@ -463,8 +429,7 @@ export default function DoctorListUser({ searchTerm })
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
                   <div className="flex flex-wrap ">
-                    {selectedDoctor?.speciality?.map((item, index) =>
-                    {
+                    {selectedDoctor?.speciality?.map((item, index) => {
                       return (
                         <p
                           key={index}
@@ -604,14 +569,12 @@ export default function DoctorListUser({ searchTerm })
                                   <FaAngleLeft style={{ color: "black" }} />
                                 </button>
                                 <div className="flex flex-row overflow-x-auto mx-2 ">
-                                  {bookingslot?.map((data, index) =>
-                                  {
+                                  {bookingslot?.map((data, index) => {
                                     console.log(data);
                                     const { year, monthName, day, dayName } =
                                       getYearMonthDay(data.date);
                                     // console.log(year, monthName, day, dayName)
-                                    if (data.isBooked == true)
-                                    {
+                                    if (data.isBooked == true) {
                                       return (
                                         <div
                                           key={index}
@@ -630,28 +593,25 @@ export default function DoctorListUser({ searchTerm })
                                           <p>{dayName}</p>
                                         </div>
                                       );
-                                    } else if (index == currentIndex)
-                                    {
+                                    } else if (index == currentIndex) {
                                       return (
                                         <div
                                           key={index}
                                           className="flex flex-col px-2"
                                         >
                                           <p>{monthName}</p>
-                                          <p className=" p-2 border-2 rounded-lg bg-blue-100">
+                                          <p className=" p-2 border-2 rounded-lg bg-blue-200">
                                             {day}
                                           </p>
                                           <p>{dayName}</p>
                                         </div>
                                       );
-                                    } else
-                                    {
+                                    } else {
                                       return (
                                         <div
                                           key={index}
                                           className="flex flex-col px-2 hover:cursor-pointer"
-                                          onClick={() =>
-                                          {
+                                          onClick={() => {
                                             handleDateClick(index);
                                           }}
                                         >
@@ -674,8 +634,7 @@ export default function DoctorListUser({ searchTerm })
                               </div>
 
                               <div className="flex flex-col space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                                {[...Array(numberOfRows)].map((_, rowIndex) =>
-                                {
+                                {[...Array(numberOfRows)].map((_, rowIndex) => {
                                   return (
                                     <div
                                       key={rowIndex}
@@ -686,14 +645,12 @@ export default function DoctorListUser({ searchTerm })
                                           rowIndex * numberOfColumns,
                                           (rowIndex + 1) * numberOfColumns
                                         )
-                                        ?.map((data, index) =>
-                                        {
+                                        ?.map((data, index) => {
                                           selectedschedule =
                                             selectedschedule + 1;
                                           index = selectedschedule - 1;
                                           // console.log(selectedschedule)
-                                          if (data.isBooked == true)
-                                          {
+                                          if (data.isBooked == true) {
                                             return (
                                               <div
                                                 key={index}
@@ -709,24 +666,21 @@ export default function DoctorListUser({ searchTerm })
                                           } else if (
                                             selectedschedule - 1 ===
                                             currentIndex
-                                          )
-                                          {
+                                          ) {
                                             return (
                                               <div
                                                 key={index}
-                                                className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-100 text-gray-800"
+                                                className="flex-1 border-2 rounded-3xl py-1 px-2 bg-blue-200 text-gray-800"
                                               >
                                                 {data.startTime}
                                               </div>
                                             );
-                                          } else
-                                          {
+                                          } else {
                                             return (
                                               <div
                                                 key={index}
                                                 className="flex-1 border-2 rounded-3xl py-1 px-2  text-gray-800"
-                                                onClick={() =>
-                                                {
+                                                onClick={() => {
                                                   handleDateClick(index);
                                                 }}
                                               >
@@ -747,8 +701,7 @@ export default function DoctorListUser({ searchTerm })
                         {!bookingslottoggle && !appointment && (
                           <button
                             className="text-white text-xs rounded-3xl px-3 py-1 "
-                            onClick={() =>
-                            {
+                            onClick={() => {
                               showSlot();
                             }}
                             style={{ backgroundColor: " #89CFF0" }}
@@ -841,10 +794,8 @@ export default function DoctorListUser({ searchTerm })
                         maxLength={1}
                         value={digit}
                         onChange={(e) => handleInputChange(e, index)}
-                        onKeyDown={(e) =>
-                        {
-                          if (e.key === "Backspace" && index > 0 && !digit)
-                          {
+                        onKeyDown={(e) => {
+                          if (e.key === "Backspace" && index > 0 && !digit) {
                             otpInputs[index - 1].focus();
                           }
                         }}
@@ -915,11 +866,10 @@ export default function DoctorListUser({ searchTerm })
                       alt={doctor.name}
                     />
                   ) : (
-
                     <AccountCircleIcon
                       style={{
                         color: "#B1DAED",
-                        fontSize: isTab ? "45px" : "90px"
+                        fontSize: isTab ? "45px" : "90px",
                       }}
                     />
                   )}
@@ -930,7 +880,8 @@ export default function DoctorListUser({ searchTerm })
 
                     <p className=" text-gray-500 sm:text-sm text-xs flex flex-row">
                       {/* {doctor?.speciality?.join(", ")} */}
-                      {doctor?.speciality?.slice(0, 2).join(", ")}<p class="text-black font-bold">...</p>
+                      {doctor?.speciality?.slice(0, 2).join(", ")}
+                      <p class="text-black font-bold">...</p>
                     </p>
                     <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience
