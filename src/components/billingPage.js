@@ -453,9 +453,9 @@ export default function BillingPage({ name, contactNo, gender, age })
             <div class="flex xl:flex-row flex-col">
               {/* ------------1st------------ */}
               <div className="xl:w-1/3 w-full  xl:border-r border-gray-300"
-                style={{
-                  overflowY: 'auto'
-                }}
+              // style={{
+              //   overflowY: 'auto'
+              // }}
               >
 
                 <p style={{ color: "gray" }}>Summary</p>
@@ -500,10 +500,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                     </tr>
                   </thead>
                   <tbody>
-                    <tr>
-                      <td style={{ border: '1px solid #ddd' }} className="border p-2  text-left">0</td>
-                      <td style={{ border: '1px solid #ddd' }} className="border p-2 text-left">0</td>
-                    </tr>
+
                     <tr>
                       <td style={{ border: '1px solid #ddd' }} className="border p-2  text-left">Amount</td>
                       <td style={{ border: '1px solid #ddd' }} className="border p-2 text-left">{calculateTotalPrice()}</td>
@@ -519,68 +516,6 @@ export default function BillingPage({ name, contactNo, gender, age })
                     </tr>
                   </tbody>
                 </table>
-
-                {/* <div style={{ width: "50%", float: "left", display: 'flex', flexDirection: 'column', }}>
-                  <label style={{ fontSize: 12 }}>Discount (%) </label>
-                  <input
-                    type="text"
-                    style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
-                    disabled={true}
-                    value={0}
-                  />
-                </div>
-
-                <div style={{ width: "50%", float: "right", display: 'flex', flexDirection: 'column' }}>
-                  <label style={{ fontSize: 12 }}>Discount (%) </label>
-                  <input
-
-                    type="text"
-                    style={{ border: "1px solid gray", width: "60%", textAlign: "center" }}
-                    disabled={true}
-                    value={0}
-                  />
-                </div>
-
-                <div
-                  style={{
-                    marginTop: "60px",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <p style={{ color: "gray", marginRight: "43%" }}>Amount</p>
-                  <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
-                </div>
-
-                <div
-                  style={{
-                    marginTop: "15px",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <p style={{ color: "gray", marginRight: "43%" }}>Discount</p>
-                  <p style={{ color: "black" }}>0</p>
-                </div>
-
-                <div
-                  style={{
-                    marginTop: "15px",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
-                >
-                  <p
-                    style={{
-                      color: "black",
-                      marginRight: "30%",
-                      fontWeight: 500,
-                    }}
-                  >
-                    Total Amount
-                  </p>
-                  <p style={{ color: "black" }}>{calculateTotalPrice()}</p>
-                </div> */}
               </div>
               {/* ------------3rd------------ */}
               <div className="middle xl:w-1/3 w-full"
@@ -633,13 +568,13 @@ export default function BillingPage({ name, contactNo, gender, age })
                       marginRight: "20%",
                       fontWeight: 500,
                       marginLeft: "20px",
-                      marginTop: '67px'
+                      marginTop: '33px'
 
                     }}
                   >
                     Due Amount
                   </p>
-                  <p style={{ color: "black", marginTop: '67px' }}>{calculateTotalPrice()}</p>
+                  <p style={{ color: "black", marginTop: '33px' }}>{calculateTotalPrice()}</p>
                 </div>
               </div>
             </div>

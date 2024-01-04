@@ -73,6 +73,41 @@
   color: #e10d05;
 }
 
+/* @media only screen and (max-width: 1000px) {
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+
+  .expand {
+    width: 30%;
+  }
+  .table {
+    width: 87%;
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    margin-left: -1px;
+  }
+} */
+@media only screen and (max-width: 1000px) {
+  .table th,
+  .table td {
+    padding: 0.5rem;
+  }
+
+  .expand {
+    width: 30%;
+  }
+  .table {
+    width: 85%;
+    max-width: 100%;
+    margin: auto;
+    overflow-x: auto;
+    margin-left: -1px;
+  }
+}
+
 @media only screen and (max-width: 768px) {
   .table th,
   .table td {
