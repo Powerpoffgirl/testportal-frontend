@@ -70,23 +70,6 @@ export default function PatientForm()
   const [doctorImage, setDoctorImage] = useState();
   const [mobileNumberError, setmobileNumberError] = useState("");
 
-  const handleChange3 = (e) =>
-  {
-    let { name, value } = e.target;
-    console.log("e.target value", value);
-
-    // Check if the value consists of exactly 10 digits and does not include alphabetic characters
-    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
-    {
-      setmobileNumberError(""); // Clear the error message if it's valid
-    } else
-    {
-      setmobileNumberError("Please enter a valid 10-digit number");
-    }
-
-    // console.log("contact number after setter function", contactNumber);
-  };
-
   const handleFileSelect = async (event) =>
   {
     const file = event.target.files[0];
@@ -314,7 +297,6 @@ export default function PatientForm()
       toast.error("Please write state");
     } else
     {
-      // const doctorId = localStorage.getItem("doctorId");
       const token = localStorage.getItem("token");
       if (!token)
       {
@@ -587,8 +569,8 @@ export default function PatientForm()
               onChange={handleChange}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {errors.contactNumber && (
-              <p className="text-red-500">{errors.contactNumber}</p>
+            {mobileNumberError && (
+              <p className="text-red-500">{mobileNumberError}</p>
             )}
           </div>
           {/* -----------address----------- */}
