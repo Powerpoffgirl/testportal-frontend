@@ -375,6 +375,7 @@ export default function DoctorList({ searchTerm })
   const bookingslot = selectedDoctor.slots;
   let processedSlots = {};
 
+  console.log("===============BOOKING SLOTS==============", bookingslot)
   for (let i in bookingslot)
   {
     let objTitle = bookingslot[i].date.split("T")[0];

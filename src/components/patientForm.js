@@ -68,22 +68,23 @@ export default function PatientForm()
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [newPatientDetails, setNewPatientDetails] = useState({});
   const [doctorImage, setDoctorImage] = useState();
-  const [contactNumber, setcontactNumber] = useState(null);
   const [mobileNumberError, setmobileNumberError] = useState("");
 
-  const handleChange3 = (e) => {
+  const handleChange3 = (e) =>
+  {
     let { name, value } = e.target;
     console.log("e.target value", value);
 
     // Check if the value consists of exactly 10 digits and does not include alphabetic characters
-    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
+    {
       setmobileNumberError(""); // Clear the error message if it's valid
-      setcontactNumber(value);
-    } else {
+    } else
+    {
       setmobileNumberError("Please enter a valid 10-digit number");
     }
 
-    console.log("contact number after setter function", contactNumber);
+    // console.log("contact number after setter function", contactNumber);
   };
 
   const handleFileSelect = async (event) =>
@@ -171,22 +172,6 @@ export default function PatientForm()
     }),
   ];
 
-  // const handleChange1 = (e) => {
-  //   setDoctorDetails((prevDoctorDetails) => ({
-  //     ...prevDoctorDetails,
-  //     workingDays: e,
-  //     // speciality: e,
-  //   }));
-  // };
-
-  // const handleChange2 = (e) => {
-  //   setDoctorDetails((prevDoctorDetails) => ({
-  //     ...prevDoctorDetails,
-  //     // workingDays: e,
-  //     speciality: e,
-  //   }));
-  // };
-
   const handleChange1 = (e) =>
   {
     setPatientDetails((prevPatientDetails) => ({
@@ -211,8 +196,6 @@ export default function PatientForm()
     { label: "Saturday", value: "Saturday" },
     { label: "Sunday", value: "Sunday" },
   ];
-
-  // const IndianDoctorSpecialties = [
   //   "General Medicine",
   //   "Cardiology",
   //   "Dermatology",
@@ -316,15 +299,27 @@ export default function PatientForm()
   {
     const { name, value } = e.target;
 
-    if (name === "pinCode") {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
-        setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
-      } else {
+    if (name === "pinCode")
+    {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
+        setPinCodeError("");
+      } else
+      {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
-    // const error = validateField(name, value);
-    // setErrors({ ...errors, [name]: error });
+
+    if (name === "contactNumber")
+    {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
+        setmobileNumberError("");
+      } else
+      {
+        setmobileNumberError("Please enter a valid Number");
+      }
+    }
 
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
@@ -410,66 +405,63 @@ export default function PatientForm()
       patientPic: userImage,
     };
 
-    if (newPatientDetails.gender === "")
+    // if (newPatientDetails.gender === "")
+    // {
+    //   toast.error("Please write gender");
+    // } else if (newPatientDetails.age === "")
+    // {
+    //   toast.error("Please write age");
+    // } else if (newPatientDetails.ageType === "")
+    // {
+    //   toast.error("Please write Age Type");
+    // } else if (newPatientDetails.bodyWeight === "")
+    // {
+    //   toast.error("Please write Body Weight");
+    // } else if (newPatientDetails.name === "")
+    // {
+    //   toast.error("Please write name");
+    // } else if (newPatientDetails.contactNumber === "")
+    // {
+    //   toast.error("Please write Contact Number");
+    // } else if (!newPatientDetails.address?.pinCode)
+    // {
+    //   toast.error("Please write Pincode");
+    // } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode))
+    // {
+    //   toast.error("Please enter a valid 6-digit PIN code");
+    // } else if (newPatientDetails.address?.district === "")
+    // {
+    //   toast.error("Please write district");
+    // } else if (newPatientDetails.address?.state === "")
+    // {
+    //   toast.error("Please write state");
+    // } else
+    // {
+    // const doctorId = localStorage.getItem("doctorId");
+    const token = localStorage.getItem("token");
+    if (!token)
     {
-      toast.error("Please write gender");
-    } else if (newPatientDetails.age === "")
-    {
-      toast.error("Please write age");
-    } else if (newPatientDetails.ageType === "")
-    {
-      toast.error("Please write ageType");
-    } else if (newPatientDetails.bodyWeight === "")
-    {
-      toast.error("Please write bodyWeight");
-    } else if (newPatientDetails.name === "")
-    {
-      toast.error("Please write name");
-    } else if (newPatientDetails.contactNumber === "")
-    {
-      toast.error("Please write contactNumber");
-    } else if (!newPatientDetails.address?.pinCode)
-    {
-      toast.error("Please write Pincode");
-    } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode))
-    {
-      toast.error("Please enter a valid 6-digit PIN code");
-    } else if (newPatientDetails.address?.district === "")
-    {
-      toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "")
-    {
-      toast.error("Please write state");
-    } else
-    {
-      const doctorId = localStorage.getItem("doctorId");
-      const token = localStorage.getItem("token");
-      if (!token)
-      {
-        console.error("No token found in local storage");
-        localStorage.clear();
-        navigate(`/userlogin`);
-      }
-      const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(newPatientDetails),
-      });
-      const data = await response.json();
-      if (data.success === true)
-      {
-        // navigate("/otp")
-        onOpenModal();
-        localStorage.setItem("patientId", data.data._id);
-
-        // Display "Member's form booked" toast message
-        toast.success("Member details updated!");
-      }
-      console.log("DATA from response", data);
+      console.error("No token found in local storage");
+      localStorage.clear();
+      navigate(`/userlogin`);
     }
+    const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+      body: JSON.stringify(newPatientDetails),
+    });
+    const data = await response.json();
+    if (data.success === true)
+    {
+      onOpenModal();
+      localStorage.setItem("patientId", data.data._id);
+      toast.success("Member details updated!");
+    }
+    console.log("DATA from response", data);
+    // }
   };
 
   console.log("PATIENT DETAILS", patientDetails);
@@ -732,8 +724,7 @@ export default function PatientForm()
               name="contactNumber"
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               required
-              value={contactNumber}
-              onChange={handleChange3}
+              onChange={handleChange}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {/* {errors.contactNumber && ( */}
