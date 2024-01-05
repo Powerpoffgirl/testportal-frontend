@@ -86,7 +86,9 @@ export default function UserProfile()
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
+
         const data = await response.json();
+
         console.log("Image uploaded successfully:", data);
         setUserImage(data.profilePicImageUrl);
         toast.success("Image uploaded successfully");
