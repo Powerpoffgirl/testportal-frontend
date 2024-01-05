@@ -935,9 +935,6 @@ export default function DoctorList({ searchTerm })
                             >
                               Book Appointment
                             </button>
-                            {/* <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
-                          Go Back
-                        </button> */}
                           </div>
                         )}
                       </div>
