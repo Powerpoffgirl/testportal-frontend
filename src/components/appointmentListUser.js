@@ -373,7 +373,7 @@ export default function AppointmentListUser({ searchTerm })
             </div>
           ))
         ) : (
-          <p>Please book an yappointment. <span style={{ textDecoration: "underline" }} onClick={() => navigate("/doctorlistuser")}>Click here.</span></p>
+          <p>Please book an appointment. <span style={{ textDecoration: "underline" }} onClick={() => navigate("/doctorlistuser")}>Click here.</span></p>
         )
         }
       </div>
