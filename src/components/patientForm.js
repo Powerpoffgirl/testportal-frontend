@@ -69,20 +69,6 @@ export default function PatientForm() {
   const [doctorImage, setDoctorImage] = useState();
   const [mobileNumberError, setmobileNumberError] = useState("");
 
-  const handleChange3 = (e) => {
-    let { name, value } = e.target;
-    console.log("e.target value", value);
-
-    // Check if the value consists of exactly 10 digits and does not include alphabetic characters
-    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
-      setmobileNumberError(""); // Clear the error message if it's valid
-    } else {
-      setmobileNumberError("Please enter a valid 10-digit number");
-    }
-
-    // console.log("contact number after setter function", contactNumber);
-  };
-
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -699,9 +685,7 @@ export default function PatientForm() {
               onChange={handleChange}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {errors.contactNumber && (
-              <p className="text-red-500">{errors.contactNumber}</p>
-            )}
+            <p class=" text-red-500 ">{mobileNumberError}</p>
           </div>
           {/* -----------address----------- */}
           <div className="mt-3">
@@ -757,8 +741,8 @@ export default function PatientForm() {
                       placeholder="Pin Code"
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.pinCode && (
-                      <p className="text-red-500">{errors.pinCode}</p>
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
                     )}
                   </div>
                 </div>

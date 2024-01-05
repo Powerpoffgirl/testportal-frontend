@@ -54,21 +54,6 @@ export default function DoctorFormAdmin() {
     doctorPic: "",
   });
 
-  const handleChange3 = (e) => {
-    let { name, value } = e.target;
-    console.log("e.target value", value);
-
-    // Check if the value consists of exactly 10 digits and does not include alphabetic characters
-    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
-      setmobileNumberError(""); // Clear the error message if it's valid
-      setcontactNumber(value);
-    } else {
-      setmobileNumberError("Please enter a valid 10-digit number");
-    }
-
-    console.log("contact number after setter function", contactNumber);
-  };
-
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
 
@@ -283,6 +268,14 @@ export default function DoctorFormAdmin() {
         setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
       } else {
         setPinCodeError("Please enter a valid Pincode");
+      }
+    }
+
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setmobileNumberError("");
+      } else {
+        setmobileNumberError("Please enter a valid Number");
       }
     }
 
@@ -748,7 +741,7 @@ export default function DoctorFormAdmin() {
                 placeholder=""
                 id="contactNumber"
                 name="contactNumber"
-                onChange={handleChange3}
+                onChange={handleChange}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
               <p class=" text-red-500 ">{mobileNumberError}</p>

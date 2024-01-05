@@ -241,7 +241,6 @@ export default function DoctorListUser({ searchTerm }) {
     });
     const data = await response.json();
 
-
     console.log("RESPONSE------", data);
     console.log("user id", data?.user?._id);
     localStorage.setItem("userId", data?.user?._id);
@@ -685,7 +684,10 @@ export default function DoctorListUser({ searchTerm }) {
                                     // console.log(year, monthName, day, dayName)
                                     if (data.isBooked == true) {
                                       return (
-                                        <Tooltip placement="top" title="Booked Slots">
+                                        <Tooltip
+                                          placement="top"
+                                          title="Booked Slots"
+                                        >
                                           <div
                                             key={index}
                                             className="flex flex-col px-2"
@@ -763,7 +765,10 @@ export default function DoctorListUser({ searchTerm }) {
                                           // console.log(selectedschedule)
                                           if (data.isBooked == true) {
                                             return (
-                                              <Tooltip placement="top" title="Booked Slots">
+                                              <Tooltip
+                                                placement="top"
+                                                title="Booked Slots"
+                                              >
                                                 <div
                                                   key={index}
                                                   className="flex-1 border-2 rounded-3xl py-1 px-2 text-gray-800"
