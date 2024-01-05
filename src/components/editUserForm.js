@@ -118,8 +118,7 @@ const SymptomsDropdown = [
   { label: "Snoring", value: "Snoring" },
 ];
 
-export default function EditUserForm()
-{
+export default function EditUserForm() {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   const navigate = useNavigate();
@@ -139,13 +138,12 @@ export default function EditUserForm()
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [floorError, setFloorError] = useState("");
   const [newUser, setNewUser] = useState(false);
-  const [patientId, setPatientId] = useState(localStorage.getItem("patientId"))
+  const [patientId, setPatientId] = useState(localStorage.getItem("patientId"));
 
-  useEffect(() =>
-  {
-    setPatientId(localStorage.getItem("patientId"))
-    console.log("+++++++++++++++PATIENT ID++++++++++++", patientId)
-  }, [patientId])
+  useEffect(() => {
+    setPatientId(localStorage.getItem("patientId"));
+    console.log("+++++++++++++++PATIENT ID++++++++++++", patientId);
+  }, [patientId]);
 
   const [appointmentDetails, setAppointmentDetails] = useState({
     doctorId: localStorage.getItem("doctorId"),
@@ -177,15 +175,11 @@ export default function EditUserForm()
     patientPic: "",
   });
 
-  useEffect(() =>
-  {
-    const fetchPatientList = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientList = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -203,8 +197,7 @@ export default function EditUserForm()
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientsList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -213,40 +206,34 @@ export default function EditUserForm()
   }, []);
 
   console.log("DATE TIME", appointmentDate, appointmentTime);
-  const handleChangeIssues = (values) =>
-  {
+  const handleChangeIssues = (values) => {
     setAppointmentDetails((prevAppointmentDetails) => ({
       ...prevAppointmentDetails,
       issues: values,
     }));
   };
 
-  const handleChangeDiseases = (values) =>
-  {
+  const handleChangeDiseases = (values) => {
     setAppointmentDetails((prevAppointmentDetails) => ({
       ...prevAppointmentDetails,
       diseases: values,
     }));
   };
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -255,8 +242,7 @@ export default function EditUserForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -268,8 +254,7 @@ export default function EditUserForm()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -281,15 +266,11 @@ export default function EditUserForm()
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -303,69 +284,59 @@ export default function EditUserForm()
 
         const data = await response.json();
         console.log("DATA from response", data);
-        if (data.data.newUser === true)
-        {
+        if (data.data.newUser === true) {
           setNewUser(true);
         }
         setUserDetails(data?.data);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleToggleEdit = () =>
-  {
+  const handleToggleEdit = () => {
     setIsEditing(!isEditing);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) =>
-    {
+    ...Array.from({ length: 24 }, (v, i) => {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange2 = (e) =>
-  {
+  const handleChange2 = (e) => {
     setUserDetails((prevUserDetails) => ({
       ...prevUserDetails,
       ageType: e,
     }));
   };
 
-  const handleChange1 = (e) =>
-  {
+  const handleChange1 = (e) => {
     setUserDetails((prevUserDetails) => ({
       ...prevUserDetails,
       gender: e,
     }));
   };
 
-  const handleChange3 = (e) =>
-  {
+  const handleChange3 = (e) => {
     console.log("HELLOOOOOOOO");
 
     setAppointmentDetails((prevAppointmentDetails) => ({
@@ -376,8 +347,7 @@ export default function EditUserForm()
     localStorage.setItem("patientId", e);
   };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     if (
@@ -390,8 +360,7 @@ export default function EditUserForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         address: {
@@ -399,8 +368,7 @@ export default function EditUserForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         [name]: value,
@@ -410,8 +378,7 @@ export default function EditUserForm()
     setIsEditing(true);
   };
 
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
     const newUserDetails = {
@@ -432,32 +399,23 @@ export default function EditUserForm()
       },
       userPic: userImage,
     };
-    if (newUserDetails.name === "")
-    {
+    if (newUserDetails.name === "") {
       toast.error("Please write name");
-    } else if (newUserDetails.email === "")
-    {
+    } else if (newUserDetails.email === "") {
       toast.error("Please write email");
-    } else if (newUserDetails.contactNumber === "")
-    {
+    } else if (newUserDetails.contactNumber === "") {
       toast.error("Please write contact number");
-    } else if (newUserDetails.address?.pinCode === "")
-    {
+    } else if (newUserDetails.address?.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (newUserDetails.address?.district === "")
-    {
+    } else if (newUserDetails.address?.district === "") {
       toast.error("Please write district");
-    } else if (newUserDetails.address?.state === "")
-    {
+    } else if (newUserDetails.address?.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       const token = localStorage.getItem("token");
       const patientId = localStorage.getItem("patientId");
-      if (newUser)
-      {
-        if (!token)
-        {
+      if (newUser) {
+        if (!token) {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate("/userlogin");
@@ -472,8 +430,7 @@ export default function EditUserForm()
         });
         const data = await response.json();
 
-        if (data.statusCode === 400)
-        {
+        if (data.statusCode === 400) {
           toast.error("Please fill the details");
         }
 
@@ -527,13 +484,11 @@ export default function EditUserForm()
       );
       const data = await response.json();
       console.log("DATA FROM APPOINTMENT BOOKING", data);
-      if (data.success === true)
-      {
+      if (data.success === true) {
         console.log("OPEN MODAL");
         onOpenModal();
         console.log("DATA FROM APPOINTMENT BOOKING", data);
-        if (data.success === true)
-        {
+        if (data.success === true) {
           toast.success("Appointment booked successfully");
           // console.log("Doctor updated successfully.");
           navigate("/appointmentlistuser");
@@ -545,18 +500,14 @@ export default function EditUserForm()
     }
   };
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     // localStorage.setItem("patientId", appointmentDetails?.patientId);
 
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -577,8 +528,7 @@ export default function EditUserForm()
         setPatientDetails(data?.data);
         // localStorage.setItem("patientId", patientId);
         console.log("################PATIENT NAME$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -734,7 +684,7 @@ export default function EditUserForm()
                       Age
                     </label>
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="age"
@@ -766,7 +716,7 @@ export default function EditUserForm()
                       Age Type
                     </label>
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <Select
                         className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
@@ -824,7 +774,7 @@ export default function EditUserForm()
                       Gender
                     </label>
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <Select
                         className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
@@ -972,20 +922,16 @@ export default function EditUserForm()
                     id="issues"
                     name="issues"
                     onChange={handleChangeIssues}
-                    onInputKeyDown={(e) =>
-                    {
-                      if (e.key === "Enter")
-                      {
+                    onInputKeyDown={(e) => {
+                      if (e.key === "Enter") {
                         e.preventDefault();
                         let inputValue = e.target.value.trim();
-                        if (inputValue)
-                        {
+                        if (inputValue) {
                           handleChangeIssues([
                             ...appointmentDetails?.issues,
                             inputValue,
                           ]);
-                          setTimeout(() =>
-                          {
+                          setTimeout(() => {
                             e.target.value = "";
                             inputValue = "";
                           }, 0);
@@ -1023,20 +969,16 @@ export default function EditUserForm()
                   id="diseases"
                   name="diseases"
                   onChange={handleChangeDiseases}
-                  onInputKeyDown={(e) =>
-                  {
-                    if (e.key === "Enter")
-                    {
+                  onInputKeyDown={(e) => {
+                    if (e.key === "Enter") {
                       e.preventDefault();
                       let inputValue = e?.target?.value?.trim();
-                      if (inputValue)
-                      {
+                      if (inputValue) {
                         handleChangeDiseases([
                           ...appointmentDetails?.diseases,
                           inputValue,
                         ]);
-                        setTimeout(() =>
-                        {
+                        setTimeout(() => {
                           e.target.value = "";
                           inputValue = "";
                         }, 0);
@@ -1075,14 +1017,14 @@ export default function EditUserForm()
                 <div className="flex flex-row">
                   <div className="px-2 w-1/4  mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         placeholder="House No."
                         id="houseNo"
                         name="houseNo"
                         onChange={handleChange}
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1091,20 +1033,20 @@ export default function EditUserForm()
                         id="houseNo"
                         name="houseNo"
                         value={patientDetails?.address?.houseNo}
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
                   </div>
                   <div className="px-2 w-1/4 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="floor"
                         name="floor"
                         onChange={handleChange}
                         placeholder="Floor"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1113,20 +1055,20 @@ export default function EditUserForm()
                         name="floor"
                         value={patientDetails?.address?.floor}
                         placeholder="Floor"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
                   </div>
                   <div className="px-2 w-1/4 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="block"
                         name="block"
                         onChange={handleChange}
                         placeholder="Block"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1135,7 +1077,7 @@ export default function EditUserForm()
                         name="block"
                         value={patientDetails?.address?.block}
                         placeholder="Block"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
 
@@ -1145,14 +1087,14 @@ export default function EditUserForm()
                   </div>
                   <div className="px-2 w-1/4 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="number"
                         id="pinCode"
                         name="pinCode"
                         onChange={handleChange}
                         placeholder="Pin Code"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1161,7 +1103,7 @@ export default function EditUserForm()
                         name="pinCode"
                         value={patientDetails?.address?.pinCode}
                         placeholder="Pin Code"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
 
@@ -1173,14 +1115,14 @@ export default function EditUserForm()
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                  userDetails?.newUser === true ? (
                     <input
                       type="text"
                       id="area"
                       name="area"
                       onChange={handleChange}
                       placeholder="Area/Landmark"
-                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   ) : (
                     <input
@@ -1189,7 +1131,7 @@ export default function EditUserForm()
                       name="area"
                       value={patientDetails?.address?.area}
                       placeholder="Area/Landmark"
-                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   )}
 
@@ -1199,14 +1141,14 @@ export default function EditUserForm()
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="district"
                         name="district"
                         onChange={handleChange}
                         placeholder="District"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1215,7 +1157,7 @@ export default function EditUserForm()
                         name="district"
                         value={patientDetails?.address?.district}
                         placeholder="District"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
 
@@ -1226,14 +1168,14 @@ export default function EditUserForm()
 
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="state"
                         name="state"
                         onChange={handleChange}
                         placeholder="State"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1242,7 +1184,7 @@ export default function EditUserForm()
                         name="state"
                         value={patientDetails?.address?.state}
                         placeholder="State"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
 

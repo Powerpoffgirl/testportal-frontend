@@ -703,7 +703,7 @@ export default function EditDoctorForm() {
             <p className="block text-black text-lg font-semibold">
               Working Days
             </p>
-            <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+            <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
               <Select
                 className="w-full border-none h-10 overflow-y-scroll"
                 mode="multiple"
@@ -730,7 +730,7 @@ export default function EditDoctorForm() {
             <div className="flex flex-row-ml-2 mr-2">
               <div className="flex ">
                 <select
-                  className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   name="workHourFrom"
                   value={doctorDetails?.workingHours?.workHourFrom}
                   onChange={handleChange}
@@ -745,7 +745,7 @@ export default function EditDoctorForm() {
               <div className=" mt-2 text-lg font-medium">to</div>
               <div className="flex">
                 <select
-                  className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   name="workHourTo"
                   value={doctorDetails?.workingHours?.workHourTo}
                   onChange={handleChange}
@@ -773,7 +773,7 @@ export default function EditDoctorForm() {
               name="totalExperience"
               value={doctorDetails?.totalExperience}
               onChange={handleChange}
-              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.totalExperience && (
               <p className="text-red-500">{errors.totalExperience}</p>
@@ -826,7 +826,7 @@ export default function EditDoctorForm() {
               name="degree"
               value={doctorDetails?.degree}
               onChange={handleChange}
-              className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.degree && <p className="text-red-500">{errors.degree}</p>}
           </div>
@@ -980,7 +980,7 @@ export default function EditDoctorForm() {
                       value={doctorDetails?.address?.houseNo}
                       onChange={handleChange}
                       // placeholder="1234"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
@@ -991,7 +991,7 @@ export default function EditDoctorForm() {
                       value={doctorDetails?.address?.floor}
                       onChange={handleChange}
                       placeholder="Floor"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
@@ -1002,7 +1002,7 @@ export default function EditDoctorForm() {
                       value={doctorDetails?.address?.block}
                       onChange={handleChange}
                       placeholder="Block"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.block && (
                       <p className="text-red-500">{errors.block}</p>
@@ -1019,7 +1019,7 @@ export default function EditDoctorForm() {
                       onInput={(e) => {
                         e.target.value = e.target.value.replace(/[^0-6]/g, "");
                       }}
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {pinCodeError && (
                       <p className="text-red-500">{pinCodeError}</p>
@@ -1035,7 +1035,7 @@ export default function EditDoctorForm() {
                     value={doctorDetails?.address?.area}
                     onChange={handleChange}
                     placeholder="Area/Landmark"
-                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
@@ -1049,7 +1049,7 @@ export default function EditDoctorForm() {
                       value={doctorDetails?.address?.district}
                       onChange={handleChange}
                       placeholder="District"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
@@ -1064,7 +1064,7 @@ export default function EditDoctorForm() {
                       value={doctorDetails?.address?.state}
                       onChange={handleChange}
                       placeholder="State"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>
