@@ -14,8 +14,7 @@ import { Flex, Select } from "antd";
 import { Popconfirm } from "antd";
 import delete_button from "../assets/delete_button.svg";
 
-export default function EditAdminForm()
-{
+export default function EditAdminForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
@@ -29,7 +28,9 @@ export default function EditAdminForm()
   const [userDetailsName, setUserDetailsName] = useState();
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
-
+  const [pinCodeError, setPinCodeError] = useState("");
+  const [contactNumber, setcontactNumber] = useState(null);
+  const [mobileNumberError, setmobileNumberError] = useState("");
 
   const [adminDetails, setAdminDetails] = useState({
     permissions: {
@@ -39,20 +40,31 @@ export default function EditAdminForm()
       edit: false,
     },
   });
+  const handleChange3 = (e) => {
+    let { name, value } = e.target;
+    console.log("e.target value", value);
 
-  const handleFileSelect = async (event) =>
-  {
+    // Check if the value consists of exactly 10 digits and does not include alphabetic characters
+    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+      setmobileNumberError(""); // Clear the error message if it's valid
+      setcontactNumber(value);
+    } else {
+      setmobileNumberError("Please enter a valid 10-digit number");
+    }
+
+    console.log("contact number after setter function", contactNumber);
+  };
+
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -61,8 +73,7 @@ export default function EditAdminForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -74,43 +85,34 @@ export default function EditAdminForm()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(
-          `${baseUrl}/api/v1/admin/get_profile`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/v1/admin/get_profile`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
 
         const data = await response.json();
         console.log("DATA from response", data);
@@ -118,8 +120,7 @@ export default function EditAdminForm()
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.doctorPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -144,16 +145,12 @@ export default function EditAdminForm()
   const [open1, setOpen1] = useState(false);
   const onCloseModal = () => setOpen1(false);
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem("doctorId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/adminlogin`);
@@ -169,32 +166,27 @@ export default function EditAdminForm()
         const data = await response.json();
         console.log("DATA from response", data?.data);
         setDoctorDetails(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleToggleEdit = () =>
-  {
+  const handleToggleEdit = () => {
     setIsEditing(!isEditing);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     // Logic to handle removing the current profile picture
     handleClose();
   };
@@ -242,21 +234,26 @@ export default function EditAdminForm()
   //     }
   // };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
+      } else {
+        setPinCodeError("Please enter a valid Pincode");
+      }
+    }
 
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
 
-    if (name === "workingDays")
-    {
+    if (name === "workingDays") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingDays: [...prevDoctorDetails.workingDays, value],
       }));
-    } else if (name === "workHourFrom" || name === "workHourTo")
-    {
+    } else if (name === "workHourFrom" || name === "workHourTo") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -274,8 +271,7 @@ export default function EditAdminForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -283,8 +279,7 @@ export default function EditAdminForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -293,8 +288,7 @@ export default function EditAdminForm()
     setIsEditing(true);
   };
 
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     // Check if the token exists
     const newDoctorDetails = {
@@ -315,34 +309,26 @@ export default function EditAdminForm()
       },
       adminPic: adminImage,
     };
-    if (doctorDetails.name === "")
-    {
+    if (doctorDetails.name === "") {
       toast.error("Please write name");
-    } else if (doctorDetails.email === "")
-    {
+    } else if (doctorDetails.email === "") {
       toast.error("Please write email");
-    } else if (doctorDetails.contactNumber === "")
-    {
+    } else if (doctorDetails.contactNumber === "") {
       toast.error("Please write contact number");
-    } else if (doctorDetails.address.pinCode === "")
-    {
+    } else if (doctorDetails.address.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (doctorDetails.address.district === "")
-    {
+    } else if (doctorDetails.address.district === "") {
       toast.error("Please write district");
-    } else if (doctorDetails.address.state === "")
-    {
+    } else if (doctorDetails.address.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const isEmpty = Object.values(newDoctorDetails).some(
         (value) => value === ""
       );
 
-      if (isEmpty || isEditing === false)
-      {
+      if (isEmpty || isEditing === false) {
         toast.error("Please fill the fields or Update");
         setIsEditing(false);
         return;
@@ -355,8 +341,7 @@ export default function EditAdminForm()
 
       // }
 
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/adminlogin`);
@@ -371,13 +356,11 @@ export default function EditAdminForm()
       });
       const data = await response.json();
 
-      if (data.statusCode === 400)
-      {
+      if (data.statusCode === 400) {
         toast.error("Please fill the details");
       }
 
-      if (data.success === true)
-      {
+      if (data.success === true) {
         console.log("Doctor updated successfully.");
         toast.success("Form submitted successfully!");
         // navigate("/otp")
@@ -406,10 +389,10 @@ export default function EditAdminForm()
               title="Delete the Profile"
               description="Are you sure to delete this Profile?"
               okText="Delete"
-              okType='danger'
+              okType="danger"
               cancelText="No"
               className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
-            // onConfirm={handleDelete}
+              // onConfirm={handleDelete}
             >
               <button onClick={onCloseModal}>
                 <img src={delete_button} alt="df" class="w-8 mb-1"></img>
@@ -498,8 +481,7 @@ export default function EditAdminForm()
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() =>
-                    {
+                    onClick={() => {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -679,16 +661,16 @@ export default function EditAdminForm()
               Contact Number
             </label>
             <input
-              type="number"
+              type="text"
               id="contactNumber"
               name="contactNumber"
               onChange={handleChange}
               value={doctorDetails?.contactNumber}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {errors.contactNumber && (
-              <p className="text-red-500">{errors.contactNumber}</p>
-            )}
+            {/* {errors.contactNumber && ( */}
+            <p class=" text-red-500 ">{mobileNumberError}</p>
+            {/* )} */}
           </div>
 
           {/* -----------email----------- */}
@@ -721,14 +703,12 @@ export default function EditAdminForm()
               >
                 Permission
               </label>
-
             </div>
 
             <div
               className="flex flex-row flex-grow "
               style={{ justifyContent: "space-around" }}
             >
-
               <div
                 style={{
                   display: "flex",
@@ -851,8 +831,8 @@ export default function EditAdminForm()
                       placeholder="Pin Code"
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.pinCode && (
-                      <p className="text-red-500">{errors.pinCode}</p>
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
                     )}
                   </div>
                 </div>
@@ -918,7 +898,6 @@ export default function EditAdminForm()
           <ToastContainer />
         </div>
       </div>
-
 
       {/* <div className="flex flex-row">
         <ToastContainer />
