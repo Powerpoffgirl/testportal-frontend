@@ -231,8 +231,9 @@ export default function AppointmentList({ searchTerm })
       console.log("DATA from response", data);
       if (data.status === 200)
       {
-        setModalContent(status === "accept" ? "Accepted" : "Declined");
-        setModalOpen(true);
+        // setModalContent(status === "accept" ? "Accepted" : "Declined");
+        // setModalOpen(true);
+        window.location.reload()
       }
     } catch (error)
     {
@@ -266,9 +267,9 @@ export default function AppointmentList({ searchTerm })
   console.log("PATIENT LISTS", patientsList);
   console.log("APPOINTMENT LIST", appointmentList);
 
-  // updateUser(userDetailsName);
-  // updateUserEmail(userDetailsEmail);
-  // updateUserimage(userDetailsPic);
+  updateUser(userDetailsName);
+  updateUserEmail(userDetailsEmail);
+  updateUserimage(userDetailsPic);
 
 
   return (

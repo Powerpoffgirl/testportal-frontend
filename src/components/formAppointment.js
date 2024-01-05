@@ -534,7 +534,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
         </label>
         <Select
           mode="multiple"
-          className="mx-2 border border-[#89CFF0] rounded-lg"
+          className="mx-2 border border-[#89CFF0] h-10 rounded-lg"
           popupClassName="no-border-dropdown-menu"
           id="issues"
           name="issues"
@@ -579,7 +579,7 @@ const FormAppoinment = ({ onDataFromChild }) =>
         </label>
         <Select
           mode="multiple"
-          className="mx-2 border border-[#89CFF0] rounded-lg"
+          className="mx-2 border border-[#89CFF0] h-10 rounded-lg"
           popupClassName="no-border-dropdown-menu" // Apply the custom class here
           id="diseases"
           name="diseases"

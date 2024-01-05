@@ -55,3 +55,24 @@ input::placeholder {
     border: none !important; /* Use !important to override default styles */
   }
 }
+
+.popconfirm {
+  position: relative;
+    border: 1px solid #ddd;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: smaller;
+    z-index: 10; /* Ensure it's above other elements */
+}
+
+.popconfirm p {
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.popconfirm button {
+    margin-right: 5px;
+}
+
