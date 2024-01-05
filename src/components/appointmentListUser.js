@@ -261,7 +261,7 @@ export default function AppointmentListUser({ searchTerm })
       </Modal>
 
       <div className="flex flex-col">
-        {filteredAppointmentList[0]?.doctorId?.doctorPic ? (
+        {filteredAppointmentList?.length > 0 ? (
           filteredAppointmentList?.map((appointment) => (
             <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" >
               <div className="flex flex-row justify-start items-center">
