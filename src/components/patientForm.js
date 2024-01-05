@@ -627,8 +627,8 @@ export default function PatientForm()
                       placeholder="Pin Code"
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.pinCode && (
-                      <p className="text-red-500">{errors.pinCode}</p>
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
                     )}
                   </div>
                 </div>
