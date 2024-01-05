@@ -219,11 +219,16 @@ const UserOTP = () =>
 
             <input
               className="input_box"
-              type="number"
+              type="text"
               placeholder="Enter OTP"
               value={otp}
               name="otp"
+              maxLength={6}
               onChange={handleMobileNumberChange}
+              onInput={(e) =>
+              {
+                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+              }}
             />
             <p className="error_message">{otperror}</p>
           </div>

@@ -323,7 +323,6 @@ export default function DoctorList({ searchTerm })
     }
   };
 
-
   function abbreviateAndCombineDays(days)
   {
     const weekDays = [
@@ -875,13 +874,14 @@ export default function DoctorList({ searchTerm })
                                     return (
                                       <div
                                         key={index}
-                                        className={` w-1/3 px-2 mb-4 ${marginb}`}
+                                        className={` w-1/3 px-2 mb-4 h-10  ${marginb}`}
                                         disabled
                                       >
                                         <div
-                                          className={` rounded-3xl py-1 px-2 text-gray-800   `}
+                                          className={` rounded-3xl py-1  px-2 `}
                                           style={{
-                                            backgroundColor: "#89CFF0",
+                                            backgroundColor: "#4974a5",
+                                            color: 'white'
                                           }}
                                         >
                                           {item.start}
@@ -1004,7 +1004,7 @@ export default function DoctorList({ searchTerm })
                         key={index}
                         ref={(input) => (otpInputs[index] = input)}
                         type="text"
-                        className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
+                        className="w-10 h-8 mr-2 text-lg  border-2 text-black border-gray-400 text-center "
                         maxLength={1}
                         value={digit}
                         onChange={(e) => handleInputChange(e, index)}
