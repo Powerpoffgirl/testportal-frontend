@@ -370,9 +370,9 @@ export default function PatientList({ searchTerm })
                 <Popconfirm
                   title="Delete the Patient"
                   description="Are you sure to delete this Patient?"
-                  okText={<FaTrashAlt />}
+                  okText="Delete"
+                  okType='danger'
                   cancelText="No"
-                  okTextcolor="blue"
                   onConfirm={() => handleDeletePatient(patient._id)}
                   className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                 >

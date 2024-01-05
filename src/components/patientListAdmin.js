@@ -311,9 +311,9 @@ export default function PatientListAdmin({ searchTerm })
           <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
             <div
               className="flex flex-row justify-start items-center"
-              onClick={() => findSelectedDoctor(patient._id)}
+
             >
-              <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(patient._id)}>
                 {patient.patientPic ? (
                   <img
                     class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
@@ -347,6 +347,7 @@ export default function PatientListAdmin({ searchTerm })
                   title="Delete the Patient"
                   description="Are you sure to delete this Patient?"
                   okText="Delete"
+                  okType='danger'
                   cancelText="No"
                   okTextcolor="blue"
                   onConfirm={() => handleDeletePatient(patient._id)}
