@@ -245,6 +245,9 @@ export default function DoctorList({ searchTerm })
     console.log("RESPONSE------", data);
     console.log("user id", data?.data?._id);
     localStorage.setItem("userId", data?.data?._id);
+    setResendClicked(true);
+    setSeconds(90);
+    toast.success("Otp sent !!");
 
     setotppage(true);
   };
