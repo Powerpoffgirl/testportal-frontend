@@ -364,7 +364,7 @@ export default function PatientListUser({ searchTerm })
             </div>
           ))
         ) : (
-          <p>Please complete your profile first.</p>
+          <p>Please complete your profile first. <span style={{ textDecoration: "underline" }} onClick={() => navigate("/userprofile")}>Click here.</span></p>
         )}
       </div>
 
