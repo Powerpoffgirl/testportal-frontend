@@ -20,6 +20,9 @@ export default function DoctorFormAdmin() {
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
+  const [contactNumber, setcontactNumber] = useState(null);
+  const [mobileNumberError, setmobileNumberError] = useState("");
+  const [pinCodeError, setPinCodeError] = useState("");
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -50,6 +53,22 @@ export default function DoctorFormAdmin() {
     },
     doctorPic: "",
   });
+
+  const handleChange3 = (e) => {
+    let { name, value } = e.target;
+    console.log("e.target value", value);
+
+    // Check if the value consists of exactly 10 digits and does not include alphabetic characters
+    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+      setmobileNumberError(""); // Clear the error message if it's valid
+      setcontactNumber(value);
+    } else {
+      setmobileNumberError("Please enter a valid 10-digit number");
+    }
+
+    console.log("contact number after setter function", contactNumber);
+  };
+
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
 
@@ -258,6 +277,15 @@ export default function DoctorFormAdmin() {
   const handleChange = (e) => {
     console.log("E value", e);
     const { name, value } = e.target;
+
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
+      } else {
+        setPinCodeError("Please enter a valid Pincode");
+      }
+    }
+
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
     setDoctorDetails((prevDoctorDetails) => ({
@@ -716,13 +744,15 @@ export default function DoctorFormAdmin() {
                 Contact Number
               </label>
               <input
-                type="number"
+                type="text"
                 placeholder=""
                 id="contactNumber"
                 name="contactNumber"
-                onChange={handleChange}
+                onChange={handleChange3}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
+              <p class=" text-red-500 ">{mobileNumberError}</p>
+
               {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
             </div>
           </div>
@@ -818,8 +848,8 @@ export default function DoctorFormAdmin() {
                       placeholder="Pin Code"
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.pinCode && (
-                      <p className="text-red-500">{errors.pinCode}</p>
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
                     )}
                   </div>
                 </div>

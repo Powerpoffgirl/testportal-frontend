@@ -68,22 +68,23 @@ export default function PatientForm()
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [newPatientDetails, setNewPatientDetails] = useState({});
   const [doctorImage, setDoctorImage] = useState();
-  const [contactNumber, setcontactNumber] = useState(null);
   const [mobileNumberError, setmobileNumberError] = useState("");
 
-  const handleChange3 = (e) => {
+  const handleChange3 = (e) =>
+  {
     let { name, value } = e.target;
     console.log("e.target value", value);
 
     // Check if the value consists of exactly 10 digits and does not include alphabetic characters
-    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
+    {
       setmobileNumberError(""); // Clear the error message if it's valid
-      setcontactNumber(value);
-    } else {
+    } else
+    {
       setmobileNumberError("Please enter a valid 10-digit number");
     }
 
-    console.log("contact number after setter function", contactNumber);
+    // console.log("contact number after setter function", contactNumber);
   };
 
   const handleFileSelect = async (event) =>
@@ -92,7 +93,6 @@ export default function PatientForm()
     if (file)
     {
       const token = localStorage.getItem("token");
-      const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("userPic", file);
 
@@ -157,35 +157,6 @@ export default function PatientForm()
   {
     setAnchorEl(null);
   };
-  // const SpecialtiesDropdown = IndianDoctorSpecialties?.map((specialty) => ({
-  //   label: specialty,
-  //   value: specialty,
-  // }));
-
-  const TimeDropdown = [
-    { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) =>
-    {
-      const hour = i.toString().padStart(2, "0");
-      return { label: `${hour}:00`, value: `${hour}:00` };
-    }),
-  ];
-
-  // const handleChange1 = (e) => {
-  //   setDoctorDetails((prevDoctorDetails) => ({
-  //     ...prevDoctorDetails,
-  //     workingDays: e,
-  //     // speciality: e,
-  //   }));
-  // };
-
-  // const handleChange2 = (e) => {
-  //   setDoctorDetails((prevDoctorDetails) => ({
-  //     ...prevDoctorDetails,
-  //     // workingDays: e,
-  //     speciality: e,
-  //   }));
-  // };
 
   const handleChange1 = (e) =>
   {
@@ -202,129 +173,30 @@ export default function PatientForm()
     }));
   };
 
-  const Daysdropdown = [
-    { label: "Monday", value: "Monday" },
-    { label: "Tuesday", value: "Tuesday" },
-    { label: "Wednesday", value: "Wednesday" },
-    { label: "Thursday", value: "Thursday" },
-    { label: "Friday", value: "Friday" },
-    { label: "Saturday", value: "Saturday" },
-    { label: "Sunday", value: "Sunday" },
-  ];
-
-  // const IndianDoctorSpecialties = [
-  //   "General Medicine",
-  //   "Cardiology",
-  //   "Dermatology",
-  //   "Endocrinology",
-  //   "Gastroenterology",
-  //   "Nephrology",
-  //   "Neurology",
-  //   "Oncology",
-  //   "Pediatrics",
-  //   "Psychiatry",
-  //   "Pulmonology",
-  //   "Rheumatology",
-  //   "General Surgery",
-  //   "Orthopedic Surgery",
-  //   "Cardiothoracic Surgery",
-  //   "Neurosurgery",
-  //   "Plastic Surgery",
-  //   "Urology",
-  //   "Vascular Surgery",
-  //   "Gynecology",
-  //   "Obstetrics",
-  //   "Ophthalmology",
-  //   "ENT (Ear, Nose, and Throat)",
-  //   "Dental Surgery",
-  //   "Anesthesiology",
-  //   "Radiology",
-  //   "Pathology",
-  //   "Hematology",
-  //   "Ayurveda",
-  //   "Homeopathy",
-  //   "Physical Medicine and Rehabilitation",
-  //   "Sports Medicine",
-  //   "Diabetology",
-  //   "Infectious Disease",
-  //   "Geriatrics",
-  //   "Pain Management",
-  //   "Critical Care Medicine",
-  //   "Emergency Medicine",
-  //   "Occupational Medicine",
-  //   "Preventive Medicine",
-  //   "Family Medicine",
-  //   "Pediatric Surgery",
-  //   "Gastrointestinal Surgery",
-  //   "Laparoscopic Surgery",
-  //   "Transplant Surgery",
-  //   "Nuclear Medicine",
-  //   "Reproductive Medicine",
-  //   "Neonatology",
-  //   "Allergy and Immunology",
-  //   "Audiology and Speech Therapy",
-  // ];
-
-  // const validateField = (name, value) => {
-  //   switch (name) {
-  //     case "name":
-  //       return value ? "" : "Name is required.";
-  //     case "age":
-  //       return /^[0-9]+$/.test(value) ? "" : "Age must be a number.";
-  //     case "bodyWeight":
-  //       return /^[0-9.]+$/.test(value) ? "" : "Body Weight must be a number.";
-  //     case "houseNo":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "houseNo is required  ";
-  //     case "floor":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-  //     case "block":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "Block is required  ";
-  //     case "area":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "Area is required and must be a string ";
-  //     case "pinCode":
-  //       return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-  //     case "district":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "District is required and must be a string ";
-  //     case "state":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "State is required and must be a string ";
-  //     case "workHourFrom":
-  //       // Assuming time in HH:MM format, adjust as needed
-  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //         ? ""
-  //         : "Invalid start time.";
-  //     case "workHourTo":
-  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //         ? ""
-  //         : "Invalid end time.";
-  //     // Add more cases as needed for other fields
-  //     default:
-  //       return "";
-  //   }
-  // };
-
   const handleChange = (e) =>
   {
     const { name, value } = e.target;
-
-    if (name === "pinCode") {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
-        setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
-      } else {
+    if (name === "pinCode")
+    {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
+        setPinCodeError("");
+      } else
+      {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
-    // const error = validateField(name, value);
-    // setErrors({ ...errors, [name]: error });
+
+    if (name === "contactNumber")
+    {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
+        setmobileNumberError("");
+      } else
+      {
+        setmobileNumberError("Please enter a valid Number");
+      }
+    }
 
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
@@ -418,16 +290,16 @@ export default function PatientForm()
       toast.error("Please write age");
     } else if (newPatientDetails.ageType === "")
     {
-      toast.error("Please write ageType");
+      toast.error("Please write Age Type");
     } else if (newPatientDetails.bodyWeight === "")
     {
-      toast.error("Please write bodyWeight");
+      toast.error("Please write Body Weight");
     } else if (newPatientDetails.name === "")
     {
       toast.error("Please write name");
     } else if (newPatientDetails.contactNumber === "")
     {
-      toast.error("Please write contactNumber");
+      toast.error("Please write Contact Number");
     } else if (!newPatientDetails.address?.pinCode)
     {
       toast.error("Please write Pincode");
@@ -442,7 +314,7 @@ export default function PatientForm()
       toast.error("Please write state");
     } else
     {
-      const doctorId = localStorage.getItem("doctorId");
+      // const doctorId = localStorage.getItem("doctorId");
       const token = localStorage.getItem("token");
       if (!token)
       {
@@ -461,11 +333,8 @@ export default function PatientForm()
       const data = await response.json();
       if (data.success === true)
       {
-        // navigate("/otp")
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
-
-        // Display "Member's form booked" toast message
         toast.success("Member details updated!");
       }
       console.log("DATA from response", data);
@@ -485,36 +354,19 @@ export default function PatientForm()
                 className=" border w-36 mx-auto rounded-full"
                 style={{ backgroundColor: "#B1DAED" }}
               >
-                {userImage || userDetails?.userPic ? (
-                  <div
-                    aria-controls="profile-pic-menu"
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={handleClick}
-                  >
-                    <img
-                      src={userDetails?.userPic || userImage}
-                      alt={userDetails?.name}
-                      style={{
-                        borderRadius: "50%",
-                        width: "145px",
-                        height: "145px",
-                        cursor: "pointer",
-                      }}
-                    />
-                  </div>
+                {userDetails?.userPic ? (
+                  <img
+                    src={userDetails?.userPic}
+                    alt={userDetails?.name}
+                    style={{
+                      borderRadius: "50%",
+                      width: "130px",
+                      height: "130px",
+                    }}
+                  />
                 ) : (
                   <PermIdentityOutlinedIcon
-                    style={{
-                      width: "auto",
-                      height: "auto",
-                      color: "white",
-                      cursor: "pointer",
-                    }}
-                    aria-controls="profile-pic-menu"
-                    aria-haspopup="true"
-                    aria-expanded={open ? "true" : undefined}
-                    onClick={handleClick}
+                    style={{ width: "auto", height: "auto", color: "white" }}
                   />
                 )}
               </div>
@@ -522,7 +374,7 @@ export default function PatientForm()
 
             <div className="flex flex-row mt-5 mb-3">
               <p className="block text-black text-lg font-semibold ">
-
+                Edit Profile Picture
                 <input
                   id="files"
                   type="file"
@@ -543,7 +395,7 @@ export default function PatientForm()
                   cursor: "pointer",
                 }}
               >
-
+                <FaAngleDown />
               </p>
 
               <div style={{ backgroundColor: "#89CFF0" }}>
@@ -637,7 +489,7 @@ export default function PatientForm()
                 Age
               </label>
               <input
-                type="number"
+                type="text"
                 id="age"
                 name="age"
                 onChange={handleChange}
@@ -684,7 +536,7 @@ export default function PatientForm()
               Body Weight
             </label>
             <input
-              type="number"
+              type="text"
               id="bodyWeight"
               name="bodyWeight"
               onChange={handleChange}
@@ -732,13 +584,12 @@ export default function PatientForm()
               name="contactNumber"
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               required
-              value={contactNumber}
-              onChange={handleChange3}
+              onChange={handleChange}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {/* {errors.contactNumber && ( */}
-            <p class=" text-red-500 ">{mobileNumberError}</p>
-            {/* )} */}
+            {errors.contactNumber && (
+              <p className="text-red-500">{errors.contactNumber}</p>
+            )}
           </div>
           {/* -----------address----------- */}
           <div className="mt-3">
@@ -787,17 +638,17 @@ export default function PatientForm()
                   </div>
                   <div className="px-2 w-full sm:w-1/2 mt-3">
                     <input
-                      type="text" // Uncomment this line if you want it to be a number input
+                      type="text"
                       id="pinCode"
                       name="pinCode"
                       onChange={handleChange}
-                      placeholder="Pincode"
-                      className="block w-full rounded-lg border bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      placeholder="Pin Code"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {pinCodeError && (
-                      <p className="text-red-500">{pinCodeError}</p>
+                    {errors.pinCode && (
+                      <p className="text-red-500">{errors.pinCode}</p>
                     )}
-                  </div>{" "}
+                  </div>
                 </div>
 
                 <div className="px-2 w-full mt-3 ">

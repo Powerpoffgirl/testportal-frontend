@@ -710,7 +710,7 @@ export default function UserProfile()
               Contact Number
             </label>
             <input
-              type="number"
+              type="text"
               id="contactNumber"
               name="contactNumber"
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
