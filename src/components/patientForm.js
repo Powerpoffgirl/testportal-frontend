@@ -282,63 +282,63 @@ export default function PatientForm()
       patientPic: userImage,
     };
 
-    // if (newPatientDetails.gender === "")
-    // {
-    //   toast.error("Please write gender");
-    // } else if (newPatientDetails.age === "")
-    // {
-    //   toast.error("Please write age");
-    // } else if (newPatientDetails.ageType === "")
-    // {
-    //   toast.error("Please write Age Type");
-    // } else if (newPatientDetails.bodyWeight === "")
-    // {
-    //   toast.error("Please write Body Weight");
-    // } else if (newPatientDetails.name === "")
-    // {
-    //   toast.error("Please write name");
-    // } else if (newPatientDetails.contactNumber === "")
-    // {
-    //   toast.error("Please write Contact Number");
-    // } else if (!newPatientDetails.address?.pinCode)
-    // {
-    //   toast.error("Please write Pincode");
-    // } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode))
-    // {
-    //   toast.error("Please enter a valid 6-digit PIN code");
-    // } else if (newPatientDetails.address?.district === "")
-    // {
-    //   toast.error("Please write district");
-    // } else if (newPatientDetails.address?.state === "")
-    // {
-    //   toast.error("Please write state");
-    // } else
-    // {
-    // const doctorId = localStorage.getItem("doctorId");
-    const token = localStorage.getItem("token");
-    if (!token)
+    if (newPatientDetails.gender === "")
     {
-      console.error("No token found in local storage");
-      localStorage.clear();
-      navigate(`/userlogin`);
-    }
-    const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify(newPatientDetails),
-    });
-    const data = await response.json();
-    if (data.success === true)
+      toast.error("Please write gender");
+    } else if (newPatientDetails.age === "")
     {
-      onOpenModal();
-      localStorage.setItem("patientId", data.data._id);
-      toast.success("Member details updated!");
+      toast.error("Please write age");
+    } else if (newPatientDetails.ageType === "")
+    {
+      toast.error("Please write Age Type");
+    } else if (newPatientDetails.bodyWeight === "")
+    {
+      toast.error("Please write Body Weight");
+    } else if (newPatientDetails.name === "")
+    {
+      toast.error("Please write name");
+    } else if (newPatientDetails.contactNumber === "")
+    {
+      toast.error("Please write Contact Number");
+    } else if (!newPatientDetails.address?.pinCode)
+    {
+      toast.error("Please write Pincode");
+    } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode))
+    {
+      toast.error("Please enter a valid 6-digit PIN code");
+    } else if (newPatientDetails.address?.district === "")
+    {
+      toast.error("Please write district");
+    } else if (newPatientDetails.address?.state === "")
+    {
+      toast.error("Please write state");
+    } else
+    {
+      // const doctorId = localStorage.getItem("doctorId");
+      const token = localStorage.getItem("token");
+      if (!token)
+      {
+        console.error("No token found in local storage");
+        localStorage.clear();
+        navigate(`/userlogin`);
+      }
+      const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(newPatientDetails),
+      });
+      const data = await response.json();
+      if (data.success === true)
+      {
+        onOpenModal();
+        localStorage.setItem("patientId", data.data._id);
+        toast.success("Member details updated!");
+      }
+      console.log("DATA from response", data);
     }
-    console.log("DATA from response", data);
-    // }
   };
 
   console.log("PATIENT DETAILS", patientDetails);
