@@ -24,7 +24,8 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm() {
+export default function PatientForm()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -67,10 +68,6 @@ export default function PatientForm() {
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [newPatientDetails, setNewPatientDetails] = useState({});
   const [doctorImage, setDoctorImage] = useState();
-<<<<<<< HEAD
-
-  const handleFileSelect = async (event) => {
-=======
   const [mobileNumberError, setmobileNumberError] = useState("");
 
   const handleChange3 = (e) =>
@@ -92,16 +89,17 @@ export default function PatientForm() {
 
   const handleFileSelect = async (event) =>
   {
->>>>>>> 6fb85fb24e1ce982e533035f9288e2c020a85bfb
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("userPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -110,7 +108,8 @@ export default function PatientForm() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -123,7 +122,8 @@ export default function PatientForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -149,11 +149,13 @@ export default function PatientForm() {
     patientPic: "",
   });
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
   // const SpecialtiesDropdown = IndianDoctorSpecialties?.map((specialty) => ({
@@ -163,40 +165,22 @@ export default function PatientForm() {
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) => {
+    ...Array.from({ length: 24 }, (v, i) =>
+    {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-<<<<<<< HEAD
-  // const handleChange1 = (e) => {
-  //   setDoctorDetails((prevDoctorDetails) => ({
-  //     ...prevDoctorDetails,
-  //     workingDays: e,
-  //     // speciality: e,
-  //   }));
-  // };
-
-  // const handleChange2 = (e) => {
-  //   setDoctorDetails((prevDoctorDetails) => ({
-  //     ...prevDoctorDetails,
-  //     // workingDays: e,
-  //     speciality: e,
-  //   }));
-  // };
-
-  const handleChange1 = (e) => {
-=======
   const handleChange1 = (e) =>
   {
->>>>>>> 6fb85fb24e1ce982e533035f9288e2c020a85bfb
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       gender: e,
     }));
   };
-  const handleChange2 = (e) => {
+  const handleChange2 = (e) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       ageType: e,
@@ -311,13 +295,10 @@ export default function PatientForm() {
   //   }
   // };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
-<<<<<<< HEAD
-    // const error = validateField(name, value);
-    // setErrors({ ...errors, [name]: error });
-=======
     if (name === "pinCode")
     {
       if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
@@ -339,7 +320,6 @@ export default function PatientForm() {
         setmobileNumberError("Please enter a valid Number");
       }
     }
->>>>>>> 6fb85fb24e1ce982e533035f9288e2c020a85bfb
 
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
@@ -354,11 +334,11 @@ export default function PatientForm() {
         "state",
       ].includes(name)
         ? {
-            address: {
-              ...prevPatientDetails.address,
-              [name]: value,
-            },
-          }
+          address: {
+            ...prevPatientDetails.address,
+            [name]: value,
+          },
+        }
         : { [name]: value }),
     }));
 
@@ -372,7 +352,8 @@ export default function PatientForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -380,7 +361,8 @@ export default function PatientForm() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -400,7 +382,8 @@ export default function PatientForm() {
     { label: "Other", value: "Other" },
   ];
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
 
     const newPatientDetails = {
@@ -422,54 +405,6 @@ export default function PatientForm() {
       patientPic: userImage,
     };
 
-<<<<<<< HEAD
-    if (newPatientDetails.gender === "") {
-      toast.error("Please write gender");
-    } else if (newPatientDetails.age === "") {
-      toast.error("Please write age");
-    } else if (newPatientDetails.ageType === "") {
-      toast.error("Please write ageType");
-    } else if (newPatientDetails.bodyWeight === "") {
-      toast.error("Please write bodyWeight");
-    } else if (newPatientDetails.name === "") {
-      toast.error("Please write name");
-    } else if (newPatientDetails.contactNumber === "") {
-      toast.error("Please write contactNumber");
-    } else if (!newPatientDetails.address?.pinCode) {
-      toast.error("Please write Pincode");
-    } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode)) {
-      toast.error("Please enter a valid 6-digit PIN code");
-    } else if (newPatientDetails.address?.district === "") {
-      toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "") {
-      toast.error("Please write state");
-    } else {
-      const doctorId = localStorage.getItem("doctorId");
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found in local storage");
-        localStorage.clear();
-        navigate(`/userlogin`);
-      }
-      const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(newPatientDetails),
-      });
-      const data = await response.json();
-      if (data.success === true) {
-        // navigate("/otp")
-        onOpenModal();
-        localStorage.setItem("patientId", data.data._id);
-
-        // Display "Member's form booked" toast message
-        toast.success("Member details updated!");
-      }
-      console.log("DATA from response", data);
-=======
     // if (newPatientDetails.gender === "")
     // {
     //   toast.error("Please write gender");
@@ -524,7 +459,6 @@ export default function PatientForm() {
       onOpenModal();
       localStorage.setItem("patientId", data.data._id);
       toast.success("Member details updated!");
->>>>>>> 6fb85fb24e1ce982e533035f9288e2c020a85bfb
     }
     console.log("DATA from response", data);
     // }
@@ -603,7 +537,8 @@ export default function PatientForm() {
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() => {
+                    onClick={() =>
+                    {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -770,11 +705,8 @@ export default function PatientForm() {
               type="number"
               id="contactNumber"
               name="contactNumber"
-<<<<<<< HEAD
-=======
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               required
->>>>>>> 6fb85fb24e1ce982e533035f9288e2c020a85bfb
               onChange={handleChange}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
