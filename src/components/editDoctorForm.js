@@ -75,6 +75,12 @@ export default function EditDoctorForm() {
         setSelectedFile(null);
         fileInputRef.current.value = "";
       }
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> 47056b363a67dc8979edf55de5fef7415976151f
     }
   };
 

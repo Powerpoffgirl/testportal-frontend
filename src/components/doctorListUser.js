@@ -597,19 +597,44 @@ export default function DoctorListUser({ searchTerm }) {
                           <p className="text-xs text-gray-500 px-2 my-1">
                             Slot available for Tommorrow{" "}
                           </p>
-                          <p className="flex flex-wrap space-x-1  my-1">
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800  ">
-                              3:00 AM
-                            </p>
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                              3:00 AM
-                            </p>
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                              3:00 AM
-                            </p>
-                            <p className="border-2 rounded-3xl py-1 px-2 text-gray-800 ">
-                              3:00 AM
-                            </p>
+                          <p className="flex flex-row justify-between  my-1 mx-2">
+                            <div className="w-1/3 px-2 h-10">
+                              <div
+                                className="rounded-3xl py-1 px-2 mt-2 text-center"
+                                style={{
+                                  backgroundColor: selectedDoctor?.slots?.[0]?.isBooked ? "#4974a5" : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked ? "white" : "#1F2937"
+                                }}
+                              >
+                                {selectedDoctor?.slots?.[0]?.startTime}
+                              </div>
+                            </div>
+
+                            <div className="w-1/3 px-2 h-10">
+                              <div
+                                className="rounded-3xl py-1 px-2 mt-2 text-center"
+                                style={{
+                                  backgroundColor: selectedDoctor?.slots?.[0]?.isBooked ? "#4974a5" : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked ? "white" : "#1F2937"
+                                }}
+                              >
+                                {selectedDoctor?.slots?.[1]?.startTime}
+                              </div>
+                            </div>
+
+                            <div className="w-1/3 px-2 h-10">
+                              <div
+                                className="rounded-3xl py-1 px-2 mt-2 text-center"
+                                style={{
+                                  backgroundColor: selectedDoctor?.slots?.[0]?.isBooked ? "#4974a5" : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked ? "white" : "#1F2937"
+                                }}
+                              >
+                                {selectedDoctor?.slots?.[2]?.startTime}
+                              </div>
+                            </div>
+
+
                           </p>
                         </div>
                       )}

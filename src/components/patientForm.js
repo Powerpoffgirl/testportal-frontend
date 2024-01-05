@@ -24,7 +24,8 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm() {
+export default function PatientForm()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -69,16 +70,22 @@ export default function PatientForm() {
   const [doctorImage, setDoctorImage] = useState();
   const [mobileNumberError, setmobileNumberError] = useState("");
 
+<<<<<<< HEAD
   const handleFileSelect = async (event) => {
+=======
+  const handleFileSelect = async (event) =>
+  {
+>>>>>>> 47056b363a67dc8979edf55de5fef7415976151f
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
-      const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("userPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -87,7 +94,8 @@ export default function PatientForm() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -100,7 +108,8 @@ export default function PatientForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -126,178 +135,52 @@ export default function PatientForm() {
     patientPic: "",
   });
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
-  // const SpecialtiesDropdown = IndianDoctorSpecialties?.map((specialty) => ({
-  //   label: specialty,
-  //   value: specialty,
-  // }));
 
-  const TimeDropdown = [
-    { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) => {
-      const hour = i.toString().padStart(2, "0");
-      return { label: `${hour}:00`, value: `${hour}:00` };
-    }),
-  ];
-
-  // const handleChange1 = (e) => {
-  //   setDoctorDetails((prevDoctorDetails) => ({
-  //     ...prevDoctorDetails,
-  //     workingDays: e,
-  //     // speciality: e,
-  //   }));
-  // };
-
-  // const handleChange2 = (e) => {
-  //   setDoctorDetails((prevDoctorDetails) => ({
-  //     ...prevDoctorDetails,
-  //     // workingDays: e,
-  //     speciality: e,
-  //   }));
-  // };
-
-  const handleChange1 = (e) => {
+  const handleChange1 = (e) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       gender: e,
     }));
   };
-  const handleChange2 = (e) => {
+  const handleChange2 = (e) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       ageType: e,
     }));
   };
 
-  const Daysdropdown = [
-    { label: "Monday", value: "Monday" },
-    { label: "Tuesday", value: "Tuesday" },
-    { label: "Wednesday", value: "Wednesday" },
-    { label: "Thursday", value: "Thursday" },
-    { label: "Friday", value: "Friday" },
-    { label: "Saturday", value: "Saturday" },
-    { label: "Sunday", value: "Sunday" },
-  ];
-  //   "General Medicine",
-  //   "Cardiology",
-  //   "Dermatology",
-  //   "Endocrinology",
-  //   "Gastroenterology",
-  //   "Nephrology",
-  //   "Neurology",
-  //   "Oncology",
-  //   "Pediatrics",
-  //   "Psychiatry",
-  //   "Pulmonology",
-  //   "Rheumatology",
-  //   "General Surgery",
-  //   "Orthopedic Surgery",
-  //   "Cardiothoracic Surgery",
-  //   "Neurosurgery",
-  //   "Plastic Surgery",
-  //   "Urology",
-  //   "Vascular Surgery",
-  //   "Gynecology",
-  //   "Obstetrics",
-  //   "Ophthalmology",
-  //   "ENT (Ear, Nose, and Throat)",
-  //   "Dental Surgery",
-  //   "Anesthesiology",
-  //   "Radiology",
-  //   "Pathology",
-  //   "Hematology",
-  //   "Ayurveda",
-  //   "Homeopathy",
-  //   "Physical Medicine and Rehabilitation",
-  //   "Sports Medicine",
-  //   "Diabetology",
-  //   "Infectious Disease",
-  //   "Geriatrics",
-  //   "Pain Management",
-  //   "Critical Care Medicine",
-  //   "Emergency Medicine",
-  //   "Occupational Medicine",
-  //   "Preventive Medicine",
-  //   "Family Medicine",
-  //   "Pediatric Surgery",
-  //   "Gastrointestinal Surgery",
-  //   "Laparoscopic Surgery",
-  //   "Transplant Surgery",
-  //   "Nuclear Medicine",
-  //   "Reproductive Medicine",
-  //   "Neonatology",
-  //   "Allergy and Immunology",
-  //   "Audiology and Speech Therapy",
-  // ];
-
-  // const validateField = (name, value) => {
-  //   switch (name) {
-  //     case "name":
-  //       return value ? "" : "Name is required.";
-  //     case "age":
-  //       return /^[0-9]+$/.test(value) ? "" : "Age must be a number.";
-  //     case "bodyWeight":
-  //       return /^[0-9.]+$/.test(value) ? "" : "Body Weight must be a number.";
-  //     case "houseNo":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "houseNo is required  ";
-  //     case "floor":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-  //     case "block":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "Block is required  ";
-  //     case "area":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "Area is required and must be a string ";
-  //     case "pinCode":
-  //       return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-  //     case "district":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "District is required and must be a string ";
-  //     case "state":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "State is required and must be a string ";
-  //     case "workHourFrom":
-  //       // Assuming time in HH:MM format, adjust as needed
-  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //         ? ""
-  //         : "Invalid start time.";
-  //     case "workHourTo":
-  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //         ? ""
-  //         : "Invalid end time.";
-  //     // Add more cases as needed for other fields
-  //     default:
-  //       return "";
-  //   }
-  // };
-
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
-
-    if (name === "pinCode") {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
+    if (name === "pinCode")
+    {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
         setPinCodeError("");
-      } else {
+      } else
+      {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
 
-    if (name === "contactNumber") {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+    if (name === "contactNumber")
+    {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
         setmobileNumberError("");
-      } else {
+      } else
+      {
         setmobileNumberError("Please enter a valid Number");
       }
     }
@@ -315,11 +198,11 @@ export default function PatientForm() {
         "state",
       ].includes(name)
         ? {
-            address: {
-              ...prevPatientDetails.address,
-              [name]: value,
-            },
-          }
+          address: {
+            ...prevPatientDetails.address,
+            [name]: value,
+          },
+        }
         : { [name]: value }),
     }));
 
@@ -333,7 +216,8 @@ export default function PatientForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -341,7 +225,8 @@ export default function PatientForm() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -361,7 +246,8 @@ export default function PatientForm() {
     { label: "Other", value: "Other" },
   ];
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
 
     const newPatientDetails = {
@@ -383,61 +269,62 @@ export default function PatientForm() {
       patientPic: userImage,
     };
 
-    // if (newPatientDetails.gender === "")
-    // {
-    //   toast.error("Please write gender");
-    // } else if (newPatientDetails.age === "")
-    // {
-    //   toast.error("Please write age");
-    // } else if (newPatientDetails.ageType === "")
-    // {
-    //   toast.error("Please write Age Type");
-    // } else if (newPatientDetails.bodyWeight === "")
-    // {
-    //   toast.error("Please write Body Weight");
-    // } else if (newPatientDetails.name === "")
-    // {
-    //   toast.error("Please write name");
-    // } else if (newPatientDetails.contactNumber === "")
-    // {
-    //   toast.error("Please write Contact Number");
-    // } else if (!newPatientDetails.address?.pinCode)
-    // {
-    //   toast.error("Please write Pincode");
-    // } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode))
-    // {
-    //   toast.error("Please enter a valid 6-digit PIN code");
-    // } else if (newPatientDetails.address?.district === "")
-    // {
-    //   toast.error("Please write district");
-    // } else if (newPatientDetails.address?.state === "")
-    // {
-    //   toast.error("Please write state");
-    // } else
-    // {
-    // const doctorId = localStorage.getItem("doctorId");
-    const token = localStorage.getItem("token");
-    if (!token) {
-      console.error("No token found in local storage");
-      localStorage.clear();
-      navigate(`/userlogin`);
+    if (newPatientDetails.gender === "")
+    {
+      toast.error("Please write gender");
+    } else if (newPatientDetails.age === "")
+    {
+      toast.error("Please write age");
+    } else if (newPatientDetails.ageType === "")
+    {
+      toast.error("Please write Age Type");
+    } else if (newPatientDetails.bodyWeight === "")
+    {
+      toast.error("Please write Body Weight");
+    } else if (newPatientDetails.name === "")
+    {
+      toast.error("Please write name");
+    } else if (newPatientDetails.contactNumber === "")
+    {
+      toast.error("Please write Contact Number");
+    } else if (!newPatientDetails.address?.pinCode)
+    {
+      toast.error("Please write Pincode");
+    } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode))
+    {
+      toast.error("Please enter a valid 6-digit PIN code");
+    } else if (newPatientDetails.address?.district === "")
+    {
+      toast.error("Please write district");
+    } else if (newPatientDetails.address?.state === "")
+    {
+      toast.error("Please write state");
+    } else
+    {
+      const token = localStorage.getItem("token");
+      if (!token)
+      {
+        console.error("No token found in local storage");
+        localStorage.clear();
+        navigate(`/userlogin`);
+      }
+      const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(newPatientDetails),
+      });
+      const data = await response.json();
+      if (data.success === true)
+      {
+        onOpenModal();
+        localStorage.setItem("patientId", data.data._id);
+        toast.success("Member details updated!");
+      }
+      console.log("DATA from response", data);
     }
-    const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
-      },
-      body: JSON.stringify(newPatientDetails),
-    });
-    const data = await response.json();
-    if (data.success === true) {
-      onOpenModal();
-      localStorage.setItem("patientId", data.data._id);
-      toast.success("Member details updated!");
-    }
-    console.log("DATA from response", data);
-    // }
   };
 
   console.log("PATIENT DETAILS", patientDetails);
@@ -513,7 +400,8 @@ export default function PatientForm() {
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() => {
+                    onClick={() =>
+                    {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -685,7 +573,13 @@ export default function PatientForm() {
               onChange={handleChange}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
+<<<<<<< HEAD
             <p class=" text-red-500 ">{mobileNumberError}</p>
+=======
+            {mobileNumberError && (
+              <p className="text-red-500">{mobileNumberError}</p>
+            )}
+>>>>>>> 47056b363a67dc8979edf55de5fef7415976151f
           </div>
           {/* -----------address----------- */}
           <div className="mt-3">
