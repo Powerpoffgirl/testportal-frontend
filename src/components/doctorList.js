@@ -244,10 +244,6 @@ export default function DoctorList({ searchTerm })
     console.log("RESPONSE------", data);
     console.log("user id", data?.data?._id);
     localStorage.setItem("userId", data?.data?._id);
-    if (data.data.newUser === true)
-    {
-      localStorage.setItem("patientId", data?.patient?._id);
-    }
 
     setotppage(true);
   };
@@ -274,24 +270,49 @@ export default function DoctorList({ searchTerm })
     try
     {
       const userId = localStorage.getItem("userId");
-
       const otpString = otp.join("");
 
-      const response = await fetch(
-        `${baseUrl}/api/v1/user/verify_otp/${userId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ otp: otpString }),
-        }
-      );
+      const response = await fetch(`${baseUrl}/api/v1/user/verify_otp/${userId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ otp: otpString }),
+      });
 
-      const data = await response.json();
-      if (data.success === true)
+      if (!response.ok)
       {
-        console.log("DATA from response", data);
+        throw new Error(`HTTP error! Status: ${response.status}`);
+      }
+
+      let data;
+      try
+      {
+        data = await response.json();
+      } catch (e)
+      {
+        throw new Error("Failed to parse JSON");
+      }
+
+      if (data?.success === true)
+      {
+        console.log("=============================DATA from response=========================", data);
+
+        if (data?.data?.data?.newUser === true)
+        {
+          const patientId = data?.patient?._id;
+          if (patientId)
+          {
+            console.log("Storing patient ID in local storage", patientId);
+            localStorage.setItem("patientId", patientId);
+          } else
+          {
+            console.error("Patient ID is undefined");
+          }
+        } else
+        {
+          // Handle the case where newUser is not true or undefined
+        }
 
         localStorage.setItem("token", data?.data?.token);
         navigate("/edituserform");
