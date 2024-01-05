@@ -529,7 +529,7 @@ export default function DoctorList({ searchTerm })
                 {selectedDoctor?.doctorPic ? (
                   <img
                     src={selectedDoctor?.doctorPic}
-                    alt="doctor image"
+                    alt={selectedDoctor?.name}
                     className=" h-80 w-full"
                   ></img>
                 ) : (
@@ -548,7 +548,7 @@ export default function DoctorList({ searchTerm })
                 </p>
                 <div className="flex flex-row">
                   <div>
-                    <img src={education} className="w-5 py-2 "></img>
+                    <img src={education} alt="education" className="w-5 py-2 "></img>
                   </div>
                   <div className="ml-1">
                     {selectedDoctor?.degree?.split(",")?.map((item) => (
@@ -564,6 +564,7 @@ export default function DoctorList({ searchTerm })
                   <div className="mt-2">
                     <img
                       src={home}
+                      alt="home"
                       style={{ minWidth: "15px", maxWidth: "16px" }}
                     ></img>
                   </div>
@@ -681,15 +682,43 @@ export default function DoctorList({ searchTerm })
                             Slot available for Tommorrow{" "}
                           </p>
                           <p className="flex flex-row justify-between  my-1 mx-2">
-                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
-                              3:00 AM
-                            </p>
-                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
-                              3:00 AM
-                            </p>
-                            <p className="border-2 rounded-3xl py-1 px-3 text-gray-800  ">
-                              3:00 AM
-                            </p>
+                            <div className="w-1/3 px-2 h-10">
+                              <div
+                                className="rounded-3xl py-1 px-2 mt-2 text-center"
+                                style={{
+                                  backgroundColor: selectedDoctor?.slots?.[0]?.isBooked ? "#4974a5" : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked ? "white" : "#1F2937"
+                                }}
+                              >
+                                {selectedDoctor?.slots?.[0]?.startTime}
+                              </div>
+                            </div>
+
+                            <div className="w-1/3 px-2 h-10">
+                              <div
+                                className="rounded-3xl py-1 px-2 mt-2 text-center"
+                                style={{
+                                  backgroundColor: selectedDoctor?.slots?.[0]?.isBooked ? "#4974a5" : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked ? "white" : "#1F2937"
+                                }}
+                              >
+                                {selectedDoctor?.slots?.[1]?.startTime}
+                              </div>
+                            </div>
+
+                            <div className="w-1/3 px-2 h-10">
+                              <div
+                                className="rounded-3xl py-1 px-2 mt-2 text-center"
+                                style={{
+                                  backgroundColor: selectedDoctor?.slots?.[0]?.isBooked ? "#4974a5" : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked ? "white" : "#1F2937"
+                                }}
+                              >
+                                {selectedDoctor?.slots?.[2]?.startTime}
+                              </div>
+                            </div>
+
+
                           </p>
                         </div>
                       )}
@@ -785,62 +814,6 @@ export default function DoctorList({ searchTerm })
                                       </div>
                                     );
                                   })}
-
-                                  {/* {bookingslot?.map((data, index) => {
-                                    // console.log(data);
-                                    const { year, monthName, day, dayName } =
-                                      getYearMonthDay(data.date);
-                                    // console.log(year, monthName, day, dayName)
-                                    if (data.isBooked == true) {
-                                      return (
-                                        <div
-                                          key={index}
-                                          className="flex flex-col px-2"
-                                          disabled
-                                        >
-                                          <p>{monthName}</p>
-                                          <p
-                                            className=" p-2 border-2 rounded-lg "
-                                            style={{
-                                              backgroundColor: "#89CFF0",
-                                            }}
-                                          >
-                                            {day}
-                                          </p>
-                                          <p>{dayName}</p>
-                                        </div>
-                                      );
-                                    } else if (index == currentIndex) {
-                                      return (
-                                        <div
-                                          key={index}
-                                          className="flex flex-col px-2"
-                                        >
-                                          <p>{monthName}</p>
-                                          <p className=" p-2 border-2 rounded-lg bg-blue-100">
-                                            {day}
-                                          </p>
-                                          <p>{dayName}</p>
-                                        </div>
-                                      );
-                                    } else {
-                                      return (
-                                        <div
-                                          key={index}
-                                          className="flex flex-col px-2 hover:cursor-pointer"
-                                          onClick={() => {
-                                            handleDateClick(index);
-                                          }}
-                                        >
-                                          <p>{monthName}</p>
-                                          <p className=" p-2 border-2 rounded-lg bg-gray-200">
-                                            {day}
-                                          </p>
-                                          <p>{dayName}</p>
-                                        </div>
-                                      );
-                                    }
-                                  })} */}
                                 </div>
                                 <button
                                   className="text-white text-xs rounded-3xl ml-auto"
@@ -853,13 +826,13 @@ export default function DoctorList({ searchTerm })
                                 {values[currentIndex]?.map((item, index) =>
                                 {
                                   const marginb =
-                                    index == 0 ? " mt-2 -mb-4" : "";
+                                    index === 0 ? " mt-2 -" : "";
                                   if (index === currentTimeIndex)
                                   {
                                     return (
                                       <div
                                         key={index}
-                                        className={` w-1/3 px-2 mb-4 ${marginb} `}
+                                        className={` w-1/3 px-2  ${marginb} `}
                                         disabled={item.isBooked}
                                       >
                                         <div
@@ -873,13 +846,13 @@ export default function DoctorList({ searchTerm })
                                         </div>
                                       </div>
                                     );
-                                  } else if (item.isBooked == true)
+                                  } else if (item.isBooked === true)
                                   {
                                     return (
                                       <Tooltip placement="top" title="Booked Slots">
                                         <div
                                           key={index}
-                                          className={` w-1/3 px-2 mb-4 h-10  ${marginb}`}
+                                          className={` w-1/3 px-2 ${marginb}`}
                                           disabled
                                         >
                                           <div
@@ -899,7 +872,7 @@ export default function DoctorList({ searchTerm })
                                     return (
                                       <div
                                         key={index}
-                                        className={` w-1/3 px-2 mb-4 ${marginb}`}
+                                        className={` w-1/3 px-2  ${marginb}`}
                                         onClick={() =>
                                         {
                                           handleTimeClick(index);
