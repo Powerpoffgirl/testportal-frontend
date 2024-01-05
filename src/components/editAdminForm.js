@@ -406,6 +406,7 @@ export default function EditAdminForm()
               title="Delete the Profile"
               description="Are you sure to delete this Profile?"
               okText="Delete"
+              okType='danger'
               cancelText="No"
               className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
             // onConfirm={handleDelete}
