@@ -527,12 +527,15 @@ export default function PatientForm() {
               Contact Number
             </label>
             <input
-              type="number"
+              type="text"
               id="contactNumber"
               name="contactNumber"
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               required
               onChange={handleChange}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, "");
+              }}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {mobileNumberError && (
@@ -591,6 +594,9 @@ export default function PatientForm() {
                       name="pinCode"
                       onChange={handleChange}
                       placeholder="Pin Code"
+                      onInput={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-6]/g, "");
+                      }}
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {pinCodeError && (

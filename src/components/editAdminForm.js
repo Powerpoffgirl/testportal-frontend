@@ -658,6 +658,9 @@ export default function EditAdminForm() {
               id="contactNumber"
               name="contactNumber"
               onChange={handleChange}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, "");
+              }}
               value={doctorDetails?.contactNumber}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
@@ -822,6 +825,9 @@ export default function EditAdminForm() {
                       onChange={handleChange}
                       value={doctorDetails?.address?.pinCode}
                       placeholder="Pin Code"
+                      onInput={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-6]/g, "");
+                      }}
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {pinCodeError && (
