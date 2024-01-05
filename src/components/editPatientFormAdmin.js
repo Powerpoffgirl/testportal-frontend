@@ -24,8 +24,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function EditPatientFormAdmin()
-{
+export default function EditPatientFormAdmin() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -46,6 +45,9 @@ export default function EditPatientFormAdmin()
   const [patientDetails, setPatientDetails] = useState({
     name: "",
     age: "",
+    contactNumber: "",
+    ageType: "",
+    gender: "",
     bodyWeight: "",
     address: {
       houseNo: "",
@@ -58,19 +60,16 @@ export default function EditPatientFormAdmin()
     },
   });
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -79,8 +78,7 @@ export default function EditPatientFormAdmin()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -92,24 +90,19 @@ export default function EditPatientFormAdmin()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/adminlogin`);
@@ -130,27 +123,22 @@ export default function EditPatientFormAdmin()
         setUserImage(data.profilePicImageUrl);
 
         setPatientDetails(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const validateField = (name, value) =>
-  {
-    switch (name)
-    {
+  const validateField = (name, value) => {
+    switch (name) {
       case "name":
         return value ? "" : "Name is required.";
       case "email":
@@ -200,8 +188,7 @@ export default function EditPatientFormAdmin()
     }
   };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     // const error = validateField(name, value);
@@ -217,8 +204,7 @@ export default function EditPatientFormAdmin()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -226,8 +212,7 @@ export default function EditPatientFormAdmin()
           [name]: value,
         },
       }));
-    } else if (["issues"].includes(name))
-    {
+    } else if (["issues"].includes(name)) {
       // Assuming the value is an array or a string to be added to the array
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
@@ -235,8 +220,7 @@ export default function EditPatientFormAdmin()
           ? value
           : [...prevPatientDetails[name], value],
       }));
-    } else if (["diseases"].includes(name))
-    {
+    } else if (["diseases"].includes(name)) {
       // Assuming the value is an array or a string to be added to the array
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
@@ -244,8 +228,7 @@ export default function EditPatientFormAdmin()
           ? value
           : [...prevPatientDetails[name], value],
       }));
-    } else
-    {
+    } else {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -254,35 +237,52 @@ export default function EditPatientFormAdmin()
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) =>
-  {
+  const AgeType = [
+    { label: "Year", value: "Year" },
+    { label: "Month", value: "Month" },
+    { label: "Day", value: "Day" },
+  ];
+
+  const Gender = [
+    { label: "Male", value: "Male" },
+    { label: "Female", value: "Female" },
+    { label: "Other", value: "Other" },
+  ];
+
+  const handleChange1 = (e) => {
+    setPatientDetails((prevUserDetails) => ({
+      ...prevUserDetails,
+      gender: e,
+    }));
+  };
+
+  const handleChange2 = (e) => {
+    setPatientDetails((prevUserDetails) => ({
+      ...prevUserDetails,
+      ageType: e,
+    }));
+  };
+
+  const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (patientDetails.name === "")
-    {
+    if (patientDetails.name === "") {
       toast.error("Please write name");
-    } else if (patientDetails.age === "")
-    {
+    } else if (patientDetails.age === "") {
       toast.error("Please write age");
-    } else if (patientDetails.bodyWeight === "")
-    {
+    } else if (patientDetails.bodyWeight === "") {
       toast.error("Please write body weight");
-    } else if (patientDetails.address?.pinCode === "")
-    {
+    } else if (patientDetails.address?.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (patientDetails.address?.district === "")
-    {
+    } else if (patientDetails.address?.district === "") {
       toast.error("Please write district");
-    } else if (patientDetails.address?.state === "")
-    {
+    } else if (patientDetails.address?.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       // Check if the token exists
       const token = localStorage.getItem("token");
       const patientId = localStorage.getItem("patientId");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/adminlogin`);
@@ -316,18 +316,15 @@ export default function EditPatientFormAdmin()
       );
       const data = await response.json();
 
-      if (data.statusCode === 400)
-      {
+      if (data.statusCode === 400) {
         toast.error("Please fill the details");
       }
 
-      if (data.message === "Permission denied")
-      {
+      if (data.message === "Permission denied") {
         toast.error("Permission denied");
       }
 
-      if (data.success === true)
-      {
+      if (data.success === true) {
         onOpenModal();
         localStorage.setItem("id", data.data._id);
         toast.success("Form submitted successfully!");
@@ -340,7 +337,7 @@ export default function EditPatientFormAdmin()
 
   return (
     <>
-      <Modal
+      {/* <Modal
         open={open}
         onClose={onCloseModal}
         center
@@ -370,11 +367,9 @@ export default function EditPatientFormAdmin()
             Go to Patient's list to book an Appointment.
           </text>
         </div>
-      </Modal>
-
+      </Modal> */}
 
       <div className="flex flex-col -ml-7  lg:flex-row">
-
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
           <div
@@ -387,7 +382,7 @@ export default function EditPatientFormAdmin()
               okText="Delete"
               cancelText="No"
               className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
-            // onConfirm={handleDelete}
+              // onConfirm={handleDelete}
             >
               <button onClick={onCloseModal}>
                 <img src={delete_button} alt="df" class="w-8 mb-1"></img>
@@ -476,8 +471,7 @@ export default function EditPatientFormAdmin()
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() =>
-                    {
+                    onClick={() => {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -523,7 +517,7 @@ export default function EditPatientFormAdmin()
               id="gender"
               name="gender"
               value={patientDetails?.gender}
-              // onChange={handleChange1}
+              onChange={handleChange1}
               placeholder="Select Gender"
               style={{ overflowY: "auto" }}
               dropdownStyle={{
@@ -531,11 +525,11 @@ export default function EditPatientFormAdmin()
                 overflowY: "auto",
               }}
             >
-              {/* {Gender.map((option) => (
+              {Gender.map((option) => (
                 <Select.Option key={option.value} value={option.value}>
                   {option.label}
                 </Select.Option>
-              ))} */}
+              ))}
             </Select>
             {errors.totalExperience && (
               <p className="text-red-500">{errors.totalExperience}</p>
@@ -572,8 +566,8 @@ export default function EditPatientFormAdmin()
                 popupClassName="no-border-dropdown-menu"
                 id="ageType"
                 name="ageType"
-                // value={userDetails?.ageType}
-                // onChange={handleChange2}
+                value={patientDetails?.ageType}
+                onChange={handleChange2}
                 placeholder="Select Age Type"
                 style={{ overflowY: "auto" }}
                 dropdownStyle={{
@@ -581,11 +575,11 @@ export default function EditPatientFormAdmin()
                   overflowY: "auto",
                 }}
               >
-                {/* {AgeType.map((option) => (
+                {AgeType.map((option) => (
                   <Select.Option key={option.value} value={option.value}>
                     {option.label}
                   </Select.Option>
-                ))} */}
+                ))}
               </Select>
               {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
@@ -661,16 +655,13 @@ export default function EditPatientFormAdmin()
               id="contactNumber"
               name="contactNumber"
               onChange={handleChange}
-              value={patientDetails?.phone}
+              value={patientDetails?.contactNumber}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.contactNumber && (
               <p className="text-red-500">{errors.contactNumber}</p>
             )}
           </div>
-
-
-
 
           {/* -----------address----------- */}
           <div className="mt-3">
@@ -796,9 +787,6 @@ export default function EditPatientFormAdmin()
           <ToastContainer />
         </div>
       </div>
-
-
-
 
       {/* <div className="flex flex-row">
         <div className=" w-full">
