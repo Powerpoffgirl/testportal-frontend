@@ -992,7 +992,7 @@ export default function EditUserForm()
                         }
                       }
                     }}
-                    value={patientDetails?.issues}
+                    value={appointmentDetails.issues}
                     placeholder="Select Issues"
                     dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
                   >
@@ -1043,7 +1043,7 @@ export default function EditUserForm()
                       }
                     }
                   }}
-                  value={patientDetails?.diseases}
+                  value={appointmentDetails.diseases}
                   placeholder="Select Disease"
                   style={{ overflowY: "auto" }}
                   dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
