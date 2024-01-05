@@ -676,7 +676,6 @@ function App()
             />
           }
         ></Route>
-        <Route path="/tabel" element={<Table></Table>}></Route>
       </Routes>
     </>
   );
