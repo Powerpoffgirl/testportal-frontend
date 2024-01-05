@@ -301,70 +301,73 @@ export default function PatientListUser({ searchTerm })
       </Modal>
 
       <div className="flex flex-col">
-        {filteredPatients?.map((patient) => (
-          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
-            <div className="flex flex-row justify-start items-center">
-              <div
-                class="flex items-center gap-x-2"
-                onClick={() => findSelectedDoctor(patient._id)}
-              >
-                {patient.patientPic ? (
-                  <img
-                    class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
-                    src={patient.patientPic}
-                    alt={patient.name}
-                  />
-                ) : (
-                  <AccountCircleIcon
-                    style={{ fontSize: "90px", color: "#B1DAED" }}
-                  />
-                )}
+        {filteredPatients[0]?.name ? (
+          filteredPatients.map((patient) => (
+            <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" key={patient._id}>
+              <div className="flex flex-row justify-start items-center">
+                <div
+                  className="flex items-center gap-x-2"
+                  onClick={() => findSelectedDoctor(patient._id)}
+                >
+                  {patient.patientPic ? (
+                    <img
+                      className="object-cover sm:w-20 sm:h-20 w-10 h-10 rounded-full"
+                      src={patient.patientPic}
+                      alt={patient.name}
+                    />
+                  ) : (
+                    <AccountCircleIcon
+                      style={{ fontSize: "90px", color: "#B1DAED" }}
+                    />
+                  )}
 
-                <div className="gap-x-3">
-                  <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize ml-2">
-                    {patient.name}
-                  </h1>
-                  <p class=" text-gray-500 text-sm capitalize ml-2">
-                    {patient.age} yrs, {patient.bodyWeight} kg
-                  </p>
-                  <p class=" text-gray-500 text-sm capitalize ml-2">
-                    {patient.address?.houseNo} {patient.address?.block}{" "}
-                    {patient.address?.area}, {patient.address?.district},{" "}
-                    {patient.address?.state}, {patient.address?.pinCode}
-                  </p>
-                  {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}
+                  <div className="gap-x-3">
+                    <h1 className="font-semibold text-gray-700 sm:text-lg text-sm capitalize ml-2">
+                      {patient.name}
+                    </h1>
+                    <p className="text-gray-500 text-sm capitalize ml-2">
+                      {patient.age} yrs, {patient.bodyWeight} kg
+                    </p>
+                    <p className="text-gray-500 text-sm capitalize ml-2">
+                      {patient.address?.houseNo} {patient.address?.block}{" "}
+                      {patient.address?.area}, {patient.address?.district},{" "}
+                      {patient.address?.state}, {patient.address?.pinCode}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-row ms-auto gap-1 sm:gap-4">
+                  <Popconfirm
+                    title="Delete the Patient"
+                    description="Are you sure to delete this Patient?"
+                    okText="Delete"
+                    okType='danger'
+                    cancelText="No"
+                    className="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                    onConfirm={() => handleDeletePatient(patient._id)}
+                  >
+                    <button
+                      danger
+                      className="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                    >
+                      {isTab ? <FaTrashAlt /> : "Delete"}
+                    </button>
+                  </Popconfirm>
+                  <button
+                    className="rounded-full px-6 sm:px-4 py-2 sm:py-1 text-white bg-[#89CFF0] text-xs sm:text-sm"
+                    onClick={() => handleBookAppointment(patient)}
+                  >
+                    Book Appointment
+                  </button>
                 </div>
               </div>
-              <div class="flex flex-row ms-auto gap-1 sm:gap-4">
-                <Popconfirm
-                  title="Delete the Patient"
-                  description="Are you sure to delete this Patient?"
-                  okText="Delete"
-                  okType='danger'
-                  cancelText="No"
-                  className="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                  onConfirm={() => handleDeletePatient(patient._id)}
-                >
-                  <button
-                    danger
-                    class="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                  // onClick={() => handleDeletePatient(patient._id)}
-                  >
-                    {isTab ? <FaTrashAlt /> : "Delete"}
-                  </button>
-                </Popconfirm>
-                <button
-                  class="rounded-full px-6 sm:px-4 py-2 sm:py-1 text-white bg-[#89CFF0] text-xs sm:text-sm"
-                  onClick={() => handleBookAppointment(patient)}
-                >
-                  Book Appointment
-                </button>
-              </div>
+              <ToastContainer />
             </div>
-            <ToastContainer />
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>Please complete your profile first.</p>
+        )}
       </div>
+
     </>
   );
 }
