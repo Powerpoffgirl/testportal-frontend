@@ -100,7 +100,6 @@ export default function UserProfile() {
         }
 
         const data = await response.json();
-
         console.log("Image uploaded successfully:", data);
         setUserImage(data.profilePicImageUrl);
         toast.success("Image uploaded successfully");
