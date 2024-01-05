@@ -80,23 +80,6 @@ export default function Layout({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, userName]); // Include dependencies in the dependency array
 
-  //     // if (type === "doctor")
-  //     // {
-  //     //   setUser("Dr. " + firstName); // Set the user with "Dr." and the first name
-  //     // } else
-  //     if (type === "admin")
-  //     {
-  //       setUser(firstName); // Set the user with only the first name
-  //     }
-  //   }
-  //   else
-  //   {
-  //     navigate("/")
-  //   }
-
-  // }, [type, userName]); // Include dependencies in the dependency array
-
-
   // -------------BASE URL SIDEBAR NAVIGATION--------------------------
 
   const link1 = [

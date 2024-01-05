@@ -138,6 +138,10 @@ export default function UserLogin()
             value={contactNumber}
             onChange={handleMobileNumberChange}
             maxLength={10}
+            onInput={(e) =>
+            {
+              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            }}
           />
           {!isValid && (
             <p className="error_message">Please enter a valid mobile number</p>
