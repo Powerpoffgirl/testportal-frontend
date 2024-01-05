@@ -68,6 +68,23 @@ export default function PatientForm()
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [newPatientDetails, setNewPatientDetails] = useState({});
   const [doctorImage, setDoctorImage] = useState();
+  const [contactNumber, setcontactNumber] = useState(null);
+  const [mobileNumberError, setmobileNumberError] = useState("");
+
+  const handleChange3 = (e) => {
+    let { name, value } = e.target;
+    console.log("e.target value", value);
+
+    // Check if the value consists of exactly 10 digits and does not include alphabetic characters
+    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+      setmobileNumberError(""); // Clear the error message if it's valid
+      setcontactNumber(value);
+    } else {
+      setmobileNumberError("Please enter a valid 10-digit number");
+    }
+
+    console.log("contact number after setter function", contactNumber);
+  };
 
   const handleFileSelect = async (event) =>
   {
@@ -299,6 +316,13 @@ export default function PatientForm()
   {
     const { name, value } = e.target;
 
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
+      } else {
+        setPinCodeError("Please enter a valid Pincode");
+      }
+    }
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
 
@@ -613,7 +637,7 @@ export default function PatientForm()
                 Age
               </label>
               <input
-                type="text"
+                type="number"
                 id="age"
                 name="age"
                 onChange={handleChange}
@@ -660,7 +684,7 @@ export default function PatientForm()
               Body Weight
             </label>
             <input
-              type="text"
+              type="number"
               id="bodyWeight"
               name="bodyWeight"
               onChange={handleChange}
@@ -706,12 +730,15 @@ export default function PatientForm()
               type="number"
               id="contactNumber"
               name="contactNumber"
-              onChange={handleChange}
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              required
+              value={contactNumber}
+              onChange={handleChange3}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {errors.contactNumber && (
-              <p className="text-red-500">{errors.contactNumber}</p>
-            )}
+            {/* {errors.contactNumber && ( */}
+            <p class=" text-red-500 ">{mobileNumberError}</p>
+            {/* )} */}
           </div>
           {/* -----------address----------- */}
           <div className="mt-3">
@@ -760,17 +787,17 @@ export default function PatientForm()
                   </div>
                   <div className="px-2 w-full sm:w-1/2 mt-3">
                     <input
-                      type="text"
+                      type="text" // Uncomment this line if you want it to be a number input
                       id="pinCode"
                       name="pinCode"
                       onChange={handleChange}
-                      placeholder="Pin Code"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      placeholder="Pincode"
+                      className="block w-full rounded-lg border bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.pinCode && (
-                      <p className="text-red-500">{errors.pinCode}</p>
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
                     )}
-                  </div>
+                  </div>{" "}
                 </div>
 
                 <div className="px-2 w-full mt-3 ">
