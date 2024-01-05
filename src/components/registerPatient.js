@@ -354,20 +354,6 @@ export default function PatientForm() {
       ageType: e,
     }));
   };
-  const handleChange3 = (e) => {
-    let { name, value } = e.target;
-    console.log("e.target value", value);
-
-    // Check if the value contains exactly 10 digits (and is not empty)
-    if (/^\d{10}$/.test(value)) {
-      setmobileNumberError(""); // Clear the error message if it's a valid 10-digit number
-      setcontactNumber(value);
-    } else {
-      setmobileNumberError("Please enter a valid 10-digit number");
-    }
-
-    console.log("contact number after setter function", contactNumber);
-  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -377,6 +363,14 @@ export default function PatientForm() {
         setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
       } else {
         setPinCodeError("Please enter a valid Pincode");
+      }
+    }
+
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setmobileNumberError("");
+      } else {
+        setmobileNumberError("Please enter a valid Number");
       }
     }
 
@@ -848,7 +842,7 @@ export default function PatientForm() {
               type="text"
               id="contactNumber"
               name="contactNumber"
-              onChange={handleChange3}
+              onChange={handleChange}
               value={patientDetails?.phoneNo}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />

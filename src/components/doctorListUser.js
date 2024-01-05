@@ -266,7 +266,6 @@ export default function DoctorListUser({ searchTerm })
     });
     const data = await response.json();
 
-
     console.log("RESPONSE------", data);
     console.log("user id", data?.user?._id);
     localStorage.setItem("userId", data?.user?._id);
