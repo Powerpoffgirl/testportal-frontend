@@ -30,11 +30,15 @@ export default function UserProfile() {
   const [userImage, setUserImage] = useState();
   const [errors, setErrors] = useState({});
   const [doctorDetails, setDoctorDetails] = useState(null);
+  const [pinCodeError, setPinCodeError] = useState("");
+
   const onOpenModal = () => setOpen1(true);
   const onCloseModal = () => setOpen1(false);
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [floorError, setFloorError] = useState("");
   const [newUser, setNewUser] = useState(false);
+  const [contactNumber, setcontactNumber] = useState(null);
+  const [mobileNumberError, setmobileNumberError] = useState("");
 
   const patientId = localStorage.getItem("patientId");
   const [patientDetails, setPatientDetails] = useState({
@@ -52,6 +56,19 @@ export default function UserProfile() {
     },
     patientPic: "",
   });
+
+  const handleChange3 = (e) => {
+    let { name, value } = e.target;
+    console.log("e.target value", value);
+    if (value.length != 10) {
+      setmobileNumberError("Please enter a valid number");
+    }
+    if (value.length == 10) {
+      setmobileNumberError("");
+    }
+    setcontactNumber(value);
+    console.log("contact number after seeter function", contactNumber);
+  };
 
   const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
@@ -192,6 +209,13 @@ export default function UserProfile() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === "pinCode") {
+      if (value.length !== 6) {
+        setPinCodeError("Please enter a valid Pincode");
+      } else {
+        setPinCodeError(""); // Clear the error message if it's valid
+      }
+    }
 
     if (
       [
@@ -628,13 +652,15 @@ export default function UserProfile() {
               type="number"
               id="contactNumber"
               name="contactNumber"
-              onChange={handleChange}
-              value={userDetails.contactNumber}
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              required
+              value={userDetails?.contactNumber}
+              onChange={handleChange3}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {errors.contactNumber && (
-              <p className="text-red-500">{errors.contactNumber}</p>
-            )}
+            {/* {errors.contactNumber && ( */}
+            <p class=" text-red-500 ">{mobileNumberError}</p>
+            {/* )} */}
           </div>
           {/* -----------address----------- */}
           <div className="mt-3">
@@ -685,7 +711,7 @@ export default function UserProfile() {
                   </div>
                   <div className="px-2 w-full sm:w-1/2 mt-3">
                     <input
-                      type="text"
+                      type="number" // Uncomment this line if you want it to be a number input
                       id="pinCode"
                       name="pinCode"
                       onChange={handleChange}
@@ -693,8 +719,8 @@ export default function UserProfile() {
                       placeholder="Pin Code"
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.pinCode && (
-                      <p className="text-red-500">{errors.pinCode}</p>
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
                     )}
                   </div>
                 </div>
