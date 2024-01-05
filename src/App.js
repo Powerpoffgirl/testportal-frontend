@@ -70,6 +70,7 @@ import SuperAdminPatientEditForm from "./components/superadminpatienteditform";
 import SuperAdminUserEditForm from "./components/superadminusereditform";
 import SuperAdminDoctorOtpPage from "./components/superadmindoctorotppage";
 import SuperAdminOtp from "./components/superadminotp";
+import Pagenotfound from "./components/pagenotfound";
 import { ToastContainer } from "react-toastify";
 import UserProfile from "./components/userProfile";
 
@@ -677,6 +678,7 @@ function App()
           }
         ></Route>
         <Route path="/tabel" element={<Table></Table>}></Route>
+        <Route path="*" element={<Pagenotfound></Pagenotfound>}></Route>
       </Routes>
     </>
   );
