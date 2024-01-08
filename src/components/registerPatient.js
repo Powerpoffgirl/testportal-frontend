@@ -79,7 +79,7 @@ export default function PatientForm() {
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [mobileNumberError, setmobileNumberError] = useState("");
-  const [contactNumber, setcontactNumber] = useState(null);
+  const [phoneNo, setphoneNo] = useState(null);
 
   const handleSearch = (event) => {
     const searchTerm = event?.target?.value?.toLowerCase();
@@ -366,7 +366,7 @@ export default function PatientForm() {
       }
     }
 
-    if (name === "contactNumber") {
+    if (name === "phoneNo") {
       if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setmobileNumberError("");
       } else {
@@ -467,25 +467,25 @@ export default function PatientForm() {
       doctorId: JSON.stringify(doctorId),
       // patientPic: userImage,
     };
-    if (newPatientDetails.gender === "") {
+    if (!newPatientDetails?.gender) {
       toast.error("Please write gender");
-    } else if (newPatientDetails.age === "") {
+    } else if (!newPatientDetails?.age) {
       toast.error("Please write age");
-    } else if (newPatientDetails.ageType === "") {
-      toast.error("Please write ageType");
-    } else if (newPatientDetails.bodyWeight === "") {
-      toast.error("Please write bodyWeight");
-    } else if (newPatientDetails.name === "") {
+    } else if (!newPatientDetails?.ageType) {
+      toast.error("Please write age type");
+    } else if (!newPatientDetails?.name) {
       toast.error("Please write name");
-    } else if (newPatientDetails.contactNumber === "") {
-      toast.error("Please write contactNumber");
+    } else if (!newPatientDetails?.phoneNo) {
+      toast.error("Please write contact number");
+    } else if (!newPatientDetails?.email) {
+      toast.error("Please write email");
     } else if (!newPatientDetails.address?.pinCode) {
       toast.error("Please write Pincode");
     } else if (!/^\d{6}$/.test(newPatientDetails?.address?.pinCode)) {
       toast.error("Please enter a valid 6-digit PIN code");
-    } else if (newPatientDetails.address?.district === "") {
+    } else if (!newPatientDetails.address?.district) {
       toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "") {
+    } else if (!newPatientDetails.address?.state) {
       toast.error("Please write state");
     } else {
       const doctorId = localStorage.getItem("doctorId");
@@ -840,8 +840,8 @@ export default function PatientForm() {
             </label>
             <input
               type="text"
-              id="contactNumber"
-              name="contactNumber"
+              id="phoneNo"
+              name="phoneNo"
               onChange={handleChange}
               value={patientDetails?.phoneNo}
               onInput={(e) => {
@@ -849,7 +849,7 @@ export default function PatientForm() {
               }}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {/* {errors.contactNumber && ( */}
+            {/* {errors.phoneNo && ( */}
             <p class=" text-red-500 ">{mobileNumberError}</p>
             {/* )} */}
           </div>
@@ -870,9 +870,7 @@ export default function PatientForm() {
               value={patientDetails?.email}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {errors.contactNumber && (
-              <p className="text-red-500">{errors.contactNumber}</p>
-            )}
+            {errors.phoneNo && <p className="text-red-500">{errors.phoneNo}</p>}
           </div>
           {/* -----------address----------- */}
           <div className="mt-3">
