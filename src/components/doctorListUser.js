@@ -163,8 +163,8 @@ export default function DoctorListUser({ searchTerm }) {
   const handleBookAppointment = async () => {
     console.log(selectedDoctor?.slots[currentIndex]);
     const bookslot = {
-      date: keys[currentIndex],
-      time: values[currentIndex][currentTimeIndex].start,
+      date: selectedDoctor?.slots[currentIndex].date.split("T")[0],
+      time: selectedDoctor?.slots[currentIndex].startTime,
     };
     console.log("selected doctor", selectedDoctor?._id);
     const response = await fetch(

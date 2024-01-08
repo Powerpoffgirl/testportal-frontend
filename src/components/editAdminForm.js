@@ -553,7 +553,7 @@ export default function EditAdminForm() {
                 name="age"
                 onChange={handleChange}
                 value={doctorDetails?.age}
-                className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
               {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
@@ -601,7 +601,7 @@ export default function EditAdminForm() {
               name="bodyWeight"
               onChange={handleChange}
               value={doctorDetails?.bodyWeight}
-              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.totalExperience && (
               <p className="text-red-500">{errors.totalExperience}</p>
@@ -789,7 +789,7 @@ export default function EditAdminForm() {
                       name="houseNo"
                       onChange={handleChange}
                       value={doctorDetails?.address?.houseNo}
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
@@ -800,7 +800,7 @@ export default function EditAdminForm() {
                       onChange={handleChange}
                       value={doctorDetails?.address?.floor}
                       placeholder="Floor"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
@@ -811,7 +811,7 @@ export default function EditAdminForm() {
                       onChange={handleChange}
                       placeholder="Block"
                       value={doctorDetails?.address?.block}
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.block && (
                       <p className="text-red-500">{errors.block}</p>
@@ -828,7 +828,7 @@ export default function EditAdminForm() {
                       onInput={(e) => {
                         e.target.value = e.target.value.replace(/[^0-6]/g, "");
                       }}
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {pinCodeError && (
                       <p className="text-red-500">{pinCodeError}</p>
@@ -844,7 +844,7 @@ export default function EditAdminForm() {
                     onChange={handleChange}
                     value={doctorDetails?.address?.area}
                     placeholder="Area/Landmark"
-                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
@@ -858,7 +858,7 @@ export default function EditAdminForm() {
                       onChange={handleChange}
                       value={doctorDetails?.address?.district}
                       placeholder="District"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
@@ -873,7 +873,7 @@ export default function EditAdminForm() {
                       onChange={handleChange}
                       value={doctorDetails?.address?.state}
                       placeholder="State"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>
@@ -1027,7 +1027,7 @@ export default function EditAdminForm() {
                   name="name"
                   onChange={handleChange}
                   value={doctorDetails?.name}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
@@ -1045,7 +1045,7 @@ export default function EditAdminForm() {
                   name="email"
                   onChange={handleChange}
                   value={doctorDetails?.email}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
               </div>
@@ -1063,7 +1063,7 @@ export default function EditAdminForm() {
                   name="contactNumber"
                   onChange={handleChange}
                   value={doctorDetails?.contactNumber}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.contactNumber && (
                   <p className="text-red-500">{errors.contactNumber}</p>
@@ -1176,7 +1176,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         placeholder="1234"
                         value={doctorDetails?.address?.houseNo}
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     </div>
                     <div class="px-2 w-full sm:w-1/3">
@@ -1193,7 +1193,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         placeholder="2nd"
                         value={doctorDetails?.address?.floor}
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     </div>
                     <div class="px-2 w-full sm:w-1/3">
@@ -1210,7 +1210,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         placeholder="A"
                         value={doctorDetails?.address?.block}
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                       {errors.block && (
                         <p className="text-red-500">{errors.block}</p>
@@ -1230,7 +1230,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         value={doctorDetails?.address?.area}
                         placeholder="Green Park"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                       {errors.area && (
                         <p className="text-red-500">{errors.area}</p>
@@ -1250,7 +1250,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         placeholder="110016"
                         value={doctorDetails?.address?.pinCode}
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                       {errors.pinCode && (
                         <p className="text-red-500">{errors.pinCode}</p>
@@ -1270,7 +1270,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         placeholder="South Delhi"
                         value={doctorDetails?.address?.district}
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                       {errors.district && (
                         <p className="text-red-500">{errors.district}</p>
@@ -1290,7 +1290,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         value={doctorDetails?.address?.state}
                         placeholder="Delhi"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                       {errors.state && (
                         <p className="text-red-500">{errors.state}</p>
