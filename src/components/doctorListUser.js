@@ -21,7 +21,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 
-
 export default function DoctorListUser({ searchTerm })
 {
     const { updateUser, updateUserEmail, updateUserimage } =
@@ -150,6 +149,7 @@ export default function DoctorListUser({ searchTerm })
     {
         console.log("date", keys[currentIndex]);
         console.log("slot", values[currentIndex][currentTimeIndex].start);
+
         const bookslot = {
             date: keys[currentIndex],
             time: values[currentIndex][currentTimeIndex].start,
