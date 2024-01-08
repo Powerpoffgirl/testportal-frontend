@@ -352,12 +352,12 @@ export default function PatientListUser({ searchTerm })
                       {isTab ? <FaTrashAlt /> : "Delete"}
                     </button>
                   </Popconfirm>
-                  <button
+                  {/* <button
                     className="rounded-full px-6 sm:px-4 py-2 sm:py-1 text-white bg-[#89CFF0] text-xs sm:text-sm"
                     onClick={() => handleBookAppointment(patient)}
                   >
                     Book Appointment
-                  </button>
+                  </button> */}
                 </div>
               </div>
               <ToastContainer />
