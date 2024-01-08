@@ -100,6 +100,7 @@ export default function DoctorList({ searchTerm }) {
   const handleBookAppointment = async () => {
     console.log("date", keys[currentIndex]);
     console.log("slot", values[currentIndex][currentTimeIndex].start);
+
     const bookslot = {
       date: keys[currentIndex],
       time: values[currentIndex][currentTimeIndex].start,
