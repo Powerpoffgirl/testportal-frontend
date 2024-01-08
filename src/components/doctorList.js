@@ -808,6 +808,7 @@ export default function DoctorList({ searchTerm })
                                         key={index}
                                         className={` w-1/3 px-2  ${marginb} `}
                                         disabled={item.isBooked}
+
                                       >
                                         <div
                                           className={` rounded-3xl py-1 px-2 text-gray-800  bg-[#B3E7FB]`}
@@ -815,6 +816,7 @@ export default function DoctorList({ searchTerm })
                                           {
                                             handleTimeClick(index);
                                           }}
+
                                         >
                                           {item.start}
                                         </div>
@@ -827,13 +829,15 @@ export default function DoctorList({ searchTerm })
                                         <div
                                           key={index}
                                           className={` w-1/3 px-2 ${marginb}`}
+                                          style={{ zIndex: 999 }}
                                           disabled
                                         >
                                           <div
                                             className={` rounded-3xl py-1  px-2 `}
                                             style={{
                                               backgroundColor: "#4974a5",
-                                              color: 'white'
+                                              color: 'white',
+                                              zIndex: 999,
                                             }}
                                           >
                                             {item.start}
@@ -853,7 +857,7 @@ export default function DoctorList({ searchTerm })
                                         }}
                                       >
                                         <div
-                                          className={` rounded-3xl py-1 px-2 text-gray-800 bg-gray-200  `}
+                                          className={` rounded-3xl py-1 px-2 text-gray-800 bg-gray-200 `}
                                         >
                                           {item.start}
                                         </div>
