@@ -22,8 +22,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Tooltip } from "antd";
 
-export default function DoctorList({ searchTerm })
-{
+export default function DoctorList({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -37,17 +36,13 @@ export default function DoctorList({ searchTerm })
   const [resendClicked, setResendClicked] = useState(false);
   const [firstTime, setFirstTime] = useState(true);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     localStorage.clear();
   }, []);
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
           method: "GET",
           headers: {
@@ -61,22 +56,18 @@ export default function DoctorList({ searchTerm })
           (doctor) => doctor.accountVerified.isVerified
         );
         setDoctorsList(verifiedDoctors);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, [searchTerm]);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     // Check if there is a searchTerm and the doctorsList is not empty.
-    if (doctorsList?.length > 0 && searchTerm)
-    {
+    if (doctorsList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
-      const matchedDoctors = doctorsList.filter((doctor) =>
-      {
+      const matchedDoctors = doctorsList.filter((doctor) => {
         // Check if the doctor's name includes the searchTerm
         const nameMatch = doctor.name
           ?.toLowerCase()
@@ -90,15 +81,13 @@ export default function DoctorList({ searchTerm })
         return nameMatch || specialityMatch;
       });
       setFilteredDoctors(matchedDoctors);
-    } else
-    {
+    } else {
       // If no searchTerm or doctorsList is empty, use the original list.
       setFilteredDoctors(doctorsList);
     }
   }, [doctorsList, searchTerm]);
 
-  const handleQRCode = (doctorId) =>
-  {
+  const handleQRCode = (doctorId) => {
     console.log("HELLO");
     localStorage.setItem("doctorId", doctorId);
     const doctor = doctorsList?.find((doc) => doc._id === doctorId);
@@ -108,8 +97,7 @@ export default function DoctorList({ searchTerm })
     onOpenModal();
   };
 
-  const handleBookAppointment = async () =>
-  {
+  const handleBookAppointment = async () => {
     console.log("date", keys[currentIndex]);
     console.log("slot", values[currentIndex][currentTimeIndex].start);
     const bookslot = {
@@ -140,27 +128,22 @@ export default function DoctorList({ searchTerm })
     showappointment();
     showSlot();
 
-    if (data.success === true)
-    {
+    if (data.success === true) {
       toast.success("Slot booked successfully", {
         // position: "top-center",
       });
-    } else
-    {
+    } else {
       toast.error("Please book another slot", {
         // position: "top-center",
       });
     }
   };
 
-  const handleFilterDocotors = (item) =>
-  {
+  const handleFilterDocotors = (item) => {
     console.log("ITEM NAME IS================>", item);
-    if (item.toLowerCase() === "all")
-    {
+    if (item.toLowerCase() === "all") {
       setFilteredDoctors(doctorsList);
-    } else
-    {
+    } else {
       const filteredDoctors = doctorsList.filter(
         (doc) => doc.speciality === item
       );
@@ -179,34 +162,28 @@ export default function DoctorList({ searchTerm })
   const MAX_LENGTH = 6;
   const otpInputs = [];
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     let { name, value } = e.target;
     console.log(value);
-    if (value.length != 10)
-    {
+    if (value.length != 10) {
       setmobileNumberError("Please enter a valid number");
     }
-    if (value.length == 10)
-    {
+    if (value.length == 10) {
       setmobileNumberError("");
     }
     setcontactNumber(value);
     console.log(contactNumber);
   };
 
-  const showSlot = () =>
-  {
+  const showSlot = () => {
     setbookingslottoggle(!bookingslottoggle);
   };
 
-  const showappointment = () =>
-  {
+  const showappointment = () => {
     setappointment(!appointment);
   };
 
-  const handleOtp = async () =>
-  {
+  const handleOtp = async () => {
     const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
       method: "post",
       headers: {
@@ -225,84 +202,75 @@ export default function DoctorList({ searchTerm })
     setotppage(true);
   };
 
-  const handleInputChange = (e, index) =>
-  {
+  const handleInputChange = (e, index) => {
     const value = e.target.value;
 
-    if (isNaN(value))
-    {
+    if (isNaN(value)) {
       return; // Allow only numeric input
     }
 
     otp[index] = value;
 
-    if (index < MAX_LENGTH - 1 && value)
-    {
+    if (index < MAX_LENGTH - 1 && value) {
       otpInputs[index + 1].focus();
     }
 
     setOtp([...otp]);
   };
-  const verifyOTP = async () =>
-  {
-    try
-    {
+  const verifyOTP = async () => {
+    try {
       const userId = localStorage.getItem("userId");
       const otpString = otp.join("");
 
-      const response = await fetch(`${baseUrl}/api/v1/user/verify_otp/${userId}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ otp: otpString }),
-      });
+      const response = await fetch(
+        `${baseUrl}/api/v1/user/verify_otp/${userId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ otp: otpString }),
+        }
+      );
 
-      if (!response.ok)
-      {
+      if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
       }
 
       let data;
-      try
-      {
+      try {
         data = await response.json();
-      } catch (e)
-      {
+      } catch (e) {
         throw new Error("Failed to parse JSON");
       }
 
-      if (data?.success === true)
-      {
-        console.log("=============================DATA from response=========================", data);
+      if (data?.success === true) {
+        console.log(
+          "=============================DATA from response=========================",
+          data
+        );
 
-        if (data?.data?.data?.newUser === true)
-        {
+        if (data?.data?.data?.newUser === true) {
           const patientId = data?.patient?._id;
-          if (patientId)
-          {
+          if (patientId) {
             console.log("Storing patient ID in local storage", patientId);
             localStorage.setItem("patientId", patientId);
-          } else
-          {
+          } else {
             console.error("Patient ID is undefined");
           }
-        } else
-        {
+        } else {
           // Handle the case where newUser is not true or undefined
         }
 
         localStorage.setItem("token", data?.data?.token);
         navigate("/edituserform");
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error verifying the OTP:", error);
     }
   };
 
-  function abbreviateAndCombineDays(days)
-  {
+  function abbreviateAndCombineDays(days) {
     const weekDays = [
       "Monday",
       "Tuesday",
@@ -316,26 +284,22 @@ export default function DoctorList({ searchTerm })
     let combinedDays = [];
     let i = 0;
 
-    while (i < dayIndexes.length)
-    {
+    while (i < dayIndexes.length) {
       let startDay = weekDays[dayIndexes[i]].substring(0, 3);
       let endDayIndex = i;
 
       while (
         endDayIndex < dayIndexes.length - 1 &&
         dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1
-      )
-      {
+      ) {
         endDayIndex++;
       }
 
       let endDay = weekDays[dayIndexes[endDayIndex]].substring(0, 3);
 
-      if (i === endDayIndex)
-      {
+      if (i === endDayIndex) {
         combinedDays.push(startDay);
-      } else
-      {
+      } else {
         combinedDays.push(`${startDay}-${endDay}`);
       }
 
@@ -349,18 +313,15 @@ export default function DoctorList({ searchTerm })
   const bookingslot = selectedDoctor.slots;
   let processedSlots = {};
 
-  console.log("===============BOOKING SLOTS==============", bookingslot)
-  for (let i in bookingslot)
-  {
+  console.log("===============BOOKING SLOTS==============", bookingslot);
+  for (let i in bookingslot) {
     let objTitle = bookingslot[i].date.split("T")[0];
     // Use the title as the index
     processedSlots[objTitle] = [];
   }
 
-  for (let i in bookingslot)
-  {
-    if (bookingslot[i].date.split("T")[0] in processedSlots)
-    {
+  for (let i in bookingslot) {
+    if (bookingslot[i].date.split("T")[0] in processedSlots) {
       processedSlots[bookingslot[i].date.split("T")[0]].push({
         start: bookingslot[i].startTime,
         end: bookingslot[i].endTime,
@@ -374,8 +335,7 @@ export default function DoctorList({ searchTerm })
   // console.log(keys)
   const values = Object.values(processedSlots);
 
-  function getYearMonthDay(dateString)
-  {
+  function getYearMonthDay(dateString) {
     // Create a new Date object using the provided date string
     const date = new Date(dateString);
 
@@ -412,27 +372,23 @@ export default function DoctorList({ searchTerm })
       ? abbreviateAndCombineDays(selectedDoctor.workingDays)
       : "";
 
-  const handleDateClick = (index) =>
-  {
+  const handleDateClick = (index) => {
     setCurrentIndex(index);
     console.log(currentIndex);
   };
-  const handleTimeClick = (time) =>
-  {
+  const handleTimeClick = (time) => {
     // console.log(time)
     setCurrentTimeIndex(time);
     console.log(currentTimeIndex);
   };
-  const goToNext = () =>
-  {
+  const goToNext = () => {
     const isLastItem = currentIndex === bookingslot.length - 1;
     const nextIndex = isLastItem ? 0 : currentIndex + 1;
     setCurrentIndex(nextIndex);
     console.log(currentIndex);
   };
 
-  const goToPrev = () =>
-  {
+  const goToPrev = () => {
     const isFirstItem = currentIndex === 0;
     const prevIndex = isFirstItem ? bookingslot.length - 1 : currentIndex - 1;
     setCurrentIndex(prevIndex);
@@ -442,17 +398,12 @@ export default function DoctorList({ searchTerm })
   var selectedschedule = 0;
   // console.log(selectedDoctor?.slots[currentIndex])
 
-  useEffect(() =>
-  {
-    if (resendClicked || firstTime)
-    {
-      const intervalId = setInterval(() =>
-      {
-        if (seconds > 0)
-        {
+  useEffect(() => {
+    if (resendClicked || firstTime) {
+      const intervalId = setInterval(() => {
+        if (seconds > 0) {
           setSeconds((prevSeconds) => prevSeconds - 1);
-        } else
-        {
+        } else {
           setFirstTime(false);
           setSeconds(90);
           setResendClicked(false);
@@ -462,8 +413,7 @@ export default function DoctorList({ searchTerm })
     }
   }, [seconds, resendClicked, firstTime]);
 
-  const formatTime = (time) =>
-  {
+  const formatTime = (time) => {
     const minutes = Math.floor(time / 60);
     const remainingSeconds = time % 60;
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
@@ -522,7 +472,11 @@ export default function DoctorList({ searchTerm })
                 </p>
                 <div className="flex flex-row">
                   <div>
-                    <img src={education} alt="education" className="w-5 py-2 "></img>
+                    <img
+                      src={education}
+                      alt="education"
+                      className="w-5 py-2 "
+                    ></img>
                   </div>
                   <div className="ml-1">
                     {selectedDoctor?.degree?.split(",")?.map((item) => (
@@ -566,8 +520,7 @@ export default function DoctorList({ searchTerm })
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
                   <div className="flex flex-wrap">
-                    {selectedDoctor?.speciality?.map((item, index) =>
-                    {
+                    {selectedDoctor?.speciality?.map((item, index) => {
                       const formattedSpeciality = item.replace(
                         /([a-z])([A-Z])/g,
                         "$1 $2"
@@ -660,8 +613,13 @@ export default function DoctorList({ searchTerm })
                               <div
                                 className="rounded-3xl py-1 px-2 mt-2 text-center"
                                 style={{
-                                  backgroundColor: selectedDoctor?.slots?.[0]?.isBooked ? "#4974a5" : "#E5E7EB",
-                                  color: selectedDoctor?.slots?.[0]?.isBooked ? "white" : "#1F2937"
+                                  backgroundColor: selectedDoctor?.slots?.[0]
+                                    ?.isBooked
+                                    ? "#4974a5"
+                                    : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked
+                                    ? "white"
+                                    : "#1F2937",
                                 }}
                               >
                                 {selectedDoctor?.slots?.[0]?.startTime}
@@ -672,8 +630,13 @@ export default function DoctorList({ searchTerm })
                               <div
                                 className="rounded-3xl py-1 px-2 mt-2 text-center"
                                 style={{
-                                  backgroundColor: selectedDoctor?.slots?.[0]?.isBooked ? "#4974a5" : "#E5E7EB",
-                                  color: selectedDoctor?.slots?.[0]?.isBooked ? "white" : "#1F2937"
+                                  backgroundColor: selectedDoctor?.slots?.[0]
+                                    ?.isBooked
+                                    ? "#4974a5"
+                                    : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked
+                                    ? "white"
+                                    : "#1F2937",
                                 }}
                               >
                                 {selectedDoctor?.slots?.[1]?.startTime}
@@ -684,15 +647,18 @@ export default function DoctorList({ searchTerm })
                               <div
                                 className="rounded-3xl py-1 px-2 mt-2 text-center"
                                 style={{
-                                  backgroundColor: selectedDoctor?.slots?.[0]?.isBooked ? "#4974a5" : "#E5E7EB",
-                                  color: selectedDoctor?.slots?.[0]?.isBooked ? "white" : "#1F2937"
+                                  backgroundColor: selectedDoctor?.slots?.[0]
+                                    ?.isBooked
+                                    ? "#4974a5"
+                                    : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked
+                                    ? "white"
+                                    : "#1F2937",
                                 }}
                               >
                                 {selectedDoctor?.slots?.[2]?.startTime}
                               </div>
                             </div>
-
-
                           </p>
                         </div>
                       )}
@@ -760,8 +726,7 @@ export default function DoctorList({ searchTerm })
                                   <FaAngleLeft style={{ color: "black" }} />
                                 </button>
                                 <div className="flex flex-row overflow-x-auto mx-2 ">
-                                  {keys.map((item, index) =>
-                                  {
+                                  {keys.map((item, index) => {
                                     const { year, monthName, day, dayName } =
                                       getYearMonthDay(item);
                                     // console.log(index)
@@ -773,8 +738,7 @@ export default function DoctorList({ searchTerm })
                                       <div
                                         key={index}
                                         className="flex flex-col px-2"
-                                        onClick={() =>
-                                        {
+                                        onClick={() => {
                                           handleDateClick(index);
                                         }}
                                       >
@@ -797,12 +761,9 @@ export default function DoctorList({ searchTerm })
                                 </button>
                               </div>
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
-                                {values[currentIndex]?.map((item, index) =>
-                                {
-                                  const marginb =
-                                    index === 0 ? " mt-2 -" : "";
-                                  if (index === currentTimeIndex)
-                                  {
+                                {values[currentIndex]?.map((item, index) => {
+                                  const marginb = index === 0 ? " mt-2 -" : "";
+                                  if (index === currentTimeIndex) {
                                     return (
                                       <div
                                         key={index}
@@ -811,8 +772,7 @@ export default function DoctorList({ searchTerm })
                                       >
                                         <div
                                           className={` rounded-3xl py-1 px-2 text-gray-800  bg-[#B3E7FB]`}
-                                          onClick={() =>
-                                          {
+                                          onClick={() => {
                                             handleTimeClick(index);
                                           }}
                                         >
@@ -820,10 +780,12 @@ export default function DoctorList({ searchTerm })
                                         </div>
                                       </div>
                                     );
-                                  } else if (item.isBooked === true)
-                                  {
+                                  } else if (item.isBooked === true) {
                                     return (
-                                      <Tooltip placement="top" title="Booked Slots">
+                                      <Tooltip
+                                        placement="top"
+                                        title="Booked Slots"
+                                      >
                                         <div
                                           key={index}
                                           className={` w-1/3 px-2 ${marginb}`}
@@ -833,7 +795,7 @@ export default function DoctorList({ searchTerm })
                                             className={` rounded-3xl py-1  px-2 `}
                                             style={{
                                               backgroundColor: "#4974a5",
-                                              color: 'white'
+                                              color: "white",
                                             }}
                                           >
                                             {item.start}
@@ -841,14 +803,12 @@ export default function DoctorList({ searchTerm })
                                         </div>
                                       </Tooltip>
                                     );
-                                  } else
-                                  {
+                                  } else {
                                     return (
                                       <div
                                         key={index}
                                         className={` w-1/3 px-2  ${marginb}`}
-                                        onClick={() =>
-                                        {
+                                        onClick={() => {
                                           handleTimeClick(index);
                                         }}
                                       >
@@ -870,8 +830,7 @@ export default function DoctorList({ searchTerm })
                         {!bookingslottoggle && !appointment && (
                           <button
                             className="text-white text-xs rounded-3xl px-3 py-1 "
-                            onClick={() =>
-                            {
+                            onClick={() => {
                               showSlot();
                             }}
                             style={{ backgroundColor: " #89CFF0" }}
@@ -961,10 +920,8 @@ export default function DoctorList({ searchTerm })
                         maxLength={1}
                         value={digit}
                         onChange={(e) => handleInputChange(e, index)}
-                        onKeyDown={(e) =>
-                        {
-                          if (e.key === "Backspace" && index > 0 && !digit)
-                          {
+                        onKeyDown={(e) => {
+                          if (e.key === "Backspace" && index > 0 && !digit) {
                             otpInputs[index - 1].focus();
                           }
                         }}
