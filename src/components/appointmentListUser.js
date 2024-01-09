@@ -9,8 +9,11 @@ import "react-toastify/dist/ReactToastify.css";
 import { Button, Popconfirm } from "antd";
 import close_button from "../assets/close_button.svg";
 
+<<<<<<< HEAD
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
+=======
+>>>>>>> 4c6909ebb0105d33109af6d8f1e649ca00d12de0
 export default function AppointmentListUser({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -75,6 +78,10 @@ export default function AppointmentListUser({ searchTerm }) {
     setFilteredAppointmentList(matchedDoctors);
   }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4c6909ebb0105d33109af6d8f1e649ca00d12de0
   const handleEditAppointment = (appointmentId) => {
     localStorage.setItem("appointmentId", appointmentId);
     navigate("/editappointment");
@@ -106,6 +113,7 @@ export default function AppointmentListUser({ searchTerm }) {
         // toast.success("Appointment Deleted")
         // Update the list in the UI by removing the deleted doctor
 
+<<<<<<< HEAD
         setAppointmentList((prevAppointmentList) =>
           prevAppointmentList.filter(
             (appointment) => appointment._id !== appointmentId
@@ -116,6 +124,15 @@ export default function AppointmentListUser({ searchTerm }) {
       }
     } catch (error) {
       console.error("There was an error deleting the Appointment:", error);
+=======
+        setAppointmentList(prevAppointmentList => prevAppointmentList.filter(appointment => appointment._id !== appointmentId));
+      } else {
+        console.error("Failed to delete the doctor", data?.message);
+      }
+
+    } catch (error) {
+      console.error('There was an error deleting the Appointment:', error);
+>>>>>>> 4c6909ebb0105d33109af6d8f1e649ca00d12de0
     }
   };
 

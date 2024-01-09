@@ -34,8 +34,12 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 </svg>`;
 
 export default function AppointmentList({ searchTerm }) {
+<<<<<<< HEAD
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
+=======
+  const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
+>>>>>>> 4c6909ebb0105d33109af6d8f1e649ca00d12de0
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [patientsList, setPatientsList] = useState([]);
@@ -59,10 +63,17 @@ export default function AppointmentList({ searchTerm }) {
     appointmentList,
   ]);
 
+<<<<<<< HEAD
   // const onCloseModal = () => {
   //   setModalOpen(false);
   //   setModalContent("");
   // };
+=======
+  const onCloseModal = () => {
+    setModalOpen(false);
+    setModalContent("");
+  };
+>>>>>>> 4c6909ebb0105d33109af6d8f1e649ca00d12de0
   useEffect(() => {
     const fetchUserDetails = async () => {
       try {
