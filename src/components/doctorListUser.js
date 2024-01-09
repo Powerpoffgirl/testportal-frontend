@@ -433,6 +433,7 @@ export default function DoctorListUser({ searchTerm }) {
             width: isTab ? "94%" : "80%",
             backgroundColor: "#E3F6FF",
             alignContent: "center",
+            borderRadius: "23px",
           },
           closeButton: {
             display: "none",

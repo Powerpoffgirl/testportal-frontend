@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import { Button, Popconfirm } from 'antd';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Button, Popconfirm } from "antd";
+import close_button from "../assets/close_button.svg";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function AppointmentListUser({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -19,8 +20,9 @@ export default function AppointmentListUser({ searchTerm }) {
   const onOpenModal = () => setOpen(true);
   const [patientsList, setPatientsList] = useState([]);
   const [selectedAppointment, setSelectedAppointment] = useState();
-  const [filteredAppointmentList, setFilteredAppointmentList] = useState([appointmentList])
-
+  const [filteredAppointmentList, setFilteredAppointmentList] = useState([
+    appointmentList,
+  ]);
 
   useEffect(() => {
     const fetchPatientDetails = async () => {
@@ -56,11 +58,14 @@ export default function AppointmentListUser({ searchTerm }) {
     if (appointmentList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
 
-      matchedDoctors = appointmentList.filter(appointment =>
-        appointment?.patientId?.name.toLowerCase().includes(lowerCaseSearchTerm)
-        ||
-        appointment?.doctorId?.name.toLowerCase().includes(lowerCaseSearchTerm)
-
+      matchedDoctors = appointmentList.filter(
+        (appointment) =>
+          appointment?.patientId?.name
+            .toLowerCase()
+            .includes(lowerCaseSearchTerm) ||
+          appointment?.doctorId?.name
+            .toLowerCase()
+            .includes(lowerCaseSearchTerm)
       );
     } else {
       matchedDoctors = appointmentList;
@@ -68,7 +73,6 @@ export default function AppointmentListUser({ searchTerm }) {
 
     setFilteredAppointmentList(matchedDoctors);
   }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
-
 
   const handleEditAppointment = (appointmentId) => {
     localStorage.setItem("appointmentId", appointmentId);
@@ -82,31 +86,36 @@ export default function AppointmentListUser({ searchTerm }) {
         console.error("No token found in local storage");
         return;
       }
-      const response = await fetch(`${baseUrl}/api/v1/user/delete_appointmentById/${appointmentId}`, {
-        method: 'DELETE', // Use DELETE method
-        headers: {
-          'Content-Type': 'application/json',
-          'x-auth-token': token // Use the stored token
+      const response = await fetch(
+        `${baseUrl}/api/v1/user/delete_appointmentById/${appointmentId}`,
+        {
+          method: "DELETE", // Use DELETE method
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Use the stored token
+          },
         }
-      });
+      );
 
       const data = await response.json();
 
       if (response.ok) {
         console.log("Appointment deleted successfully", data);
-        toast.success('Appointment Deleted!');
+        toast.success("Appointment Deleted!");
         // toast.success("Appointment Deleted")
         // Update the list in the UI by removing the deleted doctor
 
-        setAppointmentList(prevAppointmentList => prevAppointmentList.filter(appointment => appointment._id !== appointmentId));
+        setAppointmentList((prevAppointmentList) =>
+          prevAppointmentList.filter(
+            (appointment) => appointment._id !== appointmentId
+          )
+        );
       } else {
         console.error("Failed to delete the doctor", data?.message);
       }
-
     } catch (error) {
-      console.error('There was an error deleting the Appointment:', error);
+      console.error("There was an error deleting the Appointment:", error);
     }
-
   };
 
   function formatDate(dateString) {
@@ -118,7 +127,9 @@ export default function AppointmentListUser({ searchTerm }) {
   const findSelectedDoctor = async (appointmentId) => {
     console.log("appointmentId########################", appointmentId);
     // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
-    const appointment = appointmentList?.find((appointment) => appointment._id === appointmentId);
+    const appointment = appointmentList?.find(
+      (appointment) => appointment._id === appointmentId
+    );
     setSelectedAppointment(appointment); // This will return the doctor object if found, otherwise undefined
     onOpenModal();
   };
@@ -134,37 +145,51 @@ export default function AppointmentListUser({ searchTerm }) {
           modal: {
             // Set your custom width here (e.g., '70%')
             width: isTab ? "80%" : "50%",
-            backgroundColor: "#fff",
+            backgroundColor: "#E3F6FF",
             alignContent: "center",
+            borderRadius: "23px",
+          },
+          closeButton: {
+            display: "none",
           },
         }}
       >
+        <div class="flex flex-row-reverse md:-mb-14  -mb-14 z-50">
+          <button className="z-50" onClick={onCloseModal}>
+            <img src={close_button} className="w-8 mb-1"></img>
+          </button>
+        </div>
+
         <div className="flex flex-col bg-customRedp-2  w-[100%] md:w-[100%]  mt-[1%]">
           <div className="flex flex-row w-[100%] justify-between">
-            {
-              selectedAppointment?.UserPic ? <img
-                src={selectedAppointment?.UserPic}
+            {selectedAppointment?.doctorId?.doctorPic ? (
+              <img
+                src={selectedAppointment?.doctorId?.doctorPic}
                 alt="Avatar"
                 style={{
                   borderRadius: "50%",
                   height: isTab ? "40px" : "123px",
                   width: isTab ? "40px" : "123px",
-                  marginRight: '70px',
-                  marginLeft: '20px',
-                  boxShadow: 'inset 0 0 0 2px #76767'
+                  marginTop: '10px',
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                  boxShadow: "inset 0 0 0 2px #76767",
                 }}
               />
-                :
-                <AccountCircleIcon style={{
-                  fontSize: '90px', color: "#E3F6FF",
+            ) : (
+              <AccountCircleIcon
+                style={{
+                  fontSize: "90px",
+                  color: "#fff",
                   borderRadius: "50%",
                   height: isTab ? "40px" : "123px",
                   width: isTab ? "40px" : "123px",
-                  marginRight: '75px',
-                  marginLeft: "-10px",
-                  boxShadow: 'inset 0 0 0 2px #76767'
-                }} />
-            }
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                  boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
+                }}
+              />
+            )}
           </div>
           <text
             className="ml-4 text-start mt-2"
@@ -175,7 +200,9 @@ export default function AppointmentListUser({ searchTerm }) {
               fontFamily: "Lato, sans-serif",
             }}
           >
-            {selectedAppointment?.patientId?.name ? selectedAppointment.patientId?.name : "No Name"}
+            {selectedAppointment?.patientId?.name
+              ? selectedAppointment.patientId?.name
+              : "No Name"}
           </text>
           <text
             className="ml-4 text-start mt-2"
@@ -185,10 +212,17 @@ export default function AppointmentListUser({ searchTerm }) {
               lineHeight: "24px",
               fontFamily: "Lato, sans-serif",
               color: "#767676",
-
             }}
           >
-            Age: {selectedAppointment?.patientId?.age ? selectedAppointment?.patientId?.age : "   "} yr, Weight :{selectedAppointment?.patientId?.bodyWeight ? selectedAppointment?.patientId?.bodyWeight : "    "} kg
+            Age:{" "}
+            {selectedAppointment?.patientId?.age
+              ? selectedAppointment?.patientId?.age
+              : "   "}{" "}
+            yr, Weight :
+            {selectedAppointment?.patientId?.bodyWeight
+              ? selectedAppointment?.patientId?.bodyWeight
+              : "    "}{" "}
+            kg
           </text>
           <text
             className="ml-4 text-start mt-2"
@@ -200,8 +234,15 @@ export default function AppointmentListUser({ searchTerm }) {
               color: "#43BCF5",
             }}
           >
-            Issues: {selectedAppointment?.issues ? selectedAppointment?.issues.join(', ') : "N/A"}<br />
-            Diseases: {selectedAppointment?.diseases ? selectedAppointment?.diseases.join(', ') : "N/A"}
+            Issues:{" "}
+            {selectedAppointment?.issues
+              ? selectedAppointment?.issues.join(", ")
+              : "N/A"}
+            <br />
+            Diseases:{" "}
+            {selectedAppointment?.diseases
+              ? selectedAppointment?.diseases.join(", ")
+              : "N/A"}
           </text>
           <text
             className="ml-4 text-start mt-2"
@@ -210,12 +251,18 @@ export default function AppointmentListUser({ searchTerm }) {
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              color: "#2CBE78"
-
+              color: "#2CBE78",
             }}
           >
-            Appointment Date: {selectedAppointment?.appointmentDate?.date ? selectedAppointment?.appointmentDate?.date : "No Date"}<br />
-            Appointment Time: {selectedAppointment?.appointmentDate?.time ? selectedAppointment?.appointmentDate?.time : "N/A"}
+            Appointment Date:{" "}
+            {selectedAppointment?.appointmentDate?.date
+              ? selectedAppointment?.appointmentDate?.date
+              : "No Date"}
+            <br />
+            Appointment Time:{" "}
+            {selectedAppointment?.appointmentDate?.time
+              ? selectedAppointment?.appointmentDate?.time
+              : "N/A"}
           </text>
           <text
             className="ml-4 text-start mt-2 text-purple-900"
@@ -224,10 +271,11 @@ export default function AppointmentListUser({ searchTerm }) {
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              color: "#CB13CF"
+              color: "#CB13CF",
             }}
           >
-            {selectedAppointment?.patientId?.address?.houseNo ? selectedAppointment?.patientId?.address?.houseNo +
+            {selectedAppointment?.patientId?.address?.houseNo
+              ? selectedAppointment?.patientId?.address?.houseNo +
               " " +
               selectedAppointment?.patientId?.address?.block +
               " " +
@@ -237,7 +285,8 @@ export default function AppointmentListUser({ searchTerm }) {
               ", " +
               selectedAppointment?.patientId?.address?.state +
               " " +
-              selectedAppointment?.patientId?.address?.pinCode : " "}
+              selectedAppointment?.patientId?.address?.pinCode
+              : " "}
           </text>
         </div>
       </Modal>
@@ -302,11 +351,10 @@ export default function AppointmentListUser({ searchTerm }) {
                             Date & Time:<span className="ms-2"></span>
                           </p>
                           {appointment?.appointmentDate?.date ? appointment?.appointmentDate?.date.split('-').reverse().join('-') : "No Date"}
-                          {/* <br />
-                    {appointment?.appointmentDate?.time} */}
+
                         </h1>
                       </div>
-                      <div
+                      <div class={` ${isTab ? "mt-5" : ""} `}
                         style={{
                           display: "flex",
                           justifyContent: "flex-end",
@@ -319,7 +367,7 @@ export default function AppointmentListUser({ searchTerm }) {
                         }}
                       >
                         <h1
-                          class="font-semibold text-gray-700 sm:text-lg text-sm capitalize "
+                          class="font-semibold text-gray-700 sm:text-lg text-sm capitalize  "
                           style={{ marginLeft: isTab ? "-30px" : "8px", marginRight: isTab ? "4px" : "8px" }}
                         >
                           <p class="text-gray-500 sm:text-sm text-xs">
@@ -333,15 +381,21 @@ export default function AppointmentListUser({ searchTerm }) {
                   </div>
 
                 </div>
-                <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: 'row' }}>
-                  <Popconfirm title="Delete the Appointment"
+                <div
+                  class="flex flex-row ms-auto gap-1 sm:gap-1"
+                  style={{ flexDirection: "row" }}
+                >
+                  <Popconfirm
+                    title="Delete the Appointment"
                     description="Are you sure to delete this Appointment?"
                     okText="Delete"
-                    okType='danger'
+                    okType="danger"
                     cancelText="No"
                     className="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                    onConfirm={() => handleDeleteAppointment(appointment._id)}>
-                    <button danger
+                    onConfirm={() => handleDeleteAppointment(appointment._id)}
+                  >
+                    <button
+                      danger
                       class="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-black bg-[#EF5F5F] text-xs sm:text-sm"
                       // onClick={() => handleDeleteAppointment(appointment._id)}
                       style={{ marginRight: 10 }}
@@ -362,9 +416,16 @@ export default function AppointmentListUser({ searchTerm }) {
             </div>
           ))
         ) : (
-          <p>Please book an appointment. <span style={{ textDecoration: "underline" }} onClick={() => navigate("/doctorlistuser")}>Click here.</span></p>
-        )
-        }
+          <p>
+            Please book an appointment.{" "}
+            <span
+              style={{ textDecoration: "underline" }}
+              onClick={() => navigate("/doctorlistuser")}
+            >
+              Click here.
+            </span>
+          </p>
+        )}
       </div>
     </>
   );
