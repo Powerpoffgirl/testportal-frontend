@@ -136,7 +136,7 @@ export default function PatientListUser({ searchTerm })
     navigate("/editpatientform");
   };
 
-  const handleDeletePatient = async (patientId) =>
+  const handleDeletePatient = async (patientId, patientName) =>
   {
     try
     {
@@ -146,36 +146,63 @@ export default function PatientListUser({ searchTerm })
         console.error("No token found in local storage");
         return;
       }
-      const response = await fetch(
-        `${baseUrl}/api/v1/user/delete_patient/${patientId}`,
-        {
-          method: "DELETE", // Use DELETE method
+
+      if (patientName === userDetailsName)
+      {
+        // If the patientName is the same as userDetailsName, it appears to be trying to delete a user
+        const response = await fetch(`${baseUrl}/api/v1/user/delete_user`, {
+          method: "DELETE", // Use DELETE method for deleting user
           headers: {
             "Content-Type": "application/json",
-            "x-auth-token": token, // Use the stored token
+            "x-auth-token": token,
           },
+        });
+        const data = await response.json();
+
+        if (data.success === true)
+        {
+          toast.success("User Deleted successfully");
+          navigate("/userlogin");
+          return; // Return to exit the function after deleting the user
+        } else
+        {
+          console.error("Failed to delete user:", data?.message);
         }
-      );
-
-      const data = await response.json();
-
-      if (response.ok)
-      {
-        console.log("Patient deleted successfully", data);
-        // Update the list in the UI by removing the deleted doctor
-        toast.success("Appointment Deleted!");
-        setPatientsList((prevPatientsList) =>
-          prevPatientsList.filter((patient) => patient._id !== patientId)
-        );
       } else
       {
-        console.error("Failed to delete the doctor", data?.message);
+        // If the patientName is different from userDetailsName, it appears to be trying to delete a patient
+        const response = await fetch(
+          `${baseUrl}/api/v1/user/delete_patient/${patientId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        if (response.ok)
+        {
+          console.log("Patient deleted successfully", data);
+          // Update the list in the UI by removing the deleted patient
+          toast.success("Patient Deleted!");
+          setPatientsList((prevPatientsList) =>
+            prevPatientsList.filter((patient) => patient._id !== patientId)
+          );
+        } else
+        {
+          console.error("Failed to delete the patient", data?.message);
+        }
       }
     } catch (error)
     {
-      console.error("There was an error deleting the doctor:", error);
+      console.error("There was an error deleting the patient:", error);
     }
   };
+
 
   const handleBookAppointment = (patient) =>
   {
@@ -343,7 +370,7 @@ export default function PatientListUser({ searchTerm })
                     okType='danger'
                     cancelText="No"
                     className="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                    onConfirm={() => handleDeletePatient(patient._id)}
+                    onConfirm={() => handleDeletePatient(patient._id, patient.name)}
                   >
                     <button
                       danger
