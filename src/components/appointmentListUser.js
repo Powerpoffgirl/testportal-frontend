@@ -8,6 +8,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Button, Popconfirm } from "antd";
 import close_button from "../assets/close_button.svg";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 export default function AppointmentListUser({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
