@@ -122,6 +122,7 @@ export default function TestListPage()
     const handleSubmit = (newRow) =>
     {
 
+        console.log("code working till now ")
         setRows((prevRows) =>
         {
             if (rowToEdit === null)
@@ -156,11 +157,14 @@ export default function TestListPage()
                                 "x-auth-token": token,
                             },
                             body: JSON.stringify({
-                                testName: lastItem.test,
+                                testName: lastItem.testName,
                                 testCode: lastItem.testCode,
                                 department: lastItem.department,
                                 sampleType: lastItem.sampleType,
-                                costOfDiagnosticTest: lastItem.cost,
+                                costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
+                                unit: lastItem.unit,
+                                bioRefInterval: lastItem.bioRefInterval,
+                                technology: lastItem.technology,
                                 patientId: patientId,
                             }),
                         });
@@ -182,7 +186,7 @@ export default function TestListPage()
             }
         });
         setRowToEdit(null);
-        window.location.reload();
+        // window.location.reload();
     };
 
     useEffect(() =>
@@ -212,11 +216,14 @@ export default function TestListPage()
                         "x-auth-token": token,
                     },
                     body: JSON.stringify({
-                        testName: lastItem.test,
+                        testName: lastItem.testName,
                         testCode: lastItem.testCode,
                         department: lastItem.department,
                         sampleType: lastItem.sampleType,
-                        costOfDiagnosticTest: lastItem.cost,
+                        costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
+                        unit: lastItem.unit,
+                        bioRefInterval: lastItem.bioRefInterval,
+                        technology: lastItem.technology,
                         patientId: patientId,
                     }),
                 });

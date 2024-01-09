@@ -11,11 +11,15 @@ export const Table = ({ rows, deleteRow, editRow }) =>
                     <thead>
                         <tr>
                             <th className="expand">Test</th>
-                            <th className="expand">TestCode</th>
+                            <th className="expand">Test Code</th>
                             <th className="expand">Department</th>
-                            <th className="expand">SampleType</th>
+                            <th className="expand">Sample Type</th>
                             <th className="expand">Cost</th>
+                            <th className="expand">Units</th>
+                            <th className="expand">Bio.Ref.</th>
+                            <th className="expand">Technology</th>
                             <th className="expand">Actions</th>
+
                         </tr>
                     </thead>
                     <tbody>
@@ -32,6 +36,9 @@ export const Table = ({ rows, deleteRow, editRow }) =>
                                     <td style={{ textAlign: 'center' }}>{row.department}</td>
                                     <td style={{ textAlign: 'center' }}>{row.sampleType}</td>
                                     <td style={{ textAlign: 'center' }}>{row.costOfDiagnosticTest}</td>
+                                    <td style={{ textAlign: 'center' }}>{row.unit}</td>
+                                    <td style={{ textAlign: 'center' }}>{row.bioRefInterval}</td>
+                                    <td style={{ textAlign: 'center' }}>{row.technology}</td>
                                     <td className="fit">
                                         <span className="actions">
                                             <BsFillTrashFill
