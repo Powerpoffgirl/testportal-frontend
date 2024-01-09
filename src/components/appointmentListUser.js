@@ -9,9 +9,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Button, Popconfirm } from 'antd';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 
-export default function AppointmentListUser({ searchTerm })
-{
+export default function AppointmentListUser({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  let islg = useMediaQuery({ query: "(max-width: 1150px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [appointmentList, setAppointmentList] = useState([]);
   const navigate = useNavigate();
@@ -23,15 +23,11 @@ export default function AppointmentListUser({ searchTerm })
   const [filteredAppointmentList, setFilteredAppointmentList] = useState([appointmentList])
 
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -48,20 +44,17 @@ export default function AppointmentListUser({ searchTerm })
         const data = await response.json();
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     let matchedDoctors = [];
 
-    if (appointmentList?.length > 0 && searchTerm)
-    {
+    if (appointmentList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
 
       matchedDoctors = appointmentList.filter(appointment =>
@@ -70,8 +63,7 @@ export default function AppointmentListUser({ searchTerm })
         appointment?.doctorId?.name.toLowerCase().includes(lowerCaseSearchTerm)
 
       );
-    } else
-    {
+    } else {
       matchedDoctors = appointmentList;
     }
 
@@ -79,19 +71,15 @@ export default function AppointmentListUser({ searchTerm })
   }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
 
 
-  const handleEditAppointment = (appointmentId) =>
-  {
+  const handleEditAppointment = (appointmentId) => {
     localStorage.setItem("appointmentId", appointmentId);
     navigate("/editappointment");
   };
 
-  const handleDeleteAppointment = async (appointmentId) =>
-  {
-    try
-    {
+  const handleDeleteAppointment = async (appointmentId) => {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -105,35 +93,30 @@ export default function AppointmentListUser({ searchTerm })
 
       const data = await response.json();
 
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("Appointment deleted successfully", data);
         toast.success('Appointment Deleted!');
         // toast.success("Appointment Deleted")
         // Update the list in the UI by removing the deleted doctor
 
         setAppointmentList(prevAppointmentList => prevAppointmentList.filter(appointment => appointment._id !== appointmentId));
-      } else
-      {
+      } else {
         console.error("Failed to delete the doctor", data?.message);
       }
 
-    } catch (error)
-    {
+    } catch (error) {
       console.error('There was an error deleting the Appointment:', error);
     }
 
   };
 
-  function formatDate(dateString)
-  {
+  function formatDate(dateString) {
     const parts = dateString.split("-");
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
   }
   console.log("APPOINTMENT LISTS", appointmentList, selectedAppointment);
 
-  const findSelectedDoctor = async (appointmentId) =>
-  {
+  const findSelectedDoctor = async (appointmentId) => {
     console.log("appointmentId########################", appointmentId);
     // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const appointment = appointmentList?.find((appointment) => appointment._id === appointmentId);
@@ -262,8 +245,8 @@ export default function AppointmentListUser({ searchTerm })
 
       <div className="flex flex-col">
         {filteredAppointmentList?.map((appointment) => (
-          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" >
-            <div className="flex flex-row justify-start items-center">
+          <div className="bg-white w-full p-4 sm:px-1 px-1 mb-5" >
+            <div className={`flex ${islg ? "flex-col" : "flex-row"}  justify-start i`}>
               <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(appointment?._id)}>
                 {
                   appointment?.doctorId?.doctorPic ? <img
@@ -275,7 +258,7 @@ export default function AppointmentListUser({ searchTerm })
                     <AccountCircleIcon style={{ fontSize: '90px', color: "#B1DAED" }} />
                 }
                 <div
-                  class="flex flex-row bg-white p-2 md:flex-row justify-between"
+                  class="flex flex-row bg-white p-1 md:flex-row justify-between"
                   style={{
                     borderRadius: "5px",
                     marginBottom: "10px",
@@ -284,9 +267,9 @@ export default function AppointmentListUser({ searchTerm })
                 >
                   <div className="flex flex-row items-center">
                     <div>
-                      <h1 class="font-semibold text-gray-700 sm:text-lg text-sm capitalize">
+                      <h1 class="font-semibold text-gray-700 sm:text-lg text-sm ">
                         <p class="text-gray-500 sm:text-sm text-xs">
-                          Doctor's Name:<span className="ms-2"></span>
+                          Doctor's Name:<span className=""></span>
                         </p>
 
                         {appointment?.doctorId?.name}
@@ -343,15 +326,16 @@ export default function AppointmentListUser({ searchTerm })
                   </h1>
                 </div>
               </div>
+              {/* ------------------button------------------ */}
               <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: 'row' }}>
                 <Popconfirm title="Delete the Appointment"
                   description="Are you sure to delete this Appointment?"
                   okText="Delete"
                   cancelText="No"
-                  className="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                  className="rounded-xl px-3 sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                   onConfirm={() => handleDeleteAppointment(appointment._id)}>
                   <button danger
-                    class="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-black bg-[#EF5F5F] text-xs sm:text-sm"
+                    class={`rounded-2xl  sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm ${islg ? "" : "mt-8 h-6"}`}
                     // onClick={() => handleDeleteAppointment(appointment._id)}
                     style={{ marginTop: isTab ? 90 : null, paddingLeft: isTab ? 10 : null, paddingRight: isTab ? 10 : null, marginRight: 10 }}
                   >
@@ -359,7 +343,7 @@ export default function AppointmentListUser({ searchTerm })
                   </button>
                 </Popconfirm>
                 <button
-                  class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
+                  class={`rounded-2xl px-3 sm:px-8 py-1  text-white bg-[#89CFF0] text-xs sm:text-sm  ${islg ? "" : "mt-8 h-6"}`}
                   onClick={() => handleEditAppointment(appointment._id)}
                   style={{ height: isTab ? 25 : null, marginTop: isTab ? 90 : null, }}
                 >
