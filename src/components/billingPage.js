@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import { Flex, Row, Select } from "antd";
@@ -6,9 +6,11 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import Modal from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 import { MdOutlineDelete } from "react-icons/md";
+import { useReactToPrint } from 'react-to-print'
 
 export default function BillingPage({ name, contactNo, gender, age })
 {
+  const componentPDF = useRef();
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -176,12 +178,18 @@ export default function BillingPage({ name, contactNo, gender, age })
   }
 
 
+  const generatePdf = useReactToPrint({
+    content: () => componentPDF.current,
+    documentTitle: "userReport",
+    // onAfterPrint: () => alert("Data saved in PDF")
+  })
+
 
 
 
   return (
     <>
-      <div class="flex">
+      <div class="flex" ref={componentPDF}>
         <div className="MainContainer flex lg:flex-row flex-col w-full" >
           {/* --------------------left side-------------------- */}
           <div className=" mb-3 flex flex-col w-full lg:min-h-3/4 lg:w-3/12 p-6 mr-5 bg-white "
@@ -275,7 +283,10 @@ export default function BillingPage({ name, contactNo, gender, age })
                 value={appointmentDate}
                 onChange={(e) => setAppointmentDate(e.target.value)}
               />
+              <button onClick={generatePdf} style={{ marginLeft: '10px' }}>Download</button>
             </div>
+
+
 
             {/* <div style={{ marginTop: "15px" }}>
               <p style={{ color: "gray" }}>Summary</p>
