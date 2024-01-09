@@ -33,6 +33,7 @@ export default function PatientListUser({ searchTerm })
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  let smaller = useMediaQuery({ query: "(max-width: 425px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [patientsList, setPatientsList] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([patientsList]);
@@ -243,7 +244,7 @@ export default function PatientListUser({ searchTerm })
           },
         }}
       >
-        <div className="flex flex-col bg-customRed p-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
+        <div className="flex flex-col bg-customRed p-2  items-center w-[100%] md:w-[100%] mt-[2%]">
           <div className="flex flex-row w-[100%] justify-between"></div>
           <text
             className="ml-4 text-center mt-4"
@@ -271,13 +272,14 @@ export default function PatientListUser({ searchTerm })
           </text>
 
           <text
-            className="ml-4 text-center mt-2"
+            className="ml-4 text-center mt-2 truncate overflow-x-auto"
             style={{
               fontSize: isTab ? "14px" : "20px",
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
               color: "#FFFFFF",
+
             }}
           >
             {selectedPatient?.address?.houseNo +
@@ -348,14 +350,14 @@ export default function PatientListUser({ searchTerm })
                     />
                   )}
 
-                  <div className="gap-x-3">
+                  <div className="gap-x-3 truncate overflow-x-auto">
                     <h1 className="font-semibold text-gray-700 sm:text-lg text-sm capitalize ml-2">
                       {patient.name}
                     </h1>
                     <p className="text-gray-500 text-sm capitalize ml-2">
                       {patient.age} yrs, {patient.bodyWeight} kg
                     </p>
-                    <p className="text-gray-500 text-sm capitalize ml-2">
+                    <p className="text-gray-500 text-sm capitalize ml-2 truncate overflow-x-auto" style={{ width: isTab ? '35%' : null }}>
                       {patient.address?.houseNo} {patient.address?.block}{" "}
                       {patient.address?.area}, {patient.address?.district},{" "}
                       {patient.address?.state}, {patient.address?.pinCode}
