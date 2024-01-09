@@ -184,6 +184,10 @@ export default function BillingPage({ name, contactNo, gender, age })
     // onAfterPrint: () => alert("Data saved in PDF")
   })
 
+  const handleInputFocus = () =>
+  {
+    setIsListOpen(true);
+  };
 
 
 
@@ -445,6 +449,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                   <input
                     value={searchTerm}
                     onChange={handleSearch}
+                    onFocus={handleInputFocus}
                     type="search"
                     id="search-dropdown"
                     class="block p-2.5 w-full z-20 text-sm text-gray-900 bg-gray-50 rounded-e-lg border-s-gray-50 border-s-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
@@ -452,7 +457,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                     required
                   />
                   <button
-                    onClick={Toggle}
+                    // onClick={Toggle}
                     class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-gray-900 bg-gray-50 rounded-e-lg border border-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 "
                   >
                     <svg
