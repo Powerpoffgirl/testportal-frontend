@@ -542,7 +542,37 @@ export default function EditUserForm()
       }
       console.log("DATA from response", data);
       // }
+
+      const doctorId = localStorage.getItem("doctorId")
+      const details = {
+        date: appointmentDate,
+        time: appointmentTime,
+      };
+
+
+      const response1 = await fetch(
+        `${baseUrl}/api/v1/cancel_slot/${doctorId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Use the stored token
+          },
+          body: JSON.stringify(details),
+        }
+      );
+
+      const data1 = await response1.json();
+
+      if (response1.ok)
+      {
+        console.log("Appointment slot deleted successfully", data);
+        toast.success("Appointment Slot Deleted!");
+      }
     }
+
+
+
   };
 
   useEffect(() =>
