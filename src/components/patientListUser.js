@@ -121,33 +121,18 @@ export default function PatientListUser({ searchTerm }) {
     navigate("/editpatientform");
   };
 
-<<<<<<< HEAD
-  const handleDeletePatient = async (patientId) => {
+  const handleDeletePatient = async (patientId, patientName) => {
     try {
-=======
-  const handleDeletePatient = async (patientId, patientName) =>
-  {
-    try
-    {
->>>>>>> d457293ace478ac15a6f25a2081c28463ee1e3de
       const token = localStorage.getItem("token");
       if (!token) {
         console.error("No token found in local storage");
         return;
       }
 
-<<<<<<< HEAD
-      const response = await fetch(
-        `${baseUrl}/api/v1/user/delete_patient/${patientId}`,
-        {
-          method: "DELETE", // Use DELETE method
-=======
-      if (patientName === userDetailsName)
-      {
+      if (patientName === userDetailsName) {
         // If the patientName is the same as userDetailsName, it appears to be trying to delete a user
         const response = await fetch(`${baseUrl}/api/v1/user/delete_user`, {
           method: "DELETE", // Use DELETE method for deleting user
->>>>>>> d457293ace478ac15a6f25a2081c28463ee1e3de
           headers: {
             "Content-Type": "application/json",
             "x-auth-token": token,
@@ -155,35 +140,14 @@ export default function PatientListUser({ searchTerm }) {
         });
         const data = await response.json();
 
-<<<<<<< HEAD
-      if (response.ok) {
-        console.log("Patient deleted successfully", data);
-        // Update the list in the UI by removing the deleted doctor
-        toast.success("Appointment Deleted!");
-        setPatientsList((prevPatientsList) =>
-          prevPatientsList.filter((patient) => patient._id !== patientId)
-        );
-      } else {
-        console.error("Failed to delete the doctor", data?.message);
-      }
-    } catch (error) {
-      console.error("There was an error deleting the doctor:", error);
-    }
-  };
-
-  const handleBookAppointment = (patient) => {
-=======
-        if (data.success === true)
-        {
+        if (data.success === true) {
           toast.success("User Deleted successfully");
           navigate("/userlogin");
           return; // Return to exit the function after deleting the user
-        } else
-        {
+        } else {
           console.error("Failed to delete user:", data?.message);
         }
-      } else
-      {
+      } else {
         // If the patientName is different from userDetailsName, it appears to be trying to delete a patient
         const response = await fetch(
           `${baseUrl}/api/v1/user/delete_patient/${patientId}`,
@@ -198,29 +162,23 @@ export default function PatientListUser({ searchTerm }) {
 
         const data = await response.json();
 
-        if (response.ok)
-        {
+        if (response.ok) {
           console.log("Patient deleted successfully", data);
           // Update the list in the UI by removing the deleted patient
           toast.success("Patient Deleted!");
           setPatientsList((prevPatientsList) =>
             prevPatientsList.filter((patient) => patient._id !== patientId)
           );
-        } else
-        {
+        } else {
           console.error("Failed to delete the patient", data?.message);
         }
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting the patient:", error);
     }
   };
 
-
-  const handleBookAppointment = (patient) =>
-  {
->>>>>>> d457293ace478ac15a6f25a2081c28463ee1e3de
+  const handleBookAppointment = (patient) => {
     console.log("PATIENT", patient);
     localStorage.setItem("patientId", patient?._id);
     localStorage.setItem("patientName", patient?.name);
@@ -238,11 +196,9 @@ export default function PatientListUser({ searchTerm }) {
 
   console.log("SELECTED PATIENT", selectedPatient);
   console.log("SEARCH TERM FROM COMPONENT", searchTerm);
-  const username = updateUser(userDetailsName);
-
+  updateUser(userDetailsName);
   updateUserEmail(userDetailsEmail);
   updateUserimage(userDetailsPic);
-  console.log("Username ====================", username);
 
   return (
     <>
@@ -389,7 +345,9 @@ export default function PatientListUser({ searchTerm }) {
                     okType="danger"
                     cancelText="No"
                     className="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                    onConfirm={() => handleDeletePatient(patient._id, patient.name)}
+                    onConfirm={() =>
+                      handleDeletePatient(patient._id, patient.name)
+                    }
                   >
                     <button
                       danger
