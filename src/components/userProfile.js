@@ -615,7 +615,7 @@ export default function UserProfile()
                 id="age"
                 name="age"
                 onChange={handleChange}
-                value={userDetails.age}
+                value={userDetails?.age}
                 className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
               {errors.degree && <p className="text-red-500">{errors.degree}</p>}
@@ -663,7 +663,7 @@ export default function UserProfile()
               id="bodyWeight"
               name="bodyWeight"
               onChange={handleChange}
-              value={userDetails.bodyWeight}
+              value={userDetails?.bodyWeight}
               className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.totalExperience && (
@@ -702,7 +702,7 @@ export default function UserProfile()
               id="name"
               name="name"
               onChange={handleChange}
-              value={userDetails.name}
+              value={userDetails?.name}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.name && <p className="text-red-500">{errors.name}</p>}
