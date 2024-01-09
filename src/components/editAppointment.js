@@ -649,11 +649,11 @@ export default function EditAppointment()
                   <img
                     src={selectedDoctor?.doctorPic}
                     alt="doctor image"
-                    className=" h-80 w-full"
+                    className=" h-50 max-w-fit"
                   ></img>
                 ) : (
                   <AccountCircleIcon
-                    style={{ height: "100%", width: "100%", color: "#B1DAED" }}
+                    style={{ height: "60%", width: "60%", color: "#B1DAED" }}
                   />
                 )}
               </div>
