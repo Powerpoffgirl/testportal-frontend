@@ -485,7 +485,7 @@ export default function EditAdminlistform() {
                   name="name"
                   onChange={handleChange}
                   value={adminDetails?.name}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
@@ -607,7 +607,7 @@ export default function EditAdminlistform() {
                       name="houseNo"
                       onChange={handleChange}
                       placeholder="1234"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       value={adminDetails?.address?.houseNo}
                     />
                   </div>
@@ -624,7 +624,7 @@ export default function EditAdminlistform() {
                       name="floor"
                       onChange={handleChange}
                       placeholder="2nd"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       value={adminDetails?.address?.floor}
                     />
                   </div>
@@ -641,7 +641,7 @@ export default function EditAdminlistform() {
                       name="block"
                       onChange={handleChange}
                       placeholder="A"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       value={adminDetails?.address.block}
                     />
                   </div>
@@ -658,7 +658,7 @@ export default function EditAdminlistform() {
                       name="area"
                       onChange={handleChange}
                       placeholder="Green Park"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       value={adminDetails?.address.area}
                     />
                     {errors.area && (
@@ -678,7 +678,7 @@ export default function EditAdminlistform() {
                       name="pinCode"
                       onChange={handleChange}
                       placeholder="110016"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       value={adminDetails?.address.pinCode}
                     />
                     {errors.pinCode && (
@@ -698,7 +698,7 @@ export default function EditAdminlistform() {
                       name="district"
                       onChange={handleChange}
                       placeholder="South Delhi"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       value={adminDetails?.address.district}
                     />
                     {errors.district && (
@@ -718,7 +718,7 @@ export default function EditAdminlistform() {
                       name="state"
                       onChange={handleChange}
                       placeholder="Delhi"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       value={adminDetails?.address.state}
                     />
                     {errors.state && (

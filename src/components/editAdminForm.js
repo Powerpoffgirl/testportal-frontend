@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
@@ -9,9 +9,15 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
+import UserContext from "./userContext";
+import { Flex, Select } from "antd";
+import { Popconfirm } from "antd";
+import delete_button from "../assets/delete_button.svg";
 
 export default function EditAdminForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  const { updateUser, updateUserEmail, updateUserimage } =
+    useContext(UserContext);
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
@@ -19,6 +25,12 @@ export default function EditAdminForm() {
   const [isHovered1, setIsHovered1] = useState(false);
   const [adminImage, setAdminImage] = useState();
   const [errors, setErrors] = useState({});
+  const [userDetailsName, setUserDetailsName] = useState();
+  const [userDetailsEmail, setUserDetailsEmail] = useState();
+  const [userDetailsPic, setUserDetailsPic] = useState();
+  const [pinCodeError, setPinCodeError] = useState("");
+  const [contactNumber, setcontactNumber] = useState(null);
+  const [mobileNumberError, setmobileNumberError] = useState("");
 
   const [adminDetails, setAdminDetails] = useState({
     permissions: {
@@ -71,6 +83,36 @@ export default function EditAdminForm() {
     await fileInputRef.current.click();
   };
 
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("patientId");
+        if (!token) {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(`${baseUrl}/api/v1/admin/get_profile`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
+
+        const data = await response.json();
+        console.log("DATA from response", data);
+        setUserDetailsName(data?.data.name);
+        setUserDetailsEmail(data?.data.email);
+        setUserDetailsPic(data?.data.doctorPic);
+        console.log("usser name$$$$$$$", data?.data.name);
+      } catch (error) {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchUserDetails();
+  }, []);
+
   const Daysdropdown = [
     { label: "Select Days", value: "" },
     { label: "Monday", value: "Monday" },
@@ -86,6 +128,8 @@ export default function EditAdminForm() {
   const open = Boolean(anchorEl);
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  const onCloseModal = () => setOpen1(false);
 
   useEffect(() => {
     const fetchDoctorDetails = async () => {
@@ -178,6 +222,21 @@ export default function EditAdminForm() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
+      } else {
+        setPinCodeError("Please enter a valid Pincode");
+      }
+    }
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setmobileNumberError("");
+      } else {
+        setmobileNumberError("Please enter a valid Number");
+      }
+    }
 
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
@@ -306,14 +365,541 @@ export default function EditAdminForm() {
 
   console.log("DOCTOR DETAILS", doctorDetails);
 
+  updateUser(userDetailsName);
+  updateUserEmail(userDetailsEmail);
+  updateUserimage(userDetailsPic);
+
   return (
     <>
-      <div className="flex flex-row">
+      <div className="flex flex-col -ml-7  lg:flex-row">
+        {/* --------------left-------------- */}
+        <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+          <div
+            className=" flex items-end justify-end w-100% "
+            style={{ marginRight: -40, marginTop: -20 }}
+          >
+            <Popconfirm
+              title="Delete the Profile"
+              description="Are you sure to delete this Profile?"
+              okText="Delete"
+              okType="danger"
+              cancelText="No"
+              className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
+              // onConfirm={handleDelete}
+            >
+              <button onClick={onCloseModal}>
+                <img src={delete_button} alt="df" class="w-8 mb-1"></img>
+              </button>
+            </Popconfirm>
+          </div>
+          <div className="mx-auto my-2">
+            <div className=" ">
+              <div
+                className=" border w-36 mx-auto rounded-full"
+                style={{ backgroundColor: "#B1DAED" }}
+              >
+                {adminImage || doctorDetails?.adminPic ? (
+                  <div
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  >
+                    <img
+                      src={adminImage || doctorDetails?.adminPic}
+                      alt="Avatar"
+                      style={{
+                        borderRadius: "50%",
+                        width: "145px",
+                        height: "145px",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <PermIdentityOutlinedIcon
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                      color: "white",
+                      cursor: "pointer",
+                    }}
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  />
+                )}
+              </div>
+            </div>
+
+            <div className="flex flex-row mt-5 mb-3">
+              <p className="block text-black text-lg font-semibold ">
+                <input
+                  id="files"
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                />
+              </p>
+
+              <p
+                className="mt-2 ml-3"
+                aria-controls="profile-pic-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                style={{
+                  cursor: "pointer",
+                }}
+              >
+                {/* <FaAngleDown /> */}
+              </p>
+
+              <div style={{ backgroundColor: "#89CFF0" }}>
+                <Menu
+                  id="profile-pic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "edit-profile-pic-text",
+                    style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
+                  }}
+                >
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered ? "red" : "white",
+                    }}
+                    onClick={() => {
+                      handleClose();
+                    }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    {" "}
+                    <span style={{ marginRight: "8px" }}>
+                      <HiOutlineUserAdd />
+                    </span>
+                    <label htmlFor="files">New profile picture</label>
+                  </MenuItem>
+
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered1 ? "red" : "white",
+                    }}
+                    // onClick={handleRemoveProfilePicture}
+                    onMouseEnter={() => setIsHovered1(true)}
+                    onMouseLeave={() => setIsHovered1(false)}
+                  >
+                    <span style={{ marginRight: "8px" }}>
+                      <FaRegTrashAlt />
+                    </span>
+                    <span>Remove current picture</span>
+                  </MenuItem>
+                </Menu>
+              </div>
+            </div>
+          </div>
+          <hr />
+
+          <div className=" mt-3">
+            <label
+              for="total-experience"
+              className="block text-black text-lg font-semibold"
+            >
+              Gender
+            </label>
+            <Select
+              className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70   bg-white  text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              popupClassName="no-border-dropdown-menu"
+              id="gender"
+              name="gender"
+              value={doctorDetails?.gender}
+              // onChange={handleChange1}
+              placeholder="Select Gender"
+              style={{ overflowY: "auto" }}
+              dropdownStyle={{
+                maxHeight: "300px",
+                overflowY: "auto",
+              }}
+            >
+              {/* {Gender.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))} */}
+            </Select>
+            {errors.totalExperience && (
+              <p className="text-red-500">{errors.totalExperience}</p>
+            )}
+          </div>
+
+          <div className="flex flex-row gap-2">
+            <div className="mt-3 flex flex-col w-1/2">
+              <label
+                for="degree"
+                className="block text-black text-lg font-semibold"
+              >
+                Age
+              </label>
+              <input
+                type="text"
+                id="age"
+                name="age"
+                onChange={handleChange}
+                value={doctorDetails?.age}
+                className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+            </div>
+            <div className="mt-3 flex flex-col w-1/2">
+              <label
+                for="degree"
+                className="block text-black text-lg font-semibold"
+              >
+                Age Type
+              </label>
+              <Select
+                className="border rounded-lg h-11"
+                popupClassName="no-border-dropdown-menu"
+                id="ageType"
+                name="ageType"
+                // value={userDetails?.ageType}
+                // onChange={handleChange2}
+                placeholder="Select Age Type"
+                style={{ overflowY: "auto" }}
+                dropdownStyle={{
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                }}
+              >
+                {/* {AgeType.map((option) => (
+                  <Select.Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Select.Option>
+                ))} */}
+              </Select>
+              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+            </div>
+          </div>
+
+          <div className=" mt-3">
+            <label
+              for="total-experience"
+              className="block text-black text-lg font-semibold"
+            >
+              Body Weight
+            </label>
+            <input
+              type="text"
+              id="bodyWeight"
+              name="bodyWeight"
+              onChange={handleChange}
+              value={doctorDetails?.bodyWeight}
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.totalExperience && (
+              <p className="text-red-500">{errors.totalExperience}</p>
+            )}
+          </div>
+
+          {/* <div style={{ display: 'flex', alignItems: "center", justifyContent: "center", marginTop: '20px' }}>
+                        <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{
+                            backgroundColor: '#89CFF0'
+                        }}
+                            onClick={handleDelete}
+                        >
+                            Delete Profile
+                        </button>
+                    </div> */}
+        </div>
+
+        {/* ----------------------------------right---------------------------------- */}
+        <div
+          div
+          className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3"
+        >
+          <p className="text-3xl ">Personal Information</p>
+          <hr className="border my-2 " />
+          {/* -------name------- */}
+          <div className="mt-3">
+            <label
+              for="name"
+              className="block text-black text-lg font-semibold"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              onChange={handleChange}
+              value={doctorDetails?.name}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.name && <p className="text-red-500">{errors.name}</p>}
+          </div>
+
+          {/* -----------contact----------- */}
+          <div className="mt-3">
+            <label
+              for="contact"
+              className="block text-black text-lg font-semibold"
+            >
+              Contact Number
+            </label>
+            <input
+              type="text"
+              id="contactNumber"
+              name="contactNumber"
+              onChange={handleChange}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, "");
+              }}
+              value={doctorDetails?.contactNumber}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {/* {errors.contactNumber && ( */}
+            <p class=" text-red-500 ">{mobileNumberError}</p>
+            {/* )} */}
+          </div>
+
+          {/* -----------email----------- */}
+          <div className="mt-3">
+            <label
+              for="email"
+              className="block text-black text-lg font-semibold"
+            >
+              email
+            </label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              onChange={handleChange}
+              value={doctorDetails?.email}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.contactNumber && (
+              <p className="text-red-500">{errors.contactNumber}</p>
+            )}
+          </div>
+
+          <div className="flex flex-row items-start pt-4 gap-4">
+            <div className="flex flex-col mr-2 ">
+              <label
+                style={{ marginRight: "10px" }}
+                className="mx-2 text-lg font-normal text-black font-lato font-semibold"
+                htmlFor="Permission"
+              >
+                Permission
+              </label>
+            </div>
+
+            <div
+              className="flex flex-row flex-grow "
+              style={{ justifyContent: "space-around" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginRight: "10px",
+                }}
+              >
+                <label style={{ marginRight: "15px" }}>View:</label>
+                <input
+                  type="checkbox"
+                  name="view"
+                  checked={doctorDetails?.permissions.view}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginRight: "10px",
+                }}
+              >
+                <label style={{ marginRight: "15px" }}>Create:</label>
+                <input
+                  type="checkbox"
+                  name="create"
+                  checked={doctorDetails?.permissions.create}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginRight: "10px",
+                }}
+              >
+                <label style={{ marginRight: "15px" }}>Remove:</label>
+                <input
+                  type="checkbox"
+                  name="remove"
+                  checked={doctorDetails?.permissions.remove}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginRight: "10px",
+                }}
+              >
+                <label style={{ marginRight: "15px" }}>Edit:</label>
+                <input
+                  type="checkbox"
+                  name="edit"
+                  checked={doctorDetails?.permissions.edit}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          </div>
+          {/* -----------address----------- */}
+          <div className="mt-3">
+            <label
+              for="houseNo"
+              className="block text-black text-lg font-semibold"
+            >
+              Address
+            </label>
+            <div className="p-3 pb-5 border shadow-lg rounded-md">
+              <div className="flex flex-col ">
+                <div className="flex flex-row">
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      placeholder="House No."
+                      id="houseNo"
+                      name="houseNo"
+                      onChange={handleChange}
+                      value={doctorDetails?.address?.houseNo}
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      id="floor"
+                      name="floor"
+                      onChange={handleChange}
+                      value={doctorDetails?.address?.floor}
+                      placeholder="Floor"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      id="block"
+                      name="block"
+                      onChange={handleChange}
+                      placeholder="Block"
+                      value={doctorDetails?.address?.block}
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.block && (
+                      <p className="text-red-500">{errors.block}</p>
+                    )}
+                  </div>
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="pinCode"
+                      name="pinCode"
+                      onChange={handleChange}
+                      value={doctorDetails?.address?.pinCode}
+                      placeholder="Pin Code"
+                      onInput={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-6]/g, "");
+                      }}
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="px-2 w-full mt-3 ">
+                  <input
+                    type="text"
+                    id="area"
+                    name="area"
+                    onChange={handleChange}
+                    value={doctorDetails?.address?.area}
+                    placeholder="Area/Landmark"
+                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  />
+                  {errors.area && <p className="text-red-500">{errors.area}</p>}
+                </div>
+
+                <div className="flex flex-row">
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="district"
+                      name="district"
+                      onChange={handleChange}
+                      value={doctorDetails?.address?.district}
+                      placeholder="District"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.district && (
+                      <p className="text-red-500">{errors.district}</p>
+                    )}
+                  </div>
+
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="state"
+                      name="state"
+                      onChange={handleChange}
+                      value={doctorDetails?.address?.state}
+                      placeholder="State"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.state && (
+                      <p className="text-red-500">{errors.state}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-row-reverse mt-5 my-2">
+            <button
+              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              style={{
+                backgroundColor: "#89CFF0",
+              }}
+              onClick={handleUpdate}
+            >
+              Process
+            </button>
+          </div>
+          <ToastContainer />
+        </div>
+      </div>
+
+      {/* <div className="flex flex-row">
         <ToastContainer />
-
-        {/* <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]">
-
-                </div> */}
         <div className=" w-full">
           <div className="mt-6 p-2">
             <div className="flex  flex-col items-center justify-center w-full">
@@ -372,7 +958,7 @@ export default function EditAdminForm() {
                       onClose={handleClose}
                       MenuListProps={{
                         "aria-labelledby": "edit-profile-pic-text",
-                        style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
+                        style: { backgroundColor: "#89CFF0" }, 
                       }}
                     >
                       <MenuItem
@@ -380,7 +966,8 @@ export default function EditAdminForm() {
                           backgroundColor: "#89CFF0",
                           color: isHovered ? "red" : "white",
                         }}
-                        onClick={() => {
+                        onClick={() =>
+                        {
                           handleClose();
                         }}
                         onMouseEnter={() => setIsHovered(true)}
@@ -440,7 +1027,7 @@ export default function EditAdminForm() {
                   name="name"
                   onChange={handleChange}
                   value={doctorDetails?.name}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
@@ -458,7 +1045,7 @@ export default function EditAdminForm() {
                   name="email"
                   onChange={handleChange}
                   value={doctorDetails?.email}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
               </div>
@@ -476,7 +1063,7 @@ export default function EditAdminForm() {
                   name="contactNumber"
                   onChange={handleChange}
                   value={doctorDetails?.contactNumber}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.contactNumber && (
                   <p className="text-red-500">{errors.contactNumber}</p>
@@ -492,15 +1079,14 @@ export default function EditAdminForm() {
                   >
                     Permission
                   </label>
-                  {/* Input for Age */}
-                  {/* ... */}
+                 
                 </div>
 
                 <div
                   className="flex flex-row flex-grow "
                   style={{ justifyContent: "space-around" }}
                 >
-                  {/* Permissions */}
+                  
                   <div
                     style={{
                       display: "flex",
@@ -564,8 +1150,6 @@ export default function EditAdminForm() {
                       onChange={handleChange}
                     />
                   </div>
-                  {/* Error handling or displaying selected action */}
-                  {/* {action && <p>Selected Action: {action}</p>} */}
                 </div>
               </div>
 
@@ -592,7 +1176,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         placeholder="1234"
                         value={doctorDetails?.address?.houseNo}
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     </div>
                     <div class="px-2 w-full sm:w-1/3">
@@ -609,7 +1193,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         placeholder="2nd"
                         value={doctorDetails?.address?.floor}
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     </div>
                     <div class="px-2 w-full sm:w-1/3">
@@ -626,7 +1210,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         placeholder="A"
                         value={doctorDetails?.address?.block}
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                       {errors.block && (
                         <p className="text-red-500">{errors.block}</p>
@@ -646,7 +1230,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         value={doctorDetails?.address?.area}
                         placeholder="Green Park"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                       {errors.area && (
                         <p className="text-red-500">{errors.area}</p>
@@ -666,7 +1250,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         placeholder="110016"
                         value={doctorDetails?.address?.pinCode}
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                       {errors.pinCode && (
                         <p className="text-red-500">{errors.pinCode}</p>
@@ -686,7 +1270,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         placeholder="South Delhi"
                         value={doctorDetails?.address?.district}
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                       {errors.district && (
                         <p className="text-red-500">{errors.district}</p>
@@ -706,7 +1290,7 @@ export default function EditAdminForm() {
                         onChange={handleChange}
                         value={doctorDetails?.address?.state}
                         placeholder="Delhi"
-                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                       {errors.state && (
                         <p className="text-red-500">{errors.state}</p>
@@ -727,7 +1311,7 @@ export default function EditAdminForm() {
           </div>
           <ToastContainer />
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

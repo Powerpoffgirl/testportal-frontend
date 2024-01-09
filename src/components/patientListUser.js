@@ -28,7 +28,8 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function PatientListUser({ searchTerm }) {
+export default function PatientListUser({ searchTerm })
+{
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -44,11 +45,15 @@ export default function PatientListUser({ searchTerm }) {
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -66,19 +71,24 @@ export default function PatientListUser({ searchTerm }) {
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientsList(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, [searchTerm]);
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -96,67 +106,105 @@ export default function PatientListUser({ searchTerm }) {
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.userPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  useEffect(() => {
-    if (patientsList?.length > 0 && searchTerm) {
+  useEffect(() =>
+  {
+    if (patientsList?.length > 0 && searchTerm)
+    {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedPatients = patientsList.filter((p) =>
         p.name.toLowerCase().includes(lowerCaseSearchTerm)
       );
       setFilteredPatients(matchedPatients);
-    } else {
+    } else
+    {
       // If searchTerm is empty, show all patients
       setFilteredPatients(patientsList);
     }
   }, [patientsList, searchTerm]);
 
-  const handleEditPatient = (patientId) => {
+  const handleEditPatient = (patientId) =>
+  {
     localStorage.setItem("patientId", patientId);
     navigate("/editpatientform");
   };
 
-  const handleDeletePatient = async (patientId) => {
-    try {
+  const handleDeletePatient = async (patientId, patientName) =>
+  {
+    try
+    {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         return;
       }
-      const response = await fetch(
-        `${baseUrl}/api/v1/user/delete_patient/${patientId}`,
-        {
-          method: "DELETE", // Use DELETE method
+
+      if (patientName === userDetailsName)
+      {
+        // If the patientName is the same as userDetailsName, it appears to be trying to delete a user
+        const response = await fetch(`${baseUrl}/api/v1/user/delete_user`, {
+          method: "DELETE", // Use DELETE method for deleting user
           headers: {
             "Content-Type": "application/json",
-            "x-auth-token": token, // Use the stored token
+            "x-auth-token": token,
           },
+        });
+        const data = await response.json();
+
+        if (data.success === true)
+        {
+          toast.success("User Deleted successfully");
+          navigate("/userlogin");
+          return; // Return to exit the function after deleting the user
+        } else
+        {
+          console.error("Failed to delete user:", data?.message);
         }
-      );
-
-      const data = await response.json();
-
-      if (response.ok) {
-        console.log("Patient deleted successfully", data);
-        // Update the list in the UI by removing the deleted doctor
-        toast.success("Patient Deleted!");
-        setPatientsList((prevPatientsList) =>
-          prevPatientsList.filter((patient) => patient._id !== patientId)
+      } else
+      {
+        // If the patientName is different from userDetailsName, it appears to be trying to delete a patient
+        const response = await fetch(
+          `${baseUrl}/api/v1/user/delete_patient/${patientId}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+          }
         );
-      } else {
-        console.error("Failed to delete the doctor", data?.message);
+
+        const data = await response.json();
+
+        if (response.ok)
+        {
+          console.log("Patient deleted successfully", data);
+          // Update the list in the UI by removing the deleted patient
+          toast.success("Patient Deleted!");
+          setPatientsList((prevPatientsList) =>
+            prevPatientsList.filter((patient) => patient._id !== patientId)
+          );
+        } else
+        {
+          console.error("Failed to delete the patient", data?.message);
+        }
       }
-    } catch (error) {
-      console.error("There was an error deleting the doctor:", error);
+    } catch (error)
+    {
+      console.error("There was an error deleting the patient:", error);
     }
   };
 
-  const handleBookAppointment = (patient) => {
+  const handleBookAppointment = (patient) =>
+  {
     console.log("PATIENT", patient);
     localStorage.setItem("patientId", patient?._id);
     localStorage.setItem("patientName", patient?.name);
@@ -164,7 +212,8 @@ export default function PatientListUser({ searchTerm }) {
   };
   console.log("PATIENT LISTS", patientsList);
 
-  const findSelectedDoctor = async (patientId) => {
+  const findSelectedDoctor = async (patientId) =>
+  {
     console.log("DOCTOR ID", patientId);
     // // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const patient = patientsList?.find((doc) => doc._id === patientId);
@@ -278,68 +327,84 @@ export default function PatientListUser({ searchTerm }) {
       </Modal>
 
       <div className="flex flex-col">
-        {filteredPatients?.map((patient) => (
-          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
-            <div className="flex flex-row justify-start items-center">
-              <div
-                class="flex items-center gap-x-2"
-                onClick={() => findSelectedDoctor(patient._id)}
-              >
-                {patient.patientPic ? (
-                  <img
-                    class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
-                    src={patient.patientPic}
-                    alt={patient.name}
-                  />
-                ) : (
-                  <AccountCircleIcon
-                    style={{ fontSize: "90px", color: "#B1DAED" }}
-                  />
-                )}
+        {filteredPatients?.length > 0 ? (
+          filteredPatients?.map((patient) => (
+            <div
+              className="bg-white w-full p-4 sm:px-5 px-1 mb-5"
+              key={patient._id}
+            >
+              <div className="flex flex-row justify-start items-center">
+                <div
+                  className="flex items-center gap-x-2"
+                  onClick={() => findSelectedDoctor(patient._id)}
+                >
+                  {patient.patientPic ? (
+                    <img
+                      className="object-cover sm:w-20 sm:h-20 w-10 h-10 rounded-full"
+                      src={patient.patientPic}
+                      alt={patient.name}
+                    />
+                  ) : (
+                    <AccountCircleIcon
+                      style={{ fontSize: "90px", color: "#B1DAED" }}
+                    />
+                  )}
 
-                <div className="gap-x-3">
-                  <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize ml-2">
-                    {patient.name}
-                  </h1>
-                  <p class=" text-gray-500 text-sm capitalize ml-2">
-                    {patient.age} yrs, {patient.bodyWeight} kg
-                  </p>
-                  <p class=" text-gray-500 text-sm capitalize ml-2">
-                    {patient.address?.houseNo} {patient.address?.block}{" "}
-                    {patient.address?.area}, {patient.address?.district},{" "}
-                    {patient.address?.state}, {patient.address?.pinCode}
-                  </p>
-                  {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}
+                  <div className="gap-x-3">
+                    <h1 className="font-semibold text-gray-700 sm:text-lg text-sm capitalize ml-2">
+                      {patient.name}
+                    </h1>
+                    <p className="text-gray-500 text-sm capitalize ml-2">
+                      {patient.age} yrs, {patient.bodyWeight} kg
+                    </p>
+                    <p className="text-gray-500 text-sm capitalize ml-2">
+                      {patient.address?.houseNo} {patient.address?.block}{" "}
+                      {patient.address?.area}, {patient.address?.district},{" "}
+                      {patient.address?.state}, {patient.address?.pinCode}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex flex-row ms-auto gap-1 sm:gap-4">
+                  <Popconfirm
+                    title="Delete the Patient"
+                    description="Are you sure to delete this Patient?"
+                    okText="Delete"
+                    okType="danger"
+                    cancelText="No"
+                    className="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                    onConfirm={() =>
+                      handleDeletePatient(patient._id, patient.name)
+                    }
+                  >
+                    <button
+                      danger
+                      className="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                    >
+                      {isTab ? <FaTrashAlt /> : "Delete"}
+                    </button>
+                  </Popconfirm>
+                  {/* <button
+                    className="rounded-full px-6 sm:px-4 py-2 sm:py-1 text-white bg-[#89CFF0] text-xs sm:text-sm"
+                    onClick={() => handleBookAppointment(patient)}
+                  >
+                    Book Appointment
+                  </button> */}
                 </div>
               </div>
-              <div class="flex flex-row ms-auto gap-1 sm:gap-4">
-                <Popconfirm
-                  title="Delete the Patient"
-                  description="Are you sure to delete this Patient?"
-                  okText="Delete"
-                  cancelText="No"
-                  className="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                  onConfirm={() => handleDeletePatient(patient._id)}
-                >
-                  <button
-                    danger
-                    class="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                    // onClick={() => handleDeletePatient(patient._id)}
-                  >
-                    {isTab ? <FaTrashAlt /> : "Delete"}
-                  </button>
-                </Popconfirm>
-                <button
-                  class="rounded-full px-6 sm:px-4 py-2 sm:py-1 text-white bg-[#89CFF0] text-xs sm:text-sm"
-                  onClick={() => handleBookAppointment(patient)}
-                >
-                  Book Appointment
-                </button>
-              </div>
+              <ToastContainer />
             </div>
-            <ToastContainer />
-          </div>
-        ))}
+          ))
+        ) : (
+          <p>
+            Please complete your profile first.{" "}
+            <span
+              style={{ textDecoration: "underline" }}
+              onClick={() => navigate("/userprofile")}
+            >
+              Click here.
+            </span>
+          </p>
+        )}
       </div>
     </>
   );

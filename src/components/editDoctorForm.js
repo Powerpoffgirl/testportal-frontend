@@ -12,6 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 import { Select } from "antd";
 import { MdEdit } from "react-icons/md";
 import UserContext from "./userContext";
+import { Popconfirm } from "antd";
+import delete_button from "../assets/delete_button.svg";
 
 export default function EditDoctorForm() {
   const { updateUser, updateUserEmail, updateUserimage } =
@@ -29,6 +31,9 @@ export default function EditDoctorForm() {
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
   const [value, setValue] = useState("");
+  const [mobileNumberError, setmobileNumberError] = useState("");
+  const [contactNumber, setcontactNumber] = useState(null);
+  const [pinCodeError, setPinCodeError] = useState("");
 
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
@@ -39,20 +44,29 @@ export default function EditDoctorForm() {
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
-        const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
-          method: "POST",
-          headers: {
-            "x-auth-token": token,
-          },
-          body: formData,
-        });
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+      const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+        method: "POST",
+        headers: {
+          "x-auth-token": token,
+        },
+        body: formData,
+      });
 
-        const data = await response.json();
+      if (!response.ok) {
+        toast.error("Error uploading image.");
+      }
+
+      const data = await response.json();
+      if (response.status === 500) {
+        toast.error("file type not supported");
+      }
+
+      if (response.status === 413) {
+        toast.error("file Size is too big try smaller image");
+      }
+
+      if (data.success === true) {
         console.log("Image uploaded successfully:", data);
         setDoctorImage(data.profilePicImageUrl);
         toast.success("Image uploaded successfully.");
@@ -60,9 +74,6 @@ export default function EditDoctorForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
-        console.error("Error uploading image:", error);
-        toast.error("Error uploading image. Please try again.");
       }
     }
   };
@@ -192,6 +203,22 @@ export default function EditDoctorForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
+      } else {
+        setPinCodeError("Please enter a valid Pincode");
+      }
+    }
+
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setmobileNumberError("");
+      } else {
+        setmobileNumberError("Please enter a valid Number");
+      }
+    }
+
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
 
@@ -246,10 +273,12 @@ export default function EditDoctorForm() {
       name: doctorDetails?.name,
       about: doctorDetails?.about,
       consultationFee: doctorDetails?.consultationFee,
-      // registrationNo: doctorDetails?.registrationNo,
+      registrationNo: doctorDetails?.registrationNo,
 
       // email: doctorDetails?.email, // Added email field
       // contactNumber: doctorDetails?.contactNumber, // Added contactNumber field
+
+      consultationFee: doctorDetails?.consultationFee,
       workingDays: doctorDetails?.workingDays, // Added workingDays field
       workingHours: {
         workHourFrom: doctorDetails?.workingHours?.workHourFrom,
@@ -257,8 +286,9 @@ export default function EditDoctorForm() {
         interval: doctorDetails?.interval,
       },
       totalExperience: doctorDetails?.totalExperience,
-      speciality: doctorDetails?.speciality,
       degree: doctorDetails?.degree,
+      speciality: doctorDetails?.speciality,
+
       address: {
         houseNo: doctorDetails?.address?.houseNo,
         floor: doctorDetails?.address?.floor,
@@ -404,6 +434,30 @@ export default function EditDoctorForm() {
     value: specialty,
   }));
 
+  const handleDeleteDoctor = async () => {
+    const token = localStorage.getItem("token");
+    const doctorId = localStorage.getItem("doctorId");
+    if (!token) {
+      console.error("No token found in local storage");
+      localStorage.clear();
+      navigate("/userlogin");
+    }
+    const response = await fetch(`${baseUrl}/api/v1/doctor/delete_doctor`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+    });
+    const data = await response.json();
+
+    if (data.success === true) {
+      toast.success("Doctor Deleted successfully");
+      navigate("/doctorlogin");
+    }
+    console.log("DATA from response", data);
+  };
+
   const handleDelete = (workingDay) => {
     console.log("delete", workingDay);
     const days = doctorDetails.workingDays.filter(
@@ -512,13 +566,31 @@ export default function EditDoctorForm() {
       <div className="flex flex-col -ml-7  lg:flex-row">
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+          <div
+            className=" flex items-end justify-end w-100% "
+            style={{ marginRight: -40, marginTop: -20 }}
+          >
+            <Popconfirm
+              title="Delete the Profile"
+              description="Are you sure to delete this Profile?"
+              okText="Delete"
+              okType="danger"
+              cancelText="No"
+              className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
+              onConfirm={handleDeleteDoctor}
+            >
+              <button onClick={onCloseModal}>
+                <img src={delete_button} alt="df" class="w-8 mb-1"></img>
+              </button>
+            </Popconfirm>
+          </div>
           <div className="mx-auto my-2">
             <div className=" ">
               <div
                 className=" border w-36 mx-auto rounded-full"
                 style={{ backgroundColor: "#B1DAED" }}
               >
-                {doctorDetails?.doctorPic ? (
+                {doctorImage || doctorDetails?.doctorPic ? (
                   <div
                     aria-controls="profile-pic-menu"
                     aria-haspopup="true"
@@ -526,7 +598,7 @@ export default function EditDoctorForm() {
                     onClick={handleClick}
                   >
                     <img
-                      src={doctorDetails?.doctorPic}
+                      src={doctorImage || doctorDetails?.doctorPic}
                       alt={doctorDetails?.name}
                       style={{
                         borderRadius: "50%",
@@ -631,7 +703,7 @@ export default function EditDoctorForm() {
             <p className="block text-black text-lg font-semibold">
               Working Days
             </p>
-            <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+            <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
               <Select
                 className="w-full border-none h-10 overflow-y-scroll"
                 mode="multiple"
@@ -658,7 +730,7 @@ export default function EditDoctorForm() {
             <div className="flex flex-row-ml-2 mr-2">
               <div className="flex ">
                 <select
-                  className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   name="workHourFrom"
                   value={doctorDetails?.workingHours?.workHourFrom}
                   onChange={handleChange}
@@ -673,7 +745,7 @@ export default function EditDoctorForm() {
               <div className=" mt-2 text-lg font-medium">to</div>
               <div className="flex">
                 <select
-                  className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   name="workHourTo"
                   value={doctorDetails?.workingHours?.workHourTo}
                   onChange={handleChange}
@@ -701,7 +773,7 @@ export default function EditDoctorForm() {
               name="totalExperience"
               value={doctorDetails?.totalExperience}
               onChange={handleChange}
-              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.totalExperience && (
               <p className="text-red-500">{errors.totalExperience}</p>
@@ -754,7 +826,7 @@ export default function EditDoctorForm() {
               name="degree"
               value={doctorDetails?.degree}
               onChange={handleChange}
-              className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.degree && <p className="text-red-500">{errors.degree}</p>}
           </div>
@@ -831,14 +903,20 @@ export default function EditDoctorForm() {
                 Contact Number
               </label>
               <input
-                type="number"
+                type="text"
                 placeholder=""
                 id="contactNumber"
                 name="contactNumber"
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 value={doctorDetails?.contactNumber}
                 onChange={handleChange}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
+              <p class=" text-red-500 ">{mobileNumberError}</p>
+
               {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
             </div>
           </div>
@@ -902,7 +980,7 @@ export default function EditDoctorForm() {
                       value={doctorDetails?.address?.houseNo}
                       onChange={handleChange}
                       // placeholder="1234"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
@@ -913,7 +991,7 @@ export default function EditDoctorForm() {
                       value={doctorDetails?.address?.floor}
                       onChange={handleChange}
                       placeholder="Floor"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div className="px-2 w-full sm:w-1/3 mt-3">
@@ -924,7 +1002,7 @@ export default function EditDoctorForm() {
                       value={doctorDetails?.address?.block}
                       onChange={handleChange}
                       placeholder="Block"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.block && (
                       <p className="text-red-500">{errors.block}</p>
@@ -932,16 +1010,19 @@ export default function EditDoctorForm() {
                   </div>
                   <div className="px-2 w-full sm:w-1/2 mt-3">
                     <input
-                      type="text"
+                      type="text" // Uncomment this line if you want it to be a number input
                       id="pinCode"
                       name="pinCode"
                       value={doctorDetails?.address?.pinCode}
                       onChange={handleChange}
                       placeholder="Pin Code"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      onInput={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-6]/g, "");
+                      }}
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {errors.pinCode && (
-                      <p className="text-red-500">{errors.pinCode}</p>
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
                     )}
                   </div>
                 </div>
@@ -954,7 +1035,7 @@ export default function EditDoctorForm() {
                     value={doctorDetails?.address?.area}
                     onChange={handleChange}
                     placeholder="Area/Landmark"
-                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
@@ -968,7 +1049,7 @@ export default function EditDoctorForm() {
                       value={doctorDetails?.address?.district}
                       onChange={handleChange}
                       placeholder="District"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
@@ -983,7 +1064,7 @@ export default function EditDoctorForm() {
                       value={doctorDetails?.address?.state}
                       onChange={handleChange}
                       placeholder="State"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>

@@ -208,8 +208,9 @@ export default function AppointmentList({ searchTerm }) {
       const data = await response.json();
       console.log("DATA from response", data);
       if (data.status === 200) {
-        setModalContent(status === "accept" ? "Accepted" : "Declined");
-        setModalOpen(true);
+        // setModalContent(status === "accept" ? "Accepted" : "Declined");
+        // setModalOpen(true);
+        window.location.reload()
       }
     } catch (error) {
       console.error("There was an error:", error);
@@ -240,9 +241,9 @@ export default function AppointmentList({ searchTerm }) {
   console.log("PATIENT LISTS", patientsList);
   console.log("APPOINTMENT LIST", appointmentList);
 
-  // updateUser(userDetailsName);
-  // updateUserEmail(userDetailsEmail);
-  // updateUserimage(userDetailsPic);
+  updateUser(userDetailsName);
+  updateUserEmail(userDetailsEmail);
+  updateUserimage(userDetailsPic);
 
 
   return (
@@ -435,8 +436,6 @@ export default function AppointmentList({ searchTerm }) {
         </div>
       </Modal>
 
-
-      {/* -----------------------appointment array----------------------- */}
       <div className="flex flex-col">
         {filteredAppointmentList?.map((appointment) => (
           <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
@@ -472,9 +471,9 @@ export default function AppointmentList({ searchTerm }) {
                       <h1 class="font-semibold text-gray-500 sm:text-sm text-xs capitalize">
                         <span className="ms-2">
                           {" "}
-                          {appointment?.patientId?.address?.district},
-                          {/* {appointment?.patientId?.address?.pinCode},{" "} */}
-                          {"  "}{appointment?.patientId?.address?.state}
+                          {appointment?.patientId?.address?.district},{" "}
+                          {appointment?.patientId?.address?.pinCode},{" "}
+                          {appointment?.patientId?.address?.state}
                         </span>
                       </h1>
                     </div>

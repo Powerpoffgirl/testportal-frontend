@@ -1,59 +1,78 @@
 body {
-    overflow: auto;
-    background-color: #E3F6FF;
-  }
+  overflow: auto;
+  background-color: #e3f6ff;
+}
 input::placeholder {
-    color: white;
+  color: white;
+}
+
+#circletop {
+  background-color: rgba(43, 234, 142, 1);
+  width: 1029px;
+  height: 1029px;
+  border-radius: 50%;
+  top: -350px;
+  left: 654px;
+  /* transform: translateX(-50%); */
+}
+
+#circlebottom {
+  background-color: rgba(43, 234, 142, 1);
+  width: 562px;
+  height: 562px;
+  border-radius: 50%;
+  top: 645px;
+  left: -188px;
+  /* transform: translateX(-50%); */
+}
+
+.placeholder-white::placeholder {
+  color: white;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 1157px) {
+  #circletop {
+    width: 150px;
+    height: 150px;
   }
 
-  
-
-   #circletop {
-    background-color: rgba(43, 234, 142, 1);
-    width: 1029px;
-    height:1029px;
-    border-radius: 50%;
-    top: -350px;
-    left: 654px;
-    /* transform: translateX(-50%); */
-  } 
-  
   #circlebottom {
-    background-color: rgba(43, 234, 142, 1);
-    width: 562px;
-    height: 562px;
-    border-radius: 50%;
-    top:645px;
-    left: -188px;
-    /* transform: translateX(-50%); */
+    width: 100px;
+    height: 100px;
   }
+}
 
-  .placeholder-white::placeholder {
-    color: white;
-  }
-  
-  /* Media query for smaller screens */
-  @media screen and (max-width: 1157px) {
-    #circletop {
-      width: 150px;
-      height: 150px;
-    }
-  
-    #circlebottom {
-      width: 100px;
-      height: 100px;
-    }
-  }
-
-  .item{
-    background-color: aqua;
-    height: 122px;
-    width: 130px;
-  }
+.item {
+  background-color: aqua;
+  height: 122px;
+  width: 130px;
+}
 
 /* Add this to your CSS file */
 .no-border-dropdown-menu {
-    .ant-select-dropdown-menu-item {
-        border: none !important; /* Use !important to override default styles */
-    }
+  .ant-select-dropdown-menu-item {
+    border: none !important; /* Use !important to override default styles */
+  }
 }
+
+.popconfirm {
+  position: relative;
+    border: 1px solid #ddd;
+    background-color: white;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    padding: 10px;
+    border-radius: 5px;
+    font-size: smaller;
+    z-index: 10; /* Ensure it's above other elements */
+}
+
+.popconfirm p {
+    margin: 0;
+    margin-bottom: 5px;
+}
+
+.popconfirm button {
+    margin-right: 5px;
+}
+

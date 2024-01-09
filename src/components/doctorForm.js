@@ -8,11 +8,10 @@ import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { Select } from "antd";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export default function DoctorForm()
-{
+export default function DoctorForm() {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const fileInputRef = useRef(null);
@@ -48,39 +47,32 @@ export default function DoctorForm()
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleFileSelect = (event) =>
-  {
+  const handleFileSelect = (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       setSelectedFile(file);
     }
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
     handleNewProfilePicture();
   };
 
-  const handleNewProfilePicture = async () =>
-  {
+  const handleNewProfilePicture = async () => {
     const token = localStorage.getItem("token");
     const doctorId = localStorage.getItem("doctorId");
 
-    if (!token || !doctorId)
-    {
+    if (!token || !doctorId) {
       console.error("Token or doctor ID not found in local storage");
       return;
     }
@@ -89,8 +81,7 @@ export default function DoctorForm()
     formData.append("doctorPic", selectedFile);
 
     console.log("FORM DATA", formData);
-    try
-    {
+    try {
       const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
         method: "POST",
         headers: {
@@ -99,8 +90,7 @@ export default function DoctorForm()
         body: formData,
       });
 
-      if (!response.ok)
-      {
+      if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
@@ -116,16 +106,14 @@ export default function DoctorForm()
       // Reset the file input
       setSelectedFile(null);
       fileInputRef.current.value = "";
-    } catch (error)
-    {
+    } catch (error) {
       console.error("Error uploading image:", error);
       alert("Error uploading image. Please try again.");
     }
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     handleClose();
   };
 
@@ -199,28 +187,24 @@ export default function DoctorForm()
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) =>
-    {
+    ...Array.from({ length: 24 }, (v, i) => {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange1 = (e) =>
-  {
+  const handleChange1 = (e) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: e,
     }));
   };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     console.log("E value", e);
     const { name, value } = e.target;
 
-    if (name === "workHourFrom" || name === "workHourTo")
-    {
+    if (name === "workHourFrom" || name === "workHourTo") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -238,8 +222,7 @@ export default function DoctorForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -247,8 +230,7 @@ export default function DoctorForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -256,15 +238,12 @@ export default function DoctorForm()
     }
   };
 
-
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
     // Check if the token exists
 
     const token = localStorage.getItem("token");
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
       return;
     }
@@ -277,8 +256,7 @@ export default function DoctorForm()
       body: JSON.stringify(doctorDetails),
     });
     const data = await response.json();
-    if (data.success === true)
-    {
+    if (data.success === true) {
       navigate("/otp", {
         state: { contactNumber: doctorDetails.contactNumber },
       });
@@ -287,8 +265,7 @@ export default function DoctorForm()
     console.log("DATA from response", data);
   };
 
-  const handleDelete = (workingDay) =>
-  {
+  const handleDelete = (workingDay) => {
     console.log("delete", workingDay);
     const days = doctorDetails.workingDays.filter(
       (doctorDetail) => doctorDetail !== workingDay
@@ -421,7 +398,7 @@ export default function DoctorForm()
                   id="name"
                   name="name"
                   onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
               </div>
               <div>
@@ -437,7 +414,7 @@ export default function DoctorForm()
                   id="email"
                   name="email"
                   onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
               </div>
               <div>
@@ -453,7 +430,7 @@ export default function DoctorForm()
                   id="contactNumber"
                   name="contactNumber"
                   onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
               </div>
 
@@ -465,7 +442,7 @@ export default function DoctorForm()
                   >
                     Working Days
                   </label>
-                  <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
+                  <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
                     <Select
                       className="w-full border-none h-10"
                       mode="multiple"
@@ -473,7 +450,7 @@ export default function DoctorForm()
                       name="workingDays"
                       onChange={handleChange1}
                       placeholder="Select Working Days"
-                    // Add other props as needed
+                      // Add other props as needed
                     >
                       {Daysdropdown.map((option) => (
                         <Select.Option key={option.value} value={option.value}>
@@ -491,7 +468,7 @@ export default function DoctorForm()
                   <div className="flex space-x-2">
                     <div className="flex-1">
                       <select
-                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         name="workHourFrom"
                         onChange={handleChange}
                       >
@@ -505,7 +482,7 @@ export default function DoctorForm()
 
                     <div className="flex-1">
                       <select
-                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         name="workHourTo"
                         onChange={handleChange}
                       >
@@ -532,7 +509,7 @@ export default function DoctorForm()
                     id="total-experience"
                     name="totalExperience"
                     onChange={handleChange}
-                    class="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    class="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                 </div>
                 <div class="flex-1" style={{ marginRight: "10px" }}>
@@ -543,7 +520,7 @@ export default function DoctorForm()
                     Specialist
                   </label>
                   <select
-                    className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     id="speciality"
                     name="speciality"
                     onChange={handleChange}
@@ -569,7 +546,7 @@ export default function DoctorForm()
                   id="degree"
                   name="degree"
                   onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
               </div>
               <div class="p-3 pb-5 border border-[#89CFF0]">
@@ -587,7 +564,7 @@ export default function DoctorForm()
                       name="houseNo"
                       onChange={handleChange}
                       placeholder="1234"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/3">
@@ -603,7 +580,7 @@ export default function DoctorForm()
                       name="floor"
                       onChange={handleChange}
                       placeholder="2nd"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/3">
@@ -619,7 +596,7 @@ export default function DoctorForm()
                       name="block"
                       onChange={handleChange}
                       placeholder="A"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
@@ -635,7 +612,7 @@ export default function DoctorForm()
                       name="area"
                       onChange={handleChange}
                       placeholder="Green Park"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
@@ -651,7 +628,7 @@ export default function DoctorForm()
                       name="pinCode"
                       onChange={handleChange}
                       placeholder="110016"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
@@ -667,7 +644,7 @@ export default function DoctorForm()
                       name="district"
                       onChange={handleChange}
                       placeholder="South Delhi"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                   <div class="px-2 w-full sm:w-1/2">
@@ -683,7 +660,7 @@ export default function DoctorForm()
                       name="state"
                       onChange={handleChange}
                       placeholder="Delhi"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   </div>
                 </div>

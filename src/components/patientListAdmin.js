@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import Header from "./header";
 import DoctorSidebar from "./doctorSidebar";
@@ -11,6 +11,7 @@ import AdminSidebar from "./adminSidebar";
 import AdminHeader from "./adminHeader";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import UserContext from "./userContext";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
@@ -33,7 +34,10 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function PatientListAdmin({ searchTerm }) {
+export default function PatientListAdmin({ searchTerm })
+{
+  const { updateUser, updateUserEmail, updateUserimage } =
+    useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [patientsList, setPatientsList] = useState([]);
@@ -43,12 +47,57 @@ export default function PatientListAdmin({ searchTerm }) {
   const onCloseModal = () => setOpen(false);
   const navigate = useNavigate();
   const [filteredPatients, setFilteredPatients] = useState([patientsList]);
+  const [userDetailsName, setUserDetailsName] = useState();
+  const [userDetailsEmail, setUserDetailsEmail] = useState();
+  const [userDetailsPic, setUserDetailsPic] = useState();
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        const patientId = localStorage.getItem("patientId");
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(
+          `${baseUrl}/api/v1/admin/get_profile`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log("DATA from response", data);
+        setUserDetailsName(data?.data.name);
+        setUserDetailsEmail(data?.data.email);
+        setUserDetailsPic(data?.data.doctorPic);
+        console.log("usser name$$$$$$$", data?.data.name);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchUserDetails();
+  }, []);
+
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -62,22 +111,27 @@ export default function PatientListAdmin({ searchTerm }) {
 
         const data = await response.json();
 
-        if (data.message === "Permission denied") {
+        if (data.message === "Permission denied")
+        {
           toast.error("Permission Denied");
         }
         console.log("DATA from response", data);
         setPatientsList(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, [searchTerm]);
 
-  const handleDeletePatient = async (patientId) => {
-    try {
+  const handleDeletePatient = async (patientId) =>
+  {
+    try
+    {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         return;
       }
@@ -94,50 +148,64 @@ export default function PatientListAdmin({ searchTerm }) {
 
       const data = await response.json();
 
-      if (data.message === "Permission denied") {
+      if (data.message === "Permission denied")
+      {
         toast.error("Permission Denied");
-      } else {
+      } else
+      {
         toast.success("Deleted successfully");
       }
-      if (response.ok) {
+      if (response.ok)
+      {
         console.log("Patient deleted successfully", data);
         // Update the list in the UI by removing the deleted doctor
         setPatientsList((prevPatientsList) =>
           prevPatientsList.filter((patient) => patient._id !== patientId)
         );
-      } else {
+      } else
+      {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("There was an error deleting the doctor:", error);
     }
   };
 
-  const findSelectedDoctor = async (patientId) => {
+  const findSelectedDoctor = async (patientId) =>
+  {
     console.log("DOCTOR ID", patientId);
     // // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const patient = patientsList?.find((doc) => doc._id === patientId);
     setSelectedPatient(patient); // This will return the doctor object if found, otherwise undefined
     onOpenModal();
   };
-  useEffect(() => {
-    if (patientsList?.length > 0 && searchTerm) {
+  useEffect(() =>
+  {
+    if (patientsList?.length > 0 && searchTerm)
+    {
       const lowerCaseSearchTerm = searchTerm?.toLowerCase().trim();
       const matchedPatients = patientsList?.filter((p) =>
         p?.name?.toLowerCase()?.includes(lowerCaseSearchTerm)
       );
       setFilteredPatients(matchedPatients);
-    } else {
+    } else
+    {
       // If searchTerm is empty, show all patients
       setFilteredPatients(patientsList);
     }
   }, [patientsList, searchTerm]);
 
-  const handleBookAppointment = (patientId) => {
+  const handleBookAppointment = (patientId) =>
+  {
     localStorage.setItem("patientId", patientId);
     navigate("/editpatientformadmin");
   };
   console.log("PATIENT LISTS", patientsList);
+
+  updateUser(userDetailsName);
+  updateUserEmail(userDetailsEmail);
+  updateUserimage(userDetailsPic);
 
   return (
     <>
@@ -243,9 +311,9 @@ export default function PatientListAdmin({ searchTerm }) {
           <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
             <div
               className="flex flex-row justify-start items-center"
-              onClick={() => findSelectedDoctor(patient._id)}
+
             >
-              <div class="flex items-center gap-x-2">
+              <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(patient._id)}>
                 {patient.patientPic ? (
                   <img
                     class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
@@ -279,6 +347,7 @@ export default function PatientListAdmin({ searchTerm }) {
                   title="Delete the Patient"
                   description="Are you sure to delete this Patient?"
                   okText="Delete"
+                  okType='danger'
                   cancelText="No"
                   okTextcolor="blue"
                   onConfirm={() => handleDeletePatient(patient._id)}

@@ -5,11 +5,15 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
 {
     const [formState, setFormState] = useState(
         defaultValue || {
-            test: "",
+            testName: "",
             testCode: "",
             department: "",
             sampleType: "",
-            cost: "",
+            costOfDiagnosticTest: "",
+            unit: "",
+            bioRefInterval: "",
+            technology: "",
+
         }
     );
     const [errors, setErrors] = useState("");
@@ -17,11 +21,14 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
     const validateForm = () =>
     {
         if (
-            formState.test &&
+            formState.testName &&
             formState.testCode &&
             formState.department &&
             formState.sampleType &&
-            formState.cost
+            formState.costOfDiagnosticTest &&
+            formState.unit &&
+            formState.bioRefInterval &&
+            formState.technology
         )
         {
             setErrors("");
@@ -68,11 +75,11 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
             <div className="modal">
                 <form>
                     <div className="form-group">
-                        <label htmlFor="test">Test</label>
+                        <label htmlFor="testName">Test</label>
                         <input
-                            name="test"
+                            name="testName"
                             onChange={handleChange}
-                            value={formState.test}
+                            value={formState.testName}
                         />
                     </div>
                     <div className="form-group">
@@ -100,8 +107,20 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="cost">Cost</label>
-                        <input name="cost" onChange={handleChange} value={formState.cost} />
+                        <label htmlFor="costOfDiagnosticTest">Cost</label>
+                        <input name="costOfDiagnosticTest" onChange={handleChange} value={formState.costOfDiagnosticTest} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="unit">Units</label>
+                        <input name="unit" onChange={handleChange} value={formState.unit} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="bioRefInterval">Bio.Ref</label>
+                        <input name="bioRefInterval" onChange={handleChange} value={formState.bioRefInterval} />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="technology">Technology</label>
+                        <input name="technology" onChange={handleChange} value={formState.technology} />
                     </div>
                     {errors && (
                         <div className="error">{`Please include: ${errors}`}</div>

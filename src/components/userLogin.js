@@ -65,45 +65,6 @@ export default function UserLogin()
     }
   };
 
-  const handleForgetPassword = async (e) =>
-  {
-    e.preventDefault();
-    const requestBody = {
-      contactNumber: contactNumber,
-    };
-    const apiUrl = `${baseUrl}/api/v1/user/send_otp`;
-
-    try
-    {
-      // Send the POST request
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          // "x-auth-token": token
-        },
-        body: JSON.stringify(requestBody),
-      });
-
-      // Convert the response to JSON
-      const data = await response.json();
-
-      // Check the response status
-      if (response.ok)
-      {
-        console.log("OTP sent successfully", data);
-        localStorage.setItem("contactNumber", contactNumber);
-        navigate("/otpverify");
-      } else
-      {
-        console.error("Error sending OTP:", data);
-      }
-    } catch (error)
-    {
-      console.error("Error during the API call:", error);
-    }
-  };
-
   useEffect(() =>
   {
     const doctor = location?.state;
@@ -132,7 +93,6 @@ export default function UserLogin()
       });
       const data = await response.json();
       console.log("=========eeeeeeeeee==============DATA FROM RESPONSE===================", data);
-      localStorage.setItem("patientId", data?.patient?._id)
       if (data?.user?._id)
       {
         localStorage.setItem("userId", data?.user?._id);
@@ -178,6 +138,10 @@ export default function UserLogin()
             value={contactNumber}
             onChange={handleMobileNumberChange}
             maxLength={10}
+            onInput={(e) =>
+            {
+              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+            }}
           />
           {!isValid && (
             <p className="error_message">Please enter a valid mobile number</p>

@@ -138,10 +138,16 @@ export default function EditUserForm() {
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [floorError, setFloorError] = useState("");
   const [newUser, setNewUser] = useState(false);
+  const [patientId, setPatientId] = useState(localStorage.getItem("patientId"));
+
+  useEffect(() => {
+    setPatientId(localStorage.getItem("patientId"));
+    console.log("+++++++++++++++PATIENT ID++++++++++++", patientId);
+  }, [patientId]);
 
   const [appointmentDetails, setAppointmentDetails] = useState({
     doctorId: localStorage.getItem("doctorId"),
-    patientId: "",
+    patientId: patientId,
     appointmentDate: {
       date: localStorage.getItem("appointment_date"),
       time: localStorage.getItem("appointment_time"),
@@ -264,7 +270,6 @@ export default function EditUserForm() {
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const patientId = localStorage.getItem("patientId");
         if (!token) {
           console.error("No token found in local storage");
           return;
@@ -333,6 +338,7 @@ export default function EditUserForm() {
 
   const handleChange3 = (e) => {
     console.log("HELLOOOOOOOO");
+
     setAppointmentDetails((prevAppointmentDetails) => ({
       ...prevAppointmentDetails,
       patientId: e,
@@ -495,7 +501,7 @@ export default function EditUserForm() {
   };
 
   useEffect(() => {
-    localStorage.setItem("patientId", appointmentDetails?.patientId);
+    // localStorage.setItem("patientId", appointmentDetails?.patientId);
 
     const fetchPatientDetails = async () => {
       try {
@@ -520,7 +526,7 @@ export default function EditUserForm() {
         console.log("DATA from PAITIENTS response", data);
         console.log("SELECTED PATIENT DETAILS=================", data?.data);
         setPatientDetails(data?.data);
-        localStorage.setItem("patientId", patientId);
+        // localStorage.setItem("patientId", patientId);
         console.log("################PATIENT NAME$$$$$$$", data?.data.name);
       } catch (error) {
         console.error("There was an error verifying the OTP:", error);
@@ -932,7 +938,7 @@ export default function EditUserForm() {
                         }
                       }
                     }}
-                    value={patientDetails?.issues}
+                    value={appointmentDetails.issues}
                     placeholder="Select Issues"
                     dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
                   >
@@ -979,7 +985,7 @@ export default function EditUserForm() {
                       }
                     }
                   }}
-                  value={patientDetails?.diseases}
+                  value={appointmentDetails.diseases}
                   placeholder="Select Disease"
                   style={{ overflowY: "auto" }}
                   dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
@@ -1018,7 +1024,7 @@ export default function EditUserForm() {
                         id="houseNo"
                         name="houseNo"
                         onChange={handleChange}
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1027,7 +1033,7 @@ export default function EditUserForm() {
                         id="houseNo"
                         name="houseNo"
                         value={patientDetails?.address?.houseNo}
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
                   </div>
@@ -1040,7 +1046,7 @@ export default function EditUserForm() {
                         name="floor"
                         onChange={handleChange}
                         placeholder="Floor"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1049,7 +1055,7 @@ export default function EditUserForm() {
                         name="floor"
                         value={patientDetails?.address?.floor}
                         placeholder="Floor"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
                   </div>
@@ -1062,7 +1068,7 @@ export default function EditUserForm() {
                         name="block"
                         onChange={handleChange}
                         placeholder="Block"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1071,7 +1077,7 @@ export default function EditUserForm() {
                         name="block"
                         value={patientDetails?.address?.block}
                         placeholder="Block"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
 
@@ -1088,7 +1094,7 @@ export default function EditUserForm() {
                         name="pinCode"
                         onChange={handleChange}
                         placeholder="Pin Code"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1097,7 +1103,7 @@ export default function EditUserForm() {
                         name="pinCode"
                         value={patientDetails?.address?.pinCode}
                         placeholder="Pin Code"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
 
@@ -1116,7 +1122,7 @@ export default function EditUserForm() {
                       name="area"
                       onChange={handleChange}
                       placeholder="Area/Landmark"
-                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   ) : (
                     <input
@@ -1125,7 +1131,7 @@ export default function EditUserForm() {
                       name="area"
                       value={patientDetails?.address?.area}
                       placeholder="Area/Landmark"
-                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   )}
 
@@ -1142,7 +1148,7 @@ export default function EditUserForm() {
                         name="district"
                         onChange={handleChange}
                         placeholder="District"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1151,7 +1157,7 @@ export default function EditUserForm() {
                         name="district"
                         value={patientDetails?.address?.district}
                         placeholder="District"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
 
@@ -1169,7 +1175,7 @@ export default function EditUserForm() {
                         name="state"
                         onChange={handleChange}
                         placeholder="State"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
                       <input
@@ -1178,7 +1184,7 @@ export default function EditUserForm() {
                         name="state"
                         value={patientDetails?.address?.state}
                         placeholder="State"
-                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
 

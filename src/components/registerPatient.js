@@ -12,7 +12,7 @@ import { MdEdit } from "react-icons/md";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { Flex, Select } from "antd";
 import { IoIosSearch } from "react-icons/io";
-import UserContext from './userContext';
+import UserContext from "./userContext";
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#89CFF0"/>
@@ -26,7 +26,8 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 </svg>`;
 
 export default function PatientForm() {
-  const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
+  const { updateUser, updateUserEmail, updateUserimage } =
+    useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -74,10 +75,11 @@ export default function PatientForm() {
   const [userDetailsPic, setUserDetailsPic] = useState();
   const [registrationId, setRegistrationId] = useState(240301000);
 
-
   const [searchTerm, setSearchTerm] = useState("");
   const [patients, setPatients] = useState([]);
   const [filteredPatients, setFilteredPatients] = useState([]);
+  const [mobileNumberError, setmobileNumberError] = useState("");
+  const [phoneNo, setphoneNo] = useState(null);
 
   const handleSearch = (event) => {
     const searchTerm = event?.target?.value?.toLowerCase();
@@ -157,7 +159,6 @@ export default function PatientForm() {
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientDetails(data?.data);
-
       } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
@@ -247,12 +248,11 @@ export default function PatientForm() {
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");
     const day = String(currentDate.getDate()).padStart(2, "0");
     const incrementedCounter = counter++;
-    let patientId = `${year}${month}${day}${incrementedCounter}`
+    let patientId = `${year}${month}${day}${incrementedCounter}`;
     return patientId;
   };
 
   // const incrementedCounter = String(apiHitCounter).padStart(3, "0");
-
 
   const [patientDetails, setPatientDetails] = useState({
     name: "",
@@ -260,6 +260,7 @@ export default function PatientForm() {
     ageType: "",
     phoneNo: "",
     email: "",
+    refBy: "",
     registrationNo: "",
     address: {
       houseNo: "",
@@ -358,6 +359,22 @@ export default function PatientForm() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
+      } else {
+        setPinCodeError("Please enter a valid Pincode");
+      }
+    }
+
+    if (name === "phoneNo") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+        setmobileNumberError("");
+      } else {
+        setmobileNumberError("Please enter a valid Number");
+      }
+    }
+
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
     if (name === "gender") {
@@ -438,6 +455,7 @@ export default function PatientForm() {
       email: patientDetails?.email,
       phoneNo: patientDetails?.phoneNo?.toString(),
       registrationNo: incrementedId?.toString(),
+      refBy: patientDetails?.refBy,
       address: {
         houseNo: patientDetails?.address?.houseNo,
         floor: patientDetails?.address?.floor,
@@ -451,17 +469,25 @@ export default function PatientForm() {
       doctorId: JSON.stringify(doctorId),
       // patientPic: userImage,
     };
-    if (newPatientDetails.name === "") {
-      toast.error("Please write name");
-    } else if (newPatientDetails.age === "") {
+    if (!newPatientDetails?.gender) {
+      toast.error("Please write gender");
+    } else if (!newPatientDetails?.age) {
       toast.error("Please write age");
-    } else if (newPatientDetails.bodyWeight === "") {
-      toast.error("Please write body weight");
-    } else if (newPatientDetails.address?.pinCode === "") {
+    } else if (!newPatientDetails?.ageType) {
+      toast.error("Please write age type");
+    } else if (!newPatientDetails?.name) {
+      toast.error("Please write name");
+    } else if (!newPatientDetails?.phoneNo) {
+      toast.error("Please write contact number");
+    } else if (!newPatientDetails?.email) {
+      toast.error("Please write email");
+    } else if (!newPatientDetails.address?.pinCode) {
       toast.error("Please write Pincode");
-    } else if (newPatientDetails.address?.district === "") {
+    } else if (!/^\d{6}$/.test(newPatientDetails?.address?.pinCode)) {
+      toast.error("Please enter a valid 6-digit PIN code");
+    } else if (!newPatientDetails.address?.district) {
       toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "") {
+    } else if (!newPatientDetails.address?.state) {
       toast.error("Please write state");
     } else {
       const doctorId = localStorage.getItem("doctorId");
@@ -490,6 +516,7 @@ export default function PatientForm() {
         localStorage.setItem("phoneNo", newPatientDetails.phoneNo);
         localStorage.setItem("gender", newPatientDetails.gender);
         localStorage.setItem("age", newPatientDetails.age);
+        localStorage.setItem("ref", newPatientDetails.refBy);
         navigate("/billing");
       }
       console.log("DATA from response", data);
@@ -497,7 +524,6 @@ export default function PatientForm() {
   };
 
   console.log("PATIENT DETAILS", patientDetails);
-
 
   updateUser(userDetailsName);
   updateUserEmail(userDetailsEmail);
@@ -514,582 +540,521 @@ export default function PatientForm() {
 
   //   incrementLastDigit();
 
-
   // }, []);
 
   const incrementedId = parseInt(registrationId, 10) + 1;
 
-
-
-
   return (
     <>
-      <Modal
-        open={open1}
-        onClose={onCloseModal}
-        center
-        doctor={selectedDoctor}
-        styles={{
-          modal: {
-            // Set your custom width here (e.g., '70%')
-            width: isTab ? "80%" : "30%",
-            backgroundColor: "#89CFF0",
-            alignContent: "center",
-          },
-        }}
-      >
-        <div className="flex flex-col bg-customRed p-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
-          <text
-            className="text-center mt-4 mb-4"
-            style={{
-              fontSize: isTab ? "14px" : "20px",
-              fontWeight: 600,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-            }}
-          >
-            Member's Details is Saved.
-            <br />
-            Go to Member's list to book an Appointment.
-          </text>
-        </div>
-      </Modal>
-
-      <div className="flex flex-row">
-        <ToastContainer />
-        <div></div>
-        <div className=" w-full">
-          <div className="mt-6 p-2">
-            <div className="flex  flex-col items-center justify-center w-full">
-              <div className="cursor-pointer"></div>
+      <div className="flex flex-col -ml-7  lg:flex-row">
+        {/* --------------left-------------- */}
+        <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+          <div className="mx-auto my-2">
+            <div className=" ">
+              <div
+                className=" border w-36 mx-auto rounded-full"
+                style={{ backgroundColor: "#B1DAED" }}
+              >
+                {userImage || userDetails?.userPic ? (
+                  <div
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  >
+                    <img
+                      src={userDetails?.userPic || userImage}
+                      alt={userDetails?.name}
+                      style={{
+                        borderRadius: "50%",
+                        width: "145px",
+                        height: "145px",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <PermIdentityOutlinedIcon
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                      color: "white",
+                      cursor: "pointer",
+                    }}
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  />
+                )}
+              </div>
             </div>
 
+            <div className="flex flex-row mt-5 mb-3">
+              <p className="block text-black text-lg font-semibold ">
+                <input
+                  id="files"
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                />
+              </p>
+
+              <p
+                className="mt-2 ml-3"
+                aria-controls="profile-pic-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                style={{
+                  cursor: "pointer",
+                }}
+              >
+                {/* <FaAngleDown /> */}
+              </p>
+
+              <div style={{ backgroundColor: "#89CFF0" }}>
+                <Menu
+                  id="profile-pic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "edit-profile-pic-text",
+                    style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
+                  }}
+                >
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered ? "red" : "white",
+                    }}
+                    onClick={() => {
+                      handleClose();
+                    }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    {" "}
+                    <span style={{ marginRight: "8px" }}>
+                      <HiOutlineUserAdd />
+                    </span>
+                    <label htmlFor="files">New profile picture</label>
+                  </MenuItem>
+
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered1 ? "red" : "white",
+                    }}
+                    // onClick={handleRemoveProfilePicture}
+                    onMouseEnter={() => setIsHovered1(true)}
+                    onMouseLeave={() => setIsHovered1(false)}
+                  >
+                    <span style={{ marginRight: "8px" }}>
+                      <FaRegTrashAlt />
+                    </span>
+                    <span>Remove current picture</span>
+                  </MenuItem>
+                </Menu>
+              </div>
+            </div>
+          </div>
+          <hr />
+
+          <div className=" mt-3 relative">
             <div
               style={{
-                marginTop: "1px",
-                width: "20%",
-                position: "absolute",
-                fontWeight: 500,
-
+                display: "flex",
+                flexDirection: "row",
+                gap: 170,
+                marginBottom: 2,
               }}
             >
-              <p onChange={handleChange} >
-                Patient Id: {patientDetails ? patientDetails.registrationNo : incrementedId}
-              </p>
-            </div>
-
-            <form style={{ display: 'flex', flexDirection: isTab1 ? 'column' : 'row' }}>
               <label
-                style={{ marginLeft: isTab1 ? '0px' : "540px", marginTop: isTab1 ? '20px' : null, fontWeight: 500 }}
-                htmlFor="default-search"
+                for="total-experience"
+                className="block text-black text-lg font-semibold"
               >
-                Search:
+                Search
               </label>
-              <div className="relative h-10 " style={{ width: '100%' }}>
-                <input
-                  value={searchTerm}
-                  onChange={handleSearch}
-                  type="search"
-                  id="default-search"
-                  className="block p-2 ps-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="Search"
-                  required
-                  style={{ width: isTab1 ? '60%' : '80%' }}
-                // style={{
-                //   marginLeft: isTab1 ? "150px" : "600px",
-                //   width: isTab1 ? '27%' : "44%",
-                //   marginTop: "-30px",
-                //   zIndex: 200,
-                // }}
-                />
-                <button
-                  onClick={handleClearStorage}
-                  className="absolute right-16 top-0 p-1.5 border border-gray-300 rounded-md bg-gray-100 text-gray-700 cursor-pointer hover:bg-gray-200"
-
-                >
-                  Clear
-                </button>
-              </div>
-              <ul style={{ marginLeft: '600px', width: '30%', zIndex: 9999, position: 'absolute', marginTop: '42px' }} className="divide-y divide-gray-200 bg-white whitespace-normal">
-                {filteredPatients.map((patient) => (
-                  <li key={patient.id} className="p-4">
-                    <div onClick={() => handlepatientDetails(patient._id)}>
-                      <div className="font-bold">{patient.name}</div>
-                      <div className="text-sm" >
-                        <span className="ml-2">Email: {patient.email}</span>
-                        <span className="ml-2">Phone Number: {patient.phoneNo}</span>
-                        {/* <span onClick={() => handlepatientDetails(patient._id)} className="ml-2">Pid: {patient._id}</span> */}
-                      </div>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </form>
-
-            <div class="grid grid-cols-1 w-full  gap-4 mt-10">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="flex flex-col">
-                  <label
-                    class="block text-black text-lg font-semibold"
-                    htmlFor="name"
-                  >
-                    Name
-                  </label>
-                  <input
-                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={patientDetails?.name}
-                    onChange={handleChange}
-                    style={{ marginLeft: -0.5, width: '100%' }}
-                  />
-                  {/* {errors.age && ( // Change 'errors.email' to 'errors.age'
-                                        <p className="text-red-500">{errors.age}</p>
-                                    )} */}
-                </div>
-
-                <div className="flex flex-col">
-                  <label
-                    class="block text-black text-lg font-semibold"
-                    htmlFor="phoneNo"
-                  >
-                    Phone No.
-                  </label>
-                  <input
-                    class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    type="text"
-                    id="phoneNo"
-                    name="phoneNo"
-                    value={patientDetails?.phoneNo}
-                    onChange={handleChange}
-                    style={{ marginLeft: -0.5, width: '100%' }}
-                  />
-                  {errors.age && ( // Change 'errors.email' to 'errors.age'
-                    <p className="text-red-500">{errors.age}</p>
-                  )}
-                </div>
-              </div>
+              <button
+                onClick={handleClearStorage}
+                className="block text-black text-sm font-semibold"
+              >
+                Clear
+              </button>
             </div>
-            <div class="grid grid-cols-1 w-full  gap-4">
-              {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div className="flex flex-col">
-                                    <label
-                                        class="block text-black text-lg font-semibold"
-                                        htmlFor="age"
-                                    >
-                                        Phone No
-                                    </label>
-                                    <input
-                                        class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                                        type="text"
-                                        id="age"
-                                        name="age"
-                                        value={patientDetails.age}
-                                        onChange={handleChange}
-                                        style={{ marginLeft: -0.5 }}
-                                    />
-                                    {errors.age && ( // Change 'errors.email' to 'errors.age'
-                                        <p className="text-red-500">{errors.age}</p>
-                                    )}
-                                </div>
-                                <div className="flex flex-col">
-                                    <h3 class="mb-4 font-semibold text-gray-900 dark:text-white">Gender</h3>
-                                    <ul style={{ marginTop: '-13px' }} class="items-center w-full text-sm font-medium text-gray-900 bg-white border border-[#89CFF0] rounded-lg sm:flex dark:bg-gray-700 dark:border-gray-600 dark:text-white">
-                                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div class="flex items-center ps-3">
-                                                <input id="horizontal-list-radio-license" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label for="horizontal-list-radio-license" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Male </label>
-                                            </div>
-                                        </li>
-                                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div class="flex items-center ps-3">
-                                                <input id="horizontal-list-radio-id" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label for="horizontal-list-radio-id" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Female</label>
-                                            </div>
-                                        </li>
-                                        <li class="w-full border-b border-gray-200 sm:border-b-0 sm:border-r dark:border-gray-600">
-                                            <div class="flex items-center ps-3">
-                                                <input id="horizontal-list-radio-military" type="radio" value="" name="list-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-700 dark:focus:ring-offset-gray-700 focus:ring-2 dark:bg-gray-600 dark:border-gray-500" />
-                                                <label for="horizontal-list-radio-military" class="w-full py-3 ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Other</label>
-                                            </div>
-                                        </li>
-                                    </ul>
-
-                                </div>
-
-                            </div> */}
-
-              <div>
-                {/* <div class="p-3 pb-5"> */}
-                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-                  <div className="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="email"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      Email Id
-                    </label>
-                    <input
-                      type="text"
-                      id="email"
-                      name="email"
-                      value={patientDetails?.email}
-                      onChange={handleChange}
-                      placeholder="1234"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${houseNoError ? "border-red-500" : ""
-                        }`}
-                      style={{ width: '100%' }}
-                    />
-                    {houseNoError && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {houseNoError}
-                      </p>
-                    )}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/6">
-                    <label
-                      htmlFor="age"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      Age
-                    </label>
-                    <input
-                      type="text"
-                      id="age"
-                      name="age"
-                      value={patientDetails?.age}
-                      onChange={handleChange}
-                      placeholder="First Floor or 2nd"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${floorError ? "border-red-500" : ""
-                        }`}
-                      style={{ width: '100%' }}
-                    />
-                    {floorError && (
-                      <p className="text-red-500 text-sm mt-1">{floorError}</p>
-                    )}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/6">
-                    <div className="flex flex-col">
-                      <label
-                        className="mx-2 text-lg font-semibold text-black font-lato"
-                        htmlFor="ageType"
-                      >
-                        Age Type
-                      </label>
-                      <Select
-                        // mode="multiple"
-                        className="mx-2 border border-[#89CFF0] rounded-lg h-11"
-                        popupClassName="no-border-dropdown-menu"
-                        id="ageType"
-                        name="ageType"
-                        value={patientDetails?.ageType}
-                        onChange={handleChange2}
-                        placeholder="Select Age Type"
-                        style={{ overflowY: "auto", width: '100%' }}
-                        dropdownStyle={{
-                          maxHeight: "300px",
-                          overflowY: "auto",
-                        }}
-                      >
-                        {AgeType.map((option) => (
-                          <Select.Option
-                            key={option.value}
-                            value={option.value}
-                          >
-                            {option.label}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </div>
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/6">
-                    <div className="flex flex-col">
-                      <label
-                        className="mx-2 text-lg font-semibold text-black font-lato"
-                        htmlFor="gender"
-                      >
-                        Gender
-                      </label>
-                      <Select
-                        // mode="multiple"
-                        className="mx-2 border border-[#89CFF0] rounded-lg h-11"
-                        popupClassName="no-border-dropdown-menu"
-                        id="gender"
-                        name="gender"
-                        value={patientDetails?.gender}
-                        onChange={handleChange1}
-                        placeholder="Select Gender Type"
-                        style={{ overflowY: "auto", width: '100%' }}
-                        dropdownStyle={{
-                          maxHeight: "300px",
-                          overflowY: "auto",
-                        }}
-                      >
-                        {Gender.map((option) => (
-                          <Select.Option
-                            key={option.value}
-                            value={option.value}
-                          >
-                            {option.label}
-                          </Select.Option>
-                        ))}
-                      </Select>
-                    </div>
-                  </div>{" "}
-                  <div class="mt-5">
-                    <label
-                      htmlFor="houseNo"
-                      className="block text-black text-lg font-semibold mb-0"
-                    >
-                      Address
-                    </label>
-                    <div class="p-3 pb-5 border border-[#89CFF0]">
-                      <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-                        <div className="px-2 w-full sm:w-1/3">
-                          <label
-                            htmlFor="houseNo"
-                            className="block text-black text-lg font-semibold"
-                          >
-                            House No
-                          </label>
-                          <input
-                            type="text"
-                            id="houseNo"
-                            name="houseNo"
-                            onChange={handleChange}
-                            placeholder="1234"
-                            className="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                            value={patientDetails?.address?.houseNo}
-                            style={{ width: '100%' }}
-                          />
-                        </div>
-                        <div class="px-2 w-full sm:w-1/3">
-                          <label
-                            htmlFor="floor"
-                            class="block text-black text-lg font-semibold"
-                          >
-                            Floor
-                          </label>
-                          <input
-                            type="text"
-                            id="floor"
-                            name="floor"
-                            onChange={handleChange}
-                            placeholder="2nd"
-                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                            value={patientDetails?.address?.floor}
-                            style={{ width: '100%' }}
-                          />
-                        </div>
-                        <div class="px-2 w-full sm:w-1/3">
-                          <label
-                            htmlFor="block"
-                            class="block text-black text-lg font-semibold"
-                          >
-                            Block
-                          </label>
-                          <input
-                            type="text"
-                            id="block"
-                            name="block"
-                            onChange={handleChange}
-                            placeholder="A"
-                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                            value={patientDetails?.address?.block}
-                            style={{ width: '100%' }}
-                          />
-                          {errors.block && (
-                            <p className="text-red-500">{errors.block}</p>
-                          )}
-                        </div>{" "}
-                        <div class="px-2 w-full sm:w-1/2">
-                          <label
-                            htmlFor="area"
-                            class="block text-black text-lg font-semibold"
-                          >
-                            Area
-                          </label>
-                          <input
-                            type="text"
-                            id="area"
-                            name="area"
-                            onChange={handleChange}
-                            placeholder="Green Park"
-                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                            value={patientDetails?.address?.area}
-                            style={{ width: '100%' }}
-                          />
-                          {errors.area && (
-                            <p className="text-red-500">{errors.area}</p>
-                          )}
-                        </div>{" "}
-                        <div class="px-2 w-full sm:w-1/2">
-                          <label
-                            htmlFor="pincode"
-                            class="block text-black text-lg font-semibold"
-                          >
-                            Pincode
-                          </label>
-                          <input
-                            type="text"
-                            id="pinCode"
-                            name="pinCode"
-                            onChange={handleChange}
-                            placeholder="110016"
-                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                            value={patientDetails?.address?.pinCode}
-                            style={{ width: '100%' }}
-                          />
-                          {errors.pinCode && (
-                            <p className="text-red-500">{errors.pinCode}</p>
-                          )}
-                        </div>{" "}
-                        <div class="px-2 w-full sm:w-1/2">
-                          <label
-                            htmlFor="district"
-                            class="block text-black text-lg font-semibold"
-                          >
-                            District
-                          </label>
-                          <input
-                            type="text"
-                            id="district"
-                            name="district"
-                            onChange={handleChange}
-                            placeholder="South Delhi"
-                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                            value={patientDetails?.address?.district}
-                            style={{ width: '100%' }}
-                          />
-                          {errors.district && (
-                            <p className="text-red-500">{errors.district}</p>
-                          )}
-                        </div>{" "}
-                        <div class="px-2 w-full sm:w-1/2">
-                          <label
-                            htmlFor="state"
-                            class="block text-black text-lg font-semibold"
-                          >
-                            State
-                          </label>
-                          <input
-                            type="text"
-                            id="state"
-                            name="state"
-                            onChange={handleChange}
-                            placeholder="Delhi"
-                            class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                            value={patientDetails?.address?.state}
-                            style={{ width: '100%' }}
-                          />
-                          {errors.state && (
-                            <p className="text-red-500">{errors.state}</p>
-                          )}
-                        </div>{" "}
-                      </div>
+            <input
+              value={searchTerm}
+              onChange={handleSearch}
+              type="search"
+              id="default-search"
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            <ul
+              style={{
+                width: "100%",
+                zIndex: 9999,
+                position: "absolute",
+              }}
+              className="divide-y divide-gray-200 bg-white whitespace-normal"
+            >
+              {filteredPatients.map((patient) => (
+                <li key={patient.id} className="p-4">
+                  <div onClick={() => handlepatientDetails(patient._id)}>
+                    <div className="font-bold">{patient.name}</div>
+                    <div className="text-sm">
+                      <span className="ml-2">Email: {patient.email}</span>
+                      <span className="ml-2">
+                        Phone Number: {patient.phoneNo}
+                      </span>
                     </div>
                   </div>
-                  {/* <div className="px-2 w-full sm:w-1/2">
-                                            <label
-                                                htmlFor="area"
-                                                className="block text-black text-lg font-semibold"
-                                            >
-                                                Area
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="area"
-                                                name="area"
-                                                value={patientDetails.area}
-                                                onChange={handleChange}
-                                                placeholder="Green Park"
-                                                className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${areaError ? "border-red-500" : ""
-                                                    }`}
-                                            />
-                                            {errors.area && (
-                                                <p className="text-red-500">{errors.area}</p>
-                                            )}
-                                        </div>{" "}
-                                        <div className="px-2 w-full sm:w-1/2">
-                                            <label
-                                                htmlFor="pinCode"
-                                                className="block text-black text-lg font-semibold"
-                                            >
-                                                Pincode
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="pinCode"
-                                                name="pinCode"
-                                                value={patientDetails?.address?.pinCode}
-                                                onChange={handleChange}
-                                                placeholder="110016"
-                                                className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${pinCodeError ? "border-red-500" : ""
-                                                    }`}
-                                            />
-                                            {errors.pinCode && (
-                                                <p className="text-red-500">{errors.pinCode}</p>
-                                            )}
-                                        </div>{" "}
-                                        <div className="px-2 w-full sm:w-1/2">
-                                            <label
-                                                htmlFor="district"
-                                                className="block text-black text-lg font-semibold"
-                                            >
-                                                District
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="district"
-                                                name="district"
-                                                value={patientDetails?.address?.district}
-                                                onChange={handleChange}
-                                                placeholder="South Delhi"
-                                                className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${districtError ? "border-red-500" : ""
-                                                    }`}
-                                            />
-                                            {errors.district && (
-                                                <p className="text-red-500">{errors.district}</p>
-                                            )}
-                                        </div>{" "}
-                                        <div className="px-2 w-full sm:w-1/2">
-                                            <label
-                                                htmlFor="state"
-                                                className="block text-black text-lg font-semibold"
-                                            >
-                                                State
-                                            </label>
-                                            <input
-                                                type="text"
-                                                id="state"
-                                                name="state"
-                                                value={patientDetails?.address?.state}
-                                                onChange={handleChange}
-                                                placeholder="Delhi"
-                                                className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${stateError ? "border-red-500" : ""
-                                                    }`}
-                                            />
-                                            {errors.state && (
-                                                <p className="text-red-500">{errors.state}</p>
-                                            )}
-                                        </div>{" "} */}
-                </div>
-                {/* </div> */}
-              </div>
-            </div>
-            <div className="mt-10 w-100 items-center justify-center text-center" >
-              <button
-                className="rounded-full justify-center items-center px-9 py-2 bg-[#89CFF0] text-white"
-                onClick={handleRegister}
+                </li>
+              ))}
+            </ul>
+
+          </div>
+
+          <div className=" mt-3 relative">
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 170,
+                marginBottom: 2,
+              }}
+            >
+              <label
+                for="refBy"
+                className="block text-black text-lg font-semibold"
               >
-                Process
-              </button>
+                Ref by
+              </label>
+            </div>
+            <input
+              value={patientDetails?.refBy}
+              onChange={handleChange}
+              type="text"
+              name="refBy"
+              id="refBy"
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+
+          </div>
+
+          {/* <div className=" mt-3 relative">
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                gap: 170,
+                marginBottom: 2,
+              }}
+            >
+              <label
+                for="test"
+                className="block text-black text-lg font-semibold"
+              >
+                Test Asked
+              </label>
+            </div>
+            <input
+              // value={searchTerm}
+              // onChange={handleSearch}
+              type="text"
+              id="test"
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+
+          </div> */}
+
+          <div className=" mt-3">
+            <label
+              for="total-experience"
+              className="block text-black text-lg font-semibold"
+            >
+              Gender
+            </label>
+            <Select
+              className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70   bg-white  text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              popupClassName="no-border-dropdown-menu"
+              id="gender"
+              name="gender"
+              value={patientDetails?.gender}
+              onChange={handleChange1}
+              placeholder="Select Gender"
+              style={{ overflowY: "auto" }}
+              dropdownStyle={{
+                maxHeight: "300px",
+                overflowY: "auto",
+              }}
+            >
+              {Gender.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
+            {errors.totalExperience && (
+              <p className="text-red-500">{errors.totalExperience}</p>
+            )}
+          </div>
+
+          <div className="flex flex-row gap-2">
+            <div className="mt-3 flex flex-col w-1/2">
+              <label
+                for="degree"
+                className="block text-black text-lg font-semibold"
+              >
+                Age
+              </label>
+              <input
+                type="text"
+                id="age"
+                name="age"
+                onChange={handleChange}
+                value={patientDetails?.age}
+                className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+            </div>
+            <div className="mt-3 flex flex-col w-1/2">
+              <label
+                for="degree"
+                className="block text-black text-lg font-semibold"
+              >
+                Age Type
+              </label>
+              <Select
+                className="border rounded-lg h-11"
+                popupClassName="no-border-dropdown-menu"
+                id="ageType"
+                name="ageType"
+                value={patientDetails?.ageType}
+                onChange={handleChange2}
+                placeholder="Select Age Type"
+                style={{ overflowY: "auto" }}
+                dropdownStyle={{
+                  maxHeight: "300px",
+                  overflowY: "auto",
+                }}
+              >
+                {AgeType.map((option) => (
+                  <Select.Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Select.Option>
+                ))}
+              </Select>
+              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
           </div>
         </div>
-      </div >
+
+        {/* ----------------------------------right---------------------------------- */}
+        <div
+          div
+          className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3"
+        >
+          {/* <div style={{ display: 'flex', flexDirection: 'row', gap: 400 }}> */}
+          <p className="text-3xl ">Personal Information</p>
+          <p className="mt-2">
+            Patient Id:{" "}
+            {patientDetails?.registrationNo
+              ? patientDetails?.registrationNo
+              : incrementedId}
+          </p>
+          {/* </div> */}
+          <hr className="border my-2 " />
+          {/* -------name------- */}
+          <div className="mt-3">
+            <label
+              for="name"
+              className="block text-black text-lg font-semibold"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              value={patientDetails?.name}
+              onChange={handleChange}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.name && <p className="text-red-500">{errors.name}</p>}
+          </div>
+
+          {/* -----------contact----------- */}
+          <div className="mt-3">
+            <label
+              for="contact"
+              className="block text-black text-lg font-semibold"
+            >
+              Contact Number
+            </label>
+            <input
+              type="text"
+              id="phoneNo"
+              name="phoneNo"
+              onChange={handleChange}
+              value={patientDetails?.phoneNo}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, "");
+              }}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {/* {errors.phoneNo && ( */}
+            <p class=" text-red-500 ">{mobileNumberError}</p>
+            {/* )} */}
+          </div>
+
+          {/* -----------Email----------- */}
+          <div className="mt-3">
+            <label
+              for="email"
+              className="block text-black text-lg font-semibold"
+            >
+              Email
+            </label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              onChange={handleChange}
+              value={patientDetails?.email}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.phoneNo && <p className="text-red-500">{errors.phoneNo}</p>}
+          </div>
+          {/* -----------address----------- */}
+          <div className="mt-3">
+            <label
+              for="houseNo"
+              className="block text-black text-lg font-semibold"
+            >
+              Address
+            </label>
+            <div className="p-3 pb-5 border shadow-lg rounded-md">
+              <div className="flex flex-col ">
+                <div className="flex flex-row">
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      placeholder="House No."
+                      id="houseNo"
+                      name="houseNo"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.houseNo}
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      id="floor"
+                      name="floor"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.floor}
+                      placeholder="Floor"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+                  <div className="px-2 w-full sm:w-1/3 mt-3">
+                    <input
+                      type="text"
+                      id="block"
+                      name="block"
+                      onChange={handleChange}
+                      placeholder="Block"
+                      value={patientDetails?.address?.block}
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.block && (
+                      <p className="text-red-500">{errors.block}</p>
+                    )}
+                  </div>
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="pinCode"
+                      name="pinCode"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.pinCode}
+                      placeholder="Pin Code"
+                      onInput={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-6]/g, "");
+                      }}
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="px-2 w-full mt-3 ">
+                  <input
+                    type="text"
+                    id="area"
+                    name="area"
+                    onChange={handleChange}
+                    value={patientDetails?.address?.area}
+                    placeholder="Area/Landmark"
+                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  />
+                  {errors.area && <p className="text-red-500">{errors.area}</p>}
+                </div>
+
+                <div className="flex flex-row">
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="district"
+                      name="district"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.district}
+                      placeholder="District"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.district && (
+                      <p className="text-red-500">{errors.district}</p>
+                    )}
+                  </div>
+
+                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="state"
+                      name="state"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.state}
+                      placeholder="State"
+                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                    {errors.state && (
+                      <p className="text-red-500">{errors.state}</p>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-row-reverse mt-5 my-2">
+            <button
+              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              style={{
+                backgroundColor: "#89CFF0",
+              }}
+              onClick={handleRegister}
+            >
+              Continue...
+            </button>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
