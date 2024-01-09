@@ -212,6 +212,7 @@ export default function PatientListUser({ searchTerm }) {
             width: isTab ? "80%" : "70%",
             backgroundColor: "#89CFF0",
             alignContent: "center",
+            borderRadius: "23px",
           },
         }}
       >
