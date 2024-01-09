@@ -281,7 +281,7 @@ export default function EditAppointment()
     selectedDoctor && selectedDoctor.workingDays
       ? abbreviateAndCombineDays(selectedDoctor.workingDays)
       : "";
-
+  const [doctorConsultationFee, setdoctorConsultationFee] = useState();
   useEffect(() =>
   {
     const fetchAppointmentDetails = async () =>
@@ -312,6 +312,12 @@ export default function EditAppointment()
           "DATA from USE EFFECT get_appointmentById response",
           data?.data
         );
+        console.log(
+          "consultation fee ",
+          data?.data?.doctorId?.consultationFee
+        );
+        setdoctorConsultationFee(data?.data?.doctorId?.consultationFee)
+
         setSelectedDoctor({
           _id: data?.data?.doctorId?._id,
           name: data?.data?.doctorId?.name,
@@ -640,20 +646,20 @@ export default function EditAppointment()
   return (
     <>
       <div>
-        <div class="flex flex-col ">
-          <div className="flex md:flex-row p-2 pt-5 flex-col">
+        <div class=" ">
+          <div className="flex lg:flex-row p-2 pt-5 flex-col ">
             {/* ---------------------------left part--------------------------- */}
-            <div className="flex flex-col px-1 md:w-1/3">
-              <div className="">
+            <div className="flex flex-col  px-1 lg:w-1/2 mr-10">
+              <div className=" mx-auto">
                 {selectedDoctor?.doctorPic ? (
                   <img
                     src={selectedDoctor?.doctorPic}
                     alt="doctor image"
-                    className=" h-50 max-w-fit"
+                    className=" max-w-fit"
                   ></img>
                 ) : (
                   <AccountCircleIcon
-                    style={{ height: "60%", width: "60%", color: "#B1DAED" }}
+                    style={{ height: '100%', width: '100%', color: "#B1DAED", }}
                   />
                 )}
               </div>
@@ -687,7 +693,7 @@ export default function EditAppointment()
                     ></img>
                   </div>
                   <div className="">
-                    <p className="text-gray-600 text-xl ">
+                    <p className="text-gray-600 text-xl truncate overflow-x-auto w-60">
                       {selectedDoctor?.address?.houseNo +
                         " " +
                         selectedDoctor?.address?.block +
@@ -704,9 +710,9 @@ export default function EditAppointment()
                 </div>
               </div>
             </div>
+
             {/* --------------------------------right part-------------------------------- */}
-            {/* {!otppage && ( */}
-            <div className="flex flex-col  md:w-1/3 px-2">
+            <div className="flex flex-col   lg:w-1/2 px-2 mr-16">
               <div className=" py-1 mb-2">
                 <p className="text-lg font-medium text-black ">SPECIALITY</p>
                 <div className="flex flex-wrap ">
@@ -781,81 +787,20 @@ export default function EditAppointment()
                   <div className="flex flex-col  bg-white p-1 px-3">
                     <p className="flex place-content-between my-1">
                       <span className="font-medium px-2">Consultation</span>{" "}
-                      <span className="font-bold px-2">Rs1000</span>
+                      <span className="font-bold px-2">Rs {doctorConsultationFee}</span>
                     </p>
-                    {/* {!bookingslottoggle && !appointment && ( */}
-                    <div>
-                      <p className="text-xs text-gray-500 px-2 my-1">
-                        Slot available for Tommorrow{" "}
-                      </p>
-                      <Tooltip placement="top" title="Booked Slots">
-                        <p className="flex flex-row justify-between  my-1 mx-2">
-                          <div className="w-1/3 px-2 h-10">
-                            <div
-                              className="rounded-3xl py-1 px-2 mt-2 text-center"
-                              style={{
-                                backgroundColor: selectedDoctor?.slots?.[0]
-                                  ?.isBooked
-                                  ? "#4974a5"
-                                  : "#E5E7EB",
-                                color: selectedDoctor?.slots?.[0]?.isBooked
-                                  ? "white"
-                                  : "#1F2937",
-                              }}
-                            >
-                              {selectedDoctor?.slots?.[0]?.startTime}
-                            </div>
-                          </div>
-
-                          <div className="w-1/3 px-2 h-10">
-                            <div
-                              className="rounded-3xl py-1 px-2 mt-2 text-center"
-                              style={{
-                                backgroundColor: selectedDoctor?.slots?.[0]
-                                  ?.isBooked
-                                  ? "#4974a5"
-                                  : "#E5E7EB",
-                                color: selectedDoctor?.slots?.[0]?.isBooked
-                                  ? "white"
-                                  : "#1F2937",
-                              }}
-                            >
-                              {selectedDoctor?.slots?.[1]?.startTime}
-                            </div>
-                          </div>
-
-                          <div className="w-1/3 px-2 h-10">
-                            <div
-                              className="rounded-3xl py-1 px-2 mt-2 text-center"
-                              style={{
-                                backgroundColor: selectedDoctor?.slots?.[0]
-                                  ?.isBooked
-                                  ? "#4974a5"
-                                  : "#E5E7EB",
-                                color: selectedDoctor?.slots?.[0]?.isBooked
-                                  ? "white"
-                                  : "#1F2937",
-                              }}
-                            >
-                              {selectedDoctor?.slots?.[2]?.startTime}
-                            </div>
-                          </div>
-                        </p>
-                      </Tooltip>
-                    </div>
-                    {/* )} */}
                     <div>
                       {bookingslottoggle && (
                         <div className="flex flex-col">
                           <div className=" flex flex-col text-center space-y-2">
-                            <div class="flex flex-row border-2">
+                            <div class="flex flex-row border-2 overflow-x-scroll">
                               <button
                                 className="text-white text-xs rounded-3xl  "
                                 onClick={goToPrev}
                               >
                                 <FaAngleLeft style={{ color: "black" }} />
                               </button>
-                              <div className="flex flex-row overflow-x-auto mx-2 ">
+                              <div className="flex flex-row overflow-x-auto mx-auto ">
                                 {keys.map((item, index) =>
                                 {
                                   const { year, monthName, day, dayName } =
@@ -902,7 +847,7 @@ export default function EditAppointment()
                                   return (
                                     <div
                                       key={index}
-                                      className={` w-1/3 px-2  ${marginb} `}
+                                      className={` w-1/4 px-4  ${marginb} `}
                                       disabled={item.isBooked}
                                     >
                                       <div
@@ -925,7 +870,7 @@ export default function EditAppointment()
                                     >
                                       <div
                                         key={index}
-                                        className={` w-1/3 px-2 ${marginb}`}
+                                        className={` w-1/4 px-4 ${marginb}`}
                                         disabled
                                       >
                                         <div
@@ -945,7 +890,7 @@ export default function EditAppointment()
                                   return (
                                     <div
                                       key={index}
-                                      className={` w-1/3 px-2  ${marginb}`}
+                                      className={` w-1/4 px-4  ${marginb}`}
                                       onClick={() =>
                                       {
                                         handleTimeClick(index);
@@ -969,7 +914,7 @@ export default function EditAppointment()
                       {bookingslottoggle && !appointment && (
                         <div class="flex mx-auto space-x-4 mt-3">
                           <button
-                            className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
+                            className="text-white text-sm rounded-3xl px-5 py-2 mb-1 "
                             onClick={handleBookAppointment}
                             style={{ backgroundColor: " #89CFF0" }}
                           >
