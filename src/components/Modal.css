@@ -28,7 +28,7 @@
 
 .form-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   margin-bottom: 1rem;
 }
 
@@ -43,6 +43,7 @@
 
 .form-group label {
   margin-bottom: 0.2rem;
+  margin-right: 0.5rem;
 }
 
 .error {

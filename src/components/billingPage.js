@@ -93,12 +93,15 @@ export default function BillingPage({ name, contactNo, gender, age })
 
 
 
-  const handleTestAdd = (testId, cost) => () =>
+  const handleTestAdd = (testId, cost, bioRef, units, technology) => () =>
   {
 
     const testToAdd = {
       testPackage: testId,
       price: cost,
+      technology: technology,
+      units: units,
+      bio: bioRef,
       action: <MdOutlineDelete />,
     };
 
@@ -126,7 +129,7 @@ export default function BillingPage({ name, contactNo, gender, age })
   }
   const addRow = () =>
   {
-    setTableData([...tableData, { testPackage: '-', price: '-', action: '-' }]);
+    setTableData([...tableData, { testPackage: '-', price: '-', technology: '-', Units: '-', BioRef: '-', action: '-' }]);
   };
 
   const calculateTotalPrice = () =>
@@ -245,6 +248,20 @@ export default function BillingPage({ name, contactNo, gender, age })
               </p>
             </div>
 
+            <div style={{ marginTop: "3px" }}>
+              <p style={{ color: "gray" }}>Ref By</p>
+              <p
+                style={{
+                  color: "black",
+                  fontWeight: 500,
+                  marginTop: "5px",
+                  marginBottom: "10px",
+                }}
+              >
+                {localStorage.getItem("ref")}
+              </p>
+            </div>
+
             <hr />
             <hr />
 
@@ -302,6 +319,15 @@ export default function BillingPage({ name, contactNo, gender, age })
                         Price
                       </th>
                       <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
+                        Technology
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
+                        Units
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
+                        Bio.Ref
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
                         Action
                       </th>
                     </tr>
@@ -316,6 +342,9 @@ export default function BillingPage({ name, contactNo, gender, age })
                           {row.testPackage}
                         </th>
                         <td className="px-6 py-4 text-sm">{row.price}</td>
+                        <td className="px-6 py-4 text-sm">{row.technology}</td>
+                        <td className="px-6 py-4 text-sm">{row.units}</td>
+                        <td className="px-6 py-4 text-sm">{row.bio}</td>
                         <td className="px-6 py-4">
                           <button onClick={() => deleteRow(index)}><MdOutlineDelete size={25} color="red" /></button>
                         </td>
@@ -437,7 +466,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                       <ul style={{ width: '80%' }} className=" absolute divide-y divide-gray-200 bg-white">
                         {filteredTest.map((test) => (
                           <li key={test.id} className="p-4">
-                            <div onClick={handleTestAdd(test.testName, test.costOfDiagnosticTest)} className="font-bold">
+                            <div onClick={handleTestAdd(test.testName, test.costOfDiagnosticTest, test.bioRefInterval, test.unit, test.technology)} className="font-bold">
                               {test.testName}
                             </div>
                           </li>
