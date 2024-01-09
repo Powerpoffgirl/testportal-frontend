@@ -341,6 +341,8 @@ export default function DoctorFormAdmin() {
     // Check if the token exists
     if (doctorDetails.name === "") {
       toast.error("Please write name");
+    } else if (doctorDetails.registrationNo === "") {
+      toast.error("Please write registration number");
     } else if (doctorDetails.email === "") {
       toast.error("Please write email");
     } else if (doctorDetails.contactNumber === "") {
@@ -762,7 +764,7 @@ export default function DoctorFormAdmin() {
                 Interval
               </label>
               <input
-                type="text"
+                type="number"
                 id="interval"
                 name="interval"
                 // placeholder="snehaahuja1234@gmail.com"

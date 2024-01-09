@@ -894,7 +894,7 @@ export default function DoctorListUser({ searchTerm }) {
                     <p className=" text-gray-500 sm:text-sm text-xs flex flex-row">
                       {/* {doctor?.speciality?.join(", ")} */}
                       {doctor?.speciality?.slice(0, 2).join(", ")}
-                      <p class="text-black font-bold">...</p>
+                      <p class="text-gray">...</p>
                     </p>
                     <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience
