@@ -222,13 +222,14 @@ export default function AppointmentList({ searchTerm }) {
     console.log("appointmentId########################", appointmentId);
     // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const appointment = appointmentList?.find(
-      (appointment) => appointment._id === appointmentId
+      (appointment) => appointment?._id === appointmentId
     );
     setSelectedAppointment(appointment); // This will return the doctor object if found, otherwise undefined
     onOpenModal();
-    setDiseasesinfo(appointment.diseases);
-    setIssuessinfo(appointment.issues);
-    setMedicineinfo(appointment.medicineName);
+    setDiseasesinfo(appointment?.diseases?.join(", "));
+    console.log("disease array ======", diseasesinfo)
+    setIssuessinfo(appointment?.issues?.join(", "));
+    setMedicineinfo(appointment?.medicineName?.join(", "));
   };
 
   const handleConsult = (appointment) => {
@@ -248,6 +249,7 @@ export default function AppointmentList({ searchTerm }) {
 
   return (
     <>
+      {/* appointment accepted */}
       <Modal
         open={modalOpen}
         onClose={onCloseModal}
@@ -309,8 +311,7 @@ export default function AppointmentList({ searchTerm }) {
         </div>
       </Modal>
 
-      {/* other modal */}
-
+      {/* appointment details */}
       <Modal
         open={open}
         onClose={onCloseModall}
@@ -319,8 +320,10 @@ export default function AppointmentList({ searchTerm }) {
         styles={{
           modal: {
             width: isTab ? "80%" : "70%",
-            backgroundColor: "#fff",
+
             alignContent: "center",
+            borderRadius: '23px',
+            backgroundColor: '#E3F6FF'
           },
         }}
       >
@@ -330,6 +333,7 @@ export default function AppointmentList({ searchTerm }) {
               style={{
                 fontSize: "90px",
                 color: "#B1DAED",
+
                 borderRadius: "50%",
                 height: isTab ? "40px" : "123px",
                 width: isTab ? "40px" : "123px",
