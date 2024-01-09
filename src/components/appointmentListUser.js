@@ -83,11 +83,11 @@ export default function AppointmentListUser({ searchTerm })
     setFilteredAppointmentList(matchedDoctors);
   }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleEditAppointment = async (appointmentId, appointmentDate, appointmentTime) =>
+  const handleEditAppointment = async (appointmentId, appointmentDate, appointmentTime, doctorId) =>
   {
     localStorage.setItem("appointmentId", appointmentId);
 
-    navigate("/editappointment");
+
     try
     {
       const token = localStorage.getItem("token");
@@ -97,7 +97,7 @@ export default function AppointmentListUser({ searchTerm })
         return;
       }
 
-      const doctorId = localStorage.getItem("doctorId")
+
 
       const details = {
         date: appointmentDate,
@@ -122,7 +122,8 @@ export default function AppointmentListUser({ searchTerm })
       if (response.ok)
       {
         console.log("Appointment slot deleted successfully", data);
-        toast.success("Appointment Slot Deleted!");
+
+        navigate("/editappointment");
 
       }
 
@@ -132,7 +133,7 @@ export default function AppointmentListUser({ searchTerm })
     }
   };
 
-  const handleDeleteAppointment = async (appointmentId, appointmentDate, appointmentTime) =>
+  const handleDeleteAppointment = async (appointmentId, appointmentDate, appointmentTime, doctorId) =>
   {
     try
     {
@@ -168,7 +169,7 @@ export default function AppointmentListUser({ searchTerm })
           )
         );
 
-        const doctorId = localStorage.getItem("doctorId")
+
 
         const details = {
           date: appointmentDate,
@@ -482,7 +483,7 @@ export default function AppointmentListUser({ searchTerm })
                     okType="danger"
                     cancelText="No"
                     className="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                    onConfirm={() => handleDeleteAppointment(appointment._id, appointment?.appointmentDate?.date, appointment?.appointmentDate?.time)}
+                    onConfirm={() => handleDeleteAppointment(appointment._id, appointment?.appointmentDate?.date, appointment?.appointmentDate?.time, appointment?.doctorId?._id)}
                   >
                     <button
                       danger
@@ -495,7 +496,7 @@ export default function AppointmentListUser({ searchTerm })
                   </Popconfirm>
                   <button
                     class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
-                    onClick={() => handleEditAppointment(appointment._id)}
+                    onClick={() => handleEditAppointment(appointment._id, appointment?.appointmentDate?.date, appointment?.appointmentDate?.time, appointment?.doctorId?._id)}
                     style={{ height: isTab ? null : null, marginTop: isTab ? null : null, }}
                   >
                     {'Edit'}
