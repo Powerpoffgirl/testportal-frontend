@@ -246,85 +246,92 @@ export default function AppointmentListUser({ searchTerm }) {
         {filteredAppointmentList?.length > 0 ? (
           filteredAppointmentList?.map((appointment) => (
             <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" >
-              <div className="flex flex-row justify-start items-center">
-                <div class="flex items-center gap-x-2" onClick={() => findSelectedDoctor(appointment?._id)}>
+              <div className="flex flex-col xl:flex-row justify-start items-center">
+                <div class="flex items-center gap-x-2 mr-auto" onClick={() => findSelectedDoctor(appointment?._id)}>
                   {
                     appointment?.doctorId?.doctorPic ? <img
-                      class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                      class="object-cover w-20 h-20  rounded-full"
                       src={appointment?.doctorId?.doctorPic}
                       alt={appointment?.doctorId?.doctorPic.name}
                     />
                       :
                       <AccountCircleIcon style={{ fontSize: '90px', color: "#B1DAED" }} />
                   }
-                  <div
-                    class="flex flex-row bg-white p-2 md:flex-row justify-between"
-                    style={{
-                      borderRadius: "5px",
-                      marginBottom: "10px",
-                      position: "relative",
-                    }}
-                  >
-                    <div className="flex flex-row items-center">
-                      <div>
-                        <h1 class="font-semibold text-gray-700 sm:text-lg text-sm capitalize">
-                          <p class="text-gray-500 sm:text-sm text-xs">
-                            Doctor's Name:<span className="ms-2"></span>
-                          </p>
+                  <div class="flex flex-row">
 
-                          {appointment?.doctorId?.name}
+                    <div class="flex lg:flex-row flex-col">
+                      <div class="flex  bg-white p-2 md:flex-row justify-between"
+                        style={{
+                          borderRadius: "5px",
+                          marginBottom: "10px",
+                          position: "relative",
+                        }}
+                      >
+                        <div className="flex flex-row items-center">
+                          <div>
+                            <h1 class="font-semibold text-gray-700 sm:text-lg text-sm capitalize">
+                              <p class="text-gray-500 sm:text-sm text-xs">
+                                Doctor's Name:<span className="ms-2"></span>
+                              </p>
+
+                              {appointment?.doctorId?.name}
+                            </h1>
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{ textAlign: "center" }} class="mt-2">
+                        <h1
+                          class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                          style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
+                        >
+                          <p class="text-gray-500 sm:text-sm text-xs">
+                            Patient's Name:<span className="ms-2"></span>
+                          </p>
+                          {appointment?.patientId?.name ? appointment?.patientId?.name : "No Name"}
                         </h1>
                       </div>
                     </div>
-                  </div>
-                  <div style={{ textAlign: "center" }}>
-                    <h1
-                      class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                      style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
-                    >
-                      <p class="text-gray-500 sm:text-sm text-xs">
-                        Patient's Name:<span className="ms-2"></span>
-                      </p>
-                      {appointment?.patientId?.name ? appointment?.patientId?.name : "No Name"}
-                    </h1>
-                  </div>
 
-                  <div style={{ textAlign: "center" }}>
-                    <h1
-                      class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                      style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
-                    >
-                      <p class="text-gray-500 sm:text-sm text-xs">
-                        Date & Time:<span className="ms-2"></span>
-                      </p>
-                      {appointment?.appointmentDate?.date ? appointment?.appointmentDate?.date.split('-').reverse().join('-') : "No Date"}
-                      {/* <br />
+                    <div class="flex lg:flex-row flex-col">
+                      <div style={{ textAlign: "center" }} class="mt-2" >
+                        <h1
+                          class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                          style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
+                        >
+                          <p class="text-gray-500 sm:text-sm text-xs">
+                            Date & Time:<span className="ms-2"></span>
+                          </p>
+                          {appointment?.appointmentDate?.date ? appointment?.appointmentDate?.date.split('-').reverse().join('-') : "No Date"}
+                          {/* <br />
                     {appointment?.appointmentDate?.time} */}
-                    </h1>
+                        </h1>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          borderRadius: "5px",
+                          marginBottom: "20px",
+                          position: "relative",
+                          left: "29px",
+                          top: "8px",
+                          gap: '1px'
+                        }}
+                      >
+                        <h1
+                          class="font-semibold text-gray-700 sm:text-lg text-sm capitalize "
+                          style={{ marginLeft: isTab ? "-30px" : "8px", marginRight: isTab ? "4px" : "8px" }}
+                        >
+                          <p class="text-gray-500 sm:text-sm text-xs">
+                            Appointment status:<span className="ms-2"></span>
+                          </p>
+                          {appointment?.appointmentStatus}
+                        </h1>
+                      </div>
+                    </div>
+
                   </div>
 
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      borderRadius: "5px",
-                      marginBottom: "20px",
-                      position: "relative",
-                      left: "29px",
-                      top: "12px",
-                      gap: '1px'
-                    }}
-                  >
-                    <h1
-                      class="font-semibold text-gray-700 sm:text-lg text-sm capitalize "
-                      style={{ marginLeft: isTab ? "-30px" : "8px", marginRight: isTab ? "4px" : "8px" }}
-                    >
-                      <p class="text-gray-500 sm:text-sm text-xs">
-                        Appointment status:<span className="ms-2"></span>
-                      </p>
-                      {appointment?.appointmentStatus}
-                    </h1>
-                  </div>
                 </div>
                 <div class="flex flex-row ms-auto gap-1 sm:gap-1" style={{ flexDirection: 'row' }}>
                   <Popconfirm title="Delete the Appointment"
@@ -337,17 +344,17 @@ export default function AppointmentListUser({ searchTerm }) {
                     <button danger
                       class="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-black bg-[#EF5F5F] text-xs sm:text-sm"
                       // onClick={() => handleDeleteAppointment(appointment._id)}
-                      style={{ marginTop: isTab ? 90 : null, paddingLeft: isTab ? 10 : null, paddingRight: isTab ? 10 : null, marginRight: 10 }}
+                      style={{ marginRight: 10 }}
                     >
-                      {isTab ? <FaTrashAlt /> : 'Delete'}
+                      {'Delete'}
                     </button>
                   </Popconfirm>
                   <button
                     class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
                     onClick={() => handleEditAppointment(appointment._id)}
-                    style={{ height: isTab ? 25 : null, marginTop: isTab ? 90 : null, }}
+                    style={{ height: isTab ? null : null, marginTop: isTab ? null : null, }}
                   >
-                    {isTab ? <FaEdit /> : 'Edit'}
+                    {'Edit'}
                   </button>
                 </div>
               </div>
