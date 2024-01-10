@@ -36,7 +36,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 export default function AppointmentList({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [patientsList, setPatientsList] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
@@ -44,8 +44,14 @@ export default function AppointmentList({ searchTerm }) {
   const [selectedPatient, setSelectedPatient] = useState();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [openl, setOpenl] = useState(false);
   const onOpenModal = () => setOpen(true);
-  const onCloseModall = () => setOpen(false);
+  const onOpenModall = () => setOpenl(true);
+  const onCloseModall = () => {
+    console.log("clicked")
+    setOpenl(false)
+  };
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [diseasesinfo, setDiseasesinfo] = useState("");
@@ -60,6 +66,7 @@ export default function AppointmentList({ searchTerm }) {
   ]);
 
   const onCloseModal = () => {
+    console.log("close tapped")
     setModalOpen(false);
     setModalContent("");
   };
@@ -218,12 +225,10 @@ export default function AppointmentList({ searchTerm }) {
       const doctorId = localStorage.getItem("DoctorId");
 
       if (status === "Decline") {
-
         const details = {
           date: date,
           time: time,
         };
-
 
         const response = await fetch(
           `${baseUrl}/api/v1/cancel_slot/${doctorId}`,
@@ -243,7 +248,6 @@ export default function AppointmentList({ searchTerm }) {
           console.log("Appointment slot deleted successfully", data);
           toast.success("Appointment Slot Deleted!");
         }
-
       }
     } catch (error) {
       console.error("There was an error:", error);
@@ -257,9 +261,9 @@ export default function AppointmentList({ searchTerm }) {
       (appointment) => appointment?._id === appointmentId
     );
     setSelectedAppointment(appointment); // This will return the doctor object if found, otherwise undefined
-    onOpenModal();
+    onOpenModall();
     setDiseasesinfo(appointment?.diseases?.join(", "));
-    console.log("disease array ======", diseasesinfo)
+    console.log("disease array ======", diseasesinfo);
     setIssuessinfo(appointment?.issues?.join(", "));
     setMedicineinfo(appointment?.medicineName?.join(", "));
   };
@@ -291,7 +295,7 @@ export default function AppointmentList({ searchTerm }) {
             boxShadow: "none", // Removes shadow or border effects
             backgroundColor: "#E3F6FF",
             alignContent: "center",
-            borderRadius: "23px"
+            borderRadius: "23px",
           },
           closeButton: {
             display: "none",
@@ -357,7 +361,7 @@ export default function AppointmentList({ searchTerm }) {
 
       {/* appointment details */}
       <Modal
-        open={open}
+        open={openl}
         onClose={onCloseModall}
         center
         patient={selectedAppointment}
@@ -365,30 +369,30 @@ export default function AppointmentList({ searchTerm }) {
           modal: {
             width: isTab ? "80%" : "70%",
             alignContent: "center",
-            borderRadius: '23px',
-            backgroundColor: '#E3F6FF'
+            borderRadius: "23px",
+            backgroundColor: "#E3F6FF",
           },
-          // closeButton: {
-          //   display: "none",
-          // },
+          closeButton: {
+            display: "none",
+          },
         }}
       >
-        {/* <div class="flex flex-row-reverse md:-mb-14  -mb-18 z-50 mb-10 ">
-          <button onClick={onCloseModal}>
-            <img src={close_button} alt="close button" class="w-8 mb-5"></img>
+        <div class="flex flex-row-reverse    z-50   hover:cursor-pointer">
+          <button onClick={onCloseModall}>
+            <img src={close_button} alt="close button" class="w-8 "></img>
           </button>
-         
-        </div> */}
+
+        </div>
         <div className="flex flex-col bg-customRedp-2 w-[100%] md:w-[100%]  mt-[2%]">
           <div className="flex flex-row w-[100%] justify-center ">
             <AccountCircleIcon
               style={{
-                fontSize: "90px",
+                fontSize: isTab ? "50px" : "90px",
                 color: "#B1DAED",
 
                 borderRadius: "50%",
-                height: isTab ? "40px" : "123px",
-                width: isTab ? "40px" : "123px",
+                height: isTab ? "80px" : "123px",
+                width: isTab ? "80px" : "123px",
                 marginRight: "70px",
                 boxShadow: "inset 0 0 0 2px #76767",
               }}
@@ -496,10 +500,10 @@ export default function AppointmentList({ searchTerm }) {
         {filteredAppointmentList?.map((appointment) => (
           <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
             <div className="flex flex-col xl:flex-row justify-start items-center">
-              <div class="flex items-center gap-x-2 mr-auto "
+              <div
+                class="flex items-center gap-x-2 mr-auto "
                 onClick={() => findSelectedDoctor(appointment?._id)}
               >
-
                 {appointment?.patientId?.patientPic ? (
                   <img
                     class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
@@ -508,14 +512,17 @@ export default function AppointmentList({ searchTerm }) {
                   />
                 ) : (
                   <AccountCircleIcon
-                    style={{ fontSize: isTab ? "50px" : "90px", color: "#B1DAED" }}
+                    style={{
+                      fontSize: isTab ? "50px" : "90px",
+                      color: "#B1DAED",
+                    }}
                   />
                 )}
 
                 <div class="flex lg:flex-row flex-col">
-
                   <div class="flex flex-row ">
-                    <div class="flex flex-row bg-white p-2 md:flex-row justify-between "
+                    <div
+                      class="flex flex-row bg-white p-2 md:flex-row justify-between "
                       style={{
                         borderRadius: "5px",
                         // marginBottom: "10px",
@@ -552,24 +559,24 @@ export default function AppointmentList({ searchTerm }) {
                         {appointment?.issues?.[0]}
                       </h1>
                     </div>
-
                   </div>
 
                   <div class="flex flex-row ml-4">
                     <div style={{ textAlign: "" }} class=" mt-2 mr-2">
-                      <div class="font-semibold text-gray-700 sm:text-lg text-sm capitalize "
-                        style={{
-                          // marginLeft: isTab ? "2px" : "8px",
-                          // marginRight: isTab ? "4px" : "8px",
-                        }}
+                      <div
+                        class="font-semibold text-gray-700 sm:text-lg text-sm capitalize "
+                        style={
+                          {
+                            // marginLeft: isTab ? "2px" : "8px",
+                            // marginRight: isTab ? "4px" : "8px",
+                          }
+                        }
                       >
                         <p class="text-gray-500 sm:text-sm text-xs">
                           Date & Time:<span className="ms-2"></span>
                         </p>
                         {appointment?.appointmentDate?.date}
-                        <span
-                          style={{ marginRight: "10px" }}
-                        ></span>
+                        <span style={{ marginRight: "10px" }}></span>
                         {appointment?.appointmentDate?.time}
                       </div>
                     </div>
@@ -587,12 +594,11 @@ export default function AppointmentList({ searchTerm }) {
                         {appointment?.diseases?.[0]}
                       </h1>
                     </div>
-
                   </div>
-
                 </div>
               </div>
-              <div className="flex flex-row ms-auto gap-1 sm:gap-1 ml-auto"
+              <div
+                className="flex flex-row ms-auto gap-1 sm:gap-1 ml-auto"
                 style={{ flexDirection: "row" }}
               >
                 {appointment.appointmentStatus === "Confirm" ? (
@@ -620,7 +626,12 @@ export default function AppointmentList({ searchTerm }) {
                     <button
                       className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                       onClick={() =>
-                        handleAppointmentStatus(appointment?._id, appointment?.appointmentDate?.date, appointment?.appointmentDate?.time, "decline")
+                        handleAppointmentStatus(
+                          appointment?._id,
+                          appointment?.appointmentDate?.date,
+                          appointment?.appointmentDate?.time,
+                          "decline"
+                        )
                       }
                     >
                       Decline
@@ -628,7 +639,12 @@ export default function AppointmentList({ searchTerm }) {
                     <button
                       className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
                       onClick={() =>
-                        handleAppointmentStatus(appointment?._id, appointment?.appointmentDate?.date, appointment?.appointmentDate?.time, "accept")
+                        handleAppointmentStatus(
+                          appointment?._id,
+                          appointment?.appointmentDate?.date,
+                          appointment?.appointmentDate?.time,
+                          "accept"
+                        )
                       }
                     >
                       Accept
