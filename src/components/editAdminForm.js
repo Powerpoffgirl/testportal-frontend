@@ -826,7 +826,7 @@ export default function EditAdminForm() {
                       value={doctorDetails?.address?.pinCode}
                       placeholder="Pin Code"
                       onInput={(e) => {
-                        e.target.value = e.target.value.replace(/[^0-6]/g, "");
+                        e.target.value = e.target.value.replace(/[^0-9]/g, "");
                       }}
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
