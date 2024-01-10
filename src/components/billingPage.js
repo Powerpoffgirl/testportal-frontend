@@ -174,8 +174,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
       <div class="flex" ref={componentPDF}>
         <div className="MainContainer flex lg:flex-row flex-col w-full">
           {/* --------------------left side-------------------- */}
-          <div
-            className=" mb-3 flex flex-col w-full lg:min-h-3/4 lg:w-3/12 p-6 mr-5 bg-white "
+          <div className=" mb-3 flex flex-col w-9/12 lg:min-h-3/4 lg:w-3/12 p-6 mr-5 bg-white "
             style={{
               // height: "75vh",
               // float: "left",
@@ -298,8 +297,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
             </div> */}
           </div>
           {/* --------------------right side-------------------- */}
-          <div
-            className=" lg:w-8/12 p-6 w-full bg-white lg:min-h-3/4"
+          <div className=" lg:w-6/12 p-6 w-9/12 xl:w-8/12 pr-4 bg-white lg:min-h-3/4"
             style={{
               boxSizing: "border-box ",
               // height: "75vh",
@@ -309,63 +307,43 @@ export default function BillingPage({ name, contactNo, gender, age }) {
             }}
           >
             {/* table */}
-            <div style={{ overflowY: "auto" }}>
-              <div className=" overflow-x-auto mb-10">
-                <table className=" text-sm text-left rtl:text-right text-gray-500 w-full">
-                  <thead className="text-xs text-gray-700 uppercase bg-gray-50 ">
+
+            <div style={{ overflowY: "auto" }} className="flex flex-wrap">
+              <div className="overflow-x-auto mb-10   ">
+                <table className="text-sm text-left rtl:text-right text-gray-500 ">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-black text-sm font-semibold"
-                      >
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
                         Test/package
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-black text-sm font-semibold"
-                      >
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
                         Price
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-black text-sm font-semibold"
-                      >
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
                         Technology
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-black text-sm font-semibold"
-                      >
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
                         Units
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-black text-sm font-semibold"
-                      >
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
                         Bio.Ref
                       </th>
-                      <th
-                        scope="col"
-                        className="px-6 py-3 text-black text-sm font-semibold"
-                      >
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
                         Action
                       </th>
                     </tr>
                   </thead>
                   <tbody>
                     {tableData.map((row, index) => (
-                      <tr key={index} className="bg-white border-b ">
-                        <th
-                          scope="row"
-                          className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap "
-                        >
+                      <tr key={index} className="bg-white border-b">
+                        <th scope="row" className="px-3 py-4 text-sm font-medium text-gray-900 whitespace-nowrap lg:px-6">
                           {row.testPackage}
                         </th>
-                        <td className="px-6 py-4 text-sm">{row.price}</td>
-                        <td className="px-6 py-4 text-sm">{row.technology}</td>
-                        <td className="px-6 py-4 text-sm">{row.units}</td>
-                        <td className="px-6 py-4 text-sm">{row.bio}</td>
-                        <td className="px-6 py-4">
+                        <td className="px-3 py-4 text-sm lg:px-6">{row.price}</td>
+                        <td className="px-3 py-4 text-sm lg:px-6">{row.technology}</td>
+                        <td className="px-3 py-4 text-sm lg:px-6">{row.units}</td>
+                        <td className="px-3 py-4 text-sm lg:px-6">{row.bio}</td>
+                        <td className="px-3 py-4 lg:px-6">
                           <button onClick={() => deleteRow(index)}>
                             <MdOutlineDelete size={25} color="red" />
                           </button>
@@ -376,6 +354,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                 </table>
               </div>
             </div>
+
 
             <form>
               <div class="flex mt-2 mb-3">
@@ -514,9 +493,9 @@ export default function BillingPage({ name, contactNo, gender, age }) {
               {/* ------------1st------------ */}
               <div
                 className="xl:w-1/3 w-full  xl:border-r border-gray-300"
-                // style={{
-                //   overflowY: 'auto'
-                // }}
+              // style={{
+              //   overflowY: 'auto'
+              // }}
               >
                 <p style={{ color: "gray" }}>Summary</p>
 
