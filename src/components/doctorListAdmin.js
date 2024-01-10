@@ -417,6 +417,21 @@ export default function DoctorListAdmin({ searchTerm })
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
+  const handleDelete = async (id) =>
+  {
+    console.log("DOCTRO ID", id)
+    const token = localStorage.getItem("token")
+    const response = await fetch(`${baseUrl}/api/v1/admin/delete_doctor/${id}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+    });
+    const data = await response.json();
+    console.log("DATA FROM RESPONSE", data)
+    // toast.success("Doctor deleted successfully")
+  }
 
 
   updateUser(userDetailsName);
@@ -447,7 +462,7 @@ export default function DoctorListAdmin({ searchTerm })
             <button onClick={onCloseModal}>
               <img src={close_button} class="w-8 mb-1"></img>
             </button>
-            <button>
+            <button onClick={() => handleDelete(selectedDoctor?._id)}>
               <img src={delete_button} class="w-8"></img>
             </button>
             <button>
