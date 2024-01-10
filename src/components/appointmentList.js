@@ -36,7 +36,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 export default function AppointmentList({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [patientsList, setPatientsList] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
@@ -44,8 +44,14 @@ export default function AppointmentList({ searchTerm }) {
   const [selectedPatient, setSelectedPatient] = useState();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [openl, setOpenl] = useState(false);
   const onOpenModal = () => setOpen(true);
-  const onCloseModall = () => setOpen(false);
+  const onOpenModall = () => setOpenl(true);
+  const onCloseModall = () => {
+    console.log("clicked")
+    setOpenl(false)
+  };
+
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
   const [diseasesinfo, setDiseasesinfo] = useState("");
@@ -60,6 +66,7 @@ export default function AppointmentList({ searchTerm }) {
   ]);
 
   const onCloseModal = () => {
+    console.log("close tapped")
     setModalOpen(false);
     setModalContent("");
   };
@@ -257,7 +264,7 @@ export default function AppointmentList({ searchTerm }) {
       (appointment) => appointment?._id === appointmentId
     );
     setSelectedAppointment(appointment); // This will return the doctor object if found, otherwise undefined
-    onOpenModal();
+    onOpenModall();
     setDiseasesinfo(appointment?.diseases?.join(", "));
     console.log("disease array ======", diseasesinfo)
     setIssuessinfo(appointment?.issues?.join(", "));
@@ -357,7 +364,7 @@ export default function AppointmentList({ searchTerm }) {
 
       {/* appointment details */}
       <Modal
-        open={open}
+        open={openl}
         onClose={onCloseModall}
         center
         patient={selectedAppointment}
@@ -368,27 +375,27 @@ export default function AppointmentList({ searchTerm }) {
             borderRadius: '23px',
             backgroundColor: '#E3F6FF'
           },
-          // closeButton: {
-          //   display: "none",
-          // },
+          closeButton: {
+            display: "none",
+          },
         }}
       >
-        {/* <div class="flex flex-row-reverse md:-mb-14  -mb-18 z-50 mb-10 ">
-          <button onClick={onCloseModal}>
-            <img src={close_button} alt="close button" class="w-8 mb-5"></img>
+        <div class="flex flex-row-reverse    z-50   hover:cursor-pointer">
+          <button onClick={onCloseModall}>
+            <img src={close_button} alt="close button" class="w-8 "></img>
           </button>
-         
-        </div> */}
+
+        </div>
         <div className="flex flex-col bg-customRedp-2 w-[100%] md:w-[100%]  mt-[2%]">
           <div className="flex flex-row w-[100%] justify-center ">
             <AccountCircleIcon
               style={{
-                fontSize: "90px",
+                fontSize: isTab ? "50px" : "90px",
                 color: "#B1DAED",
 
                 borderRadius: "50%",
-                height: isTab ? "40px" : "123px",
-                width: isTab ? "40px" : "123px",
+                height: isTab ? "80px" : "123px",
+                width: isTab ? "80px" : "123px",
                 marginRight: "70px",
                 boxShadow: "inset 0 0 0 2px #76767",
               }}
