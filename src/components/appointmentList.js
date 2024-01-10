@@ -33,8 +33,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function AppointmentList({ searchTerm })
-{
+export default function AppointmentList({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -60,21 +59,16 @@ export default function AppointmentList({ searchTerm })
     appointmentList,
   ]);
 
-  const onCloseModal = () =>
-  {
+  const onCloseModal = () => {
     setModalOpen(false);
     setModalContent("");
   };
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -95,22 +89,17 @@ export default function AppointmentList({ searchTerm })
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.doctorPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -128,19 +117,15 @@ export default function AppointmentList({ searchTerm })
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientsList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
-    const fetchAppointmentDetails = async () =>
-    {
-      try
-      {
+    const fetchAppointmentDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -163,20 +148,17 @@ export default function AppointmentList({ searchTerm })
         );
 
         setAppointmentList(filteredAppointmentList);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchAppointmentDetails();
   }, []);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     let matchedDoctors = [];
 
-    if (appointmentList?.length > 0 && searchTerm)
-    {
+    if (appointmentList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
 
       matchedDoctors = appointmentList.filter(
@@ -197,21 +179,17 @@ export default function AppointmentList({ searchTerm })
             .toLowerCase()
             .includes(lowerCaseSearchTerm)
       );
-    } else
-    {
+    } else {
       matchedDoctors = appointmentList;
     }
 
     setFilteredAppointmentList(matchedDoctors);
   }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleAppointmentStatus = async (patientId, date, time, status) =>
-  {
-    try
-    {
+  const handleAppointmentStatus = async (patientId, date, time, status) => {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -231,8 +209,7 @@ export default function AppointmentList({ searchTerm })
 
       const data = await response.json();
       console.log("DATA from response", data);
-      if (data.status === 200)
-      {
+      if (data.status === 200) {
         // setModalContent(status === "accept" ? "Accepted" : "Declined");
         // setModalOpen(true);
         window.location.reload();
@@ -240,8 +217,7 @@ export default function AppointmentList({ searchTerm })
 
       const doctorId = localStorage.getItem("DoctorId");
 
-      if (status === "Decline")
-      {
+      if (status === "Decline") {
 
         const details = {
           date: date,
@@ -263,21 +239,18 @@ export default function AppointmentList({ searchTerm })
 
         const data = await response.json();
 
-        if (response.ok)
-        {
+        if (response.ok) {
           console.log("Appointment slot deleted successfully", data);
           toast.success("Appointment Slot Deleted!");
         }
 
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error:", error);
     }
   };
 
-  const findSelectedDoctor = async (appointmentId) =>
-  {
+  const findSelectedDoctor = async (appointmentId) => {
     console.log("appointmentId########################", appointmentId);
     // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const appointment = appointmentList?.find(
@@ -291,8 +264,7 @@ export default function AppointmentList({ searchTerm })
     setMedicineinfo(appointment?.medicineName?.join(", "));
   };
 
-  const handleConsult = (appointment) =>
-  {
+  const handleConsult = (appointment) => {
     const appointmentId = appointment._id;
     console.log("appointment", appointment?.patientId._id);
     localStorage.setItem("appointmentId", appointmentId);
@@ -523,11 +495,11 @@ export default function AppointmentList({ searchTerm })
       <div className="flex flex-col">
         {filteredAppointmentList?.map((appointment) => (
           <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
-            <div className="flex flex-row justify-start items-center">
-              <div
-                class="flex items-center gap-x-2"
+            <div className="flex flex-col xl:flex-row justify-start items-center">
+              <div class="flex items-center gap-x-2 mr-auto "
                 onClick={() => findSelectedDoctor(appointment?._id)}
               >
+
                 {appointment?.patientId?.patientPic ? (
                   <img
                     class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
@@ -536,84 +508,91 @@ export default function AppointmentList({ searchTerm })
                   />
                 ) : (
                   <AccountCircleIcon
-                    style={{ fontSize: "90px", color: "#B1DAED" }}
+                    style={{ fontSize: isTab ? "50px" : "90px", color: "#B1DAED" }}
                   />
                 )}
-                <div
-                  class="flex flex-row bg-white p-2 md:flex-row justify-between"
-                  style={{
-                    borderRadius: "5px",
-                    marginBottom: "10px",
-                    position: "relative",
-                  }}
-                >
-                  <div className="flex flex-row items-center">
-                    <div>
-                      <h1 class="font-semibold ml-2 text-gray-700 sm:text-lg text-sm capitalize">
-                        {appointment?.patientId?.name}
-                      </h1>
-                      <h1 class="font-semibold text-gray-500 sm:text-sm text-xs capitalize">
-                        <span className="ms-2">
-                          {" "}
-                          {appointment?.patientId?.address?.district},{" "}
-                          {appointment?.patientId?.address?.pinCode},{" "}
-                          {appointment?.patientId?.address?.state}
-                        </span>
+
+                <div class="flex lg:flex-row flex-col">
+
+                  <div class="flex flex-row ">
+                    <div class="flex flex-row bg-white p-2 md:flex-row justify-between "
+                      style={{
+                        borderRadius: "5px",
+                        // marginBottom: "10px",
+                        position: "relative",
+                      }}
+                    >
+                      <div className="flex flex-row items-center">
+                        <div>
+                          <h1 class="font-semibold ml-2 text-gray-700 sm:text-lg text-sm capitalize">
+                            {appointment?.patientId?.name}
+                          </h1>
+                          <h1 class="font-semibold text-gray-500 sm:text-sm text-xs capitalize">
+                            <span className="ms-2">
+                              {" "}
+                              {appointment?.patientId?.address?.district},{" "}
+                              {appointment?.patientId?.address?.pinCode},{" "}
+                              {appointment?.patientId?.address?.state}
+                            </span>
+                          </h1>
+                        </div>
+                      </div>
+                    </div>
+                    <div style={{ textAlign: "center" }} class="lg:mt-2 mt-2">
+                      <h1
+                        class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                        style={{
+                          marginLeft: isTab ? "2px" : "8px",
+                          marginRight: isTab ? "4px" : "8px",
+                        }}
+                      >
+                        <p class="text-gray-500 sm:text-sm text-xs">
+                          Issues:<span className="ms-2"></span>
+                        </p>
+                        {appointment?.issues?.[0]}
                       </h1>
                     </div>
+
                   </div>
-                </div>
-                <div style={{ textAlign: "center" }}>
-                  <h1
-                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                    style={{
-                      marginLeft: isTab ? "2px" : "8px",
-                      marginRight: isTab ? "4px" : "8px",
-                    }}
-                  >
-                    <p class="text-gray-500 sm:text-sm text-xs">
-                      Date & Time:<span className="ms-2"></span>
-                    </p>
-                    {appointment?.appointmentDate?.date}
-                    <span
-                      style={{ marginLeft: "10px", marginRight: "10px" }}
-                    ></span>
-                    {appointment?.appointmentDate?.time}
-                  </h1>
-                </div>
 
-                <div style={{ textAlign: "center" }}>
-                  <h1
-                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                    style={{
-                      marginLeft: isTab ? "2px" : "8px",
-                      marginRight: isTab ? "4px" : "8px",
-                    }}
-                  >
-                    <p class="text-gray-500 sm:text-sm text-xs">
-                      Diseases:<span className="ms-2"></span>
-                    </p>
-                    {appointment?.diseases?.[0]}
-                  </h1>
-                </div>
+                  <div class="flex flex-row ml-4">
+                    <div style={{ textAlign: "" }} class=" mt-2 mr-2">
+                      <div class="font-semibold text-gray-700 sm:text-lg text-sm capitalize "
+                        style={{
+                          // marginLeft: isTab ? "2px" : "8px",
+                          // marginRight: isTab ? "4px" : "8px",
+                        }}
+                      >
+                        <p class="text-gray-500 sm:text-sm text-xs">
+                          Date & Time:<span className="ms-2"></span>
+                        </p>
+                        {appointment?.appointmentDate?.date}
+                        <span
+                          style={{ marginRight: "10px" }}
+                        ></span>
+                        {appointment?.appointmentDate?.time}
+                      </div>
+                    </div>
+                    <div style={{ textAlign: "" }} class="mt-2">
+                      <h1
+                        class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                        style={{
+                          marginLeft: isTab ? "2px" : "8px",
+                          marginRight: isTab ? "4px" : "8px",
+                        }}
+                      >
+                        <p class="text-gray-500 sm:text-sm text-xs">
+                          Diseases:<span className="ms-2"></span>
+                        </p>
+                        {appointment?.diseases?.[0]}
+                      </h1>
+                    </div>
 
-                <div style={{ textAlign: "center" }}>
-                  <h1
-                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                    style={{
-                      marginLeft: isTab ? "2px" : "8px",
-                      marginRight: isTab ? "4px" : "8px",
-                    }}
-                  >
-                    <p class="text-gray-500 sm:text-sm text-xs">
-                      Issues:<span className="ms-2"></span>
-                    </p>
-                    {appointment?.issues?.[0]}
-                  </h1>
+                  </div>
+
                 </div>
               </div>
-              <div
-                className="flex flex-row ms-auto gap-1 sm:gap-1"
+              <div className="flex flex-row ms-auto gap-1 sm:gap-1 ml-auto"
                 style={{ flexDirection: "row" }}
               >
                 {appointment.appointmentStatus === "Confirm" ? (
