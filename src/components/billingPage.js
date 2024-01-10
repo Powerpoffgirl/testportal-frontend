@@ -15,6 +15,7 @@ export default function BillingPage({ name, contactNo, gender, age })
   const componentPDF = useRef();
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
+  const fileInputRef = useRef(null);
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [searchTerm, setSearchTerm] = useState("");
   const [isListOpen, setIsListOpen] = useState(false);
@@ -323,6 +324,44 @@ export default function BillingPage({ name, contactNo, gender, age })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleFileSelect = async (event) =>
+  {
+    const file = event.target.files[0];
+    if (file)
+    {
+      const token = localStorage.getItem("token");
+      const patientId = localStorage.getItem("selectedPatientId");
+      const doctorId = localStorage.getItem("doctorId");
+      const formData = new FormData();
+      formData.append("patientReport", file);
+
+      console.log("FORM DATA", formData);
+      try
+      {
+        const response = await fetch(`${baseUrl}/api/v1/doctor/upload_report/${patientId}`, {
+          method: "POST",
+          headers: {
+            "x-auth-token": token,
+          },
+          body: formData,
+        });
+
+        if (!response.ok)
+        {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        fileInputRef.current.value = "";
+      } catch (error)
+      {
+        console.error("Error ", error);
+        toast.error("Error uploading pdf. Please try again.");
+      }
+    }
+  };
+
 
   console.log("row =====", tableData);
   console.log("patient Report ====", patientReport);
@@ -422,12 +461,12 @@ export default function BillingPage({ name, contactNo, gender, age })
                 onChange={(e) => setAppointmentDate(e.target.value)}
               />
             </div>
-            <div>
+            <div style={{ display: "flex", flexDirection: 'row', gap: '10px' }}>
               <button
                 onClick={generatePdf}
                 style={{
                   height: "40px",
-                  width: "120px",
+                  width: "100%",
                   backgroundColor: "#89CFF0",
                   borderRadius: "10px",
                   marginTop: "20px",
@@ -435,6 +474,29 @@ export default function BillingPage({ name, contactNo, gender, age })
               >
                 Download PDF
               </button>
+
+              <button
+
+                style={{
+                  height: "40px",
+                  width: "100%",
+                  backgroundColor: "#89CFF0",
+                  borderRadius: "10px",
+                  marginTop: "20px",
+                }}
+              >
+                <label htmlFor="files">Send To SMS</label>
+              </button>
+              <p className="block text-black text-lg font-semibold ">
+                <input
+                  id="files"
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleFileSelect}
+                />
+              </p>
             </div>
 
             {/* <div style={{ marginTop: "15px" }}>
