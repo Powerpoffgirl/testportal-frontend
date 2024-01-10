@@ -287,7 +287,10 @@ export default function BillingPage({ name, contactNo, gender, age })
                 value={appointmentDate}
                 onChange={(e) => setAppointmentDate(e.target.value)}
               />
-              <button onClick={generatePdf} style={{ marginLeft: '10px' }}>Download</button>
+
+            </div>
+            <div>
+              <button onClick={generatePdf} style={{ height: '40px', width: '120px', backgroundColor: '#89CFF0', borderRadius: '10px', marginTop: '20px' }}>Download PDF</button>
             </div>
 
 
