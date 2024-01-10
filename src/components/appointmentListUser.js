@@ -10,8 +10,7 @@ import { Button, Popconfirm } from "antd";
 import close_button from "../assets/close_button.svg";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-export default function AppointmentListUser({ searchTerm })
-{
+export default function AppointmentListUser({ searchTerm }) {
   let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [appointmentList, setAppointmentList] = useState([]);
@@ -25,15 +24,11 @@ export default function AppointmentListUser({ searchTerm })
     appointmentList,
   ]);
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -50,20 +45,17 @@ export default function AppointmentListUser({ searchTerm })
         const data = await response.json();
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     let matchedDoctors = [];
 
-    if (appointmentList?.length > 0 && searchTerm)
-    {
+    if (appointmentList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
 
       matchedDoctors = appointmentList.filter(
@@ -75,35 +67,32 @@ export default function AppointmentListUser({ searchTerm })
             .toLowerCase()
             .includes(lowerCaseSearchTerm)
       );
-    } else
-    {
+    } else {
       matchedDoctors = appointmentList;
     }
 
     setFilteredAppointmentList(matchedDoctors);
   }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleEditAppointment = async (appointmentId, appointmentDate, appointmentTime, doctorId) =>
-  {
+  const handleEditAppointment = async (
+    appointmentId,
+    appointmentDate,
+    appointmentTime,
+    doctorId
+  ) => {
     localStorage.setItem("appointmentId", appointmentId);
 
-
-    try
-    {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
-
-
 
       const details = {
         date: appointmentDate,
         time: appointmentTime,
       };
-
 
       const response = await fetch(
         `${baseUrl}/api/v1/cancel_slot/${doctorId}`,
@@ -119,27 +108,25 @@ export default function AppointmentListUser({ searchTerm })
 
       const data = await response.json();
 
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("Appointment slot deleted successfully", data);
 
         navigate("/editappointment");
-
       }
-
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting the Appointment:", error);
     }
   };
 
-  const handleDeleteAppointment = async (appointmentId, appointmentDate, appointmentTime, doctorId) =>
-  {
-    try
-    {
+  const handleDeleteAppointment = async (
+    appointmentId,
+    appointmentDate,
+    appointmentTime,
+    doctorId
+  ) => {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -156,8 +143,7 @@ export default function AppointmentListUser({ searchTerm })
 
       const data = await response.json();
 
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("Appointment deleted successfully", data);
         toast.success("Appointment Deleted!");
         // toast.success("Appointment Deleted")
@@ -169,13 +155,10 @@ export default function AppointmentListUser({ searchTerm })
           )
         );
 
-
-
         const details = {
           date: appointmentDate,
           time: appointmentTime,
         };
-
 
         const response1 = await fetch(
           `${baseUrl}/api/v1/cancel_slot/${doctorId}`,
@@ -191,30 +174,24 @@ export default function AppointmentListUser({ searchTerm })
 
         const data1 = await response1.json();
 
-        if (response1.ok)
-        {
+        if (response1.ok) {
           console.log("Appointment slot deleted successfully", data);
         }
-
-      } else
-      {
+      } else {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting the Appointment:", error);
     }
   };
 
-  function formatDate(dateString)
-  {
+  function formatDate(dateString) {
     const parts = dateString.split("-");
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
   }
   console.log("APPOINTMENT LISTS", appointmentList, selectedAppointment);
 
-  const findSelectedDoctor = async (appointmentId) =>
-  {
+  const findSelectedDoctor = async (appointmentId) => {
     console.log("appointmentId########################", appointmentId);
     // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const appointment = appointmentList?.find(
@@ -260,34 +237,37 @@ export default function AppointmentListUser({ searchTerm })
                   borderRadius: "50%",
                   height: isTab ? "40px" : "123px",
                   width: isTab ? "40px" : "123px",
-                  marginTop: '10px',
+                  marginTop: "10px",
                   marginRight: "auto",
                   marginLeft: "auto",
                   boxShadow: "inset 0 0 0 2px #76767",
                 }}
               />
             ) : (
-              <AccountCircleIcon
-                style={{
-                  fontSize: "90px",
-                  color: "#fff",
-                  borderRadius: "50%",
-                  height: isTab ? "40px" : "123px",
-                  width: isTab ? "40px" : "123px",
-                  marginRight: "auto",
-                  marginLeft: "auto",
-                  boxShadow: "0px 0px 5px 2px rgba(0, 0, 0, 0.5)",
-                }}
-              />
+              <div className="flex flex-row w-[100%] justify-center ">
+                <AccountCircleIcon
+                  style={{
+                    fontSize: isTab ? "50px" : "90px",
+                    color: "#B1DAED",
+                    borderRadius: "50%",
+                    height: isTab ? "80px" : "123px",
+                    width: isTab ? "80px" : "123px",
+                    boxShadow: "inset 0 0 0 2px #76767",
+                    // Adjust or remove marginRight if necessary
+                  }}
+                />
+              </div>
             )}
           </div>
+
           <text
-            className="ml-4 text-start mt-2"
+            className=" text-center mt-4 capitalize"
             style={{
-              fontSize: isTab ? "18px" : "30px",
-              fontWeight: 500,
+              fontSize: isTab ? "18px" : "26px",
+              fontWeight: 600,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
+              marginLeft: -70,
             }}
           >
             {selectedAppointment?.patientId?.name
@@ -295,13 +275,14 @@ export default function AppointmentListUser({ searchTerm })
               : "No Name"}
           </text>
           <text
-            className="ml-4 text-start mt-2"
+            className="ml-4 text-start mt-4"
             style={{
-              fontSize: isTab ? "12px" : "22px",
+              fontSize: isTab ? "12px" : "20px",
               fontWeight: 400,
               lineHeight: "24px",
               fontFamily: "Lato, sans-serif",
-              color: "#767676",
+              color: "#000000",
+              marginBottom: "2%",
             }}
           >
             Age:{" "}
@@ -315,13 +296,14 @@ export default function AppointmentListUser({ searchTerm })
             kg
           </text>
           <text
-            className="ml-4 text-start mt-2"
+            className="ml-4 text-start mt-4"
             style={{
-              fontSize: isTab ? "16px" : "22px",
+              fontSize: isTab ? "12px" : "20px",
               fontWeight: 400,
-              lineHeight: "28.8px",
+              lineHeight: "24px",
               fontFamily: "Lato, sans-serif",
-              color: "#43BCF5",
+              color: "#000000",
+              marginBottom: "2%",
             }}
           >
             Issues:{" "}
@@ -335,13 +317,14 @@ export default function AppointmentListUser({ searchTerm })
               : "N/A"}
           </text>
           <text
-            className="ml-4 text-start mt-2"
+            className="ml-4 text-start mt-4"
             style={{
-              fontSize: isTab ? "14px" : "22px",
+              fontSize: isTab ? "12px" : "20px",
               fontWeight: 400,
-              lineHeight: "28.8px",
+              lineHeight: "24px",
               fontFamily: "Lato, sans-serif",
-              color: "#2CBE78",
+              color: "#000000",
+              marginBottom: "2%",
             }}
           >
             Appointment Date:{" "}
@@ -355,27 +338,27 @@ export default function AppointmentListUser({ searchTerm })
               : "N/A"}
           </text>
           <text
-            className="ml-4 text-start mt-2 text-purple-900"
+            className="ml-4 text-start mt-2"
             style={{
-              fontSize: isTab ? "14px" : "22px",
+              fontSize: isTab ? "14px" : "20px",
               fontWeight: 400,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              color: "#CB13CF",
+              color: "#000000",
             }}
           >
             {selectedAppointment?.patientId?.address?.houseNo
               ? selectedAppointment?.patientId?.address?.houseNo +
-              " " +
-              selectedAppointment?.patientId?.address?.block +
-              " " +
-              selectedAppointment?.patientId?.address?.area +
-              ", " +
-              selectedAppointment?.patientId?.address?.district +
-              ", " +
-              selectedAppointment?.patientId?.address?.state +
-              " " +
-              selectedAppointment?.patientId?.address?.pinCode
+                " " +
+                selectedAppointment?.patientId?.address?.block +
+                " " +
+                selectedAppointment?.patientId?.address?.area +
+                ", " +
+                selectedAppointment?.patientId?.address?.district +
+                ", " +
+                selectedAppointment?.patientId?.address?.state +
+                " " +
+                selectedAppointment?.patientId?.address?.pinCode
               : " "}
           </text>
         </div>
@@ -384,22 +367,30 @@ export default function AppointmentListUser({ searchTerm })
       <div className="flex flex-col">
         {filteredAppointmentList?.length > 0 ? (
           filteredAppointmentList?.map((appointment) => (
-            <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5" >
+            <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
               <div className="flex flex-col xl:flex-row justify-start items-center">
-                <div class="flex items-center gap-x-2 mr-auto" onClick={() => findSelectedDoctor(appointment?._id)}>
-                  {
-                    appointment?.doctorId?.doctorPic ? <img
+                <div
+                  class="flex items-center gap-x-2 mr-auto"
+                  onClick={() => findSelectedDoctor(appointment?._id)}
+                >
+                  {appointment?.doctorId?.doctorPic ? (
+                    <img
                       class="object-cover w-20 h-20  rounded-full"
                       src={appointment?.doctorId?.doctorPic}
                       alt={appointment?.doctorId?.doctorPic.name}
                     />
-                      :
-                      <AccountCircleIcon style={{ fontSize: isTab ? "50px" : '90px', color: "#B1DAED" }} />
-                  }
+                  ) : (
+                    <AccountCircleIcon
+                      style={{
+                        fontSize: isTab ? "50px" : "90px",
+                        color: "#B1DAED",
+                      }}
+                    />
+                  )}
                   <div class="flex flex-row">
-
                     <div class="flex lg:flex-row flex-col ">
-                      <div class="flex  bg-white p-2 md:flex-row justify-between"
+                      <div
+                        class="flex  bg-white p-2 md:flex-row justify-between"
                         style={{
                           borderRadius: "5px",
                           marginBottom: "-8px",
@@ -421,30 +412,49 @@ export default function AppointmentListUser({ searchTerm })
                       <div style={{ textAlign: "center" }} class="mt-2">
                         <h1
                           class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                          style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
+                          style={{
+                            marginLeft: isTab ? "2px" : "8px",
+                            marginRight: isTab ? "4px" : "8px",
+                          }}
                         >
                           <p class="text-gray-500 sm:text-sm text-xs">
                             Patient's Name:<span className="ms-2"></span>
                           </p>
-                          {appointment?.patientId?.name ? appointment?.patientId?.name : "No Name"}
+                          {appointment?.patientId?.name
+                            ? appointment?.patientId?.name
+                            : "No Name"}
                         </h1>
                       </div>
                     </div>
 
                     <div class="flex lg:flex-row flex-col ">
-                      <div style={{ textAlign: "center", marginBottom: isTab ? "-19px" : '0px' }} class="mt-2" >
+                      <div
+                        style={{
+                          textAlign: "center",
+                          marginBottom: isTab ? "-19px" : "0px",
+                        }}
+                        class="mt-2"
+                      >
                         <h1
                           class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                          style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
+                          style={{
+                            marginLeft: isTab ? "2px" : "8px",
+                            marginRight: isTab ? "4px" : "8px",
+                          }}
                         >
                           <p class="text-gray-500 sm:text-sm text-xs">
                             Date & Time:<span className="ms-2"></span>
                           </p>
-                          {appointment?.appointmentDate?.date ? appointment?.appointmentDate?.date.split('-').reverse().join('-') : "No Date"}
-
+                          {appointment?.appointmentDate?.date
+                            ? appointment?.appointmentDate?.date
+                                .split("-")
+                                .reverse()
+                                .join("-")
+                            : "No Date"}
                         </h1>
                       </div>
-                      <div class={` ${isTab ? "mt-5" : ""} `}
+                      <div
+                        class={` ${isTab ? "mt-5" : ""} `}
                         style={{
                           display: "flex",
                           justifyContent: "flex-end",
@@ -453,12 +463,15 @@ export default function AppointmentListUser({ searchTerm })
                           position: "relative",
                           left: "29px",
                           top: "8px",
-                          gap: '1px'
+                          gap: "1px",
                         }}
                       >
                         <h1
                           class="font-semibold text-gray-700 sm:text-lg text-sm capitalize  "
-                          style={{ marginLeft: isTab ? "-30px" : "8px", marginRight: isTab ? "4px" : "8px" }}
+                          style={{
+                            marginLeft: isTab ? "-30px" : "8px",
+                            marginRight: isTab ? "4px" : "8px",
+                          }}
                         >
                           <p class="text-gray-500 sm:text-sm text-xs">
                             Appointment status:<span className="ms-2"></span>
@@ -467,9 +480,7 @@ export default function AppointmentListUser({ searchTerm })
                         </h1>
                       </div>
                     </div>
-
                   </div>
-
                 </div>
                 <div
                   class="flex flex-row ms-auto gap-1 sm:gap-1"
@@ -482,7 +493,14 @@ export default function AppointmentListUser({ searchTerm })
                     okType="danger"
                     cancelText="No"
                     className="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                    onConfirm={() => handleDeleteAppointment(appointment._id, appointment?.appointmentDate?.date, appointment?.appointmentDate?.time, appointment?.doctorId?._id)}
+                    onConfirm={() =>
+                      handleDeleteAppointment(
+                        appointment._id,
+                        appointment?.appointmentDate?.date,
+                        appointment?.appointmentDate?.time,
+                        appointment?.doctorId?._id
+                      )
+                    }
                   >
                     <button
                       danger
@@ -490,15 +508,25 @@ export default function AppointmentListUser({ searchTerm })
                       // onClick={() => handleDeleteAppointment(appointment._id)}
                       style={{ marginRight: 10 }}
                     >
-                      {'Delete'}
+                      {"Delete"}
                     </button>
                   </Popconfirm>
                   <button
                     class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
-                    onClick={() => handleEditAppointment(appointment._id, appointment?.appointmentDate?.date, appointment?.appointmentDate?.time, appointment?.doctorId?._id)}
-                    style={{ height: isTab ? null : null, marginTop: isTab ? null : null, }}
+                    onClick={() =>
+                      handleEditAppointment(
+                        appointment._id,
+                        appointment?.appointmentDate?.date,
+                        appointment?.appointmentDate?.time,
+                        appointment?.doctorId?._id
+                      )
+                    }
+                    style={{
+                      height: isTab ? null : null,
+                      marginTop: isTab ? null : null,
+                    }}
                   >
-                    {'Edit'}
+                    {"Edit"}
                   </button>
                 </div>
               </div>
