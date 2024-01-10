@@ -285,6 +285,7 @@ export default function PatientForm() {
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
         toast.success("Member details updated!");
+        navigate(`/patientlistuser`);
       }
       console.log("DATA from response", data);
     }

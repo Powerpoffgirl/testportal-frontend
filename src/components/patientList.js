@@ -224,7 +224,7 @@ export default function PatientList({ searchTerm }) {
             width: isTab ? "80%" : "70%",
             backgroundColor: "#E3F6FF",
             alignContent: "center",
-            borderRadius: "23px"
+            borderRadius: "23px",
           },
           closeButton: {
             display: "none",
@@ -320,12 +320,12 @@ export default function PatientList({ searchTerm }) {
       </Modal>
       <div className="flex flex-col">
         {filteredPatients?.map((patient) => (
-          <div
-            className="bg-white w-full p-4 sm:px-5 px-1 mb-5"
-
-          >
+          <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
             <div className="flex flex-row justify-start items-center">
-              <div class="flex items-center gap-x-2 " onClick={() => findSelectedDoctor(patient._id)}>
+              <div
+                class="flex items-center gap-x-2 "
+                onClick={() => findSelectedDoctor(patient._id)}
+              >
                 {patient.patientPic ? (
                   <img
                     class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
@@ -336,8 +336,7 @@ export default function PatientList({ searchTerm }) {
                   <AccountCircleIcon
                     style={{
                       color: "#B1DAED",
-                      fontSize: isTab ? "50px" : "90px"
-
+                      fontSize: isTab ? "50px" : "90px",
                     }}
                   />
                 )}
@@ -349,8 +348,8 @@ export default function PatientList({ searchTerm }) {
                     {patient.age} yrs , {patient.bodyWeight} kg
                   </p>
                   <p>
-                    {patient.address?.district},
-                    {patient.address?.state}, {patient.address?.pinCode}
+                    {patient.address?.district},{patient.address?.state},{" "}
+                    {patient.address?.pinCode}
                   </p>
                   {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}
                 </div>
@@ -360,7 +359,7 @@ export default function PatientList({ searchTerm }) {
                   title="Delete the Patient"
                   description="Are you sure to delete this Patient?"
                   okText="Delete"
-                  okType='danger'
+                  okType="danger"
                   cancelText="No"
                   onConfirm={() => handleDeletePatient(patient._id)}
                   className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
