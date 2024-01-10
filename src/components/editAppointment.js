@@ -597,9 +597,9 @@ export default function EditAppointment() {
     <>
       <div>
         <div class=" ">
-          <div className="flex lg:flex-row p-2 pt-5 flex-col ">
+          <div className="flex lg:flex-row  pt-5 flex-col ">
             {/* ---------------------------left part--------------------------- */}
-            <div className="flex flex-col  px-1 lg:w-1/2 mr-10">
+            <div className="flex flex-col  px-1 lg:w-5/12 xl:mr-10 ">
               <div className=" mx-auto">
                 {selectedDoctor?.doctorPic ? (
                   <img
@@ -642,8 +642,8 @@ export default function EditAppointment() {
                       style={{ minWidth: "15px", maxWidth: "16px" }}
                     ></img>
                   </div>
-                  <div className="">
-                    <p className="text-gray-600 text-xl ">
+                  <div className="flex flex-wrap">
+                    <p className="text-gray-600 text-xl  ">
                       {selectedDoctor?.address?.houseNo +
                         " " +
                         selectedDoctor?.address?.block +
@@ -651,18 +651,23 @@ export default function EditAppointment() {
                         selectedDoctor?.address?.area +
                         ", " +
                         selectedDoctor?.address?.district +
-                        ", " +
-                        selectedDoctor?.address?.state +
+                        ", "
+
+                      }
+                    </p>
+                    <p className="text-gray-600 text-xl  ">
+                      {selectedDoctor?.address?.state +
                         " " +
                         selectedDoctor?.address?.pinCode}
                     </p>
+
                   </div>
                 </div>
               </div>
             </div>
 
             {/* --------------------------------right part-------------------------------- */}
-            <div className="flex flex-col   lg:w-1/2 px-2 mr-16">
+            <div className="flex flex-col   lg:w-6/12 px-2 xl:mr-16 ">
               <div className=" py-1 mb-2">
                 <p className="text-lg font-medium text-black ">SPECIALITY</p>
                 <div className="flex flex-wrap ">
@@ -687,7 +692,7 @@ export default function EditAppointment() {
 
               <div className=" py-1 mb-2">
                 <p className="text-lg font-medium text-black">Timing</p>
-                <div className="flex flex-row  place-content-between">
+                <div className="flex flex-row  place-content-between px-3">
                   {workingDays.split(" ")[0] && (
                     <div className="flex flex-col">
                       <p className="text-gray-600 font-semibold">
@@ -749,7 +754,7 @@ export default function EditAppointment() {
                               >
                                 <FaAngleLeft style={{ color: "black" }} />
                               </button>
-                              <div className="flex flex-row overflow-x-auto mx-auto ">
+                              <div className="flex flex-row overflow-x-auto mx-auto  ">
                                 {keys.map((item, index) => {
                                   const { year, monthName, day, dayName } =
                                     getYearMonthDay(item);
@@ -792,7 +797,7 @@ export default function EditAppointment() {
                                   return (
                                     <div
                                       key={index}
-                                      className={` w-1/4 px-4  ${marginb} `}
+                                      className={`w-1/3 xl:w-1/4 px-4  ${marginb} `}
                                       disabled={item.isBooked}
                                     >
                                       <div
@@ -813,7 +818,7 @@ export default function EditAppointment() {
                                     >
                                       <div
                                         key={index}
-                                        className={` w-1/4 px-4 ${marginb}`}
+                                        className={`w-1/3 xl:w-1/4 px-4 ${marginb}`}
                                         disabled
                                       >
                                         <div
@@ -832,7 +837,7 @@ export default function EditAppointment() {
                                   return (
                                     <div
                                       key={index}
-                                      className={` w-1/4 px-4  ${marginb}`}
+                                      className={` xl:w-1/4 w-1/3 px-4  ${marginb}`}
                                       onClick={() => {
                                         handleTimeClick(index);
                                       }}

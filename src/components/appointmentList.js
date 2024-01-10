@@ -443,11 +443,11 @@ export default function AppointmentList({ searchTerm }) {
       <div className="flex flex-col">
         {filteredAppointmentList?.map((appointment) => (
           <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
-            <div className="flex flex-row justify-start items-center">
-              <div
-                class="flex items-center gap-x-2"
+            <div className="flex flex-col xl:flex-row justify-start items-center">
+              <div class="flex items-center gap-x-2 mr-auto "
                 onClick={() => findSelectedDoctor(appointment?._id)}
               >
+
                 {appointment?.patientId?.patientPic ? (
                   <img
                     class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
@@ -459,81 +459,83 @@ export default function AppointmentList({ searchTerm }) {
                     style={{ fontSize: "90px", color: "#B1DAED" }}
                   />
                 )}
-                <div
-                  class="flex flex-row bg-white p-2 md:flex-row justify-between"
-                  style={{
-                    borderRadius: "5px",
-                    marginBottom: "10px",
-                    position: "relative",
-                  }}
-                >
-                  <div className="flex flex-row items-center">
-                    <div>
-                      <h1 class="font-semibold ml-2 text-gray-700 sm:text-lg text-sm capitalize">
-                        {appointment?.patientId?.name}
-                      </h1>
-                      <h1 class="font-semibold text-gray-500 sm:text-sm text-xs capitalize">
-                        <span className="ms-2">
-                          {" "}
-                          {appointment?.patientId?.address?.district},{" "}
-                          {appointment?.patientId?.address?.pinCode},{" "}
-                          {appointment?.patientId?.address?.state}
-                        </span>
-                      </h1>
+                <div class="flex flex-row">
+                  <div
+                    class="flex flex-row bg-white p-2 md:flex-row justify-between"
+                    style={{
+                      borderRadius: "5px",
+                      marginBottom: "10px",
+                      position: "relative",
+                    }}
+                  >
+                    <div className="flex flex-row items-center">
+                      <div>
+                        <h1 class="font-semibold ml-2 text-gray-700 sm:text-lg text-sm capitalize">
+                          {appointment?.patientId?.name}
+                        </h1>
+                        <h1 class="font-semibold text-gray-500 sm:text-sm text-xs capitalize">
+                          <span className="ms-2">
+                            {" "}
+                            {appointment?.patientId?.address?.district},{" "}
+                            {appointment?.patientId?.address?.pinCode},{" "}
+                            {appointment?.patientId?.address?.state}
+                          </span>
+                        </h1>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <div style={{ textAlign: "center" }}>
-                  <h1
-                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                    style={{
-                      marginLeft: isTab ? "2px" : "8px",
-                      marginRight: isTab ? "4px" : "8px",
-                    }}
-                  >
-                    <p class="text-gray-500 sm:text-sm text-xs">
-                      Date & Time:<span className="ms-2"></span>
-                    </p>
-                    {appointment?.appointmentDate?.date}
-                    <span
-                      style={{ marginLeft: "10px", marginRight: "10px" }}
-                    ></span>
-                    {appointment?.appointmentDate?.time}
-                  </h1>
-                </div>
-
-                <div style={{ textAlign: "center" }}>
-                  <h1
-                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                    style={{
-                      marginLeft: isTab ? "2px" : "8px",
-                      marginRight: isTab ? "4px" : "8px",
-                    }}
-                  >
-                    <p class="text-gray-500 sm:text-sm text-xs">
-                      Diseases:<span className="ms-2"></span>
-                    </p>
-                    {appointment?.diseases?.[0]}
-                  </h1>
+                  <div style={{ textAlign: "center" }}>
+                    <h1
+                      class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                      style={{
+                        marginLeft: isTab ? "2px" : "8px",
+                        marginRight: isTab ? "4px" : "8px",
+                      }}
+                    >
+                      <p class="text-gray-500 sm:text-sm text-xs">
+                        Date & Time:<span className="ms-2"></span>
+                      </p>
+                      {appointment?.appointmentDate?.date}
+                      <span
+                        style={{ marginRight: "10px" }}
+                      ></span>
+                      {/* {appointment?.appointmentDate?.time} */}
+                    </h1>
+                  </div>
                 </div>
 
-                <div style={{ textAlign: "center" }}>
-                  <h1
-                    class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
-                    style={{
-                      marginLeft: isTab ? "2px" : "8px",
-                      marginRight: isTab ? "4px" : "8px",
-                    }}
-                  >
-                    <p class="text-gray-500 sm:text-sm text-xs">
-                      Issues:<span className="ms-2"></span>
-                    </p>
-                    {appointment?.issues?.[0]}
-                  </h1>
+                <div class="flex flex-row">
+                  <div style={{ textAlign: "center" }}>
+                    <h1
+                      class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                      style={{
+                        marginLeft: isTab ? "2px" : "8px",
+                        marginRight: isTab ? "4px" : "8px",
+                      }}
+                    >
+                      <p class="text-gray-500 sm:text-sm text-xs">
+                        Diseases:<span className="ms-2"></span>
+                      </p>
+                      {appointment?.diseases?.[0]}
+                    </h1>
+                  </div>
+                  <div style={{ textAlign: "center" }}>
+                    <h1
+                      class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                      style={{
+                        marginLeft: isTab ? "2px" : "8px",
+                        marginRight: isTab ? "4px" : "8px",
+                      }}
+                    >
+                      <p class="text-gray-500 sm:text-sm text-xs">
+                        Issues:<span className="ms-2"></span>
+                      </p>
+                      {appointment?.issues?.[0]}
+                    </h1>
+                  </div>
                 </div>
               </div>
-              <div
-                className="flex flex-row ms-auto gap-1 sm:gap-1"
+              <div className="flex flex-row ms-auto gap-1 sm:gap-1 ml-auto"
                 style={{ flexDirection: "row" }}
               >
                 {appointment.appointmentStatus === "Confirm" ? (
