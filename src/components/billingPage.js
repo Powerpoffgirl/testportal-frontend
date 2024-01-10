@@ -6,10 +6,12 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import Modal from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 import { MdOutlineDelete } from "react-icons/md";
+import { GiConfirmed } from "react-icons/gi";
 import { useReactToPrint } from 'react-to-print'
 
 export default function BillingPage({ name, contactNo, gender, age })
 {
+
   const componentPDF = useRef();
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
@@ -24,6 +26,20 @@ export default function BillingPage({ name, contactNo, gender, age })
   const [open, setOpen] = useState(false);
   const [tests, setTests] = useState([]);
   const [filteredTest, setFilteredtest] = useState([]);
+  const [value, setValue] = useState("");
+  // const [index, setIndex] = useState(0);
+  const [patientReport, setPatientReport] = useState({
+
+    testName: "",
+    testCode: "",
+    department: "",
+    sampleType: "",
+    costOfDiagnosticTest: "",
+    unit: "",
+    bioRefInterval: "",
+    technology: "",
+    patientId: "",
+  });
   const [patientDetails, setPatientDetails] = useState({
     medicineName: [],
     issues: [],
@@ -95,7 +111,7 @@ export default function BillingPage({ name, contactNo, gender, age })
 
 
 
-  const handleTestAdd = (testId, cost, bioRef, units, technology) => () =>
+  const handleTestAdd = (testId, cost, bioRef, units, technology, testcode, department, sampleType) => () =>
   {
 
     const testToAdd = {
@@ -104,7 +120,12 @@ export default function BillingPage({ name, contactNo, gender, age })
       technology: technology,
       units: units,
       bio: bioRef,
-      action: <MdOutlineDelete />,
+      testCode: testcode,
+      sampleType: sampleType,
+      department: department,
+      Delete: <MdOutlineDelete />,
+      Save: <GiConfirmed />,
+
     };
 
     setTableData([...tableData, testToAdd]);
@@ -129,9 +150,12 @@ export default function BillingPage({ name, contactNo, gender, age })
 
     setTableData(updatedTableData);
   }
+
+
+
   const addRow = () =>
   {
-    setTableData([...tableData, { testPackage: '-', price: '-', technology: '-', Units: '-', BioRef: '-', action: '-' }]);
+    setTableData([...tableData, { testPackage: '-', price: '-', technology: '-', Units: '-', BioRef: '-', delete: '-', save: '-' }]);
   };
 
   const calculateTotalPrice = () =>
@@ -188,6 +212,122 @@ export default function BillingPage({ name, contactNo, gender, age })
   {
     setIsListOpen(true);
   };
+
+
+
+
+  const handleChange = async (e, index) =>
+  {
+    const { name, value } = e.target;
+    const patientId = localStorage.getItem("selectedPatientId");
+    if (name === "value" || index === index)
+    {
+
+      setValue(e.target.value);
+      setPatientReport((prevPatientReport) => ({
+        ...prevPatientReport,
+        value: e.target.value,
+        testName: tableData[index]?.testPackage,
+        testCode: tableData[index]?.testCode,
+        department: tableData[index]?.department,
+        sampleType: tableData[index]?.sampleType,
+        costOfDiagnosticTest: tableData[index]?.price,
+        unit: tableData[index]?.units,
+        bioRefInterval: tableData[index]?.bio,
+        technology: tableData[index]?.technology,
+        patientId: patientId
+      }));
+    }
+    else
+    {
+      setPatientReport((prevPatientReport) => ({
+        ...prevPatientReport,
+        [name]: value
+      }));
+    }
+
+
+
+
+    // console.log("testname", tableData[index]?.testPackage
+    // )
+
+    // console.log("table value new", tableData[index]?.technology)
+
+    // console.log("index%%%%%%", index)
+  }
+
+
+  const handleSave = async () =>
+  {
+
+    try
+    {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`${baseUrl}/api/v1/doctor/create_testBooking`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(patientReport),
+      });
+
+      const responseData = await response.json();
+      console.log("DATA from response", responseData);
+      // Handle responseData as needed (maybe update state?)
+
+    } catch (error)
+    {
+      console.error("There was an error verifying the OTP:", error);
+    }
+
+  }
+
+
+
+  useEffect(() =>
+  {
+    const fetchTestDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("selectedPatientId");
+
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+
+        const response = await fetch(`${baseUrl}/api/v1/doctor/getall_testBooking`, {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+        });
+
+        const responseData = await response.json();
+        console.log("DATA from response from table ", responseData);
+
+
+
+      } catch (error)
+      {
+        console.error("There was an error fetching test details:", error);
+      }
+    };
+
+    fetchTestDetails();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+
+  console.log("row =====", tableData);
+  console.log("patient Report ====", patientReport);
 
 
 
@@ -340,13 +480,19 @@ export default function BillingPage({ name, contactNo, gender, age })
                         Technology
                       </th>
                       <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
+                        Value
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
                         Units
                       </th>
                       <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
                         Bio.Ref
                       </th>
                       <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
-                        Action
+                        Delete
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
+                        Save
                       </th>
                     </tr>
                   </thead>
@@ -356,15 +502,23 @@ export default function BillingPage({ name, contactNo, gender, age })
                         <th
                           scope="row"
                           className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap "
+                          value={patientReport.testName}
+                          name="testName"
                         >
                           {row.testPackage}
                         </th>
-                        <td className="px-6 py-4 text-sm">{row.price}</td>
-                        <td className="px-6 py-4 text-sm">{row.technology}</td>
-                        <td className="px-6 py-4 text-sm">{row.units}</td>
-                        <td className="px-6 py-4 text-sm">{row.bio}</td>
+                        <td className="px-6 py-4 text-sm" value={patientReport.price} name="price">{row.price}</td>
+                        <td className="px-6 py-4 text-sm" value={patientReport.technology} name="technology">{row.technology}</td>
+                        <td className="px-6 py-4 text-sm" >
+                          <input type="text" onChange={(e) => handleChange(e, index)} value={value} name="value" />
+                        </td>
+                        <td className="px-6 py-4 text-sm" value={patientReport.unit} name="unit">{row.units}</td>
+                        <td className="px-6 py-4 text-sm" value={patientReport.bioRefInterval} name="price">{row.bio}</td>
                         <td className="px-6 py-4">
                           <button onClick={() => deleteRow(index)}><MdOutlineDelete size={25} color="red" /></button>
+                        </td>
+                        <td className="px-6 py-4">
+                          <button onClick={handleSave}><GiConfirmed size={25} color="green" /></button>
                         </td>
                       </tr>
                     ))}
@@ -485,7 +639,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                       <ul style={{ width: '80%' }} className=" absolute divide-y divide-gray-200 bg-white">
                         {filteredTest.map((test) => (
                           <li key={test.id} className="p-4">
-                            <div onClick={handleTestAdd(test.testName, test.costOfDiagnosticTest, test.bioRefInterval, test.unit, test.technology)} className="font-bold">
+                            <div onClick={handleTestAdd(test.testName, test.costOfDiagnosticTest, test.bioRefInterval, test.unit, test.technology, test.testCode, test.department, test.sampleType, test.patientId)} className="font-bold">
                               {test.testName}
                             </div>
                           </li>
