@@ -10,9 +10,8 @@ import { Button, Popconfirm } from "antd";
 import close_button from "../assets/close_button.svg";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-export default function AppointmentListUser({ searchTerm })
-{
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+export default function AppointmentListUser({ searchTerm }) {
+  let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [appointmentList, setAppointmentList] = useState([]);
   const navigate = useNavigate();
@@ -25,15 +24,11 @@ export default function AppointmentListUser({ searchTerm })
     appointmentList,
   ]);
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -50,20 +45,17 @@ export default function AppointmentListUser({ searchTerm })
         const data = await response.json();
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     let matchedDoctors = [];
 
-    if (appointmentList?.length > 0 && searchTerm)
-    {
+    if (appointmentList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
 
       matchedDoctors = appointmentList.filter(
@@ -75,24 +67,20 @@ export default function AppointmentListUser({ searchTerm })
             .toLowerCase()
             .includes(lowerCaseSearchTerm)
       );
-    } else
-    {
+    } else {
       matchedDoctors = appointmentList;
     }
 
     setFilteredAppointmentList(matchedDoctors);
   }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleEditAppointment = async (appointmentId, appointmentDate, appointmentTime, doctorId) =>
-  {
+  const handleEditAppointment = async (appointmentId, appointmentDate, appointmentTime, doctorId) => {
     localStorage.setItem("appointmentId", appointmentId);
 
 
-    try
-    {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -119,27 +107,22 @@ export default function AppointmentListUser({ searchTerm })
 
       const data = await response.json();
 
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("Appointment slot deleted successfully", data);
 
         navigate("/editappointment");
 
       }
 
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting the Appointment:", error);
     }
   };
 
-  const handleDeleteAppointment = async (appointmentId, appointmentDate, appointmentTime, doctorId) =>
-  {
-    try
-    {
+  const handleDeleteAppointment = async (appointmentId, appointmentDate, appointmentTime, doctorId) => {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -156,8 +139,7 @@ export default function AppointmentListUser({ searchTerm })
 
       const data = await response.json();
 
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("Appointment deleted successfully", data);
         toast.success("Appointment Deleted!");
         // toast.success("Appointment Deleted")
@@ -191,31 +173,26 @@ export default function AppointmentListUser({ searchTerm })
 
         const data1 = await response1.json();
 
-        if (response1.ok)
-        {
+        if (response1.ok) {
           console.log("Appointment slot deleted successfully", data);
           toast.success("Appointment Slot Deleted!");
         }
 
-      } else
-      {
+      } else {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting the Appointment:", error);
     }
   };
 
-  function formatDate(dateString)
-  {
+  function formatDate(dateString) {
     const parts = dateString.split("-");
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
   }
   console.log("APPOINTMENT LISTS", appointmentList, selectedAppointment);
 
-  const findSelectedDoctor = async (appointmentId) =>
-  {
+  const findSelectedDoctor = async (appointmentId) => {
     console.log("appointmentId########################", appointmentId);
     // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const appointment = appointmentList?.find(
@@ -395,15 +372,15 @@ export default function AppointmentListUser({ searchTerm })
                       alt={appointment?.doctorId?.doctorPic.name}
                     />
                       :
-                      <AccountCircleIcon style={{ fontSize: '90px', color: "#B1DAED" }} />
+                      <AccountCircleIcon style={{ fontSize: isTab ? "50px" : '90px', color: "#B1DAED" }} />
                   }
                   <div class="flex flex-row">
 
-                    <div class="flex lg:flex-row flex-col">
+                    <div class="flex lg:flex-row flex-col ">
                       <div class="flex  bg-white p-2 md:flex-row justify-between"
                         style={{
                           borderRadius: "5px",
-                          marginBottom: "10px",
+                          marginBottom: "-8px",
                           position: "relative",
                         }}
                       >
@@ -432,8 +409,8 @@ export default function AppointmentListUser({ searchTerm })
                       </div>
                     </div>
 
-                    <div class="flex lg:flex-row flex-col">
-                      <div style={{ textAlign: "center" }} class="mt-2" >
+                    <div class="flex lg:flex-row flex-col ">
+                      <div style={{ textAlign: "center", marginBottom: isTab ? "-19px" : '0px' }} class="mt-2" >
                         <h1
                           class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
                           style={{ marginLeft: isTab ? "2px" : "8px", marginRight: isTab ? "4px" : "8px" }}
