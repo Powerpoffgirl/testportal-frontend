@@ -5,8 +5,7 @@ import { useDispatch } from "react-redux";
 import { toggleSidebar } from "../slices/sidebar/toggleSlice";
 import { useNavigate } from "react-router-dom";
 
-export default function AdminHeader({ line1, line2, isAdd })
-{
+export default function AdminHeader({ line1, line2, isAdd }) {
   const threeDots = `<svg width="25" height="14" viewBox="0 0 25 14" fill="none" xmlns="http://www.w3.org/2000/svg">
   <path d="M1 1L24 0.999998" stroke="black" stroke-width="2" stroke-linecap="round"/>
   <path d="M1 13L24 13" stroke="black" stroke-width="2" stroke-linecap="round"/>
@@ -26,13 +25,11 @@ export default function AdminHeader({ line1, line2, isAdd })
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const handleDoctorForm = () =>
-  {
+  const handleDoctorForm = () => {
     navigate("/doctorform");
   };
 
-  const handleToggleSidebar = () =>
-  {
+  const handleToggleSidebar = () => {
     dispatch(toggleSidebar());
   };
 
