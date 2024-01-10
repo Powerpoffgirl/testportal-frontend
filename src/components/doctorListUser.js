@@ -150,7 +150,7 @@ export default function DoctorListUser({ searchTerm }) {
 
     console.log("slot booked", data);
     if (data.success === true) {
-      toast.success("Slot selected Successfully!");
+      // toast.success("Slot selected Successfully!");
       navigate("/edituserform");
     } else {
       toast.error("Slot Not Available");
