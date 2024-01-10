@@ -569,14 +569,16 @@ export default function EditUserForm()
         appointmentDetails
       );
 
-      const existingAppointment = appointmentList.find((appointment) =>
+      const existingAppointment = appointmentList?.find((appointment) =>
       {
-        if (appointment?.doctorId?._id === appointmentDetails?.doctorId && appointment?.patientId?._id === appointmentDetails?.patientId && appointment?.appointmentDate?.date > appointmentDetails?.appointmentDate?.date)
+        if (appointment?.doctorId?._id === appointmentDetails?.doctorId && appointment?.patientId?._id === appointmentDetails?.patientId)
         {
-          console.log("IDS ARE MATCHING")
+          console.log("IDS ARE MATCHING", appointment?.appointmentDate?.date, appointmentDetails?.appointmentDate?.date)
           return appointment
         }
       });
+
+      console.log("EXSISTING APPOINTMENT", existingAppointment)
 
       if (existingAppointment)
       {
@@ -585,8 +587,6 @@ export default function EditUserForm()
           date: appointmentDate,
           time: appointmentTime,
         };
-
-
         const response = await fetch(
           `${baseUrl}/api/v1/cancel_slot/${appointmentDetails?.doctorId}`,
           {
