@@ -130,10 +130,6 @@ export default function DoctorList({ searchTerm }) {
     showSlot();
 
     if (data.success === true) {
-      toast.success("Slot booked successfully", {
-        // position: "top-center",
-      });
-    } else {
       toast.error("Please book another slot", {
         // position: "top-center",
       });
@@ -994,7 +990,10 @@ export default function DoctorList({ searchTerm }) {
                     />
                   ) : (
                     <AccountCircleIcon
-                      style={{ fontSize: isTab ? "45px" : "90px", color: "#B1DAED" }}
+                      style={{
+                        fontSize: isTab ? "45px" : "90px",
+                        color: "#B1DAED",
+                      }}
                     />
                   )}
                   <div>
@@ -1005,7 +1004,7 @@ export default function DoctorList({ searchTerm }) {
                     <p className=" text-gray-500 sm:text-sm text-xs flex flex-row">
                       {/* {doctor?.speciality?.join(", ")} */}
                       {doctor?.speciality?.slice(0, 1).join(", ")}
-                      <p class="text-black font-bold">...</p>
+                      <p class="text-gray">...</p>
                     </p>
                     <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience
