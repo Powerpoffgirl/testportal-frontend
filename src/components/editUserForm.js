@@ -141,7 +141,7 @@ export default function EditUserForm()
   const [newUser, setNewUser] = useState(false);
   const [pinCodeError, setPinCodeError] = useState("");
   const [mobileNumberError, setmobileNumberError] = useState("");
-
+  const [appointmentList, setAppointmentList] = useState([]);
   const [patientId, setPatientId] = useState(localStorage.getItem("patientId"));
 
   useEffect(() =>
@@ -211,8 +211,40 @@ export default function EditUserForm()
         console.error("There was an error verifying the OTP:", error);
       }
     };
-
     fetchPatientList();
+
+    const fetchAppointmentList = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(
+          `${baseUrl}/api/v1/user/get_all_appointments`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log("DATA from response", data);
+        setAppointmentList(data?.data);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchAppointmentList();
+
+
   }, []);
 
   console.log("DATE TIME", appointmentDate, appointmentTime);
@@ -382,18 +414,24 @@ export default function EditUserForm()
   const handleChange = (e) =>
   {
     const { name, value } = e.target;
-    if (name === "pinCode") {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
+    if (name === "pinCode")
+    {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
         setPinCodeError("");
-      } else {
+      } else
+      {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
 
-    if (name === "contactNumber") {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+    if (name === "contactNumber")
+    {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
         setmobileNumberError("");
-      } else {
+      } else
+      {
         setmobileNumberError("Please enter a valid Number");
       }
     }
@@ -526,46 +564,77 @@ export default function EditUserForm()
         console.log("PATIENT UPDATED SUCCESSFULLY", data1);
       }
 
-      // if (data.success === true)
-      // {
       console.log(
         "====================APPOINTMENT DETAILS=====================",
         appointmentDetails
       );
-      const response = await fetch(
-        `${baseUrl}/api/v1/user/create_appointment`,
-        {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token,
-          },
-          body: JSON.stringify(appointmentDetails),
-        }
-      );
-      const data = await response.json();
-      console.log("DATA FROM APPOINTMENT BOOKING", data);
-      if (data.success === true)
+
+      const existingAppointment = appointmentList.find((appointment) =>
       {
-        console.log("OPEN MODAL");
-        onOpenModal();
+        if (appointment?.doctorId?._id === appointmentDetails?.doctorId && appointment?.patientId?._id === appointmentDetails?.patientId && appointment?.appointmentDate?.date > appointmentDetails?.appointmentDate?.date)
+        {
+          console.log("IDS ARE MATCHING")
+          return appointment
+        }
+      });
+
+      if (existingAppointment)
+      {
+        toast.error("An appointment already exists with this doctor.");
+        const details = {
+          date: appointmentDate,
+          time: appointmentTime,
+        };
+
+
+        const response = await fetch(
+          `${baseUrl}/api/v1/cancel_slot/${appointmentDetails?.doctorId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Use the stored token
+            },
+            body: JSON.stringify(details),
+          }
+        );
+
+        const data = await response.json();
+        console.log("=====DATA=====", data)
+        return
+      }
+      else
+      {
+        const response = await fetch(
+          `${baseUrl}/api/v1/user/create_appointment`,
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+            body: JSON.stringify(appointmentDetails),
+          }
+        );
+        const data = await response.json();
         console.log("DATA FROM APPOINTMENT BOOKING", data);
         if (data.success === true)
         {
-          toast.success("Appointment booked successfully");
-          // console.log("Doctor updated successfully.");
-          navigate("/appointmentlistuser");
+          console.log("OPEN MODAL");
+          onOpenModal();
+          console.log("DATA FROM APPOINTMENT BOOKING", data);
+          if (data.success === true)
+          {
+            toast.success("Appointment booked successfully");
+            // console.log("Doctor updated successfully.");
+            navigate("/appointmentlistuser");
+          }
+          console.log("Doctor updated successfully.");
         }
-        console.log("Doctor updated successfully.");
+        console.log("DATA from response", data);
       }
-      console.log("DATA from response", data);
-      // }
-
 
     }
-
-
-
   };
 
   useEffect(() =>
@@ -1182,7 +1251,8 @@ export default function EditUserForm()
                         onChange={handleChange}
                         placeholder="Pin Code"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        onInput={(e) => {
+                        onInput={(e) =>
+                        {
                           e.target.value = e.target.value.replace(
                             /[^0-9]/g,
                             ""
