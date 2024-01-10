@@ -287,7 +287,10 @@ export default function BillingPage({ name, contactNo, gender, age })
                 value={appointmentDate}
                 onChange={(e) => setAppointmentDate(e.target.value)}
               />
-              <button onClick={generatePdf} style={{ marginLeft: '10px' }}>Download</button>
+
+            </div>
+            <div>
+              <button onClick={generatePdf} style={{ height: '40px', width: '120px', backgroundColor: '#89CFF0', borderRadius: '10px', marginTop: '20px' }}>Download PDF</button>
             </div>
 
 
@@ -383,7 +386,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                 <button
                   id="dropdown-button"
                   data-dropdown-toggle="dropdown"
-                  class="flex-shrink-0 z-10 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100"
+                  class="flex-shrink-0 inline-flex items-center py-2.5 px-4 text-sm font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-s-lg hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100"
                   type="button"
                 >
                   Tests{" "}

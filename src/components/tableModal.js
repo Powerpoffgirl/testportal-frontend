@@ -75,7 +75,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
             <div className="modal">
                 <form>
                     <div className="form-group">
-                        <label htmlFor="testName">Test</label>
+                        <label htmlFor="testName" style={{ marginRight: '50px' }}>Test</label>
                         <input
                             name="testName"
                             onChange={handleChange}
@@ -91,7 +91,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="department">Department</label>
+                        <label htmlFor="department" style={{ marginRight: '-5px' }}>Department</label>
                         <input
                             name="department"
                             onChange={handleChange}
@@ -99,7 +99,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="sampleType">Sample Type</label>
+                        <label htmlFor="sampleType" style={{ marginRight: '-8px' }}>Sample Type</label>
                         <input
                             name="sampleType"
                             onChange={handleChange}
@@ -107,15 +107,15 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
                         />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="costOfDiagnosticTest">Cost</label>
+                        <label htmlFor="costOfDiagnosticTest" style={{ marginRight: '50px' }}>Cost</label>
                         <input name="costOfDiagnosticTest" onChange={handleChange} value={formState.costOfDiagnosticTest} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="unit">Units</label>
+                        <label htmlFor="unit" style={{ marginRight: '45px' }}>Units</label>
                         <input name="unit" onChange={handleChange} value={formState.unit} />
                     </div>
                     <div className="form-group">
-                        <label htmlFor="bioRefInterval">Bio.Ref</label>
+                        <label htmlFor="bioRefInterval" style={{ marginRight: '40px' }}>Bio.Ref</label>
                         <input name="bioRefInterval" onChange={handleChange} value={formState.bioRefInterval} />
                     </div>
                     <div className="form-group">

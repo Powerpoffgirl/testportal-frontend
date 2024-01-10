@@ -10,7 +10,8 @@ import { Button, Popconfirm } from "antd";
 import close_button from "../assets/close_button.svg";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-export default function AppointmentListUser({ searchTerm }) {
+export default function AppointmentListUser({ searchTerm })
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [appointmentList, setAppointmentList] = useState([]);
@@ -24,11 +25,15 @@ export default function AppointmentListUser({ searchTerm }) {
     appointmentList,
   ]);
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -45,17 +50,20 @@ export default function AppointmentListUser({ searchTerm }) {
         const data = await response.json();
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     let matchedDoctors = [];
 
-    if (appointmentList?.length > 0 && searchTerm) {
+    if (appointmentList?.length > 0 && searchTerm)
+    {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
 
       matchedDoctors = appointmentList.filter(
@@ -67,22 +75,71 @@ export default function AppointmentListUser({ searchTerm }) {
             .toLowerCase()
             .includes(lowerCaseSearchTerm)
       );
-    } else {
+    } else
+    {
       matchedDoctors = appointmentList;
     }
 
     setFilteredAppointmentList(matchedDoctors);
   }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleEditAppointment = (appointmentId) => {
+  const handleEditAppointment = async (appointmentId, appointmentDate, appointmentTime, doctorId) =>
+  {
     localStorage.setItem("appointmentId", appointmentId);
-    navigate("/editappointment");
+
+
+    try
+    {
+      const token = localStorage.getItem("token");
+      if (!token)
+      {
+        console.error("No token found in local storage");
+        return;
+      }
+
+
+
+      const details = {
+        date: appointmentDate,
+        time: appointmentTime,
+      };
+
+
+      const response = await fetch(
+        `${baseUrl}/api/v1/cancel_slot/${doctorId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Use the stored token
+          },
+          body: JSON.stringify(details),
+        }
+      );
+
+      const data = await response.json();
+
+      if (response.ok)
+      {
+        console.log("Appointment slot deleted successfully", data);
+
+        navigate("/editappointment");
+
+      }
+
+    } catch (error)
+    {
+      console.error("There was an error deleting the Appointment:", error);
+    }
   };
 
-  const handleDeleteAppointment = async (appointmentId) => {
-    try {
+  const handleDeleteAppointment = async (appointmentId, appointmentDate, appointmentTime, doctorId) =>
+  {
+    try
+    {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         return;
       }
@@ -99,7 +156,8 @@ export default function AppointmentListUser({ searchTerm }) {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok)
+      {
         console.log("Appointment deleted successfully", data);
         toast.success("Appointment Deleted!");
         // toast.success("Appointment Deleted")
@@ -110,21 +168,54 @@ export default function AppointmentListUser({ searchTerm }) {
             (appointment) => appointment._id !== appointmentId
           )
         );
-      } else {
+
+
+
+        const details = {
+          date: appointmentDate,
+          time: appointmentTime,
+        };
+
+
+        const response1 = await fetch(
+          `${baseUrl}/api/v1/cancel_slot/${doctorId}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Use the stored token
+            },
+            body: JSON.stringify(details),
+          }
+        );
+
+        const data1 = await response1.json();
+
+        if (response1.ok)
+        {
+          console.log("Appointment slot deleted successfully", data);
+          toast.success("Appointment Slot Deleted!");
+        }
+
+      } else
+      {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("There was an error deleting the Appointment:", error);
     }
   };
 
-  function formatDate(dateString) {
+  function formatDate(dateString)
+  {
     const parts = dateString.split("-");
     return `${parts[2]}.${parts[1]}.${parts[0]}`;
   }
   console.log("APPOINTMENT LISTS", appointmentList, selectedAppointment);
 
-  const findSelectedDoctor = async (appointmentId) => {
+  const findSelectedDoctor = async (appointmentId) =>
+  {
     console.log("appointmentId########################", appointmentId);
     // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const appointment = appointmentList?.find(
@@ -392,7 +483,7 @@ export default function AppointmentListUser({ searchTerm }) {
                     okType="danger"
                     cancelText="No"
                     className="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
-                    onConfirm={() => handleDeleteAppointment(appointment._id)}
+                    onConfirm={() => handleDeleteAppointment(appointment._id, appointment?.appointmentDate?.date, appointment?.appointmentDate?.time, appointment?.doctorId?._id)}
                   >
                     <button
                       danger
@@ -405,7 +496,7 @@ export default function AppointmentListUser({ searchTerm }) {
                   </Popconfirm>
                   <button
                     class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
-                    onClick={() => handleEditAppointment(appointment._id)}
+                    onClick={() => handleEditAppointment(appointment._id, appointment?.appointmentDate?.date, appointment?.appointmentDate?.time, appointment?.doctorId?._id)}
                     style={{ height: isTab ? null : null, marginTop: isTab ? null : null, }}
                   >
                     {'Edit'}
