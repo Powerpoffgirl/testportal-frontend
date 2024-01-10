@@ -48,8 +48,8 @@ export default function AppointmentList({ searchTerm }) {
   const onOpenModal = () => setOpen(true);
   const onOpenModall = () => setOpenl(true);
   const onCloseModall = () => {
-    console.log("clicked")
-    setOpenl(false)
+    console.log("clicked");
+    setOpenl(false);
   };
 
   const [modalOpen, setModalOpen] = useState(false);
@@ -66,7 +66,7 @@ export default function AppointmentList({ searchTerm }) {
   ]);
 
   const onCloseModal = () => {
-    console.log("close tapped")
+    console.log("close tapped");
     setModalOpen(false);
     setModalContent("");
   };
@@ -381,7 +381,6 @@ export default function AppointmentList({ searchTerm }) {
           <button onClick={onCloseModall}>
             <img src={close_button} alt="close button" class="w-8 "></img>
           </button>
-
         </div>
         <div className="flex flex-col bg-customRedp-2 w-[100%] md:w-[100%]  mt-[2%]">
           <div className="flex flex-row w-[100%] justify-center ">
