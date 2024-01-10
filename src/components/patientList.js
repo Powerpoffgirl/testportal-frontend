@@ -9,6 +9,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { ToastContainer, toast } from "react-toastify";
 import UserContext from "./userContext";
+import close_button from "../assets/close_button.svg";
 import "react-toastify/dist/ReactToastify.css";
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -34,7 +35,7 @@ export default function PatientList({ searchTerm })
 {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedPatient, setSelectedPatient] = useState();
   const [open, setOpen] = useState(false);
@@ -248,12 +249,23 @@ export default function PatientList({ searchTerm })
         styles={{
           modal: {
             width: isTab ? "80%" : "70%",
-            backgroundColor: "#fff",
+            backgroundColor: "#E3F6FF",
             alignContent: "center",
+            borderRadius: "23px"
+          },
+          closeButton: {
+            display: "none",
           },
         }}
       >
-        <div className="flex flex-col bg-customRedp-2 w-[100%] md:w-[100%]  mt-[2%]">
+        <div class="flex flex-row-reverse md:-mb-14  -mb-18 z-50">
+          <button onClick={onCloseModal}>
+            <img src={close_button} class="w-8 mb-5"></img>
+          </button>
+          {/* <button><img src={delete_button} class="w-8"></img></button>
+            <button><img src={edit_button} class="w-8"></img></button> */}
+        </div>
+        <div className="flex flex-col bg-customRedp-2 w-[100%] md:w-[100%]  mt-[2%] ">
           <div className="flex flex-row w-[100%] justify-between">
             {selectedPatient?.patientPic ? (
               <img
@@ -263,8 +275,8 @@ export default function PatientList({ searchTerm })
                   borderRadius: "50%",
                   height: isTab ? "40px" : "123px",
                   width: isTab ? "40px" : "123px",
-                  marginRight: "70px",
-                  marginLeft: "20px",
+                  marginRight: "auto",
+                  marginLeft: "auto",
                   boxShadow: "inset 0 0 0 2px #76767",
                 }}
               />
@@ -276,7 +288,8 @@ export default function PatientList({ searchTerm })
                   borderRadius: "50%",
                   height: isTab ? "40px" : "123px",
                   width: isTab ? "40px" : "123px",
-                  marginRight: "70px",
+                  marginRight: "auto",
+                  marginLeft: "auto",
                   boxShadow: "inset 0 0 0 2px #76767",
                 }}
               />
@@ -348,7 +361,11 @@ export default function PatientList({ searchTerm })
                   />
                 ) : (
                   <AccountCircleIcon
-                    style={{ fontSize: "90px", color: "#B1DAED" }}
+                    style={{
+                      color: "#B1DAED",
+                      fontSize: isTab ? "50px" : "90px"
+
+                    }}
                   />
                 )}
                 <div>
@@ -359,8 +376,7 @@ export default function PatientList({ searchTerm })
                     {patient.age} yrs , {patient.bodyWeight} kg
                   </p>
                   <p>
-                    {patient.address?.houseNo} , {patient.address?.block},{" "}
-                    {patient.address?.area}, {patient.address?.district},
+                    {patient.address?.district},
                     {patient.address?.state}, {patient.address?.pinCode}
                   </p>
                   {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}

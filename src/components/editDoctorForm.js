@@ -565,7 +565,7 @@ export default function EditDoctorForm() {
     <>
       <div className="flex flex-col -ml-7  lg:flex-row">
         {/* --------------left-------------- */}
-        <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+        <div className="flex flex-col border bg-white lg:w-2/5 xl:w-1/4 py-6 px-3  ml-5 my-5  ">
           <div
             className=" flex items-end justify-end w-100% "
             style={{ marginRight: -40, marginTop: -20 }}
@@ -712,7 +712,7 @@ export default function EditDoctorForm() {
                 value={doctorDetails?.workingDays}
                 onChange={handleChange1}
                 placeholder="Mon-Fri"
-                // Add other props as needed
+              // Add other props as needed
               >
                 {Daysdropdown.map((option) => (
                   <Select.Option key={option.value} value={option.value}>
@@ -833,7 +833,7 @@ export default function EditDoctorForm() {
         </div>
 
         {/* ----------------------------------right---------------------------------- */}
-        <div className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3">
+        <div className="border bg-white flex flex-col lg:w-3/5 xl:w-3/4 p-6 my-5 mx-3">
           <p className="text-3xl ">Personal Information</p>
           <hr className="border my-2 " />
           {/* -------name------- */}

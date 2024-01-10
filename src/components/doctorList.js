@@ -23,7 +23,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { Tooltip } from "antd";
 
 export default function DoctorList({ searchTerm }) {
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState("");
@@ -994,7 +994,7 @@ export default function DoctorList({ searchTerm }) {
                     />
                   ) : (
                     <AccountCircleIcon
-                      style={{ fontSize: "90px", color: "#B1DAED" }}
+                      style={{ fontSize: isTab ? "45px" : "90px", color: "#B1DAED" }}
                     />
                   )}
                   <div>
@@ -1002,8 +1002,10 @@ export default function DoctorList({ searchTerm }) {
                       Dr. {doctor.name}
                     </h1>
 
-                    <p className=" text-gray-500 sm:text-sm text-xs ">
-                      {doctor?.speciality?.join(", ")}
+                    <p className=" text-gray-500 sm:text-sm text-xs flex flex-row">
+                      {/* {doctor?.speciality?.join(", ")} */}
+                      {doctor?.speciality?.slice(0, 1).join(", ")}
+                      <p class="text-black font-bold">...</p>
                     </p>
                     <p className=" text-gray-500 sm:text-sm text-xs ">
                       {doctor.totalExperience} Years Experience
