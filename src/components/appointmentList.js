@@ -37,6 +37,7 @@ export default function AppointmentList({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 767px)" });
+  let isTab1 = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [patientsList, setPatientsList] = useState([]);
   const [appointmentList, setAppointmentList] = useState([]);
@@ -544,7 +545,7 @@ export default function AppointmentList({ searchTerm }) {
                         </div>
                       </div>
                     </div>
-                    <div style={{ textAlign: "center" }} class="lg:mt-2 mt-2">
+                    <div style={{ textAlign: "center", display: isTab1 ? 'none' : '' }} class={`lg:mt-2 mt-2 `}>
                       <h1
                         class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
                         style={{
@@ -552,8 +553,8 @@ export default function AppointmentList({ searchTerm }) {
                           marginRight: isTab ? "4px" : "8px",
                         }}
                       >
-                        <p class="text-gray-500 sm:text-sm text-xs">
-                          Issues:<span className="ms-2"></span>
+                        <p class={`text-gray-500 sm:text-sm text-xs `}>
+                          Issues:<span className={`ms-2 `}></span>
                         </p>
                         {appointment?.issues?.[0]}
                       </h1>
@@ -579,7 +580,7 @@ export default function AppointmentList({ searchTerm }) {
                         {appointment?.appointmentDate?.time}
                       </div>
                     </div>
-                    <div style={{ textAlign: "" }} class="mt-2">
+                    <div style={{ display: isTab1 ? 'none' : '' }} class="mt-2">
                       <h1
                         class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
                         style={{
@@ -597,7 +598,7 @@ export default function AppointmentList({ searchTerm }) {
                 </div>
               </div>
               <div
-                className="flex flex-row ms-auto gap-1 sm:gap-1 ml-auto"
+                className="flex flex-row ms-auto gap-1 sm:gap-1 ml-auto mt-2"
                 style={{ flexDirection: "row" }}
               >
                 {appointment.appointmentStatus === "Confirm" ? (
