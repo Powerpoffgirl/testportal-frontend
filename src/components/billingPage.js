@@ -493,7 +493,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                   type="file"
                   ref={fileInputRef}
                   style={{ display: "none" }}
-                  accept="image/*"
+                  accept="application/pdf"
                   onChange={handleFileSelect}
                 />
               </p>

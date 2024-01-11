@@ -11,17 +11,19 @@ import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import "react-toastify/dist/ReactToastify.css";
+import { useReactToPrint } from 'react-to-print'
 
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
-export default function PatientDescription() {
+export default function PatientDescription()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const location = useLocation;
   const patientId = localStorage.getItem("patientId");
 
   console.log("patientId", patientId);
-
+  const componentPDF = useRef();
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [modalOpen, setModalOpen] = useState(false);
   const [modalContent, setModalContent] = useState("");
@@ -44,11 +46,20 @@ export default function PatientDescription() {
     labTests: [],
   });
   const [patient, setPatient] = useState({});
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  const generatePdf = useReactToPrint({
+    content: () => componentPDF.current,
+    documentTitle: "userReport",
+    // onAfterPrint: () => alert("Data saved in PDF")
+  });
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -68,7 +79,8 @@ export default function PatientDescription() {
         console.log("DATA from response", data.data);
         setPatientsHistory(data?.data);
         setPatient(data?.data[0]);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -77,16 +89,19 @@ export default function PatientDescription() {
   console.log("patientsHistory", patientsHistory);
   console.log("patient", patient);
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -95,7 +110,8 @@ export default function PatientDescription() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -107,14 +123,16 @@ export default function PatientDescription() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const onCloseModal = () => {
+  const onCloseModal = () =>
+  {
     setModalOpen(false);
     setModalContent("");
     navigate(`/appointmentlist`);
@@ -422,48 +440,56 @@ export default function PatientDescription() {
   const [anchorEl, setAnchorEl] = useState(null);
   // const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
   // Function to handle profile picture change
-  const handleNewProfilePicture = () => {
+  const handleNewProfilePicture = () =>
+  {
     // Logic to handle adding a new profile picture
     handleClose();
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = () =>
+  {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const handleChangeIssues = (values) => {
+  const handleChangeIssues = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       issues: values,
     }));
   };
 
-  const handleChangeDiseases = (values) => {
+  const handleChangeDiseases = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       diseases: values,
     }));
   };
 
-  const handleChangeMedicine = (values) => {
+  const handleChangeMedicine = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       medicineName: values,
     }));
   };
 
-  const handleChangeLabTests = (values) => {
+  const handleChangeLabTests = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       labTests: values,
@@ -472,12 +498,14 @@ export default function PatientDescription() {
 
   console.log("PATIENT DETAILS", patientDetails);
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
 
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       return;
     }
@@ -494,7 +522,8 @@ export default function PatientDescription() {
       }
     );
     const data = await response.json();
-    if (data.success === true) {
+    if (data.success === true)
+    {
       localStorage.setItem("appointmentId", appointmentId);
       toast.success("Diagnosis saved.");
       setModalOpen(true);
@@ -503,6 +532,45 @@ export default function PatientDescription() {
   };
 
   console.log("PATIENT DETAILS", patientDetails);
+  const handleFileSelect1 = async (event) =>
+  {
+    const file = event.target.files[0];
+    if (file)
+    {
+      const token = localStorage.getItem("token");
+      const patientId = localStorage.getItem("patientId");
+      const doctorId = localStorage.getItem("doctorId");
+      const formData = new FormData();
+      formData.append("patientReport", file);
+
+      console.log("FORM DATA", formData);
+      try
+      {
+        const response = await fetch(`${baseUrl}/api/v1/doctor/upload_patient_report/${patientId}`, {
+          method: "POST",
+          headers: {
+            "x-auth-token": token,
+          },
+          body: formData,
+        });
+
+        if (!response.ok)
+        {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        fileInputRef.current.value = "";
+      } catch (error)
+      {
+        console.error("Error ", error);
+        toast.error("Error uploading pdf. Please try again.");
+      }
+    }
+  };
+
+
 
   return (
     <form
@@ -708,14 +776,18 @@ export default function PatientDescription() {
             id="issues"
             name="issues"
             onChange={handleChangeIssues}
-            onInputKeyDown={(e) => {
+            onInputKeyDown={(e) =>
+            {
               // Handle custom value input
-              if (e.key === "Enter") {
+              if (e.key === "Enter")
+              {
                 e.preventDefault();
                 let inputValue = e.target.value.trim();
-                if (inputValue) {
+                if (inputValue)
+                {
                   handleChangeIssues([...patientDetails.issues, inputValue]);
-                  setTimeout(() => {
+                  setTimeout(() =>
+                  {
                     e.target.value = "";
                     inputValue = "";
                   }, 0);
@@ -748,17 +820,21 @@ export default function PatientDescription() {
             id="diesease"
             name="diesease"
             onChange={handleChangeDiseases}
-            onInputKeyDown={(e) => {
+            onInputKeyDown={(e) =>
+            {
               // Handle custom value input
-              if (e.key === "Enter") {
+              if (e.key === "Enter")
+              {
                 e.preventDefault();
                 let inputValue = e.target.value.trim();
-                if (inputValue) {
+                if (inputValue)
+                {
                   handleChangeDiseases([
                     ...patientDetails.diseases,
                     inputValue,
                   ]);
-                  setTimeout(() => {
+                  setTimeout(() =>
+                  {
                     e.target.value = "";
                     inputValue = "";
                   }, 0);
@@ -794,17 +870,21 @@ export default function PatientDescription() {
             id="medicineName"
             name="medicineName"
             onChange={handleChangeMedicine}
-            onInputKeyDown={(e) => {
+            onInputKeyDown={(e) =>
+            {
               // Handle custom value input
-              if (e.key === "Enter") {
+              if (e.key === "Enter")
+              {
                 e.preventDefault();
                 let inputValue = e.target.value.trim();
-                if (inputValue) {
+                if (inputValue)
+                {
                   handleChangeMedicine([
                     ...patientDetails.medicineName,
                     inputValue,
                   ]);
-                  setTimeout(() => {
+                  setTimeout(() =>
+                  {
                     e.target.value = "";
                     inputValue = "";
                   }, 0);
@@ -838,17 +918,21 @@ export default function PatientDescription() {
             id="labTests"
             name="labTests"
             onChange={handleChangeLabTests}
-            onInputKeyDown={(e) => {
+            onInputKeyDown={(e) =>
+            {
               // Handle custom value input
-              if (e.key === "Enter") {
+              if (e.key === "Enter")
+              {
                 e.preventDefault();
                 let inputValue = e.target.value.trim();
-                if (inputValue) {
+                if (inputValue)
+                {
                   handleChangeLabTests([
                     ...patientDetails.labTests,
                     inputValue,
                   ]);
-                  setTimeout(() => {
+                  setTimeout(() =>
+                  {
                     e.target.value = "";
                     inputValue = "";
                   }, 0);
@@ -872,7 +956,7 @@ export default function PatientDescription() {
       <div className="flex justify-center my-5">
         <label
           className="mx-2 block text-black text-lg font-semibold"
-          //   htmlFor="issues"
+        //   htmlFor="issues"
         >
           Medical History
         </label>
@@ -884,7 +968,7 @@ export default function PatientDescription() {
           Process
         </button> */}
       </div>
-      <div>
+      <div ref={componentPDF}>
         <table
           style={{
             width: "100%",
@@ -1075,7 +1159,7 @@ export default function PatientDescription() {
             ))}
           </tbody>
         </table>
-        <div className="flex justify-center my-5">
+        <div className="flex justify-center my-5 flex-row gap-5 ">
           <button
             type="submit"
             className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
@@ -1083,6 +1167,42 @@ export default function PatientDescription() {
           >
             Process
           </button>
+          <button
+            className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+            onClick={generatePdf}
+          // style={{
+          //   height: "40px",
+          //   width: "120px",
+          //   backgroundColor: "#89CFF0",
+          //   borderRadius: "10px",
+          //   marginTop: "20px",
+          // }}
+          >
+            Download PDF
+          </button>
+
+          <button
+            className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+          // style={{
+          //   height: "40px",
+          //   width: "100px",
+          //   backgroundColor: "#89CFF0",
+          //   borderRadius: "10px",
+          //   marginTop: "20px",
+          // }}
+          >
+            <label htmlFor="files">Send To SMS</label>
+          </button>
+          <p className="block text-black text-lg font-semibold ">
+            <input
+              id="files"
+              type="file"
+              ref={fileInputRef}
+              style={{ display: "none" }}
+              accept="application/pdf"
+              onChange={handleFileSelect1}
+            />
+          </p>
         </div>
       </div>
       {/* </div> */}
