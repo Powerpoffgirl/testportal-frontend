@@ -7,6 +7,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Popconfirm } from "antd";
 import UserContext from "./userContext";
+import { FaEdit } from "react-icons/fa";
+
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import close_button from "../assets/close_button.svg";
 
@@ -227,6 +229,38 @@ export default function PatientListUser({ searchTerm }) {
           </button>
         </div>
 
+        <div className="flex flex-row w-[100%] justify-between">
+          {selectedPatient?.patientPic ? (
+            <img
+              src={selectedPatient?.patientPic}
+              alt="Avatar"
+              style={{
+                borderRadius: "50%",
+                height: isTab ? "40px" : "123px",
+                width: isTab ? "40px" : "123px",
+                marginTop: "10px",
+                marginRight: "auto",
+                marginLeft: "auto",
+                boxShadow: "inset 0 0 0 2px #76767",
+              }}
+            />
+          ) : (
+            <div className="flex flex-row w-[100%] justify-center ">
+              <AccountCircleIcon
+                style={{
+                  fontSize: isTab ? "50px" : "90px",
+                  color: "#B1DAED",
+                  borderRadius: "50%",
+                  height: isTab ? "80px" : "123px",
+                  width: isTab ? "80px" : "123px",
+                  boxShadow: "inset 0 0 0 2px #76767",
+                  // Adjust or remove marginRight if necessary
+                }}
+              />
+            </div>
+          )}
+        </div>
+
         <div className="flex flex-col bg-customGreen p-2  items-center w-[100%] md:w-[100%] mt-[2%]">
           <div className="flex flex-row w-[100%] justify-between"></div>
           <text
@@ -277,7 +311,7 @@ export default function PatientListUser({ searchTerm }) {
               selectedPatient?.address?.pinCode}
           </text>
 
-          <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
+          {/* <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
             <span
               style={{
                 width: "25px",
@@ -294,8 +328,8 @@ export default function PatientListUser({ searchTerm }) {
               onClick={() => handleDeletePatient(selectedPatient?._id)}
               dangerouslySetInnerHTML={{ __html: svg5 }}
             ></span>
-          </div>
-          <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
+          </div> */}
+          {/* <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
             <span className="flex">
               <span
                 className="mr-8"
@@ -307,7 +341,7 @@ export default function PatientListUser({ searchTerm }) {
                 dangerouslySetInnerHTML={{ __html: svg2 }}
               ></span>
             </span>
-          </div>
+          </div> */}
         </div>
       </Modal>
 
@@ -353,6 +387,24 @@ export default function PatientListUser({ searchTerm }) {
                   </div>
                 </div>
                 <div className="flex flex-row ms-auto gap-1 sm:gap-4">
+                  <button
+                    class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
+                    onClick={() =>
+                      handleEditPatient(
+                        patient._id,
+                        patient?.patientDate?.date,
+                        patient?.patientDate?.time,
+                        patient?.doctorId?._id
+                      )
+                    }
+                    style={{
+                      height: isTab ? null : null,
+                      marginTop: isTab ? null : null,
+                    }}
+                  >
+                    {"Edit"}
+                  </button>
+
                   <Popconfirm
                     title="Delete the Patient"
                     description="Are you sure to delete this Patient?"
@@ -371,6 +423,7 @@ export default function PatientListUser({ searchTerm }) {
                       {isTab ? <FaTrashAlt /> : "Delete"}
                     </button>
                   </Popconfirm>
+
                   {/* <button
                     className="rounded-full px-6 sm:px-4 py-2 sm:py-1 text-white bg-[#89CFF0] text-xs sm:text-sm"
                     onClick={() => handleBookAppointment(patient)}
