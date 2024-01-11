@@ -15,8 +15,7 @@ import { useReactToPrint } from 'react-to-print'
 
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
-export default function PatientDescription()
-{
+export default function PatientDescription() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const location = useLocation;
@@ -51,15 +50,11 @@ export default function PatientDescription()
     documentTitle: "userReport",
     // onAfterPrint: () => alert("Data saved in PDF")
   });
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -79,8 +74,7 @@ export default function PatientDescription()
         console.log("DATA from response", data.data);
         setPatientsHistory(data?.data);
         setPatient(data?.data[0]);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -89,19 +83,16 @@ export default function PatientDescription()
   console.log("patientsHistory", patientsHistory);
   console.log("patient", patient);
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -110,8 +101,7 @@ export default function PatientDescription()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -123,16 +113,14 @@ export default function PatientDescription()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const onCloseModal = () =>
-  {
+  const onCloseModal = () => {
     setModalOpen(false);
     setModalContent("");
     navigate(`/appointmentlist`);
@@ -440,56 +428,58 @@ export default function PatientDescription()
   const [anchorEl, setAnchorEl] = useState(null);
   // const open = Boolean(anchorEl);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
   // Function to handle profile picture change
-  const handleNewProfilePicture = () =>
-  {
+  const handleNewProfilePicture = () => {
     // Logic to handle adding a new profile picture
     handleClose();
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const handleChangeIssues = (values) =>
-  {
+  // bp & temp
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setPatientDetails((prevPatientDetails) => ({
+      ...prevPatientDetails,
+      [name]: value,
+    }));
+  };
+
+
+  const handleChangeIssues = (values) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       issues: values,
     }));
   };
 
-  const handleChangeDiseases = (values) =>
-  {
+  const handleChangeDiseases = (values) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       diseases: values,
     }));
   };
 
-  const handleChangeMedicine = (values) =>
-  {
+  const handleChangeMedicine = (values) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       medicineName: values,
     }));
   };
 
-  const handleChangeLabTests = (values) =>
-  {
+  const handleChangeLabTests = (values) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       labTests: values,
@@ -498,18 +488,17 @@ export default function PatientDescription()
 
   console.log("PATIENT DETAILS", patientDetails);
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
       return;
     }
     const appointmentId = localStorage.getItem("appointmentId");
+    console.log("patient details ===================", patientDetails)
     const response = await fetch(
       `${baseUrl}/api/v1/doctor/doctor_diagnosis/${appointmentId}`,
       {
@@ -522,21 +511,18 @@ export default function PatientDescription()
       }
     );
     const data = await response.json();
-    if (data.success === true)
-    {
+    if (data.success === true) {
+      // setModalOpen(true);
       localStorage.setItem("appointmentId", appointmentId);
       toast.success("Diagnosis saved.");
-      setModalOpen(true);
     }
     console.log("DATA from response", data);
   };
 
-  console.log("PATIENT DETAILS", patientDetails);
-  const handleFileSelect1 = async (event) =>
-  {
+  console.log("PATIENT DETAILS1  ", patientDetails);
+  const handleFileSelect1 = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const patientId = localStorage.getItem("patientId");
       const doctorId = localStorage.getItem("doctorId");
@@ -544,8 +530,7 @@ export default function PatientDescription()
       formData.append("patientReport", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/doctor/upload_patient_report/${patientId}`, {
           method: "POST",
           headers: {
@@ -554,16 +539,14 @@ export default function PatientDescription()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
 
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error ", error);
         toast.error("Error uploading pdf. Please try again.");
       }
@@ -573,639 +556,500 @@ export default function PatientDescription()
 
 
   return (
-    <form
-      className="flex flex-col gap-2 px-3 w-full relative overflow-hidden justify-center"
-      onSubmit={(e) => e.preventDefault()}
-    >
-      <Modal
-        open={modalOpen}
-        onClose={onCloseModal}
-        styles={{
-          modal: {
-            background: "transparent", // Makes modal background transparent
-            boxShadow: "none", // Removes shadow or border effects
-            // Any other styles to override default modal styles
-          },
-        }}
-        center
-      >
-        <div
-          className="flex flex-col items-center w-[100%] md:w-[100%]"
-          style={{
-            border: "none",
-            borderRadius: "5px",
-            backgroundColor: "#89CFF0",
-          }}
-        >
-          <text
-            className="ml-4 text-center mt-4"
-            style={{
-              marginBottom: -20,
-              fontSize: "40px",
-              fontWeight: 700,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-              height: "100px",
-              width: "370px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            Diagnosis saved.
-          </text>
-          <text
-            className="ml-4 text-center"
-            style={{
-              fontSize: "60px",
-              fontWeight: 800,
-              lineHeight: "24px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-              marginBottom: "7%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            {<IoIosCheckmarkCircleOutline />}
-          </text>
-        </div>
-      </Modal>
-      <ToastContainer />
+    <>
 
-      {/* <div className="grid grid-cols-1 w-full gap-4"> */}
-      <div className="flex  flex-col items-center justify-center w-full mb-10">
-        <div className="cursor-pointer">
+      <form
+        className="flex flex-col overflow-hidden justify-center "
+        onSubmit={(e) => e.preventDefault()}
+      >
+        <Modal
+          open={modalOpen}
+          onClose={onCloseModal}
+          styles={{
+            modal: {
+              background: "transparent", // Makes modal background transparent
+              boxShadow: "none", // Removes shadow or border effects
+              display: 'none'
+              // Any other styles to override default modal styles
+            },
+          }}
+          center
+        >
           <div
+            className="flex flex-col items-center w-[100%] md:w-[100%]"
             style={{
-              display: "flex",
-              flexDirection: "column",
+              border: "none",
+              borderRadius: "5px",
+              backgroundColor: "#89CFF0",
             }}
           >
+            <text
+              className="ml-4 text-center mt-4"
+              style={{
+                marginBottom: -20,
+                fontSize: "40px",
+                fontWeight: 700,
+                lineHeight: "28.8px",
+                fontFamily: "Lato, sans-serif",
+                color: "#FFFFFF",
+                height: "100px",
+                width: "370px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              Diagnosis saved.
+            </text>
+            <text
+              className="ml-4 text-center"
+              style={{
+                fontSize: "60px",
+                fontWeight: 800,
+                lineHeight: "24px",
+                fontFamily: "Lato, sans-serif",
+                color: "#FFFFFF",
+                marginBottom: "7%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {<IoIosCheckmarkCircleOutline />}
+            </text>
+          </div>
+        </Modal>
+        <ToastContainer />
+
+        {/* <div className="grid grid-cols-1 w-full gap-4"> */}
+
+        <div className="flex flex-col items-center justify-center mb-10  ">
+          <div className="cursor-pointer">
             <div
               style={{
-                backgroundColor: "#FFFFFF",
-                width: "90px",
-                height: "90px",
-                borderRadius: "50%",
-                alignItems: "center",
                 display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-evenly",
-                color: "#A4A4A4",
+                flexDirection: "column",
               }}
             >
-              {patient?.patientId?.patientPic ? (
-                <img
-                  src={patient?.patientId?.patientPic}
-                  alt={patient?.patientId?.name}
-                  style={{
-                    borderRadius: "50%",
-                  }}
-                />
-              ) : (
-                <PermIdentityOutlinedIcon
-                  style={{ width: "70px", height: "70px" }}
-                />
-              )}
+              <div
+                style={{
+                  backgroundColor: "#FFFFFF",
+                  width: "120px",
+                  height: "120px",
+                  borderRadius: "50%",
+                  alignItems: "center",
+                  display: "flex",
+                  flexDirection: "row",
+                  justifyContent: "space-evenly",
+                  color: "#A4A4A4",
+                }}
+              >
+                {patient?.patientId?.patientPic ? (
+                  <img
+                    src={patient?.patientId?.patientPic}
+                    alt={patient?.patientId?.name}
+                    style={{
+                      borderRadius: "50%",
+                    }}
+                  />
+                ) : (
+                  <PermIdentityOutlinedIcon
+                    style={{ width: "70px", height: "70px" }}
+                  />
+                )}
+              </div>
+              <p
+                aria-controls="profile-pic-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                style={{
+                  cursor: "pointer",
+                  marginLeft: 37,
+                  marginTop: -20,
+                }}
+              ></p>
             </div>
-            <p
-              aria-controls="profile-pic-menu"
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              style={{
-                cursor: "pointer",
-                marginLeft: 37,
-                marginTop: -20,
-              }}
-            ></p>
           </div>
         </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
-        <div className="flex flex-col ">
-          <label
-            className="mx-2 text-lg font-normal text-black font-lato"
-            htmlFor="patientName"
-          >
-            Patient Name
-          </label>
-          {patientsHistory?.length > 0 ? (
-            <input
-              className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
-              name="doctorName"
-              value={patient?.patientId?.name} // Value based on condition
-            />
-          ) : (
-            <input
-              className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
-              name="doctorName"
-            />
-          )}
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-0">
-          <div className="flex flex-col">
-            <label
-              className="mx-2 text-lg font-normal text-black font-lato " // Corrected class name
-              htmlFor="doctorName"
-            >
-              Age
-            </label>
-            <input
-              className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg "
-              name="doctorName"
-              value={patient?.patientId?.age + " yr"}
-            />
-          </div>
-          <div className="flex flex-col">
-            <label
-              className="mx-2 text-lg font-normal text-black font-lato"
-              htmlFor="doctorName"
-            >
-              Weight
-            </label>
-            <input
-              className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg "
-              name="doctorName"
-              value={patient?.patientId?.bodyWeight + " kg"} // Value based on condition
-            />
-          </div>
-          <div className="flex flex-col">
-            <label
-              className="mx-2 text-lg font-normal text-black font-lato"
-              htmlFor="doctorName"
-            >
-              Temperature
-            </label>
-            <input
-              className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg "
-              name="doctorName"
-              value="32"
-            />
-          </div>
-          <div className="flex flex-col">
-            <label
-              className="mx-2 text-lg font-normal text-black font-lato"
-              htmlFor="doctorName"
-            >
-              BP
-            </label>
-            <input
-              className="mx-2 px-2  border border-[#89CFF0] h-10 rounded-lg "
-              name="doctorName"
-              value="100/80mm Hg"
-            />
-          </div>
-        </div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex flex-col">
-          <label
-            className="mx-2 text-lg font-normal text-black font-lato"
-            htmlFor="issues"
-          >
-            Issues
-          </label>
-          <Select
-            mode="multiple"
-            className="mx-2 border border-[#89CFF0]  h-10 rounded-lg "
-            popupClassName="no-border-dropdown-menu" // Apply the custom class here
-            id="issues"
-            name="issues"
-            onChange={handleChangeIssues}
-            onInputKeyDown={(e) =>
-            {
-              // Handle custom value input
-              if (e.key === "Enter")
-              {
-                e.preventDefault();
-                let inputValue = e.target.value.trim();
-                if (inputValue)
-                {
-                  handleChangeIssues([...patientDetails.issues, inputValue]);
-                  setTimeout(() =>
-                  {
-                    e.target.value = "";
-                    inputValue = "";
-                  }, 0);
-                }
-              }
-            }}
-            value={patientDetails.issues}
-            placeholder="Select Issues"
-            style={{ overflowY: "auto" }}
-            dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
-          >
-            {issues.map((option) => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
-        </div>
-        <div className="flex flex-col">
-          <label
-            className="mx-2 text-lg font-normal text-black font-lato"
-            htmlFor="issues"
-          >
-            Disease
-          </label>
-          <Select
-            mode="multiple"
-            className="mx-2 border border-[#89CFF0] h-10 rounded-lg"
-            popupClassName="no-border-dropdown-menu" // Apply the custom class here
-            id="diesease"
-            name="diesease"
-            onChange={handleChangeDiseases}
-            onInputKeyDown={(e) =>
-            {
-              // Handle custom value input
-              if (e.key === "Enter")
-              {
-                e.preventDefault();
-                let inputValue = e.target.value.trim();
-                if (inputValue)
-                {
-                  handleChangeDiseases([
-                    ...patientDetails.diseases,
-                    inputValue,
-                  ]);
-                  setTimeout(() =>
-                  {
-                    e.target.value = "";
-                    inputValue = "";
-                  }, 0);
-                }
-              }
-            }}
-            value={patientDetails.diseases}
-            placeholder="Select Diesease"
-            style={{ overflowY: "auto" }}
-            dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
-          >
-            {diseases.map((option) => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
-        </div>
-      </div>
-      {/* <div className="grid grid-cols-1 w-full gap-4"> */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="flex flex-col">
-          <label
-            className="mx-2 text-lg font-normal text-black font-lato"
-            htmlFor="issues"
-          >
-            Medicine Name
-          </label>
-          <Select
-            mode="multiple"
-            className="mx-2 border border-[#89CFF0] h-10 rounded-lg"
-            popupClassName="no-border-dropdown-menu" // Apply the custom class here
-            id="medicineName"
-            name="medicineName"
-            onChange={handleChangeMedicine}
-            onInputKeyDown={(e) =>
-            {
-              // Handle custom value input
-              if (e.key === "Enter")
-              {
-                e.preventDefault();
-                let inputValue = e.target.value.trim();
-                if (inputValue)
-                {
-                  handleChangeMedicine([
-                    ...patientDetails.medicineName,
-                    inputValue,
-                  ]);
-                  setTimeout(() =>
-                  {
-                    e.target.value = "";
-                    inputValue = "";
-                  }, 0);
-                }
-              }
-            }}
-            value={patientDetails.medicineName}
-            placeholder="Select Medicine"
-            style={{ overflowY: "auto" }}
-            dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
-          >
-            {medicineName.map((option) => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
-        </div>
-        {/* <div className="grid grid-cols-1 w-full gap-4"> */}
-        <div className="flex flex-col">
-          <label
-            className="mx-2 text-lg font-normal text-black font-lato"
-            htmlFor="issues"
-          >
-            Lab Tests
-          </label>
-          <Select
-            mode="multiple"
-            className="mx-2 border border-[#89CFF0] h-10  rounded-lg"
-            popupClassName="no-border-dropdown-menu" // Apply the custom class here
-            id="labTests"
-            name="labTests"
-            onChange={handleChangeLabTests}
-            onInputKeyDown={(e) =>
-            {
-              // Handle custom value input
-              if (e.key === "Enter")
-              {
-                e.preventDefault();
-                let inputValue = e.target.value.trim();
-                if (inputValue)
-                {
-                  handleChangeLabTests([
-                    ...patientDetails.labTests,
-                    inputValue,
-                  ]);
-                  setTimeout(() =>
-                  {
-                    e.target.value = "";
-                    inputValue = "";
-                  }, 0);
-                }
-              }
-            }}
-            value={patientDetails.labTests}
-            placeholder="Select Lab Tests"
-            style={{ overflowY: "auto" }}
-            dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
-          >
-            {labTests.map((option) => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
-        </div>
-      </div>
 
-      <div className="flex justify-center my-5">
-        <label
-          className="mx-2 block text-black text-lg font-semibold"
-        //   htmlFor="issues"
-        >
-          Medical History
-        </label>
-        {/* <button
+
+        <div className="flex xl:flex-row flex-col  ">
+          <div className="flex flex-col xl:w-1/2 xl:pr-2">
+            <label
+              className="mx-2 text-lg font-semibold text-black font-lato"
+              htmlFor="patientName"
+            >
+              Patient Name
+            </label>
+            {patientsHistory?.length > 0 ? (
+              <input
+                className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+                name="doctorName"
+                value={patient?.patientId?.name} // Value based on condition
+              />
+            ) : (
+              <input
+                className="mx-2 px-2 border border-[#89CFF0] h-10 rounded-lg"
+                name="doctorName"
+              />
+            )}
+          </div>
+          <div className="flex lg:flex-row flex-col justify-between xl:w-1/2 max-w-2xl ">
+            <div className="ml-2  xl:ml-4 flex flex-col lg:w-1/5  ">
+              <label
+                className=" text-lg font-semibold text-black font-lato " // Corrected class name
+                htmlFor="doctorName"
+              >
+                Age
+              </label>
+              <input
+                className=" px-2 border border-[#89CFF0] h-10 rounded-lg "
+                name="doctorName"
+                value={patient?.patientId?.age + " yr"}
+              />
+            </div>
+            <div className="ml-2  flex flex-col lg:w-1/5 ">
+              <label
+                className=" text-lg font-semibold text-black font-lato"
+                htmlFor="doctorName"
+              >
+                Weight
+              </label>
+              <input
+                className=" px-2  border border-[#89CFF0] h-10 rounded-lg "
+                name="doctorName"
+                value={patient?.patientId?.bodyWeight + " kg"} // Value based on condition
+              />
+            </div>
+            <div className="ml-2  flex flex-col lg:w-1/5  ">
+              <label
+                className="text-lg font-semibold text-black font-lato"
+                htmlFor="doctorName"
+              >
+                Temperature
+              </label>
+              <input
+                className=" px-2  border border-[#89CFF0] h-10 rounded-lg "
+                name="bodyTemperature"
+                onChange={handleChange}
+              // value="32"
+              />
+            </div>
+            <div className="ml-2  flex flex-col lg:w-1/5  ">
+              <label
+                className=" text-lg font-semibold text-black font-lato"
+                htmlFor="doctorName"
+              >
+                BP
+              </label>
+              <input
+                className=" px-2  border border-[#89CFF0] h-10 rounded-lg "
+                name="bloodPressure"
+                onChange={handleChange}
+              // value="100/80mm Hg"
+              />
+            </div>
+          </div>
+        </div>
+
+
+        <div className="flex xl:flex-row flex-col gap-4 ">
+          <div className="flex flex-col  xl:w-1/2">
+            <label
+              className="mx-2 text-lg font-semibold text-black font-lato"
+              htmlFor="issues"
+            >
+              Issues
+            </label>
+            <Select
+              mode="multiple"
+              className="mx-2 border border-[#89CFF0]  h-10 rounded-lg "
+              popupClassName="no-border-dropdown-menu" // Apply the custom class here
+              id="issues"
+              name="issues"
+              onChange={handleChangeIssues}
+              onInputKeyDown={(e) => {
+                // Handle custom value input
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  let inputValue = e.target.value.trim();
+                  if (inputValue) {
+                    handleChangeIssues([...patientDetails.issues, inputValue]);
+                    setTimeout(() => {
+                      e.target.value = "";
+                      inputValue = "";
+                    }, 0);
+                  }
+                }
+              }}
+              value={patientDetails.issues}
+              placeholder="Select Issues"
+              style={{ overflowY: "auto" }}
+              dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+            >
+              {issues.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+          <div className="flex flex-col  xl:w-1/2">
+            <label
+              className="mx-2 text-lg font-semibold text-black font-lato"
+              htmlFor="issues"
+            >
+              Disease
+            </label>
+            <style>
+              {`
+          .ant-select-selector {
+            border-color: white !important;
+          }
+        `}
+            </style>
+            <Select
+              mode="multiple"
+              className="mx-2 bg-white border border-[#89CFF0] h-10 rounded-lg"
+              popupClassName="no-border-dropdown-menu" // Apply the custom class here
+              id="diesease"
+              name="diesease"
+              onChange={handleChangeDiseases}
+              onInputKeyDown={(e) => {
+                // Handle custom value input
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  let inputValue = e.target.value.trim();
+                  if (inputValue) {
+                    handleChangeDiseases([
+                      ...patientDetails.diseases,
+                      inputValue,
+                    ]);
+                    setTimeout(() => {
+                      e.target.value = "";
+                      inputValue = "";
+                    }, 0);
+                  }
+                }
+              }}
+              value={patientDetails.diseases}
+              placeholder="Select Diesease"
+              style={{ overflowY: "auto" }}
+              dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+            >
+              {diseases.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        </div>
+
+
+        {/* <div className="grid grid-cols-1 w-full gap-4"> */}
+        <div className="flex xl:flex-row flex-col gap-4 ">
+          <div className="flex flex-col xl:w-1/2">
+            <label
+              className="mx-2 text-lg font-semibold text-black font-lato"
+              htmlFor="issues"
+            >
+              Medicine Name
+            </label>
+            <Select
+              mode="multiple"
+              className="mx-2 bg-white border border-[#89CFF0] h-10 rounded-lg"
+              popupClassName="no-border-dropdown-menu" // Apply the custom class here
+              id="medicineName"
+              name="medicineName"
+              onChange={handleChangeMedicine}
+              onInputKeyDown={(e) => {
+                // Handle custom value input
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  let inputValue = e.target.value.trim();
+                  if (inputValue) {
+                    handleChangeMedicine([
+                      ...patientDetails.medicineName,
+                      inputValue,
+                    ]);
+                    setTimeout(() => {
+                      e.target.value = "";
+                      inputValue = "";
+                    }, 0);
+                  }
+                }
+              }}
+              value={patientDetails.medicineName}
+              placeholder="Select Medicine"
+              style={{ overflowY: "auto" }}
+              dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+            >
+              {medicineName.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+          {/* <div className="grid grid-cols-1 w-full gap-4"> */}
+          <div className="flex flex-col xl:w-1/2">
+            <label
+              className="mx-2 text-lg font-semibold text-black font-lato"
+              htmlFor="issues"
+            >
+              Lab Tests
+            </label>
+            <Select
+              mode="multiple"
+              className="mx-2 bg-white border border-[#89CFF0] h-10  rounded-lg"
+              popupClassName="no-border-dropdown-menu" // Apply the custom class here
+              id="labTests"
+              name="labTests"
+              onChange={handleChangeLabTests}
+              onInputKeyDown={(e) => {
+                // Handle custom value input
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  let inputValue = e.target.value.trim();
+                  if (inputValue) {
+                    handleChangeLabTests([
+                      ...patientDetails.labTests,
+                      inputValue,
+                    ]);
+                    setTimeout(() => {
+                      e.target.value = "";
+                      inputValue = "";
+                    }, 0);
+                  }
+                }
+              }}
+              value={patientDetails.labTests}
+              placeholder="Select Lab Tests"
+              style={{ overflowY: "auto" }}
+              dropdownStyle={{ maxHeight: "300px", overflowY: "auto" }}
+            >
+              {labTests.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
+          </div>
+        </div>
+
+
+        <div class="flex flex-col ">
+          <div className="flex justify-center my-5 ">
+            <label
+              className="mx-2 block text-black text-lg font-semibold"
+            //   htmlFor="issues"
+            >
+              Medical History
+            </label>
+
+            {/* <button
           type="submit"
           className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
           onClick={handleRegister}
         >
           Process
         </button> */}
-      </div>
-      <div ref={componentPDF}>
-        <table
-          style={{
-            width: "100%",
-            backgroundColor: "white",
-            borderCollapse: "collapse",
-            marginBottom: "40px",
-          }}
-        >
-          <thead>
-            <tr
-              style={{
-                color: "black",
-                textAlign: "center",
-                padding: "8px",
-                border: "1px solid #89CFF0",
-                borderRadius: "5px",
-              }}
-            >
-              <th
-                style={{
-                  color: "black",
-                  textAlign: "center", // Center text horizontally
-                  padding: "8px",
-                  paddingLeft: "10px",
-                  border: "1px solid #89CFF0",
-                  // alignItems: "center", This won't affect th elements directly
-                }}
-              >
-                Dr. Name
-              </th>
-              <th
-                style={{
-                  color: "black",
-                  textAlign: "center",
-                  padding: "8px",
-                  paddingLeft: "10px",
-                  border: "1px solid #89CFF0",
-                  // Border for table header cells
-                }}
-              >
-                Date
-              </th>
-              <th
-                style={{
-                  color: "black",
-                  textAlign: "center",
-                  padding: "8px",
-                  paddingLeft: "10px",
-                  border: "1px solid #89CFF0",
-                  // Border for table header cells
-                }}
-              >
-                Time
-              </th>
-              <th
-                style={{
-                  color: "black",
-                  textAlign: "center",
-                  padding: "8px",
-                  paddingLeft: "10px",
-                  border: "1px solid #89CFF0",
-                  // Border for table header cells
-                }}
-              >
-                Issues
-              </th>
-              <th
-                style={{
-                  color: "black",
-                  textAlign: "center",
-                  padding: "8px",
-                  paddingLeft: "10px",
-                  border: "1px solid #89CFF0",
-                  // Border for table header cells
-                }}
-              >
-                Disease
-              </th>
-              <th
-                style={{
-                  color: "black",
-                  textAlign: "center",
-                  padding: "8px",
-                  paddingLeft: "10px",
-                  border: "1px solid #89CFF0",
-                  // Border for table header cells
-                }}
-              >
-                Medicine Name
-              </th>
-              <th
-                style={{
-                  color: "black",
-                  textAlign: "center",
-                  padding: "8px",
-                  paddingLeft: "10px",
-                  border: "1px solid #89CFF0",
-                  // Border for table header cells
-                }}
-              >
-                Lab Test
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {patientsHistory?.map((history, index) => (
-              <tr
-                key={index}
-                style={{
-                  color: "black",
-                  textAlign: "center",
-                  padding: "8px",
-                  border: "1px solid #89CFF0",
-                  borderRadius: "5px", // Border for table header cells
-                }}
-              >
-                <td
-                  style={{
-                    color: "black",
-                    textAlign: "center",
-                    padding: "8px",
-                    border: "1px solid #89CFF0",
-                  }}
-                >
-                  {history?.doctorId?.name}
-                </td>
-                <td
-                  style={{
-                    color: "black",
-                    textAlign: "center",
-                    padding: "8px",
-                    border: "1px solid #89CFF0",
-                  }}
-                >
-                  {history?.appointmentDate?.date}
-                </td>
-                <td
-                  style={{
-                    color: "black",
-                    textAlign: "center",
-                    padding: "8px",
-                    border: "1px solid #89CFF0",
-                  }}
-                >
-                  {history?.appointmentDate?.time}
-                </td>
-                <td
-                  style={{
-                    color: "black",
-                    textAlign: "center",
-                    padding: "8px",
-                    border: "1px solid #89CFF0",
-                  }}
-                >
-                  {history?.issues}
-                </td>
-                <td
-                  style={{
-                    color: "black",
-                    textAlign: "center",
-                    padding: "8px",
-                    border: "1px solid #89CFF0",
-                  }}
-                >
-                  {history?.diseases}
-                </td>
-                <td
-                  style={{
-                    color: "black",
-                    textAlign: "center",
-                    padding: "8px",
-                    border: "1px solid #89CFF0",
-                  }}
-                >
-                  {history?.medicineName}
-                </td>
-                <td
-                  style={{
-                    color: "black",
-                    textAlign: "center",
-                    padding: "8px",
-                    border: "1px solid #89CFF0",
-                  }}
-                >
-                  {history?.labTests}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="flex justify-center my-5 flex-row gap-5 ">
-          <button
-            type="submit"
-            className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
-            onClick={handleRegister}
-          >
-            Process
-          </button>
-          <button
-            className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
-            onClick={generatePdf}
-          // style={{
-          //   height: "40px",
-          //   width: "120px",
-          //   backgroundColor: "#89CFF0",
-          //   borderRadius: "10px",
-          //   marginTop: "20px",
-          // }}
-          >
-            Download PDF
-          </button>
+          </div>
+          <div ref={componentPDF} class=" flex flex-col ">
 
-          <button
-            className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
-          // style={{
-          //   height: "40px",
-          //   width: "100px",
-          //   backgroundColor: "#89CFF0",
-          //   borderRadius: "10px",
-          //   marginTop: "20px",
-          // }}
-          >
-            <label htmlFor="files">Send To SMS</label>
-          </button>
-          <p className="block text-black text-lg font-semibold ">
-            <input
-              id="files"
-              type="file"
-              ref={fileInputRef}
-              style={{ display: "none" }}
-              accept="application/pdf"
-              onChange={handleFileSelect1}
-            />
-          </p>
+            <div className=" overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-2xl  md:max-w-md max-w-xs mx-auto">
+              <table className=" divide-y divide-gray-200 ">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Dr. Name</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Date</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Time</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Issues</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Disease</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Medicine Name</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Lab Test</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {patientsHistory?.map((history, index) => (
+                    <tr key={index}>
+                      <td className=" px-6 py-4 whitespace-nowrap text-sm  text-gray-900">{history?.doctorId?.name}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black ">{history?.appointmentDate?.date}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-black">{history?.appointmentDate?.time}</td>
+                      <td
+                        // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
+                        className="w-[300px] px-6 py-4 whitespace-normal text-sm text-black break-words" style={{ wordWrap: 'break-word' }}
+                      >{history?.issues?.join(', ')}</td>
+                      <td
+                        // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
+                        className="w-[300px] px-6 py-4 whitespace-normal text-sm text-black break-words" style={{ wordWrap: 'break-word' }}>{history?.diseases?.join(', ')}</td>
+                      <td
+                        className="w-[300px] px-6 py-4 whitespace-normal text-sm text-black break-words" style={{ wordWrap: 'break-word' }}
+                      // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
+                      >{history?.medicineName?.join(', ')}</td>
+                      <td
+                        className="w-[300px] px-6 py-4 whitespace-normal text-sm text-black break-words" style={{ wordWrap: 'break-word' }}
+                      // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
+                      >{history?.labTests?.join(', ')}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+
+
+            <div className="flex mx-auto my-5 flex-col lg:flex-row gap-5 ">
+              <button
+                type="submit"
+                className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                onClick={handleRegister}
+              >
+                Process
+              </button>
+              <button
+                className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                onClick={generatePdf}
+              // style={{
+              //   height: "40px",
+              //   width: "120px",
+              //   backgroundColor: "#89CFF0",
+              //   borderRadius: "10px",
+              //   marginTop: "20px",
+              // }}
+              >
+                Download PDF
+              </button>
+              <button
+                className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+              // style={{
+              //   height: "40px",
+              //   width: "100px",
+              //   backgroundColor: "#89CFF0",
+              //   borderRadius: "10px",
+              //   marginTop: "20px",
+              // }}
+              >
+                <label htmlFor="files">Send To SMS</label>
+              </button>
+              <p className="block text-black text-lg font-semibold">
+                <input
+                  id="files"
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="application/pdf"
+                  onChange={handleFileSelect1}
+                />
+              </p>
+            </div>
+          </div>
         </div>
-      </div>
-      {/* </div> */}
-    </form>
+      </form>
+
+
+    </>
   );
 }

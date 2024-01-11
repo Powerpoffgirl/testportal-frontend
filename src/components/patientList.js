@@ -35,6 +35,7 @@ export default function PatientList({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 767px)" });
+
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedPatient, setSelectedPatient] = useState();
   const [open, setOpen] = useState(false);
