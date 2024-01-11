@@ -189,58 +189,6 @@ export default function BillingPrice()
         // window.location.reload();
     };
 
-    useEffect(() =>
-    {
-
-        const submitDetails = async () =>
-        {
-            try
-            {
-                const token = localStorage.getItem("token");
-                const patientId = localStorage.getItem("selectedPatientId");
-
-                if (!token)
-                {
-                    console.error("No token found in local storage");
-                    return;
-                }
-
-                const lastItem = rows[rows.length - 1];
-
-                console.log("last Item -------", lastItem)
-
-                const response = await fetch(`${baseUrl}/api/v1/doctor/create_testBooking`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-auth-token": token,
-                    },
-                    body: JSON.stringify({
-                        testName: lastItem.testName,
-                        testCode: lastItem.testCode,
-                        department: lastItem.department,
-                        sampleType: lastItem.sampleType,
-                        costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
-                        unit: lastItem.unit,
-                        bioRefInterval: lastItem.bioRefInterval,
-                        technology: lastItem.technology,
-                        patientId: patientId,
-                    }),
-                });
-
-                const responseData = await response.json();
-                console.log("DATA from response", responseData);
-                // Handle responseData as needed (maybe update state?)
-
-            } catch (error)
-            {
-                console.error("There was an error verifying the OTP:", error);
-            }
-        };
-
-        submitDetails();
-
-    }, [rows])
 
 
 
@@ -260,7 +208,7 @@ export default function BillingPrice()
                     return;
                 }
 
-                const response = await fetch(`${baseUrl}/api/v1/doctor/getall_testBooking`, {
+                const response = await fetch(`${baseUrl}/api/v1/doctor/getall_testBookingByPatientId/${patientId}`, {
                     method: "get",
                     headers: {
                         "Content-Type": "application/json",
@@ -345,7 +293,7 @@ export default function BillingPrice()
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '100px' }}>
-                            <button style={{ color: 'white', height: 30, width: '15%', backgroundColor: "#89CFF0", borderRadius: 10, marginLeft: 'auto', marginRight: 'auto' }}>
+                            <button onClick={() => navigate(`/summary`)} style={{ color: 'white', height: 30, width: '15%', backgroundColor: "#89CFF0", borderRadius: 10, marginLeft: 'auto', marginRight: 'auto' }}>
                                 Go To Summary
                             </button>
                         </div>
