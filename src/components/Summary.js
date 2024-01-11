@@ -300,9 +300,9 @@ export default function Summary()
                             borderRadius: 20,
                         }}
                     >
-                        <div ref={componentPDF}>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, marginTop: '10px' }}>Patient Report</div>
-                            <div style={{ marginLeft: '20px', marginTop: "3px", display: 'flex', flexDirection: 'row', gap: '550px' }}>
+                        <div ref={componentPDF} style={{ marginLeft: '5%', marginRight: '5%' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, marginTop: '10px', fontSize: 'xx-large' }}>Lab Patient Report</div>
+                            <div style={{ marginLeft: '20px', marginTop: "3px", display: 'flex', flexDirection: 'row', gap: '500px' }}>
                                 <p style={{ fontWeight: 500, width: '100px', }}>Name:{localStorage?.getItem("name")}</p>
                                 <p style={{ fontWeight: 500, marginLeft: '10px' }}>Home Collection:  {localStorage?.getItem("houseNo")},{localStorage?.getItem("floor")} , {localStorage?.getItem("block")}, {localStorage?.getItem("area")},{localStorage?.getItem("district")},{localStorage?.getItem("pincode")}</p>
 
@@ -324,25 +324,25 @@ export default function Summary()
 
 
 
-                            <table className="text-sm rtl:text-right text-gray-500 w-full">
-                                <thead style={{ backgroundColor: '#89CFF0' }} className="text-xs text-gray-700 uppercase">
+                            <table className="text-sm rtl:text-right text-gray-500 text-left w-full border border-red">
+                                <thead style={{ backgroundColor: '#89CFF0' }} className="text-xs text-gray-700 text-left uppercase  ">
                                     <tr>
-                                        <th scope="col" className="px-3 py-3 text-white  text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Test/package
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             testCode
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Technology
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Value
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Units
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Bio.Ref
                                         </th>
 
@@ -357,12 +357,12 @@ export default function Summary()
 
                                         return (
                                             <tr key={idx}>
-                                                <td style={{ textAlign: 'center' }}>{row.testName}</td>
-                                                <td style={{ textAlign: 'center' }}>{row.testCode}</td>
-                                                <td style={{ textAlign: 'center' }}>{row.technology}</td>
-                                                <td style={{ textAlign: 'center' }}>{row.value}</td>
-                                                <td style={{ textAlign: 'center' }}>{row.unit}</td>
-                                                <td style={{ textAlign: 'center' }}>{row.bioRefInterval}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', }}>{row.testName}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left' }}>{row.testCode}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left' }}>{row.technology}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left' }}>{row.value}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left' }}>{row.unit}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left' }}>{row.bioRefInterval}</td>
                                             </tr>
                                         );
                                     })}
