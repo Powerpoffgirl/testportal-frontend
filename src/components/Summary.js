@@ -24,6 +24,7 @@ export default function Summary()
     const [userDetailsName, setUserDetailsName] = useState();
     const [userDetailsEmail, setUserDetailsEmail] = useState();
     const [userDetailsPic, setUserDetailsPic] = useState();
+    const [outRange, setOutRange] = useState(false);
 
 
 
@@ -268,6 +269,8 @@ export default function Summary()
 
                 setRows(responseData.data || []);
 
+
+
             } catch (error)
             {
                 console.error("There was an error fetching test details:", error);
@@ -300,49 +303,48 @@ export default function Summary()
                             borderRadius: 20,
                         }}
                     >
-                        <div ref={componentPDF}>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, marginTop: '10px' }}>Patient Report</div>
-                            <div style={{ marginLeft: '20px', marginTop: "3px", display: 'flex', flexDirection: 'row', gap: '550px' }}>
-                                <p style={{ fontWeight: 500, width: '100px', }}>Name:{localStorage?.getItem("name")}</p>
-                                <p style={{ fontWeight: 500, marginLeft: '10px' }}>Home Collection:  {localStorage?.getItem("houseNo")},{localStorage?.getItem("floor")} , {localStorage?.getItem("block")}, {localStorage?.getItem("area")},{localStorage?.getItem("district")},{localStorage?.getItem("pincode")}</p>
+                        <div ref={componentPDF} style={{ marginLeft: '5%', marginRight: '5%' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, marginTop: '10px', fontSize: 'xx-large' }}>Lab Patient Report</div>
+                            <div style={{ display: 'flex', flexDirection: 'row', marginBottom: '20px' }}>
+                                <div style={{ flex: '1', display: 'flex', flexDirection: 'column', marginRight: '20px' }}>
+                                    <p style={{ fontWeight: 500 }}>Name: {localStorage?.getItem("name")}</p>
 
+                                    <div style={{ display: 'flex', flexDirection: 'row', gap: '10px' }}>
+                                        <p style={{ color: "black", fontWeight: 500 }}>Ref By: </p>
+                                        <p style={{ color: "black", fontWeight: 500 }}>{localStorage.getItem("ref")}</p>
+                                    </div>
+                                </div>
+
+                                <div style={{ flex: '1', display: 'flex', flexDirection: 'column', marginLeft: '400px' }}>
+                                    <p style={{ fontWeight: 500 }}>Home Collection</p>
+                                    <p>{localStorage?.getItem("houseNo")}, {localStorage?.getItem("floor")}, {localStorage?.getItem("block")},</p>
+                                    <p> {localStorage?.getItem("area")},{localStorage?.getItem("district")}, {localStorage?.getItem("pincode")}</p>
+                                </div>
                             </div>
 
-                            <div style={{ marginLeft: '20px', display: 'flex', flexDirection: 'row', gap: '10px', marginBottom: '20px' }}>
-                                <p style={{ color: "black", fontWeight: 500 }}>Ref By:- </p>
-                                <p
-                                    style={{
-                                        color: "black",
-                                        fontWeight: 500
-                                    }}
-                                >
-                                    {localStorage.getItem("ref")}
-                                </p>
-                            </div>
 
 
 
 
-
-                            <table className="text-sm rtl:text-right text-gray-500 w-full">
-                                <thead style={{ backgroundColor: '#89CFF0' }} className="text-xs text-gray-700 uppercase">
-                                    <tr>
-                                        <th scope="col" className="px-3 py-3 text-white  text-sm font-semibold lg:px-6">
+                            <table className="text-sm rtl:text-right text-black text-left w-full">
+                                <thead style={{ backgroundColor: '#89CFF0', }} className="text-xs text-gray-700 text-left uppercase  ">
+                                    <tr >
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Test/package
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             testCode
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Technology
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Value
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Units
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
+                                        <th style={{ textAlign: 'left' }} scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Bio.Ref
                                         </th>
 
@@ -357,15 +359,19 @@ export default function Summary()
 
                                         return (
                                             <tr key={idx}>
-                                                <td style={{ textAlign: 'center' }}>{row.testName}</td>
-                                                <td style={{ textAlign: 'center' }}>{row.testCode}</td>
-                                                <td style={{ textAlign: 'center' }}>{row.technology}</td>
-                                                <td style={{ textAlign: 'center' }}>{row.value}</td>
-                                                <td style={{ textAlign: 'center' }}>{row.unit}</td>
-                                                <td style={{ textAlign: 'center' }}>{row.bioRefInterval}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.testName}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.testCode}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.technology}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.value}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.unit}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.bioRefInterval}</td>
                                             </tr>
+
                                         );
                                     })}
+                                    <tr style={{ borderTop: '1px solid #89CFF0', borderBottom: '1px solid #89CFF0' }}>
+                                        <td style={{ paddingLeft: '25px' }}>Remarks: </td>
+                                    </tr>
                                 </tbody>
                             </table>
 
