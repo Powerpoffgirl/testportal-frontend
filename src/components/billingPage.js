@@ -112,6 +112,11 @@ export default function BillingPage({ name, contactNo, gender, age })
 
   ]);
 
+  const [updatedData, setupdatedData] = useState([
+
+  ]);
+
+
   const [inputValues, setInputValues] = useState(Array(tableData.length).fill(''));
 
 
@@ -133,10 +138,10 @@ export default function BillingPage({ name, contactNo, gender, age })
       Save: <GiConfirmed />,
 
     };
-
-    setTableData([...tableData, testToAdd]);
+    setTableData([testToAdd]);
 
     setSearchTerm("");
+
 
     setIsListOpen(false);
   };
@@ -250,7 +255,7 @@ export default function BillingPage({ name, contactNo, gender, age })
   }
 
 
-  const handleSave = async () =>
+  const handleSave = async (e) =>
   {
 
     try
@@ -267,7 +272,10 @@ export default function BillingPage({ name, contactNo, gender, age })
 
       const responseData = await response.json();
       console.log("DATA from response", responseData);
-      // setValue("");
+
+
+      e.target.value = '';
+
 
     } catch (error)
     {
@@ -316,6 +324,48 @@ export default function BillingPage({ name, contactNo, gender, age })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() =>
+  {
+    const fetchTestDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("selectedPatientId");
+
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+
+        const response = await fetch(`${baseUrl}/api/v1/doctor/getall_testBookingByPatientId/${patientId}`, {
+          method: "get",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+        });
+
+        const responseData = await response.json();
+        console.log("DATA from response getAll_testBooking ", responseData);
+
+        setupdatedData(responseData.data || [])
+
+
+
+      } catch (error)
+      {
+        console.error("There was an error fetching test details:", error);
+      }
+    };
+
+    fetchTestDetails();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
 
   const handleFileSelect = async (event) =>
   {
@@ -684,6 +734,30 @@ export default function BillingPage({ name, contactNo, gender, age })
                         </td>
                         <td className="px-6 py-4 text-sm " value={patientReport.unit} name="unit">{row.units}</td>
                         <td className="px-6 py-4 text-sm" value={patientReport.bioRefInterval} name="price">{row.bio}</td>
+                        <td className="px-6 py-4">
+                          <button onClick={() => deleteRow(index)}><MdOutlineDelete size={25} color="red" /></button>
+                        </td>
+                        <td className="px-6 py-4">
+                          <button onClick={handleSave}><GiConfirmed size={25} color="green" /></button>
+                        </td>
+                      </tr>
+                    ))}
+
+                    {updatedData.map((row, index) => (
+                      <tr key={index} className="bg-white border-b ">
+                        <th
+                          scope="row"
+                          className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap "
+                          value={row.testName}
+                          name="testName"
+                        >
+                          {row.testName}
+                        </th>
+                        <td className="px-6 py-4 text-sm" value={row.costOfDiagnosticTest} name="price">{row.costOfDiagnosticTest}</td>
+                        <td className="px-6 py-4 text-sm" value={patientReport.technology} name="technology">{row.technology}</td>
+                        <td className="px-6 py-4 text-sm " name="unit">{row.value}</td>
+                        <td className="px-6 py-4 text-sm " value={patientReport.unit} name="unit">{row.unit}</td>
+                        <td className="px-6 py-4 text-sm" value={patientReport.bioRefInterval} name="price">{row.bioRefInterval}</td>
                         <td className="px-6 py-4">
                           <button onClick={() => deleteRow(index)}><MdOutlineDelete size={25} color="red" /></button>
                         </td>
