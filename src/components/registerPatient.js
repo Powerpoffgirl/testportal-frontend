@@ -572,6 +572,14 @@ export default function PatientForm()
         localStorage.setItem("gender", newPatientDetails.gender);
         localStorage.setItem("age", newPatientDetails.age);
         localStorage.setItem("ref", newPatientDetails.refBy);
+        localStorage.setItem("houseNo", newPatientDetails.address.houseNo);
+        localStorage.setItem("floor", newPatientDetails.address.floor);
+        localStorage.setItem("block", newPatientDetails.address.block);
+        localStorage.setItem("area", newPatientDetails.address.area);
+        localStorage.setItem("district", newPatientDetails.address.district);
+        localStorage.setItem("state", newPatientDetails.address.state);
+        localStorage.setItem("pincode", newPatientDetails.address.pinCode);
+
         navigate("/billing");
       }
       console.log("DATA from response", data);

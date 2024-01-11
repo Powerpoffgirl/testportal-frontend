@@ -167,6 +167,8 @@ export default function BillingPage({ name, contactNo, gender, age })
       totalPrice += row.price;
     });
 
+    localStorage.setItem("totalPrice", totalPrice);
+
     return totalPrice;
   };
 

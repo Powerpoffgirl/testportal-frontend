@@ -6,6 +6,8 @@ import { Route, Routes } from "react-router-dom";
 import OTP from "./components/Otp";
 import Qr from "./components/Qr";
 import BillingPage from "./components/billingPage";
+import BillingPrice from "./components/billingPrice";
+import Summary from "./components/Summary";
 import TestListPage from "./components/testlistpage";
 import UserForm from "./components/userForm";
 import UserAdmin from "./components/userAdmin";
@@ -373,6 +375,30 @@ function App()
               type="doctor"
               headerTextTop={"Patients's"}
               headerTextBottom={"Billing"}
+            />
+          }
+        ></Route>
+
+        <Route
+          path="/billingPrice"
+          element={
+            <Layout
+              Component={BillingPrice}
+              type="doctor"
+              headerTextTop={"Patients's"}
+              headerTextBottom={"Billing"}
+            />
+          }
+        ></Route>
+
+        <Route
+          path="/summary"
+          element={
+            <Layout
+              Component={Summary}
+              type="doctor"
+              headerTextTop={"Patients's"}
+              headerTextBottom={"Summary"}
             />
           }
         ></Route>
