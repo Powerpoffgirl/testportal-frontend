@@ -325,24 +325,24 @@ export default function Summary()
 
 
                             <table className="text-sm rtl:text-right text-gray-500 w-full">
-                                <thead className="text-xs text-gray-700 uppercase bg-gray-50">
+                                <thead style={{ backgroundColor: '#89CFF0' }} className="text-xs text-gray-700 uppercase">
                                     <tr>
-                                        <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                                        <th scope="col" className="px-3 py-3 text-white  text-sm font-semibold lg:px-6">
                                             Test/package
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             testCode
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Technology
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Value
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Units
                                         </th>
-                                        <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                                        <th scope="col" className="px-3 py-3 text-white text-sm font-semibold lg:px-6">
                                             Bio.Ref
                                         </th>
 
@@ -376,10 +376,12 @@ export default function Summary()
                                 onClick={generatePdf}
                                 style={{
                                     height: "40px",
-                                    width: "120px",
+                                    width: "140px",
                                     backgroundColor: "#89CFF0",
-                                    borderRadius: "10px",
+                                    borderRadius: "20px",
                                     marginTop: "20px",
+                                    padding: '2px',
+                                    color: 'white'
                                 }}
                             >
                                 Download PDF
@@ -391,11 +393,12 @@ export default function Summary()
                                     height: "40px",
                                     width: "120px",
                                     backgroundColor: "#89CFF0",
-                                    borderRadius: "10px",
+                                    borderRadius: "20px",
                                     marginTop: "20px",
+                                    padding: '2px'
                                 }}
                             >
-                                <label htmlFor="files">Send To SMS</label>
+                                <label htmlFor="files" style={{ color: 'white' }}>Send To SMS</label>
                             </button>
                             <p className="block text-black text-lg font-semibold ">
                                 <input

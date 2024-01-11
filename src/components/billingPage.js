@@ -273,7 +273,7 @@ export default function BillingPage({ name, contactNo, gender, age })
       const responseData = await response.json();
       console.log("DATA from response", responseData);
 
-
+      window.location.reload();
       e.target.value = '';
 
 
