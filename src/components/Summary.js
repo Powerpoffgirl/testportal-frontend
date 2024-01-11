@@ -355,13 +355,13 @@ export default function Summary()
                         <div ref={componentPDF}>
                             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 600, marginTop: '10px' }}>Patient Report</div>
                             <div style={{ marginLeft: '20px', marginTop: "3px", display: 'flex', flexDirection: 'row', gap: '550px' }}>
-                                <p style={{ fontWeight: 500 }}>Name: {localStorage?.getItem("name")}</p>
+                                <p style={{ fontWeight: 500, width: '100px', }}>Name:{localStorage?.getItem("name")}</p>
                                 <p style={{ fontWeight: 500, marginLeft: '10px' }}>Home Collection:  {localStorage?.getItem("houseNo")},{localStorage?.getItem("floor")} , {localStorage?.getItem("block")}, {localStorage?.getItem("area")},{localStorage?.getItem("district")},{localStorage?.getItem("pincode")}</p>
 
                             </div>
 
                             <div style={{ marginLeft: '20px', display: 'flex', flexDirection: 'row', gap: '10px', marginBottom: '20px' }}>
-                                <p style={{ color: "black", fontWeight: 500 }}>Ref By: </p>
+                                <p style={{ color: "black", fontWeight: 500 }}>Ref By:- </p>
                                 <p
                                     style={{
                                         color: "black",
