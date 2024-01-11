@@ -440,7 +440,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                 onChange={(e) => setAppointmentDate(e.target.value)}
               />
             </div>
-            <div style={{ display: "flex", flexDirection: 'row', gap: '10px' }}>
+            {/* <div style={{ display: "flex", flexDirection: 'row', gap: '10px' }}>
               <button
                 onClick={generatePdf}
                 style={{
@@ -476,7 +476,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                   onChange={handleFileSelect}
                 />
               </p>
-            </div>
+            </div> */}
 
             {/* <div style={{ marginTop: "15px" }}>
               <p style={{ color: "gray" }}>Summary</p>
@@ -699,13 +699,13 @@ export default function BillingPage({ name, contactNo, gender, age })
               <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", gap: "20px", marginTop: "10px", marginLeft: "70%" }}>
                 <button
                   style={{ backgroundColor: "#89CFF0", borderRadius: "23px", padding: "2px 9px 2px 9px", color: "white" }}
-                // onClick={handleRegister}
+                  onClick={() => navigate(`/billingprice`)}
                 >
                   Go To Billing
                 </button>
                 <button
                   style={{ backgroundColor: "#89CFF0", borderRadius: "23px", padding: "2px 9px 2px 9px", color: "white" }}
-                // onClick={handleRegister}
+                  onClick={() => navigate(`/summary`)}
                 >
                   Lab Report
                 </button>
