@@ -673,11 +673,11 @@ export default function PatientForm() {
           <hr />
 
           <div className=" mt-3 relative">
-            <div
+            <div class=""
               style={{
                 display: "flex",
                 flexDirection: "row",
-                gap: 170,
+                // gap: 170,
                 marginBottom: 2,
               }}
             >

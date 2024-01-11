@@ -8,11 +8,13 @@ import { ToastContainer, toast } from "react-toastify";
 import { MdOutlineDelete } from "react-icons/md";
 import { GiConfirmed } from "react-icons/gi";
 import { useReactToPrint } from 'react-to-print'
+import { Tooltip } from "antd";
 
 export default function BillingPage({ name, contactNo, gender, age }) {
 
   const componentPDF = useRef();
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  let xsview = useMediaQuery({ query: "(max-width: 375px)" });
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -377,9 +379,9 @@ export default function BillingPage({ name, contactNo, gender, age }) {
   return (
     <>
       <div class="flex" ref={componentPDF}>
-        <div className="MainContainer flex lg:flex-row flex-col w-full">
+        <div className="MainContainer flex lg:flex-row flex-col w-full sm:ml-0">
           {/* --------------------left side-------------------- */}
-          <div className=" mb-3 flex flex-col w-9/12 lg:min-h-3/4 lg:w-3/12 p-6 mr-5 bg-white "
+          <div className={` mb-3 flex flex-col w-5/12 lg:min-h-3/4 lg:w-3/12 p-6 mr-5 bg-white md:w-1/2 sm:w-1/2 ${xsview ? "" : "ml-4"}`}
             style={{
               // height: "75vh",
               // float: "left",
@@ -510,8 +512,10 @@ export default function BillingPage({ name, contactNo, gender, age }) {
               <p style={{ color: "black" }}>Self</p>
             </div> */}
           </div>
+
+
           {/* --------------------right side-------------------- */}
-          <div className=" lg:w-6/12 p-6 w-9/12 xl:w-8/12 pr-4 bg-white lg:min-h-3/4"
+          <div className={` lg:w-4/12 p-6 md:w-1/2 xl:w-8/12 pr-4 bg-white lg:min-h-3/4 w-5/12 ${xsview ? "" : "ml-4"}  `}
             style={{
               boxSizing: "border-box ",
               // height: "75vh",
@@ -646,8 +650,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
               </div>
             </form>
 
-            <div className="flex flex-wrap">
-              <div className="overflow-x-auto overflow-y-auto" style={{ height: "300px" }}>
+            <div className="flex flex-wrap ">
+              <div className="overflow-x-auto overflow-y-auto " style={{ height: "300px" }}>
 
                 <table className="text-sm text-left rtl:text-right text-gray-500 ">
                   <thead className="text-xs text-gray-700 uppercase bg-gray-50">
@@ -681,7 +685,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                   <tbody className="overflow-y-auto"
                   >
                     {tableData.map((row, index) => (
-                      <tr key={index} className="bg-white border-b ">
+
+                      <tr key={index} className="bg-white border-b  ">
                         <th
                           scope="row"
                           className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap "
@@ -693,7 +698,9 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                         <td className="px-6 py-4 text-sm" value={patientReport.price} name="price">{row.price}</td>
                         <td className="px-6 py-4 text-sm" value={patientReport.technology} name="technology">{row.technology}</td>
                         <td className="px-6 py-4 text-sm" >
-                          <input type="text" className="w-14" onChange={(e) => handleChange(e, index)} value={inputValues[index]} name="value" />
+                          <Tooltip placement="top" title="Enter Value" >
+                            <input type="text" className="w-14 border border-black rounded-lg placeholder-gray-300 pl-1" onChange={(e) => handleChange(e, index)} value={inputValues[index]} name="value" />
+                          </Tooltip>
                         </td>
                         <td className="px-6 py-4 text-sm " value={patientReport.unit} name="unit">{row.units}</td>
                         <td className="px-6 py-4 text-sm" value={patientReport.bioRefInterval} name="price">{row.bio}</td>
@@ -704,6 +711,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                           <button onClick={handleSave}><GiConfirmed size={25} color="green" /></button>
                         </td>
                       </tr>
+
                     ))}
 
                     {updatedData.map((row, index) => (
@@ -733,14 +741,14 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                 </table>
               </div>
 
-              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", gap: "20px", marginTop: "10px", marginLeft: "70%" }}>
-                <button
+              <div style={{ gap: "", marginTop: "10px" }} class=" flex flex-row-reverse  w-full  ">
+                <button class="mx-4"
                   style={{ backgroundColor: "#89CFF0", borderRadius: "23px", padding: "2px 9px 2px 9px", color: "white" }}
                   onClick={() => navigate(`/billingprice`)}
                 >
                   Go To Billing
                 </button>
-                <button
+                <button class="mx-4"
                   style={{ backgroundColor: "#89CFF0", borderRadius: "23px", padding: "2px 9px 2px 9px", color: "white" }}
                   onClick={() => navigate(`/summary`)}
                 >

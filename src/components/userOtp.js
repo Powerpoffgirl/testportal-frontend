@@ -198,8 +198,7 @@ const UserOTP = () => {
               name="otp"
               maxLength={6}
               onChange={handleMobileNumberChange}
-              onInput={(e) =>
-              {
+              onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, '');
               }}
             />
