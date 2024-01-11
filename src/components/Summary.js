@@ -359,12 +359,12 @@ export default function Summary()
 
                                         return (
                                             <tr key={idx}>
-                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.testName}</td>
-                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.testCode}</td>
-                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.technology}</td>
-                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.value}</td>
-                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.unit}</td>
-                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval ? 'bolder' : null }}>{row.bioRefInterval}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval.split('-')[1] || row.value < row.bioRefInterval.split('-')[0] ? 'bolder' : null }}>{row.testName}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval.split('-')[1] || row.value < row.bioRefInterval.split('-')[0] ? 'bolder' : null }}>{row.testCode}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval.split('-')[1] || row.value < row.bioRefInterval.split('-')[0] ? 'bolder' : null }}>{row.technology}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval.split('-')[1] || row.value < row.bioRefInterval.split('-')[0] ? 'bolder' : null }}>{row.value}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval.split('-')[1] || row.value < row.bioRefInterval.split('-')[0] ? 'bolder' : null }}>{row.unit}</td>
+                                                <td className="px-3 lg:px-6" style={{ textAlign: 'left', fontWeight: row.value > row.bioRefInterval.split('-')[1] || row.value < row.bioRefInterval.split('-')[0] ? 'bolder' : null }}>{row.bioRefInterval}</td>
                                             </tr>
 
                                         );

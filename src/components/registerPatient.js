@@ -551,38 +551,53 @@ export default function PatientForm()
         localStorage.clear();
         navigate(`/userlogin`);
       }
-      const response = await fetch(
-        `${baseUrl}/api/v1/doctor/create_labPatient`,
-        {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token,
-          },
-          body: JSON.stringify(newPatientDetails),
-        }
-      );
-      const data = await response.json();
-      if (data.success === true)
-      {
-        onOpenModal();
-        localStorage.setItem("patientId", data.data._id);
-        localStorage.setItem("name", newPatientDetails.name);
-        localStorage.setItem("phoneNo", newPatientDetails.phoneNo);
-        localStorage.setItem("gender", newPatientDetails.gender);
-        localStorage.setItem("age", newPatientDetails.age);
-        localStorage.setItem("ref", newPatientDetails.refBy);
-        localStorage.setItem("houseNo", newPatientDetails.address.houseNo);
-        localStorage.setItem("floor", newPatientDetails.address.floor);
-        localStorage.setItem("block", newPatientDetails.address.block);
-        localStorage.setItem("area", newPatientDetails.address.area);
-        localStorage.setItem("district", newPatientDetails.address.district);
-        localStorage.setItem("state", newPatientDetails.address.state);
-        localStorage.setItem("pincode", newPatientDetails.address.pinCode);
+      const patient = patients?.filter((patient) =>
+        patient?.name?.toLowerCase().includes(newPatientDetails?.name?.toLowerCase() ?? "") &&
+        patient?.phoneNo == newPatientDetails?.phoneNo);
 
-        navigate("/billing");
+      if (patient.length > 0)
+      {
+        toast.error("Patient with this name and phone no already exists");
+      } else
+      {
+        const response = await fetch(
+          `${baseUrl}/api/v1/doctor/create_labPatient`,
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+            body: JSON.stringify(newPatientDetails),
+          }
+        );
+        const data = await response.json();
+        if (data.success === true)
+        {
+          onOpenModal();
+          localStorage.setItem("selectedPatientId", data.data._id);
+          // localStorage.setItem("patientId", data.data._id);
+          localStorage.setItem("name", newPatientDetails.name);
+          localStorage.setItem("phoneNo", newPatientDetails.phoneNo);
+          localStorage.setItem("gender", newPatientDetails.gender);
+          localStorage.setItem("age", newPatientDetails.age);
+          localStorage.setItem("ref", newPatientDetails.refBy);
+          localStorage.setItem("houseNo", newPatientDetails.address.houseNo);
+          localStorage.setItem("floor", newPatientDetails.address.floor);
+          localStorage.setItem("block", newPatientDetails.address.block);
+          localStorage.setItem("area", newPatientDetails.address.area);
+          localStorage.setItem("district", newPatientDetails.address.district);
+          localStorage.setItem("state", newPatientDetails.address.state);
+          localStorage.setItem("pincode", newPatientDetails.address.pinCode);
+
+          navigate("/billing");
+          console.log("DATA from response", data);
+
+        }
+
+
       }
-      console.log("DATA from response", data);
+
     }
   };
 
