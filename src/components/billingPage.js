@@ -247,15 +247,6 @@ export default function BillingPage({ name, contactNo, gender, age })
       }));
     }
 
-
-
-
-    // console.log("testname", tableData[index]?.testPackage
-    // )
-
-    // console.log("table value new", tableData[index]?.technology)
-
-    // console.log("index%%%%%%", index)
   }
 
 
@@ -406,20 +397,6 @@ export default function BillingPage({ name, contactNo, gender, age })
                 </div>
               </div>
             </div>
-            {/* <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                marginTop: "5px",
-              }}
-            >
-              <div style={{ color: "black", fontWeight: 500 }}>
-                {localStorage.getItem("gender")}
-              </div>
-              <div style={{ color: "black", fontWeight: 500 }}>
-                {localStorage.getItem("age")}
-              </div>
-            </div> */}
 
             <div style={{ marginTop: "5px" }}>
               <p style={{ color: "gray" }}>Contact number</p>
@@ -532,69 +509,6 @@ export default function BillingPage({ name, contactNo, gender, age })
           >
             {/* table */}
 
-            <div style={{ overflowY: "auto" }} className="flex flex-wrap">
-              <div className="overflow-x-auto mb-10   ">
-                <table className="text-sm text-left rtl:text-right text-gray-500 ">
-                  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                    <tr>
-                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
-                        Test/package
-                      </th>
-                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
-                        Price
-                      </th>
-                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
-                        Technology
-                      </th>
-                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
-                        Value
-                      </th>
-                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
-                        Units
-                      </th>
-                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
-                        Bio.Ref
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
-                        Delete
-                      </th>
-                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
-                        Save
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tableData.map((row, index) => (
-                      <tr key={index} className="bg-white border-b ">
-                        <th
-                          scope="row"
-                          className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap "
-                          value={patientReport.testName}
-                          name="testName"
-                        >
-                          {row.testPackage}
-                        </th>
-                        <td className="px-6 py-4 text-sm" value={patientReport.price} name="price">{row.price}</td>
-                        <td className="px-6 py-4 text-sm" value={patientReport.technology} name="technology">{row.technology}</td>
-                        <td className="px-6 py-4 text-sm" >
-                          <input type="text" className="w-14" onChange={(e) => handleChange(e, index)} value={inputValues[index]} name="value" />
-                        </td>
-                        <td className="px-6 py-4 text-sm " value={patientReport.unit} name="unit">{row.units}</td>
-                        <td className="px-6 py-4 text-sm" value={patientReport.bioRefInterval} name="price">{row.bio}</td>
-                        <td className="px-6 py-4">
-                          <button onClick={() => deleteRow(index)}><MdOutlineDelete size={25} color="red" /></button>
-                        </td>
-                        <td className="px-6 py-4">
-                          <button onClick={handleSave}><GiConfirmed size={25} color="green" /></button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-
-
             <form>
               <div class="flex mt-2 mb-3">
                 <label
@@ -680,7 +594,6 @@ export default function BillingPage({ name, contactNo, gender, age })
                     required
                   />
                   <button
-                    // onClick={Toggle}
                     class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-gray-900 bg-gray-50 rounded-e-lg border border-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 "
                   >
                     <svg
@@ -719,264 +632,89 @@ export default function BillingPage({ name, contactNo, gender, age })
                 </div>
               </div>
             </form>
-            <div class="flex xl:flex-row flex-col">
-              {/* ------------1st------------ */}
-              <div
-                className="xl:w-1/3 w-full  xl:border-r border-gray-300"
-              // style={{
-              //   overflowY: 'auto'
-              // }}
-              >
-                <p style={{ color: "gray" }}>Summary</p>
 
-                <div style={{ marginRight: 10 }}>
-                  <table
-                    style={{ borderCollapse: "collapse" }}
-                    className="border-collapse w-full"
-                  >
-                    <thead>
-                      <tr>
-                        <th
-                          style={{ border: "1px solid #ddd" }}
-                          className="border p-2 text-left"
-                        >
-                          Test{" "}
-                        </th>
-                        <th
-                          style={{ border: "1px solid #ddd" }}
-                          className="border p-2  text-left"
-                        >
-                          Price
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {tableData.map((row, index) => (
-                        <tr key={index}>
-                          <td
-                            style={{ border: "1px solid #ddd" }}
-                            className="border p-2  text-left"
-                          >
-                            {row.testPackage}
-                          </td>
-                          <td
-                            style={{ border: "1px solid #ddd" }}
-                            className="border p-2 text-left"
-                          >
-                            {row.price}
-                          </td>
-                        </tr>
-                      ))}
-                      <tr>
-                        <td
-                          style={{ border: "1px solid #ddd" }}
-                          className="border p-2 font-bold  text-left"
-                        >
-                          Total Price
-                        </td>
-                        <td
-                          style={{ border: "1px solid #ddd" }}
-                          className="border p-2 font-bold  text-left"
-                        >
-                          {calculateTotalPrice()}
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-              {/* ------------2nd------------ */}
-              <div
-                className="Absolute_left xl:w-1/3 w-full mt-3 xl:border-r border-gray-300"
-                style={{
-                  padding: "10px",
-                }}
-              >
-                <table
-                  style={{ borderCollapse: "collapse" }}
-                  className="border-collapse w-full"
-                >
-                  <thead>
+            <div className="flex flex-wrap">
+              <div className="overflow-x-auto overflow-y-auto" style={{ height: "300px" }}>
+
+                <table className="text-sm text-left rtl:text-right text-gray-500 ">
+                  <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                     <tr>
-                      <th
-                        style={{ border: "1px solid #ddd" }}
-                        className="border p-2 text-left"
-                      >
-                        Discount (%){" "}
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                        Test/package
                       </th>
-                      <th
-                        style={{ border: "1px solid #ddd" }}
-                        className="border p-2  text-left"
-                      >
-                        Discount (%){" "}
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                        Price
+                      </th>
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                        Technology
+                      </th>
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                        Value
+                      </th>
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                        Units
+                      </th>
+                      <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                        Bio.Ref
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
+                        Delete
+                      </th>
+                      <th scope="col" className="px-6 py-3 text-black text-sm font-semibold">
+                        Save
                       </th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr>
-                      <td
-                        style={{ border: "1px solid #ddd" }}
-                        className="border p-2  text-left"
-                      >
-                        Amount
-                      </td>
-                      <td
-                        style={{ border: "1px solid #ddd" }}
-                        className="border p-2 text-left"
-                      >
-                        {calculateTotalPrice()}
-                      </td>
-                    </tr>
-                    <tr>
-                      <td
-                        style={{ border: "1px solid #ddd" }}
-                        className="border p-2  text-left"
-                      >
-                        Discount
-                      </td>
-                      <td
-                        style={{ border: "1px solid #ddd" }}
-                        className="border p-2 text-left"
-                      >
-                        0
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td
-                        style={{ border: "1px solid #ddd" }}
-                        className="border p-2 font-bold  text-left"
-                      >
-                        Total Amount
-                      </td>
-                      <td
-                        style={{ border: "1px solid #ddd" }}
-                        className="border p-2 font-bold  text-left"
-                      >
-                        {calculateTotalPrice()}
-                      </td>
-                    </tr>
+                  <tbody className="overflow-y-auto"
+                  >
+                    {tableData.map((row, index) => (
+                      <tr key={index} className="bg-white border-b ">
+                        <th
+                          scope="row"
+                          className="px-6 py-4 text-sm font-medium text-gray-900 whitespace-nowrap "
+                          value={patientReport.testName}
+                          name="testName"
+                        >
+                          {row.testPackage}
+                        </th>
+                        <td className="px-6 py-4 text-sm" value={patientReport.price} name="price">{row.price}</td>
+                        <td className="px-6 py-4 text-sm" value={patientReport.technology} name="technology">{row.technology}</td>
+                        <td className="px-6 py-4 text-sm" >
+                          <input type="text" className="w-14" onChange={(e) => handleChange(e, index)} value={inputValues[index]} name="value" />
+                        </td>
+                        <td className="px-6 py-4 text-sm " value={patientReport.unit} name="unit">{row.units}</td>
+                        <td className="px-6 py-4 text-sm" value={patientReport.bioRefInterval} name="price">{row.bio}</td>
+                        <td className="px-6 py-4">
+                          <button onClick={() => deleteRow(index)}><MdOutlineDelete size={25} color="red" /></button>
+                        </td>
+                        <td className="px-6 py-4">
+                          <button onClick={handleSave}><GiConfirmed size={25} color="green" /></button>
+                        </td>
+                      </tr>
+                    ))}
                   </tbody>
                 </table>
               </div>
-              {/* ------------3rd------------ */}
-              <div
-                className="middle xl:w-1/3 w-full"
-                style={{
-                  // width: "30%",
-                  height: "30vh",
-                  // float: "left",
-                  // borderRight: "0.5px solid #D3D3D3",
-                }}
-              >
-                <div
-                  style={{ width: "100%", marginLeft: "30px", marginTop: 20 }}
-                >
-                  <input type="checkbox" disabled={true} checked={true} />
-                  <label>Due Payment</label>
-                </div>
 
-                <div style={{ marginTop: "15px" }}>
-                  <p
-                    style={{
-                      color: "gray",
-                      marginRight: "100px",
-                      marginLeft: "20px",
-                    }}
-                  >
-                    Paid Amount
-                  </p>
-                  <input
-                    type="text"
-                    style={{
-                      border: "1px solid gray",
-                      width: "50%",
-                      marginLeft: "20px",
-                      textAlign: "center",
-                    }}
-                    disabled={true}
-                    value={0}
-                  />
-                </div>
-
-                <div
-                  style={{
-                    marginTop: "15px",
-                    display: "flex",
-                    flexDirection: "row",
-                  }}
+              <div style={{ display: "flex", flexDirection: "row", justifyContent: "space-between", gap: "20px", marginTop: "10px", marginLeft: "70%" }}>
+                <button
+                  style={{ backgroundColor: "#89CFF0", borderRadius: "23px", padding: "2px 9px 2px 9px", color: "white" }}
+                // onClick={handleRegister}
                 >
-                  <p
-                    style={{
-                      color: "black",
-                      marginRight: "20%",
-                      fontWeight: 500,
-                      marginLeft: "20px",
-                      marginTop: "33px",
-                    }}
-                  >
-                    Due Amount
-                  </p>
-                  <p style={{ color: "black", marginTop: "33px" }}>
-                    {calculateTotalPrice()}
-                  </p>
-                </div>
+                  Go To Billing
+                </button>
+                <button
+                  style={{ backgroundColor: "#89CFF0", borderRadius: "23px", padding: "2px 9px 2px 9px", color: "white" }}
+                // onClick={handleRegister}
+                >
+                  Lab Report
+                </button>
               </div>
+
+
             </div>
-            {/* <div className="Absolute_Right">
-              <div style={{ margin: "20px", marginBottom: "10px" }}>
-                <label style={{ marginLeft: "20px" }}>Payment Method</label>
-              </div>
 
-              <div style={{ width: "25%", float: "left", marginLeft: "20px" }}>
-                <div
-                  style={{
-                    marginBottom: "10px",
-                    padding: "8px 12px",
-                    border: "1px solid #ccc",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    transition: "background-color 0.3s",
-                    backgroundColor:
-                      selectedMethod === "cash" ? "#f0f0f0" : "white",
-                  }}
-                  onClick={() => handleMethodClick("cash")}
-                >
-                  Cash
-                </div>
 
-                <div
-                  style={{
-                    marginBottom: "10px",
-                    padding: "8px 12px",
-                    border: "1px solid #ccc",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    transition: "background-color 0.3s",
-                    backgroundColor:
-                      selectedMethod === "UPI" ? "#f0f0f0" : "white",
-                  }}
-                  onClick={() => handleMethodClick("UPI")}
-                >
-                  UPI
-                </div>
-
-                <div
-                  style={{
-                    padding: "8px 12px",
-                    border: "1px solid #ccc",
-                    borderRadius: "5px",
-                    cursor: "pointer",
-                    transition: "background-color 0.3s",
-                    backgroundColor:
-                      selectedMethod === "Card" ? "#f0f0f0" : "white",
-                  }}
-                  onClick={() => handleMethodClick("Card")}
-                >
-                  Card
-                </div>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>
