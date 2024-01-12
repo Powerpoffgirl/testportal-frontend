@@ -358,8 +358,8 @@ export default function TestListPage()
                                 editRow={handleEditRow}
                             />
                             <div style={{ display: 'flex', alignItems: "center", justifyContent: 'center', marginTop: 20 }}>
-                                <button onClick={() => setModalOpen(true)} style={{ color: 'white', height: 30, width: 60, backgroundColor: "#89CFF0", borderRadius: 10 }}>
-                                    Add
+                                <button onClick={() => setModalOpen(true)} className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato">
+                                    ADD
                                 </button>
                             </div>
                             <div style={{ zIndex: '9999', position: 'absolute' }}>

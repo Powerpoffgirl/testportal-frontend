@@ -1,0 +1,13 @@
+/* printStyles.css */
+@media print {
+    .printContainer {
+        max-width: max-content;
+    }
+    .address{
+        display:'block'
+    }
+    @page {
+        size: A4 landscape;
+       
+    }
+}
