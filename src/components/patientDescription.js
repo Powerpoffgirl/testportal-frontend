@@ -539,7 +539,7 @@ export default function PatientDescription()
       // setModalOpen(true);
       localStorage.setItem("appointmentId", appointmentId);
       toast.success("Diagnosis saved.");
-      navigate(`/descriptionsummary`);
+
     }
     console.log("DATA from response", data);
   };
@@ -1056,14 +1056,14 @@ export default function PatientDescription()
               >
                 Process
               </button>
-              {/* <button
-                className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
-                onClick={generatePdf}
-              
-              >
-                Download PDF
-              </button>
               <button
+                className="w-60 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                onClick={() => navigate(`/descriptionsummary`)}
+
+              >
+                Go to Patient Report
+              </button>
+              {/* <button
                 className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
               
               >
