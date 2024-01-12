@@ -1056,28 +1056,16 @@ export default function PatientDescription()
               >
                 Process
               </button>
-              <button
+              {/* <button
                 className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
                 onClick={generatePdf}
-              // style={{
-              //   height: "40px",
-              //   width: "120px",
-              //   backgroundColor: "#89CFF0",
-              //   borderRadius: "10px",
-              //   marginTop: "20px",
-              // }}
+              
               >
                 Download PDF
               </button>
               <button
                 className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
-              // style={{
-              //   height: "40px",
-              //   width: "100px",
-              //   backgroundColor: "#89CFF0",
-              //   borderRadius: "10px",
-              //   marginTop: "20px",
-              // }}
+              
               >
                 <label htmlFor="files">Send To SMS</label>
               </button>
@@ -1090,7 +1078,7 @@ export default function PatientDescription()
                   accept="application/pdf"
                   onChange={handleFileSelect1}
                 />
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
