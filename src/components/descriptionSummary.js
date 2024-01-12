@@ -10,14 +10,15 @@ import "./Table.css";
 import { Table } from "./table";
 import { Modal } from "./tableModal";
 import { useReactToPrint } from "react-to-print";
+import './printStyles.css'
 
-export default function DescriptionSummary()
-{
+export default function DescriptionSummary() {
     const componentPDF = useRef();
     const { updateUser, updateUserEmail, updateUserimage } =
         useContext(UserContext);
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
+    let isLg = useMediaQuery({ query: "(max-width: 1023px)" });
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
     const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -29,11 +30,9 @@ export default function DescriptionSummary()
     const [patientsHistory, setPatientsHistory] = useState(null);
     const [patient, setPatient] = useState({});
 
-    const handleFileSelect1 = async (event) =>
-    {
+    const handleFileSelect1 = async (event) => {
         const file = event.target.files[0];
-        if (file)
-        {
+        if (file) {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("patientId");
             const doctorId = localStorage.getItem("doctorId");
@@ -41,8 +40,7 @@ export default function DescriptionSummary()
             formData.append("patientReport", file);
 
             console.log("FORM DATA", formData);
-            try
-            {
+            try {
                 const response = await fetch(`${baseUrl}/api/v1/doctor/upload_patient_report/${patientId}`, {
                     method: "POST",
                     headers: {
@@ -51,32 +49,26 @@ export default function DescriptionSummary()
                     body: formData,
                 });
 
-                if (!response.ok)
-                {
+                if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
 
                 fileInputRef.current.value = "";
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("Error ", error);
                 toast.error("Error uploading pdf. Please try again.");
             }
         }
     };
 
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -97,8 +89,7 @@ export default function DescriptionSummary()
                 setUserDetailsEmail(data?.data.email);
                 setUserDetailsPic(data?.data.doctorPic);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -106,15 +97,11 @@ export default function DescriptionSummary()
     }, []);
 
 
-    useEffect(() =>
-    {
-        const fetchPatientDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchPatientDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -136,8 +123,7 @@ export default function DescriptionSummary()
                 setPatientsHistory(data?.data);
                 setPatient(data?.data[0]);
 
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -164,17 +150,13 @@ export default function DescriptionSummary()
     const [rowToEdit, setRowToEdit] = useState(null);
 
 
-    useEffect(() =>
-    {
-        const fetchTestDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchTestDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -194,8 +176,7 @@ export default function DescriptionSummary()
                 console.log("DATA from response", responseData);
 
                 setRows(responseData.data || []);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error fetching test details:", error);
             }
         };
@@ -211,118 +192,123 @@ export default function DescriptionSummary()
 
     return (
         <>
-            <div style={{ margin: 0, minHeight: "100vh", width: "100%" }}>
+            <div style={{ margin: 0, minHeight: "100vh", width: "100%" }} class="md:max-w-[440px] lg:max-w-2xl xl:max-w-full 2xl:max-w-full">
                 <div className="MainContainer" style={{ width: "100%" }}>
                     <div
                         className="Right_side"
                         style={{
                             boxSizing: "border-box",
                             width: "100%",
-                            height: "75vh",
+                            height: "80vh",
                             float: "left",
                             backgroundColor: "white",
                             padding: "20px",
                             borderRadius: 20,
                         }}
                     >
-                        <div
-                            ref={componentPDF}
+                        <div class=""
+                            ref={componentPDF} 
                             style={{ marginLeft: "5%", marginRight: "5%" }}
                         >
-                            <div
+                            <div class="mb-3  text-3xl"
                                 style={{
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     fontWeight: 600,
                                     marginTop: "10px",
-                                    fontSize: "xx-large",
+                                    // fontSize: "xx-large",
                                 }}
                             >
-                                Patient Report
+                                Patient Medical Report
                             </div>
-                            <div
+                            <div class=" flex flex-row justify-content-between "
                                 style={{
-                                    display: "flex",
-                                    flexDirection: "row",
+                                    // display: "flex",
+                                    // flexDirection: "row",
                                     marginBottom: "20px",
                                 }}
                             >
-                                <div
+                                <div class="   flex flex-col "
                                     style={{
-                                        flex: "1",
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        marginRight: "20px",
+                                        // flex: "1",
+                                        // display: "flex",
+                                        // flexDirection: "column",
+                                        // marginRight: "20px",
                                     }}
                                 >
-                                    <p style={{ fontWeight: 500 }}>
-                                        Name: {patient?.patientId?.name}
-                                    </p>
+                                    <div class="">
+                                        <p style={{ fontWeight: 500 }}>
+                                            Name: {patient?.patientId?.name}
+                                        </p>
 
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            gap: "10px",
-                                        }}
-                                    >
-                                        <p style={{ color: "black", fontWeight: 500 }}>Age: </p>
-                                        <p style={{ color: "black", fontWeight: 500 }}>
-                                            {patient?.patientId?.age + " yr"}
-                                        </p>
-                                    </div>
-                                    <div
-                                        style={{
-                                            display: "flex",
-                                            flexDirection: "row",
-                                            gap: "10px",
-                                        }}
-                                    >
-                                        <p style={{ color: "black", fontWeight: 500 }}>Weight: </p>
-                                        <p style={{ color: "black", fontWeight: 500 }}>
-                                            {patient?.patientId?.bodyWeight + " kg"}
-                                        </p>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                gap: "10px",
+                                            }}
+                                        >
+                                            <p style={{ color: "black", fontWeight: 500 }}>Age: </p>
+                                            <p style={{ color: "black", fontWeight: 500 }}>
+                                                {patient?.patientId?.age + " yr"}
+                                            </p>
+                                        </div>
+                                        <div
+                                            style={{
+                                                display: "flex",
+                                                flexDirection: "row",
+                                                gap: "10px",
+                                            }}
+                                        >
+                                            <p style={{ color: "black", fontWeight: 500 }}>Weight: </p>
+                                            <p style={{ color: "black", fontWeight: 500 }}>
+                                                {patient?.patientId?.bodyWeight + " kg"}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div
+                                <div class=" address flex flex-col"
                                     style={{
                                         flex: "1",
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        marginLeft: "400px",
+                                        display: isLg ? "none" : "",
+                                        // flexDirection: "column",
+                                        // marginLeft: "auto",
                                     }}
                                 >
-                                    <p style={{ fontWeight: 500 }}>Home Collection</p>
-                                    <p>
-                                        {patient?.patientId?.address?.houseNo},{" "}
-                                        {patient?.patientId?.address?.block},{" "}
-                                        {patient?.patientId?.address?.area},
-                                    </p>
-                                    <p>
-                                        {" "}
-                                        {patient?.patientId?.address?.district}
-                                        {patient?.patientId?.address?.state},
-                                        {patient?.patientId?.address?.pinCode},{" "}
+                                    <div class="ml-auto">
 
-                                    </p>
+                                        <p style={{ fontWeight: 500 }}>Home Collection</p>
+                                        <p>
+                                            {patient?.patientId?.address?.houseNo},{" "}
+                                            {patient?.patientId?.address?.block},{" "}
+                                            {patient?.patientId?.address?.area},
+                                        </p>
+                                        <p>
+                                            {" "}
+                                            {patient?.patientId?.address?.district}
+                                            {patient?.patientId?.address?.state},
+                                            {patient?.patientId?.address?.pinCode},{" "}
+
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class=" flex flex-col ">
 
-                                <div className=" overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-2xl  md:max-w-md max-w-xs mx-auto">
+                                <div className="printContainer overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-xs mx-auto">
                                     <table className=" divide-y divide-gray-200 ">
-                                        <thead className="bg-gray-50">
+                                        <thead className="bg-[#89CFF0]">
                                             <tr>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Dr. Name</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Date</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Time</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Issues</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Disease</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Medicine Name</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Lab Test</th>
+                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Dr. Name</th>
+                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Date</th>
+                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Time</th>
+                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Issues</th>
+                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Disease</th>
+                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Medicine Name</th>
+                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Lab Test</th>
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
@@ -357,15 +343,12 @@ export default function DescriptionSummary()
 
                             </div>
                         </div>
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: "center" }} className="flex mx-auto my-5 flex-col lg:flex-row gap-5 justify-center">
+                        <div  className="flex  flex-col lg:flex-row-reverse mt-5 mb-5 p-3 ">
 
                             <button
-                                className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                                className=" bg-[#89CFF0] py-1 mb-3 px-8 mx-auto lg:mx-1 rounded-full text-white font-semibold text-xl leading-9 font-lato"
                                 onClick={generatePdf}
                             // style={{
-                            //   height: "40px",
-                            //   width: "120px",
-                            //   backgroundColor: "#89CFF0",
                             //   borderRadius: "10px",
                             //   marginTop: "20px",
                             // }}
@@ -373,11 +356,10 @@ export default function DescriptionSummary()
                                 Download PDF
                             </button>
                             <button
-                                className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                                className=" bg-[#89CFF0] py-1 mb-3 px-9 mx-auto lg:mr-2 rounded-full text-white font-semibold text-xl leading-9 font-lato"
                             // style={{
                             //   height: "40px",
                             //   width: "100px",
-                            //   backgroundColor: "#89CFF0",
                             //   borderRadius: "10px",
                             //   marginTop: "20px",
                             // }}
