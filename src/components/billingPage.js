@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import { Flex, Row, Select } from "antd";
@@ -9,10 +9,13 @@ import { MdOutlineDelete } from "react-icons/md";
 import { GiConfirmed } from "react-icons/gi";
 import { useReactToPrint } from "react-to-print";
 import { Tooltip } from "antd";
+import UserContext from "./userContext";
 
 export default function BillingPage({ name, contactNo, gender, age })
 {
   const componentPDF = useRef();
+  const { updateUser, updateUserEmail, updateUserimage } =
+    useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   let xsview = useMediaQuery({ query: "(max-width: 375px)" });
   const navigate = useNavigate();
@@ -28,6 +31,9 @@ export default function BillingPage({ name, contactNo, gender, age })
   const [tests, setTests] = useState([]);
   const [filteredTest, setFilteredtest] = useState([]);
   const [value, setValue] = useState("");
+  const [userDetailsName, setUserDetailsName] = useState();
+  const [userDetailsEmail, setUserDetailsEmail] = useState();
+  const [userDetailsPic, setUserDetailsPic] = useState();
   // const [index, setIndex] = useState(0);
   const [patientReport, setPatientReport] = useState({
     testName: "",
@@ -68,6 +74,44 @@ export default function BillingPage({ name, contactNo, gender, age })
     setFilteredtest(filtered);
     console.log("filtered value", filteredTest);
   };
+
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("patientId");
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(
+          `${baseUrl}/api/v1/doctor/get_doctorDetails`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log("DATA from response", data);
+        setUserDetailsName(data?.data.name);
+        setUserDetailsEmail(data?.data.email);
+        setUserDetailsPic(data?.data.patientPic);
+        console.log("usser name$$$$$$$", data?.data.name);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchUserDetails();
+  }, []);
 
   useEffect(() =>
   {
@@ -421,6 +465,11 @@ export default function BillingPage({ name, contactNo, gender, age })
       }
     }
   };
+
+  updateUser(userDetailsName);
+  updateUserEmail(userDetailsEmail);
+  updateUserimage(userDetailsPic);
+
 
   console.log("row =====", tableData);
   console.log("patient Report ====", patientReport);
