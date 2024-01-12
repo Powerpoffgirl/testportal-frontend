@@ -336,7 +336,7 @@ export default function BillingPage({ name, contactNo, gender, age })
         console.log("DATA from response", responseData);
 
         toast.success("Saved");
-        // window.location.reload();
+        window.location.reload();
         e.target.value = "";
       }
 

@@ -38,6 +38,7 @@ import EditUserForm from "./components/editUserForm";
 import EditPatientFormAdmin from "./components/editPatientFormAdmin";
 import AppointmentList from "./components/appointmentList";
 import PatientDescription from "./components/patientDescription";
+import DescriptionSummary from "./components/descriptionSummary";
 import PatientListAdmin from "./components/patientListAdmin";
 import UserList from "./components/userList";
 import ShowPatientForm from "./components/showPatientForm";
@@ -356,6 +357,18 @@ function App()
             />
           }
         ></Route>
+        <Route
+          path="/descriptionsummary"
+          element={
+            <Layout
+              Component={DescriptionSummary}
+              type="doctor"
+              headerTextTop={"Patients's"}
+              headerTextBottom={"Description"}
+            />
+          }
+        ></Route>
+        '
         <Route
           path="/registerpatient"
           element={
