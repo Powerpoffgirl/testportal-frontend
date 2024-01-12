@@ -953,10 +953,13 @@ export default function BillingPage({ name, contactNo, gender, age })
                 <button
                   class="mx-4"
                   style={{
+                    height: "40px",
+                    width: "120px",
                     backgroundColor: "#89CFF0",
-                    borderRadius: "23px",
-                    padding: "2px 9px 2px 9px",
-                    color: "white",
+                    borderRadius: "20px",
+                    marginTop: "20px",
+                    padding: "2px",
+                    color: 'white'
                   }}
                   onClick={() => navigate(`/billingprice`)}
                 >
@@ -965,10 +968,13 @@ export default function BillingPage({ name, contactNo, gender, age })
                 <button
                   class="mx-4"
                   style={{
+                    height: "40px",
+                    width: "120px",
                     backgroundColor: "#89CFF0",
-                    borderRadius: "23px",
-                    padding: "2px 9px 2px 9px",
-                    color: "white",
+                    borderRadius: "20px",
+                    marginTop: "20px",
+                    padding: "2px",
+                    color: 'white'
                   }}
                   onClick={() => navigate(`/summary`)}
                 >
