@@ -1,21 +1,15 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Flex, Row, Select } from "antd";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
-// import Modal from "react-responsive-modal";
 import UserContext from './userContext';
-import { ToastContainer, toast } from "react-toastify";
-
 import { Table } from "./table";
 import { Modal } from "./tableModal";
 
-export default function TestListPage()
-{
+export default function TestListPage() {
 
     const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
-    let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-    let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
+    let issm = useMediaQuery({ query: "(max-width: 375px)" });
+    // let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [rowNumber, setRowNumber] = useState();
@@ -25,16 +19,11 @@ export default function TestListPage()
 
 
 
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
-                const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -55,8 +44,7 @@ export default function TestListPage()
                 setUserDetailsEmail(data?.data.email);
                 setUserDetailsPic(data?.data.doctorPic);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -77,16 +65,13 @@ export default function TestListPage()
     ]);
     const [rowToEdit, setRowToEdit] = useState(null);
 
-    const handleDeleteRow = async (index) =>
-    {
+    const handleDeleteRow = async (index) => {
 
-        try
-        {
+        try {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("selectedPatientId");
 
-            if (!token)
-            {
+            if (!token) {
                 console.error("No token found in local storage");
                 return;
             }
@@ -104,45 +89,36 @@ export default function TestListPage()
             setRows(rows.filter((_, idx) => idx !== index));
 
 
-        } catch (error)
-        {
+        } catch (error) {
             console.error("There was an error deleting details:", error);
         }
 
 
     };
 
-    const handleEditRow = (idx) =>
-    {
+    const handleEditRow = (idx) => {
         setRowToEdit(idx);
         setModalOpen(true);
     };
 
 
-    const handleSubmit = (newRow) =>
-    {
+    const handleSubmit = (newRow) => {
 
         console.log("code working till now ")
-        setRows((prevRows) =>
-        {
-            if (rowToEdit === null)
-            {
+        setRows((prevRows) => {
+            if (rowToEdit === null) {
                 const updatedRows = [...prevRows, newRow];
                 const newRowNumber = updatedRows.length - 1;
                 setRowNumber(newRowNumber);
 
                 return updatedRows;
-            } else
-            {
-                const EditDetails = async () =>
-                {
-                    try
-                    {
+            } else {
+                const EditDetails = async () => {
+                    try {
                         const token = localStorage.getItem("token");
                         const patientId = localStorage.getItem("selectedPatientId");
 
-                        if (!token)
-                        {
+                        if (!token) {
                             console.error("No token found in local storage");
                             return;
                         }
@@ -173,8 +149,7 @@ export default function TestListPage()
                         console.log("DATA from response", responseData);
                         // Handle responseData as needed (maybe update state?)
 
-                    } catch (error)
-                    {
+                    } catch (error) {
                         console.error("There was an error verifying the OTP:", error);
                     }
                 };
@@ -245,17 +220,13 @@ export default function TestListPage()
 
 
 
-    useEffect(() =>
-    {
-        const fetchTestDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchTestDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -273,8 +244,7 @@ export default function TestListPage()
 
 
                 setRows(responseData.data || []);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error fetching test details:", error);
             }
         };
@@ -290,43 +260,45 @@ export default function TestListPage()
 
     return (
         <>
-            <div style={{ margin: 0, minHeight: "100vh", width: "100%" }}>
-                <div className="MainContainer" style={{ width: "100%" }}>
+            <div style={{ minHeight: "100vh" }} class={`  md:max-w-xl lg:max-w-2xl xl:max-w-5xl 2xl:max-w-full max-w-[400px] `}>
+                <div className="MainContainer" style={{}}>
                     <div
-                        className="Right_side"
+                        className="Right_side  pt-5 pl-5 pr-5"
                         style={{
                             boxSizing: "border-box",
                             width: "100%",
                             height: "75vh",
-                            float: "left",
+                            // float: "left",
                             backgroundColor: "white",
-                            padding: "20px",
+                            // padding: "20px",
                             borderRadius: 20,
+                            // width:issm? "":""
                         }}
                     >
                         <div>
-                            <Table
+                            <Table class="overflow-auto  "
                                 rows={rows}
                                 deleteRow={handleDeleteRow}
                                 editRow={handleEditRow}
                             />
-                            <div style={{ display: 'flex', alignItems: "center", justifyContent: 'center', marginTop: 20, marginLeft: isTab1 ? -200 : null, marginBottom: isTab1 ? -500 : null }}>
+                            <div style={{ display: 'flex', alignItems: "center", justifyContent: 'center', marginTop: 20 }}>
                                 <button onClick={() => setModalOpen(true)} style={{ color: 'white', height: 30, width: 60, backgroundColor: "#89CFF0", borderRadius: 10 }}>
                                     Add
                                 </button>
                             </div>
+                            <div style={{ zIndex: '9999', position: 'absolute' }}>
 
-                            {modalOpen && (
-                                <Modal
-                                    closeModal={() =>
-                                    {
-                                        setModalOpen(false);
-                                        setRowToEdit(null);
-                                    }}
-                                    onSubmit={handleSubmit}
-                                    defaultValue={rowToEdit !== null && rows[rowToEdit]}
-                                />
-                            )}
+                                {modalOpen && (
+                                    <Modal class="flex flex-col  border border-black "
+                                        closeModal={() => {
+                                            setModalOpen(false);
+                                            setRowToEdit(null);
+                                        }}
+                                        onSubmit={handleSubmit}
+                                        defaultValue={rowToEdit !== null && rows[rowToEdit]}
+                                    />
+                                )}
+                            </div>
 
                         </div>
                     </div>

@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "./Modal.css";
 
-export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
-{
+export const Modal = ({ closeModal, onSubmit, defaultValue }) => {
     const [formState, setFormState] = useState(
         defaultValue || {
             testName: "",
@@ -18,8 +17,7 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
     );
     const [errors, setErrors] = useState("");
 
-    const validateForm = () =>
-    {
+    const validateForm = () => {
         if (
             formState.testName &&
             formState.testCode &&
@@ -29,17 +27,13 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
             formState.unit &&
             formState.bioRefInterval &&
             formState.technology
-        )
-        {
+        ) {
             setErrors("");
             return true;
-        } else
-        {
+        } else {
             let errorFields = [];
-            for (const [key, value] of Object.entries(formState))
-            {
-                if (!value)
-                {
+            for (const [key, value] of Object.entries(formState)) {
+                if (!value) {
                     errorFields.push(key);
                 }
             }
@@ -48,13 +42,11 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
         }
     };
 
-    const handleChange = (e) =>
-    {
+    const handleChange = (e) => {
         setFormState({ ...formState, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e) =>
-    {
+    const handleSubmit = (e) => {
         e.preventDefault();
 
         if (!validateForm()) return;
@@ -63,12 +55,11 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
 
         closeModal();
     };
-
+    console.log(errors)
     return (
         <div
             className="modal-container"
-            onClick={(e) =>
-            {
+            onClick={(e) => {
                 if (e.target.className === "modal-container") closeModal();
             }}
         >
@@ -123,7 +114,14 @@ export const Modal = ({ closeModal, onSubmit, defaultValue }) =>
                         <input name="technology" onChange={handleChange} value={formState.technology} />
                     </div>
                     {errors && (
-                        <div className="error">{`Please include: ${errors}`}</div>
+                        <div className="error flex flex-wrap">Please include :  { errors?.split(',')?.map((item, index) => {
+                            // console.log("item",item)
+                            return (
+                                <p key={index} >
+                                    {item},&nbsp;
+                                </p>
+                            )
+                        })}</div>
                     )}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <button type="submit" style={{ color: 'white', height: 30, width: 60, backgroundColor: "#89CFF0", borderRadius: 10 }} onClick={handleSubmit}>
