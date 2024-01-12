@@ -123,68 +123,87 @@ export default function TestListPage()
     {
 
         console.log("code working till now ")
-        setRows((prevRows) =>
+
+        const test = rows?.filter((row) =>
+            row?.testName?.toLowerCase().includes(newRow?.testName.toLowerCase()) &&
+            row?.testCode?.toLowerCase().includes(newRow?.testCode.toLowerCase())
+        );
+        console.log("==================TEST===========================", test)
+
+        if (test.length > 0)
         {
-            if (rowToEdit === null)
+            toast.error("Test ")
+            return
+        } else
+        {
+            setRows((prevRows) =>
             {
-                const updatedRows = [...prevRows, newRow];
-                const newRowNumber = updatedRows.length - 1;
-                setRowNumber(newRowNumber);
-
-                return updatedRows;
-            } else
-            {
-                const EditDetails = async () =>
+                if (rowToEdit === null)
                 {
-                    try
-                    {
-                        const token = localStorage.getItem("token");
-                        const patientId = localStorage.getItem("selectedPatientId");
 
-                        if (!token)
+                    const updatedRows = [...prevRows, newRow];
+                    const newRowNumber = updatedRows.length - 1;
+                    setRowNumber(newRowNumber);
+                    submitDetails()
+                    return updatedRows;
+
+
+
+
+                } else
+                {
+                    const EditDetails = async () =>
+                    {
+                        try
                         {
-                            console.error("No token found in local storage");
-                            return;
+                            const token = localStorage.getItem("token");
+                            const patientId = localStorage.getItem("selectedPatientId");
+
+                            if (!token)
+                            {
+                                console.error("No token found in local storage");
+                                return;
+                            }
+
+                            const lastItem = rows[rowToEdit];
+
+
+                            const response = await fetch(`${baseUrl}/api/v1/doctor/update_testBooking/${rows[rowToEdit]._id}`, {
+                                method: "Put",
+                                headers: {
+                                    "Content-Type": "application/json",
+                                    "x-auth-token": token,
+                                },
+                                body: JSON.stringify({
+                                    testName: lastItem.testName,
+                                    testCode: lastItem.testCode,
+                                    department: lastItem.department,
+                                    sampleType: lastItem.sampleType,
+                                    costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
+                                    unit: lastItem.unit,
+                                    bioRefInterval: lastItem.bioRefInterval,
+                                    technology: lastItem.technology,
+                                    patientId: patientId,
+                                }),
+                            });
+
+                            const responseData = await response.json();
+                            console.log("DATA from response", responseData);
+                            // Handle responseData as needed (maybe update state?)
+
+                        } catch (error)
+                        {
+                            console.error("There was an error verifying the OTP:", error);
                         }
+                    };
+                    EditDetails();
+                    return prevRows?.map((currRow, idx) =>
+                        idx !== rowToEdit ? currRow : newRow
+                    );
 
-                        const lastItem = rows[rowToEdit];
-
-
-                        const response = await fetch(`${baseUrl}/api/v1/doctor/update_testBooking/${rows[rowToEdit]._id}`, {
-                            method: "Put",
-                            headers: {
-                                "Content-Type": "application/json",
-                                "x-auth-token": token,
-                            },
-                            body: JSON.stringify({
-                                testName: lastItem.testName,
-                                testCode: lastItem.testCode,
-                                department: lastItem.department,
-                                sampleType: lastItem.sampleType,
-                                costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
-                                unit: lastItem.unit,
-                                bioRefInterval: lastItem.bioRefInterval,
-                                technology: lastItem.technology,
-                                patientId: patientId,
-                            }),
-                        });
-
-                        const responseData = await response.json();
-                        console.log("DATA from response", responseData);
-                        // Handle responseData as needed (maybe update state?)
-
-                    } catch (error)
-                    {
-                        console.error("There was an error verifying the OTP:", error);
-                    }
-                };
-                EditDetails();
-                return prevRows.map((currRow, idx) =>
-                    idx !== rowToEdit ? currRow : newRow
-                );
-
-            }
-        });
+                }
+            });
+        }
         setRowToEdit(null);
         // window.location.reload();
     };
@@ -192,53 +211,65 @@ export default function TestListPage()
     // useEffect(() =>
     // {
 
-    //     const submitDetails = async () =>
-    //     {
-    //         try
-    //         {
-    //             const token = localStorage.getItem("token");
-    //             const patientId = localStorage.getItem("selectedPatientId");
+    const submitDetails = async () =>
+    {
+        try
+        {
+            const token = localStorage.getItem("token");
+            const patientId = localStorage.getItem("selectedPatientId");
 
-    //             if (!token)
-    //             {
-    //                 console.error("No token found in local storage");
-    //                 return;
-    //             }
+            if (!token)
+            {
+                console.error("No token found in local storage");
+                return;
+            }
+            const lastItem = rows[rows.length - 1];
 
-    //             const lastItem = rows[rows.length - 1];
+            console.log("last Item -------", lastItem)
 
-    //             console.log("last Item -------", lastItem)
+            const test = rows?.filter((row) =>
+                row?.testName?.toLowerCase().includes(lastItem?.testName.toLowerCase()) &&
+                row?.testCode?.toLowerCase().includes(lastItem?.testCode.toLowerCase())
+            );
+            console.log("==================TEST===========================", test)
+            // if (test.length > 0)
+            // {
+            //     toast.error("Test with this name and code already exists.")
+            //     return
+            // } else
+            // {
+            const response = await fetch(`${baseUrl}/api/v1/doctor/create_testBooking`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-auth-token": token,
+                },
+                body: JSON.stringify({
+                    testName: lastItem.testName,
+                    testCode: lastItem.testCode,
+                    department: lastItem.department,
+                    sampleType: lastItem.sampleType,
+                    costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
+                    unit: lastItem.unit,
+                    bioRefInterval: lastItem.bioRefInterval,
+                    technology: lastItem.technology,
+                    patientId: patientId,
+                }),
+            });
 
-    //             const response = await fetch(`${baseUrl}/api/v1/doctor/create_testBooking`, {
-    //                 method: "POST",
-    //                 headers: {
-    //                     "Content-Type": "application/json",
-    //                     "x-auth-token": token,
-    //                 },
-    //                 body: JSON.stringify({
-    //                     testName: lastItem.testName,
-    //                     testCode: lastItem.testCode,
-    //                     department: lastItem.department,
-    //                     sampleType: lastItem.sampleType,
-    //                     costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
-    //                     unit: lastItem.unit,
-    //                     bioRefInterval: lastItem.bioRefInterval,
-    //                     technology: lastItem.technology,
-    //                     patientId: patientId,
-    //                 }),
-    //             });
+            const responseData = await response.json();
+            console.log("DATA from response", responseData);
+            // }
 
-    //             const responseData = await response.json();
-    //             console.log("DATA from response", responseData);
-    //             // Handle responseData as needed (maybe update state?)
 
-    //         } catch (error)
-    //         {
-    //             console.error("There was an error verifying the OTP:", error);
-    //         }
-    //     };
 
-    //     submitDetails();
+        } catch (error)
+        {
+            console.error("There was an error verifying the OTP:", error);
+        }
+    };
+
+    // submitDetails();
 
     // }, [rows])
 
