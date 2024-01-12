@@ -557,7 +557,22 @@ export default function PatientForm()
 
       if (patient.length > 0)
       {
-        toast.error("Patient with this name and phone no already exists");
+        // toast.error("Patient with this name and phone no already exists");
+        localStorage.setItem("selectedPatientId", patient[0]._id);
+        localStorage.setItem("name", patient[0].name);
+        localStorage.setItem("phoneNo", patient[0].phoneNo);
+        localStorage.setItem("gender", patient[0].gender);
+        localStorage.setItem("age", patient[0].age);
+        localStorage.setItem("ref", patient[0].refBy);
+        localStorage.setItem("houseNo", patient[0].address.houseNo);
+        localStorage.setItem("floor", patient[0].address.floor);
+        localStorage.setItem("block", patient[0].address.block);
+        localStorage.setItem("area", patient[0].address.area);
+        localStorage.setItem("district", patient[0].address.district);
+        localStorage.setItem("state", patient[0].address.state);
+        localStorage.setItem("pincode", patient[0].address.pinCode);
+
+        navigate("/billing");
       } else
       {
         const response = await fetch(
@@ -576,7 +591,6 @@ export default function PatientForm()
         {
           onOpenModal();
           localStorage.setItem("selectedPatientId", data.data._id);
-          // localStorage.setItem("patientId", data.data._id);
           localStorage.setItem("name", newPatientDetails.name);
           localStorage.setItem("phoneNo", newPatientDetails.phoneNo);
           localStorage.setItem("gender", newPatientDetails.gender);
