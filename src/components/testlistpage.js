@@ -314,7 +314,7 @@ export default function TestListPage()
                 const testList = responseData.data?.filter(test => test.value == null);
                 console.log("=============TESTS===========COIMING", testList)
 
-                setRows(responseData.data || []);
+                setRows(testList || []);
                 setSubmitToggle(false);
             } catch (error)
             {
