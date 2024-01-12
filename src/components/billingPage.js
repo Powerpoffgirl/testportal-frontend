@@ -267,25 +267,36 @@ export default function BillingPage({ name, contactNo, gender, age })
   {
     try
     {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `${baseUrl}/api/v1/doctor/create_testBooking`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token,
-          },
-          body: JSON.stringify(patientReport),
-        }
-      );
 
-      const responseData = await response.json();
-      console.log("DATA from response", responseData);
+      console.log("consoling value", patientReport);
+      if (patientReport.value == null)
+      {
+        toast.error("Value can't be empty");
+        return;
+      } else
+      {
+        const token = localStorage.getItem("token");
+        const response = await fetch(
+          `${baseUrl}/api/v1/doctor/create_testBooking`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+            body: JSON.stringify(patientReport),
+          }
+        );
 
-      toast.success("Saved");
-      window.location.reload();
-      e.target.value = "";
+        const responseData = await response.json();
+        console.log("DATA from response", responseData);
+
+        toast.success("Saved");
+        // window.location.reload();
+        e.target.value = "";
+      }
+
+
     } catch (error)
     {
       console.error("There was an error verifying the OTP:", error);
