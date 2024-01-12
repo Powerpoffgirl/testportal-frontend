@@ -135,7 +135,7 @@ export default function PatientForm()
         console.log("DATA from response", data);
         setUserDetailsName(data?.data.name);
         setUserDetailsEmail(data?.data.email);
-        setUserDetailsPic(data?.data.doctorPic);
+        setUserDetailsPic(data?.data.patientPic);
         console.log("usser name$$$$$$$", data?.data.name);
       } catch (error)
       {
@@ -230,7 +230,7 @@ export default function PatientForm()
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
-      formData.append("doctorPic", file);
+      formData.append("patientPic", file);
 
       console.log("FORM DATA", formData);
       try
@@ -551,38 +551,69 @@ export default function PatientForm()
         localStorage.clear();
         navigate(`/userlogin`);
       }
-      const response = await fetch(
-        `${baseUrl}/api/v1/doctor/create_labPatient`,
-        {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token,
-          },
-          body: JSON.stringify(newPatientDetails),
-        }
+      const patient = patients?.filter(
+        (patient) =>
+          patient?.name
+            ?.toLowerCase()
+            .includes(newPatientDetails?.name?.toLowerCase() ?? "") &&
+          patient?.phoneNo == newPatientDetails?.phoneNo
       );
-      const data = await response.json();
-      if (data.success === true)
+
+      if (patient.length > 0)
       {
-        onOpenModal();
-        localStorage.setItem("patientId", data.data._id);
-        localStorage.setItem("name", newPatientDetails.name);
-        localStorage.setItem("phoneNo", newPatientDetails.phoneNo);
-        localStorage.setItem("gender", newPatientDetails.gender);
-        localStorage.setItem("age", newPatientDetails.age);
-        localStorage.setItem("ref", newPatientDetails.refBy);
-        localStorage.setItem("houseNo", newPatientDetails.address.houseNo);
-        localStorage.setItem("floor", newPatientDetails.address.floor);
-        localStorage.setItem("block", newPatientDetails.address.block);
-        localStorage.setItem("area", newPatientDetails.address.area);
-        localStorage.setItem("district", newPatientDetails.address.district);
-        localStorage.setItem("state", newPatientDetails.address.state);
-        localStorage.setItem("pincode", newPatientDetails.address.pinCode);
+        // toast.error("Patient with this name and phone no already exists");
+        localStorage.setItem("selectedPatientId", patient[0]._id);
+        localStorage.setItem("name", patient[0].name);
+        localStorage.setItem("registrationNo", patient[0].registrationNo);
+        localStorage.setItem("phoneNo", patient[0].phoneNo);
+        localStorage.setItem("gender", patient[0].gender);
+        localStorage.setItem("age", patient[0].age);
+        localStorage.setItem("ref", patient[0].refBy);
+        localStorage.setItem("houseNo", patient[0].address.houseNo);
+        localStorage.setItem("floor", patient[0].address.floor);
+        localStorage.setItem("block", patient[0].address.block);
+        localStorage.setItem("area", patient[0].address.area);
+        localStorage.setItem("district", patient[0].address.district);
+        localStorage.setItem("state", patient[0].address.state);
+        localStorage.setItem("pincode", patient[0].address.pinCode);
 
         navigate("/billing");
+      } else
+      {
+        const response = await fetch(
+          `${baseUrl}/api/v1/doctor/create_labPatient`,
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+            body: JSON.stringify(newPatientDetails),
+          }
+        );
+        const data = await response.json();
+        if (data.success === true)
+        {
+          onOpenModal();
+          localStorage.setItem("selectedPatientId", data.data._id);
+          localStorage.setItem("name", newPatientDetails.name);
+          localStorage.setItem("registrationNo", newPatientDetails.registrationNo);
+          localStorage.setItem("phoneNo", newPatientDetails.phoneNo);
+          localStorage.setItem("gender", newPatientDetails.gender);
+          localStorage.setItem("age", newPatientDetails.age);
+          localStorage.setItem("ref", newPatientDetails.refBy);
+          localStorage.setItem("houseNo", newPatientDetails.address.houseNo);
+          localStorage.setItem("floor", newPatientDetails.address.floor);
+          localStorage.setItem("block", newPatientDetails.address.block);
+          localStorage.setItem("area", newPatientDetails.address.area);
+          localStorage.setItem("district", newPatientDetails.address.district);
+          localStorage.setItem("state", newPatientDetails.address.state);
+          localStorage.setItem("pincode", newPatientDetails.address.pinCode);
+
+          navigate("/billing");
+          console.log("DATA from response", data);
+        }
       }
-      console.log("DATA from response", data);
     }
   };
 
@@ -729,7 +760,8 @@ export default function PatientForm()
           <hr />
 
           <div className=" mt-3 relative">
-            <div class=""
+            <div
+              class=""
               style={{
                 display: "flex",
                 flexDirection: "row",
@@ -783,7 +815,6 @@ export default function PatientForm()
                 </li>
               ))}
             </ul>
-
           </div>
 
           <div className=" mt-3 relative">
@@ -810,7 +841,6 @@ export default function PatientForm()
               id="refBy"
               className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-
           </div>
 
           {/* <div className=" mt-3 relative">
@@ -1055,7 +1085,7 @@ export default function PatientForm()
                       placeholder="Pin Code"
                       onInput={(e) =>
                       {
-                        e.target.value = e.target.value.replace(/[^0-6]/g, "");
+                        e.target.value = e.target.value.replace(/[^0-9]/g, "");
                       }}
                       className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
