@@ -293,7 +293,17 @@ export default function BillingPrice()
                         </div>
 
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '100px' }}>
-                            <button onClick={() => navigate(`/summary`)} style={{ color: 'white', height: 30, width: '15%', backgroundColor: "#89CFF0", borderRadius: 10, marginLeft: 'auto', marginRight: 'auto' }}>
+                            <button
+                                class="mx-4"
+                                style={{
+                                    backgroundColor: "#89CFF0",
+                                    borderRadius: "23px",
+                                    padding: "8px 15px 8px 15px",
+                                    color: "white",
+
+                                }}
+                                onClick={() => navigate(`/summary`)}
+                            >
                                 Go To Summary
                             </button>
                         </div>

@@ -221,20 +221,29 @@ export default function BillingPage({ name, contactNo, gender, age })
     ]);
   };
 
-  const calculateTotalPrice = () =>
+  useEffect(() =>
   {
-    let totalPrice = 0;
 
-    tableData.forEach((row) =>
+    const calculateTotalPrice = () =>
     {
-      // Assuming price is a number, you might need to parse it if it's a string
-      totalPrice += row.price;
-    });
+      let totalPrice = 0;
 
-    localStorage.setItem("totalPrice", totalPrice);
+      tableData.forEach((row) =>
+      {
+        // Assuming price is a number, you might need to parse it if it's a string
+        totalPrice += row.price;
+      });
 
-    return totalPrice;
-  };
+      localStorage.setItem("totalPrice", totalPrice);
+
+      return totalPrice;
+    };
+
+    calculateTotalPrice();
+
+
+  }, [])
+
 
   const getTestNames = () =>
   {
