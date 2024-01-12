@@ -284,6 +284,8 @@ export default function AppointmentList({ searchTerm }) {
   updateUserEmail(userDetailsEmail);
   updateUserimage(userDetailsPic);
 
+  console.log("selectedAppointment", selectedAppointment?.doctorId?.doctorPic);
+
   return (
     <>
       {/* appointment accepted */}
@@ -308,6 +310,7 @@ export default function AppointmentList({ searchTerm }) {
           <button onClick={onCloseModal}>
             <img src={close_button} alt="close button" class="w-8 mb-5"></img>
           </button>
+
           {/* <button><img src={delete_button} class="w-8"></img></button>
             <button><img src={edit_button} class="w-8"></img></button> */}
         </div>
@@ -383,20 +386,40 @@ export default function AppointmentList({ searchTerm }) {
             <img src={close_button} alt="close button" class="w-8 "></img>
           </button>
         </div>
+
         <div className="flex flex-col bg-customRedp-2 w-[100%] md:w-[100%]  mt-[2%]">
           <div className="flex flex-row w-[100%] justify-center ">
-            <AccountCircleIcon
-              style={{
-                fontSize: isTab ? "50px" : "90px",
-                color: "#B1DAED",
-
-                borderRadius: "50%",
-                height: isTab ? "80px" : "123px",
-                width: isTab ? "80px" : "123px",
-                marginRight: "70px",
-                boxShadow: "inset 0 0 0 2px #76767",
-              }}
-            />
+            <div className="flex flex-row w-[100%] justify-between">
+              {selectedAppointment?.patientId?.patientPic ? (
+                <img
+                  src={selectedAppointment?.patientId?.patientPic}
+                  alt={selectedAppointment?.patientId?.name}
+                  style={{
+                    borderRadius: "50%",
+                    height: isTab ? "40px" : "123px",
+                    width: isTab ? "40px" : "123px",
+                    marginTop: "10px",
+                    marginRight: "auto",
+                    marginLeft: "auto",
+                    boxShadow: "inset 0 0 0 2px #76767",
+                  }}
+                />
+              ) : (
+                <div className="flex flex-row w-[100%] justify-center ">
+                  <AccountCircleIcon
+                    style={{
+                      fontSize: isTab ? "50px" : "90px",
+                      color: "#B1DAED",
+                      borderRadius: "50%",
+                      height: isTab ? "80px" : "123px",
+                      width: isTab ? "80px" : "123px",
+                      boxShadow: "inset 0 0 0 2px #76767",
+                      // Adjust or remove marginRight if necessary
+                    }}
+                  />
+                </div>
+              )}
+            </div>
           </div>
           <text
             className=" text-center mt-4 capitalize"
@@ -545,7 +568,13 @@ export default function AppointmentList({ searchTerm }) {
                         </div>
                       </div>
                     </div>
-                    <div style={{ textAlign: "center", display: isTab1 ? 'none' : '' }} class={`lg:mt-2 mt-2 `}>
+                    <div
+                      style={{
+                        textAlign: "center",
+                        display: isTab1 ? "none" : "",
+                      }}
+                      class={`lg:mt-2 mt-2 `}
+                    >
                       <h1
                         class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
                         style={{
@@ -580,7 +609,7 @@ export default function AppointmentList({ searchTerm }) {
                         {appointment?.appointmentDate?.time}
                       </div>
                     </div>
-                    <div style={{ display: isTab1 ? 'none' : '' }} class="mt-2">
+                    <div style={{ display: isTab1 ? "none" : "" }} class="mt-2">
                       <h1
                         class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
                         style={{
