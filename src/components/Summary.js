@@ -451,8 +451,7 @@ export default function Summary()
                                                                 : "normal",
                                                     }}
                                                 >
-                                                    {row.testCode} {row.value} , {row?.bioRefInterval?.split("-")[1]} , {row?.bioRefInterval?.split("-")[0]} {row?.value > row?.bioRefInterval?.split("-")[1] ||
-                                                        row?.value < row?.bioRefInterval?.split("-")[0]}
+                                                    {row.testCode}
                                                 </td>
                                                 <td
                                                     className="px-3 lg:px-6"
