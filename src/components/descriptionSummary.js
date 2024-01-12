@@ -296,15 +296,16 @@ export default function DescriptionSummary()
                                 >
                                     <p style={{ fontWeight: 500 }}>Home Collection</p>
                                     <p>
-                                        {localStorage?.getItem("houseNo")},{" "}
-                                        {localStorage?.getItem("floor")},{" "}
-                                        {localStorage?.getItem("block")},
+                                        {patient?.patientId?.address?.houseNo},{" "}
+                                        {patient?.patientId?.address?.block},{" "}
+                                        {patient?.patientId?.address?.area},
                                     </p>
                                     <p>
                                         {" "}
-                                        {localStorage?.getItem("area")},
-                                        {localStorage?.getItem("district")},{" "}
-                                        {localStorage?.getItem("pincode")}
+                                        {patient?.patientId?.address?.district}
+                                        {patient?.patientId?.address?.state},
+                                        {patient?.patientId?.address?.pinCode},{" "}
+
                                     </p>
                                 </div>
                             </div>
