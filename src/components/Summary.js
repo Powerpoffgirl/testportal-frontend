@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Flex, Row, Select } from "antd";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+// import { Flex, Row, Select } from "antd";
+// import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 // import Modal from "react-responsive-modal";
 import UserContext from "./userContext";
 import { ToastContainer, toast } from "react-toastify";
 import "./Table.css";
-import { Table } from "./table";
-import { Modal } from "./tableModal";
+// import { Table } from "./table";
+// import { Modal } from "./tableModal";
 import { useReactToPrint } from "react-to-print";
 
 export default function Summary() {
   const componentPDF = useRef();
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-  let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
+  // let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  // let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -348,14 +348,14 @@ export default function Summary() {
                       scope="col"
                       className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
                     >
-                      Test/package
+                      Test/ package
                     </th>
                     <th
                       style={{ textAlign: "left" }}
                       scope="col"
                       className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
                     >
-                      testCode
+                      Test Code
                     </th>
                     <th
                       style={{ textAlign: "left" }}
@@ -383,7 +383,7 @@ export default function Summary() {
                       scope="col"
                       className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
                     >
-                      Bio.Ref
+                      Bio. Ref
                     </th>
                   </tr>
                 </thead>
@@ -394,14 +394,14 @@ export default function Summary() {
                       : "";
 
                     return (
-                      <tr key={idx}>
+                      <tr key={idx} class="">
                         <td
-                          className="px-3 lg:px-6"
+                          className="px-3 lg:px-6 "
                           style={{
                             textAlign: "left",
                             fontWeight:
                               row?.value > row?.bioRefInterval?.split("-")[1] ||
-                              row?.value < row?.bioRefInterval?.split("-")[0]
+                                row?.value < row?.bioRefInterval?.split("-")[0]
                                 ? "bolder"
                                 : null,
                           }}
@@ -414,7 +414,7 @@ export default function Summary() {
                             textAlign: "left",
                             fontWeight:
                               row?.value > row?.bioRefInterval?.split("-")[1] ||
-                              row?.value < row?.bioRefInterval?.split("-")[0]
+                                row?.value < row?.bioRefInterval?.split("-")[0]
                                 ? "bolder"
                                 : null,
                           }}
@@ -427,7 +427,7 @@ export default function Summary() {
                             textAlign: "left",
                             fontWeight:
                               row?.value > row?.bioRefInterval?.split("-")[1] ||
-                              row?.value < row?.bioRefInterval?.split("-")[0]
+                                row?.value < row?.bioRefInterval?.split("-")[0]
                                 ? "bolder"
                                 : null,
                           }}
@@ -440,7 +440,7 @@ export default function Summary() {
                             textAlign: "left",
                             fontWeight:
                               row?.value > row.bioRefInterval?.split("-")[1] ||
-                              row?.value < row.bioRefInterval?.split("-")[0]
+                                row?.value < row.bioRefInterval?.split("-")[0]
                                 ? "bolder"
                                 : null,
                           }}
@@ -453,7 +453,7 @@ export default function Summary() {
                             textAlign: "left",
                             fontWeight:
                               row?.value > row.bioRefInterval?.split("-")[1] ||
-                              row?.value < row.bioRefInterval?.split("-")[0]
+                                row?.value < row.bioRefInterval?.split("-")[0]
                                 ? "bolder"
                                 : null,
                           }}
@@ -466,7 +466,7 @@ export default function Summary() {
                             textAlign: "left",
                             fontWeight:
                               row?.value > row.bioRefInterval?.split("-")[1] ||
-                              row?.value < row.bioRefInterval?.split("-")[0]
+                                row?.value < row.bioRefInterval?.split("-")[0]
                                 ? "bolder"
                                 : null,
                           }}
