@@ -77,8 +77,7 @@ import Pagenotfound from "./components/pagenotfound";
 import { ToastContainer } from "react-toastify";
 import UserProfile from "./components/userProfile";
 
-function App()
-{
+function App() {
   return (
     <>
       <ToastContainer />

@@ -6,6 +6,8 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { LuRefreshCcw } from "react-icons/lu";
+
 
 const svgContent = `
 <svg xmlns="http://www.w3.org/2000/svg" width="836" height="579" viewBox="0 0 786 679" fill="none">
@@ -104,25 +106,18 @@ export default function OtpVerify() {
     e.preventDefault();
   };
 
-  const SendOTP = async () => {
+  const SendOTP = async (e) => {
+    e.preventDefault()
     // Retrieve the token from local storage
     setResendClicked(true);
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("id");
-    if (resendClicked) {
-      toast.success("Otp Sended successfully!");
-    }
-    // If there's no token, log an error and exit
-    if (!token) {
-      console.error("No token found in local storage");
-      return;
-    }
 
     // Define the request body and the API endpoint
     const requestBody = {
       contactNumber: contactNumber,
     };
-    const apiUrl = `${baseUrl}/api/v1/admin/send_otp/${id}`;
+    const apiUrl = `${baseUrl}/api/v1/doctor/forget_password`;
 
     try {
       // Send the POST request
@@ -140,6 +135,7 @@ export default function OtpVerify() {
       // Check the response status
       if (response.ok) {
         console.log("OTP sent successfully", data);
+        toast.success("OTP sent successfully")
         setResendClicked(true);
         setSeconds(90);
       } else {
@@ -271,19 +267,6 @@ export default function OtpVerify() {
             ></div>
           )}
 
-          <ToastContainer
-            position="top-center"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-
           <div
             className="rounded-full flex flex-row p-2 m-3 md:w-400 sm:w-300"
             style={{
@@ -310,43 +293,27 @@ export default function OtpVerify() {
             </span>
           </div>
           <form className="flex flex-col ">
-            <div className="flex flex-col items-center">
-              <input
-                className="outline-none border-b-2 m-4 text-white  placeholder-white md:w-413 sm:w-300"
-                style={{
-                  height: "29px",
-                  backgroundColor: "transparent",
-                  fontFamily: "Lato, sans-serif",
-                  fontWeight: 400,
-                  fontSize: isTab ? "20px" : "24px",
-                  lineHeight: "31.2px",
-                }}
-                placeholder={"Mobile No"}
-                value={contactNumber}
-                name="contactNumber"
-              ></input>
-              <div style={{ display: "flex", justifyContent: "center" }}>
-                <button
-                  className="mt-4 bg-customRed w-40"
+            <div className="flex flex-col items-center ">
+              <div class="flex flex-row justify-center ">
+                <input className="outline-none border-b-2 m-4 text-white pl-2 placeholder-white  sm:w-300 w-2/5  "
                   style={{
-                    display: "inline",
-                    height: "45px",
-                    borderRadius: "43px",
-                    color: "white",
-                    fontSize: "24px",
-                    fontWeight: 600,
-                    lineHeight: "28.8px",
-                    border: "2px solid white",
-                    marginBottom: "20px",
+                    height: "29px",
+                    backgroundColor: "transparent",
+                    fontFamily: "Lato, sans-serif",
+                    fontWeight: 400,
+                    fontSize: isTab ? "20px" : "24px",
+                    lineHeight: "31.2px",
                   }}
-                  onClick={SendOTP}
-                >
-                  Resend OTP
-                </button>
+                  placeholder={"Mobile No"}
+                  value={contactNumber}
+                  name="contactNumber"
+                ></input>
+                <LuRefreshCcw className="Resend_icon mt-5 mr-4 hover:cursor-pointer w-1/5 " style={{color:'white'}}  onClick={SendOTP} />
               </div>
+            
 
               <div
-                className="flex  gap-1 md:gap-2 w-full"
+                className="flex  md:gap-2 w-full"
                 style={{
                   top: "8%",
                   position: "relative",
@@ -356,10 +323,13 @@ export default function OtpVerify() {
               >
                 {otp.map((digit, index) => (
                   <input
+                    onInput={(e) => {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                    }}
                     key={index}
                     ref={(input) => (otpInputs[index] = input)}
-                    type="number"
-                    className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-4xl md:text-5xl lg:text-6xl border rounded-md text-center"
+                    type="text"
+                    className="w-8 h-10 md:w-12 md:h-12 lg:w-14 lg:h-14 mx-2 text-2xl md:text-3xl lg:text-4xl border rounded-md text-center"
                     maxLength={1}
                     style={{ border: "1px solid #89CFF0" }}
                     value={digit}
@@ -374,9 +344,9 @@ export default function OtpVerify() {
               </div>
 
               <text
-                className="mt-10"
+                className="mt-10 text-white"
                 style={{
-                  color: "#A4A4A4",
+                  // color: "#A4A4A4",
                   display: "flex",
                   fontWeight: 400,
                   fontSize: "18px",
@@ -394,7 +364,7 @@ export default function OtpVerify() {
             <div className="flex justify-center">
               <button
                 // onClick={handleNavigate}
-                className="rounded-full mt-4 text-customRed"
+                className="rounded-full mt-4 text-customRed text-lg "
                 type="submit"
                 style={{
                   backgroundColor: "white",
@@ -409,7 +379,7 @@ export default function OtpVerify() {
             </div>
           </form>
         </div>
-        <ToastContainer />
+
       </div>
     </>
   );
