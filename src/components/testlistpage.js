@@ -260,9 +260,6 @@ export default function TestListPage()
             const responseData = await response.json();
             console.log("DATA from response", responseData);
             // }
-
-
-
         } catch (error)
         {
             console.error("There was an error verifying the OTP:", error);
