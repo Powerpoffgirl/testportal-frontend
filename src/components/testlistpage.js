@@ -1,16 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Navigate, useNavigate } from "react-router-dom";
+import { Flex, Row, Select } from "antd";
+import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+// import Modal from "react-responsive-modal";
 import UserContext from './userContext';
+import { ToastContainer, toast } from "react-toastify";
+
 import { Table } from "./table";
 import { Modal } from "./tableModal";
-import { ToastContainer, toast } from "react-toastify";
 
 export default function TestListPage() {
 
     const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
-    let issm = useMediaQuery({ query: "(max-width: 375px)" });
-    // let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
+    let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+    let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
     const navigate = useNavigate()
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [rowNumber, setRowNumber] = useState();
@@ -25,6 +29,7 @@ export default function TestListPage() {
         const fetchUserDetails = async () => {
             try {
                 const token = localStorage.getItem("token");
+                const patientId = localStorage.getItem("patientId");
                 if (!token) {
                     console.error("No token found in local storage");
                     return;
@@ -182,74 +187,6 @@ export default function TestListPage() {
         setRowToEdit(null);
         // window.location.reload();
     };
-
-    useEffect(() => {
-
-
-        const submitDetails = async () => {
-            try {
-                const token = localStorage.getItem("token");
-                const patientId = localStorage.getItem("selectedPatientId");
-
-                if (!token) {
-                    console.error("No token found in local storage");
-                    return;
-                }
-                const lastItem = rows[rows.length - 1];
-
-                console.log("last Item -------", lastItem)
-
-                const test = rows?.filter((row) =>
-                    row?.testName?.toLowerCase().includes(lastItem?.testName.toLowerCase()) &&
-                    row?.testCode?.toLowerCase().includes(lastItem?.testCode.toLowerCase())
-                );
-                console.log("==================TEST===========================", test)
-                // if (test.length > 0)
-                // {
-                //     toast.error("Test with this name and code already exists.")
-                //     return
-                // } else
-                // {
-                const response = await fetch(`${baseUrl}/api/v1/doctor/create_testBooking`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-auth-token": token,
-                    },
-                    body: JSON.stringify({
-                        testName: lastItem.testName,
-                        testCode: lastItem.testCode,
-                        department: lastItem.department,
-                        sampleType: lastItem.sampleType,
-                        costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
-                        unit: lastItem.unit,
-                        bioRefInterval: lastItem.bioRefInterval,
-                        technology: lastItem.technology,
-                        patientId: patientId,
-                    }),
-                });
-
-                const responseData = await response.json();
-                console.log("DATA from response", responseData);
-                // }
-
-
-
-            } catch (error) {
-                console.error("There was an error verifying the OTP:", error);
-            }
-        };
-
-        if (submittoggle) {
-
-            submitDetails();
-        }
-
-
-
-    }, [rows])
-
-
 
 
     useEffect(() => {
