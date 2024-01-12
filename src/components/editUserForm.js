@@ -571,7 +571,7 @@ export default function EditUserForm()
 
       const existingAppointment = appointmentList?.find((appointment) =>
       {
-        if (appointment?.doctorId?._id === appointmentDetails?.doctorId && appointment?.patientId?._id === appointmentDetails?.patientId)
+        if (appointment?.doctorId?._id === appointmentDetails?.doctorId && appointment?.patientId?._id === appointmentDetails?.patientId && (appointment?.appointmentDate?.date >= appointmentDetails?.appointmentDate?.date || appointment?.appointmentDate?.date < appointmentDetails?.appointmentDate?.date))
         {
           console.log("IDS ARE MATCHING", appointment?.appointmentDate?.date, appointmentDetails?.appointmentDate?.date)
           return appointment
