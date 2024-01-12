@@ -311,6 +311,8 @@ export default function TestListPage()
                 const responseData = await response.json();
                 console.log("DATA from response", responseData);
 
+                const testList = responseData.data?.filter(test => test.value == null);
+                console.log("=============TESTS===========COIMING", testList)
 
                 setRows(responseData.data || []);
                 setSubmitToggle(false);

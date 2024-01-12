@@ -101,8 +101,10 @@ export default function BillingPage({ name, contactNo, gender, age })
           "DATA from USE EFFECT response List Lab Patient",
           data?.data
         );
-        const testList = data?.data?.find(test => test.value === "");
-
+        const testData = data?.data
+        console.log("=========TEST DATA============", testData)
+        const testList = testData?.filter(test => test.value == null);
+        console.log("=============TESTS===========COIMING", testList)
         setTests(testList);
       } catch (error)
       {
