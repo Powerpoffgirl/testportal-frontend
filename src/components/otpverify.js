@@ -84,7 +84,7 @@ export default function OtpVerify() {
   const [contactError, setContactError] = useState("");
   const [passwordError, setPasswordError] = useState("");
   const [firstTime, setFirstTime] = useState(true);
-  const [seconds, setSeconds] = useState(90);
+  const [seconds, setSeconds] = useState(9);
   const [resendClicked, setResendClicked] = useState(false);
   const location = useLocation();
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -356,7 +356,7 @@ export default function OtpVerify() {
               >
                 Resend OTP in
                 <text className="mx-2" style={{ color: "#000000" }}>
-                  {formatTime(seconds)}
+                  {formatTime(seconds) == 0 ? '0' : formatTime(seconds)}
                 </text>{" "}
                 Sec
               </text>
