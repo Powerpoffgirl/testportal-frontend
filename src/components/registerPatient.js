@@ -564,6 +564,7 @@ export default function PatientForm()
         // toast.error("Patient with this name and phone no already exists");
         localStorage.setItem("selectedPatientId", patient[0]._id);
         localStorage.setItem("name", patient[0].name);
+        localStorage.setItem("registrationNo", newPatientDetails.registrationNo);
         localStorage.setItem("phoneNo", patient[0].phoneNo);
         localStorage.setItem("gender", patient[0].gender);
         localStorage.setItem("age", patient[0].age);
