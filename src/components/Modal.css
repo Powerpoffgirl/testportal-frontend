@@ -49,9 +49,24 @@
 }
 
 .error {
+
   background-color: #f8d7da;
   color: #df4759;
   padding: 0.5rem;
   border-radius: 0.3rem;
   margin-bottom: 1rem;
+}
+
+@media only screen and (max-width: 425px) {
+
+  .modal {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: 80px;
+      height: 70%;
+      border-radius: 5px;
+      padding: 2rem;
+      background-color: white;
+      width: 24em;
+    }
 }
