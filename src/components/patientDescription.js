@@ -15,7 +15,8 @@ import { useReactToPrint } from 'react-to-print'
 
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
-export default function PatientDescription() {
+export default function PatientDescription()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const location = useLocation;
@@ -50,11 +51,15 @@ export default function PatientDescription() {
     documentTitle: "userReport",
     // onAfterPrint: () => alert("Data saved in PDF")
   });
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -74,7 +79,8 @@ export default function PatientDescription() {
         console.log("DATA from response", data.data);
         setPatientsHistory(data?.data);
         setPatient(data?.data[0]);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -83,16 +89,19 @@ export default function PatientDescription() {
   console.log("patientsHistory", patientsHistory);
   console.log("patient", patient);
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -101,7 +110,8 @@ export default function PatientDescription() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -113,14 +123,16 @@ export default function PatientDescription() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const onCloseModal = () => {
+  const onCloseModal = () =>
+  {
     setModalOpen(false);
     setModalContent("");
     navigate(`/appointmentlist`);
@@ -428,28 +440,33 @@ export default function PatientDescription() {
   const [anchorEl, setAnchorEl] = useState(null);
   // const open = Boolean(anchorEl);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
   // Function to handle profile picture change
-  const handleNewProfilePicture = () => {
+  const handleNewProfilePicture = () =>
+  {
     // Logic to handle adding a new profile picture
     handleClose();
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = () =>
+  {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
   // bp & temp
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
@@ -458,28 +475,32 @@ export default function PatientDescription() {
   };
 
 
-  const handleChangeIssues = (values) => {
+  const handleChangeIssues = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       issues: values,
     }));
   };
 
-  const handleChangeDiseases = (values) => {
+  const handleChangeDiseases = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       diseases: values,
     }));
   };
 
-  const handleChangeMedicine = (values) => {
+  const handleChangeMedicine = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       medicineName: values,
     }));
   };
 
-  const handleChangeLabTests = (values) => {
+  const handleChangeLabTests = (values) =>
+  {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       labTests: values,
@@ -488,12 +509,14 @@ export default function PatientDescription() {
 
   console.log("PATIENT DETAILS", patientDetails);
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
 
     // Check if the token exists
     const token = localStorage.getItem("token");
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       return;
     }
@@ -511,18 +534,22 @@ export default function PatientDescription() {
       }
     );
     const data = await response.json();
-    if (data.success === true) {
+    if (data.success === true)
+    {
       // setModalOpen(true);
       localStorage.setItem("appointmentId", appointmentId);
       toast.success("Diagnosis saved.");
+      navigate(`/descriptionsummary`);
     }
     console.log("DATA from response", data);
   };
 
   console.log("PATIENT DETAILS1  ", patientDetails);
-  const handleFileSelect1 = async (event) => {
+  const handleFileSelect1 = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const patientId = localStorage.getItem("patientId");
       const doctorId = localStorage.getItem("doctorId");
@@ -530,7 +557,8 @@ export default function PatientDescription() {
       formData.append("patientReport", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/doctor/upload_patient_report/${patientId}`, {
           method: "POST",
           headers: {
@@ -539,14 +567,16 @@ export default function PatientDescription() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
         const data = await response.json();
 
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error ", error);
         toast.error("Error uploading pdf. Please try again.");
       }
@@ -558,7 +588,7 @@ export default function PatientDescription() {
   return (
     <>
 
-      <form
+      <form ref={componentPDF}
         className="flex flex-col overflow-hidden justify-center "
         onSubmit={(e) => e.preventDefault()}
       >
@@ -622,6 +652,7 @@ export default function PatientDescription() {
         <ToastContainer />
 
         {/* <div className="grid grid-cols-1 w-full gap-4"> */}
+
 
         <div className="flex flex-col items-center justify-center mb-10  ">
           <div className="cursor-pointer">
@@ -769,14 +800,18 @@ export default function PatientDescription() {
               id="issues"
               name="issues"
               onChange={handleChangeIssues}
-              onInputKeyDown={(e) => {
+              onInputKeyDown={(e) =>
+              {
                 // Handle custom value input
-                if (e.key === "Enter") {
+                if (e.key === "Enter")
+                {
                   e.preventDefault();
                   let inputValue = e.target.value.trim();
-                  if (inputValue) {
+                  if (inputValue)
+                  {
                     handleChangeIssues([...patientDetails.issues, inputValue]);
-                    setTimeout(() => {
+                    setTimeout(() =>
+                    {
                       e.target.value = "";
                       inputValue = "";
                     }, 0);
@@ -816,17 +851,21 @@ export default function PatientDescription() {
               id="diesease"
               name="diesease"
               onChange={handleChangeDiseases}
-              onInputKeyDown={(e) => {
+              onInputKeyDown={(e) =>
+              {
                 // Handle custom value input
-                if (e.key === "Enter") {
+                if (e.key === "Enter")
+                {
                   e.preventDefault();
                   let inputValue = e.target.value.trim();
-                  if (inputValue) {
+                  if (inputValue)
+                  {
                     handleChangeDiseases([
                       ...patientDetails.diseases,
                       inputValue,
                     ]);
-                    setTimeout(() => {
+                    setTimeout(() =>
+                    {
                       e.target.value = "";
                       inputValue = "";
                     }, 0);
@@ -864,17 +903,21 @@ export default function PatientDescription() {
               id="medicineName"
               name="medicineName"
               onChange={handleChangeMedicine}
-              onInputKeyDown={(e) => {
+              onInputKeyDown={(e) =>
+              {
                 // Handle custom value input
-                if (e.key === "Enter") {
+                if (e.key === "Enter")
+                {
                   e.preventDefault();
                   let inputValue = e.target.value.trim();
-                  if (inputValue) {
+                  if (inputValue)
+                  {
                     handleChangeMedicine([
                       ...patientDetails.medicineName,
                       inputValue,
                     ]);
-                    setTimeout(() => {
+                    setTimeout(() =>
+                    {
                       e.target.value = "";
                       inputValue = "";
                     }, 0);
@@ -908,17 +951,21 @@ export default function PatientDescription() {
               id="labTests"
               name="labTests"
               onChange={handleChangeLabTests}
-              onInputKeyDown={(e) => {
+              onInputKeyDown={(e) =>
+              {
                 // Handle custom value input
-                if (e.key === "Enter") {
+                if (e.key === "Enter")
+                {
                   e.preventDefault();
                   let inputValue = e.target.value.trim();
-                  if (inputValue) {
+                  if (inputValue)
+                  {
                     handleChangeLabTests([
                       ...patientDetails.labTests,
                       inputValue,
                     ]);
-                    setTimeout(() => {
+                    setTimeout(() =>
+                    {
                       e.target.value = "";
                       inputValue = "";
                     }, 0);
@@ -957,7 +1004,7 @@ export default function PatientDescription() {
           Process
         </button> */}
           </div>
-          <div ref={componentPDF} class=" flex flex-col ">
+          <div class=" flex flex-col ">
 
             <div className=" overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-2xl  md:max-w-md max-w-xs mx-auto">
               <table className=" divide-y divide-gray-200 ">
