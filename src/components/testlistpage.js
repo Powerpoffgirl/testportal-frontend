@@ -22,6 +22,7 @@ export default function TestListPage()
     const [userDetailsName, setUserDetailsName] = useState();
     const [userDetailsEmail, setUserDetailsEmail] = useState();
     const [userDetailsPic, setUserDetailsPic] = useState();
+    const [submittoggle, setSubmitToggle] = useState(false);
 
 
 
@@ -144,7 +145,7 @@ export default function TestListPage()
                     const updatedRows = [...prevRows, newRow];
                     const newRowNumber = updatedRows.length - 1;
                     setRowNumber(newRowNumber);
-                    submitDetails()
+                    setSubmitToggle(true);
                     return updatedRows;
 
 
@@ -208,70 +209,78 @@ export default function TestListPage()
         // window.location.reload();
     };
 
-    // useEffect(() =>
-    // {
 
-    const submitDetails = async () =>
+    useEffect(() =>
     {
-        try
-        {
-            const token = localStorage.getItem("token");
-            const patientId = localStorage.getItem("selectedPatientId");
 
-            if (!token)
+
+        const submitDetails = async () =>
+        {
+            try
             {
-                console.error("No token found in local storage");
-                return;
+                const token = localStorage.getItem("token");
+                const patientId = localStorage.getItem("selectedPatientId");
+
+                if (!token)
+                {
+                    console.error("No token found in local storage");
+                    return;
+                }
+                const lastItem = rows[rows.length - 1];
+
+                console.log("last Item -------", lastItem)
+
+                const test = rows?.filter((row) =>
+                    row?.testName?.toLowerCase().includes(lastItem?.testName.toLowerCase()) &&
+                    row?.testCode?.toLowerCase().includes(lastItem?.testCode.toLowerCase())
+                );
+                console.log("==================TEST===========================", test)
+                // if (test.length > 0)
+                // {
+                //     toast.error("Test with this name and code already exists.")
+                //     return
+                // } else
+                // {
+                const response = await fetch(`${baseUrl}/api/v1/doctor/create_testBooking`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-auth-token": token,
+                    },
+                    body: JSON.stringify({
+                        testName: lastItem.testName,
+                        testCode: lastItem.testCode,
+                        department: lastItem.department,
+                        sampleType: lastItem.sampleType,
+                        costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
+                        unit: lastItem.unit,
+                        bioRefInterval: lastItem.bioRefInterval,
+                        technology: lastItem.technology,
+                        patientId: patientId,
+                    }),
+                });
+
+                const responseData = await response.json();
+                console.log("DATA from response", responseData);
+                // }
+
+
+
+            } catch (error)
+            {
+                console.error("There was an error verifying the OTP:", error);
             }
-            const lastItem = rows[rows.length - 1];
+        };
 
-            console.log("last Item -------", lastItem)
-
-            const test = rows?.filter((row) =>
-                row?.testName?.toLowerCase().includes(lastItem?.testName.toLowerCase()) &&
-                row?.testCode?.toLowerCase().includes(lastItem?.testCode.toLowerCase())
-            );
-            console.log("==================TEST===========================", test)
-            // if (test.length > 0)
-            // {
-            //     toast.error("Test with this name and code already exists.")
-            //     return
-            // } else
-            // {
-            const response = await fetch(`${baseUrl}/api/v1/doctor/create_testBooking`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-auth-token": token,
-                },
-                body: JSON.stringify({
-                    testName: lastItem.testName,
-                    testCode: lastItem.testCode,
-                    department: lastItem.department,
-                    sampleType: lastItem.sampleType,
-                    costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
-                    unit: lastItem.unit,
-                    bioRefInterval: lastItem.bioRefInterval,
-                    technology: lastItem.technology,
-                    patientId: patientId,
-                }),
-            });
-
-            const responseData = await response.json();
-            console.log("DATA from response", responseData);
-            // }
-
-
-
-        } catch (error)
+        if (submittoggle)
         {
-            console.error("There was an error verifying the OTP:", error);
+
+            submitDetails();
         }
-    };
 
-    // submitDetails();
 
-    // }, [rows])
+
+    }, [rows])
 
 
 
@@ -304,6 +313,7 @@ export default function TestListPage()
 
 
                 setRows(responseData.data || []);
+                setSubmitToggle(false);
             } catch (error)
             {
                 console.error("There was an error fetching test details:", error);
@@ -311,6 +321,8 @@ export default function TestListPage()
         };
 
         fetchTestDetails();
+
+
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
