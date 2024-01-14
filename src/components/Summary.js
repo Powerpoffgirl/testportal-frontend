@@ -11,13 +11,13 @@ import "./Table.css";
 // import { Modal } from "./tableModal";
 import { useReactToPrint } from "react-to-print";
 
-export default function Summary()
-{
+export default function Summary() {
     const componentPDF = useRef();
     const { updateUser, updateUserEmail, updateUserimage } =
         useContext(UserContext);
     // let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     // let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
+    let isLg = useMediaQuery({ query: "(max-width: 1023px)" });
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
     const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -27,11 +27,9 @@ export default function Summary()
     const [userDetailsPic, setUserDetailsPic] = useState();
     const [outRange, setOutRange] = useState(false);
 
-    const handleFileSelect = async (event) =>
-    {
+    const handleFileSelect = async (event) => {
         const file = event.target.files[0];
-        if (file)
-        {
+        if (file) {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("selectedPatientId");
             const doctorId = localStorage.getItem("doctorId");
@@ -39,8 +37,7 @@ export default function Summary()
             formData.append("patientReport", file);
 
             console.log("FORM DATA", formData);
-            try
-            {
+            try {
                 const response = await fetch(
                     `${baseUrl}/api/v1/doctor/upload_report/${patientId}`,
                     {
@@ -52,32 +49,26 @@ export default function Summary()
                     }
                 );
 
-                if (!response.ok)
-                {
+                if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
 
                 fileInputRef.current.value = "";
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("Error ", error);
                 toast.error("Error uploading pdf. Please try again.");
             }
         }
     };
 
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -98,8 +89,7 @@ export default function Summary()
                 setUserDetailsEmail(data?.data.email);
                 setUserDetailsPic(data?.data.doctorPic);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -125,15 +115,12 @@ export default function Summary()
     ]);
     const [rowToEdit, setRowToEdit] = useState(null);
 
-    const handleDeleteRow = async (index) =>
-    {
-        try
-        {
+    const handleDeleteRow = async (index) => {
+        try {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("selectedPatientId");
 
-            if (!token)
-            {
+            if (!token) {
                 console.error("No token found in local storage");
                 return;
             }
@@ -152,41 +139,32 @@ export default function Summary()
             const responseData = await response.json();
             console.log("DATA from response", responseData);
             setRows(rows.filter((_, idx) => idx !== index));
-        } catch (error)
-        {
+        } catch (error) {
             console.error("There was an error deleting details:", error);
         }
     };
 
-    const handleEditRow = (idx) =>
-    {
+    const handleEditRow = (idx) => {
         setRowToEdit(idx);
         setModalOpen(true);
     };
 
-    const handleSubmit = (newRow) =>
-    {
+    const handleSubmit = (newRow) => {
         console.log("code working till now ");
-        setRows((prevRows) =>
-        {
-            if (rowToEdit === null)
-            {
+        setRows((prevRows) => {
+            if (rowToEdit === null) {
                 const updatedRows = [...prevRows, newRow];
                 const newRowNumber = updatedRows.length - 1;
                 setRowNumber(newRowNumber);
 
                 return updatedRows;
-            } else
-            {
-                const EditDetails = async () =>
-                {
-                    try
-                    {
+            } else {
+                const EditDetails = async () => {
+                    try {
                         const token = localStorage.getItem("token");
                         const patientId = localStorage.getItem("selectedPatientId");
 
-                        if (!token)
-                        {
+                        if (!token) {
                             console.error("No token found in local storage");
                             return;
                         }
@@ -218,8 +196,7 @@ export default function Summary()
                         const responseData = await response.json();
                         console.log("DATA from response", responseData);
                         // Handle responseData as needed (maybe update state?)
-                    } catch (error)
-                    {
+                    } catch (error) {
                         console.error("There was an error verifying the OTP:", error);
                     }
                 };
@@ -233,17 +210,13 @@ export default function Summary()
         // window.location.reload();
     };
 
-    useEffect(() =>
-    {
-        const fetchTestDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchTestDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -263,8 +236,7 @@ export default function Summary()
                 console.log("DATA from response", responseData);
 
                 setRows(responseData.data || []);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error fetching test details:", error);
             }
         };
@@ -282,14 +254,14 @@ export default function Summary()
 
     return (
         <>
-            <div style={{ margin: 0, minHeight: "100vh", width: "100%" }}>
+            <div style={{ margin: 0, minHeight: "100vh", width: "100%" }} class="md:max-w-[440px] lg:max-w-2xl xl:max-w-full 2xl:max-w-full">
                 <div className="MainContainer" style={{ width: "100%" }}>
                     <div
                         className="Right_side"
                         style={{
                             boxSizing: "border-box",
                             width: "100%",
-                            height: "75vh",
+                            height: "80vh",
                             float: "left",
                             backgroundColor: "white",
                             padding: "20px",
@@ -300,26 +272,26 @@ export default function Summary()
                             ref={componentPDF}
                             style={{ marginLeft: "5%", marginRight: "5%" }}
                         >
-                            <div
+                            <div class="mb-3  text-3xl"
                                 style={{
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     fontWeight: 600,
                                     marginTop: "10px",
-                                    fontSize: "xx-large",
+                                    // fontSize: "xx-large",
                                 }}
                             >
                                 Lab Patient Report
                             </div>
-                            <div
+                            <div class=""
                                 style={{
                                     display: "flex",
                                     flexDirection: "row",
                                     marginBottom: "20px",
                                 }}
                             >
-                                <div
+                                <div class=""
                                     style={{
                                         flex: "1",
                                         display: "flex",
@@ -345,185 +317,182 @@ export default function Summary()
                                     </div>
                                 </div>
 
-                                <div
-                                    style={{
-                                        flex: "1",
-                                        display: "flex",
-                                        flexDirection: "column",
-                                        marginLeft: "400px",
-                                    }}
+                                <div class="flex flex-col"
+                                style={{
+                                    display: isLg ? "none" : "",
+                                }}
                                 >
-                                    <p style={{ fontWeight: 500 }}>Home Collection</p>
-                                    <p>
-                                        {localStorage?.getItem("houseNo")},{" "}
-                                        {localStorage?.getItem("floor")},{" "}
-                                        {localStorage?.getItem("block")},
-                                    </p>
-                                    <p>
-                                        {" "}
-                                        {localStorage?.getItem("area")},
-                                        {localStorage?.getItem("district")},{" "}
-                                        {localStorage?.getItem("pincode")}
-                                    </p>
+                                    <div clss="ml-auto">
+                                        <p style={{ fontWeight: 500 }}>Home Collection</p>
+                                        <p>
+                                            {localStorage?.getItem("houseNo")},{" "}
+                                            {localStorage?.getItem("floor")},{" "}
+                                            {localStorage?.getItem("block")},
+                                        </p>
+                                        <p>
+                                            {" "}
+                                            {localStorage?.getItem("area")},
+                                            {localStorage?.getItem("district")},{" "}
+                                            {localStorage?.getItem("pincode")}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-
-                            <table className="text-sm rtl:text-right text-black text-left w-full">
-                                <thead
-                                    style={{ backgroundColor: "#89CFF0" }}
-                                    className="text-xs text-gray-700 text-left uppercase  "
-                                >
-                                    <tr>
-                                        <th
-                                            style={{ textAlign: "left" }}
-                                            scope="col"
-                                            className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
-                                        >
-                                            Test/ package
-                                        </th>
-                                        <th
-                                            style={{ textAlign: "left" }}
-                                            scope="col"
-                                            className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
-                                        >
-                                            Test Code
-                                        </th>
-                                        <th
-                                            style={{ textAlign: "left" }}
-                                            scope="col"
-                                            className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
-                                        >
-                                            Technology
-                                        </th>
-                                        <th
-                                            style={{ textAlign: "left" }}
-                                            scope="col"
-                                            className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
-                                        >
-                                            Value
-                                        </th>
-                                        <th
-                                            style={{ textAlign: "left" }}
-                                            scope="col"
-                                            className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
-                                        >
-                                            Units
-                                        </th>
-                                        <th
-                                            style={{ textAlign: "left" }}
-                                            scope="col"
-                                            className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
-                                        >
-                                            Bio. Ref
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {rows.map((row, idx) =>
-                                    {
-                                        const statusText = row.status
-                                            ? row.status.charAt(0).toUpperCase() + row.status.slice(1)
-                                            : "";
-
-                                        return (
-                                            <tr key={idx} class="">
-                                                <td
-                                                    className="px-3 lg:px-6 "
-                                                    style={{
-                                                        textAlign: "left",
-                                                        fontWeight:
-                                                            Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
-                                                                Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
-                                                                ? "bolder"
-                                                                : "normal",
-                                                    }}
-                                                >
-                                                    {row.testName}
-                                                </td>
-                                                <td
-                                                    className="px-3 lg:px-6"
-                                                    style={{
-                                                        textAlign: "left",
-                                                        fontWeight:
-                                                            Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
-                                                                Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
-                                                                ? "bolder"
-                                                                : "normal",
-                                                    }}
-                                                >
-                                                    {row.testCode}
-                                                </td>
-                                                <td
-                                                    className="px-3 lg:px-6"
-                                                    style={{
-                                                        textAlign: "left",
-                                                        fontWeight:
-                                                            Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
-                                                                Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
-                                                                ? "bolder"
-                                                                : "normal",
-                                                    }}
-                                                >
-                                                    {row.technology}
-                                                </td>
-                                                <td
-                                                    className="px-3 lg:px-6"
-                                                    style={{
-                                                        textAlign: "left",
-                                                        fontWeight:
-                                                            Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
-                                                                Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
-                                                                ? "bolder"
-                                                                : "normal",
-                                                    }}
-                                                >
-                                                    {row.value}
-                                                </td>
-                                                <td
-                                                    className="px-3 lg:px-6"
-                                                    style={{
-                                                        textAlign: "left",
-                                                        fontWeight:
-                                                            Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
-                                                                Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
-                                                                ? "bolder"
-                                                                : "normal",
-                                                    }}
-                                                >
-                                                    {row.unit}
-                                                </td>
-                                                <td
-                                                    className="px-3 lg:px-6"
-                                                    style={{
-                                                        textAlign: "left",
-                                                        fontWeight:
-                                                            Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
-                                                                Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
-                                                                ? "bolder"
-                                                                : "normal",
-                                                    }}
-                                                >
-                                                    {row.bioRefInterval}
-                                                </td>
-                                            </tr>
-                                        );
-                                    })}
-                                    <tr
-                                        style={{
-                                            borderTop: "1px solid #89CFF0",
-                                            borderBottom: "1px solid #89CFF0",
-                                        }}
+                            <div class="printContainer overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-xs mx-auto ">
+                                <table className="text-sm rtl:text-right text-black text-left  border mx-auto">
+                                    <thead
+                                        style={{ backgroundColor: "#89CFF0" }}
+                                        className="text-xs text-gray-700 text-left uppercase overflow-x-auto "
                                     >
-                                        <td style={{ paddingLeft: "25px" }}>Remarks: </td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                                        <tr>
+                                            <th
+                                                style={{ textAlign: "left" }}
+                                                scope="col"
+                                                className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
+                                            >
+                                                Test/ package
+                                            </th>
+                                            <th
+                                                style={{ textAlign: "left" }}
+                                                scope="col"
+                                                className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
+                                            >
+                                                Test Code
+                                            </th>
+                                            <th
+                                                style={{ textAlign: "left" }}
+                                                scope="col"
+                                                className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
+                                            >
+                                                Technology
+                                            </th>
+                                            <th
+                                                style={{ textAlign: "left" }}
+                                                scope="col"
+                                                className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
+                                            >
+                                                Value
+                                            </th>
+                                            <th
+                                                style={{ textAlign: "left" }}
+                                                scope="col"
+                                                className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
+                                            >
+                                                Units
+                                            </th>
+                                            <th
+                                                style={{ textAlign: "left" }}
+                                                scope="col"
+                                                className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
+                                            >
+                                                Bio. Ref
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {rows.map((row, idx) => {
+                                            const statusText = row.status
+                                                ? row.status.charAt(0).toUpperCase() + row.status.slice(1)
+                                                : "";
+
+                                            return (
+                                                <tr key={idx} class="">
+                                                    <td
+                                                        className="px-3 lg:px-6 "
+                                                        style={{
+                                                            textAlign: "left",
+                                                            fontWeight:
+                                                                Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
+                                                                    Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
+                                                                    ? "bolder"
+                                                                    : "normal",
+                                                        }}
+                                                    >
+                                                        {row.testName}
+                                                    </td>
+                                                    <td
+                                                        className="px-3 lg:px-6"
+                                                        style={{
+                                                            textAlign: "left",
+                                                            fontWeight:
+                                                                Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
+                                                                    Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
+                                                                    ? "bolder"
+                                                                    : "normal",
+                                                        }}
+                                                    >
+                                                        {row.testCode}
+                                                    </td>
+                                                    <td
+                                                        className="px-3 lg:px-6"
+                                                        style={{
+                                                            textAlign: "left",
+                                                            fontWeight:
+                                                                Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
+                                                                    Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
+                                                                    ? "bolder"
+                                                                    : "normal",
+                                                        }}
+                                                    >
+                                                        {row.technology}
+                                                    </td>
+                                                    <td
+                                                        className="px-3 lg:px-6"
+                                                        style={{
+                                                            textAlign: "left",
+                                                            fontWeight:
+                                                                Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
+                                                                    Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
+                                                                    ? "bolder"
+                                                                    : "normal",
+                                                        }}
+                                                    >
+                                                        {row.value}
+                                                    </td>
+                                                    <td
+                                                        className="px-3 lg:px-6"
+                                                        style={{
+                                                            textAlign: "left",
+                                                            fontWeight:
+                                                                Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
+                                                                    Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
+                                                                    ? "bolder"
+                                                                    : "normal",
+                                                        }}
+                                                    >
+                                                        {row.unit}
+                                                    </td>
+                                                    <td
+                                                        className="px-3 lg:px-6"
+                                                        style={{
+                                                            textAlign: "left",
+                                                            fontWeight:
+                                                                Number(row?.value) > Number(row?.bioRefInterval?.split("-")[1]) ||
+                                                                    Number(row?.value) < Number(row?.bioRefInterval?.split("-")[0])
+                                                                    ? "bolder"
+                                                                    : "normal",
+                                                        }}
+                                                    >
+                                                        {row.bioRefInterval}
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                        <tr
+                                            style={{
+                                                borderTop: "1px solid #89CFF0",
+                                                borderBottom: "1px solid #89CFF0",
+                                            }}
+                                        >
+                                            <td style={{ paddingLeft: "25px" }}>Remarks: </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
-                        <div
+                        <div class=" justify-content-center flex flex-col sm:flex-row"
                             style={{
-                                display: "flex",
-                                flexDirection: "row",
                                 gap: "10px",
                                 alignItems: "center",
                                 justifyContent: "center",
