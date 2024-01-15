@@ -116,7 +116,6 @@ function App() {
         />
         <Route path="/termsofservices" element={<TermsOfServices />}></Route>
         <Route path="/privacypolicy" element={<PrivacyPolicy />}></Route>
-
         <Route
           path="/superadmineditlist"
           element={
@@ -129,7 +128,6 @@ function App() {
             />
           }
         />
-
         <Route
           path="/superadminadminlist"
           element={
@@ -143,7 +141,6 @@ function App() {
             />
           }
         />
-
         <Route
           path="/superadminadminform"
           element={
@@ -155,7 +152,6 @@ function App() {
             />
           }
         />
-
         <Route
           path="/superadminadmineditform"
           element={
@@ -166,7 +162,6 @@ function App() {
             />
           }
         />
-
         <Route
           path="/superadmindoctoreditform"
           element={
@@ -178,7 +173,6 @@ function App() {
             />
           }
         />
-
         <Route
           path="/superadminuserlist"
           element={
@@ -188,11 +182,10 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"User List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
-
         <Route
           path="/superadminusereditform"
           element={
@@ -204,7 +197,6 @@ function App() {
             />
           }
         />
-
         <Route
           path="/superadminpatientlist"
           element={
@@ -214,11 +206,10 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"Patient List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
-
         <Route
           path="/superadminappointmentlist"
           element={
@@ -228,11 +219,10 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"Appointment List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
-
         <Route
           path="/superadminpatientform"
           element={
@@ -244,7 +234,6 @@ function App() {
             />
           }
         />
-
         <Route
           path="/superadmindoctorlist"
           element={
@@ -254,11 +243,10 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"Doctor List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
-
         <Route
           path="/superadminappointmentlist"
           element={
@@ -268,11 +256,10 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"Appointment List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
-
         <Route
           path="/superadmindoctorform"
           element={
@@ -284,7 +271,6 @@ function App() {
             />
           }
         />
-
         <Route
           path="/superadmindoctorlist"
           element={
@@ -294,11 +280,10 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"Doctor List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
-
         {/* <Route
         path="/superadmindoctorotppage"
         element={
@@ -309,7 +294,6 @@ function App() {
           />
         }
       /> */}
-
         <Route
           path="/superadminotp"
           element={
@@ -320,7 +304,6 @@ function App() {
             />
           }
         />
-
         <Route path="/userotp" element={<UserOTP />}></Route>
         <Route
           path="/qr"
@@ -390,7 +373,6 @@ function App() {
             />
           }
         ></Route>
-
         <Route
           path="/billingPrice"
           element={
@@ -402,7 +384,6 @@ function App() {
             />
           }
         ></Route>
-
         <Route
           path="/summary"
           element={
@@ -414,7 +395,6 @@ function App() {
             />
           }
         ></Route>
-
         <Route
           path="/testlist"
           element={
@@ -500,7 +480,6 @@ function App() {
             />
           }
         ></Route>
-
         <Route
           path="/doctorformadmin"
           element={
@@ -578,7 +557,6 @@ function App() {
             />
           }
         ></Route>
-
         <Route
           path="/editpatientformadmin"
           element={
@@ -590,7 +568,6 @@ function App() {
             />
           }
         ></Route>
-
         <Route
           path="/editappointmentsuperadmin"
           element={
@@ -602,7 +579,6 @@ function App() {
             />
           }
         ></Route>
-
         <Route
           path="/patientlistadmin"
           element={
