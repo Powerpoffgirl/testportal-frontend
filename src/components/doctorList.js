@@ -462,7 +462,7 @@ export default function DoctorList({ searchTerm }) {
             {/* <button><img src={delete_button} class="w-8"></img></button>
             <button><img src={edit_button} class="w-8"></img></button> */}
           </div>
-          <div className="flex md:flex-row p-2 pt-5 flex-col overflow-y-auto max-h-screen">
+          <div className="flex md:flex-row p-2 pt-5 flex-col overflow-y-auto h-[80vh]  ">
             {/* ---------------------------left part--------------------------- */}
             <div className="flex flex-col px-1 md:w-1/2">
               <div className="">
@@ -532,7 +532,7 @@ export default function DoctorList({ searchTerm }) {
             </div>
             {/* --------------------------------right part-------------------------------- */}
             {!otppage && (
-              <div className="flex flex-col  md:w-1/2 px-2 pb-5 mb-4">
+              <div className="flex flex-col  md:w-1/2 px-2 pb-5 mb-4 ">
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
                   <div className="flex flex-wrap">
