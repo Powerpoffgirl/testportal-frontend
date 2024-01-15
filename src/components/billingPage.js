@@ -189,7 +189,7 @@ export default function BillingPage({ name, contactNo, gender, age })
           Delete: <MdOutlineDelete />,
           Save: <GiConfirmed />,
         };
-        setTableData([testToAdd]);
+        setTableData([...tableData, testToAdd]);
 
         setSearchTerm("");
 
@@ -345,7 +345,7 @@ export default function BillingPage({ name, contactNo, gender, age })
         console.log("DATA from response", responseData);
 
         toast.success("Saved");
-        window.location.reload();
+        // window.location.reload();
         e.target.value = "";
       }
 
@@ -822,12 +822,12 @@ export default function BillingPage({ name, contactNo, gender, age })
                       >
                         {/* Delete */}
                       </th>
-                      <th
+                      {/* <th
                         scope="col"
                         className="px-6 py-3 text-black text-sm font-semibold"
                       >
-                        {/* Save */}
-                      </th>
+                        Save
+                      </th> */}
                     </tr>
                   </thead>
                   <tbody className="overflow-y-auto">
@@ -885,11 +885,11 @@ export default function BillingPage({ name, contactNo, gender, age })
                             <MdOutlineDelete size={25} color="red" />
                           </button>
                         </td>
-                        <td className="px-6 py-4">
+                        {/* <td className="px-6 py-4">
                           <button onClick={handleSave}>
                             <GiConfirmed size={25} color="green" />
                           </button>
-                        </td>
+                        </td> */}
                       </tr>
                     ))}
 
@@ -979,6 +979,21 @@ export default function BillingPage({ name, contactNo, gender, age })
                   onClick={() => navigate(`/summary`)}
                 >
                   Lab Report
+                </button>
+                <button
+                  class="mx-4"
+                  style={{
+                    height: "40px",
+                    width: "120px",
+                    backgroundColor: "#89CFF0",
+                    borderRadius: "20px",
+                    marginTop: "20px",
+                    padding: "2px",
+                    color: 'white'
+                  }}
+                  onClick={handleSave}
+                >
+                  Confirm
                 </button>
               </div>
             </div>
