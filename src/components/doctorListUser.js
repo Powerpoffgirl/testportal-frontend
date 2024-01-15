@@ -35,7 +35,18 @@ export default function DoctorListUser({ searchTerm }) {
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
 
-  const onCloseModal = () => setOpen(false);
+  const onCloseModal = () => {
+    console.log("modal closed");
+    setappointment(false);
+    setotppage(false);
+    setbookingslottoggle(false);
+    setCurrentIndex(0);
+    setCurrentTimeIndex(0);
+    setcontactNumber(null);
+    setmobileNumberError("");
+    setOtp(["", "", "", "", "", ""]);
+    setOpen(false);
+  };
   const [filteredDoctors, setFilteredDoctors] = useState([doctorsList]);
   const navigate = useNavigate();
 
