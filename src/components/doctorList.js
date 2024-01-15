@@ -30,7 +30,18 @@ export default function DoctorList({ searchTerm })
   const [selectedDoctor, setselectedDoctor] = useState("");
   const [open, setOpen] = useState(false);
   const onOpenModal = () => setOpen(true);
-  const onCloseModal = () => setOpen(false);
+  const onCloseModal = () => {
+    console.log('modal closed')
+    setappointment(false)
+    setotppage(false)
+    setbookingslottoggle(false)
+    setCurrentIndex(0)
+    setCurrentTimeIndex(0)
+    setcontactNumber(null)
+    setmobileNumberError("")
+    setOtp(["", "", "", "", "", ""])
+    setOpen(false)
+  };
   const [filteredDoctors, setFilteredDoctors] = useState([doctorsList]);
   const navigate = useNavigate();
   const [seconds, setSeconds] = useState(90);
@@ -470,11 +481,13 @@ export default function DoctorList({ searchTerm })
   return (
     <>
       {/* ---------------------------------------------modal--------------------------------------------- */}
+      <div style={{}}>
       <Modal
         open={open}
         onClose={onCloseModal}
         center
         doctor={selectedDoctor}
+        class=""
         styles={{
           modal: {
             width: isTab ? "94%" : "80%",
@@ -972,9 +985,12 @@ export default function DoctorList({ searchTerm })
                   >
                     {otp?.map((digit, index) => (
                       <input
+                        onInput={(e) => {
+                          e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                        }}
                         key={index}
                         ref={(input) => (otpInputs[index] = input)}
-                        type="text"
+                        type="number"
                         className="w-10 h-8 mr-2 text-lg  border-2 text-black border-gray-400 text-center "
                         maxLength={1}
                         value={digit}
@@ -1028,7 +1044,7 @@ export default function DoctorList({ searchTerm })
           </div>
         </div>
       </Modal>
-
+      </div>
       <div
         className="flex flex-col bg-customGreen"
         style={{
