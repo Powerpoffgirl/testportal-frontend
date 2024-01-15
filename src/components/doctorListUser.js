@@ -451,7 +451,16 @@ export default function DoctorListUser({ searchTerm }) {
           },
         }}
       >
-        <div class="flex flex-col ">
+        <style>
+          {`
+          .react-responsive-modal-container{
+            overflow-y:hidden;
+             
+          }
+          `}
+        </style>
+
+        <div class="flex flex-col  ">
           <div class="flex flex-row-reverse md:-mb-14  -mb-14 z-50">
             <button onClick={onCloseModal}>
               <img src={close_button} class="w-8 mb-1"></img>
@@ -459,14 +468,14 @@ export default function DoctorListUser({ searchTerm }) {
             {/* <button><img src={delete_button} class="w-8"></img></button>
             <button><img src={edit_button} class="w-8"></img></button> */}
           </div>
-          <div className="flex md:flex-row p-2 pt-5 flex-col">
+          <div className="flex md:flex-row p-2 pt-5 flex-col overflow-y-auto max-h-screen">
             {/* ---------------------------left part--------------------------- */}
             <div className="flex flex-col px-1 md:w-1/2">
               <div className="">
                 {selectedDoctor?.doctorPic ? (
                   <img
                     src={selectedDoctor?.doctorPic}
-                    alt="doctor image"
+                    alt={selectedDoctor?.name}
                     className=" h-80 w-full"
                   ></img>
                 ) : (
@@ -485,7 +494,11 @@ export default function DoctorListUser({ searchTerm }) {
                 </p>
                 <div className="flex flex-row">
                   <div>
-                    <img src={education} className="w-5 py-2 "></img>
+                    <img
+                      src={education}
+                      alt="education"
+                      className="w-5 py-2 "
+                    ></img>
                   </div>
                   <div className="ml-1">
                     {selectedDoctor?.degree?.split(",")?.map((item) => (
@@ -501,6 +514,7 @@ export default function DoctorListUser({ searchTerm }) {
                   <div className="mt-2">
                     <img
                       src={home}
+                      alt="home"
                       style={{ minWidth: "15px", maxWidth: "16px" }}
                     ></img>
                   </div>
@@ -524,17 +538,22 @@ export default function DoctorListUser({ searchTerm }) {
             </div>
             {/* --------------------------------right part-------------------------------- */}
             {!otppage && (
-              <div className="flex flex-col  md:w-1/2 px-2">
+              <div className="flex flex-col  md:w-1/2 px-2 pb-5 mb-4">
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
-                  <div className="flex flex-wrap ">
+                  <div className="flex flex-wrap">
                     {selectedDoctor?.speciality?.map((item, index) => {
+                      const formattedSpeciality = item.replace(
+                        /([a-z])([A-Z])/g,
+                        "$1 $2"
+                      ); // Split at capital letters
+
                       return (
                         <p
                           key={index}
-                          className="bg-white rounded-xl py-1 px-4 mx-2 my-1 "
+                          className="bg-white rounded-xl py-1 px-4 mx-2 my-1 space-between-words"
                         >
-                          {item}
+                          {formattedSpeciality}
                         </p>
                       );
                     })}
@@ -545,7 +564,7 @@ export default function DoctorListUser({ searchTerm }) {
                     About The Doctor
                   </p>
                   <p className=" italic text-gray-600">
-                    {selectedDoctor?.about}
+                    {selectedDoctor.about}
                   </p>
                 </div>
 
@@ -602,67 +621,67 @@ export default function DoctorListUser({ searchTerm }) {
                     <div className="flex flex-col  bg-white p-1 px-3">
                       <p className="flex place-content-between my-1">
                         <span className="font-medium px-2">Consultation</span>{" "}
-                        <span className="font-bold px-2">Rs1000</span>
+                        <span className="font-bold px-2">
+                          Rs {selectedDoctor.consultationFee}
+                        </span>
                       </p>
                       {!bookingslottoggle && !appointment && (
                         <div>
                           <p className="text-xs text-gray-500 px-2 my-1">
                             Slot available for Tommorrow{" "}
                           </p>
-                          <Tooltip placement="top" title="Booked Slots">
-                            <p className="flex flex-row justify-between  my-1 mx-2">
-                              <div className="w-1/3 px-2 h-10">
-                                <div
-                                  className="rounded-3xl py-1 px-2 mt-2 text-center"
-                                  style={{
-                                    backgroundColor: selectedDoctor?.slots?.[0]
-                                      ?.isBooked
-                                      ? "#4974a5"
-                                      : "#E5E7EB",
-                                    color: selectedDoctor?.slots?.[0]?.isBooked
-                                      ? "white"
-                                      : "#1F2937",
-                                  }}
-                                >
-                                  {selectedDoctor?.slots?.[0]?.startTime}
-                                </div>
+                          <p className="flex flex-row justify-between  my-1 mx-2">
+                            <div className="w-1/3 px-2 h-10">
+                              <div
+                                className="rounded-3xl py-1 px-2 mt-2 text-center"
+                                style={{
+                                  backgroundColor: selectedDoctor?.slots?.[0]
+                                    ?.isBooked
+                                    ? "#4974a5"
+                                    : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked
+                                    ? "white"
+                                    : "#1F2937",
+                                }}
+                              >
+                                {selectedDoctor?.slots?.[0]?.startTime}
                               </div>
+                            </div>
 
-                              <div className="w-1/3 px-2 h-10">
-                                <div
-                                  className="rounded-3xl py-1 px-2 mt-2 text-center"
-                                  style={{
-                                    backgroundColor: selectedDoctor?.slots?.[0]
-                                      ?.isBooked
-                                      ? "#4974a5"
-                                      : "#E5E7EB",
-                                    color: selectedDoctor?.slots?.[0]?.isBooked
-                                      ? "white"
-                                      : "#1F2937",
-                                  }}
-                                >
-                                  {selectedDoctor?.slots?.[1]?.startTime}
-                                </div>
+                            <div className="w-1/3 px-2 h-10">
+                              <div
+                                className="rounded-3xl py-1 px-2 mt-2 text-center"
+                                style={{
+                                  backgroundColor: selectedDoctor?.slots?.[0]
+                                    ?.isBooked
+                                    ? "#4974a5"
+                                    : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked
+                                    ? "white"
+                                    : "#1F2937",
+                                }}
+                              >
+                                {selectedDoctor?.slots?.[1]?.startTime}
                               </div>
+                            </div>
 
-                              <div className="w-1/3 px-2 h-10">
-                                <div
-                                  className="rounded-3xl py-1 px-2 mt-2 text-center"
-                                  style={{
-                                    backgroundColor: selectedDoctor?.slots?.[0]
-                                      ?.isBooked
-                                      ? "#4974a5"
-                                      : "#E5E7EB",
-                                    color: selectedDoctor?.slots?.[0]?.isBooked
-                                      ? "white"
-                                      : "#1F2937",
-                                  }}
-                                >
-                                  {selectedDoctor?.slots?.[2]?.startTime}
-                                </div>
+                            <div className="w-1/3 px-2 h-10">
+                              <div
+                                className="rounded-3xl py-1 px-2 mt-2 text-center"
+                                style={{
+                                  backgroundColor: selectedDoctor?.slots?.[0]
+                                    ?.isBooked
+                                    ? "#4974a5"
+                                    : "#E5E7EB",
+                                  color: selectedDoctor?.slots?.[0]?.isBooked
+                                    ? "white"
+                                    : "#1F2937",
+                                }}
+                              >
+                                {selectedDoctor?.slots?.[2]?.startTime}
                               </div>
-                            </p>
-                          </Tooltip>
+                            </div>
+                          </p>
                         </div>
                       )}
                       {appointment && (
@@ -723,7 +742,7 @@ export default function DoctorListUser({ searchTerm }) {
                             <div className=" flex flex-col text-center space-y-2">
                               <div class="flex flex-row border-2">
                                 <button
-                                  className="text-white text-xs rounded-3xl  "
+                                  className="text-white text-xs rounded-3xl mr-auto "
                                   onClick={goToPrev}
                                 >
                                   <FaAngleLeft style={{ color: "black" }} />
@@ -757,13 +776,12 @@ export default function DoctorListUser({ searchTerm }) {
                                   })}
                                 </div>
                                 <button
-                                  className="text-white text-xs rounded-3xl"
+                                  className="text-white text-xs rounded-3xl ml-auto"
                                   onClick={goToNext}
                                 >
                                   <FaAngleRight style={{ color: "black" }} />
                                 </button>
                               </div>
-
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex]?.map((item, index) => {
                                   const marginb = index === 0 ? " mt-2 -" : "";
@@ -851,14 +869,126 @@ export default function DoctorListUser({ searchTerm }) {
                             >
                               Book Appointment
                             </button>
-                            {/* <button className="text-white text-xs rounded-3xl px-3 py-1 " onClick={() => { showSlot() }} style={{ backgroundColor: ' #89CFF0' }}>
-                          Go Back
-                        </button> */}
                           </div>
                         )}
                       </div>
                     </div>
                   </div>
+                </div>
+              </div>
+            )}
+            {otppage && (
+              <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1 pb-5 mb-4">
+                <p className="text-3xl ">Personal Information</p>
+                <hr className="border my-2 " />
+                {/* ------------mobile Number------------ */}
+                <div className="mt-3 flex flex-row">
+                  <p className="block text-black text-base font-semibold">
+                    Mobile Number :{contactNumber}
+                  </p>
+                </div>
+                {/* -----------contact----------- */}
+                <div className="mt-3 flex flex-row">
+                  <p className="block text-black text-base font-semibold">
+                    Date :{" "}
+                    {selectedDoctor?.slots[currentIndex]?.date?.split("T")[0]}
+                  </p>
+                </div>
+                {/* -----------address----------- */}
+                <div className="mt-3 flex flex-row">
+                  <p className="block text-black text-base font-semibold">
+                    Time :{selectedDoctor?.slots[currentIndex]?.startTime}
+                  </p>
+                  <p></p>
+                </div>
+                <hr class=" mt-3" />
+
+                {/* ----------------------------------------otp verification section---------------------------------------- */}
+                <div class="flex flex-col">
+                  <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
+                  <div
+                    class="bg-gray-300 flex flex-row rounded-lg"
+                    style={{ maxWidth: "11rem" }}
+                  >
+                    <img src={phonelogo} class="pl-5 pr-1"></img>
+                    <input
+                      className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
+                      type="number"
+                      id="mobileNo"
+                      name="mobileNo"
+                      value={contactNumber}
+                      style={{
+                        border: "",
+                        height: "45px",
+                        paddingLeft: "1.5%",
+                        maxWidth: "8rem",
+                      }}
+                    />
+                  </div>
+
+                  <div
+                    className="flex w-full my-3"
+                    style={{
+                      position: "relative",
+                      overflow: "hidden",
+                    }}
+                  >
+                    {otp?.map((digit, index) => (
+                      <input
+                        onInput={(e) => {
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]/g,
+                            ""
+                          );
+                        }}
+                        key={index}
+                        ref={(input) => (otpInputs[index] = input)}
+                        type="number"
+                        className="w-10 h-8 mr-2 text-lg  border-2 text-black border-gray-400 text-center "
+                        maxLength={1}
+                        value={digit}
+                        onChange={(e) => handleInputChange(e, index)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Backspace" && index > 0 && !digit) {
+                            otpInputs[index - 1].focus();
+                          }
+                        }}
+                      />
+                    ))}
+                  </div>
+
+                  <p
+                    style={{
+                      fontWeight: 400,
+                      fontSize: "16px",
+                      display: "flex",
+                      marginLeft: "40%",
+                    }}
+                  ></p>
+                  <p class="text-gray-600">
+                    Otp will expire in
+                    <span
+                      className="timer"
+                      style={{ color: "#666", cursor: "pointer" }}
+                    >
+                      <text className="mx-2" style={{ color: "#000000" }}>
+                        {formatTime(seconds)} sec
+                      </text>
+                    </span>
+                    <button
+                      onClick={handleOtp}
+                      class="font-medium underline text-black"
+                    >
+                      Resend
+                    </button>{" "}
+                  </p>
+                  <button
+                    className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+                    style={{ backgroundColor: "#89CFF0" }}
+                    onClick={verifyOTP}
+                  >
+                    Verify
+                  </button>
                 </div>
               </div>
             )}
