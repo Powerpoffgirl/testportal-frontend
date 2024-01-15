@@ -28,6 +28,7 @@ export default function DoctorList({ searchTerm }) {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState("");
   const [open, setOpen] = useState(false);
+
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => {
     console.log("modal closed");
@@ -47,9 +48,9 @@ export default function DoctorList({ searchTerm }) {
   const [resendClicked, setResendClicked] = useState(false);
   const [firstTime, setFirstTime] = useState(true);
 
-  useEffect(() => {
-    localStorage.clear();
-  }, []);
+  // useEffect(() => {
+  //   localStorage.clear();
+  // }, []);
 
   useEffect(() => {
     const fetchDoctorDetails = async () => {
@@ -111,13 +112,11 @@ export default function DoctorList({ searchTerm }) {
   const handleBookAppointment = async () => {
     // if a slot is already booked then don't book a new slot.
 
-    console.log("date", keys[currentIndex]);
-    console.log("slot", values[currentIndex][currentTimeIndex].start);
-
     const bookslot = {
       date: keys[currentIndex],
       time: values[currentIndex][currentTimeIndex].start,
     };
+
     console.log("selected doctor", selectedDoctor?._id);
     const response = await fetch(
       `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
@@ -532,7 +531,7 @@ export default function DoctorList({ searchTerm }) {
             </div>
             {/* --------------------------------right part-------------------------------- */}
             {!otppage && (
-              <div className="flex flex-col  md:w-1/2 px-2 pb-5 mb-4 ">
+              <div className="flex flex-col  md:w-1/2 px-2 pb-5  ">
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
                   <div className="flex flex-wrap">
@@ -872,7 +871,7 @@ export default function DoctorList({ searchTerm }) {
               </div>
             )}
             {otppage && (
-              <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1 pb-5 mb-4">
+              <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1 pb-5 ">
                 <p className="text-3xl ">Personal Information</p>
                 <hr className="border my-2 " />
                 {/* ------------mobile Number------------ */}

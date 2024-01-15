@@ -235,11 +235,17 @@ export default function EditUserForm() {
   }, []);
 
   console.log("DATE TIME", appointmentDate, appointmentTime);
-  const handleChangeIssues = (values) => {
-    setAppointmentDetails((prevAppointmentDetails) => ({
-      ...prevAppointmentDetails,
-      issues: values,
-    }));
+  const handleChangeIssues = (value) => {
+
+    const cleanedValues = value.filter((item) => item.trim() !== ' ');
+
+    // Update the state with the cleaned values
+    setAppointmentDetails({ ...appointmentDetails, issues: cleanedValues });
+
+    // setAppointmentDetails((prevAppointmentDetails) => ({
+    //   ...prevAppointmentDetails,
+    //   issues: values,
+    // }));
   };
 
   const handleChangeDiseases = (values) => {
@@ -364,8 +370,11 @@ export default function EditUserForm() {
       gender: e,
     }));
   };
-
+  const [selectedOption, setSelectedOption] = useState(null);
   const handleChange3 = (e) => {
+    if (e === 'add-member') {
+      navigate('/patientform');
+    }
     console.log("HELLOOOOOOOO");
 
     setAppointmentDetails((prevAppointmentDetails) => ({
@@ -742,18 +751,39 @@ export default function EditUserForm() {
                     className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                 ) : (
+
                   <Select
-                    className="h-11 block w-full placeholder-gray-400 rounded-lg border  bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    className="h-11 block w-full placeholder-gray-400 rounded-lg border bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     name="patientName"
                     onChange={handleChange3}
                     placeholder="Select Member"
+                  // value={appointmentDetails?.patientId}
                   >
-                    {patientsList?.map((patient) => (
+                    {patientsList.map((patient) => (
                       <Select.Option key={patient._id} value={patient._id}>
                         {patient.name}
                       </Select.Option>
                     ))}
+                    <Select.Option key="add-member" value="add-member">
+                      Add member +
+                    </Select.Option>
                   </Select>
+
+                  // <Select
+                  //   className="h-11 block w-full placeholder-gray-400 rounded-lg border  bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  //   name="patientName"
+                  //   onChange={handleChange3}
+                  //   placeholder="Select Member"
+                  // >
+                  //   {patientsList?.map((patient) => (
+                  //     <>
+                  //       <Select.Option key={patient._id} value={patient._id}>
+                  //         {patient.name}
+                  //       </Select.Option>
+                  //     </>
+                  //   ))}
+                  //   <button onClick={() => navigate('/patientform')}>Add member </button>
+                  // </Select>
                 )}
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
