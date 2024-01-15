@@ -24,8 +24,7 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm()
-{
+export default function PatientForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -37,6 +36,8 @@ export default function PatientForm()
   const navigate = useNavigate();
   const [name, setName] = useState("");
   const [nameError, setNameError] = useState("");
+  const [patientsList, setPatientsList] = useState([]);
+
   const [age, setAge] = useState("");
   const [ageError, setAgeError] = useState("");
   const [bodyWeight, setBodyWeight] = useState("");
@@ -70,18 +71,15 @@ export default function PatientForm()
   const [doctorImage, setDoctorImage] = useState();
   const [mobileNumberError, setmobileNumberError] = useState("");
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const formData = new FormData();
       formData.append("userPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -90,8 +88,7 @@ export default function PatientForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -104,8 +101,7 @@ export default function PatientForm()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -131,52 +127,41 @@ export default function PatientForm()
     patientPic: "",
   });
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleChange1 = (e) =>
-  {
+  const handleChange1 = (e) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       gender: e,
     }));
   };
-  const handleChange2 = (e) =>
-  {
+  const handleChange2 = (e) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       ageType: e,
     }));
   };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "pinCode")
-    {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setPinCodeError("");
-      } else
-      {
+      } else {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
 
-    if (name === "contactNumber")
-    {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setmobileNumberError("");
-      } else
-      {
+      } else {
         setmobileNumberError("Please enter a valid Number");
       }
     }
@@ -194,11 +179,11 @@ export default function PatientForm()
         "state",
       ].includes(name)
         ? {
-          address: {
-            ...prevPatientDetails.address,
-            [name]: value,
-          },
-        }
+            address: {
+              ...prevPatientDetails.address,
+              [name]: value,
+            },
+          }
         : { [name]: value }),
     }));
 
@@ -212,8 +197,7 @@ export default function PatientForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -221,8 +205,7 @@ export default function PatientForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -242,8 +225,7 @@ export default function PatientForm()
     { label: "Other", value: "Other" },
   ];
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     const newPatientDetails = {
@@ -265,41 +247,29 @@ export default function PatientForm()
       patientPic: userImage,
     };
 
-    if (newPatientDetails.gender === "")
-    {
+    if (newPatientDetails.gender === "") {
       toast.error("Please write gender");
-    } else if (newPatientDetails.age === "")
-    {
+    } else if (newPatientDetails.age === "") {
       toast.error("Please write age");
-    } else if (newPatientDetails.ageType === "")
-    {
+    } else if (newPatientDetails.ageType === "") {
       toast.error("Please write Age Type");
-    } else if (newPatientDetails.bodyWeight === "")
-    {
+    } else if (newPatientDetails.bodyWeight === "") {
       toast.error("Please write Body Weight");
-    } else if (newPatientDetails.name === "")
-    {
+    } else if (newPatientDetails.name === "") {
       toast.error("Please write name");
-    } else if (newPatientDetails.contactNumber === "")
-    {
+    } else if (newPatientDetails.contactNumber === "") {
       toast.error("Please write Contact Number");
-    } else if (!newPatientDetails.address?.pinCode)
-    {
+    } else if (!newPatientDetails.address?.pinCode) {
       toast.error("Please write Pincode");
-    } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode))
-    {
+    } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode)) {
       toast.error("Please enter a valid 6-digit PIN code");
-    } else if (newPatientDetails.address?.district === "")
-    {
+    } else if (newPatientDetails.address?.district === "") {
       toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "")
-    {
+    } else if (newPatientDetails.address?.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/userlogin`);
@@ -313,8 +283,7 @@ export default function PatientForm()
         body: JSON.stringify(newPatientDetails),
       });
       const data = await response.json();
-      if (data.success === true)
-      {
+      if (data.success === true) {
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
         toast.success("Member details updated!");
@@ -374,7 +343,6 @@ export default function PatientForm()
 
             <div className="flex flex-row mt-5 mb-3">
               <p className="block text-black text-lg font-semibold ">
-
                 <input
                   id="files"
                   type="file"
@@ -414,8 +382,7 @@ export default function PatientForm()
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() =>
-                    {
+                    onClick={() => {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -585,8 +552,7 @@ export default function PatientForm()
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               required
               onChange={handleChange}
-              onInput={(e) =>
-              {
+              onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -605,96 +571,190 @@ export default function PatientForm()
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
-                <div className="flex flex-row">
-                  <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      placeholder="House No."
-                      id="houseNo"
-                      name="houseNo"
-                      onChange={handleChange}
-                      // placeholder="1234"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                <div className="flex lg:flex-row flex-col">
+                  <div class="flex flex-row ">
+                    <div className="px-2 lg:w-1/2  mt-3">
+                      {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                        <input
+                          type="text"
+                          placeholder="House No."
+                          id="houseNo"
+                          name="houseNo"
+                          onChange={handleChange}
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          placeholder="House No."
+                          id="houseNo"
+                          name="houseNo"
+                          value={patientDetails?.address?.houseNo}
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )}
+                    </div>
+                    <div className="px-2 lg:w-1/2 mt-3">
+                      {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                        <input
+                          type="text"
+                          id="floor"
+                          name="floor"
+                          onChange={handleChange}
+                          placeholder="Floor"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          id="floor"
+                          name="floor"
+                          value={patientDetails?.address?.floor}
+                          placeholder="Floor"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )}
+                    </div>
                   </div>
-                  <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      id="floor"
-                      name="floor"
-                      onChange={handleChange}
-                      placeholder="Floor"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                  </div>
-                  <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      id="block"
-                      name="block"
-                      onChange={handleChange}
-                      placeholder="Block"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {errors.block && (
-                      <p className="text-red-500">{errors.block}</p>
-                    )}
-                  </div>
-                  <div className="px-2 w-full sm:w-1/2 mt-3">
-                    <input
-                      type="text"
-                      id="pinCode"
-                      name="pinCode"
-                      onChange={handleChange}
-                      placeholder="Pin Code"
-                      onInput={(e) =>
-                      {
-                        e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                      }}
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {pinCodeError && (
-                      <p className="text-red-500">{pinCodeError}</p>
-                    )}
+                  <div class="flex flex-row">
+                    <div className="px-2 lg:w-1/2 mt-3">
+                      {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                        <input
+                          type="text"
+                          id="block"
+                          name="block"
+                          onChange={handleChange}
+                          placeholder="Block"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          id="block"
+                          name="block"
+                          value={patientDetails?.address?.block}
+                          placeholder="Block"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )}
+
+                      {errors.block && (
+                        <p className="text-red-500">{errors.block}</p>
+                      )}
+                    </div>
+                    <div className="px-2 lg:w-1/2 mt-3">
+                      {patientsList?.length === 0 ||
+                      userDetails?.newUser === true ? (
+                        <input
+                          type="text"
+                          id="pinCode"
+                          name="pinCode"
+                          onChange={handleChange}
+                          placeholder="Pin Code"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                          onInput={(e) => {
+                            e.target.value = e.target.value.replace(
+                              /[^0-9]/g,
+                              ""
+                            );
+                          }}
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          id="pinCode"
+                          name="pinCode"
+                          value={patientDetails?.address?.pinCode}
+                          placeholder="Pin Code"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )}
+
+                      {pinCodeError && (
+                        <p className="text-red-500">{pinCodeError}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
-
+                {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
-                  <input
-                    type="text"
-                    id="area"
-                    name="area"
-                    onChange={handleChange}
-                    placeholder="Area/Landmark"
-                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                  />
+                  {patientsList?.length === 0 ||
+                  userDetails?.newUser === true ? (
+                    <input
+                      type="text"
+                      id="area"
+                      name="area"
+                      onChange={handleChange}
+                      placeholder="Area/Landmark"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      id="area"
+                      name="area"
+                      value={patientDetails?.address?.area}
+                      placeholder="Area/Landmark"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  )}
+
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
 
                 <div className="flex flex-row">
-                  <div className="px-2 w-full sm:w-1/2 mt-3">
-                    <input
-                      type="text"
-                      id="district"
-                      name="district"
-                      onChange={handleChange}
-                      placeholder="District"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                  <div className="px-2 w-1/2 mt-3">
+                    {patientsList?.length === 0 ||
+                    userDetails?.newUser === true ? (
+                      <input
+                        type="text"
+                        id="district"
+                        name="district"
+                        onChange={handleChange}
+                        placeholder="District"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        id="district"
+                        name="district"
+                        value={patientDetails?.address?.district}
+                        placeholder="District"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
+
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
                     )}
                   </div>
 
-                  <div className="px-2 w-full sm:w-1/2 mt-3">
-                    <input
-                      type="text"
-                      id="state"
-                      name="state"
-                      onChange={handleChange}
-                      placeholder="State"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                  <div className="px-2 w-1/2 mt-3">
+                    {patientsList?.length === 0 ||
+                    userDetails?.newUser === true ? (
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        onChange={handleChange}
+                        placeholder="State"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value={patientDetails?.address?.state}
+                        placeholder="State"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
+
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>
                     )}
