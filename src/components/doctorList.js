@@ -270,6 +270,7 @@ export default function DoctorList({ searchTerm }) {
         navigate("/edituserform");
       }
     } catch (error) {
+      toast.error('Wrong OTP')
       console.error("There was an error verifying the OTP:", error);
     }
   };
@@ -426,14 +427,17 @@ export default function DoctorList({ searchTerm }) {
   return (
     <>
       {/* ---------------------------------------------modal--------------------------------------------- */}
-      <div style={{}}>
+
       <Modal
         open={open}
         onClose={onCloseModal}
         center
         doctor={selectedDoctor}
-        class=""
+        className={{
+          modal1: 'react-responsive-modal-container', // Match the class name
+        }}
         styles={{
+
           modal: {
             width: isTab ? "94%" : "80%",
             backgroundColor: "#E3F6FF",
@@ -445,7 +449,16 @@ export default function DoctorList({ searchTerm }) {
           },
         }}
       >
-        <div class="flex flex-col ">
+
+        <style>
+          {`
+          .react-responsive-modal-container{
+            overflow-y:hidden;
+             
+          }
+          `}
+        </style>
+        <div class="flex flex-col  ">
           <div class="flex flex-row-reverse md:-mb-14  -mb-14 z-50">
             <button onClick={onCloseModal}>
               <img src={close_button} class="w-8 mb-1"></img>
@@ -453,7 +466,7 @@ export default function DoctorList({ searchTerm }) {
             {/* <button><img src={delete_button} class="w-8"></img></button>
             <button><img src={edit_button} class="w-8"></img></button> */}
           </div>
-          <div className="flex md:flex-row p-2 pt-5 flex-col">
+          <div className="flex md:flex-row p-2 pt-5 flex-col overflow-y-auto max-h-screen">
             {/* ---------------------------left part--------------------------- */}
             <div className="flex flex-col px-1 md:w-1/2">
               <div className="">
@@ -523,7 +536,7 @@ export default function DoctorList({ searchTerm }) {
             </div>
             {/* --------------------------------right part-------------------------------- */}
             {!otppage && (
-              <div className="flex flex-col  md:w-1/2 px-2">
+              <div className="flex flex-col  md:w-1/2 px-2 pb-5 mb-4">
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
                   <div className="flex flex-wrap">
@@ -863,7 +876,7 @@ export default function DoctorList({ searchTerm }) {
               </div>
             )}
             {otppage && (
-              <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1">
+              <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1 pb-5 mb-4">
                 <p className="text-3xl ">Personal Information</p>
                 <hr className="border my-2 " />
                 {/* ------------mobile Number------------ */}
@@ -977,7 +990,7 @@ export default function DoctorList({ searchTerm }) {
           </div>
         </div>
       </Modal>
-      </div>
+
       <div
         className="flex flex-col bg-customGreen"
         style={{
