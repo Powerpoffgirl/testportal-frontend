@@ -278,37 +278,62 @@ export default function BillingPage({ name, contactNo, gender, age })
 
   const handleChange = (e, index) =>
   {
-    const { name, value } = e.target;
-    console.log("E TARGET VALUE", value)
+    const { name, value, key } = e.target;
+
+    if (key === "Enter" && name === "value")
+    {
+      const newInputValues = [...inputValues];
+      newInputValues[index] = value;
+
+      setInputValues(newInputValues);
+
+      console.log("value is been setted", inputValues)
+
+
+
+    };
+
+
+
+
+
+  };
+
+  const handleBlur = (e, index) =>
+  {
+
+    const { value } = e.target;
     const newInputValues = [...inputValues];
     console.log("INPUT VALUES=====", inputValues)
     newInputValues[index] = value;
     setInputValues(inputValues);
 
-    if (name === "value")
+
+
+    const testId = tableData[index]?.id;
+
+    setPatientReport((prevPatientReport) =>
     {
-      const testId = tableData[index]?.id;
+      // const existingTest = prevPatientReport.testAsked.find((test) => test.id === testId);
 
-      setPatientReport((prevPatientReport) =>
-      {
-        // const existingTest = prevPatientReport.testAsked.find((test) => test.id === testId);
-
-        // if (existingTest)
-        // {
-        //   // Update the existing test's value
-        //   existingTest.value = value;
-        //   return { ...prevPatientReport };
-        // } else
-        // {
-        // Add a new test to the array
-        return {
-          ...prevPatientReport,
-          testAsked: [...prevPatientReport.testAsked, { id: testId, value: value }],
-        };
-      }
-      );
+      // if (existingTest)
+      // {
+      //   // Update the existing test's value
+      //   existingTest.value = value;
+      //   return { ...prevPatientReport };
+      // } else
+      // {
+      // Add a new test to the array
+      return {
+        ...prevPatientReport,
+        testAsked: [...prevPatientReport.testAsked, { id: testId, value: value }],
+      };
     }
-  };
+    );
+    // }
+  }
+  // if (key === "Enter" && name === "value")
+  // {
 
 
   const handleSave = async (e) =>
@@ -857,8 +882,10 @@ export default function BillingPage({ name, contactNo, gender, age })
                               type="text"
                               className="w-14 border border-black rounded-lg placeholder-gray-300 pl-1"
                               onChange={(e) => handleChange(e, index)}
+                              onBlur={(e) => handleBlur(e, index)}
                               value={inputValues[index]}
                               name="value"
+                              onKeyDown={(e) => handleChange(e, index)}
                             />
                           </Tooltip>
                         </td>
