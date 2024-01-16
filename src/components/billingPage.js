@@ -36,15 +36,7 @@ export default function BillingPage({ name, contactNo, gender, age })
   const [userDetailsPic, setUserDetailsPic] = useState();
   // const [index, setIndex] = useState(0);
   const [patientReport, setPatientReport] = useState({
-    testName: "",
-    testCode: "",
-    department: "",
-    sampleType: "",
-    costOfDiagnosticTest: "",
-    unit: "",
-    bioRefInterval: "",
-    technology: "",
-    patientId: "",
+    testAsked: [],
   });
   const [patientDetails, setPatientDetails] = useState({
     medicineName: [],
@@ -284,52 +276,38 @@ export default function BillingPage({ name, contactNo, gender, age })
     setIsListOpen(true);
   };
 
-  const handleChange = async (e, index) =>
+  const handleChange = (e, index) =>
   {
     const { name, value } = e.target;
-    const patientId = localStorage.getItem("selectedPatientId");
-
     const newInputValues = [...inputValues];
-    newInputValues[index] = e.target.value;
+    newInputValues[index] = value;
     setInputValues(newInputValues);
 
     if (name === "value")
     {
-      // Assuming that each row has a unique test ID accessible via tableData[index].test._id
       const testId = tableData[index]?.id;
 
-      // // Find the index of the test in testAsked array
-      // const testIndex = patientReport.testAsked.findIndex((test) => test.id === testId);
+      setPatientReport((prevPatientReport) =>
+      {
+        // const existingTest = prevPatientReport.testAsked.find((test) => test.id === testId);
 
-      // // If the test is not in testAsked array, add it; otherwise, update the value
-      // if (testIndex === -1)
-      // {
-      setPatientReport((prevPatientReport) => ({
-        ...prevPatientReport,
-        testAsked: [
-          ...prevPatientReport.testAsked,
-          { id: testId, value: e.target.value },
-        ],
-      }));
-      //  else
-      // {
-      //   setPatientReport((prevPatientReport) => ({
-      //     ...prevPatientReport,
-      //     testAsked: [
-      //       ...prevPatientReport.testAsked.slice(0, testIndex),
-      //       { id: testId, value: e.target.value },
-      //       ...prevPatientReport.testAsked.slice(testIndex + 1),
-      //     ],
-      //   }));
-      // }
-    } else
-    {
-      setPatientReport((prevPatientReport) => ({
-        ...prevPatientReport,
-        [name]: value,
-      }));
+        // if (existingTest)
+        // {
+        //   // Update the existing test's value
+        //   existingTest.value = value;
+        //   return { ...prevPatientReport };
+        // } else
+        // {
+        // Add a new test to the array
+        return {
+          ...prevPatientReport,
+          testAsked: [...prevPatientReport.testAsked, { id: testId, value: value }],
+        };
+      }
+      );
     }
   };
+
 
   const handleSave = async (e) =>
   {
@@ -337,32 +315,32 @@ export default function BillingPage({ name, contactNo, gender, age })
     {
       const patientId = localStorage.getItem("selectedPatientId");
       console.log("consoling value", patientReport);
-      if (patientReport.value == null)
-      {
-        toast.error("Value can't be empty");
-        return;
-      } else
-      {
-        const token = localStorage.getItem("token");
-        const response = await fetch(
-          `${baseUrl}/api/v1/doctor/update_labPatient/${patientId}`,
-          {
-            method: "put",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token,
-            },
-            body: JSON.stringify(patientReport),
-          }
-        );
+      // if (patientReport.value == null)
+      // {
+      //   toast.error("Value can't be empty");
+      //   return;
+      // } else
+      // {
+      const token = localStorage.getItem("token");
+      const response = await fetch(
+        `${baseUrl}/api/v1/doctor/update_labPatient/${patientId}`,
+        {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+          body: JSON.stringify(patientReport),
+        }
+      );
 
-        const responseData = await response.json();
-        console.log("DATA from response", responseData);
+      const responseData = await response.json();
+      console.log("DATA from response", responseData);
 
-        toast.success("Saved");
-        // window.location.reload();
-        e.target.value = "";
-      }
+      toast.success("Saved");
+      // window.location.reload();
+      e.target.value = "";
+      // }
 
 
     } catch (error)
