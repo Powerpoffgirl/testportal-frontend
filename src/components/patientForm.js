@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
@@ -57,7 +57,63 @@ export default function PatientForm() {
   const [newPatientDetails, setNewPatientDetails] = useState({});
   const [doctorImage, setDoctorImage] = useState();
   const [mobileNumberError, setmobileNumberError] = useState("");
+  const [patientDetails, setPatientDetails] = useState({
+    name: "",
+    contactNumber: "",
+    age: "",
+    bodyWeight: "",
+    address: {
+      houseNo: "",
+      floor: "",
+      block: "",
+      area: "",
+      pinCode: "",
+      district: "",
+      state: "",
+    },
+    ageType: "",
+    gender: "",
+    patientPic: "",
+  });
 
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const district = data[0]?.PostOffice[0]?.District;
+        const state = data[0]?.PostOffice[0]?.State; // Corrected to "State" with a capital "S"
+        console.log("District:", district);
+        console.log("State:", state);
+
+        // Update patientDetails with the District and State information
+        setPatientDetails((prevDetails) => ({
+          ...prevDetails,
+          address: {
+            ...prevDetails.address,
+            district: district,
+            state: state,
+          },
+        }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (patientDetails?.address?.pinCode) {
+      fetchData();
+    }
+  }, [patientDetails?.address?.pinCode]);
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -94,25 +150,6 @@ export default function PatientForm() {
       }
     }
   };
-
-  const [patientDetails, setPatientDetails] = useState({
-    name: "",
-    contactNumber: "",
-    age: "",
-    bodyWeight: "",
-    address: {
-      houseNo: "",
-      floor: "",
-      block: "",
-      area: "",
-      pinCode: "",
-      district: "",
-      state: "",
-    },
-    ageType: "",
-    gender: "",
-    patientPic: "",
-  });
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -153,26 +190,26 @@ export default function PatientForm() {
       }
     }
 
-    setPatientDetails((prevPatientDetails) => ({
-      ...prevPatientDetails,
-      patientPic: patientImage,
-      ...([
-        "houseNo",
-        "floor",
-        "block",
-        "area",
-        "pinCode",
-        "district",
-        "state",
-      ].includes(name)
-        ? {
-            address: {
-              ...prevPatientDetails.address,
-              [name]: value,
-            },
-          }
-        : { [name]: value }),
-    }));
+    // setPatientDetails((prevPatientDetails) => ({
+    //   ...prevPatientDetails,
+    //   patientPic: patientImage,
+    //   ...([
+    //     "houseNo",
+    //     "floor",
+    //     "block",
+    //     "area",
+    //     "pinCode",
+    //     "district",
+    //     "state",
+    //   ].includes(name)
+    //     ? {
+    //         address: {
+    //           ...prevPatientDetails.address,
+    //           [name]: value,
+    //         },
+    //       }
+    //     : { [name]: value }),
+    // }));
 
     if (
       [
@@ -198,6 +235,7 @@ export default function PatientForm() {
         [name]: value,
       }));
     }
+
     setIsEditing(true);
   };
   const AgeType = [
@@ -453,6 +491,9 @@ export default function PatientForm() {
                 name="age"
                 onChange={handleChange}
                 className="block mt-0 w-full placeholder-gray-400/70 rounded-lg border bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                }}
               />
               {errors.age && <p className="text-red-500">{errors.age}</p>}
             </div>
@@ -504,6 +545,9 @@ export default function PatientForm() {
               name="bodyWeight"
               onChange={handleChange}
               className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, "");
+              }}
             />
             {errors.bodyWeight && (
               <p className="text-red-500">{errors.bodyWeight}</p>
@@ -711,6 +755,7 @@ export default function PatientForm() {
                         id="district"
                         name="district"
                         onChange={handleChange}
+                        value={patientDetails?.address?.district}
                         placeholder="District*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -738,6 +783,7 @@ export default function PatientForm() {
                         id="state"
                         name="state"
                         onChange={handleChange}
+                        value={patientDetails?.address?.state}
                         placeholder="State*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
