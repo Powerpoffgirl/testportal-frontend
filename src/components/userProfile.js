@@ -43,6 +43,7 @@ export default function UserProfile() {
   const patientId = localStorage.getItem("patientId");
   const [patientDetails, setPatientDetails] = useState({
     name: "",
+    contactNumber: "",
     age: "",
     bodyWeight: "",
     address: {
@@ -54,8 +55,49 @@ export default function UserProfile() {
       district: "",
       state: "",
     },
+    ageType: "",
+    gender: "",
     patientPic: "",
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const district = data[0]?.PostOffice[0]?.District;
+        const state = data[0]?.PostOffice[0]?.State; // Corrected to "State" with a capital "S"
+        console.log("District:", district);
+        console.log("State:", state);
+
+        // Update patientDetails with the District and State information
+        setUserDetails((prevDetails) => ({
+          ...prevDetails,
+          address: {
+            ...prevDetails.address,
+            district: district,
+            state: state,
+          },
+        }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (userDetails?.address?.pinCode) {
+      fetchData();
+    }
+  }, [patientDetails?.address?.pinCode]);
 
   const handleChange3 = (e) => {
     let { name, value } = e.target;
@@ -519,15 +561,15 @@ export default function UserProfile() {
           </div>
           <hr />
 
-          <div className=" mt-3">
+          <div className="mt-3">
             <label
-              for="total-experience"
+              htmlFor="gender" // Use "htmlFor" instead of "for"
               className="block text-black text-lg font-semibold"
             >
-              Gender
+              Gender<span className="text-red-500">*</span>
             </label>
             <Select
-              className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70   bg-white  text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70 bg-white text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               popupClassName="no-border-dropdown-menu"
               id="gender"
               name="gender"
@@ -557,7 +599,7 @@ export default function UserProfile() {
                 for="degree"
                 className="block text-black text-lg font-semibold"
               >
-                Age
+                Age<span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -565,6 +607,9 @@ export default function UserProfile() {
                 name="age"
                 onChange={handleChange}
                 value={userDetails?.age}
+                onInput={(e) => {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                }}
                 className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
               {errors.degree && <p className="text-red-500">{errors.degree}</p>}
@@ -574,7 +619,7 @@ export default function UserProfile() {
                 for="degree"
                 className="block text-black text-lg font-semibold"
               >
-                Age Type
+                Age Type<span className="text-red-500">*</span>
               </label>
               <Select
                 className="border rounded-lg h-11"
@@ -605,7 +650,7 @@ export default function UserProfile() {
               for="total-experience"
               className="block text-black text-lg font-semibold"
             >
-              Body Weight
+              Body Weight<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -613,6 +658,9 @@ export default function UserProfile() {
               name="bodyWeight"
               onChange={handleChange}
               value={userDetails?.bodyWeight}
+              onInput={(e) => {
+                e.target.value = e.target.value.replace(/[^0-9]/g, "");
+              }}
               className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.totalExperience && (
@@ -644,7 +692,7 @@ export default function UserProfile() {
               for="name"
               className="block text-black text-lg font-semibold"
             >
-              Name
+              Name<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -663,7 +711,7 @@ export default function UserProfile() {
               for="contact"
               className="block text-black text-lg font-semibold"
             >
-              Contact Number
+              Contact Number<span className="text-red-500">*</span>
             </label>
             <input
               type="text"
@@ -771,8 +819,9 @@ export default function UserProfile() {
                           type="text"
                           id="pinCode"
                           name="pinCode"
+                          value={userDetails?.address?.pinCode}
                           onChange={handleChange}
-                          placeholder="Pin Code"
+                          placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                           onInput={(e) => {
                             e.target.value = e.target.value.replace(
@@ -786,7 +835,7 @@ export default function UserProfile() {
                           type="text"
                           id="pinCode"
                           name="pinCode"
-                          value={patientDetails?.address?.pinCode}
+                          value={userDetails?.address?.pinCode}
                           placeholder="Pin Code"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
@@ -833,7 +882,8 @@ export default function UserProfile() {
                         id="district"
                         name="district"
                         onChange={handleChange}
-                        placeholder="District"
+                        value={userDetails?.address?.district}
+                        placeholder="District*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
@@ -841,7 +891,7 @@ export default function UserProfile() {
                         type="text"
                         id="district"
                         name="district"
-                        value={patientDetails?.address?.district}
+                        value={userDetails?.address?.district}
                         placeholder="District"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -860,7 +910,8 @@ export default function UserProfile() {
                         id="state"
                         name="state"
                         onChange={handleChange}
-                        placeholder="State"
+                        value={userDetails?.address?.state}
+                        placeholder="State*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
@@ -868,7 +919,7 @@ export default function UserProfile() {
                         type="text"
                         id="state"
                         name="state"
-                        value={patientDetails?.address?.state}
+                        value={userDetails?.address?.state}
                         placeholder="State"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />

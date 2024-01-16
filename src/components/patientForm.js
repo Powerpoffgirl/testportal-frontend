@@ -114,6 +114,7 @@ export default function PatientForm() {
       fetchData();
     }
   }, [patientDetails?.address?.pinCode]);
+
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -693,6 +694,7 @@ export default function PatientForm() {
                           type="text"
                           id="pinCode"
                           name="pinCode"
+                          value={patientDetails?.address?.pinCode}
                           onChange={handleChange}
                           placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
