@@ -13,8 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 import { FaAngleDown } from "react-icons/fa";
 
-export default function DoctorFormAdmin()
-{
+export default function DoctorFormAdmin() {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [doctorImage, setDoctorImage] = useState();
@@ -62,29 +61,24 @@ export default function DoctorFormAdmin()
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -93,8 +87,7 @@ export default function DoctorFormAdmin()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -106,22 +99,19 @@ export default function DoctorFormAdmin()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     handleClose();
   };
 
@@ -194,23 +184,20 @@ export default function DoctorFormAdmin()
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) =>
-    {
+    ...Array.from({ length: 24 }, (v, i) => {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange1 = (e) =>
-  {
+  const handleChange1 = (e) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: e,
       // speciality: e,
     }));
   };
-  const handleChange2 = (e) =>
-  {
+  const handleChange2 = (e) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       // workingDays: e,
@@ -273,29 +260,22 @@ export default function DoctorFormAdmin()
   //   }
   // };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     console.log("E value", e);
     const { name, value } = e.target;
 
-    if (name === "pinCode")
-    {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
-      } else
-      {
+      } else {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
 
-    if (name === "contactNumber")
-    {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setmobileNumberError("");
-      } else
-      {
+      } else {
         setmobileNumberError("Please enter a valid Number");
       }
     }
@@ -322,8 +302,7 @@ export default function DoctorFormAdmin()
       name === "workHourFrom" ||
       name === "workHourTo" ||
       name === "interval"
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -341,8 +320,7 @@ export default function DoctorFormAdmin()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -350,8 +328,7 @@ export default function DoctorFormAdmin()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -360,42 +337,30 @@ export default function DoctorFormAdmin()
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
     // Check if the token exists
-    if (doctorDetails.name === "")
-    {
+    if (doctorDetails.name === "") {
       toast.error("Please write name");
-    } else if (doctorDetails.registrationNo === "")
-    {
+    } else if (doctorDetails.registrationNo === "") {
       toast.error("Please write registration number");
-    } else if (doctorDetails.email === "")
-    {
+    } else if (doctorDetails.email === "") {
       toast.error("Please write email");
-    } else if (doctorDetails.contactNumber === "")
-    {
+    } else if (doctorDetails.contactNumber === "") {
       toast.error("Please write contact number");
-    } else if (doctorDetails.totalExperience === "")
-    {
+    } else if (doctorDetails.totalExperience === "") {
       toast.error("Please write total experience");
-    } else if (doctorDetails.degree === "")
-    {
+    } else if (doctorDetails.degree === "") {
       toast.error("Please write degree");
-    } else if (doctorDetails.address.pinCode === "")
-    {
+    } else if (doctorDetails.address.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (doctorDetails.address.district === "")
-    {
+    } else if (doctorDetails.address.district === "") {
       toast.error("Please write district");
-    } else if (doctorDetails.address.state === "")
-    {
+    } else if (doctorDetails.address.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/adminlogin`);
@@ -405,8 +370,7 @@ export default function DoctorFormAdmin()
         (value) => value === ""
       );
 
-      if (isEmpty || isEditing === false)
-      {
+      if (isEmpty || isEditing === false) {
         toast.error("Please fill the fields or Update");
         setIsEditing(false);
         return;
@@ -422,23 +386,19 @@ export default function DoctorFormAdmin()
       });
       const data = await response.json();
 
-      if (data.statusCode === 400)
-      {
+      if (data.statusCode === 400) {
         toast.error("Please fill the details");
       }
 
-      if (data.message === "Permission denied")
-      {
+      if (data.message === "Permission denied") {
         toast.error("Permission Denied");
       }
 
-      if (data.statusCode === 500)
-      {
+      if (data.statusCode === 500) {
         toast.error("Enter Unique Values or Values already Exist ");
       }
 
-      if (data.success === true)
-      {
+      if (data.success === true) {
         console.log("-----------------ID------------------", data?.data?._id);
         localStorage.setItem("id", data?.data?._id);
         navigate("/otp", {
@@ -448,8 +408,7 @@ export default function DoctorFormAdmin()
       console.log("DATA from response", data);
     }
 
-    const handleDelete = (workingDay) =>
-    {
+    const handleDelete = (workingDay) => {
       console.log("delete", workingDay);
       const days = doctorDetails.workingDays.filter(
         (doctorDetail) => doctorDetail !== workingDay
@@ -552,8 +511,7 @@ export default function DoctorFormAdmin()
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() =>
-                    {
+                    onClick={() => {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -598,7 +556,7 @@ export default function DoctorFormAdmin()
                 name="workingDays"
                 onChange={handleChange1}
                 placeholder="Mon-Fri"
-              // Add other props as needed
+                // Add other props as needed
               >
                 {Daysdropdown.map((option) => (
                   <Select.Option key={option.value} value={option.value}>
@@ -786,8 +744,7 @@ export default function DoctorFormAdmin()
                 id="contactNumber"
                 name="contactNumber"
                 onChange={handleChange}
-                onInput={(e) =>
-                {
+                onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -849,7 +806,7 @@ export default function DoctorFormAdmin()
                   <div class="flex flex-row ">
                     <div className="px-2 lg:w-1/2  mt-3">
                       {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
+                      doctorDetails?.newDoctor === true ? (
                         <input
                           type="text"
                           placeholder="House No."
@@ -871,7 +828,7 @@ export default function DoctorFormAdmin()
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
+                      doctorDetails?.newDoctor === true ? (
                         <input
                           type="text"
                           id="floor"
@@ -895,7 +852,7 @@ export default function DoctorFormAdmin()
                   <div class="flex flex-row">
                     <div className="px-2 lg:w-1/2 mt-3">
                       {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
+                      doctorDetails?.newDoctor === true ? (
                         <input
                           type="text"
                           id="block"
@@ -921,7 +878,8 @@ export default function DoctorFormAdmin()
                     </div>
 
                     <div className="px-2 lg:w-1/2 mt-3">
-                      {(doctorsList?.length === 0 || doctorDetails?.newDoctor === true) ? (
+                      {doctorsList?.length === 0 ||
+                      doctorDetails?.newDoctor === true ? (
                         <div style={{ display: "flex" }}>
                           <input
                             type="text"
@@ -930,9 +888,11 @@ export default function DoctorFormAdmin()
                             onChange={handleChange}
                             placeholder="Pin Code"
                             className="block w-full rounded-lg border bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                            onInput={(e) =>
-                            {
-                              e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                            onInput={(e) => {
+                              e.target.value = e.target.value.replace(
+                                /[^0-9]/g,
+                                ""
+                              );
                             }}
                           />
                           <p style={{ color: "red" }}>*</p>
@@ -953,13 +913,12 @@ export default function DoctorFormAdmin()
                         <p className="text-red-500">{pinCodeError}</p>
                       )}
                     </div>
-
                   </div>
                 </div>
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {doctorsList?.length === 0 ||
-                    doctorDetails?.newDoctor === true ? (
+                  doctorDetails?.newDoctor === true ? (
                     <input
                       type="text"
                       id="area"
@@ -985,7 +944,7 @@ export default function DoctorFormAdmin()
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
                     {doctorsList?.length === 0 ||
-                      doctorDetails?.newDoctor === true ? (
+                    doctorDetails?.newDoctor === true ? (
                       <input
                         type="text"
                         id="district"
@@ -1012,7 +971,7 @@ export default function DoctorFormAdmin()
 
                   <div className="px-2 w-1/2 mt-3">
                     {doctorsList?.length === 0 ||
-                      doctorDetails?.newUser === true ? (
+                    doctorDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="state"
@@ -1071,7 +1030,7 @@ export default function DoctorFormAdmin()
             </button>
           </div>
         </div>
-      </div >
+      </div>
 
       {/* <div className="flex flex-row">
         <div className=" w-full">
