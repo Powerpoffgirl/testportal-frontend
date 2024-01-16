@@ -283,6 +283,9 @@ export default function PatientForm() {
         body: JSON.stringify(newPatientDetails),
       });
       const data = await response.json();
+      if (data.success === false) {
+        toast.error("Member already registerd");
+      }
       if (data.success === true) {
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
@@ -415,15 +418,16 @@ export default function PatientForm() {
           </div>
           <hr />
 
-          <div className=" mt-3">
+          <div className="mt-3">
             <label
-              for="total-experience"
+              htmlFor="gender" // Use "htmlFor" instead of "for"
               className="block text-black text-lg font-semibold"
             >
-              Gender
+              Gender<span className="text-red-500">*</span>{" "}
+              {/* Add asterisk here */}
             </label>
             <Select
-              className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70   bg-white  text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70 bg-white text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               popupClassName="no-border-dropdown-menu"
               id="gender"
               name="gender"
@@ -450,26 +454,28 @@ export default function PatientForm() {
           <div className="flex gap-2">
             <div className="mt-3 w-1/2 flex flex-col">
               <label
-                for="age"
+                htmlFor="age" // Use "htmlFor" instead of "for"
                 className="block text-black text-lg font-semibold"
               >
-                Age
+                Age<span className="text-red-500">*</span>{" "}
+                {/* Add asterisk here */}
               </label>
               <input
                 type="text"
                 id="age"
                 name="age"
                 onChange={handleChange}
-                className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                className="block mt-0 w-full placeholder-gray-400/70 rounded-lg border bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
-              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+              {errors.age && <p className="text-red-500">{errors.age}</p>}
             </div>
             <div className="mt-3 w-1/2 flex flex-col">
               <label
-                for="ageType"
+                htmlFor="ageType" // Use "htmlFor" instead of "for"
                 className="block text-black text-lg font-semibold"
               >
-                Age Type
+                Age Type<span className="text-red-500">*</span>{" "}
+                {/* Add asterisk here */}
               </label>
               <Select
                 className="border rounded-lg h-11"
@@ -491,26 +497,29 @@ export default function PatientForm() {
                   </Select.Option>
                 ))}
               </Select>
-              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+              {errors.ageType && (
+                <p className="text-red-500">{errors.ageType}</p>
+              )}
             </div>
           </div>
 
-          <div className=" mt-3">
+          <div className="mt-3">
             <label
-              for="total-experience"
+              htmlFor="bodyWeight" // Use "htmlFor" instead of "for"
               className="block text-black text-lg font-semibold"
             >
-              Body Weight
+              Body Weight<span className="text-red-500">*</span>{" "}
+              {/* Add asterisk here */}
             </label>
             <input
               type="text"
               id="bodyWeight"
               name="bodyWeight"
               onChange={handleChange}
-              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
-            {errors.totalExperience && (
-              <p className="text-red-500">{errors.totalExperience}</p>
+            {errors.bodyWeight && (
+              <p className="text-red-500">{errors.bodyWeight}</p>
             )}
           </div>
         </div>
@@ -522,17 +531,17 @@ export default function PatientForm() {
           {/* -------name------- */}
           <div className="mt-3">
             <label
-              for="name"
+              htmlFor="name"
               className="block text-black text-lg font-semibold"
             >
-              Name
+              Name<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
               id="name"
               name="name"
               onChange={handleChange}
-              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.name && <p className="text-red-500">{errors.name}</p>}
           </div>
@@ -540,10 +549,11 @@ export default function PatientForm() {
           {/* -----------contact----------- */}
           <div className="mt-3">
             <label
-              for="contact"
+              htmlFor="contactNumber" // Use "htmlFor" instead of "for"
               className="block text-black text-lg font-semibold"
             >
-              Contact Number
+              Contact Number<span className="text-red-500">*</span>{" "}
+              {/* Add asterisk here */}
             </label>
             <input
               type="text"
@@ -555,7 +565,7 @@ export default function PatientForm() {
               onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
-              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {mobileNumberError && (
               <p className="text-red-500">{mobileNumberError}</p>
@@ -653,7 +663,7 @@ export default function PatientForm() {
                           id="pinCode"
                           name="pinCode"
                           onChange={handleChange}
-                          placeholder="Pin Code"
+                          placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                           onInput={(e) => {
                             e.target.value = e.target.value.replace(
@@ -714,7 +724,7 @@ export default function PatientForm() {
                         id="district"
                         name="district"
                         onChange={handleChange}
-                        placeholder="District"
+                        placeholder="District*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
@@ -741,7 +751,7 @@ export default function PatientForm() {
                         id="state"
                         name="state"
                         onChange={handleChange}
-                        placeholder="State"
+                        placeholder="State*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
