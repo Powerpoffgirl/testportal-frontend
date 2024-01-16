@@ -15,8 +15,7 @@ import UserContext from "./userContext";
 import { Popconfirm } from "antd";
 import delete_button from "../assets/delete_button.svg";
 
-export default function EditDoctorForm()
-{
+export default function EditDoctorForm() {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -26,6 +25,8 @@ export default function EditDoctorForm()
   const [open1, setOpen1] = useState(false);
   const onOpenModal = () => setOpen1(true);
   const onCloseModal = () => setOpen1(false);
+  const [doctorsList, setDoctorsList] = useState([]);
+
   const [doctorImage, setDoctorImage] = useState();
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
@@ -36,11 +37,9 @@ export default function EditDoctorForm()
   const [contactNumber, setcontactNumber] = useState(null);
   const [pinCodeError, setPinCodeError] = useState("");
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
@@ -56,24 +55,20 @@ export default function EditDoctorForm()
         body: formData,
       });
 
-      if (!response.ok)
-      {
+      if (!response.ok) {
         toast.error("Error uploading image.");
       }
 
       const data = await response.json();
-      if (response.status === 500)
-      {
+      if (response.status === 500) {
         toast.error("file type not supported");
       }
 
-      if (response.status === 413)
-      {
+      if (response.status === 413) {
         toast.error("file Size is too big try smaller image");
       }
 
-      if (data.success === true)
-      {
+      if (data.success === true) {
         console.log("Image uploaded successfully:", data);
         setDoctorImage(data.profilePicImageUrl);
         toast.success("Image uploaded successfully.");
@@ -100,16 +95,12 @@ export default function EditDoctorForm()
   const open = Boolean(anchorEl);
   const fileInputRef = useRef(null);
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem("doctorId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -127,42 +118,36 @@ export default function EditDoctorForm()
         const data = await response.json();
         console.log("DATA from USE EFFECT response", data?.data);
         setDoctorDetails(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) =>
-    {
+    ...Array.from({ length: 24 }, (v, i) => {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange2 = (e) =>
-  {
+  const handleChange2 = (e) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       // workingDays: e,
@@ -217,28 +202,21 @@ export default function EditDoctorForm()
   //     }
   // };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "pinCode")
-    {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
-      } else
-      {
+      } else {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
 
-    if (name === "contactNumber")
-    {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setmobileNumberError("");
-      } else
-      {
+      } else {
         setmobileNumberError("Please enter a valid Number");
       }
     }
@@ -246,14 +224,16 @@ export default function EditDoctorForm()
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
 
-    if (name === "workingDays")
-    {
+    if (name === "workingDays") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingDays: [...prevDoctorDetails?.workingDays, value],
       }));
-    } else if (name === "workHourFrom" || name === "workHourTo" || name === "interval")
-    {
+    } else if (
+      name === "workHourFrom" ||
+      name === "workHourTo" ||
+      name === "interval"
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -271,8 +251,7 @@ export default function EditDoctorForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -280,8 +259,7 @@ export default function EditDoctorForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -290,13 +268,11 @@ export default function EditDoctorForm()
     setIsEditing(true);
   };
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     setIsEditing(true);
   }, [doctorDetails]);
 
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     // Check if the token exists
     const newDoctorDetails = {
@@ -330,41 +306,29 @@ export default function EditDoctorForm()
       },
       doctorPic: doctorImage,
     };
-    if (newDoctorDetails.name === "")
-    {
+    if (newDoctorDetails.name === "") {
       toast.error("Please write Dr. name");
-    } else if (newDoctorDetails.email === "")
-    {
+    } else if (newDoctorDetails.email === "") {
       toast.error("Please write Email");
-    } else if (newDoctorDetails.contactNumber === "")
-    {
+    } else if (newDoctorDetails.contactNumber === "") {
       toast.error("Please write contact number");
-    } else if (newDoctorDetails.workingDays === "")
-    {
+    } else if (newDoctorDetails.workingDays === "") {
       toast.error("Please write working days");
-    } else if (newDoctorDetails.workingHours === "")
-    {
+    } else if (newDoctorDetails.workingHours === "") {
       toast.error("Please write working hours");
-    } else if (newDoctorDetails.totalExperience === "")
-    {
+    } else if (newDoctorDetails.totalExperience === "") {
       toast.error("Please write total experience");
-    } else if (newDoctorDetails.speciality === "")
-    {
+    } else if (newDoctorDetails.speciality === "") {
       toast.error("Please write speciality");
-    } else if (newDoctorDetails.degree === "")
-    {
+    } else if (newDoctorDetails.degree === "") {
       toast.error("Please write degree");
-    } else if (newDoctorDetails.address?.pinCode === "")
-    {
+    } else if (newDoctorDetails.address?.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (newDoctorDetails.address?.district === "")
-    {
+    } else if (newDoctorDetails.address?.district === "") {
       toast.error("Please write district");
-    } else if (newDoctorDetails.address?.state === "")
-    {
+    } else if (newDoctorDetails.address?.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       console.log("New DOCTOR DETAILS", newDoctorDetails);
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
@@ -373,15 +337,13 @@ export default function EditDoctorForm()
         (value) => value === ""
       );
 
-      if (isEmpty || isEditing === false)
-      {
+      if (isEmpty || isEditing === false) {
         toast.error("Please fill the fields or Update");
         setIsEditing(false);
         return;
       }
 
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/doctorlogin`);
@@ -400,8 +362,7 @@ export default function EditDoctorForm()
       // if (data.statusCode === 400) {
       //   toast.error("Please fill the details");
       // }
-      if (data.success === true)
-      {
+      if (data.success === true) {
         console.log("Doctor updated successfully.");
 
         toast.success("Doctor updated successfully.");
@@ -414,8 +375,7 @@ export default function EditDoctorForm()
     }
   };
 
-  const handleChange1 = (value) =>
-  {
+  const handleChange1 = (value) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: value, // directly set the value, which is the updated array of working days
@@ -480,12 +440,10 @@ export default function EditDoctorForm()
     value: specialty,
   }));
 
-  const handleDeleteDoctor = async () =>
-  {
+  const handleDeleteDoctor = async () => {
     const token = localStorage.getItem("token");
     const doctorId = localStorage.getItem("doctorId");
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
       localStorage.clear();
       navigate("/userlogin");
@@ -499,16 +457,14 @@ export default function EditDoctorForm()
     });
     const data = await response.json();
 
-    if (data.success === true)
-    {
+    if (data.success === true) {
       toast.success("Doctor Deleted successfully");
       navigate("/doctorlogin");
     }
     console.log("DATA from response", data);
   };
 
-  const handleDelete = (workingDay) =>
-  {
+  const handleDelete = (workingDay) => {
     console.log("delete", workingDay);
     const days = doctorDetails.workingDays.filter(
       (doctorDetail) => doctorDetail !== workingDay
@@ -521,39 +477,28 @@ export default function EditDoctorForm()
     });
   };
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
     // Check if the token exists
-    if (doctorDetails.name === "")
-    {
+    if (doctorDetails.name === "") {
       toast.error("Please write name");
-    } else if (doctorDetails.email === "")
-    {
+    } else if (doctorDetails.email === "") {
       toast.error("Please write email");
-    } else if (doctorDetails.contactNumber === "")
-    {
+    } else if (doctorDetails.contactNumber === "") {
       toast.error("Please write contact number");
-    } else if (doctorDetails.totalExperience === "")
-    {
+    } else if (doctorDetails.totalExperience === "") {
       toast.error("Please write total experience");
-    } else if (doctorDetails.degree === "")
-    {
+    } else if (doctorDetails.degree === "") {
       toast.error("Please write degree");
-    } else if (doctorDetails.address.pinCode === "")
-    {
+    } else if (doctorDetails.address.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (doctorDetails.address.district === "")
-    {
+    } else if (doctorDetails.address.district === "") {
       toast.error("Please write district");
-    } else if (doctorDetails.address.state === "")
-    {
+    } else if (doctorDetails.address.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/adminlogin`);
@@ -563,8 +508,7 @@ export default function EditDoctorForm()
         (value) => value === ""
       );
 
-      if (isEmpty || isEditing === false)
-      {
+      if (isEmpty || isEditing === false) {
         toast.error("Please fill the fields or Update");
         setIsEditing(false);
         return;
@@ -580,26 +524,21 @@ export default function EditDoctorForm()
       });
       const data = await response.json();
 
-      if (data.statusCode === 400)
-      {
+      if (data.statusCode === 400) {
         toast.error("Please fill the details");
-      } else
-      {
+      } else {
         toast.error("Contact number already registered");
       }
 
-      if (data.message === "Permission denied")
-      {
+      if (data.message === "Permission denied") {
         toast.error("Permission Denied");
       }
 
-      if (data.statusCode === 500)
-      {
+      if (data.statusCode === 500) {
         toast.error("Enter Unique Values or Values already Exist ");
       }
 
-      if (data.success === true)
-      {
+      if (data.success === true) {
         navigate("/otp", {
           state: { contactNumber: doctorDetails.contactNumber },
         });
@@ -608,8 +547,7 @@ export default function EditDoctorForm()
       console.log("DATA from response", data);
     }
 
-    const handleDelete = (workingDay) =>
-    {
+    const handleDelete = (workingDay) => {
       console.log("delete", workingDay);
       const days = doctorDetails.workingDays.filter(
         (doctorDetail) => doctorDetail !== workingDay
@@ -734,8 +672,7 @@ export default function EditDoctorForm()
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() =>
-                    {
+                    onClick={() => {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -781,7 +718,7 @@ export default function EditDoctorForm()
                 value={doctorDetails?.workingDays}
                 onChange={handleChange1}
                 placeholder="Mon-Fri"
-              // Add other props as needed
+                // Add other props as needed
               >
                 {Daysdropdown.map((option) => (
                   <Select.Option key={option.value} value={option.value}>
@@ -979,8 +916,7 @@ export default function EditDoctorForm()
                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 value={doctorDetails?.contactNumber}
                 onChange={handleChange}
-                onInput={(e) =>
-                {
+                onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -1040,103 +976,190 @@ export default function EditDoctorForm()
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
-                <div className="flex flex-row">
-                  <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      placeholder="House No."
-                      id="houseNo"
-                      name="houseNo"
-                      value={doctorDetails?.address?.houseNo}
-                      onChange={handleChange}
-                      // placeholder="1234"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                <div className="flex lg:flex-row flex-col">
+                  <div class="flex flex-row ">
+                    <div className="px-2 lg:w-1/2  mt-3">
+                      {doctorsList?.length === 0 ||
+                      doctorDetails?.newDoctor === true ? (
+                        <input
+                          type="text"
+                          placeholder="House No."
+                          id="houseNo"
+                          name="houseNo"
+                          onChange={handleChange}
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          placeholder="House No."
+                          id="houseNo"
+                          name="houseNo"
+                          value={doctorDetails?.address?.houseNo}
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )}
+                    </div>
+                    <div className="px-2 lg:w-1/2 mt-3">
+                      {doctorsList?.length === 0 ||
+                      doctorDetails?.newDoctor === true ? (
+                        <input
+                          type="text"
+                          id="floor"
+                          name="floor"
+                          onChange={handleChange}
+                          placeholder="Floor"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          id="floor"
+                          name="floor"
+                          value={doctorDetails?.address?.floor}
+                          placeholder="Floor"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )}
+                    </div>
                   </div>
-                  <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      id="floor"
-                      name="floor"
-                      value={doctorDetails?.address?.floor}
-                      onChange={handleChange}
-                      placeholder="Floor"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                  </div>
-                  <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      id="block"
-                      name="block"
-                      value={doctorDetails?.address?.block}
-                      onChange={handleChange}
-                      placeholder="Block"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {errors.block && (
-                      <p className="text-red-500">{errors.block}</p>
-                    )}
-                  </div>
-                  <div className="px-2 w-full sm:w-1/2 mt-3">
-                    <input
-                      type="text" // Uncomment this line if you want it to be a number input
-                      id="pinCode"
-                      name="pinCode"
-                      value={doctorDetails?.address?.pinCode}
-                      onChange={handleChange}
-                      placeholder="Pin Code"
-                      onInput={(e) =>
-                      {
-                        e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                      }}
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {pinCodeError && (
-                      <p className="text-red-500">{pinCodeError}</p>
-                    )}
+                  <div class="flex flex-row">
+                    <div className="px-2 lg:w-1/2 mt-3">
+                      {doctorsList?.length === 0 ||
+                      doctorDetails?.newDoctor === true ? (
+                        <input
+                          type="text"
+                          id="block"
+                          name="block"
+                          onChange={handleChange}
+                          placeholder="Block"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          id="block"
+                          name="block"
+                          value={doctorDetails?.address?.block}
+                          placeholder="Block"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )}
+
+                      {errors.block && (
+                        <p className="text-red-500">{errors.block}</p>
+                      )}
+                    </div>
+                    <div className="px-2 lg:w-1/2 mt-3">
+                      {doctorsList?.length === 0 ||
+                      doctorDetails?.newDoctor === true ? (
+                        <input
+                          type="text"
+                          id="pinCode"
+                          name="pinCode"
+                          onChange={handleChange}
+                          placeholder="Pin Code"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                          onInput={(e) => {
+                            e.target.value = e.target.value.replace(
+                              /[^0-9]/g,
+                              ""
+                            );
+                          }}
+                        />
+                      ) : (
+                        <input
+                          type="text"
+                          id="pinCode"
+                          name="pinCode"
+                          value={doctorDetails?.address?.pinCode}
+                          placeholder="Pin Code"
+                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        />
+                      )}
+
+                      {pinCodeError && (
+                        <p className="text-red-500">{pinCodeError}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
-
+                {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
-                  <input
-                    type="text"
-                    id="area"
-                    name="area"
-                    value={doctorDetails?.address?.area}
-                    onChange={handleChange}
-                    placeholder="Area/Landmark"
-                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                  />
+                  {doctorsList?.length === 0 ||
+                  doctorDetails?.newDoctor === true ? (
+                    <input
+                      type="text"
+                      id="area"
+                      name="area"
+                      onChange={handleChange}
+                      placeholder="Area/Landmark"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  ) : (
+                    <input
+                      type="text"
+                      id="area"
+                      name="area"
+                      value={doctorDetails?.address?.area}
+                      placeholder="Area/Landmark"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  )}
+
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
 
                 <div className="flex flex-row">
-                  <div className="px-2 w-full sm:w-1/2 mt-3">
-                    <input
-                      type="text"
-                      id="district"
-                      name="district"
-                      value={doctorDetails?.address?.district}
-                      onChange={handleChange}
-                      placeholder="District"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                  <div className="px-2 w-1/2 mt-3">
+                    {doctorsList?.length === 0 ||
+                    doctorDetails?.newDoctor === true ? (
+                      <input
+                        type="text"
+                        id="district"
+                        name="district"
+                        onChange={handleChange}
+                        placeholder="District"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        id="district"
+                        name="district"
+                        value={doctorDetails?.address?.district}
+                        placeholder="District"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
+
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
                     )}
                   </div>
 
-                  <div className="px-2 w-full sm:w-1/2 mt-3">
-                    <input
-                      type="text"
-                      id="state"
-                      name="state"
-                      value={doctorDetails?.address?.state}
-                      onChange={handleChange}
-                      placeholder="State"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                  <div className="px-2 w-1/2 mt-3">
+                    {doctorsList?.length === 0 ||
+                    doctorDetails?.newUser === true ? (
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        onChange={handleChange}
+                        placeholder="State"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        id="state"
+                        name="state"
+                        value={doctorDetails?.address?.state}
+                        placeholder="State"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
+
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>
                     )}

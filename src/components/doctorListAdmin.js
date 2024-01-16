@@ -48,9 +48,22 @@ export default function DoctorListAdmin({ searchTerm }) {
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState("");
+  const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
+
   const [open, setOpen] = useState(false);
   const onOpenModal = () => setOpen(true);
-  const onCloseModal = () => setOpen(false);
+  const onCloseModal = () => {
+    console.log("modal closed");
+    setappointment(false);
+    setotppage(false);
+    setbookingslottoggle(false);
+    setCurrentIndex(0);
+    setCurrentTimeIndex(0);
+    setcontactNumber(null);
+    setmobileNumberError("");
+    setOtp(["", "", "", "", "", ""]);
+    setOpen(false);
+  };
   const [filteredDoctors, setFilteredDoctors] = useState([doctorsList]);
   const navigate = useNavigate();
   const [seconds, setSeconds] = useState(90);
@@ -328,6 +341,50 @@ export default function DoctorListAdmin({ searchTerm }) {
     return { year, monthName, day, dayName };
   }
 
+  function abbreviateAndCombineDays(days) {
+    const weekDays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    const dayIndexes = days.map((day) => weekDays.indexOf(day));
+    let combinedDays = [];
+    let i = 0;
+
+    while (i < dayIndexes.length) {
+      let startDay = weekDays[dayIndexes[i]].substring(0, 3);
+      let endDayIndex = i;
+
+      while (
+        endDayIndex < dayIndexes.length - 1 &&
+        dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1
+      ) {
+        endDayIndex++;
+      }
+
+      let endDay = weekDays[dayIndexes[endDayIndex]].substring(0, 3);
+
+      if (i === endDayIndex) {
+        combinedDays.push(startDay);
+      } else {
+        combinedDays.push(`${startDay}-${endDay}`);
+      }
+
+      i = endDayIndex + 1;
+    }
+
+    return combinedDays.join(" ");
+  }
+
+  const workingDays =
+    selectedDoctor && selectedDoctor.workingDays
+      ? abbreviateAndCombineDays(selectedDoctor.workingDays)
+      : "";
+
   const handleDateClick = (index) => {
     setCurrentIndex(index);
   };
@@ -417,6 +474,15 @@ export default function DoctorListAdmin({ searchTerm }) {
           },
         }}
       >
+        <style>
+          {`
+          .react-responsive-modal-container{
+            overflow-y:hidden;
+             
+          }
+          `}
+        </style>
+
         <div class="flex flex-col ">
           <div class="flex flex-row-reverse md:-mb-14  -mb-14 z-50">
             <button onClick={onCloseModal}>
@@ -429,7 +495,7 @@ export default function DoctorListAdmin({ searchTerm }) {
               <img src={edit_button} class="w-8"></img>
             </button>
           </div>
-          <div className="flex md:flex-row p-2 pt-5 flex-col">
+          <div className="flex md:flex-row p-2 pt-5 flex-col overflow-y-auto h-[80vh]">
             {/* ---------------------------left part--------------------------- */}
             <div className="flex flex-col px-1 md:w-1/2">
               <div className="">
@@ -515,30 +581,51 @@ export default function DoctorListAdmin({ searchTerm }) {
                     About The Doctor
                   </p>
                   <p className=" italic text-gray-600">
-                    Lorem ipsum dolor sit amet consectetur. Vitae dui elit vel
-                    justo facilisi praesent in et donec. Rutrum lorem consequat
-                    tempus fermentum egestas. At gravida enim proin blandit. Non
-                    et arcu arcu mauris augue massa.
+                    {selectedDoctor.about}
                   </p>
                 </div>
 
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black">Timing</p>
                   <div className="flex flex-row  place-content-between">
-                    <div className="flex flex-col ">
-                      <p className="text-gray-600 font-semibold">
-                        Mon - Thur :
-                      </p>
-                      <p className="text-gray-600">10:00 AM - 3:00 PM</p>
-                      <p className="text-gray-600">3:00 AM - 7:00 PM</p>
-                    </div>
-                    <div className="flex flex-col">
-                      <p className="text-gray-600 font-semibold">
-                        Mon - Thur :
-                      </p>
-                      <p className="text-gray-600">10:00 AM - 3:00 PM</p>
-                      <p className="text-gray-600">3:00 AM - 7:00 PM</p>
-                    </div>
+                    {workingDays.split(" ")[0] && (
+                      <div className="flex flex-col">
+                        <p className="text-gray-600 font-semibold">
+                          {workingDays.split(" ")[0]}:
+                        </p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
+                        {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
+                      </div>
+                    )}
+                    {workingDays.split(" ")[1] && (
+                      <div className="flex flex-col">
+                        <p className="text-gray-600 font-semibold">
+                          {workingDays.split(" ")[1]}:
+                        </p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
+                        {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
+                      </div>
+                    )}
+                  </div>
+                  <div className="flex flex-row place-content-between">
+                    {workingDays.split(" ")[2] && (
+                      <div className="flex flex-col">
+                        <p className="text-gray-600 font-semibold">
+                          {workingDays.split(" ")[2]}:
+                        </p>
+                        <p className="text-gray-600">
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourTo}
+                        </p>
+                        {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -551,7 +638,9 @@ export default function DoctorListAdmin({ searchTerm }) {
                     <div className="flex flex-col  bg-white p-1 px-3">
                       <p className="flex place-content-between my-1">
                         <span className="font-medium px-2">Consultation</span>{" "}
-                        <span className="font-bold px-2">Rs1000</span>
+                        <span className="font-bold px-2">
+                          Rs {selectedDoctor.consultationFee}
+                        </span>
                       </p>
                       {!bookingslottoggle && !appointment && (
                         <div>
@@ -775,7 +864,7 @@ export default function DoctorListAdmin({ searchTerm }) {
                             }}
                             style={{ backgroundColor: " #89CFF0" }}
                           >
-                            Book Slots
+                            Show Slots
                           </button>
                         )}
                         {/* {bookingslottoggle && !appointment && (

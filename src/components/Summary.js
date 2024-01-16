@@ -272,7 +272,7 @@ export default function Summary() {
                             ref={componentPDF}
                             style={{ marginLeft: "5%", marginRight: "5%" }}
                         >
-                            <div class="mb-3  text-3xl"
+                            <div class="mb-3  text-3xl "
                                 style={{
                                     display: "flex",
                                     alignItems: "center",
@@ -339,7 +339,7 @@ export default function Summary() {
                                 </div>
                             </div>
                             <div class="printContainer overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-xs mx-auto ">
-                                <table className="text-sm rtl:text-right text-black text-left  border mx-auto">
+                                <table className="text-sm rtl:text-right text-black text-left   mx-auto">
                                     <thead
                                         style={{ backgroundColor: "#89CFF0" }}
                                         className="text-xs text-gray-700 text-left uppercase overflow-x-auto "

@@ -964,6 +964,7 @@ export default function PatientDescription()
                       ...patientDetails.labTests,
                       inputValue,
                     ]);
+
                     setTimeout(() =>
                     {
                       e.target.value = "";
