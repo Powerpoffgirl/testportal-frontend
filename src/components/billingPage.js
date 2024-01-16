@@ -37,6 +37,7 @@ export default function BillingPage({ name, contactNo, gender, age })
   // const [index, setIndex] = useState(0);
   const [patientReport, setPatientReport] = useState({
     testAsked: [],
+    patientId: "",
   });
   const [patientDetails, setPatientDetails] = useState({
     medicineName: [],
@@ -301,7 +302,7 @@ export default function BillingPage({ name, contactNo, gender, age })
 
   const handleBlur = (e, index) =>
   {
-
+    const patientId = localStorage.getItem("selectedPatientId");
     const { value } = e.target;
     const newInputValues = [...inputValues];
     console.log("INPUT VALUES=====", inputValues)
@@ -327,6 +328,7 @@ export default function BillingPage({ name, contactNo, gender, age })
       return {
         ...prevPatientReport,
         testAsked: [...prevPatientReport.testAsked, { id: testId, value: value }],
+        // patientId: patientId
       };
     }
     );
@@ -429,7 +431,7 @@ export default function BillingPage({ name, contactNo, gender, age })
         }
 
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/getall_testBookingByPatientId/${patientId}`,
+          `${baseUrl}/api/v1/doctor/get_labPatient/${patientId}`,
           {
             method: "get",
             headers: {
@@ -442,7 +444,8 @@ export default function BillingPage({ name, contactNo, gender, age })
         const responseData = await response.json();
         console.log("DATA from response getAll_testBooking ", responseData);
 
-        setupdatedData(responseData.data || []);
+        setupdatedData(responseData?.data?.testAsked || []);
+        console.log("DATA from response updated data ", updatedData);
       } catch (error)
       {
         console.error("There was an error fetching test details:", error);
@@ -924,38 +927,38 @@ export default function BillingPage({ name, contactNo, gender, age })
                           value={row.testName}
                           name="testName"
                         >
-                          {row.testName}
+                          {row?.id?.testName}
                         </th>
                         <td
                           className="px-6 py-4 text-sm"
                           value={row.costOfDiagnosticTest}
                           name="price"
                         >
-                          {row.costOfDiagnosticTest}
+                          {row?.id?.costOfDiagnosticTest}
                         </td>
                         <td
                           className="px-6 py-4 text-sm"
                           value={patientReport.technology}
                           name="technology"
                         >
-                          {row.technology}
+                          {row?.id?.technology}
                         </td>
                         <td className="px-6 py-4 text-sm " name="unit">
-                          {row.value}
+                          {row?.value}
                         </td>
                         <td
                           className="px-6 py-4 text-sm "
                           value={patientReport.unit}
                           name="unit"
                         >
-                          {row.unit}
+                          {row?.id?.unit}
                         </td>
                         <td
                           className="px-6 py-4 text-sm"
                           value={patientReport.bioRefInterval}
                           name="price"
                         >
-                          {row.bioRefInterval}
+                          {row?.id?.bioRefInterval}
                         </td>
                         {/* <td className="px-6 py-4">
                           <button onClick={() => deleteRow(index)}><MdOutlineDelete size={25} color="red" /></button>
