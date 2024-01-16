@@ -35,6 +35,12 @@ export default function DoctorListUser({ searchTerm }) {
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
 
+  const [prevAppointment, setprevAppointment] = useState({
+    doctorId: localStorage.getItem('doctorId'),
+    appointmentDate: localStorage.getItem('appointment_date'),
+    appointmentTime: localStorage.getItem('appointment_time')
+  });
+
   const onCloseModal = () => {
     console.log("modal closed");
     setappointment(false);
@@ -138,6 +144,38 @@ export default function DoctorListUser({ searchTerm }) {
   };
 
   const handleBookAppointment = async () => {
+
+    const token = localStorage.getItem("token");
+    console.log("********************previous date*****************************", prevAppointment?.appointmentDate)
+    // if (token) {
+    //   navigate("/edituserform");
+    // }
+
+    console.log("date", keys[currentIndex]);
+    console.log("slot", values[currentIndex][currentTimeIndex].start);
+    if (prevAppointment?.appointmentDate) {
+      //cancel slot
+      const details = {
+        date: prevAppointment?.appointmentDate,
+        time: prevAppointment?.appointmentTime,
+      };
+
+      const response = await fetch(
+        `${baseUrl}/api/v1/cancel_slot/${prevAppointment?.doctorId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Use the stored token
+          },
+          body: JSON.stringify(details),
+        }
+      );
+      toast.success('appointment deleted')
+
+    }
+
+
     console.log("date", keys[currentIndex]);
     console.log("slot", values[currentIndex][currentTimeIndex].start);
 
