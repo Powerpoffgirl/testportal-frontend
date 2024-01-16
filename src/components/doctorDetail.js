@@ -138,14 +138,12 @@ export default function DoctorDetail()
         className="flex min-h-screen relative overflow-auto 
     box-border"
       >
-        <Sidebar></Sidebar>
         <div
           className="flex flex-col bg-customGreen items-center "
           style={{
             width: isTab ? "100%" : "77%",
           }}
         >
-          <PatientHeader line1="Find" line2="Doctors"></PatientHeader>
           <div
             className="flex flex-col bg-white p-2  items-center w-[80%] md:w-[50%]  mt-[2%]"
             style={{ borderRadius: "5px" }}
