@@ -303,15 +303,12 @@ export default function PatientForm()
         body: JSON.stringify(newPatientDetails),
       });
       const data = await response.json();
-<<<<<<< HEAD
-      if (data.success === true)
+      if (data.success === false)
       {
-=======
-      if (data.success === false) {
         toast.error("Member already registerd");
       }
-      if (data.success === true) {
->>>>>>> 6f574caa24b0a975815795ab83f413325d020ac8
+      if (data.success === true)
+      {
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
         toast.success("Member details updated!");
