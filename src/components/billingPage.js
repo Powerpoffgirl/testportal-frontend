@@ -279,9 +279,11 @@ export default function BillingPage({ name, contactNo, gender, age })
   const handleChange = (e, index) =>
   {
     const { name, value } = e.target;
+    console.log("E TARGET VALUE", value)
     const newInputValues = [...inputValues];
+    console.log("INPUT VALUES=====", inputValues)
     newInputValues[index] = value;
-    setInputValues(newInputValues);
+    setInputValues(inputValues);
 
     if (name === "value")
     {
