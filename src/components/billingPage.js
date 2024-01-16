@@ -166,6 +166,7 @@ export default function BillingPage({ name, contactNo, gender, age })
 
   const handleTestAdd =
     (
+      id,
       testId,
       cost,
       bioRef,
@@ -178,6 +179,7 @@ export default function BillingPage({ name, contactNo, gender, age })
       () =>
       {
         const testToAdd = {
+          id: id,
           testPackage: testId,
           price: cost,
           technology: technology,
@@ -293,20 +295,33 @@ export default function BillingPage({ name, contactNo, gender, age })
 
     if (name === "value")
     {
-      setValue(e.target.value);
+      // Assuming that each row has a unique test ID accessible via tableData[index].test._id
+      const testId = tableData[index]?.id;
+
+      // // Find the index of the test in testAsked array
+      // const testIndex = patientReport.testAsked.findIndex((test) => test.id === testId);
+
+      // // If the test is not in testAsked array, add it; otherwise, update the value
+      // if (testIndex === -1)
+      // {
       setPatientReport((prevPatientReport) => ({
         ...prevPatientReport,
-        value: e.target.value,
-        testName: tableData[index]?.testPackage,
-        testCode: tableData[index]?.testCode,
-        department: tableData[index]?.department,
-        sampleType: tableData[index]?.sampleType,
-        costOfDiagnosticTest: tableData[index]?.price,
-        unit: tableData[index]?.units,
-        bioRefInterval: tableData[index]?.bio,
-        technology: tableData[index]?.technology,
-        patientId: patientId,
+        testAsked: [
+          ...prevPatientReport.testAsked,
+          { id: testId, value: e.target.value },
+        ],
       }));
+      //  else
+      // {
+      //   setPatientReport((prevPatientReport) => ({
+      //     ...prevPatientReport,
+      //     testAsked: [
+      //       ...prevPatientReport.testAsked.slice(0, testIndex),
+      //       { id: testId, value: e.target.value },
+      //       ...prevPatientReport.testAsked.slice(testIndex + 1),
+      //     ],
+      //   }));
+      // }
     } else
     {
       setPatientReport((prevPatientReport) => ({
@@ -320,7 +335,7 @@ export default function BillingPage({ name, contactNo, gender, age })
   {
     try
     {
-
+      const patientId = localStorage.getItem("selectedPatientId");
       console.log("consoling value", patientReport);
       if (patientReport.value == null)
       {
@@ -330,9 +345,9 @@ export default function BillingPage({ name, contactNo, gender, age })
       {
         const token = localStorage.getItem("token");
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/create_testBooking`,
+          `${baseUrl}/api/v1/doctor/update_labPatient/${patientId}`,
           {
-            method: "POST",
+            method: "put",
             headers: {
               "Content-Type": "application/json",
               "x-auth-token": token,
@@ -749,6 +764,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                           <li key={test?.id} className="p-4">
                             <div
                               onClick={handleTestAdd(
+                                test?._id,
                                 test?.testName,
                                 test?.costOfDiagnosticTest,
                                 test?.bioRefInterval,
