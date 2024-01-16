@@ -13,7 +13,6 @@ import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaAngleDown } from "react-icons/fa";
 import { Select } from "antd";
 
-
 export default function PatientForm()
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
