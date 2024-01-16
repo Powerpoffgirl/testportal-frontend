@@ -765,7 +765,6 @@ export default function PatientForm()
               style={{
                 display: "flex",
                 flexDirection: "row",
-                // gap: 170,
                 marginBottom: 2,
               }}
             >
