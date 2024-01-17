@@ -39,14 +39,13 @@ export default function DoctorDetail()
   console.log("ARR 4", arr[4]);
   localStorage.setItem("doctorId", arr[4]);
 
+  const doctorId = localStorage.getItem("doctorId");
   useEffect(() =>
   {
     const fetchDoctorDetails = async () =>
     {
       try
       {
-        const doctorId = localStorage.getItem("doctorId");
-
         const response = await fetch(
           `${baseUrl}/api/v1/get_doctor/${doctorId}`,
           {
@@ -66,7 +65,7 @@ export default function DoctorDetail()
       }
     };
     fetchDoctorDetails();
-  }, []);
+  }, [doctorId]);
 
   // const handleChange = (e) =>
   // {

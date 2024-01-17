@@ -84,6 +84,59 @@ export default function PatientForm()
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [phoneNo, setphoneNo] = useState(null);
+  const [patientDetails, setPatientDetails] = useState({
+    name: "",
+    age: "",
+    bodyWeight: "",
+    address: {
+      houseNo: "",
+      floor: "",
+      block: "",
+      area: "",
+      pinCode: "",
+      district: "",
+      state: "",
+    },
+    patientPic: "",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const district = data[0]?.PostOffice[0]?.District;
+        const state = data[0]?.PostOffice[0]?.State; // Corrected to "State" with a capital "S"
+        console.log("District:", district);
+        console.log("State:", state);
+
+        setPatientDetails((prevDetails) => ({
+          ...prevDetails,
+          address: {
+            ...prevDetails.address,
+            district: district,
+            state: state,
+          },
+        }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (patientDetails?.address?.pinCode) {
+      fetchData();
+    }
+  }, [patientDetails?.address?.pinCode]);
 
   const handleSearch = (event) =>
   {
@@ -287,26 +340,26 @@ export default function PatientForm()
 
   // const incrementedCounter = String(apiHitCounter).padStart(3, "0");
 
-  const [patientDetails, setPatientDetails] = useState({
-    name: "",
-    age: "",
-    ageType: "",
-    phoneNo: "",
-    email: "",
-    refBy: "",
-    registrationNo: "",
-    address: {
-      houseNo: "",
-      floor: "",
-      block: "",
-      area: "",
-      pinCode: "",
-      district: "",
-      state: "",
-    },
-    gender: "",
-    doctorId: "",
-  });
+  // const [patientDetails, setPatientDetails] = useState({
+  //   name: "",
+  //   age: "",
+  //   ageType: "",
+  //   phoneNo: "",
+  //   email: "",
+  //   refBy: "",
+  //   registrationNo: "",
+  //   address: {
+  //     houseNo: "",
+  //     floor: "",
+  //     block: "",
+  //     area: "",
+  //     pinCode: "",
+  //     district: "",
+  //     state: "",
+  //   },
+  //   gender: "",
+  //   doctorId: "",
+  // });
 
   const handleClick = (event) =>
   {
@@ -783,7 +836,7 @@ export default function PatientForm()
                 for="total-experience"
                 className="block text-black text-lg font-semibold"
               >
-                Search
+                Search<span className="text-red-500">*</span>{" "}
               </label>
               <button
                 className="btn btn-primary border py-1 ml-auto px-4 rounded-3xl text-white mb-2"
@@ -840,7 +893,7 @@ export default function PatientForm()
                 for="refBy"
                 className="block text-black text-lg font-semibold"
               >
-                Ref by
+                Ref by<span className="text-red-500">*</span>{" "}
               </label>
             </div>
             <input
@@ -884,7 +937,7 @@ export default function PatientForm()
               for="total-experience"
               className="block text-black text-lg font-semibold"
             >
-              Gender
+              Gender<span className="text-red-500">*</span>{" "}
             </label>
             <Select
               className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70   bg-white  text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -917,7 +970,7 @@ export default function PatientForm()
                 for="degree"
                 className="block text-black text-lg font-semibold"
               >
-                Age
+                Age<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 type="text"
@@ -934,7 +987,7 @@ export default function PatientForm()
                 for="degree"
                 className="block text-black text-lg font-semibold"
               >
-                Age Type
+                Age Type<span className="text-red-500">*</span>{" "}
               </label>
               <Select
                 className="border rounded-lg h-11"
@@ -996,7 +1049,7 @@ export default function PatientForm()
               for="name"
               className="block text-black text-lg font-semibold"
             >
-              Name
+              Name<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
@@ -1015,7 +1068,7 @@ export default function PatientForm()
               for="contact"
               className="block text-black text-lg font-semibold"
             >
-              Contact Number
+              Contact Number<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
@@ -1040,7 +1093,7 @@ export default function PatientForm()
               for="email"
               className="block text-black text-lg font-semibold"
             >
-              Email
+              Email<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
@@ -1073,6 +1126,7 @@ export default function PatientForm()
                           id="houseNo"
                           name="houseNo"
                           onChange={handleChange}
+                          value={patientDetails?.address?.houseNo}
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       ) : (
@@ -1094,6 +1148,7 @@ export default function PatientForm()
                           id="floor"
                           name="floor"
                           onChange={handleChange}
+                          value={patientDetails?.address?.floor}
                           placeholder="Floor"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
@@ -1118,6 +1173,7 @@ export default function PatientForm()
                           id="block"
                           name="block"
                           onChange={handleChange}
+                          value={patientDetails?.address?.block}
                           placeholder="Block"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
@@ -1144,7 +1200,8 @@ export default function PatientForm()
                           id="pinCode"
                           name="pinCode"
                           onChange={handleChange}
-                          placeholder="Pin Code"
+                          value={patientDetails?.address?.pinCode}
+                          placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                           onInput={(e) =>
                           {
@@ -1160,7 +1217,7 @@ export default function PatientForm()
                           id="pinCode"
                           name="pinCode"
                           value={patientDetails?.address?.pinCode}
-                          placeholder="Pin Code"
+                          placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       )}
@@ -1180,6 +1237,7 @@ export default function PatientForm()
                       id="area"
                       name="area"
                       onChange={handleChange}
+                      value={patientDetails?.address?.area}
                       placeholder="Area/Landmark"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
@@ -1206,6 +1264,7 @@ export default function PatientForm()
                         id="district"
                         name="district"
                         onChange={handleChange}
+                        value={patientDetails?.address?.district}
                         placeholder="District"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -1233,6 +1292,7 @@ export default function PatientForm()
                         id="state"
                         name="state"
                         onChange={handleChange}
+                        value={patientDetails?.address?.state}
                         placeholder="State"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
