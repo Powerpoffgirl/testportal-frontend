@@ -190,7 +190,7 @@ export default function DoctorListUser({ searchTerm })
           body: JSON.stringify(details),
         }
       );
-      toast.success('appointment deleted')
+      // toast.success('appointment deleted')
 
     }
 
@@ -560,7 +560,7 @@ export default function DoctorListUser({ searchTerm })
             {/* <button><img src={delete_button} class="w-8"></img></button>
             <button><img src={edit_button} class="w-8"></img></button> */}
           </div>
-          <div className="flex md:flex-row p-2 pt-5 flex-col overflow-y-auto  h-[80vh]">
+          <div className="flex md:flex-row p-2 pt-5 flex-col overflow-y-auto  h-[90vh] md:h-auto">
             {/* ---------------------------left part--------------------------- */}
             <div className="flex flex-col px-1 md:w-1/2">
               <div className="">

@@ -599,7 +599,7 @@ export default function EditAppointment() {
         <div class=" ">
           <div className="flex lg:flex-row  pt-5 flex-col ">
             {/* ---------------------------left part--------------------------- */}
-            <div className="flex flex-col  px-1 lg:w-5/12 xl:mr-10 ">
+            <div className="flex flex-col max-w-screen-xsview mx-auto md:max-w-screen-sview lg:max-w-screen-xsview xl:max-w-screen-sview xl:mx-1 2xl:max-w-screen-lg">
               <div className=" mx-auto">
                 {selectedDoctor?.doctorPic ? (
                   <img
@@ -667,7 +667,7 @@ export default function EditAppointment() {
             </div>
 
             {/* --------------------------------right part-------------------------------- */}
-            <div className="flex flex-col   lg:w-6/12 px-2 xl:mr-16 ">
+            <div className="flex flex-col max-w-screen-xsview mx-auto md:max-w-screen-sview lg:max-w-screen-xsview xl:mx-1 xl:max-w-screen-sview 2xl:max-w-screen-lg ">
               <div className=" py-1 mb-2">
                 <p className="text-lg font-medium text-black ">SPECIALITY</p>
                 <div className="flex flex-wrap ">
