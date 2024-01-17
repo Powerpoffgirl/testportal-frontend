@@ -199,7 +199,7 @@ const UserOTP = () => {
               maxLength={6}
               onChange={handleMobileNumberChange}
               onInput={(e) => {
-                e.target.value = e.target.value.replace(/[^0-9]/g, '');
+                e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
             />
             <p className="error_message">{otperror}</p>
@@ -209,7 +209,8 @@ const UserOTP = () => {
               fontWeight: 400,
               fontSize: "16px",
               display: "flex",
-              marginLeft: "40%",
+              marginLeft: "55%",
+              marginTop: "-5%",
             }}
           >
             <p className="timer" style={{ color: "#666", cursor: "pointer" }}>
