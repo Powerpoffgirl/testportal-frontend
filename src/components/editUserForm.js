@@ -354,7 +354,7 @@ export default function EditUserForm() {
       gender: e,
     }));
   };
-  const [selectedOption, setSelectedOption] = useState(null);
+
   const handleChange3 = (e) => {
     if (e === "add-member") {
       navigate("/patientform");
@@ -528,10 +528,13 @@ export default function EditUserForm() {
       console.log("EXSISTING APPOINTMENT", existingAppointment);
 
       if (existingAppointment) {
+        const oldappointmentDate = localStorage.getItem("EditAppointmentDate");
+        const oldappointmentTime = localStorage.getItem("EditAppointmentTime");
+
         toast.error("An appointment already exists with this doctor.");
         const details = {
-          date: appointmentDate,
-          time: appointmentTime,
+          date: oldappointmentDate,
+          time: oldappointmentDate,
         };
         const response = await fetch(
           `${baseUrl}/api/v1/cancel_slot/${appointmentDetails?.doctorId}`,
@@ -547,7 +550,8 @@ export default function EditUserForm() {
 
         const data = await response.json();
         console.log("=====DATA=====", data);
-        return;
+        // navigate("/appointmentlistuser");
+        // return;
       } else {
         const response = await fetch(
           `${baseUrl}/api/v1/user/create_appointment`,
@@ -575,6 +579,47 @@ export default function EditUserForm() {
         }
         console.log("DATA from response", data);
       }
+    }
+
+    const selectedDate = localStorage.getItem("bookSlotDate");
+    const selectedTime = localStorage.getItem("bookSlotTime");
+    const selectedDoctor = localStorage.getItem("SelectedDoc");
+
+    const bookslot = {
+      date: selectedDate,
+      time: selectedTime,
+    };
+    const response = await fetch(
+      `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookslot),
+      }
+    );
+
+    const data = await response.json();
+
+    console.log("slot booked", data);
+    if (data.success === true) {
+      // toast.success("Slot selected Successfully!");
+      localStorage.setItem(
+        "appointment_date",
+        data?.doctorSlot?.date?.split("T")[0]
+      );
+      localStorage.setItem("appointment_time", data?.doctorSlot?.startTime);
+      navigate("/appointmentlistuser");
+      localStorage.removeItem("bookSlotDate");
+      localStorage.removeItem("bookSlotTime");
+      localStorage.removeItem("SelectedDoc");
+    } else {
+      toast.error("Slot Not Available");
+      navigate("/doctorlistuser");
+      localStorage.removeItem("bookSlotDate");
+      localStorage.removeItem("bookSlotTime");
+      localStorage.removeItem("SelectedDoc");
     }
   };
 

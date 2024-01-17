@@ -202,34 +202,38 @@ export default function DoctorListUser({ searchTerm })
       date: keys[currentIndex],
       time: values[currentIndex][currentTimeIndex].start,
     };
+
+    localStorage.setItem("bookSlotDate", keys[currentIndex])
+    localStorage.setItem("bookSlotTime", values[currentIndex][currentTimeIndex].start)
     console.log("selected doctor", selectedDoctor?._id);
-    const response = await fetch(
-      `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
-      {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookslot),
-      }
-    );
+    localStorage.setItem("SelectedDoc", selectedDoctor?._id)
+    // const response = await fetch(
+    //   `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
+    //   {
+    //     method: "post",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(bookslot),
+    //   }
+    // );
 
-    const data = await response.json();
+    // const data = await response.json();
 
-    console.log("slot booked", data);
-    if (data.success === true)
-    {
-      // toast.success("Slot selected Successfully!");
-      navigate("/edituserform");
-    } else
-    {
-      toast.error("Slot Not Available");
-    }
+    // console.log("slot booked", data);
+    // if (data.success === true)
+    // {
+    //   // toast.success("Slot selected Successfully!");
+    //   navigate("/edituserform");
+    // } else
+    // {
+    //   toast.error("Slot Not Available");
+    // }
     localStorage.setItem(
       "appointment_date",
-      data?.doctorSlot?.date?.split("T")[0]
+      keys[currentIndex]
     );
-    localStorage.setItem("appointment_time", data?.doctorSlot?.startTime);
+    localStorage.setItem("appointment_time", values[currentIndex][currentTimeIndex].start);
 
     // showappointment();
     // showSlot();
