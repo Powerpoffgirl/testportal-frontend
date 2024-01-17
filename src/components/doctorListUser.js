@@ -190,7 +190,7 @@ export default function DoctorListUser({ searchTerm })
           body: JSON.stringify(details),
         }
       );
-      toast.success('appointment deleted')
+      // toast.success('appointment deleted')
 
     }
 
