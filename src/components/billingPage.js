@@ -37,7 +37,7 @@ export default function BillingPage({ name, contactNo, gender, age })
   // const [index, setIndex] = useState(0);
   const [patientReport, setPatientReport] = useState({
     testAsked: [],
-    patientId: "",
+    // patientId: "",
   });
   const [patientDetails, setPatientDetails] = useState({
     medicineName: [],
@@ -372,10 +372,13 @@ export default function BillingPage({ name, contactNo, gender, age })
       // }
 
 
+
     } catch (error)
     {
       console.error("There was an error verifying the OTP:", error);
     }
+
+    navigate(`/summary`)
   };
 
   useEffect(() =>
@@ -1002,11 +1005,11 @@ export default function BillingPage({ name, contactNo, gender, age })
                     padding: "2px",
                     color: 'white'
                   }}
-                  onClick={() => navigate(`/summary`)}
+                  onClick={handleSave}
                 >
                   Lab Report
                 </button>
-                <button
+                {/* <button
                   class="mx-4"
                   style={{
                     height: "40px",
@@ -1020,7 +1023,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                   onClick={handleSave}
                 >
                   Confirm
-                </button>
+                </button> */}
               </div>
             </div>
           </div>

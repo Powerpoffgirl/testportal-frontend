@@ -5,6 +5,14 @@ import Header from "./header";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import PatientHeader from "./patientHeader";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import education from "../assets/education.svg";
+import home from "../assets/home.svg";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { FaAngleLeft } from "react-icons/fa";
+import { FaAngleRight } from "react-icons/fa";
+import { Tooltip } from "antd";
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#89CFF0"/>
 </svg>`;
@@ -18,13 +26,13 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 
 export default function DoctorDetail()
 {
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-  const baseUrl = process.env.REACT_APP_BASE_URL;
+  // let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  // const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const [doctorDetails, setDoctorDetails] = useState({});
-  const [contactNumber, setContactNumber] = useState("");
-  const [selectedDoctor, setSelectedDoctor] = useState();
-  const navigate = useNavigate();
+  // const [contactNumber, setContactNumber] = useState("");
+  // const [selectedDoctor, setSelectedDoctor] = useState();
+  // const navigate = useNavigate();
 
   console.log("Current URL", window.location.href);
   const arr = window.location.href.split("/");
@@ -60,81 +68,842 @@ export default function DoctorDetail()
     fetchDoctorDetails();
   }, []);
 
-  const handleChange = (e) =>
+  // const handleChange = (e) =>
+  // {
+  //   setContactNumber(e.target.value);
+  // };
+
+  // const handleSendOTP = async () =>
+  // {
+  //   // Define the request body and the API endpoint
+  //   const requestBody = {
+  //     contactNumber: contactNumber,
+  //   };
+  //   const apiUrl = `${baseUrl}/api/v1/user/register_user`;
+
+  //   try
+  //   {
+  //     // Send the POST request
+  //     const response = await fetch(apiUrl, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(requestBody),
+  //     });
+
+  //     // Convert the response to JSON
+  //     const data = await response.json();
+
+  //     // Check the response status
+  //     if (response.ok)
+  //     {
+  //       console.log("OTP sent successfully", data);
+  //       localStorage.setItem("userId", data.data._id);
+  //       navigate("/userotp", { state: { doctor: selectedDoctor } });
+  //     } else if (response.status === 403)
+  //     {
+  //       console.log("User verified");
+
+  //       console.log("=========USER RESPONSE DATA========", data?.data)
+  //       const response1 = await fetch(`${baseUrl}/api/v1/user/login_user`, {
+  //         method: "post",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify({
+  //           contactNumber: data?.data?.contactNumber,
+  //           password: data?.data?.password,
+  //         }),
+  //       });
+  //       const data1 = await response1.json();
+
+  //       if (data1.success === true)
+  //       {
+
+  //         localStorage.setItem("token", data1.token);
+  //         // setSelectedDoctor(doctorDetails)
+  //         console.log("==============SELECTED DOCTOR=============", selectedDoctor)
+  //         navigate("/bookappointment", { state: { doctor: selectedDoctor } });
+
+  //       }
+
+  //     } else
+  //     {
+  //       console.error("Error sending OTP:", data);
+  //     }
+  //   } catch (error)
+  //   {
+  //     console.error("Error during the API call:", error);
+  //   }
+  // };
+
+  // console.log("DOCTOR DETAILS", doctorDetails);
+  // console.log("CONTACT NUMBER", contactNumber);
+  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  const [selectedDoctor, setSelectedDoctor] = useState("");
+  const [open, setOpen] = useState(false);
+  const [contactNumber, setcontactNumber] = useState(null);
+  const [mobileNumberError, setmobileNumberError] = useState("");
+
+  const [otppage, setotppage] = useState(false);
+  const [bookingslottoggle, setbookingslottoggle] = useState(true);
+  const [appointment, setappointment] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [resendClicked, setResendClicked] = useState(false);
+  const [seconds, setSeconds] = useState(90);
+  const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
+
+  const onOpenModal = () => setOpen(true);
+  const onCloseModal = () => setOpen(false);
+  const navigate = useNavigate();
+  const [otp, setOtp] = useState(["", "", "", "", "", ""]);
+
+  const [appointmentDetails, setAppointmentDetails] = useState(null);
+
+  const showappointment = () =>
   {
-    setContactNumber(e.target.value);
+    setappointment(!appointment);
   };
 
-  const handleSendOTP = async () =>
+  const handleChange = (e) =>
   {
-    // Define the request body and the API endpoint
-    const requestBody = {
-      contactNumber: contactNumber,
-    };
-    const apiUrl = `${baseUrl}/api/v1/user/register_user`;
-
-    try
+    let { name, value } = e.target;
+    console.log(value);
+    if (value.length != 10)
     {
-      // Send the POST request
-      const response = await fetch(apiUrl, {
-        method: "POST",
+      setmobileNumberError("Please enter a valid number");
+    }
+    if (value.length == 10)
+    {
+      setmobileNumberError("");
+    }
+    setcontactNumber(value);
+    console.log(contactNumber);
+  };
+
+  const goToNext = () =>
+  {
+    const isLastItem = currentIndex === bookingslot.length - 1;
+    const nextIndex = isLastItem ? 0 : currentIndex + 1;
+    setCurrentIndex(nextIndex);
+    console.log(currentIndex);
+  };
+
+  const bookingslot = selectedDoctor.slots;
+  let processedSlots = {};
+
+  console.log("===============BOOKING SLOTS==============", bookingslot);
+  for (let i in bookingslot)
+  {
+    let objTitle = bookingslot[i].date.split("T")[0];
+    // Use the title as the index
+    processedSlots[objTitle] = [];
+  }
+
+  for (let i in bookingslot)
+  {
+    if (bookingslot[i].date.split("T")[0] in processedSlots)
+    {
+      processedSlots[bookingslot[i].date.split("T")[0]].push({
+        start: bookingslot[i].startTime,
+        end: bookingslot[i].endTime,
+        isBooked: bookingslot[i].isBooked,
+        _id: bookingslot[i]._id,
+      });
+    }
+  }
+
+  const keys = Object.keys(processedSlots);
+  // console.log(keys)
+  const values = Object.values(processedSlots);
+
+  const goToPrev = () =>
+  {
+    const isFirstItem = currentIndex === 0;
+    const prevIndex = isFirstItem ? bookingslot.length - 1 : currentIndex - 1;
+    setCurrentIndex(prevIndex);
+    console.log(currentIndex);
+  };
+
+
+  function getYearMonthDay(dateString)
+  {
+    // Create a new Date object using the provided date string
+    const date = new Date(dateString);
+
+    // Get the year, month, day, and day of the week from the date
+    const year = date.getFullYear(); // Retrieves the year as a four-digit number
+    const month = date.getMonth() + 1; // getMonth() returns 0-11, so adding 1 for human-readable format
+    const day = date.getDate(); // Retrieves the day of the month
+    const dayOfWeek = date.getDay(); // Retrieves the day of the week (0-6)
+    // console.log(month)
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const dayName = dayNames[dayOfWeek];
+
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const monthName = monthNames[month - 1];
+
+    return { year, monthName, day, dayName };
+  }
+
+  const handleDateClick = (index) =>
+  {
+    setCurrentIndex(index);
+    console.log(currentIndex);
+  };
+
+  const handleTimeClick = (time) =>
+  {
+    // console.log(time)
+    setCurrentTimeIndex(time);
+    console.log(currentTimeIndex);
+  };
+
+  const workingDays =
+    selectedDoctor && selectedDoctor.workingDays
+      ? abbreviateAndCombineDays(selectedDoctor.workingDays)
+      : "";
+  const [doctorConsultationFee, setdoctorConsultationFee] = useState();
+  useEffect(() =>
+  {
+    const fetchAppointmentDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const appointmentId = localStorage.getItem("appointmentId");
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(
+          `${baseUrl}/api/v1/user/get_appointmentById/${appointmentId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        console.log(
+          "DATA from USE EFFECT get_appointmentById response",
+          data?.data
+        );
+        console.log(
+          "consultation fee ",
+          data?.data?.doctorId?.consultationFee
+        );
+        setdoctorConsultationFee(data?.data?.doctorId?.consultationFee)
+
+        setSelectedDoctor({
+          _id: data?.data?.doctorId?._id,
+          name: data?.data?.doctorId?.name,
+          consultationFee: data?.data?.doctorId?.consultationFee,
+          speciality: data?.data?.doctorId?.speciality,
+          degree: data?.data?.doctorId?.degree,
+          email: data?.data?.doctorId?.email,
+          registrationNo: data?.data?.doctorId?.registrationNo,
+          totalExperience: data?.data?.doctorId.totalExperience,
+          about: data?.data?.doctorId?.about,
+          issues: data?.data?.doctorId?.issues,
+          address: {
+            houseNo: data?.data?.doctorId?.address?.houseNo,
+            block: data?.data?.doctorId?.address?.block,
+            area: data?.data?.doctorId?.address?.area,
+            district: data?.data?.doctorId?.address?.district,
+            state: data?.data?.doctorId?.address?.state,
+            pinCode: data?.data?.doctorId?.address?.pinCode,
+          },
+          workingHours: data?.data?.doctorId?.workingHours,
+          slots: data?.data?.doctorId?.slots,
+          appointmentDate: {
+            date: data?.data?.doctorId?.date,
+            time: data?.data?.doctorId?.time,
+          },
+          workingDays: data?.data?.doctorId?.workingDays, // Include the timing property if available
+        });
+
+        setAppointmentDetails(data?.data);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchAppointmentDetails();
+  }, []);
+
+  function abbreviateAndCombineDays(days)
+  {
+    const weekDays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    const dayIndexes = days.map((day) => weekDays.indexOf(day));
+    let combinedDays = [];
+    let i = 0;
+
+    while (i < dayIndexes.length)
+    {
+      let startDay = weekDays[dayIndexes[i]].substring(0, 3);
+      let endDayIndex = i;
+
+      while (
+        endDayIndex < dayIndexes.length - 1 &&
+        dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1
+      )
+      {
+        endDayIndex++;
+      }
+
+      let endDay = weekDays[dayIndexes[endDayIndex]].substring(0, 3);
+
+      if (i === endDayIndex)
+      {
+        combinedDays.push(startDay);
+      } else
+      {
+        combinedDays.push(`${startDay}-${endDay}`);
+      }
+
+      i = endDayIndex + 1;
+    }
+
+    return combinedDays.join(" ");
+  }
+
+  const [input, setInput] = useState("");
+
+  const handleOtp = async () =>
+  {
+    const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ contactNumber: contactNumber }),
+    });
+  }
+
+
+  const showSlot = () =>
+  {
+    setbookingslottoggle(!bookingslottoggle);
+  };
+
+  const handleBookAppointment = async () =>
+  {
+    console.log("date", keys[currentIndex]);
+    console.log("slot", values[currentIndex][currentTimeIndex].start);
+    const bookslot = {
+      date: keys[currentIndex],
+      time: values[currentIndex][currentTimeIndex].start,
+    };
+    console.log("selected doctor", selectedDoctor?._id);
+    const response = await fetch(
+      `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
+      {
+        method: "post",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(requestBody),
-      });
-
-      // Convert the response to JSON
-      const data = await response.json();
-
-      // Check the response status
-      if (response.ok)
-      {
-        console.log("OTP sent successfully", data);
-        localStorage.setItem("userId", data.data._id);
-        navigate("/userotp", { state: { doctor: selectedDoctor } });
-      } else if (response.status === 403)
-      {
-        console.log("User verified");
-
-        console.log("=========USER RESPONSE DATA========", data?.data)
-        const response1 = await fetch(`${baseUrl}/api/v1/user/login_user`, {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            contactNumber: data?.data?.contactNumber,
-            password: data?.data?.password,
-          }),
-        });
-        const data1 = await response1.json();
-
-        if (data1.success === true)
-        {
-
-          localStorage.setItem("token", data1.token);
-          // setSelectedDoctor(doctorDetails)
-          console.log("==============SELECTED DOCTOR=============", selectedDoctor)
-          navigate("/bookappointment", { state: { doctor: selectedDoctor } });
-
-        }
-
-      } else
-      {
-        console.error("Error sending OTP:", data);
+        body: JSON.stringify(bookslot),
       }
-    } catch (error)
+    );
+
+    const data = await response.json();
+
+    console.log("slot booked", data);
+    localStorage.setItem(
+      "appointment_date",
+      data?.doctorSlot?.date?.split("T")[0]
+    );
+    localStorage.setItem("appointment_time", data?.doctorSlot?.startTime);
+
+    showappointment();
+
+    showSlot();
+
+    if (data.success === true)
     {
-      console.error("Error during the API call:", error);
+      toast.success("Slot selected Successfully!");
+      navigate("/edituserform");
+    } else
+    {
+      toast.error("Please book another slot", {
+        // position: "top-center",
+      });
     }
   };
 
-  console.log("DOCTOR DETAILS", doctorDetails);
-  console.log("CONTACT NUMBER", contactNumber);
+
+
+
+  const handleOptionSelect = (selectedValue) =>
+  {
+    // Check if the selected issue is already in the list
+    if (!appointmentDetails.issues.includes(selectedValue))
+    {
+      // If not, add it to the list
+      setAppointmentDetails((prevDetails) => ({
+        ...prevDetails,
+        issues: [...prevDetails.issues, selectedValue],
+      }));
+    }
+
+    // Optionally, clear the input after selection
+    setInput("");
+  };
+
+
   return (
     <>
-      <div
+
+      <div>
+        <div class=" ">
+          <div className="flex lg:flex-row  pt-5 flex-col ">
+            {/* ---------------------------left part--------------------------- */}
+            <div className="flex flex-col  px-1 lg:w-5/12 xl:mr-10 ">
+              <div className=" mx-auto">
+                {selectedDoctor?.doctorPic ? (
+                  <img
+                    src={selectedDoctor?.doctorPic}
+                    alt="doctorimage"
+                    className=" max-w-fit"
+                  ></img>
+                ) : (
+                  <AccountCircleIcon
+                    style={{ height: '20%', width: '20%', color: "#B1DAED", }}
+                  />
+                )}
+              </div>
+              <div className="flex flex-col  py-4 px-5 bg-white mt-1">
+                <p className="text-xs text-black font-medium mb-2">
+                  Registration No. :- {doctorDetails?.registrationNo}
+                </p>
+
+                <p className="text-black text-3xl font-medium mb-2">
+                  Dr. {doctorDetails?.name}
+                </p>
+                <div className="flex flex-row">
+                  <div>
+                    <img src={education} className="w-5 py-2 "></img>
+                  </div>
+                  <div className="ml-1">
+                    {doctorDetails?.degree?.split(",")?.map((item) => (
+                      <p className="text-gray-600 text-xl mb-1">{item}</p>
+                    ))}
+                  </div>
+                </div>
+                <p className="text-gray-600 text-xl mb-2">
+                  {doctorDetails?.totalExperience} Years Experience
+                </p>
+
+                <div className="flex flex-row space-x-2">
+                  <div className="mt-2">
+                    <img
+                      src={home}
+                      alt="a"
+                      style={{ minWidth: "15px", maxWidth: "16px" }}
+                    ></img>
+                  </div>
+                  <div className="flex flex-wrap">
+                    <p className="text-gray-600 text-xl  ">
+                      {doctorDetails?.address?.houseNo +
+                        " " +
+                        doctorDetails?.address?.block +
+                        " " +
+                        doctorDetails?.address?.area +
+                        ", " +
+                        doctorDetails?.address?.district +
+                        ", "
+
+                      }
+                    </p>
+                    <p className="text-gray-600 text-xl  ">
+                      {doctorDetails?.address?.state +
+                        " " +
+                        doctorDetails?.address?.pinCode}
+                    </p>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* --------------------------------right part-------------------------------- */}
+            <div className="flex flex-col   lg:w-6/12 px-2 xl:mr-16 ">
+              <div className=" py-1 mb-2">
+                <p className="text-lg font-medium text-black ">SPECIALITY</p>
+                <div className="flex flex-wrap ">
+                  {doctorDetails?.speciality?.map((item, index) =>
+                  {
+                    return (
+                      <p
+                        key={index}
+                        className="bg-white rounded-xl py-1 px-4 mx-2 my-1 "
+                      >
+                        {item}
+                      </p>
+                    );
+                  })}
+                </div>
+              </div>
+              <div className=" py-1 mb-2">
+                <p className="text-lg font-medium text-black">
+                  About The Doctor
+                </p>
+                <p className=" italic text-gray-600">{doctorDetails?.about}</p>
+              </div>
+
+              <div className=" py-1 mb-2">
+                <p className="text-lg font-medium text-black">Timing</p>
+                <div className="flex flex-row  place-content-between px-3">
+                  {workingDays.split(" ")[0] && (
+                    <div className="flex flex-col">
+                      <p className="text-gray-600 font-semibold">
+                        {workingDays.split(" ")[0]}:
+                      </p>
+                      <p className="text-gray-600">
+                        {doctorDetails?.workingHours?.workHourFrom} -{" "}
+                        {doctorDetails?.workingHours?.workHourTo}
+                      </p>
+                      {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
+                    </div>
+                  )}
+                  {workingDays.split(" ")[1] && (
+                    <div className="flex flex-col">
+                      <p className="text-gray-600 font-semibold">
+                        {workingDays.split(" ")[1]}:
+                      </p>
+                      <p className="text-gray-600">
+                        {doctorDetails?.workingHours?.workHourFrom} -{" "}
+                        {doctorDetails?.workingHours?.workHourTo}
+                      </p>
+                      {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
+                    </div>
+                  )}
+                </div>
+                <div className="flex flex-row place-content-between">
+                  {workingDays.split(" ")[2] && (
+                    <div className="flex flex-col">
+                      <p className="text-gray-600 font-semibold">
+                        {workingDays.split(" ")[2]}:
+                      </p>
+                      <p className="text-gray-600">
+                        {doctorDetails?.workingHours?.workHourFrom} -{" "}
+                        {doctorDetails?.workingHours?.workHourTo}
+                      </p>
+                      {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className=" py-1 mb-2">
+                <p className="text-lg font-medium text-black">
+                  Select service
+                </p>
+
+                <div className="flex flex-col mb-2">
+                  <div className="flex flex-col  bg-white p-1 px-3">
+                    <p className="flex place-content-between my-1">
+                      <span className="font-medium px-2">Consultation</span>{" "}
+                      <span className="font-bold px-2">
+                        Rs {doctorDetails.consultationFee}
+                      </span>
+                    </p>
+                    {!bookingslottoggle && !appointment && (
+                      <div>
+                        <p className="text-xs text-gray-500 px-2 my-1">
+                          Slot available for Tommorrow{" "}
+                        </p>
+                        <p className="flex flex-row justify-between  my-1 mx-2">
+                          <div className="w-1/3 px-2 h-10">
+                            <div
+                              className="rounded-3xl py-1 px-2 mt-2 text-center"
+                              style={{
+                                backgroundColor: doctorDetails?.slots?.[0]
+                                  ?.isBooked
+                                  ? "#4974a5"
+                                  : "#E5E7EB",
+                                color: doctorDetails?.slots?.[0]?.isBooked
+                                  ? "white"
+                                  : "#1F2937",
+                              }}
+                            >
+                              {doctorDetails?.slots?.[0]?.startTime}
+                            </div>
+                          </div>
+
+                          <div className="w-1/3 px-2 h-10">
+                            <div
+                              className="rounded-3xl py-1 px-2 mt-2 text-center"
+                              style={{
+                                backgroundColor: doctorDetails?.slots?.[0]
+                                  ?.isBooked
+                                  ? "#4974a5"
+                                  : "#E5E7EB",
+                                color: doctorDetails?.slots?.[0]?.isBooked
+                                  ? "white"
+                                  : "#1F2937",
+                              }}
+                            >
+                              {doctorDetails?.slots?.[1]?.startTime}
+                            </div>
+                          </div>
+
+                          <div className="w-1/3 px-2 h-10">
+                            <div
+                              className="rounded-3xl py-1 px-2 mt-2 text-center"
+                              style={{
+                                backgroundColor: doctorDetails?.slots?.[0]
+                                  ?.isBooked
+                                  ? "#4974a5"
+                                  : "#E5E7EB",
+                                color: doctorDetails?.slots?.[0]?.isBooked
+                                  ? "white"
+                                  : "#1F2937",
+                              }}
+                            >
+                              {doctorDetails?.slots?.[2]?.startTime}
+                            </div>
+                          </div>
+                        </p>
+                      </div>
+                    )}
+                    {appointment && (
+                      <div class="mx-2">
+                        <p class="font-medium text-gray-500 ">
+                          Date:{" "}
+                          {
+                            doctorDetails?.slots[currentIndex].date.split(
+                              "T"
+                            )[0]
+                          }
+                        </p>
+                        <p class="font-medium text-gray-500 mb-3">
+                          Time:
+                          {doctorDetails?.slots[currentIndex].startTime}
+                        </p>
+                        <hr />
+                        <p class="mt-2">Mobile Number</p>
+                        <div class="flex flex-row">
+                          {/* <img src={phonelogo} class="pl-1 pr-3"></img> */}
+                          <input
+                            class=" border my-1 placeholder-gray-500 p-1 pl-2"
+                            type="tel"
+                            id="phone-number"
+                            name="contactNumber"
+                            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                            required
+                            value={contactNumber}
+                            onChange={handleChange}
+                          />
+                        </div>
+                        <p class=" text-red-500 ">{mobileNumberError}</p>
+                        <div class="flex flex-row-reverse">
+                          {mobileNumberError.length === 0 ? (
+                            <button
+                              className="text-white text-xs rounded-3xl px-3 py-1 "
+                              onClick={handleOtp}
+                              style={{ backgroundColor: " #89CFF0" }}
+                            >
+                              Send OTP
+                            </button>
+                          ) : (
+                            <button
+                              className="text-white text-xs rounded-3xl px-3 py-1 "
+                              disabled
+                              onClick={handleOtp}
+                              style={{ backgroundColor: " #89CFF0" }}
+                            >
+                              Send OTP
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    <div>
+                      {bookingslottoggle && (
+                        <div className="flex flex-col">
+                          <div className=" flex flex-col text-center space-y-2">
+                            <div class="flex flex-row border-2">
+                              <button
+                                className="text-white text-xs rounded-3xl mr-auto "
+                                onClick={goToPrev}
+                              >
+                                <FaAngleLeft style={{ color: "black" }} />
+                              </button>
+                              <div className="flex flex-row overflow-x-auto mx-2 ">
+                                {keys.map((item, index) =>
+                                {
+                                  const { year, monthName, day, dayName } =
+                                    getYearMonthDay(item);
+                                  // console.log(index)
+                                  const bg =
+                                    currentIndex === index
+                                      ? "bg-[#B3E7FB]"
+                                      : "bg-gray-200";
+                                  return (
+                                    <div
+                                      key={index}
+                                      className="flex flex-col px-2"
+                                      onClick={() =>
+                                      {
+                                        handleDateClick(index);
+                                      }}
+                                    >
+                                      <p>{monthName}</p>
+                                      <p
+                                        className={` p-2 border-2 pl-3 pr-3 rounded-lg ${bg}`}
+                                      >
+                                        {day}
+                                      </p>
+                                      <p>{dayName}</p>
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                              <button
+                                className="text-white text-xs rounded-3xl ml-auto"
+                                onClick={goToNext}
+                              >
+                                <FaAngleRight style={{ color: "black" }} />
+                              </button>
+                            </div>
+                            <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
+                              {values[currentIndex]?.map((item, index) =>
+                              {
+                                const marginb = index === 0 ? " mt-2 -" : "";
+                                if (index === currentTimeIndex)
+                                {
+                                  return (
+                                    <div
+                                      key={index}
+                                      className={` w-1/3 px-2  ${marginb} `}
+                                      disabled={item.isBooked}
+                                    >
+                                      <div
+                                        className={` rounded-3xl py-1 px-2 text-gray-800  bg-[#B3E7FB]`}
+                                        onClick={() =>
+                                        {
+                                          handleTimeClick(index);
+                                        }}
+                                      >
+                                        {item.start}
+                                      </div>
+                                    </div>
+                                  );
+                                } else if (item.isBooked === true)
+                                {
+                                  return (
+                                    <Tooltip
+                                      placement="top"
+                                      title="Booked Slots"
+                                    >
+                                      <div
+                                        key={index}
+                                        className={` w-1/3 px-2 ${marginb}`}
+                                        disabled
+                                      >
+                                        <div
+                                          className={` rounded-3xl py-1  px-2 `}
+                                          style={{
+                                            backgroundColor: "#4974a5",
+                                            color: "white",
+                                          }}
+                                        >
+                                          {item.start}
+                                        </div>
+                                      </div>
+                                    </Tooltip>
+                                  );
+                                } else
+                                {
+                                  return (
+                                    <div
+                                      key={index}
+                                      className={` w-1/3 px-2  ${marginb}`}
+                                      onClick={() =>
+                                      {
+                                        handleTimeClick(index);
+                                      }}
+                                    >
+                                      <div
+                                        className={` rounded-3xl py-1 px-2 text-gray-800 bg-gray-200  `}
+                                      >
+                                        {item.start}
+                                      </div>
+                                    </div>
+                                  );
+                                }
+                              })}
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                    <div className="flex flex-row-reverse my-1">
+                      {!bookingslottoggle && !appointment && (
+                        <button
+                          className="text-white text-xs rounded-3xl px-3 py-1 "
+                          onClick={() =>
+                          {
+                            showSlot();
+                          }}
+                          style={{ backgroundColor: " #89CFF0" }}
+                        >
+                          Show Slots
+                        </button>
+                      )}
+                      {bookingslottoggle && !appointment && (
+                        <div class="flex mx-auto space-x-4 mt-3">
+                          <button
+                            className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
+                            onClick={handleBookAppointment}
+                            style={{ backgroundColor: " #89CFF0" }}
+                          >
+                            Book Appointment
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      {/* <div
         className="flex min-h-screen relative overflow-auto 
     box-border"
       >
@@ -273,7 +1042,8 @@ export default function DoctorDetail()
             Send OTP
           </button>
         </div>
-      </div>
+      </div> */}
     </>
   );
 }
+
