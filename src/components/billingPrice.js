@@ -208,7 +208,7 @@ export default function BillingPrice()
                     return;
                 }
 
-                const response = await fetch(`${baseUrl}/api/v1/doctor/getall_testBookingByPatientId/${patientId}`, {
+                const response = await fetch(`${baseUrl}/api/v1/doctor/get_labPatient/${patientId}`, {
                     method: "get",
                     headers: {
                         "Content-Type": "application/json",
@@ -220,7 +220,7 @@ export default function BillingPrice()
                 console.log("DATA from response", responseData);
 
 
-                setRows(responseData.data || []);
+                setRows(responseData?.data?.testAsked || []);
 
             } catch (error)
             {
@@ -254,16 +254,16 @@ export default function BillingPrice()
                             borderRadius: 20,
                         }}
                     >
-                        <table className="text-sm text-left rtl:text-right text-gray-500 w-full">
+                        <table className="text-sm text-left text-gray-500 w-full">
                             <thead className="text-xs text-gray-700 uppercase bg-gray-50">
                                 <tr>
-                                    <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                                    <th scope="col" className=" text-left text-black text-sm font-semibold ">
                                         Test/package
                                     </th>
-                                    <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                                    <th scope="col" className="py-3 text-left text-black text-sm font-semibold ">
                                         Test Code
                                     </th>
-                                    <th scope="col" className="px-3 py-3 text-black text-sm font-semibold lg:px-6">
+                                    <th scope="col" className=" py-3 text-left text-black text-sm font-semibold ">
                                         Price
                                     </th>
 
@@ -278,9 +278,9 @@ export default function BillingPrice()
 
                                     return (
                                         <tr key={idx}>
-                                            <td style={{ textAlign: 'center' }}>{row.testName}</td>
-                                            <td style={{ textAlign: 'center' }}>{row.testCode}</td>
-                                            <td style={{ textAlign: 'center' }}>{row.costOfDiagnosticTest}</td>
+                                            <td style={{ textAlign: 'left', color: 'black' }}>{row?.id?.testName}</td>
+                                            <td style={{ textAlign: 'left', color: 'black' }}>{row?.id?.testCode}</td>
+                                            <td style={{ textAlign: 'left', color: 'black' }}>{row?.id?.costOfDiagnosticTest}</td>
 
                                         </tr>
                                     );

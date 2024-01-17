@@ -11,6 +11,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { Flex, Select } from "antd";
+import { DatePicker, Space } from 'antd';
 import { IoIosSearch } from "react-icons/io";
 import UserContext from "./userContext";
 
@@ -25,7 +26,8 @@ const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns=
 <path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
 </svg>`;
 
-export default function PatientForm() {
+export default function PatientForm()
+{
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -82,8 +84,62 @@ export default function PatientForm() {
   const [filteredPatients, setFilteredPatients] = useState([]);
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [phoneNo, setphoneNo] = useState(null);
+  const [patientDetails, setPatientDetails] = useState({
+    name: "",
+    age: "",
+    bodyWeight: "",
+    address: {
+      houseNo: "",
+      floor: "",
+      block: "",
+      area: "",
+      pinCode: "",
+      district: "",
+      state: "",
+    },
+    patientPic: "",
+  });
 
-  const handleSearch = (event) => {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const district = data[0]?.PostOffice[0]?.District;
+        const state = data[0]?.PostOffice[0]?.State; // Corrected to "State" with a capital "S"
+        console.log("District:", district);
+        console.log("State:", state);
+
+        setPatientDetails((prevDetails) => ({
+          ...prevDetails,
+          address: {
+            ...prevDetails.address,
+            district: district,
+            state: state,
+          },
+        }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (patientDetails?.address?.pinCode) {
+      fetchData();
+    }
+  }, [patientDetails?.address?.pinCode]);
+
+  const handleSearch = (event) =>
+  {
     const searchTerm = event?.target?.value?.toLowerCase();
 
     setSearchTerm(searchTerm);
@@ -95,22 +151,28 @@ export default function PatientForm() {
     setFilteredPatients(filtered);
   };
 
-  const handlepatientDetails = (patientId) => {
+  const handlepatientDetails = (patientId) =>
+  {
     localStorage.setItem("selectedPatientId", patientId);
     window.location.reload();
   };
 
-  const handleClearStorage = (patientId) => {
+  const handleClearStorage = (patientId) =>
+  {
     localStorage.removeItem("selectedPatientId");
     window.location.reload();
   };
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -131,19 +193,24 @@ export default function PatientForm() {
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.patientPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("selectedPatientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -161,19 +228,24 @@ export default function PatientForm() {
         const data = await response.json();
         console.log("DATA from response", data);
         setPatientDetails(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
 
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/doctorlogin`);
@@ -198,23 +270,27 @@ export default function PatientForm() {
         const registrationIds = data?.data[0].registrationNo;
         setRegistrationId(data?.data[0].registrationNo);
         console.log("regis id ++++++++++++++++++++++++++", registrationId);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("patientPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -223,7 +299,8 @@ export default function PatientForm() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -235,7 +312,8 @@ export default function PatientForm() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
@@ -244,7 +322,8 @@ export default function PatientForm() {
 
   let counter = 0;
 
-  const generatePatientId = () => {
+  const generatePatientId = () =>
+  {
     const currentDate = new Date();
     const year = currentDate.getFullYear().toString().substring(2);
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -254,34 +333,41 @@ export default function PatientForm() {
     return patientId;
   };
 
+  const onChange = (date, dateString) =>
+  {
+    console.log(date, dateString);
+  };
+
   // const incrementedCounter = String(apiHitCounter).padStart(3, "0");
 
-  const [patientDetails, setPatientDetails] = useState({
-    name: "",
-    age: "",
-    ageType: "",
-    phoneNo: "",
-    email: "",
-    refBy: "",
-    registrationNo: "",
-    address: {
-      houseNo: "",
-      floor: "",
-      block: "",
-      area: "",
-      pinCode: "",
-      district: "",
-      state: "",
-    },
-    gender: "",
-    doctorId: "",
-  });
+  // const [patientDetails, setPatientDetails] = useState({
+  //   name: "",
+  //   age: "",
+  //   ageType: "",
+  //   phoneNo: "",
+  //   email: "",
+  //   refBy: "",
+  //   registrationNo: "",
+  //   address: {
+  //     houseNo: "",
+  //     floor: "",
+  //     block: "",
+  //     area: "",
+  //     pinCode: "",
+  //     district: "",
+  //     state: "",
+  //   },
+  //   gender: "",
+  //   doctorId: "",
+  // });
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
@@ -344,53 +430,65 @@ export default function PatientForm() {
     { label: "Other", value: "Other" },
   ];
 
-  const handleChange1 = (e) => {
+  const handleChange1 = (e) =>
+  {
     setPatientDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       gender: e,
     }));
   };
 
-  const handleChange2 = (e) => {
+  const handleChange2 = (e) =>
+  {
     setPatientDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       ageType: e,
     }));
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
-    if (name === "pinCode") {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
+    if (name === "pinCode")
+    {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
         setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
-      } else {
+      } else
+      {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
 
-    if (name === "phoneNo") {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+    if (name === "phoneNo")
+    {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
         setmobileNumberError("");
-      } else {
+      } else
+      {
         setmobileNumberError("Please enter a valid Number");
       }
     }
 
     // const error = validateField(name, value);
     // setErrors({ ...errors, [name]: error });
-    if (name === "gender") {
+    if (name === "gender")
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails.gender,
 
         [name]: value,
       }));
-    } else if (name === "ageType") {
+    } else if (name === "ageType")
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails.ageType,
         [name]: value,
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -410,11 +508,11 @@ export default function PatientForm() {
         "state",
       ].includes(name)
         ? {
-            address: {
-              ...prevPatientDetails.address,
-              [name]: value,
-            },
-          }
+          address: {
+            ...prevPatientDetails.address,
+            [name]: value,
+          },
+        }
         : { [name]: value }),
     }));
 
@@ -428,7 +526,8 @@ export default function PatientForm() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -436,7 +535,8 @@ export default function PatientForm() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -445,7 +545,8 @@ export default function PatientForm() {
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
     const doctorId = localStorage.getItem("doctorId");
 
@@ -471,30 +572,42 @@ export default function PatientForm() {
       doctorId: JSON.stringify(doctorId),
       // patientPic: userImage,
     };
-    if (!newPatientDetails?.gender) {
+    if (!newPatientDetails?.gender)
+    {
       toast.error("Please write gender");
-    } else if (!newPatientDetails?.age) {
+    } else if (!newPatientDetails?.age)
+    {
       toast.error("Please write age");
-    } else if (!newPatientDetails?.ageType) {
+    } else if (!newPatientDetails?.ageType)
+    {
       toast.error("Please write age type");
-    } else if (!newPatientDetails?.name) {
+    } else if (!newPatientDetails?.name)
+    {
       toast.error("Please write name");
-    } else if (!newPatientDetails?.phoneNo) {
+    } else if (!newPatientDetails?.phoneNo)
+    {
       toast.error("Please write contact number");
-    } else if (!newPatientDetails?.email) {
+    } else if (!newPatientDetails?.email)
+    {
       toast.error("Please write email");
-    } else if (!newPatientDetails.address?.pinCode) {
+    } else if (!newPatientDetails.address?.pinCode)
+    {
       toast.error("Please write Pincode");
-    } else if (!/^\d{6}$/.test(newPatientDetails?.address?.pinCode)) {
+    } else if (!/^\d{6}$/.test(newPatientDetails?.address?.pinCode))
+    {
       toast.error("Please enter a valid 6-digit PIN code");
-    } else if (!newPatientDetails.address?.district) {
+    } else if (!newPatientDetails.address?.district)
+    {
       toast.error("Please write district");
-    } else if (!newPatientDetails.address?.state) {
+    } else if (!newPatientDetails.address?.state)
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       const doctorId = localStorage.getItem("doctorId");
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/userlogin`);
@@ -507,7 +620,8 @@ export default function PatientForm() {
           patient?.phoneNo == newPatientDetails?.phoneNo
       );
 
-      if (patient.length > 0) {
+      if (patient.length > 0)
+      {
         // toast.error("Patient with this name and phone no already exists");
         localStorage.setItem("selectedPatientId", patient[0]._id);
         localStorage.setItem("name", patient[0].name);
@@ -525,7 +639,8 @@ export default function PatientForm() {
         localStorage.setItem("pincode", patient[0].address.pinCode);
 
         navigate("/billing");
-      } else {
+      } else
+      {
         const response = await fetch(
           `${baseUrl}/api/v1/doctor/create_labPatient`,
           {
@@ -538,7 +653,8 @@ export default function PatientForm() {
           }
         );
         const data = await response.json();
-        if (data.success === true) {
+        if (data.success === true)
+        {
           onOpenModal();
           localStorage.setItem("selectedPatientId", data.data._id);
           localStorage.setItem("name", newPatientDetails.name);
@@ -673,7 +789,8 @@ export default function PatientForm() {
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() => {
+                    onClick={() =>
+                    {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -712,7 +829,6 @@ export default function PatientForm() {
               style={{
                 display: "flex",
                 flexDirection: "row",
-                // gap: 170,
                 marginBottom: 2,
               }}
             >
@@ -720,7 +836,7 @@ export default function PatientForm() {
                 for="total-experience"
                 className="block text-black text-lg font-semibold"
               >
-                Search
+                Search<span className="text-red-500">*</span>{" "}
               </label>
               <button
                 className="btn btn-primary border py-1 ml-auto px-4 rounded-3xl text-white mb-2"
@@ -728,7 +844,7 @@ export default function PatientForm() {
                   backgroundColor: "#89CFF0",
                 }}
                 onClick={handleClearStorage}
-                // className="block text-black text-sm font-semibold"
+              // className="block text-black text-sm font-semibold"
               >
                 Clear
               </button>
@@ -777,7 +893,7 @@ export default function PatientForm() {
                 for="refBy"
                 className="block text-black text-lg font-semibold"
               >
-                Ref by
+                Ref by<span className="text-red-500">*</span>{" "}
               </label>
             </div>
             <input
@@ -821,7 +937,7 @@ export default function PatientForm() {
               for="total-experience"
               className="block text-black text-lg font-semibold"
             >
-              Gender
+              Gender<span className="text-red-500">*</span>{" "}
             </label>
             <Select
               className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70   bg-white  text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -854,7 +970,7 @@ export default function PatientForm() {
                 for="degree"
                 className="block text-black text-lg font-semibold"
               >
-                Age
+                Age<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 type="text"
@@ -871,7 +987,7 @@ export default function PatientForm() {
                 for="degree"
                 className="block text-black text-lg font-semibold"
               >
-                Age Type
+                Age Type<span className="text-red-500">*</span>{" "}
               </label>
               <Select
                 className="border rounded-lg h-11"
@@ -895,6 +1011,20 @@ export default function PatientForm() {
               </Select>
               {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
+
+          </div>
+          <div className="mt-3 flex flex-col w-full">
+            <label
+              for="degree"
+              className="block text-black text-lg font-semibold"
+            >
+              Date
+            </label>
+            <Space direction="vertical">
+
+              <DatePicker onChange={onChange} />
+            </Space>
+            {/* {errors.degree && <p className="text-red-500">{errors.degree}</p>} */}
           </div>
         </div>
 
@@ -919,7 +1049,7 @@ export default function PatientForm() {
               for="name"
               className="block text-black text-lg font-semibold"
             >
-              Name
+              Name<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
@@ -938,7 +1068,7 @@ export default function PatientForm() {
               for="contact"
               className="block text-black text-lg font-semibold"
             >
-              Contact Number
+              Contact Number<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
@@ -946,7 +1076,8 @@ export default function PatientForm() {
               name="phoneNo"
               onChange={handleChange}
               value={patientDetails?.phoneNo}
-              onInput={(e) => {
+              onInput={(e) =>
+              {
                 e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -962,7 +1093,7 @@ export default function PatientForm() {
               for="email"
               className="block text-black text-lg font-semibold"
             >
-              Email
+              Email<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
@@ -988,13 +1119,14 @@ export default function PatientForm() {
                   <div class="flex flex-row ">
                     <div className="px-2 lg:w-1/2  mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           placeholder="House No."
                           id="houseNo"
                           name="houseNo"
                           onChange={handleChange}
+                          value={patientDetails?.address?.houseNo}
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       ) : (
@@ -1010,12 +1142,13 @@ export default function PatientForm() {
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="floor"
                           name="floor"
                           onChange={handleChange}
+                          value={patientDetails?.address?.floor}
                           placeholder="Floor"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
@@ -1034,12 +1167,13 @@ export default function PatientForm() {
                   <div class="flex flex-row">
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="block"
                           name="block"
                           onChange={handleChange}
+                          value={patientDetails?.address?.block}
                           placeholder="Block"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
@@ -1060,15 +1194,17 @@ export default function PatientForm() {
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="pinCode"
                           name="pinCode"
                           onChange={handleChange}
-                          placeholder="Pin Code"
+                          value={patientDetails?.address?.pinCode}
+                          placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                          onInput={(e) => {
+                          onInput={(e) =>
+                          {
                             e.target.value = e.target.value.replace(
                               /[^0-9]/g,
                               ""
@@ -1081,7 +1217,7 @@ export default function PatientForm() {
                           id="pinCode"
                           name="pinCode"
                           value={patientDetails?.address?.pinCode}
-                          placeholder="Pin Code"
+                          placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       )}
@@ -1095,12 +1231,13 @@ export default function PatientForm() {
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {patientsList?.length === 0 ||
-                  userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                     <input
                       type="text"
                       id="area"
                       name="area"
                       onChange={handleChange}
+                      value={patientDetails?.address?.area}
                       placeholder="Area/Landmark"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
@@ -1121,12 +1258,13 @@ export default function PatientForm() {
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="district"
                         name="district"
                         onChange={handleChange}
+                        value={patientDetails?.address?.district}
                         placeholder="District"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -1148,12 +1286,13 @@ export default function PatientForm() {
 
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="state"
                         name="state"
                         onChange={handleChange}
+                        value={patientDetails?.address?.state}
                         placeholder="State"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
