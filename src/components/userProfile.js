@@ -749,6 +749,7 @@ export default function UserProfile() {
                           id="houseNo"
                           name="houseNo"
                           onChange={handleChange}
+                          value={userDetails?.address?.houseNo}
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       ) : (
@@ -757,7 +758,7 @@ export default function UserProfile() {
                           placeholder="House No."
                           id="houseNo"
                           name="houseNo"
-                          value={patientDetails?.address?.houseNo}
+                          value={userDetails?.address?.houseNo}
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       )}
@@ -770,6 +771,7 @@ export default function UserProfile() {
                           id="floor"
                           name="floor"
                           onChange={handleChange}
+                          value={userDetails?.address?.floor}
                           placeholder="Floor"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
@@ -778,7 +780,7 @@ export default function UserProfile() {
                           type="text"
                           id="floor"
                           name="floor"
-                          value={patientDetails?.address?.floor}
+                          value={userDetails?.address?.floor}
                           placeholder="Floor"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
@@ -802,7 +804,7 @@ export default function UserProfile() {
                           type="text"
                           id="block"
                           name="block"
-                          value={patientDetails?.address?.block}
+                          value={userDetails?.address?.block}
                           placeholder="Block"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
@@ -864,7 +866,7 @@ export default function UserProfile() {
                       type="text"
                       id="area"
                       name="area"
-                      value={patientDetails?.address?.area}
+                      value={userDetails?.address?.area}
                       placeholder="Area/Landmark"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />

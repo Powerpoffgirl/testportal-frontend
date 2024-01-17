@@ -179,6 +179,45 @@ export default function EditUserForm() {
   });
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(
+          `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const district = data[0]?.PostOffice[0]?.District;
+        const state = data[0]?.PostOffice[0]?.State; // Corrected to "State" with a capital "S"
+        console.log("District:", district);
+        console.log("State:", state);
+
+        // Update patientDetails with the District and State information
+        setPatientDetails((prevDetails) => ({
+          ...prevDetails,
+          address: {
+            ...prevDetails.address,
+            district: district,
+            state: state,
+          },
+        }));
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (patientDetails?.address?.pinCode) {
+      fetchData();
+    }
+  }, [patientDetails?.address?.pinCode]);
+
+  useEffect(() => {
     const fetchPatientList = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -236,8 +275,7 @@ export default function EditUserForm() {
 
   console.log("DATE TIME", appointmentDate, appointmentTime);
   const handleChangeIssues = (value) => {
-
-    const cleanedValues = value.filter((item) => item.trim() !== ' ');
+    const cleanedValues = value.filter((item) => item.trim() !== " ");
 
     // Update the state with the cleaned values
     setAppointmentDetails({ ...appointmentDetails, issues: cleanedValues });
@@ -372,8 +410,8 @@ export default function EditUserForm() {
   };
   const [selectedOption, setSelectedOption] = useState(null);
   const handleChange3 = (e) => {
-    if (e === 'add-member') {
-      navigate('/patientform');
+    if (e === "add-member") {
+      navigate("/patientform");
     }
     console.log("HELLOOOOOOOO");
 
@@ -530,7 +568,7 @@ export default function EditUserForm() {
           (appointment?.appointmentDate?.date >=
             appointmentDetails?.appointmentDate?.date ||
             appointment?.appointmentDate?.date <
-            appointmentDetails?.appointmentDate?.date)
+              appointmentDetails?.appointmentDate?.date)
         ) {
           console.log(
             "IDS ARE MATCHING",
@@ -739,7 +777,7 @@ export default function EditUserForm() {
                   htmlFor="name"
                   className="block text-black text-lg font-semibold"
                 >
-                  Name
+                  Name<span className="text-red-500">*</span>{" "}
                 </label>
                 {patientsList?.length === 0 || userDetails?.newUser === true ? (
                   <input
@@ -751,13 +789,12 @@ export default function EditUserForm() {
                     className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                 ) : (
-
                   <Select
                     className="h-11 block w-full placeholder-gray-400 rounded-lg border bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     name="patientName"
                     onChange={handleChange3}
                     placeholder="Select Member"
-                  // value={appointmentDetails?.patientId}
+                    // value={appointmentDetails?.patientId}
                   >
                     {patientsList.map((patient) => (
                       <Select.Option key={patient._id} value={patient._id}>
@@ -798,10 +835,10 @@ export default function EditUserForm() {
                       htmlFor="age"
                       className="block text-black text-lg font-semibold "
                     >
-                      Age
+                      Age<span className="text-red-500">*</span>{" "}
                     </label>
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="age"
@@ -830,10 +867,10 @@ export default function EditUserForm() {
                       className="block text-lg font-semibold text-black font-lato"
                       htmlFor="ageType"
                     >
-                      Age Type
+                      Age Type<span className="text-red-500">*</span>{" "}
                     </label>
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <Select
                         className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
@@ -888,10 +925,10 @@ export default function EditUserForm() {
                       className="block text-lg font-semibold text-black font-lato"
                       htmlFor="gender"
                     >
-                      Gender
+                      Gender<span className="text-red-500">*</span>{" "}
                     </label>
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <Select
                         className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
@@ -952,7 +989,7 @@ export default function EditUserForm() {
                   htmlFor="email1"
                   className="block text-black text-lg font-semibold"
                 >
-                  Body Weight
+                  Body Weight<span className="text-red-500">*</span>{" "}
                 </label>
                 {patientsList?.length === 0 || userDetails?.newUser === true ? (
                   <input
@@ -981,7 +1018,7 @@ export default function EditUserForm() {
                   htmlFor="email2"
                   className="block text-black text-lg font-semibold"
                 >
-                  Appointment Date
+                  Appointment Date<span className="text-red-500">*</span>{" "}
                 </label>
                 <input
                   type="text"
@@ -1000,7 +1037,7 @@ export default function EditUserForm() {
                   htmlFor="email3"
                   className="block text-black text-lg font-semibold"
                 >
-                  Appointment Time
+                  Appointment Time<span className="text-red-500">*</span>{" "}
                 </label>
                 <input
                   type="text"
@@ -1022,7 +1059,7 @@ export default function EditUserForm() {
                   htmlFor="contact"
                   className="block text-black text-lg font-semibold"
                 >
-                  Issues
+                  Issues<span className="text-red-500">*</span>{" "}
                 </label>
                 <div class="">
                   <style>
@@ -1080,7 +1117,7 @@ export default function EditUserForm() {
                   htmlFor="contact"
                   className="block text-black text-lg font-semibold"
                 >
-                  Disease
+                  Disease<span className="text-red-500">*</span>{" "}
                 </label>
                 <Select
                   mode="multiple"
@@ -1138,7 +1175,7 @@ export default function EditUserForm() {
                   <div class="flex flex-row ">
                     <div className="px-2 lg:w-1/2  mt-3">
                       {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                         <input
                           type="text"
                           placeholder="House No."
@@ -1157,10 +1194,10 @@ export default function EditUserForm() {
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       )}
-                    </div >
+                    </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="floor"
@@ -1184,7 +1221,7 @@ export default function EditUserForm() {
                   <div class="flex flex-row">
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="block"
@@ -1210,13 +1247,14 @@ export default function EditUserForm() {
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="pinCode"
                           name="pinCode"
                           onChange={handleChange}
-                          placeholder="Pin Code"
+                          value={patientDetails?.address?.pinCode}
+                          placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                           onInput={(e) => {
                             e.target.value = e.target.value.replace(
@@ -1231,7 +1269,7 @@ export default function EditUserForm() {
                           id="pinCode"
                           name="pinCode"
                           value={patientDetails?.address?.pinCode}
-                          placeholder="Pin Code"
+                          placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       )}
@@ -1245,7 +1283,7 @@ export default function EditUserForm() {
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                  userDetails?.newUser === true ? (
                     <input
                       type="text"
                       id="area"
@@ -1271,12 +1309,13 @@ export default function EditUserForm() {
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="district"
                         name="district"
                         onChange={handleChange}
+                        value={patientDetails?.address?.district}
                         placeholder="District"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -1298,13 +1337,14 @@ export default function EditUserForm() {
 
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="state"
                         name="state"
                         onChange={handleChange}
-                        placeholder="State"
+                        value={patientDetails?.address?.state}
+                        placeholder="State*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
@@ -1313,7 +1353,7 @@ export default function EditUserForm() {
                         id="state"
                         name="state"
                         value={patientDetails?.address?.state}
-                        placeholder="State"
+                        placeholder="State*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
