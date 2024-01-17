@@ -143,6 +143,7 @@ export default function EditUserForm()
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [appointmentList, setAppointmentList] = useState([]);
   const [patientId, setPatientId] = useState(localStorage.getItem("patientId"));
+  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() =>
   {
@@ -190,57 +191,12 @@ export default function EditUserForm()
     patientPic: "",
   });
 
-<<<<<<< HEAD
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch(
-          `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
-          {
-            method: "GET",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        const district = data[0]?.PostOffice[0]?.District;
-        const state = data[0]?.PostOffice[0]?.State; // Corrected to "State" with a capital "S"
-        console.log("District:", district);
-        console.log("State:", state);
-
-        // Update patientDetails with the District and State information
-        setPatientDetails((prevDetails) => ({
-          ...prevDetails,
-          address: {
-            ...prevDetails.address,
-            district: district,
-            state: state,
-          },
-        }));
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
-
-    if (patientDetails?.address?.pinCode) {
-      fetchData();
-    }
-  }, [patientDetails?.address?.pinCode]);
-
-  useEffect(() => {
-    const fetchPatientList = async () => {
-      try {
-=======
   useEffect(() =>
   {
     const fetchPatientList = async () =>
     {
       try
       {
->>>>>>> feb39314702529ad7b4c350d0b6dac06f58a4b13
         const token = localStorage.getItem("token");
         if (!token)
         {
@@ -301,15 +257,12 @@ export default function EditUserForm()
   }, []);
 
   console.log("DATE TIME", appointmentDate, appointmentTime);
-<<<<<<< HEAD
-  const handleChangeIssues = (value) => {
-    const cleanedValues = value.filter((item) => item.trim() !== " ");
-=======
+
+
   const handleChangeIssues = (value) =>
   {
 
     const cleanedValues = value.filter((item) => item.trim() !== ' ');
->>>>>>> feb39314702529ad7b4c350d0b6dac06f58a4b13
 
     // Update the state with the cleaned values
     setAppointmentDetails({ ...appointmentDetails, issues: cleanedValues });
@@ -462,18 +415,12 @@ export default function EditUserForm()
       gender: e,
     }));
   };
-  const [selectedOption, setSelectedOption] = useState(null);
-<<<<<<< HEAD
-  const handleChange3 = (e) => {
-    if (e === "add-member") {
-      navigate("/patientform");
-=======
+
   const handleChange3 = (e) =>
   {
     if (e === 'add-member')
     {
       navigate('/patientform');
->>>>>>> feb39314702529ad7b4c350d0b6dac06f58a4b13
     }
     console.log("HELLOOOOOOOO");
 
@@ -651,14 +598,9 @@ export default function EditUserForm()
           (appointment?.appointmentDate?.date >=
             appointmentDetails?.appointmentDate?.date ||
             appointment?.appointmentDate?.date <
-<<<<<<< HEAD
-              appointmentDetails?.appointmentDate?.date)
-        ) {
-=======
             appointmentDetails?.appointmentDate?.date)
         )
         {
->>>>>>> feb39314702529ad7b4c350d0b6dac06f58a4b13
           console.log(
             "IDS ARE MATCHING",
             appointment?.appointmentDate?.date,
@@ -892,7 +834,7 @@ export default function EditUserForm()
                     name="patientName"
                     onChange={handleChange3}
                     placeholder="Select Member"
-                    // value={appointmentDetails?.patientId}
+                  // value={appointmentDetails?.patientId}
                   >
                     {patientsList?.map((patient) => (
                       <Select.Option key={patient._id} value={patient._id}>
@@ -936,7 +878,7 @@ export default function EditUserForm()
                       Age<span className="text-red-500">*</span>{" "}
                     </label>
                     {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="age"
@@ -968,7 +910,7 @@ export default function EditUserForm()
                       Age Type<span className="text-red-500">*</span>{" "}
                     </label>
                     {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                       <Select
                         className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
@@ -1026,7 +968,7 @@ export default function EditUserForm()
                       Gender<span className="text-red-500">*</span>{" "}
                     </label>
                     {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                       <Select
                         className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
@@ -1281,7 +1223,7 @@ export default function EditUserForm()
                   <div class="flex flex-row ">
                     <div className="px-2 lg:w-1/2  mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           placeholder="House No."
@@ -1303,7 +1245,7 @@ export default function EditUserForm()
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="floor"
@@ -1327,7 +1269,7 @@ export default function EditUserForm()
                   <div class="flex flex-row">
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="block"
@@ -1353,7 +1295,7 @@ export default function EditUserForm()
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="pinCode"
@@ -1390,7 +1332,7 @@ export default function EditUserForm()
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {patientsList?.length === 0 ||
-                  userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                     <input
                       type="text"
                       id="area"
@@ -1416,7 +1358,7 @@ export default function EditUserForm()
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="district"
@@ -1444,7 +1386,7 @@ export default function EditUserForm()
 
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="state"
