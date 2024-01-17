@@ -311,37 +311,6 @@ export default function PatientListUser({ searchTerm }) {
               selectedPatient?.address?.pinCode}
           </text>
 
-          {/* <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
-            <span
-              style={{
-                width: "25px",
-                height: "25px",
-              }}
-              onClick={() => handleEditPatient(selectedPatient?._id)}
-              dangerouslySetInnerHTML={{ __html: svg4 }}
-            ></span>
-            <span
-              style={{
-                width: "25px",
-                height: "25px",
-              }}
-              onClick={() => handleDeletePatient(selectedPatient?._id)}
-              dangerouslySetInnerHTML={{ __html: svg5 }}
-            ></span>
-          </div> */}
-          {/* <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
-            <span className="flex">
-              <span
-                className="mr-8"
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg1 }}
-              ></span>
-              <span
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg2 }}
-              ></span>
-            </span>
-          </div> */}
         </div>
       </Modal>
 
@@ -352,9 +321,9 @@ export default function PatientListUser({ searchTerm }) {
               className="bg-white w-full p-4 sm:px-5 px-1 mb-5"
               key={patient._id}
             >
-              <div className="flex flex-row justify-start items-center">
+              <div className="flex lg:flex-row flex-col justify-start items-center ">
                 <div
-                  className="flex items-center gap-x-2"
+                  className="flex items-center gap-x-2 "
                   onClick={() => findSelectedDoctor(patient._id)}
                 >
                   {patient.patientPic ? (
@@ -386,7 +355,7 @@ export default function PatientListUser({ searchTerm }) {
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-row ms-auto gap-1 sm:gap-4">
+                <div className="flex flex-row ms-auto gap-1 sm:gap-4 pr-5">
                   <button
                     class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
                     onClick={() =>
