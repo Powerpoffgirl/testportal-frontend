@@ -349,16 +349,16 @@ export default function AppointmentListUser({ searchTerm }) {
           >
             {selectedAppointment?.patientId?.address?.houseNo
               ? selectedAppointment?.patientId?.address?.houseNo +
-                " " +
-                selectedAppointment?.patientId?.address?.block +
-                " " +
-                selectedAppointment?.patientId?.address?.area +
-                ", " +
-                selectedAppointment?.patientId?.address?.district +
-                ", " +
-                selectedAppointment?.patientId?.address?.state +
-                " " +
-                selectedAppointment?.patientId?.address?.pinCode
+              " " +
+              selectedAppointment?.patientId?.address?.block +
+              " " +
+              selectedAppointment?.patientId?.address?.area +
+              ", " +
+              selectedAppointment?.patientId?.address?.district +
+              ", " +
+              selectedAppointment?.patientId?.address?.state +
+              " " +
+              selectedAppointment?.patientId?.address?.pinCode
               : " "}
           </text>
         </div>
@@ -447,9 +447,9 @@ export default function AppointmentListUser({ searchTerm }) {
                           </p>
                           {appointment?.appointmentDate?.date
                             ? appointment?.appointmentDate?.date
-                                .split("-")
-                                .reverse()
-                                .join("-")
+                              .split("-")
+                              .reverse()
+                              .join("-")
                             : "No Date"}
                         </h1>
                       </div>
