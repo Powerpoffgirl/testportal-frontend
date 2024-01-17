@@ -1009,7 +1009,7 @@ export default function EditUserForm() {
                   htmlFor="email2"
                   className="block text-black text-lg font-semibold"
                 >
-                  Appointment Date<span className="text-red-500">*</span>
+                  Appointment Date
                 </label>
                 <input
                   type="text"
@@ -1028,7 +1028,7 @@ export default function EditUserForm() {
                   htmlFor="email3"
                   className="block text-black text-lg font-semibold"
                 >
-                  Appointment Time<span className="text-red-500">*</span>
+                  Appointment Time
                 </label>
                 <input
                   type="text"
@@ -1050,7 +1050,7 @@ export default function EditUserForm() {
                   htmlFor="contact"
                   className="block text-black text-lg font-semibold"
                 >
-                  Issues<span className="text-red-500">*</span>
+                  Issues
                 </label>
                 <div class="">
                   <style>
@@ -1108,7 +1108,7 @@ export default function EditUserForm() {
                   htmlFor="contact"
                   className="block text-black text-lg font-semibold"
                 >
-                  Disease<span className="text-red-500">*</span>
+                  Disease
                 </label>
                 <Select
                   mode="multiple"
