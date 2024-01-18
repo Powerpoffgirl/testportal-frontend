@@ -131,7 +131,7 @@ export default function EditUserForm()
   // const { state } = location;
   // console.log("Edit user form state", location);
   // const appointmentId = location.state.oldAppointment
-  // const oldAppointment = state;
+  const oldAppointment = location.state.oldAppointment;
 
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
@@ -638,39 +638,45 @@ export default function EditUserForm()
         const selectedDate = localStorage.getItem("bookSlotDate")
         const selectedTime = localStorage.getItem("bookSlotTime")
         const selectedDoctor = localStorage.getItem("SelectedDoc")
-        const details = {
-          doctorId: selectedDoctor,
-          patientId: appointmentDetails?.patientId,
-          appointmentDate: {
-            date: selectedDate,
-            time: selectedTime
-          },
-          issues: appointmentDetails?.issues,
-          diseases: appointmentDetails?.diseases,
-        }
-        const oldappointment = localStorage.getItem("appointmentId");
+        if (oldAppointment._id)
+        {
 
-        const response = await fetch(
-          `${baseUrl}/api/v1/user/update_appointmentById/${oldappointment}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Use the stored token
+          const details = {
+            doctorId: selectedDoctor,
+            patientId: appointmentDetails?.patientId,
+            appointmentDate: {
+              date: selectedDate,
+              time: selectedTime
             },
-            body: JSON.stringify(details),
+            issues: appointmentDetails?.issues,
+            diseases: appointmentDetails?.diseases,
           }
-        );
+          // const oldappointment = localStorage.getItem("appointmentId");
 
-        const data = await response.json();
-        console.log("=====DATA=====", data);
+          const response = await fetch(
+            `${baseUrl}/api/v1/user/update_appointmentById/${oldAppointment._id}`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                "x-auth-token": token, // Use the stored token
+              },
+              body: JSON.stringify(details),
+            }
+          );
+
+          const data = await response.json();
+          console.log("=====DATA=====", data);
+
+        }
+
 
 
         // const oldappointmentDate = localStorage.getItem("EditAppointmentDate")
         // const oldappointmentTime = localStorage.getItem("EditAppointmentTime")
 
 
-        toast.error("An appointment already exists with this doctor.");
+        // toast.error("An appointment already exists with this doctor.");
         const details1 = {
           date: appointmentDetails.appointmentDate.date,
           time: appointmentDetails.appointmentDate.time,
