@@ -33,6 +33,7 @@ export default function BillingPage({ name, contactNo, gender, age })
   const [value, setValue] = useState("");
   const [userDetailsName, setUserDetailsName] = useState();
   const [userDetailsEmail, setUserDetailsEmail] = useState();
+  const dateString = localStorage.getItem("dateString");
   const [userDetailsPic, setUserDetailsPic] = useState();
   // const [index, setIndex] = useState(0);
   const [patientReport, setPatientReport] = useState({
@@ -257,7 +258,7 @@ export default function BillingPage({ name, contactNo, gender, age })
 
   // State to manage the date
 
-  const [appointmentDate, setAppointmentDate] = useState(formattedDate);
+  const [appointmentDate, setAppointmentDate] = useState(dateString);
 
   const Toggle = (e) =>
   {
@@ -327,7 +328,7 @@ export default function BillingPage({ name, contactNo, gender, age })
       // Add a new test to the array
       return {
         ...prevPatientReport,
-        testAsked: [...prevPatientReport.testAsked, { id: testId, value: value }],
+        testAsked: [...prevPatientReport.testAsked, { id: testId, value: value, date: dateString }],
         // patientId: patientId
       };
     }

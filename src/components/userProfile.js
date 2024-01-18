@@ -16,7 +16,8 @@ import { IoTrashOutline } from "react-icons/io5";
 import { Popconfirm } from "antd";
 import delete_button from "../assets/delete_button.svg";
 
-export default function UserProfile() {
+export default function UserProfile()
+{
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
 
@@ -60,9 +61,12 @@ export default function UserProfile() {
     patientPic: "",
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchData = async () =>
+    {
+      try
+      {
         const response = await fetch(
           `https://api.postalpincode.in/pincode/${userDetails?.address?.pinCode}`,
           {
@@ -70,7 +74,8 @@ export default function UserProfile() {
           }
         );
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
@@ -89,39 +94,47 @@ export default function UserProfile() {
             state: state,
           },
         }));
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error fetching data:", error);
       }
     };
 
-    if (userDetails?.address?.pinCode) {
+    if (userDetails?.address?.pinCode)
+    {
       fetchData();
     }
   }, [userDetails?.address?.pinCode]);
 
-  const handleChange3 = (e) => {
+  const handleChange3 = (e) =>
+  {
     let { name, value } = e.target;
     console.log("e.target value", value);
 
     // Check if the value consists of exactly 10 digits and does not include alphabetic characters
-    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+    if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
+    {
       setmobileNumberError(""); // Clear the error message if it's valid
       setcontactNumber(value);
-    } else {
+    } else
+    {
       setmobileNumberError("Please enter a valid 10-digit number");
     }
 
     console.log("contact number after setter function", contactNumber);
   };
 
-  const handleNewProfilePictureClick = async () => {
+  const handleNewProfilePictureClick = async () =>
+  {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
@@ -137,20 +150,24 @@ export default function UserProfile() {
         body: formData,
       });
 
-      if (!response.ok) {
+      if (!response.ok)
+      {
         toast.error("Error uploading image.");
       }
 
       const data = await response.json();
-      if (response.status === 500) {
+      if (response.status === 500)
+      {
         toast.error("file type not supported");
       }
 
-      if (response.status === 413) {
+      if (response.status === 413)
+      {
         toast.error("file Size is too big try smaller image");
       }
 
-      if (data.success === true) {
+      if (data.success === true)
+      {
         console.log("Image uploaded successfully:", data);
         setUserImage(data.profilePicImageUrl);
         toast.success("Image uploaded successfully.");
@@ -167,12 +184,16 @@ export default function UserProfile() {
   const fileInputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -187,37 +208,76 @@ export default function UserProfile() {
 
         const data = await response.json();
         console.log("DATA from response", data);
-        if (data?.data?.newUser === true) {
+        if (data?.data?.newUser === true)
+        {
           setNewUser(true);
         }
         setUserDetails(data?.data);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
-  const handleToggleEdit = () => {
+  const handleToggleEdit = () =>
+  {
     setIsEditing(!isEditing);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = async () =>
+  {
+    const token = localStorage.getItem("token");
+    const id = localStorage.getItem("userId");
+    const patientId = localStorage.getItem("patientId");
+
+    const response = await fetch(`${baseUrl}/api/v1/user/remove_image`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+    });
+
+    const data = await response.json();
+    // if (data.statusCode === 400)
+    // {
+    //   toast.error('"workingHours.interval" must be a string');
+    // }
+    if (data.success === true)
+    {
+      console.log("patient updated successfully.");
+
+      toast.success("patient Image removed successfully.");
+      setUserImage("");
+      // window.location.reload();
+      // onOpenModal()
+      // navigate("/doctorlistadmin")
+
+      // localStorage.setItem("id", data.data._id)
+    }
+    console.log("DATA from response", data);
+
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const handleChange2 = (e) => {
+
+  const handleChange2 = (e) =>
+  {
     setUserDetails((prevUserDetails) => ({
       ...prevUserDetails,
       // workingDays: e,
@@ -225,7 +285,8 @@ export default function UserProfile() {
     }));
   };
 
-  const handleChange1 = (e) => {
+  const handleChange1 = (e) =>
+  {
     setUserDetails((prevUserDetails) => ({
       ...prevUserDetails,
       gender: e,
@@ -233,10 +294,12 @@ export default function UserProfile() {
     }));
   };
 
-  const handleDelete = async () => {
+  const handleDelete = async () =>
+  {
     const token = localStorage.getItem("token");
     const doctorId = localStorage.getItem("doctorId");
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       localStorage.clear();
       navigate("/userlogin");
@@ -250,7 +313,8 @@ export default function UserProfile() {
     });
     const data = await response.json();
 
-    if (data.success === true) {
+    if (data.success === true)
+    {
       localStorage.clear();
       toast.success("User Deleted successfully");
       navigate("/userlogin");
@@ -258,20 +322,27 @@ export default function UserProfile() {
     console.log("DATA from response", data);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
-    if (name === "pinCode") {
-      if (value.length !== 6) {
+    if (name === "pinCode")
+    {
+      if (value.length !== 6)
+      {
         setPinCodeError("Please enter a valid Pincode");
-      } else {
+      } else
+      {
         setPinCodeError(""); // Clear the error message if it's valid
       }
     }
 
-    if (name === "contactNumber") {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
+    if (name === "contactNumber")
+    {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
         setmobileNumberError("");
-      } else {
+      } else
+      {
         setmobileNumberError("Please enter a valid Number");
       }
     }
@@ -286,7 +357,8 @@ export default function UserProfile() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         address: {
@@ -294,7 +366,8 @@ export default function UserProfile() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         [name]: value,
@@ -304,7 +377,8 @@ export default function UserProfile() {
     setIsEditing(true);
   };
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e) =>
+  {
     e.preventDefault();
     const newUserDetails = {
       name: userDetails?.name,
@@ -326,30 +400,42 @@ export default function UserProfile() {
     };
     console.log("New User", newUserDetails);
 
-    if (newUserDetails?.gender === "") {
+    if (newUserDetails?.gender === "")
+    {
       toast.error("Please write gender");
-    } else if (newUserDetails?.age === "") {
+    } else if (newUserDetails?.age === "")
+    {
       toast.error("Please write age");
-    } else if (newUserDetails?.ageType === "") {
+    } else if (newUserDetails?.ageType === "")
+    {
       toast.error("Please write ageType");
-    } else if (newUserDetails?.bodyWeight === "") {
+    } else if (newUserDetails?.bodyWeight === "")
+    {
       toast.error("Please write bodyWeight");
-    } else if (newUserDetails?.name === "") {
+    } else if (newUserDetails?.name === "")
+    {
       toast.error("Please write name");
-    } else if (newUserDetails?.contactNumber === "") {
+    } else if (newUserDetails?.contactNumber === "")
+    {
       toast.error("Please write contactNumber");
-    } else if (!newUserDetails?.address?.pinCode) {
+    } else if (!newUserDetails?.address?.pinCode)
+    {
       toast.error("Please write Pincode");
-    } else if (!/^\d{6}$/.test(newUserDetails?.address?.pinCode)) {
+    } else if (!/^\d{6}$/.test(newUserDetails?.address?.pinCode))
+    {
       toast.error("Please enter a valid 6-digit PIN code");
-    } else if (newUserDetails?.address?.district === "") {
+    } else if (newUserDetails?.address?.district === "")
+    {
       toast.error("Please write district");
-    } else if (newUserDetails?.address?.state === "") {
+    } else if (newUserDetails?.address?.state === "")
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate("/userlogin");
@@ -364,10 +450,12 @@ export default function UserProfile() {
       });
       const data = await response.json();
 
-      if (data.statusCode === 400) {
+      if (data.statusCode === 400)
+      {
         toast.error("Please fill the details");
       }
-      if (data.success === true) {
+      if (data.success === true)
+      {
         toast.success("User details updated successfully");
         // console.log("Doctor updated successfully.");
         navigate("/doctorlistuser");
@@ -529,7 +617,8 @@ export default function UserProfile() {
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() => {
+                    onClick={() =>
+                    {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -547,7 +636,7 @@ export default function UserProfile() {
                       backgroundColor: "#89CFF0",
                       color: isHovered1 ? "red" : "white",
                     }}
-                    // onClick={handleRemoveProfilePicture}
+                    onClick={handleRemoveProfilePicture}
                     onMouseEnter={() => setIsHovered1(true)}
                     onMouseLeave={() => setIsHovered1(false)}
                   >
@@ -608,7 +697,8 @@ export default function UserProfile() {
                 name="age"
                 onChange={handleChange}
                 value={userDetails?.age}
-                onInput={(e) => {
+                onInput={(e) =>
+                {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
                 className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -659,7 +749,8 @@ export default function UserProfile() {
               name="bodyWeight"
               onChange={handleChange}
               value={userDetails?.bodyWeight}
-              onInput={(e) => {
+              onInput={(e) =>
+              {
                 e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
               className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -722,7 +813,8 @@ export default function UserProfile() {
               required
               value={userDetails?.contactNumber}
               onChange={handleChange}
-              onInput={(e) => {
+              onInput={(e) =>
+              {
                 e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
               className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -743,7 +835,7 @@ export default function UserProfile() {
                   <div class="flex flex-row ">
                     <div className="px-2 lg:w-1/2  mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           placeholder="House No."
@@ -766,7 +858,7 @@ export default function UserProfile() {
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="floor"
@@ -791,7 +883,7 @@ export default function UserProfile() {
                   <div class="flex flex-row">
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="block"
@@ -818,7 +910,7 @@ export default function UserProfile() {
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                        userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="pinCode"
@@ -827,7 +919,8 @@ export default function UserProfile() {
                           onChange={handleChange}
                           placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                          onInput={(e) => {
+                          onInput={(e) =>
+                          {
                             e.target.value = e.target.value.replace(
                               /[^0-9]/g,
                               ""
@@ -854,7 +947,7 @@ export default function UserProfile() {
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {patientsList?.length === 0 ||
-                  userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                     <input
                       type="text"
                       id="area"
@@ -881,7 +974,7 @@ export default function UserProfile() {
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="district"
@@ -909,7 +1002,7 @@ export default function UserProfile() {
 
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="state"

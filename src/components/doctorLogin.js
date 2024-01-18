@@ -153,6 +153,7 @@ export default function DoctorLogin()
           localStorage.setItem("token", data.token);
           localStorage.setItem("userContactNumber", contactNumber);
           localStorage.setItem("name", data?.data?.name);
+          localStorage.setItem("doctorId", data?.data._id);
           navigate("/patientlist");
         }
       }
