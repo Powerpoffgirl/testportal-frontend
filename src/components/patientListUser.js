@@ -315,7 +315,7 @@ export default function PatientListUser({ searchTerm })
           </text>
 
           <text
-            className="ml-4 text-center mt-2 truncate overflow-x-auto"
+            className="ml-4 text-center mt-2 truncate overflow-y-auto flex-wrap "
             style={{
               fontSize: isTab ? "14px" : "20px",
               fontWeight: 400,
@@ -328,14 +328,28 @@ export default function PatientListUser({ searchTerm })
               " " +
               selectedPatient?.address?.block +
               " " +
-              selectedPatient?.address?.area +
-              ", " +
-              selectedPatient?.address?.district +
+              selectedPatient?.address?.area
+
+            }
+          </text>
+
+          <text
+            className="ml-4 text-center mt-2 truncate overflow-y-auto flex-wrap "
+            style={{
+              fontSize: isTab ? "14px" : "20px",
+              fontWeight: 400,
+              lineHeight: "28.8px",
+              fontFamily: "Lato, sans-serif",
+              color: "black",
+            }}
+          >
+            {selectedPatient?.address?.district +
               ", " +
               selectedPatient?.address?.state +
               " " +
               selectedPatient?.address?.pinCode}
           </text>
+
 
         </div>
       </Modal>

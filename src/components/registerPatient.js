@@ -391,6 +391,8 @@ export default function PatientForm()
   const onChange = (date, dateString) =>
   {
     console.log(date, dateString);
+
+    localStorage.setItem("dateString", dateString);
   };
 
   // const incrementedCounter = String(apiHitCounter).padStart(3, "0");

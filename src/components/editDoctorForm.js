@@ -29,7 +29,7 @@ export default function EditDoctorForm()
   const onOpenModal = () => setOpen1(true);
   const onCloseModal = () => setOpen1(false);
   const [doctorsList, setDoctorsList] = useState([]);
-
+  const [name, setName] = useState("")
   const [doctorImage, setDoctorImage] = useState();
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
@@ -192,6 +192,7 @@ export default function EditDoctorForm()
         console.log("DATA from USE EFFECT response", data?.data);
         setDoctorDetails(data?.data);
         setQrCodeUrl(data.data.qrCodeUrl)
+        setName(data.data.name)
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);
@@ -211,8 +212,38 @@ export default function EditDoctorForm()
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
+  const handleRemoveProfilePicture = async () =>
   {
+    const token = localStorage.getItem("token");
+
+    const doctorId = localStorage.getItem("doctorId");
+    const response = await fetch(`${baseUrl}/api/v1/doctor/remove_image`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+    });
+
+    const data = await response.json();
+    // if (data.statusCode === 400)
+    // {
+    //   toast.error('"workingHours.interval" must be a string');
+    // }
+    if (data.success === true)
+    {
+      console.log("Doctor updated successfully.");
+
+      toast.success("Doctor Image removed successfully.");
+      setDoctorImage("");
+      // window.location.reload();
+      // onOpenModal()
+      // navigate("/doctorlistadmin")
+
+      // localStorage.setItem("id", data.data._id)
+    }
+    console.log("DATA from response", data);
+
     // Logic to handle removing the current profile picture
     handleClose();
   };
@@ -702,6 +733,20 @@ export default function EditDoctorForm()
   updateUserEmail(doctorDetails?.email);
   updateUserimage(doctorDetails?.doctorPic);
 
+
+
+  const handleDownload = () =>
+  {
+    // Create a new anchor element
+    const element = document.createElement("a");
+    element.href = `${qrCodeUrl}`;
+    element.download = `${name}_QRCode`;
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
+
   return (
     <>
       <div className="flex flex-col -ml-7  lg:flex-row">
@@ -826,7 +871,7 @@ export default function EditDoctorForm()
                       backgroundColor: "#89CFF0",
                       color: isHovered1 ? "red" : "white",
                     }}
-                    // onClick={handleRemoveProfilePicture}
+                    onClick={handleRemoveProfilePicture}
                     onMouseEnter={() => setIsHovered1(true)}
                     onMouseLeave={() => setIsHovered1(false)}
                   >
@@ -978,9 +1023,17 @@ export default function EditDoctorForm()
         <div className="border bg-white flex flex-col lg:w-3/5 xl:w-3/4 p-6 my-5 mx-3">
           <p className="text-3xl ">Personal Information</p>
           {
-            showQrCode && (<p class="mx-auto ">
-              {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
-            </p>)
+            showQrCode && (
+              <>
+                <p class="mx-auto ">
+                  {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
+                </p>
+                <button onClick={handleDownload}> Download Qr</button>
+              </>
+
+            )
+
+
           }
           <hr className="border my-2 " />
           {/* -------name------- */}
