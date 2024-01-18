@@ -656,7 +656,7 @@ export default function EditAppointment()
         <div class=" ">
           <div className="flex lg:flex-row  pt-5 flex-col ">
             {/* ---------------------------left part--------------------------- */}
-            <div className="flex flex-col max-w-screen-xsview mx-auto md:max-w-screen-sview lg:max-w-screen-xsview xl:max-w-screen-sview xl:mx-1 2xl:max-w-screen-lg">
+            <div className="flex flex-col max-w-screen-xsview mx-auto md:max-w-screen-sview lg:max-w-screen-xsview xl:max-w-screen-sm xl:mx-1 2xl:max-w-screen-md">
               <div className=" mx-auto">
                 {selectedDoctor?.doctorPic ? (
                   <img
@@ -699,8 +699,8 @@ export default function EditAppointment()
                       style={{ minWidth: "15px", maxWidth: "16px" }}
                     ></img>
                   </div>
-                  <div className="flex flex-wrap">
-                    <p className="text-gray-600 text-xl  ">
+                  <div style={{ width: '85%' }} className="flex flex-wrap ">
+                    <p className="text-gray-600 text-xl flex-wrap   ">
                       {selectedDoctor?.address?.houseNo +
                         " " +
                         selectedDoctor?.address?.block +
@@ -724,7 +724,7 @@ export default function EditAppointment()
             </div>
 
             {/* --------------------------------right part-------------------------------- */}
-            <div className="flex flex-col max-w-screen-xsview mx-auto md:max-w-screen-sview lg:max-w-screen-xsview xl:mx-1 xl:max-w-screen-sview 2xl:max-w-screen-lg ">
+            <div className="flex flex-col max-w-screen-xsview mx-auto md:max-w-screen-sview lg:max-w-screen-xsview xl:mx-1 xl:max-w-screen-sm 2xl:max-w-screen-md ">
               <div className=" py-1 mb-2">
                 <p className="text-lg font-medium text-black ">SPECIALITY</p>
                 <div className="flex flex-wrap ">
@@ -733,7 +733,7 @@ export default function EditAppointment()
                     return (
                       <p
                         key={index}
-                        className="bg-white rounded-xl py-1 px-4 mx-2 my-1 "
+                        className="bg-white rounded-xl py-1 px-4 mx-2 my-1 overflow-hidden "
                       >
                         {item}
                       </p>
@@ -745,7 +745,7 @@ export default function EditAppointment()
                 <p className="text-lg font-medium text-black">
                   About The Doctor
                 </p>
-                <p className=" italic text-gray-600">{selectedDoctor?.about}</p>
+                <p className=" italic text-gray-600 flex flex-wrap overflow-hidden w-80">{selectedDoctor?.about}</p>
               </div>
 
               <div className=" py-1 mb-2">

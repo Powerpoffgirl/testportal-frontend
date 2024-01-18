@@ -15,13 +15,15 @@ import UserContext from "./userContext";
 import { Popconfirm } from "antd";
 import delete_button from "../assets/delete_button.svg";
 
-export default function EditDoctorForm()
+export default function EditDoctorForm() 
 {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
+  const [qrCodeUrl, setQrCodeUrl] = useState("");
+  const [showQrCode, setShowQrCode] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [open1, setOpen1] = useState(false);
   const onOpenModal = () => setOpen1(true);
@@ -189,6 +191,7 @@ export default function EditDoctorForm()
         const data = await response.json();
         console.log("DATA from USE EFFECT response", data?.data);
         setDoctorDetails(data?.data);
+        setQrCodeUrl(data.data.qrCodeUrl)
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);
@@ -586,6 +589,10 @@ export default function EditDoctorForm()
       workingDays: days,
     });
   };
+  const toggleQrCode = () =>
+  {
+    setShowQrCode(!showQrCode);
+  };
 
   const handleRegister = async (e) =>
   {
@@ -970,6 +977,11 @@ export default function EditDoctorForm()
         {/* ----------------------------------right---------------------------------- */}
         <div className="border bg-white flex flex-col lg:w-3/5 xl:w-3/4 p-6 my-5 mx-3">
           <p className="text-3xl ">Personal Information</p>
+          {
+            showQrCode && (<p class="mx-auto ">
+              {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
+            </p>)
+          }
           <hr className="border my-2 " />
           {/* -------name------- */}
           <div className="flex flex-row">
@@ -1327,7 +1339,16 @@ export default function EditDoctorForm()
               <p className="text-red-500">{errors.username}</p>
             )}
           </div>
-          <div className="flex flex-row-reverse mt-5 my-2">
+          <div className="flex flex-row-reverse mt-5 my-2 gap-4">
+            <button
+              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              style={{
+                backgroundColor: "#89CFF0",
+              }}
+              onClick={toggleQrCode}
+            >
+              Show Qr
+            </button>
             <button
               className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
               style={{

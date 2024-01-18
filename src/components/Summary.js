@@ -110,6 +110,14 @@ export default function Summary()
     const generatePdf = useReactToPrint({
         content: () => componentPDF.current,
         documentTitle: "userReport",
+
+        onBeforeGetContent: () =>
+        {
+            // This is called before getting the content for printing
+            // You can enable the "Send To SMS" button here
+            const sendToSMSButton = document.getElementById('sendToSMSButton');
+            sendToSMSButton.disabled = false;
+        },
         // onAfterPrint: () => alert("Data saved in PDF")
     });
 
@@ -546,6 +554,7 @@ export default function Summary()
                             </button>
 
                             <button
+
                                 style={{
                                     height: "40px",
                                     width: "120px",
@@ -555,7 +564,7 @@ export default function Summary()
                                     padding: "2px",
                                 }}
                             >
-                                <label htmlFor="files" style={{ color: "white" }}>
+                                <label htmlFor="files" id="sendToSMSButton" disabled style={{ color: "white" }}>
                                     Send To SMS
                                 </label>
                             </button>

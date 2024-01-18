@@ -5,7 +5,8 @@ import { useMediaQuery } from "react-responsive";
 import AdminSidebar from "./adminSidebar";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
-export default function Qr() {
+export default function Qr()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL
   const [qrCodeUrl, setQrCodeUrl] = useState("");
@@ -15,11 +16,15 @@ export default function Qr() {
   const id = localStorage.getItem('id')
   const token = localStorage.getItem('token')
 
-  useEffect(() => {
-    const getQRCode = async () => {
+  useEffect(() =>
+  {
+    const getQRCode = async () =>
+    {
 
-      const fetchData = async () => {
-        try {
+      const fetchData = async () =>
+      {
+        try
+        {
           const response = await fetch(`${baseUrl}/api/v1/admin/get_doctor/${id}`, {
             method: "GET",
             headers: {
@@ -31,7 +36,8 @@ export default function Qr() {
           setUserDetails(data.data);
           console.log("registered data", userDetails)
           console.log("address", userDetails.address.houseNo)
-        } catch (error) {
+        } catch (error)
+        {
           console.error('Error:', error);
         }
       };
@@ -39,10 +45,12 @@ export default function Qr() {
       fetchData();
 
 
-      try {
+      try
+      {
         const token = localStorage.getItem("token");
         const id = localStorage.getItem("id")
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -60,14 +68,16 @@ export default function Qr() {
         console.log("DOCTOR DETAILS", doctorDetails.qrCodeUrl)
         setQrCodeUrl(doctorDetails.qrCodeUrl)
         setName(doctorDetails.name)
-      } catch (error) {
+      } catch (error)
+      {
         console.error('There was an error verifying the OTP:', error);
       }
     }
     getQRCode()
   }, [])
 
-  const handleDownload = () => {
+  const handleDownload = () =>
+  {
     // Create a new anchor element
     const element = document.createElement("a");
     element.href = `${qrCodeUrl}`;
@@ -151,7 +161,8 @@ export default function Qr() {
               <div className="mt-3 flex flex-row">
                 <p className="block text-black text-lg font-semibold" >Working Days :</p>
                 <p className=" text-black text-lg flex flex-wrap">
-                  {userDetails?.workingDays.map((item, index) => {
+                  {userDetails?.workingDays.map((item, index) =>
+                  {
                     return (
                       <div key={index}>
                         {item},

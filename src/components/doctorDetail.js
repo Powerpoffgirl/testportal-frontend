@@ -58,7 +58,9 @@ export default function DoctorDetail()
 
         const data = await response.json();
         console.log("DATA from response", data?.data);
+        console.log("slots===", data?.data?.slots);
         setDoctorDetails(data?.data);
+
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);
@@ -147,7 +149,7 @@ export default function DoctorDetail()
   const [mobileNumberError, setmobileNumberError] = useState("");
 
   const [otppage, setotppage] = useState(false);
-  const [bookingslottoggle, setbookingslottoggle] = useState(true);
+  const [bookingslottoggle, setbookingslottoggle] = useState(false);
   const [appointment, setappointment] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [resendClicked, setResendClicked] = useState(false);
@@ -190,7 +192,7 @@ export default function DoctorDetail()
     console.log(currentIndex);
   };
 
-  const bookingslot = selectedDoctor.slots;
+  const bookingslot = doctorDetails.slots;
   let processedSlots = {};
 
   console.log("===============BOOKING SLOTS==============", bookingslot);
@@ -411,6 +413,7 @@ export default function DoctorDetail()
 
   const showSlot = () =>
   {
+    console.log("func called-----------")
     setbookingslottoggle(!bookingslottoggle);
   };
 
@@ -424,7 +427,7 @@ export default function DoctorDetail()
     };
     console.log("selected doctor", selectedDoctor?._id);
     const response = await fetch(
-      `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
+      `${baseUrl}/api/v1/book_slot/${doctorDetails?._id}`,
       {
         method: "post",
         headers: {
@@ -492,11 +495,12 @@ export default function DoctorDetail()
                   <img
                     src={selectedDoctor?.doctorPic}
                     alt="doctorimage"
-                    className=" max-w-fit"
+                    // className=" max-w-fit"
+                    style={{ height: '100%', width: '100%' }}
                   ></img>
                 ) : (
                   <AccountCircleIcon
-                    style={{ height: '20%', width: '20%', color: "#B1DAED", }}
+                    style={{ height: '90%', width: '90%', color: "#B1DAED", }}
                   />
                 )}
               </div>
