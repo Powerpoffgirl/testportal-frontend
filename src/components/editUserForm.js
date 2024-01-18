@@ -125,14 +125,8 @@ export default function EditUserForm()
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   const navigate = useNavigate();
-
   const location = useLocation();
   console.log("location from edit user form", location);
-  // const { state } = location;
-  // console.log("Edit user form state", location);
-  // const appointmentId = location.state.oldAppointment
-  const oldAppointment = location.state.oldAppointment;
-
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -153,33 +147,39 @@ export default function EditUserForm()
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [appointmentList, setAppointmentList] = useState([]);
   const [patientId, setPatientId] = useState(localStorage.getItem("patientId"));
+  const inputRef = useRef(null);
 
-  useEffect(() =>
-  {
-    setPatientId(localStorage.getItem("patientId"));
-    console.log("+++++++++++++++PATIENT ID++++++++++++", patientId);
-  }, [patientId]);
+  // ----------------------new Dates coming from base URL--------------------------------
+  const selectedDate = location?.state?.selectedSlot.date
+  const selectedTime = location?.state?.selectedSlot.time
+  const selectedDoctor = location?.state?.selectedDoctor
+  const isEditing = location?.state?.isEditing
+  const oldAppointment = location?.state?.appointment
+  const oldAppointmentId = location?.state?.appointment?._id
 
-  useEffect(() =>
-  {
-    const token = localStorage.getItem("token")
-    if (!token)
-    {
-      localStorage.clear()
-      navigate(`/userlogin`)
-    }
-  }, [])
-
+  console.log("=======OLD APPOINTMENT ID==========", oldAppointmentId)
   const [appointmentDetails, setAppointmentDetails] = useState({
-    doctorId: localStorage.getItem("doctorId"),
+    doctorId: selectedDoctor,
     patientId: patientId,
     appointmentDate: {
-      date: localStorage.getItem("appointment_date"),
-      time: localStorage.getItem("appointment_time"),
+      date: selectedDate,
+      time: selectedTime,
     },
     issues: [],
     diseases: [],
   });
+
+  const AgeType = [
+    { label: "Year", value: "Year" },
+    { label: "Month", value: "Month" },
+    { label: "Day", value: "Day" },
+  ];
+
+  const Gender = [
+    { label: "Male", value: "Male" },
+    { label: "Female", value: "Female" },
+    { label: "Other", value: "Other" },
+  ];
 
   // const patientId = localStorage.getItem("patientId");
   const [patientDetails, setPatientDetails] = useState({
@@ -199,6 +199,98 @@ export default function EditUserForm()
     },
     patientPic: "",
   });
+
+
+  useEffect(() =>
+  {
+    setPatientId(localStorage.getItem("patientId"));
+    console.log("+++++++++++++++PATIENT ID++++++++++++", patientId);
+  }, [patientId]);
+
+  useEffect(() =>
+  {
+    const token = localStorage.getItem("token")
+    if (!token)
+    {
+      localStorage.clear()
+      navigate(`/userlogin`)
+    }
+  }, [])
+
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("patientId");
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(
+          `${baseUrl}/api/v1/user/get_patientDetails/${patientId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
+          }
+        );
+
+        const data = await response.json();
+        console.log("DATA from PAITIENTS response", data);
+        console.log("SELECTED PATIENT DETAILS=================", data?.data);
+        setPatientDetails(data?.data);
+        // localStorage.setItem("patientId", patientId);
+        console.log("################PATIENT NAME$$$$$$$", data?.data.name);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchPatientDetails();
+  }, [appointmentDetails?.patientId]);
+
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(`${baseUrl}/api/v1/user/get_userDetails`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
+
+        const data = await response.json();
+        console.log("DATA from response", data);
+        if (data.data.newUser === true)
+        {
+          setNewUser(true);
+        }
+        setUserDetails(data?.data);
+        console.log("usser name$$$$$$$", data?.data.name);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchUserDetails();
+  }, []);
+
 
   useEffect(() =>
   {
@@ -265,19 +357,10 @@ export default function EditUserForm()
     fetchAppointmentList();
   }, []);
 
-  console.log("DATE TIME", appointmentDate, appointmentTime);
   const handleChangeIssues = (value) =>
   {
-
     const cleanedValues = value.filter((item) => item.trim() !== ' ');
-
-    // Update the state with the cleaned values
     setAppointmentDetails({ ...appointmentDetails, issues: cleanedValues });
-
-    // setAppointmentDetails((prevAppointmentDetails) => ({
-    //   ...prevAppointmentDetails,
-    //   issues: values,
-    // }));
   };
 
   const handleChangeDiseases = (values) =>
@@ -287,128 +370,6 @@ export default function EditUserForm()
       diseases: values,
     }));
   };
-  const handleNewProfilePictureClick = async () =>
-  {
-    // This will trigger the hidden file input to open the file dialog
-    await fileInputRef.current.click();
-  };
-
-  const handleFileSelect = async (event) =>
-  {
-    const file = event.target.files[0];
-    if (file)
-    {
-      const token = localStorage.getItem("token");
-      const doctorId = localStorage.getItem("doctorId");
-      const formData = new FormData();
-      formData.append("doctorPic", file);
-
-      console.log("FORM DATA", formData);
-      try
-      {
-        const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
-          method: "POST",
-          headers: {
-            "x-auth-token": token,
-          },
-          body: formData,
-        });
-
-        if (!response.ok)
-        {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("Image uploaded successfully:", data);
-        setUserImage(data.profilePicImageUrl);
-        toast.success("Image uploaded successfully");
-
-        // Reset the file input
-        setSelectedFile(null);
-        fileInputRef.current.value = "";
-      } catch (error)
-      {
-        console.error("Error uploading image:", error);
-        toast.error("Error uploading image. Please try again.");
-      }
-    }
-  };
-  const selectedDate = localStorage.getItem("bookSlotDate")
-  const selectedTime = localStorage.getItem("bookSlotTime")
-  const selectedDoctor = localStorage.getItem("SelectedDoc")
-
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-  const fileInputRef = useRef(null);
-  const [isEditing, setIsEditing] = useState(false);
-
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
-        const token = localStorage.getItem("token");
-        if (!token)
-        {
-          console.error("No token found in local storage");
-          return;
-        }
-        const response = await fetch(`${baseUrl}/api/v1/user/get_userDetails`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token, // Replace with your actual token from the previous session
-          },
-        });
-
-        const data = await response.json();
-        console.log("DATA from response", data);
-        if (data.data.newUser === true)
-        {
-          setNewUser(true);
-        }
-        setUserDetails(data?.data);
-        console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
-        console.error("There was an error verifying the OTP:", error);
-      }
-    };
-    fetchUserDetails();
-  }, []);
-
-  const handleClick = (event) =>
-  {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () =>
-  {
-    setAnchorEl(null);
-  };
-
-  const handleToggleEdit = () =>
-  {
-    setIsEditing(!isEditing);
-  };
-
-  // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
-    // Logic to handle removing the current profile picture
-    handleClose();
-  };
-
-  const TimeDropdown = [
-    { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) =>
-    {
-      const hour = i.toString().padStart(2, "0");
-      return { label: `${hour}:00`, value: `${hour}:00` };
-    }),
-  ];
 
   const handleChange2 = (e) =>
   {
@@ -425,7 +386,7 @@ export default function EditUserForm()
       gender: e,
     }));
   };
-  const [selectedOption, setSelectedOption] = useState(null);
+
   const handleChange3 = (e) =>
   {
     if (e === 'add-member')
@@ -494,7 +455,6 @@ export default function EditUserForm()
       }));
     }
 
-    setIsEditing(true);
   };
 
   const handleUpdate = async (e) =>
@@ -541,6 +501,7 @@ export default function EditUserForm()
     {
       const token = localStorage.getItem("token");
       const patientId = localStorage.getItem("patientId");
+      // ---------------------if New User--------------------
       if (newUser)
       {
         if (!token)
@@ -549,6 +510,8 @@ export default function EditUserForm()
           localStorage.clear();
           navigate("/userlogin");
         }
+
+        // -------------------------UPDATED USER HERE-------------------
         const response = await fetch(`${baseUrl}/api/v1/user/update_user`, {
           method: "put",
           headers: {
@@ -563,6 +526,8 @@ export default function EditUserForm()
         {
           toast.error("Please fill the details");
         }
+
+        // -------------------------UPDATED PATIENT HERE-------------------
 
         const response1 = await fetch(
           `${baseUrl}/api/v1/user/update_patient/${patientId}`,
@@ -593,196 +558,11 @@ export default function EditUserForm()
         );
         const data1 = await response1.json();
         console.log("PATIENT UPDATED SUCCESSFULLY", data1);
-      }
-
-      console.log(
-        "====================APPOINTMENT DETAILS=====================",
-        appointmentDetails
-      );
-
-      const existingAppointment = appointmentList?.find((appointment) =>
-      {
-        if (
-          appointment?.doctorId?._id === appointmentDetails?.doctorId &&
-          appointment?.patientId?._id === appointmentDetails?.patientId &&
-          (appointment?.appointmentDate?.date >=
-            appointmentDetails?.appointmentDate?.date ||
-            appointment?.appointmentDate?.date <
-            appointmentDetails?.appointmentDate?.date)
-        )
-        {
-          console.log(
-            "IDS ARE MATCHING",
-            appointment?.appointmentDate?.date,
-            appointmentDetails?.appointmentDate?.date
-          );
-          return appointment;
-        }
-      });
-
-      console.log("EXSISTING APPOINTMENT", existingAppointment);
 
 
+        // -------------------------CREATE APPOINTMENT FOR NEW USER-------------------
 
-
-
-
-      const EditToggle = localStorage.getItem("EditToggle")
-
-
-      if (EditToggle)
-      {
-        console.log("entered in the if condintion++++++++++++++++++")
-        const oldappointmentDate = localStorage.getItem("EditAppointmentDate")
-        const oldappointmentTime = localStorage.getItem("EditAppointmentTime")
-        const selectedDate = localStorage.getItem("bookSlotDate")
-        const selectedTime = localStorage.getItem("bookSlotTime")
-        const selectedDoctor = localStorage.getItem("SelectedDoc")
-        if (oldAppointment._id)
-        {
-
-          const details = {
-            doctorId: selectedDoctor,
-            patientId: appointmentDetails?.patientId,
-            appointmentDate: {
-              date: selectedDate,
-              time: selectedTime
-            },
-            issues: appointmentDetails?.issues,
-            diseases: appointmentDetails?.diseases,
-          }
-          // const oldappointment = localStorage.getItem("appointmentId");
-
-          const response = await fetch(
-            `${baseUrl}/api/v1/user/update_appointmentById/${oldAppointment._id}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                "x-auth-token": token, // Use the stored token
-              },
-              body: JSON.stringify(details),
-            }
-          );
-
-          const data = await response.json();
-          console.log("=====DATA=====", data);
-
-        }
-
-
-
-        // const oldappointmentDate = localStorage.getItem("EditAppointmentDate")
-        // const oldappointmentTime = localStorage.getItem("EditAppointmentTime")
-
-
-        // toast.error("An appointment already exists with this doctor.");
-        const details1 = {
-          date: appointmentDetails.appointmentDate.date,
-          time: appointmentDetails.appointmentDate.time,
-        };
-        const response1 = await fetch(
-          `${baseUrl}/api/v1/cancel_slot/${selectedDoctor}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Use the stored token
-            },
-            body: JSON.stringify(details1),
-          }
-        );
-
-        const data1 = await response1.json();
-        console.log("=====DATA===== the actual calling ", data1);
-
-
-
-
-
-        const bookslot = {
-          date: selectedDate,
-          time: selectedTime,
-        };
-        const response2 = await fetch(
-          `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
-          {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(bookslot),
-          }
-        );
-
-        const data3 = await response2.json();
-
-        console.log("slot booked", data3);
-        if (data3.success === true)
-        {
-          // toast.success("Slot selected Successfully!");
-          localStorage.setItem(
-            "appointment_date",
-            data?.doctorSlot?.date?.split("T")[0]
-          );
-          localStorage.setItem("appointment_time", data?.doctorSlot?.startTime);
-          navigate("/appointmentlistuser");
-          localStorage.removeItem("bookSlotDate");
-          localStorage.removeItem("bookSlotTime");
-          localStorage.removeItem("SelectedDoc");
-
-        } else
-        {
-          toast.error("Slot Not Available");
-          navigate("/doctorlistuser");
-          localStorage.removeItem("bookSlotDate");
-          localStorage.removeItem("bookSlotTime");
-          localStorage.removeItem("SelectedDoc");
-        }
-        localStorage.removeItem("EditToggle");
-      }
-
-
-
-
-
-
-
-
-
-
-
-      if (existingAppointment)
-      {
-        // const oldappointmentDate = localStorage.getItem("EditAppointmentDate")
-        // const oldappointmentTime = localStorage.getItem("EditAppointmentTime")
-
-        toast.error("An appointment already exists with this doctor.");
-        // const details = {
-        //   date: appointmentDate,
-        //   time: appointmentTime,
-
-        // };
-        // const response = await fetch(
-        //   `${baseUrl}/api/v1/cancel_slot/${appointmentDetails?.doctorId}`,
-        //   {
-        //     method: "POST",
-        //     headers: {
-        //       "Content-Type": "application/json",
-        //       "x-auth-token": token, // Use the stored token
-        //     },
-        //     body: JSON.stringify(details),
-        //   }
-        // );
-
-        // const data = await response.json();
-        // console.log("=====DATA=====", data);
-        // // return;
-        navigate("/appointmentlistuser");
-        return;
-      } else
-      {
-        const response = await fetch(
+        const appointmentResponse = await fetch(
           `${baseUrl}/api/v1/user/create_appointment`,
           {
             method: "post",
@@ -793,128 +573,208 @@ export default function EditUserForm()
             body: JSON.stringify(appointmentDetails),
           }
         );
-        const data = await response.json();
-        console.log("DATA FROM APPOINTMENT BOOKING", data);
-        if (data.success === true)
+        const appointmentData = await appointmentResponse.json();
+
+        if (appointmentData.success === true)
         {
-          console.log("OPEN MODAL");
-          onOpenModal();
-          console.log("DATA FROM APPOINTMENT BOOKING", data);
+
+          // -------------------------SLOT BOOKED FOR NEW USER-------------------
+
+          const response = await fetch(
+            `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
+            {
+              method: "post",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                date: selectedDate,
+                time: selectedTime
+              }),
+            }
+          );
+          const data = await response.json()
           if (data.success === true)
           {
-            toast.success("Appointment booked successfully");
-            // console.log("Doctor updated successfully.");
-            navigate("/appointmentlistuser");
+            navigate("/appointmentlistuser")
+            toast.success("Appointment booked successfully")
           }
-          console.log("Doctor updated successfully.");
+          else
+          {
+            toast.error("Slot not available")
+          }
         }
-        console.log("DATA from response", data);
       }
-    }
-
-
-
-    const selectedDate = localStorage.getItem("bookSlotDate")
-    const selectedTime = localStorage.getItem("bookSlotTime")
-    const selectedDoctor = localStorage.getItem("SelectedDoc")
-
-    const bookslot = {
-      date: selectedDate,
-      time: selectedTime,
-    };
-    const response = await fetch(
-      `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
+      else
       {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookslot),
-      }
-    );
-
-    const data = await response.json();
-
-    console.log("slot booked", data);
-    if (data.success === true)
-    {
-      // toast.success("Slot selected Successfully!");
-      localStorage.setItem(
-        "appointment_date",
-        data?.doctorSlot?.date?.split("T")[0]
-      );
-      localStorage.setItem("appointment_time", data?.doctorSlot?.startTime);
-      navigate("/appointmentlistuser");
-      localStorage.removeItem("bookSlotDate");
-      localStorage.removeItem("bookSlotTime");
-      localStorage.removeItem("SelectedDoc");
-
-    } else
-    {
-      toast.error("Slot Not Available");
-      navigate("/doctorlistuser");
-      localStorage.removeItem("bookSlotDate");
-      localStorage.removeItem("bookSlotTime");
-      localStorage.removeItem("SelectedDoc");
-    }
-
-
-
-
-
-  };
-
-  useEffect(() =>
-  {
-    // localStorage.setItem("patientId", appointmentDetails?.patientId);
-
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
-        const token = localStorage.getItem("token");
-        const patientId = localStorage.getItem("patientId");
         if (!token)
         {
           console.error("No token found in local storage");
-          return;
+          localStorage.clear();
+          navigate("/userlogin");
         }
-        const response = await fetch(
-          `${baseUrl}/api/v1/user/get_patientDetails/${patientId}`,
+
+        //-------- IF AN APPOINTMENT ALREADY EXSISTS AND USER WANTS TO EDIT IT
+        if (isEditing)
+        {
+          //----------------1. UPDATE APPOINTMENT API------------------------
+          const appointmentResponse = await fetch(
+            `${baseUrl}/api/v1/user/update_appointmentById/${oldAppointmentId}`,
+            {
+              method: "put",
+              headers: {
+                "Content-Type": "application/json",
+                "x-auth-token": token,
+              },
+              body: JSON.stringify({
+                patientId: oldAppointment.patientId._id,
+                doctorId: selectedDoctor,
+                issues: oldAppointment.issues,
+                diseases: oldAppointment.diseases,
+                appointmentDate: {
+                  date: selectedDate,
+                  time: selectedTime
+                }
+              }),
+            }
+          );
+          const appointmentData = await appointmentResponse.json();
+
+          if (appointmentData.success)
           {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
+            // ---------------2. BOOK  SLOT API--------------------------------
+            const response = await fetch(
+              `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
+              {
+                method: "post",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  date: selectedDate,
+                  time: selectedTime
+                }),
+              }
+            );
+            const data = await response.json()
+            if (data.success === true)
+            {
+              toast.success("Appointment edited successfully")
+            }
+            else
+            {
+              toast.error("Slot not available for editing")
+            }
+
           }
-        );
+          // ---------------3. CANCEL SLOT API-------------------------------
+          const response = await fetch(
+            `${baseUrl}/api/v1/cancel_slot/${selectedDoctor}`,
+            {
+              method: "post",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                date: oldAppointment.appointmentDate.date,
+                time: oldAppointment.appointmentDate.time
+              }),
+            }
+          );
+          const data = await response.json()
+          if (data.success === true)
+          {
+            navigate("/appointmentlistuser")
+          }
+          else
+          {
+            toast.error("Slot not available for cancelling")
+          }
+        }
+        else
+        {
+          // ------------------------CHECK WHETHER AN APPOINTMENT ALREADY EXSISTS OR NOT---------------
+          const existingAppointment = appointmentList?.find((appointment) =>
+          {
+            if (
+              appointment?.doctorId?._id === appointmentDetails?.doctorId &&
+              appointment?.patientId?._id === appointmentDetails?.patientId &&
+              (appointment?.appointmentDate?.date >=
+                appointmentDetails?.appointmentDate?.date ||
+                appointment?.appointmentDate?.date <
+                appointmentDetails?.appointmentDate?.date)
+            )
+            {
+              console.log(
+                "IDS ARE MATCHING",
+                appointment?.appointmentDate?.date,
+                appointmentDetails?.appointmentDate?.date
+              );
+              return appointment;
+            }
+          });
 
-        const data = await response.json();
-        console.log("DATA from PAITIENTS response", data);
-        console.log("SELECTED PATIENT DETAILS=================", data?.data);
-        setPatientDetails(data?.data);
-        // localStorage.setItem("patientId", patientId);
-        console.log("################PATIENT NAME$$$$$$$", data?.data.name);
-      } catch (error)
-      {
-        console.error("There was an error verifying the OTP:", error);
+          console.log("EXSISTING APPOINTMENT", existingAppointment);
+
+          if (existingAppointment)
+          {
+            toast.error("An appointment already exsists. Please edit that appointment")
+          }
+          else
+          {
+            // -------------------------CREATE APPOINTMENT FOR OLD USER-------------------
+
+            const appointmentResponse = await fetch(
+              `${baseUrl}/api/v1/user/create_appointment`,
+              {
+                method: "post",
+                headers: {
+                  "Content-Type": "application/json",
+                  "x-auth-token": token,
+                },
+                body: JSON.stringify(appointmentDetails),
+              }
+            );
+            const appointmentData = await appointmentResponse.json();
+
+            if (appointmentData.success === true)
+            {
+              // -------------------------SLOT BOOKED FOR OLD USER-------------------
+
+              const response = await fetch(
+                `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
+                {
+                  method: "post",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    date: selectedDate,
+                    time: selectedTime
+                  }),
+                }
+              );
+              const data = await response.json()
+              if (data.success === true)
+              {
+                navigate("/appointmentlistuser")
+                toast.success("Appointment booked successfully")
+              }
+              else
+              {
+                toast.error("Slot not available4")
+              }
+            }
+          }
+
+
+        }
+
       }
-    };
-    fetchPatientDetails();
-  }, [appointmentDetails?.patientId]);
+    }
+  };
 
-  const AgeType = [
-    { label: "Year", value: "Year" },
-    { label: "Month", value: "Month" },
-    { label: "Day", value: "Day" },
-  ];
 
-  const Gender = [
-    { label: "Male", value: "Male" },
-    { label: "Female", value: "Female" },
-    { label: "Other", value: "Other" },
-  ];
 
   console.log("User DETAILS", userDetails);
   updateUser(userDetails.name);
@@ -925,82 +785,9 @@ export default function EditUserForm()
   console.log("PATIENTS LIST", patientsList);
   console.log("PATIENT DETAILS", patientDetails);
 
-  const inputRef = useRef(null);
 
   return (
     <>
-      <Modal
-        open={open}
-        onClose={onCloseModal}
-        center
-        styles={{
-          modal: {
-            backgroundColor: "#89CFF0",
-            alignContent: "center",
-            width: "30%",
-          },
-        }}
-      >
-        <div
-          className="flex flex-col bg-customRedp-2  items-center w-[100%] Tabview:w-[100%]  mt-[2%]"
-          style={{ borderRadius: "5px" }}
-        >
-          <text
-            className="ml-4 text-center mt-4"
-            style={{
-              // fontSize: isTab ? "18px" : "26px",
-              fontWeight: 600,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-            }}
-          >
-            Congratulations
-          </text>
-          <text
-            className="ml-4 text-center mt-4"
-            style={{
-              fontSize: "40px",
-              fontWeight: 400,
-              lineHeight: "24px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-              marginBottom: "2%",
-            }}
-          >
-            {/* <img src={celebrate} alt="Congratulations" /> */}
-          </text>
-
-          <text
-            className="ml-4 text-center mt-2"
-            style={{
-              // fontSize: isTab ? "16px" : "24px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "white",
-            }}
-          >
-            Your Appointment Has Been Booked.
-            <br />
-            Please wait for Confirmation.
-            <br />
-          </text>
-          <text
-            className="ml-4 text-center mt-2"
-            style={{
-              // fontSize: isTab ? "16px" : "24px",
-              fontWeight: 400,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "white",
-            }}
-          >
-            <b> Thank You</b>
-          </text>
-        </div>
-      </Modal>
-
       <div className="flex ">
         <div className="shadow-md bg-white flex flex-col w-full  p-6 my-5 mr-4">
           <p className="text-3xl ml-4">Appointment Details</p>

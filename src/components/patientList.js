@@ -75,7 +75,9 @@ export default function PatientList({ searchTerm })
 
         const data = await response.json();
         console.log("DATA from response", data);
-        setPatientsList(data?.data);
+        const filteredPatients = data.data.filter((patient) => patient.name !== null);
+        setPatientsList(filteredPatients);
+
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);

@@ -29,7 +29,10 @@ export default function DoctorList({ searchTerm })
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState("");
   const [open, setOpen] = useState(false);
-
+  const [newSlot, setNewSlot] = useState({
+    date: "",
+    time: ""
+  })
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () =>
   {
@@ -50,9 +53,6 @@ export default function DoctorList({ searchTerm })
   const [resendClicked, setResendClicked] = useState(false);
   const [firstTime, setFirstTime] = useState(true);
 
-  // useEffect(() => {
-  //   localStorage.clear();
-  // }, []);
 
   useEffect(() =>
   {
@@ -123,38 +123,26 @@ export default function DoctorList({ searchTerm })
   const handleBookAppointment = async () =>
   {
     // if a slot is already booked then don't book a new slot.
-    const token = localStorage.getItem("token")
-    if (token)
-    {
-      navigate("/edituserform");
-    }
-
     const bookslot = {
       date: keys[currentIndex],
       time: values[currentIndex][currentTimeIndex].start,
     };
 
-    console.log("selected doctor", selectedDoctor?._id);
-    const response = await fetch(
-      `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
-      {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bookslot),
-      }
-    );
+    setNewSlot((prevSlot) => ({
+      ...prevSlot,
+      date: bookslot.date
+    }));
 
-    const data = await response.json();
+    setNewSlot((prevSlot) => ({
+      ...prevSlot,
+      time: bookslot.time
+    }));
 
-    console.log("slot booked", data);
-    localStorage.setItem(
-      "appointment_date",
-      data?.doctorSlot?.date?.split("T")[0]
-    );
-    localStorage.setItem("appointment_time", data?.doctorSlot?.startTime);
-
+    const token = localStorage.getItem("token")
+    if (token)
+    {
+      navigate("/edituserform", { state: { selectedSlot: bookslot, selectedDoctor: selectedDoctor._id } });
+    }
     showappointment();
     showSlot();
   };
@@ -306,7 +294,7 @@ export default function DoctorList({ searchTerm })
         }
 
         localStorage.setItem("token", data?.data?.token);
-        navigate("/edituserform");
+        navigate("/edituserform", { state: { selectedSlot: newSlot, selectedDoctor: selectedDoctor._id } });
       }
     } catch (error)
     {

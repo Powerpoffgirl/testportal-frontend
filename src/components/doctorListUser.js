@@ -36,11 +36,6 @@ export default function DoctorListUser({ searchTerm })
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
 
-  const [prevAppointment, setprevAppointment] = useState({
-    doctorId: localStorage.getItem('doctorId'),
-    appointmentDate: localStorage.getItem('appointment_date'),
-    appointmentTime: localStorage.getItem('appointment_time')
-  });
 
   const onCloseModal = () =>
   {
@@ -163,80 +158,18 @@ export default function DoctorListUser({ searchTerm })
   {
 
     const token = localStorage.getItem("token");
-    console.log("********************previous date*****************************", prevAppointment?.appointmentDate)
-    if (token)
-    {
-      navigate("/edituserform");
-    }
-
-    console.log("date", keys[currentIndex]);
-    console.log("slot", values[currentIndex][currentTimeIndex].start);
-    if (prevAppointment?.appointmentDate)
-    {
-      //cancel slot
-      const details = {
-        date: prevAppointment?.appointmentDate,
-        time: prevAppointment?.appointmentTime,
-      };
-
-      const response = await fetch(
-        `${baseUrl}/api/v1/cancel_slot/${prevAppointment?.doctorId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token, // Use the stored token
-          },
-          body: JSON.stringify(details),
-        }
-      );
-      // toast.success('appointment deleted')
-
-    }
-
-
-    console.log("date", keys[currentIndex]);
-    console.log("slot", values[currentIndex][currentTimeIndex].start);
-
     const bookslot = {
       date: keys[currentIndex],
       time: values[currentIndex][currentTimeIndex].start,
     };
 
-    // localStorage.setItem("bookSlotDate", keys[currentIndex])
-    // localStorage.setItem("bookSlotTime", values[currentIndex][currentTimeIndex].start)
-    // console.log("selected doctor", selectedDoctor?._id);
-    // localStorage.setItem("SelectedDoc", selectedDoctor?._id)
-    // const response = await fetch(
-    //   `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
-    //   {
-    //     method: "post",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(bookslot),
-    //   }
-    // );
+    console.log("=============Book slots==================", bookslot)
 
-    // const data = await response.json();
+    if (token)
+    {
+      navigate("/edituserform", { state: { selectedSlot: bookslot, selectedDoctor: selectedDoctor._id } });
+    }
 
-    // console.log("slot booked", data);
-    // if (data.success === true)
-    // {
-    //   // toast.success("Slot selected Successfully!");
-    //   navigate("/edituserform");
-    // } else
-    // {
-    //   toast.error("Slot Not Available");
-    // }
-    localStorage.setItem(
-      "appointment_date",
-      keys[currentIndex]
-    );
-    localStorage.setItem("appointment_time", values[currentIndex][currentTimeIndex].start);
-
-    // showappointment();
-    // showSlot();
   };
 
   const handleFilterDocotors = (item) =>
@@ -319,38 +252,6 @@ export default function DoctorListUser({ searchTerm })
     setOtp([...otp]);
   };
 
-  const verifyOTP = async () =>
-  {
-    try
-    {
-      const userId = localStorage.getItem("userId");
-
-      const otpString = otp.join("");
-
-      const response = await fetch(
-        `${baseUrl}/api/v1/user/verify_otp/${userId}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ otp: otpString }),
-        }
-      );
-
-      const data = await response.json();
-      if (data.success === true)
-      {
-        console.log("DATA from response", data);
-
-        localStorage.setItem("token", data?.data?.token);
-        navigate("/edituserform");
-      }
-    } catch (error)
-    {
-      console.error("There was an error verifying the OTP:", error);
-    }
-  };
 
   const bookingslot = selectedDoctor.slots;
 
@@ -1008,97 +909,6 @@ export default function DoctorListUser({ searchTerm })
                   <p></p>
                 </div>
                 <hr class=" mt-3" />
-
-                {/* ----------------------------------------otp verification section---------------------------------------- */}
-                <div class="flex flex-col">
-                  <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
-                  <div
-                    class="bg-gray-300 flex flex-row rounded-lg"
-                    style={{ maxWidth: "11rem" }}
-                  >
-                    <img src={phonelogo} class="pl-5 pr-1"></img>
-                    <input
-                      className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
-                      type="number"
-                      id="mobileNo"
-                      name="mobileNo"
-                      value={contactNumber}
-                      style={{
-                        border: "",
-                        height: "45px",
-                        paddingLeft: "1.5%",
-                        maxWidth: "8rem",
-                      }}
-                    />
-                  </div>
-
-                  <div
-                    className="flex w-full my-3"
-                    style={{
-                      position: "relative",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {otp?.map((digit, index) => (
-                      <input
-                        onInput={(e) =>
-                        {
-                          e.target.value = e.target.value.replace(
-                            /[^0-9]/g,
-                            ""
-                          );
-                        }}
-                        key={index}
-                        ref={(input) => (otpInputs[index] = input)}
-                        type="number"
-                        className="w-10 h-8 mr-2 text-lg  border-2 text-black border-gray-400 text-center "
-                        maxLength={1}
-                        value={digit}
-                        onChange={(e) => handleInputChange(e, index)}
-                        onKeyDown={(e) =>
-                        {
-                          if (e.key === "Backspace" && index > 0 && !digit)
-                          {
-                            otpInputs[index - 1].focus();
-                          }
-                        }}
-                      />
-                    ))}
-                  </div>
-
-                  <p
-                    style={{
-                      fontWeight: 400,
-                      fontSize: "16px",
-                      display: "flex",
-                      marginLeft: "40%",
-                    }}
-                  ></p>
-                  <p class="text-gray-600">
-                    Otp will expire in
-                    <span
-                      className="timer"
-                      style={{ color: "#666", cursor: "pointer" }}
-                    >
-                      <text className="mx-2" style={{ color: "#000000" }}>
-                        {formatTime(seconds)} sec
-                      </text>
-                    </span>
-                    <button
-                      onClick={handleOtp}
-                      class="font-medium underline text-black"
-                    >
-                      Resend
-                    </button>{" "}
-                  </p>
-                  <button
-                    className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-                    style={{ backgroundColor: "#89CFF0" }}
-                    onClick={verifyOTP}
-                  >
-                    Verify
-                  </button>
-                </div>
               </div>
             )}
           </div>

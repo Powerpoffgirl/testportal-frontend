@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import Sidebar from "./sidebar";
-import Header from "./header";
 import { useNavigate } from "react-router-dom";
-import { Modal } from "react-responsive-modal";
-import UserSidebar from "./userSidebar";
-import AdminSidebar from "./adminSidebar";
-import FormAppoinment from "./formAppointment";
-import design from "../assets/design.svg";
-import EditFormAppoinment from "./editFormAppointment";
-import close_button from "../assets/close_button.svg";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import education from "../assets/education.svg";
 import home from "../assets/home.svg";
-import phonelogo from "../assets/phone.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaAngleLeft } from "react-icons/fa";
@@ -24,12 +14,9 @@ import { useLocation } from "react-router-dom";
 export default function EditAppointment()
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-
   const location = useLocation();
   console.log("my location-----------", location.state);
   console.log("my appointment id===", location.state.appointment._id)
-  // const { state } = location;
-  // console.log("the state", state);
   const oldAppointment = location.state.appointment;
   console.log("old appointment---", oldAppointment)
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -436,39 +423,8 @@ export default function EditAppointment()
     localStorage.setItem("SelectedDoc", selectedDoctor?._id)
     localStorage.setItem("EditToggle", Edittoggle)
     console.log("selected doctor", selectedDoctor?._id);
-    // const response = await fetch(
-    //   `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
-    //   {
-    //     method: "post",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(bookslot),
-    //   }
-    // );
-
-    // const data = await response.json();
-
-    // console.log("slot booked", data);
-    // localStorage.setItem(
-    //   "appointment_date",
-    //   keys[currentIndex]
-    // );
-    // localStorage.setItem("appointment_time", values[currentIndex][currentTimeIndex].start);
-
-
     showappointment();
-    navigate("/edituserform", { state: { oldAppointment: oldAppointment } });
-    // showSlot();
-
-    // if (data.success === true) {
-    //   toast.success("Slot selected Successfully!");
-    //  
-    // } else {
-    //   toast.error("Please book another slot", {
-    //     // position: "top-center",
-    //   });
-    // }
+    navigate("/edituserform", { state: { selectedSlot: bookslot, selectedDoctor: selectedDoctor._id, isEditing: true, appointment: oldAppointment } });
   };
 
   const filterSymptoms = (userInput) =>

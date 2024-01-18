@@ -85,10 +85,6 @@ export default function AppointmentListUser({ searchTerm })
 
   const handleEditAppointment = async (
     appointment
-    // appointmentId,
-    // appointmentDate,
-    // appointmentTime,
-    // doctorId
   ) =>
   {
     // localStorage.setItem("appointmentId", appointmentId);
