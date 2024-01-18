@@ -84,19 +84,20 @@ export default function AppointmentListUser({ searchTerm })
   }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
 
   const handleEditAppointment = async (
-    appointmentId,
-    appointmentDate,
-    appointmentTime,
-    doctorId
+    appointment
+    // appointmentId,
+    // appointmentDate,
+    // appointmentTime,
+    // doctorId
   ) =>
   {
-    localStorage.setItem("appointmentId", appointmentId);
+    // localStorage.setItem("appointmentId", appointmentId);
 
-    navigate("/editappointment");
+    navigate("/editappointment", { state: { appointment: appointment } });
 
-    localStorage.setItem("EditAppointmentDate", appointmentDate)
+    // localStorage.setItem("EditAppointmentDate", appointmentDate)
 
-    localStorage.setItem("EditAppointmentTime", appointmentTime)
+    // localStorage.setItem("EditAppointmentTime", appointmentTime)
 
     // try
     // {
@@ -544,10 +545,11 @@ export default function AppointmentListUser({ searchTerm })
                     class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
                     onClick={() =>
                       handleEditAppointment(
-                        appointment._id,
-                        appointment?.appointmentDate?.date,
-                        appointment?.appointmentDate?.time,
-                        appointment?.doctorId?._id
+                        appointment
+                        // appointment._id,
+                        // appointment?.appointmentDate?.date,
+                        // appointment?.appointmentDate?.time,
+                        // appointment?.doctorId?._id
                       )
                     }
                     style={{

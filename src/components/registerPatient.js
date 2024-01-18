@@ -11,7 +11,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { Flex, Select } from "antd";
-import { DatePicker, Space } from 'antd';
+import { DatePicker, Space } from "antd";
 import { IoIosSearch } from "react-icons/io";
 import UserContext from "./userContext";
 import DoctorList from "./doctorList";
@@ -905,7 +905,7 @@ export default function PatientForm()
                 for="total-experience"
                 className="block text-black text-lg font-semibold"
               >
-                Search<span className="text-red-500">*</span>{" "}
+                Search
               </label>
               <button
                 className="btn btn-primary border py-1 ml-auto px-4 rounded-3xl text-white mb-2"
@@ -1101,7 +1101,6 @@ export default function PatientForm()
               </Select>
               {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
-
           </div>
           <div className="mt-3 flex flex-col w-full">
             <label
@@ -1111,7 +1110,6 @@ export default function PatientForm()
               Date
             </label>
             <Space direction="vertical">
-
               <DatePicker onChange={onChange} />
             </Space>
             {/* {errors.degree && <p className="text-red-500">{errors.degree}</p>} */}

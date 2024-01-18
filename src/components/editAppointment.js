@@ -19,10 +19,19 @@ import "react-toastify/dist/ReactToastify.css";
 import { FaAngleLeft } from "react-icons/fa";
 import { FaAngleRight } from "react-icons/fa";
 import { Tooltip } from "antd";
+import { useLocation } from "react-router-dom";
 
 export default function EditAppointment()
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+
+  const location = useLocation();
+  console.log("my location-----------", location.state);
+  console.log("my appointment id===", location.state.appointment._id)
+  // const { state } = location;
+  // console.log("the state", state);
+  const oldAppointment = location.state.appointment;
+  console.log("old appointment---", oldAppointment)
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setSelectedDoctor] = useState("");
   const [open, setOpen] = useState(false);
@@ -223,7 +232,7 @@ export default function EditAppointment()
         }
 
         localStorage.setItem("token", data?.data?.token);
-        navigate("/edituserform");
+        // navigate("/edituserform");
       }
     } catch (error)
     {
@@ -289,7 +298,7 @@ export default function EditAppointment()
       try
       {
         const token = localStorage.getItem("token");
-        const appointmentId = localStorage.getItem("appointmentId");
+        const appointmentId = oldAppointment._id
         if (!token)
         {
           console.error("No token found in local storage");
@@ -420,10 +429,12 @@ export default function EditAppointment()
       time: values[currentIndex][currentTimeIndex].start,
     };
 
+    const Edittoggle = true;
 
     localStorage.setItem("bookSlotDate", keys[currentIndex])
     localStorage.setItem("bookSlotTime", values[currentIndex][currentTimeIndex].start)
     localStorage.setItem("SelectedDoc", selectedDoctor?._id)
+    localStorage.setItem("EditToggle", Edittoggle)
     console.log("selected doctor", selectedDoctor?._id);
     // const response = await fetch(
     //   `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
@@ -439,15 +450,15 @@ export default function EditAppointment()
     // const data = await response.json();
 
     // console.log("slot booked", data);
-    localStorage.setItem(
-      "appointment_date",
-      keys[currentIndex]
-    );
-    localStorage.setItem("appointment_time", values[currentIndex][currentTimeIndex].start);
+    // localStorage.setItem(
+    //   "appointment_date",
+    //   keys[currentIndex]
+    // );
+    // localStorage.setItem("appointment_time", values[currentIndex][currentTimeIndex].start);
 
 
     showappointment();
-    navigate("/edituserform");
+    navigate("/edituserform", { state: { oldAppointment: oldAppointment } });
     // showSlot();
 
     // if (data.success === true) {

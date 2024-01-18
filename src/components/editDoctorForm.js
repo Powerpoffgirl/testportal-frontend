@@ -40,7 +40,7 @@ export default function EditDoctorForm()
   const [contactNumber, setcontactNumber] = useState(null);
   const [pinCodeError, setPinCodeError] = useState("");
 
-  const [patientDetails, setPatientDetails] = useState({
+  const [doctorDetails, setDoctorDetails] = useState({
     name: "",
     age: "",
     bodyWeight: "",
@@ -63,7 +63,7 @@ export default function EditDoctorForm()
       try
       {
         const response = await fetch(
-          `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
+          `https://api.postalpincode.in/pincode/${doctorDetails?.address?.pinCode}`,
           {
             method: "GET",
           }
@@ -80,7 +80,7 @@ export default function EditDoctorForm()
         console.log("District:", district);
         console.log("State:", state);
 
-        setPatientDetails((prevDetails) => ({
+        setDoctorDetails((prevDetails) => ({
           ...prevDetails,
           address: {
             ...prevDetails.address,
@@ -94,11 +94,11 @@ export default function EditDoctorForm()
       }
     };
 
-    if (patientDetails?.address?.pinCode)
+    if (doctorDetails?.address?.pinCode)
     {
       fetchData();
     }
-  }, [patientDetails?.address?.pinCode]);
+  }, [doctorDetails?.address?.pinCode]);
 
   const handleFileSelect = async (event) =>
   {
@@ -159,7 +159,7 @@ export default function EditDoctorForm()
     { label: "Saturday", value: "Saturday" },
     { label: "Sunday", value: "Sunday" },
   ];
-  const [doctorDetails, setDoctorDetails] = useState(null);
+  // const [doctorDetails, setDoctorDetails] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const fileInputRef = useRef(null);
@@ -842,7 +842,7 @@ export default function EditDoctorForm()
           <hr />
 
           <div className="mt-4">
-            <p className="block text-black text-lg font-semibold">
+            <p className="block text-black text-lg font-semibold mt-1 mb-1">
               Working Days<span className="text-red-500">*</span>{" "}
             </p>
             <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
@@ -866,7 +866,7 @@ export default function EditDoctorForm()
           </div>
 
           <div className="mt-3">
-            <p className="block text-black text-lg font-semibold">
+            <p className="block text-black text-lg font-semibold mt-1 mb-1">
               Working Hours<span className="text-red-500">*</span>{" "}
             </p>
             <div className="flex flex-row-ml-2 mr-2">
@@ -905,7 +905,7 @@ export default function EditDoctorForm()
           <div className=" mt-3">
             <label
               for="total-experience"
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mt-1 mb-1"
             >
               Total Experience<span className="text-red-500">*</span>{" "}
             </label>
@@ -925,7 +925,7 @@ export default function EditDoctorForm()
           <div className="mt-3">
             <label
               for="specialist"
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mt-1 mb-1"
             >
               Specialist<span className="text-red-500">*</span>{" "}
             </label>
@@ -958,7 +958,7 @@ export default function EditDoctorForm()
           <div className="mt-3">
             <label
               for="degree"
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mt-1 mb-1"
             >
               Degree<span className="text-red-500">*</span>{" "}
             </label>
@@ -988,7 +988,7 @@ export default function EditDoctorForm()
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
                 for="name"
-                className="block text-black text-lg font-semibold"
+                className="block text-black text-lg font-semibold mt-1 mb-1"
               >
                 Name<span className="text-red-500">*</span>{" "}
               </label>
@@ -1006,7 +1006,7 @@ export default function EditDoctorForm()
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
                 for="name"
-                className="block text-black text-lg font-semibold"
+                className="block text-black text-lg font-semibold mt-1 mb-1"
               >
                 Registration Number<span className="text-red-500">*</span>{" "}
               </label>
@@ -1027,7 +1027,7 @@ export default function EditDoctorForm()
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
                 for="email"
-                className="block text-black text-lg font-semibold"
+                className="block text-black text-lg font-semibold mt-1 mb-1"
               >
                 Email<span className="text-red-500">*</span>{" "}
               </label>
@@ -1045,7 +1045,7 @@ export default function EditDoctorForm()
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
                 for="contact"
-                className="block text-black text-lg font-semibold"
+                className="block text-black text-lg font-semibold mt-1 mb-1"
               >
                 Contact Number<span className="text-red-500">*</span>{" "}
               </label>
@@ -1073,7 +1073,7 @@ export default function EditDoctorForm()
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
                 for="interval"
-                className="block text-black text-lg font-semibold"
+                className="block text-black text-lg font-semibold mt-1 mb-1"
               >
                 Interval<span className="text-red-500">*</span>{" "}
               </label>
@@ -1091,7 +1091,7 @@ export default function EditDoctorForm()
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
                 for="consultationFee"
-                className="block text-black text-lg font-semibold"
+                className="block text-black text-lg font-semibold mt-1 mb-1"
               >
                 Consultation fees<span className="text-red-500">*</span>{" "}
               </label>
@@ -1112,7 +1112,7 @@ export default function EditDoctorForm()
           <div className="mt-3">
             <label
               for="houseNo"
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mt-1 mb-1"
             >
               Address
             </label>
@@ -1322,18 +1322,17 @@ export default function EditDoctorForm()
           <div>
             <label
               htmlFor="about"
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mt-2 mb-2"
             >
               About
             </label>
-            <input
+            <textarea
               type="text"
               id="about"
               name="about"
               value={doctorDetails?.about}
               onChange={handleChange}
-              // style={{ display: 'flex', flexWrap: 'wrap' }}
-              className="flex flex-wrap w-full h-24 placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              className="resize-y block w-full h-24 placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
             {errors.username && (
               <p className="text-red-500">{errors.username}</p>

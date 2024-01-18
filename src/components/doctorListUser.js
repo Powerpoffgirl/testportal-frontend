@@ -203,10 +203,10 @@ export default function DoctorListUser({ searchTerm })
       time: values[currentIndex][currentTimeIndex].start,
     };
 
-    localStorage.setItem("bookSlotDate", keys[currentIndex])
-    localStorage.setItem("bookSlotTime", values[currentIndex][currentTimeIndex].start)
-    console.log("selected doctor", selectedDoctor?._id);
-    localStorage.setItem("SelectedDoc", selectedDoctor?._id)
+    // localStorage.setItem("bookSlotDate", keys[currentIndex])
+    // localStorage.setItem("bookSlotTime", values[currentIndex][currentTimeIndex].start)
+    // console.log("selected doctor", selectedDoctor?._id);
+    // localStorage.setItem("SelectedDoc", selectedDoctor?._id)
     // const response = await fetch(
     //   `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
     //   {

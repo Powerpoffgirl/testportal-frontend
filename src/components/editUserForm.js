@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef, useState, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 import UserContext from "./userContext";
 import { Select } from "antd";
+import { useLocation } from "react-router-dom";
 
 const DiseasesDropdown = [
   { label: "Common Cold", value: "Common Cold" },
@@ -123,6 +125,14 @@ export default function EditUserForm()
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   const navigate = useNavigate();
+
+  const location = useLocation();
+  console.log("location from edit user form", location);
+  // const { state } = location;
+  // console.log("Edit user form state", location);
+  // const appointmentId = location.state.oldAppointment
+  // const oldAppointment = state;
+
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -143,7 +153,6 @@ export default function EditUserForm()
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [appointmentList, setAppointmentList] = useState([]);
   const [patientId, setPatientId] = useState(localStorage.getItem("patientId"));
-  const [selectedOption, setSelectedOption] = useState(null);
 
   useEffect(() =>
   {
@@ -257,8 +266,6 @@ export default function EditUserForm()
   }, []);
 
   console.log("DATE TIME", appointmentDate, appointmentTime);
-
-
   const handleChangeIssues = (value) =>
   {
 
@@ -327,6 +334,9 @@ export default function EditUserForm()
       }
     }
   };
+  const selectedDate = localStorage.getItem("bookSlotDate")
+  const selectedTime = localStorage.getItem("bookSlotTime")
+  const selectedDoctor = localStorage.getItem("SelectedDoc")
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -415,7 +425,7 @@ export default function EditUserForm()
       gender: e,
     }));
   };
-
+  const [selectedOption, setSelectedOption] = useState(null);
   const handleChange3 = (e) =>
   {
     if (e === 'add-member')
@@ -612,18 +622,36 @@ export default function EditUserForm()
 
       console.log("EXSISTING APPOINTMENT", existingAppointment);
 
-      if (existingAppointment)
+
+
+
+
+
+      const EditToggle = localStorage.getItem("EditToggle")
+
+
+      if (EditToggle)
       {
+        console.log("entered in the if condintion++++++++++++++++++")
         const oldappointmentDate = localStorage.getItem("EditAppointmentDate")
         const oldappointmentTime = localStorage.getItem("EditAppointmentTime")
-
-        toast.error("An appointment already exists with this doctor.");
+        const selectedDate = localStorage.getItem("bookSlotDate")
+        const selectedTime = localStorage.getItem("bookSlotTime")
+        const selectedDoctor = localStorage.getItem("SelectedDoc")
         const details = {
-          date: oldappointmentDate,
-          time: oldappointmentDate,
-        };
+          doctorId: selectedDoctor,
+          patientId: appointmentDetails?.patientId,
+          appointmentDate: {
+            date: selectedDate,
+            time: selectedTime
+          },
+          issues: appointmentDetails?.issues,
+          diseases: appointmentDetails?.diseases,
+        }
+        const oldappointment = localStorage.getItem("appointmentId");
+
         const response = await fetch(
-          `${baseUrl}/api/v1/cancel_slot/${appointmentDetails?.doctorId}`,
+          `${baseUrl}/api/v1/user/update_appointmentById/${oldappointment}`,
           {
             method: "POST",
             headers: {
@@ -636,8 +664,116 @@ export default function EditUserForm()
 
         const data = await response.json();
         console.log("=====DATA=====", data);
-        // navigate("/appointmentlistuser");
-        // return;
+
+
+        // const oldappointmentDate = localStorage.getItem("EditAppointmentDate")
+        // const oldappointmentTime = localStorage.getItem("EditAppointmentTime")
+
+
+        toast.error("An appointment already exists with this doctor.");
+        const details1 = {
+          date: appointmentDetails.appointmentDate.date,
+          time: appointmentDetails.appointmentDate.time,
+        };
+        const response1 = await fetch(
+          `${baseUrl}/api/v1/cancel_slot/${selectedDoctor}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Use the stored token
+            },
+            body: JSON.stringify(details1),
+          }
+        );
+
+        const data1 = await response1.json();
+        console.log("=====DATA===== the actual calling ", data1);
+
+
+
+
+
+        const bookslot = {
+          date: selectedDate,
+          time: selectedTime,
+        };
+        const response2 = await fetch(
+          `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
+          {
+            method: "post",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bookslot),
+          }
+        );
+
+        const data3 = await response2.json();
+
+        console.log("slot booked", data3);
+        if (data3.success === true)
+        {
+          // toast.success("Slot selected Successfully!");
+          localStorage.setItem(
+            "appointment_date",
+            data?.doctorSlot?.date?.split("T")[0]
+          );
+          localStorage.setItem("appointment_time", data?.doctorSlot?.startTime);
+          navigate("/appointmentlistuser");
+          localStorage.removeItem("bookSlotDate");
+          localStorage.removeItem("bookSlotTime");
+          localStorage.removeItem("SelectedDoc");
+
+        } else
+        {
+          toast.error("Slot Not Available");
+          navigate("/doctorlistuser");
+          localStorage.removeItem("bookSlotDate");
+          localStorage.removeItem("bookSlotTime");
+          localStorage.removeItem("SelectedDoc");
+        }
+        localStorage.removeItem("EditToggle");
+      }
+
+
+
+
+
+
+
+
+
+
+
+      if (existingAppointment)
+      {
+        // const oldappointmentDate = localStorage.getItem("EditAppointmentDate")
+        // const oldappointmentTime = localStorage.getItem("EditAppointmentTime")
+
+        toast.error("An appointment already exists with this doctor.");
+        // const details = {
+        //   date: appointmentDate,
+        //   time: appointmentTime,
+
+        // };
+        // const response = await fetch(
+        //   `${baseUrl}/api/v1/cancel_slot/${appointmentDetails?.doctorId}`,
+        //   {
+        //     method: "POST",
+        //     headers: {
+        //       "Content-Type": "application/json",
+        //       "x-auth-token": token, // Use the stored token
+        //     },
+        //     body: JSON.stringify(details),
+        //   }
+        // );
+
+        // const data = await response.json();
+        // console.log("=====DATA=====", data);
+        // // return;
+        navigate("/appointmentlistuser");
+        return;
       } else
       {
         const response = await fetch(
@@ -872,7 +1008,7 @@ export default function EditUserForm()
                   htmlFor="name"
                   className="block text-black text-lg font-semibold"
                 >
-                  Name<span className="text-red-500">*</span>{" "}
+                  Name
                 </label>
                 {patientsList?.length === 0 || userDetails?.newUser === true ? (
                   <input
@@ -884,6 +1020,7 @@ export default function EditUserForm()
                     className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                 ) : (
+
                   <Select
                     className="h-11 block w-full placeholder-gray-400 rounded-lg border bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     name="patientName"
@@ -930,7 +1067,7 @@ export default function EditUserForm()
                       htmlFor="age"
                       className="block text-black text-lg font-semibold "
                     >
-                      Age<span className="text-red-500">*</span>{" "}
+                      Age
                     </label>
                     {patientsList?.length === 0 ||
                       userDetails?.newUser === true ? (
@@ -962,7 +1099,7 @@ export default function EditUserForm()
                       className="block text-lg font-semibold text-black font-lato"
                       htmlFor="ageType"
                     >
-                      Age Type<span className="text-red-500">*</span>{" "}
+                      Age Type
                     </label>
                     {patientsList?.length === 0 ||
                       userDetails?.newUser === true ? (
@@ -1020,7 +1157,7 @@ export default function EditUserForm()
                       className="block text-lg font-semibold text-black font-lato"
                       htmlFor="gender"
                     >
-                      Gender<span className="text-red-500">*</span>{" "}
+                      Gender
                     </label>
                     {patientsList?.length === 0 ||
                       userDetails?.newUser === true ? (
@@ -1084,7 +1221,7 @@ export default function EditUserForm()
                   htmlFor="email1"
                   className="block text-black text-lg font-semibold"
                 >
-                  Body Weight<span className="text-red-500">*</span>{" "}
+                  Body Weight
                 </label>
                 {patientsList?.length === 0 || userDetails?.newUser === true ? (
                   <input
@@ -1113,14 +1250,14 @@ export default function EditUserForm()
                   htmlFor="email2"
                   className="block text-black text-lg font-semibold"
                 >
-                  Appointment Date<span className="text-red-500">*</span>{" "}
+                  Appointment Date
                 </label>
                 <input
                   type="text"
                   id="appointmentDate"
                   name="appointmentDate"
                   onChange={handleChange}
-                  value={appointmentDate}
+                  value={selectedDate}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
@@ -1132,14 +1269,14 @@ export default function EditUserForm()
                   htmlFor="email3"
                   className="block text-black text-lg font-semibold"
                 >
-                  Appointment Time<span className="text-red-500">*</span>{" "}
+                  Appointment Time
                 </label>
                 <input
                   type="text"
                   id="appointmentTime"
                   name="appointmentTime"
                   onChange={handleChange}
-                  value={appointmentTime}
+                  value={selectedTime}
                   className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                 />
                 {errors.email && <p className="text-red-500">{errors.email}</p>}
@@ -1154,7 +1291,7 @@ export default function EditUserForm()
                   htmlFor="contact"
                   className="block text-black text-lg font-semibold"
                 >
-                  Issues<span className="text-red-500">*</span>{" "}
+                  Issues
                 </label>
                 <div class="">
                   <style>
@@ -1216,7 +1353,7 @@ export default function EditUserForm()
                   htmlFor="contact"
                   className="block text-black text-lg font-semibold"
                 >
-                  Disease<span className="text-red-500">*</span>{" "}
+                  Disease
                 </label>
                 <Select
                   mode="multiple"
@@ -1297,7 +1434,7 @@ export default function EditUserForm()
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       )}
-                    </div>
+                    </div >
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
                         userDetails?.newUser === true ? (
@@ -1356,8 +1493,7 @@ export default function EditUserForm()
                           id="pinCode"
                           name="pinCode"
                           onChange={handleChange}
-                          value={patientDetails?.address?.pinCode}
-                          placeholder="Pin Code*"
+                          placeholder="Pin Code"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                           onInput={(e) =>
                           {
@@ -1373,7 +1509,7 @@ export default function EditUserForm()
                           id="pinCode"
                           name="pinCode"
                           value={patientDetails?.address?.pinCode}
-                          placeholder="Pin Code*"
+                          placeholder="Pin Code"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       )}
@@ -1419,7 +1555,6 @@ export default function EditUserForm()
                         id="district"
                         name="district"
                         onChange={handleChange}
-                        value={patientDetails?.address?.district}
                         placeholder="District"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -1447,8 +1582,7 @@ export default function EditUserForm()
                         id="state"
                         name="state"
                         onChange={handleChange}
-                        value={patientDetails?.address?.state}
-                        placeholder="State*"
+                        placeholder="State"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
@@ -1457,7 +1591,7 @@ export default function EditUserForm()
                         id="state"
                         name="state"
                         value={patientDetails?.address?.state}
-                        placeholder="State*"
+                        placeholder="State"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
