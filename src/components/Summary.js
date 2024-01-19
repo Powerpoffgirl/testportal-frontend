@@ -1,14 +1,9 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Navigate, useNavigate } from "react-router-dom";
-// import { Flex, Row, Select } from "antd";
-// import { IoIosCheckmarkCircleOutline } from "react-icons/io";
-// import Modal from "react-responsive-modal";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import UserContext from "./userContext";
 import { ToastContainer, toast } from "react-toastify";
 import "./Table.css";
-// import { Table } from "./table";
-// import { Modal } from "./tableModal";
 import { useReactToPrint } from "react-to-print";
 
 export default function Summary()
@@ -16,8 +11,6 @@ export default function Summary()
     const componentPDF = useRef();
     const { updateUser, updateUserEmail, updateUserimage } =
         useContext(UserContext);
-    // let isTab = useMediaQuery({ query: "(max-width: 768px)" });
-    // let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
     let isLg = useMediaQuery({ query: "(max-width: 1023px)" });
     const navigate = useNavigate();
     const fileInputRef = useRef(null);
@@ -27,6 +20,9 @@ export default function Summary()
     const [userDetailsEmail, setUserDetailsEmail] = useState();
     const [userDetailsPic, setUserDetailsPic] = useState();
     const [outRange, setOutRange] = useState(false);
+    const location = useLocation()
+    console.log("LOCATION============", location)
+    const reportDate = location.state.reportDate
 
     const handleFileSelect = async (event) =>
     {
@@ -121,126 +117,8 @@ export default function Summary()
         // onAfterPrint: () => alert("Data saved in PDF")
     });
 
-    const [modalOpen, setModalOpen] = useState(false);
-    const [rows, setRows] = useState([
-        // {
-        //     _id: "empty",
-        //     testName: "Empty",
-        //     testCode: "Empty",
-        //     department: "Empty",
-        //     sampleType: "Empty",
-        //     costOfDiagnosticTest: "$0",
-        // },
-    ]);
-    const [rowToEdit, setRowToEdit] = useState(null);
+    const [rows, setRows] = useState([]);
 
-    const handleDeleteRow = async (index) =>
-    {
-        try
-        {
-            const token = localStorage.getItem("token");
-            const patientId = localStorage.getItem("selectedPatientId");
-
-            if (!token)
-            {
-                console.error("No token found in local storage");
-                return;
-            }
-
-            const response = await fetch(
-                `${baseUrl}/api/v1/doctor/delete_testBooking/${rows[index]._id}`,
-                {
-                    method: "delete",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "x-auth-token": token,
-                    },
-                }
-            );
-
-            const responseData = await response.json();
-            console.log("DATA from response", responseData);
-            setRows(rows.filter((_, idx) => idx !== index));
-        } catch (error)
-        {
-            console.error("There was an error deleting details:", error);
-        }
-    };
-
-    const handleEditRow = (idx) =>
-    {
-        setRowToEdit(idx);
-        setModalOpen(true);
-    };
-
-    const handleSubmit = (newRow) =>
-    {
-        console.log("code working till now ");
-        setRows((prevRows) =>
-        {
-            if (rowToEdit === null)
-            {
-                const updatedRows = [...prevRows, newRow];
-                const newRowNumber = updatedRows.length - 1;
-                setRowNumber(newRowNumber);
-
-                return updatedRows;
-            } else
-            {
-                const EditDetails = async () =>
-                {
-                    try
-                    {
-                        const token = localStorage.getItem("token");
-                        const patientId = localStorage.getItem("selectedPatientId");
-
-                        if (!token)
-                        {
-                            console.error("No token found in local storage");
-                            return;
-                        }
-
-                        const lastItem = rows[rowToEdit];
-
-                        const response = await fetch(
-                            `${baseUrl}/api/v1/doctor/update_testBooking/${rows[rowToEdit]._id}`,
-                            {
-                                method: "Put",
-                                headers: {
-                                    "Content-Type": "application/json",
-                                    "x-auth-token": token,
-                                },
-                                body: JSON.stringify({
-                                    testName: lastItem.testName,
-                                    testCode: lastItem.testCode,
-                                    department: lastItem.department,
-                                    sampleType: lastItem.sampleType,
-                                    costOfDiagnosticTest: lastItem.costOfDiagnosticTest,
-                                    unit: lastItem.unit,
-                                    bioRefInterval: lastItem.bioRefInterval,
-                                    technology: lastItem.technology,
-                                    patientId: patientId,
-                                }),
-                            }
-                        );
-
-                        const responseData = await response.json();
-                        console.log("DATA from response", responseData);
-                        // Handle responseData as needed (maybe update state?)
-                    } catch (error)
-                    {
-                        console.error("There was an error verifying the OTP:", error);
-                    }
-                };
-                EditDetails();
-                return prevRows.map((currRow, idx) =>
-                    idx !== rowToEdit ? currRow : newRow
-                );
-            }
-        });
-        setRowToEdit(null);
-        // window.location.reload();
-    };
 
     useEffect(() =>
     {
@@ -269,9 +147,11 @@ export default function Summary()
                 );
 
                 const responseData = await response.json();
-                console.log("DATA from response", responseData);
+                console.log("DATA from response", responseData.data.testAsked);
+                // console.log("DATE", reportDate.data.date)
+                const todayReport = responseData?.data?.testAsked.filter((report) => report.date.includes(reportDate));
 
-                setRows(responseData?.data?.testAsked || []);
+                setRows(todayReport);
             } catch (error)
             {
                 console.error("There was an error fetching test details:", error);
@@ -336,6 +216,10 @@ export default function Summary()
                                         marginRight: "20px",
                                     }}
                                 >
+                                    <p style={{ fontWeight: 500, textTransform: 'capitalize' }}>
+                                        Date: {reportDate.split('-').reverse().join('-')}
+
+                                    </p>
                                     <p style={{ fontWeight: 500, textTransform: 'capitalize' }}>
                                         Name: {localStorage?.getItem("name")}
                                     </p>

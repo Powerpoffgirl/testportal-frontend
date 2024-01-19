@@ -290,7 +290,15 @@ export default function BillingPage({ name, contactNo, gender, age })
       setInputValues(newInputValues);
 
       console.log("value is been setted", inputValues)
+
+
+
     };
+
+
+
+
+
   };
 
   const handleBlur = (e, index) =>
@@ -321,10 +329,15 @@ export default function BillingPage({ name, contactNo, gender, age })
       return {
         ...prevPatientReport,
         testAsked: [...prevPatientReport.testAsked, { id: testId, value: value, date: dateString }],
+        // patientId: patientId
       };
     }
     );
+    // }
   }
+  // if (key === "Enter" && name === "value")
+  // {
+
 
   const handleSave = async (e) =>
   {
@@ -332,12 +345,6 @@ export default function BillingPage({ name, contactNo, gender, age })
     {
       const patientId = localStorage.getItem("selectedPatientId");
       console.log("consoling value", patientReport);
-      // if (patientReport.value == null)
-      // {
-      //   toast.error("Value can't be empty");
-      //   return;
-      // } else
-      // {
       const token = localStorage.getItem("token");
       const response = await fetch(
         `${baseUrl}/api/v1/doctor/update_labPatient/${patientId}`,
@@ -363,9 +370,45 @@ export default function BillingPage({ name, contactNo, gender, age })
       console.error("There was an error verifying the OTP:", error);
     }
 
-    navigate(`/summary`)
+    navigate(`/summary`, { state: { reportDate: dateString } })
   };
 
+  useEffect(() =>
+  {
+    const fetchTestDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("selectedPatientId");
+
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+
+        const response = await fetch(
+          `${baseUrl}/api/v1/doctor/getall_testBooking`,
+          {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+          }
+        );
+
+        const responseData = await response.json();
+        console.log("DATA from response from table ", responseData);
+      } catch (error)
+      {
+        console.error("There was an error fetching test details:", error);
+      }
+    };
+
+    fetchTestDetails();
+  }, []);
 
   useEffect(() =>
   {
@@ -396,7 +439,7 @@ export default function BillingPage({ name, contactNo, gender, age })
         const responseData = await response.json();
         console.log("DATA from response getAll_testBooking ", responseData);
 
-        setupdatedData(responseData?.data?.testAsked);
+        setupdatedData(responseData?.data?.testAsked || []);
         console.log("DATA from response updated data ", updatedData);
       } catch (error)
       {
@@ -405,7 +448,50 @@ export default function BillingPage({ name, contactNo, gender, age })
     };
 
     fetchTestDetails();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleFileSelect = async (event) =>
+  {
+    const file = event.target.files[0];
+    if (file)
+    {
+      const token = localStorage.getItem("token");
+      const patientId = localStorage.getItem("selectedPatientId");
+      const doctorId = localStorage.getItem("doctorId");
+      const formData = new FormData();
+      formData.append("patientReport", file);
+
+      console.log("FORM DATA", formData);
+      try
+      {
+        const response = await fetch(
+          `${baseUrl}/api/v1/doctor/upload_report/${patientId}`,
+          {
+            method: "POST",
+            headers: {
+              "x-auth-token": token,
+            },
+            body: formData,
+          }
+        );
+
+        if (!response.ok)
+        {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        fileInputRef.current.value = "";
+      } catch (error)
+      {
+        console.error("Error ", error);
+        toast.error("Error uploading pdf. Please try again.");
+      }
+    }
+  };
 
   updateUser(userDetailsName);
   updateUserEmail(userDetailsEmail);
@@ -753,14 +839,15 @@ export default function BillingPage({ name, contactNo, gender, age })
                         scope="col"
                         className="px-6 py-3 text-black text-sm font-semibold"
                       >
-                        {/* Delete */}
+                        Date
                       </th>
-                      {/* <th
+                      <th
                         scope="col"
                         className="px-6 py-3 text-black text-sm font-semibold"
                       >
-                        Save
-                      </th> */}
+                        {/* Delete */}
+                      </th>
+
                     </tr>
                   </thead>
                   <tbody className="overflow-y-auto">
@@ -869,12 +956,9 @@ export default function BillingPage({ name, contactNo, gender, age })
                         >
                           {row?.id?.bioRefInterval}
                         </td>
-                        {/* <td className="px-6 py-4">
-                          <button onClick={() => deleteRow(index)}><MdOutlineDelete size={25} color="red" /></button>
-                        </td> */}
-                        {/* <td className="px-6 py-4">
-                          <button onClick={handleSave}><GiConfirmed size={25} color="green" /></button>
-                        </td> */}
+                        <td className="px-6 py-4">
+                          {row.date.slice(0, 10).split('-').reverse().join('-')}
+                        </td>
                       </tr>
                     ))}
                   </tbody>
