@@ -353,6 +353,27 @@ export default function AppointmentListUser({ searchTerm })
               marginBottom: "2%",
             }}
           >
+            Medicines:{" "}
+            {selectedAppointment?.medicineName
+              ? selectedAppointment?.medicineName.join(", ")
+              : "N/A"}
+            <br />
+            Lab Tests:{" "}
+            {selectedAppointment?.labTests
+              ? selectedAppointment?.labTests.join(", ")
+              : "N/A"}
+          </text>
+          <text
+            className="ml-4 text-start mt-4"
+            style={{
+              fontSize: isTab ? "12px" : "20px",
+              fontWeight: 400,
+              lineHeight: "24px",
+              fontFamily: "Lato, sans-serif",
+              color: "#000000",
+              marginBottom: "2%",
+            }}
+          >
             Appointment Date:{" "}
             {selectedAppointment?.appointmentDate?.date
               ? selectedAppointment?.appointmentDate?.date
