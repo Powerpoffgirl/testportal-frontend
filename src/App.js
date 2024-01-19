@@ -77,7 +77,8 @@ import Pagenotfound from "./components/pagenotfound";
 import { ToastContainer } from "react-toastify";
 import UserProfile from "./components/userProfile";
 
-function App() {
+function App()
+{
   return (
     <>
       <ToastContainer />
@@ -182,7 +183,7 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"User List"}
               search={"true"}
-              // AddButton={"true"}
+            // AddButton={"true"}
             />
           }
         />
@@ -206,7 +207,7 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"Patient List"}
               search={"true"}
-              // AddButton={"true"}
+            // AddButton={"true"}
             />
           }
         />
@@ -219,7 +220,7 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"Appointment List"}
               search={"true"}
-              // AddButton={"true"}
+            // AddButton={"true"}
             />
           }
         />
@@ -243,7 +244,7 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"Doctor List"}
               search={"true"}
-              // AddButton={"true"}
+            // AddButton={"true"}
             />
           }
         />
@@ -256,7 +257,7 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"Appointment List"}
               search={"true"}
-              // AddButton={"true"}
+            // AddButton={"true"}
             />
           }
         />
@@ -280,7 +281,7 @@ function App() {
               headerTextTop={"Super Admin"}
               headerTextBottom={"Doctor List"}
               search={"true"}
-              // AddButton={"true"}
+            // AddButton={"true"}
             />
           }
         />
@@ -326,7 +327,7 @@ function App() {
         ></Route>
         <Route
           path="/doctordetail/:id"
-          element={<Layout Component={DoctorDetail} type="doctor" />}
+          element={<Layout Component={DoctorDetail} />}
         ></Route>
         <Route
           path="/patientdescription/:id"
