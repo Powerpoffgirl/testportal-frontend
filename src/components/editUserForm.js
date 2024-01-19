@@ -1399,7 +1399,7 @@ export default function EditUserForm()
           </div>
           <div className="flex flex-row-reverse mt-5 my-2 ">
             <button
-              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              className="btn btn-primary border py-3 px-8 rounded-3xl text-white"
               style={{
                 backgroundColor: "#89CFF0",
               }}

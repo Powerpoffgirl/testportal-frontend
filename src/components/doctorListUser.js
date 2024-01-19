@@ -715,7 +715,7 @@ export default function DoctorListUser({ searchTerm })
                           <div class="flex flex-row-reverse">
                             {mobileNumberError.length === 0 ? (
                               <button
-                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                className="text-white text-xs rounded-3xl px-5 py-2 "
                                 onClick={handleOtp}
                                 style={{ backgroundColor: " #89CFF0" }}
                               >
@@ -723,7 +723,7 @@ export default function DoctorListUser({ searchTerm })
                               </button>
                             ) : (
                               <button
-                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                className="text-white text-xs rounded-3xl px-5 py-2 "
                                 disabled
                                 onClick={handleOtp}
                                 style={{ backgroundColor: " #89CFF0" }}
@@ -857,7 +857,7 @@ export default function DoctorListUser({ searchTerm })
                       <div className="flex flex-row-reverse my-1">
                         {!bookingslottoggle && !appointment && (
                           <button
-                            className="text-white text-xs rounded-3xl px-3 py-1 "
+                            className="text-white text-xs rounded-3xl px-5 py-2  "
                             onClick={() =>
                             {
                               showSlot();
@@ -870,7 +870,7 @@ export default function DoctorListUser({ searchTerm })
                         {bookingslottoggle && !appointment && (
                           <div class="flex mx-auto space-x-4 mt-3">
                             <button
-                              className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
+                              className="text-white text-sm rounded-3xl px-5 py-2 mb-1 "
                               onClick={handleBookAppointment}
                               style={{ backgroundColor: " #89CFF0" }}
                             >

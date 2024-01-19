@@ -758,7 +758,7 @@ export default function DoctorList({ searchTerm })
                           <div class="flex flex-row-reverse">
                             {mobileNumberError.length === 0 ? (
                               <button
-                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                className="text-white text-xs rounded-3xl px-5 py-2 "
                                 onClick={handleOtp}
                                 style={{ backgroundColor: " #89CFF0" }}
                               >
@@ -766,7 +766,7 @@ export default function DoctorList({ searchTerm })
                               </button>
                             ) : (
                               <button
-                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                className="text-white text-xs rounded-3xl px-5 py-2 "
                                 disabled
                                 onClick={handleOtp}
                                 style={{ backgroundColor: " #89CFF0" }}
@@ -900,7 +900,7 @@ export default function DoctorList({ searchTerm })
                       <div className="flex flex-row-reverse my-1">
                         {!bookingslottoggle && !appointment && (
                           <button
-                            className="text-white text-xs rounded-3xl px-3 py-1 "
+                            className="text-white text-xs rounded-3xl px-5 py-2 "
                             onClick={() =>
                             {
                               showSlot();
@@ -913,7 +913,7 @@ export default function DoctorList({ searchTerm })
                         {bookingslottoggle && !appointment && (
                           <div class="flex mx-auto space-x-4 mt-3">
                             <button
-                              className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
+                              className="text-white text-sm rounded-3xl px-5 py-2 mb-1 "
                               onClick={handleBookAppointment}
                               style={{ backgroundColor: " #89CFF0" }}
                             >
@@ -1035,13 +1035,15 @@ export default function DoctorList({ searchTerm })
                       Resend
                     </button>{" "}
                   </p>
-                  <button
-                    className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-                    style={{ backgroundColor: "#89CFF0" }}
-                    onClick={verifyOTP}
-                  >
-                    Verify
-                  </button>
+                  <div style={{ width: '100%', display: 'flex', alignItems: "center", justifyContent: 'center' }}>
+                    <button
+                      className="btn btn-primary border py-2 px-10 mt-4 rounded-3xl text-white"
+                      style={{ backgroundColor: "#89CFF0" }}
+                      onClick={verifyOTP}
+                    >
+                      Verify
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
