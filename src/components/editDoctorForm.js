@@ -1028,7 +1028,10 @@ export default function EditDoctorForm()
                 <p class="mx-auto ">
                   {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
                 </p>
-                <button onClick={handleDownload}> Download Qr</button>
+                <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+                  style={{
+                    backgroundColor: "#89CFF0",
+                  }} onClick={handleDownload}> Download Qr</button>
               </>
 
             )

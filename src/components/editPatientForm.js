@@ -68,6 +68,51 @@ export default function EditPatientForm()
 
   useEffect(() =>
   {
+    const fetchData = async () =>
+    {
+      try
+      {
+        const response = await fetch(
+          `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
+          {
+            method: "GET",
+          }
+        );
+
+        if (!response.ok)
+        {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        const district = data[0]?.PostOffice[0]?.District;
+        const state = data[0]?.PostOffice[0]?.State; // Corrected to "State" with a capital "S"
+        console.log("District:", district);
+        console.log("State:", state);
+
+        // Update patientDetails with the District and State information
+        setPatientDetails((prevDetails) => ({
+          ...prevDetails,
+          address: {
+            ...prevDetails.address,
+            district: district,
+            state: state,
+          },
+        }));
+      } catch (error)
+      {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    if (patientDetails?.address?.pinCode)
+    {
+      fetchData();
+    }
+  }, [patientDetails?.address?.pinCode]);
+
+  useEffect(() =>
+  {
     const fetchPatientDetails = async () =>
     {
       try
@@ -524,7 +569,7 @@ export default function EditPatientForm()
               for="total-experience"
               className="block text-black text-lg font-semibold"
             >
-              Gender
+              Gender<span className="text-red-500">*</span>{" "}
             </label>
             <Select
               className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70   bg-white  text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -556,7 +601,7 @@ export default function EditPatientForm()
                 for="age"
                 className="block text-black text-lg font-semibold"
               >
-                Age
+                Age<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 type="text"
@@ -573,7 +618,7 @@ export default function EditPatientForm()
                 for="age"
                 className="block text-black text-lg font-semibold"
               >
-                Age Type
+                Age Type<span className="text-red-500">*</span>{" "}
               </label>
               <Select
                 className="border rounded-lg h-11"
@@ -604,7 +649,7 @@ export default function EditPatientForm()
               for="total-experience"
               className="block text-black text-lg font-semibold"
             >
-              Body Weight
+              Body Weight<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
@@ -630,7 +675,7 @@ export default function EditPatientForm()
               for="name"
               className="block text-black text-lg font-semibold"
             >
-              Name
+              Name<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
@@ -649,7 +694,7 @@ export default function EditPatientForm()
               htmlFor="contactNumber"
               className="block text-black text-lg font-semibold"
             >
-              Contact Number
+              Contact Number<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
