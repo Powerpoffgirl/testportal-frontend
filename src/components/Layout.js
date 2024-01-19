@@ -46,7 +46,6 @@ export default function Layout({
     const data = await response.json();
     if (data.success === true)
     {
-      // navigate("/");
       localStorage.removeItem("token");
       localStorage.clear()
     }

@@ -327,7 +327,7 @@ function App()
         ></Route>
         <Route
           path="/doctordetail/:id"
-          element={<Layout Component={DoctorDetail} />}
+          element={<Layout Component={DoctorDetail} headerTextTop={"Doctor Talk"} />}
         ></Route>
         <Route
           path="/patientdescription/:id"
