@@ -1423,7 +1423,7 @@ export default function PatientForm()
               Show Qr
             </button> */}
             <button
-              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              className="btn btn-primary border py-3 px-6 rounded-3xl text-white"
               style={{
                 backgroundColor: "#89CFF0",
               }}

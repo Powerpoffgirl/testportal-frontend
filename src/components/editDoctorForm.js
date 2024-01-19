@@ -1017,27 +1017,29 @@ export default function EditDoctorForm()
             />
             {errors.degree && <p className="text-red-500">{errors.degree}</p>}
           </div>
-        </div>
-
-        {/* ----------------------------------right---------------------------------- */}
-        <div className="border bg-white flex flex-col lg:w-3/5 xl:w-3/4 p-6 my-5 mx-3">
-          <p className="text-3xl ">Personal Information</p>
           {
             showQrCode && (
               <>
                 <p class="mx-auto ">
                   {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
                 </p>
-                <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-                  style={{
-                    backgroundColor: "#89CFF0",
-                  }} onClick={handleDownload}> Download Qr</button>
+                <div style={{ width: '100%', display: 'flex', alignItems: "center", justifyContent: 'center' }}>
+                  <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+                    style={{
+                      backgroundColor: "#89CFF0",
+                    }} onClick={handleDownload}> Download QR</button>
+                </div>
               </>
 
             )
 
 
           }
+        </div>
+
+        {/* ----------------------------------right---------------------------------- */}
+        <div className="border bg-white flex flex-col lg:w-3/5 xl:w-3/4 p-6 my-5 mx-3">
+          <p className="text-3xl ">Personal Information</p>
           <hr className="border my-2 " />
           {/* -------name------- */}
           <div className="flex flex-row">
@@ -1395,23 +1397,24 @@ export default function EditDoctorForm()
             )}
           </div>
           <div className="flex flex-row-reverse mt-5 my-2 gap-4">
+
             <button
-              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-              style={{
-                backgroundColor: "#89CFF0",
-              }}
-              onClick={toggleQrCode}
-            >
-              Show Qr
-            </button>
-            <button
-              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              className="btn btn-primary border py-3 px-6 rounded-3xl text-white"
               style={{
                 backgroundColor: "#89CFF0",
               }}
               onClick={handleUpdate}
             >
               Continue...
+            </button>
+            <button
+              className="btn btn-primary border py-3 px-8 rounded-3xl text-white"
+              style={{
+                backgroundColor: "#89CFF0",
+              }}
+              onClick={toggleQrCode}
+            >
+              Show QR
             </button>
           </div>
         </div>
