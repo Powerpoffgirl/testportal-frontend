@@ -297,6 +297,52 @@ export default function EditUserForm()
     fetchUserDetails();
   }, []);
 
+  useEffect(() =>
+  {
+    const fetchData = async () =>
+    {
+      if (patientDetails?.address?.pinCode?.length === 6)
+      {
+        try
+        {
+          const response = await fetch(
+            `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
+            {
+              method: "GET",
+            }
+          );
+
+          if (!response.ok)
+          {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          const data = await response.json();
+          const district = data[0]?.PostOffice[0]?.District;
+          const state = data[0]?.PostOffice[0]?.State; // Corrected to "State" with a capital "S"
+          console.log("District:", district);
+          console.log("State:", state);
+
+          setPatientDetails((prevDetails) => ({
+            ...prevDetails,
+            address: {
+              ...prevDetails.address,
+              district: district,
+              state: state,
+            },
+          }));
+
+
+        } catch (error)
+        {
+          console.error("Error fetching data:", error);
+        }
+      };
+    }
+    if (patientDetails?.address?.pinCode.length === 6)
+    {
+      fetchData();
+    }
+  }, [patientDetails?.address?.pinCode]);
 
   useEffect(() =>
   {
@@ -455,12 +501,26 @@ export default function EditUserForm()
           [name]: value,
         },
       }));
+
+      setPatientDetails((prevPatientDetails) => ({
+        ...prevPatientDetails,
+        address: {
+          ...prevPatientDetails.address,
+          [name]: value
+        }
+      }))
     } else
     {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         [name]: value,
       }));
+
+      setPatientDetails((prevPatientDetails) => ({
+        ...prevPatientDetails,
+        [name]: value
+
+      }))
     }
 
   };
@@ -827,7 +887,6 @@ export default function EditUserForm()
                     name="patientName"
                     onChange={handleChange3}
                     placeholder="Select Member"
-                  // value={appointmentDetails?.patientId}
                   >
                     {patientsList?.map((patient) => (
                       <Select.Option key={patient._id} value={patient._id}>
@@ -838,22 +897,6 @@ export default function EditUserForm()
                       Add member +
                     </Select.Option>
                   </Select>
-
-                  // <Select
-                  //   className="h-11 block w-full placeholder-gray-400 rounded-lg border  bg-white text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                  //   name="patientName"
-                  //   onChange={handleChange3}
-                  //   placeholder="Select Member"
-                  // >
-                  //   {patientsList?.map((patient) => (
-                  //     <>
-                  //       <Select.Option key={patient._id} value={patient._id}>
-                  //         {patient.name}
-                  //       </Select.Option>
-                  //     </>
-                  //   ))}
-                  //   <button onClick={() => navigate('/patientform')}>Add member </button>
-                  // </Select>
                 )}
                 {errors.name && <p className="text-red-500">{errors.name}</p>}
               </div>
@@ -877,6 +920,10 @@ export default function EditUserForm()
                         id="age"
                         name="age"
                         onChange={handleChange}
+                        onInput={(e) =>
+                        {
+                          e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                        }}
                         className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
@@ -1030,6 +1077,10 @@ export default function EditUserForm()
                     id="bodyWeight"
                     name="bodyWeight"
                     onChange={handleChange}
+                    onInput={(e) =>
+                    {
+                      e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                    }}
                     className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
                 ) : (
@@ -1294,6 +1345,7 @@ export default function EditUserForm()
                           id="pinCode"
                           name="pinCode"
                           onChange={handleChange}
+                          value={patientDetails?.address?.pinCode}
                           placeholder="Pin Code"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                           onInput={(e) =>
@@ -1356,6 +1408,7 @@ export default function EditUserForm()
                         id="district"
                         name="district"
                         onChange={handleChange}
+                        value={patientDetails?.address?.district}
                         placeholder="District"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
@@ -1383,6 +1436,7 @@ export default function EditUserForm()
                         id="state"
                         name="state"
                         onChange={handleChange}
+                        value={patientDetails?.address?.state}
                         placeholder="State"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
