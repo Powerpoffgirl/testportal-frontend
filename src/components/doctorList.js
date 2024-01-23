@@ -116,7 +116,8 @@ export default function DoctorList({ searchTerm })
 
   const handleBookAppointment = async () =>
   {
-    // if a slot is already booked then don't book a new slot.
+
+    console.log("HANDLE BOOK APOOINTMENT")
     const bookslot = {
       date: keys[currentIndex],
       time: values[currentIndex][currentTimeIndex].start,
@@ -135,6 +136,7 @@ export default function DoctorList({ searchTerm })
     const token = localStorage.getItem("token")
     if (token)
     {
+      console.log("TOKEN PRESENT")
       navigate("/edituserform", { state: { selectedSlot: bookslot, selectedDoctor: selectedDoctor._id } });
     }
     showappointment();
@@ -195,6 +197,11 @@ export default function DoctorList({ searchTerm })
 
   const handleOtp = async () =>
   {
+    const token = localStorage.getItem("token")
+    if (token)
+    {
+      navigate("/edituserform")
+    }
     const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
       method: "post",
       headers: {

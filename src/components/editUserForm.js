@@ -126,7 +126,6 @@ export default function EditUserForm()
     useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("location from edit user form", location);
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedFile, setSelectedFile] = useState(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -242,6 +241,7 @@ export default function EditUserForm()
         );
 
         const data = await response.json();
+
         console.log("DATA from PAITIENTS response", data);
         console.log("SELECTED PATIENT DETAILS=================", data?.data);
         setPatientDetails(data?.data);
@@ -276,6 +276,12 @@ export default function EditUserForm()
         });
 
         const data = await response.json();
+        if (data.message === "Invalid or expired token")
+        {
+          localStorage.clear();
+          toast.error("Invalid or Expired Token")
+          navigate(`/userlogin`)
+        }
         console.log("DATA from response", data);
         if (data.data.newUser === true)
         {
@@ -316,6 +322,7 @@ export default function EditUserForm()
         );
 
         const data = await response.json();
+
         console.log("DATA from response", data);
         setPatientsList(data?.data);
       } catch (error)
@@ -347,6 +354,7 @@ export default function EditUserForm()
         );
 
         const data = await response.json();
+
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
       } catch (error)
