@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import Header from "./header";
-import UserSidebar from "./userSidebar";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { FaTrashAlt } from "react-icons/fa";
 import { FaEdit } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Button, Popconfirm } from "antd";
+import { Popconfirm } from "antd";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
 const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -30,7 +28,8 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function SuperAdminAppointmentList({ searchTerm }) {
+export default function SuperAdminAppointmentList({ searchTerm })
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [appointmentList, setAppointmentList] = useState([]);
@@ -44,11 +43,15 @@ export default function SuperAdminAppointmentList({ searchTerm }) {
     appointmentList,
   ]);
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -65,17 +68,20 @@ export default function SuperAdminAppointmentList({ searchTerm }) {
         const data = await response.json();
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     let matchedDoctors = [];
 
-    if (appointmentList?.length > 0 && searchTerm) {
+    if (appointmentList?.length > 0 && searchTerm)
+    {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
 
       matchedDoctors = appointmentList.filter(
@@ -87,22 +93,27 @@ export default function SuperAdminAppointmentList({ searchTerm }) {
             .toLowerCase()
             .includes(lowerCaseSearchTerm)
       );
-    } else {
+    } else
+    {
       matchedDoctors = appointmentList;
     }
 
     setFilteredAppointmentList(matchedDoctors);
   }, [appointmentList, searchTerm]); // Include all dependencies in the dependency array
 
-  const handleEditAppointment = (appointmentId) => {
+  const handleEditAppointment = (appointmentId) =>
+  {
     localStorage.setItem("appointmentId", appointmentId);
     navigate("/editappointmentsuperadmin");
   };
 
-  const handleDeleteAppointment = async (appointmentId) => {
-    try {
+  const handleDeleteAppointment = async (appointmentId) =>
+  {
+    try
+    {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         return;
       }
@@ -119,32 +130,29 @@ export default function SuperAdminAppointmentList({ searchTerm }) {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok)
+      {
         console.log("Appointment deleted successfully", data);
         toast.success("Appointment Deleted!");
-        // toast.success("Appointment Deleted")
-        // Update the list in the UI by removing the deleted doctor
-
         setAppointmentList((prevAppointmentList) =>
           prevAppointmentList.filter(
             (appointment) => appointment._id !== appointmentId
           )
         );
-      } else {
+      } else
+      {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("There was an error deleting the Appointment:", error);
     }
   };
 
-  function formatDate(dateString) {
-    const parts = dateString.split("-");
-    return `${parts[2]}.${parts[1]}.${parts[0]}`;
-  }
   console.log("APPOINTMENT LISTS", appointmentList, selectedAppointment);
 
-  const findSelectedDoctor = async (appointmentId) => {
+  const findSelectedDoctor = async (appointmentId) =>
+  {
     console.log("appointmentId########################", appointmentId);
     // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const appointment = appointmentList?.find(
@@ -163,7 +171,6 @@ export default function SuperAdminAppointmentList({ searchTerm }) {
         patient={selectedAppointment}
         styles={{
           modal: {
-            // Set your custom width here (e.g., '70%')
             width: isTab ? "80%" : "70%",
             backgroundColor: "#89CFF0",
             alignContent: "center",
@@ -365,7 +372,7 @@ export default function SuperAdminAppointmentList({ searchTerm }) {
                       Date & Time:<span className="ms-2"></span>
                     </p>
                     {appointment?.appointmentDate?.date
-                      .split("-")
+                      ?.split("-")
                       .reverse()
                       .join("-")}
                     <br />
