@@ -505,8 +505,8 @@ function App()
             <Layout
               Component={EditDoctorForm}
               type="doctor"
-              headerTextTop={"Edit Doctor's"}
-              headerTextBottom={"Form"}
+              headerTextTop={"Doctor's"}
+              headerTextBottom={"Profile"}
             />
           }
         ></Route>
