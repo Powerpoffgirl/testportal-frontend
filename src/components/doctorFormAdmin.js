@@ -204,72 +204,15 @@ export default function DoctorFormAdmin()
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: e,
-      // speciality: e,
     }));
   };
   const handleChange2 = (e) =>
   {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
-      // workingDays: e,
       speciality: e,
     }));
   };
-
-  // const validateField = (name, value) => {
-  //   switch (name) {
-  //     case "name":
-  //       return value ? "" : "Name is required.";
-  //     case "email":
-  //       return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-  //         ? ""
-  //         : "Email is not valid.";
-  //     case "contactNumber":
-  //       return value.length > 0 && value.length === 10
-  //         ? ""
-  //         : "Contact number is required or Add valid 10 Digit Number.";
-  //     case "degree":
-  //       return value ? "" : "Degree is required  ";
-  //     case "totalExperience":
-  //       return value ? "" : "Total Experience is required  ";
-  //     case "houseNo":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "houseNo is required  ";
-  //     case "floor":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-  //     case "block":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "Block is required  ";
-  //     case "area":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "Area is required and must be a string ";
-  //     case "pinCode":
-  //       return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-  //     case "district":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "District is required and must be a string ";
-  //     case "state":
-  //       return /^[a-zA-Z\s]+$/.test(value) && value
-  //         ? ""
-  //         : "State is required and must be a string ";
-  //     case "workHourFrom":
-  //       // Assuming time in HH:MM format, adjust as needed
-  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //         ? ""
-  //         : "Invalid start time.";
-  //     case "workHourTo":
-  //       return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //         ? ""
-  //         : "Invalid end time.";
-  //     // Add more cases as needed for other fields
-  //     default:
-  //       return "";
-  //   }
-  // };
 
   const handleChange = (e) =>
   {
@@ -298,27 +241,13 @@ export default function DoctorFormAdmin()
       }
     }
 
-    // const error = validateField(name, value);
-    // setErrors({ ...errors, [name]: error });
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       doctorPic: doctorImage,
     }));
-    // if (name === "speciality") {
-
-    //   setDoctorDetails((prevDoctorDetails) => ({
-    //     ...prevDoctorDetails,
-    //     speciality: {
-    //       ...prevDoctorDetails.speciality,
-    //       [name]: value,
-    //     },
-    //     // speciality: e,
-    //   }));
-    // }
 
     if (
       name === "workHourFrom" ||
-      name === "workHourTo" ||
       name === "interval"
     )
     {
@@ -329,7 +258,27 @@ export default function DoctorFormAdmin()
           [name]: value,
         },
       }));
-    } else if (
+
+    }
+    else if (name === "workHourTo")
+    {
+      if (doctorDetails.workingHours.workHourFrom > value)
+      {
+        console.log(doctorDetails.workingHours.workHourFrom, "VAALUE", value)
+        toast.error("End time should be greater than the start time.")
+      }
+      else
+      {
+        setDoctorDetails((prevDoctorDetails) => ({
+          ...prevDoctorDetails,
+          workingHours: {
+            ...prevDoctorDetails.workingHours,
+            [name]: value,
+          },
+        }));
+      }
+    }
+    else if (
       [
         "houseNo",
         "floor",
