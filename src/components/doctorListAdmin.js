@@ -577,7 +577,7 @@ export default function DoctorListAdmin({ searchTerm })
               <img src={close_button} alt="closeButton" class="w-8 mb-1"></img>
             </button>
             <Popconfirm
-              title="Delete the Patient"
+              title="Delete the Doctor"
               description="Are you sure to delete this Doctor?"
               okText="Delete"
               okType="danger"
