@@ -1060,13 +1060,14 @@ export default function DoctorFormAdmin()
             >
               About
             </label>
-            <input
+            <textarea
               type="text"
               id="about"
               name="about"
               onChange={handleChange}
               className="block w-full h-24 placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
+
             {errors.username && (
               <p className="text-red-500">{errors.username}</p>
             )}

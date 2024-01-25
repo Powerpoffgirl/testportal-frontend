@@ -196,7 +196,7 @@ export default function Qr()
                 >
                   Specialist:
                 </p>
-                <p className="block text-black text-lg ">{userDetails?.speciality}</p>
+                <p className="block text-black text-lg ">{userDetails?.speciality.join(', ')}</p>
               </div>
 
               <div className="mt-3 flex flex-row">

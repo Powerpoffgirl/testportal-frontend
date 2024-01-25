@@ -1,9 +1,6 @@
 import React, { useEffect, useState, useRef, useContext } from "react";
-import DoctorSidebar from "./doctorSidebar";
 import { useMediaQuery } from "react-responsive";
 import { Modal } from "react-responsive-modal";
-import UserSidebarWithoutLogin from "./UserSidebarWithoutLogin";
-import PatientHeader from "./patientHeader";
 import { useNavigate } from "react-router-dom";
 import one from "../assets/one.svg";
 import two from "../assets/two.svg";
@@ -483,7 +480,7 @@ export default function DoctorListUser({ searchTerm })
               </div>
               <div className="flex flex-col  py-4 px-5 bg-white mt-1">
                 <p className="text-xs text-black font-medium mb-2">
-                  Registration No. :- 33256
+                  Registration No. :- {selectedDoctor?.registrationNo}
                 </p>
 
                 <p className="text-black text-3xl font-medium mb-2">
@@ -587,7 +584,7 @@ export default function DoctorListUser({ searchTerm })
                           {workingDays.split(" ")[1]}:
                         </p>
                         <p className="text-gray-600">
-                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
+                          {selectedDoctor?.workingHours?.workHourFrom} - {" "}
                           {selectedDoctor?.workingHours?.workHourTo}
                         </p>
                         {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
@@ -699,7 +696,7 @@ export default function DoctorListUser({ searchTerm })
                           <hr />
                           <p class="mt-2">Mobile Number</p>
                           <div class="flex flex-row">
-                            <img src={phonelogo} class="pl-1 pr-3"></img>
+                            <img src={phonelogo} alt="phonelogo" class="pl-1 pr-3"></img>
                             <input
                               class=" border my-1 placeholder-gray-500 p-1 pl-2"
                               type="tel"

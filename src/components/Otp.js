@@ -9,6 +9,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "./adminSidebar";
 import AdminHeader from "./adminHeader";
 import phone from '../assets/phone.svg'
+import { toast } from "react-toastify";
 
 const OTP = () =>
 {
@@ -24,6 +25,11 @@ const OTP = () =>
   const id = localStorage.getItem('id')
   const token = localStorage.getItem('token')
   console.log(location.state);
+  const [seconds, setSeconds] = useState(90);
+  const [resendClicked, setResendClicked] = useState(false);
+  const [firstTime, setFirstTime] = useState(true);
+
+
   useEffect(() =>
   {
 
@@ -95,7 +101,7 @@ const OTP = () =>
       // Check the response status
       if (response.ok)
       {
-        console.log("OTP sent successfully", data);
+        toast.success("OTP sent")
       } else
       {
         console.error("Error sending OTP:", data);
@@ -158,6 +164,33 @@ const OTP = () =>
     }
 
     setOtp([...otp]);
+  };
+
+  useEffect(() =>
+  {
+    if (resendClicked || firstTime)
+    {
+      const intervalId = setInterval(() =>
+      {
+        if (seconds > 0)
+        {
+          setSeconds((prevSeconds) => prevSeconds - 1);
+        } else
+        {
+          setFirstTime(false);
+          setSeconds(90);
+          setResendClicked(false);
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [seconds, resendClicked, firstTime]);
+
+  const formatTime = (time) =>
+  {
+    const minutes = Math.floor(time / 60);
+    const remainingSeconds = time % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
   console.log("OTP", otp)
@@ -352,7 +385,14 @@ const OTP = () =>
                   ))}
                 </div>
 
-                <p class="text-gray-600">Otp will expire in 30 seconds  <button onClick={SendOTP} class="font-medium underline text-black">Resend</button> </p>
+                <p class="text-gray-600">Otp will expire in <span
+                  className="timer"
+                  style={{ color: "#666", cursor: "pointer" }}
+                >
+                  <text className="mx-2" style={{ color: "#000000" }}>
+                    {formatTime(seconds)} sec
+                  </text>
+                </span> seconds  <button onClick={SendOTP} class="font-medium underline text-black">Resend</button> </p>
 
               </div>
               <div className="flex flex-row-reverse mt-5 my-2">
