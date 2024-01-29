@@ -554,98 +554,74 @@ export default function EditAdminForm()
           </div>
           <hr />
 
-          {/* <div className=" mt-3">
-            <label
-              for="total-experience"
-              className="block text-black text-lg font-semibold"
-            >
-              Gender
-            </label>
-            <Select
-              className="border rounded-lg h-11 block w-full mt-0 placeholder-gray-400/70   bg-white  text-gray-700 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-              popupClassName="no-border-dropdown-menu"
-              id="gender"
-              name="gender"
-              value={doctorDetails?.gender}
-              // onChange={handleChange1}
-              placeholder="Select Gender"
-              style={{ overflowY: "auto" }}
-              dropdownStyle={{
-                maxHeight: "300px",
-                overflowY: "auto",
-              }}
-            >
-        
-            </Select>
-            {errors.totalExperience && (
-              <p className="text-red-500">{errors.totalExperience}</p>
-            )}
-          </div>
-
-          <div className="flex flex-row gap-2">
-            <div className="mt-3 flex flex-col w-1/2">
+          <div>
+            <div className="flex flex-col mr-2 mt-2">
               <label
-                for="degree"
-                className="block text-black text-lg font-semibold"
+                style={{ marginRight: "10px" }}
+                className="mx-2 text-lg font-semibold text-black font-lato"
+                htmlFor="Permission"
               >
-                Age
+                Permissions
               </label>
-              <input
-                type="text"
-                id="age"
-                name="age"
-                onChange={handleChange}
-                value={doctorDetails?.age}
-                className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-              />
-              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
-            <div className="mt-3 flex flex-col w-1/2">
-              <label
-                for="degree"
-                className="block text-black text-lg font-semibold"
-              >
-                Age Type
-              </label>
-              <Select
-                className="border rounded-lg h-11"
-                popupClassName="no-border-dropdown-menu"
-                id="ageType"
-                name="ageType"
-            
-                placeholder="Select Age Type"
-                style={{ overflowY: "auto" }}
-                dropdownStyle={{
-                  maxHeight: "300px",
-                  overflowY: "auto",
-                }}
-              >
-             
-              </Select>
-              {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+            <div
+              className="flex flex-col flex-grow mx-2"
+              style={{ justifyContent: "space-around" }}
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      View
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="view"
+                        checked={doctorDetails?.permissions.view}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Create
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="create"
+                        checked={doctorDetails?.permissions.create}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Remove
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="remove"
+                        checked={doctorDetails?.permissions.remove}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Edit
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="edit"
+                        checked={doctorDetails?.permissions.edit}
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-
-          <div className=" mt-3">
-            <label
-              for="total-experience"
-              className="block text-black text-lg font-semibold"
-            >
-              Body Weight
-            </label>
-            <input
-              type="text"
-              id="bodyWeight"
-              name="bodyWeight"
-              onChange={handleChange}
-              value={doctorDetails?.bodyWeight}
-              className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border  bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-            />
-            {errors.totalExperience && (
-              <p className="text-red-500">{errors.totalExperience}</p>
-            )}
-          </div> */}
-
         </div>
 
         {/* ----------------------------------right---------------------------------- */}
@@ -718,87 +694,6 @@ export default function EditAdminForm()
             {errors.contactNumber && (
               <p className="text-red-500">{errors.contactNumber}</p>
             )}
-          </div>
-
-          <div className="flex flex-row items-start pt-4 gap-4">
-            <div className="flex flex-col mr-2 ">
-              <label
-                style={{ marginRight: "10px" }}
-                className="mx-2 text-lg font-normal text-black font-lato font-semibold"
-                htmlFor="Permission"
-              >
-                Permission
-              </label>
-            </div>
-
-            <div
-              className="flex flex-row flex-grow "
-              style={{ justifyContent: "space-around" }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginRight: "10px",
-                }}
-              >
-                <label style={{ marginRight: "15px" }}>View:</label>
-                <input
-                  type="checkbox"
-                  name="view"
-                  checked={doctorDetails?.permissions.view}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginRight: "10px",
-                }}
-              >
-                <label style={{ marginRight: "15px" }}>Create:</label>
-                <input
-                  type="checkbox"
-                  name="create"
-                  checked={doctorDetails?.permissions.create}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginRight: "10px",
-                }}
-              >
-                <label style={{ marginRight: "15px" }}>Remove:</label>
-                <input
-                  type="checkbox"
-                  name="remove"
-                  checked={doctorDetails?.permissions.remove}
-                  onChange={handleChange}
-                />
-              </div>
-
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginRight: "10px",
-                }}
-              >
-                <label style={{ marginRight: "15px" }}>Edit:</label>
-                <input
-                  type="checkbox"
-                  name="edit"
-                  checked={doctorDetails?.permissions.edit}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
           </div>
           {/* -----------address----------- */}
           <div className="mt-3">

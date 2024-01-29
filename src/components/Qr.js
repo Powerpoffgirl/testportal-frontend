@@ -93,14 +93,12 @@ export default function Qr()
         <div
           className=" bg-customGreen "
           style={{
-
+            paddingRight: "3%"
           }}
         >
-
-
           <div className="flex flex-col lg:flex-row ">
             {/* --------------left-------------- */}
-            <div className="flex flex-col border bg-white w-2/3 lg:w-1/3 p-6 my-5 mr-5">
+            <div className="flex flex-col border bg-white w-11/12 lg:w-11/12 p-6 my-5 mr-5">
 
 
 
@@ -225,14 +223,14 @@ export default function Qr()
             </div>
 
             {/* ----------------------------------right---------------------------------- */}
-            <div className="border bg-white flex flex-col w-2/3 lg:w-1/3 p-6 my-5  ">
+            <div className="border bg-white flex flex-col w-11/12 lg:w-11/12 p-6 my-5  ">
               <text
                 className="text-center"
                 style={{
                   fontWeight: 600,
-                  fontSize: "24px",
+                  fontSize: isTab ? "20px" : "24px",
                   lineHeight: "28.8px",
-                  fontFamily: "Lato, sans-serif",
+                  fontFamily: "Lato, sans-serif"
                 }}
               >
                 Generate Personal QR
@@ -247,7 +245,6 @@ export default function Qr()
                 </button>
               </div>
             </div>
-
           </div>
         </div >
       </div >

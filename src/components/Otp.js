@@ -199,265 +199,163 @@ const OTP = () =>
 
   return (
     <>
-      <div
-        className="flex min-h-screen relative overflow-auto 
-    box-border"
-      >
-        <div
-          className="flex flex-col bg-customGreen"
-          style={{
-            width: isTab ? "100%" : "77%",
-          }}>
-          <div className="flex flex-col lg:flex-row ml-2">
-            {/* --------------left-------------- */}
-            <div className="flex flex-col border bg-white lg:w-1/3 p-5 ml-5 mt-5 mb-5 md:1/3">
-              <div className="mx-auto my-2">
-                <div className=" " >
-                  <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
-                    {userDetails?.doctorPic ? (
-                      <img
-                        src={userDetails?.doctorPic}
-                        alt="Avatar"
-                        style={{
-                          borderRadius: "50%",
-                          width: '130px',
-                          height: '130px'
-                        }}
-                      />
-                    ) : (
-                      <PermIdentityOutlinedIcon
-                        style={{ width: "auto", height: 'auto', color: 'white' }}
-                      />
-                    )}
-                  </div>
-                </div>
 
-              </div>
-
-              <div className="mt-4 flex flex-row">
-                <p className="block text-black text-lg font-semibold" >Working Days :</p>
-                <p className="block text-black text-lg ">
-                  {userDetails?.workingDays.map((item, index) =>
-                  {
-                    return (
-                      <div key={index}>
-                        {item}
-                      </div>
-                    )
-                  })}
-                </p>
-
-              </div>
-
-              <div className="mt-3 flex flex-row">
-                <p className="block text-black text-lg font-semibold">Working Hours :</p>
-                <p className="block text-black text-lg ">
-                  {userDetails?.workingHours?.workHourFrom} - {userDetails?.workingHours?.workHourTo}
-
-                </p>
-
-              </div>
-
-              <div className=" mt-3 flex flex-row">
-                <p
-                  className="block text-black text-lg font-semibold"
-                >
-                  Total Experience :
-                </p>
-                <p className="block text-black text-lg ">{userDetails?.totalExperience}</p>
-              </div>
-
-              <div className="mt-3 flex flex-row" >
-                <p
-                  className="block text-black text-lg font-semibold"
-                >
-                  Specialist:
-                </p>
-
-                <p class=" flex flex-wrap">
-                  {userDetails?.speciality?.map((item, index) =>
-                  {
-                    return (
-                      <p key={index} className="block text-black text-lg ">{item},</p>
-
-                    )
-                  })}
-                </p>
-
-              </div>
-
-              <div className="mt-3 flex flex-row">
-                <p
-                  className="block text-black text-lg font-semibold"
-                >
-                  Degree:
-                </p>
-
-                <p className="block text-black text-lg ">{userDetails?.degree}</p>
-              </div>
-            </div>
-
-            {/* ----------------------------------right---------------------------------- */}
-            <div className="border bg-white flex flex-col lg:w-2/3 p-6 my-5 mx-3 md:2/3">
-              <p className="text-3xl " >Personal Information</p>
-              <hr className="border my-2 " />
-              {/* -------name------- */}
-              <div className="mt-3 flex flex-row">
-                <p
-                  className="block text-black text-lg font-semibold"
-                >
-                  Name :
-                </p>
-                <p className="block text-black text-lg "> {userDetails?.name}</p>
-              </div>
-
-              {/* ------------email------------ */}
-              <div className="mt-3 flex flex-row">
-                <p
-                  className="block text-black text-lg font-semibold"
-                >
-                  Email :
-                </p>
-                <p className="block text-black text-lg "> {userDetails?.email}</p>
-              </div>
-              {/* -----------contact----------- */}
-              <div className="mt-3 flex flex-row">
-                <p
-                  className="block text-black text-lg font-semibold"
-                >
-                  Mobile Number :
-                </p>
-                <p className="block text-black text-lg "> {userDetails?.contactNumber}</p>
-              </div>
-              {/* -----------address----------- */}
-              <div className="mt-3 flex flex-row">
-                <p
-                  className="block text-black text-lg font-semibold"
-                >
-                  Address:
-                </p>
-                <p className=" text-black text-lg flex flex-wrap"> {" "} {userDetails?.address?.houseNo}, {userDetails?.address?.floor}, {userDetails?.address?.block}, {userDetails?.address?.pinCode}, {userDetails?.address?.area} ,{userDetails?.address?.district} ,{userDetails?.ddress?.state}</p>
-              </div>
-              <hr class=" mt-3" />
-
-
-              {/* ----------------------------------------otp verification section---------------------------------------- */}
-              <div class="flex flex-col">
-                <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
-                <div class="bg-gray-300 flex flex-row rounded-lg" style={{ maxWidth: '11rem' }} >
-                  <img src={phone} class="pl-5 pr-1"></img>
-                  <input
-                    className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
-                    type="number"
-                    id="mobileNo"
-                    name="mobileNo"
-                    value={mobileNo?.contactNumber}
-                    style={{ border: "", height: "45px", paddingLeft: "1.5%", maxWidth: '8rem' }}
-                  // onChange={handleChange}
+      <div className="flex flex-col -ml-7 lg:flex-row" style={{
+        paddingRight: "3%"
+      }}>
+        {/* --------------left-------------- */}
+        <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5 ">
+          <div className="mx-auto my-2">
+            <div className=" " >
+              <div className=" border w-36 mx-auto rounded-full" style={{ backgroundColor: '#B1DAED' }}>
+                {userDetails?.doctorPic ? (
+                  <img
+                    src={userDetails?.doctorPic}
+                    alt="Avatar"
+                    style={{
+                      borderRadius: "50%",
+                      width: '130px',
+                      height: '130px'
+                    }}
                   />
-                </div>
-
-                <div
-                  className="flex w-full my-3"
-                  style={{
-
-                    position: "relative",
-                    overflow: "hidden",
-                  }}
-                >
-                  {otp.map((digit, index) => (
-                    <input
-                      key={index}
-                      ref={(input) => (otpInputs[index] = input)}
-                      type="text"
-                      className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
-                      maxLength={1}
-                      value={digit}
-                      onChange={(e) => handleInputChange(e, index)}
-                      onKeyDown={(e) =>
-                      {
-                        if (e.key === "Backspace" && index > 0 && !digit)
-                        {
-                          otpInputs[index - 1].focus();
-                        }
-                      }}
-                    />
-                  ))}
-                </div>
-
-                <p class="text-gray-600">Otp will expire in <span
-                  className="timer"
-                  style={{ color: "#666", cursor: "pointer" }}
-                >
-                  <text className="mx-2" style={{ color: "#000000" }}>
-                    {formatTime(seconds)} sec
-                  </text>
-                </span> seconds  <button onClick={SendOTP} class="font-medium underline text-black">Resend</button> </p>
-
-              </div>
-              <div className="flex flex-row-reverse mt-5 my-2">
-                <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{ backgroundColor: '#89CFF0' }} onClick={verifyOTP}>
-                  Verify
-                </button>
+                ) : (
+                  <PermIdentityOutlinedIcon
+                    style={{ width: "auto", height: 'auto', color: 'white' }}
+                  />
+                )}
               </div>
             </div>
 
+          </div>
 
+          <div className="mt-4 flex flex-row">
+            <p className="block text-black text-lg font-semibold" >Working Days :</p>
+            <p className="block text-black text-lg ">
+              {userDetails?.workingDays.map((item, index) =>
+              {
+                return (
+                  <div key={index}>
+                    {item}
+                  </div>
+                )
+              })}
+            </p>
 
-          </div >
+          </div>
 
+          <div className="mt-3 flex flex-row">
+            <p className="block text-black text-lg font-semibold">Working Hours :</p>
+            <p className="block text-black text-lg ">
+              {userDetails?.workingHours?.workHourFrom} - {userDetails?.workingHours?.workHourTo}
 
-          {/* otp verify section  */}
-          {/* <div
-            className="flex flex-col gap-2 px-3 w-full border-2"
-            style={{
-              top: "4%",
-              left: "2%",
-              position: "relative",
-              overflow: "hidden",
-              justifyContent: "center",
-            }}
-          >
-            
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <button
-                className="mt-4 bg-customRed w-40"
-                style={{
-                  display: "inline",
-                  height: "45px",
-                  borderRadius: "43px",
-                  color: "white",
-                  fontSize: "24px",
-                  fontWeight: 600,
-                  lineHeight: "28.8px",
-                }}
-                onClick={SendOTP}
-              >
-                Resend OTP
-              </button>
-            </div>
+            </p>
 
-            <text
-              className="ml-[45%] md:ml-[49%]"
-              style={{
-                // marginLeft: "49%",
-                marginTop: "2%",
-                fontSize: "20px",
-                fontWeight: 400,
-                lineHeight: "24px",
-                fontFamily: "Lato, sans-serif",
-              }}
+          </div>
+
+          <div className=" mt-3 flex flex-row">
+            <p
+              className="block text-black text-lg font-semibold"
             >
-              OTP
-            </text>
+              Total Experience :
+            </p>
+            <p className="block text-black text-lg ">{userDetails?.totalExperience}</p>
+          </div>
+
+          <div className="mt-3 flex flex-row" >
+            <p
+              className="block text-black text-lg font-semibold"
+            >
+              Specialist:
+            </p>
+
+            <p class=" flex flex-wrap">
+              {userDetails?.speciality?.map((item, index) =>
+              {
+                return (
+                  <p key={index} className="block text-black text-lg ">{item},</p>
+
+                )
+              })}
+            </p>
+
+          </div>
+
+          <div className="mt-3 flex flex-row">
+            <p
+              className="block text-black text-lg font-semibold"
+            >
+              Degree:
+            </p>
+
+            <p className="block text-black text-lg ">{userDetails?.degree}</p>
+          </div>
+        </div>
+
+        {/* ----------------------------------right---------------------------------- */}
+        <div className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3">
+          <p className="text-3xl " >Personal Information</p>
+          <hr className="border my-2 " />
+          {/* -------name------- */}
+          <div className="mt-3 flex flex-row">
+            <p
+              className="block text-black text-lg font-semibold"
+            >
+              Name :
+            </p>
+            <p className="block text-black text-lg "> {userDetails?.name}</p>
+          </div>
+
+          {/* ------------email------------ */}
+          <div className="mt-3 flex flex-row">
+            <p
+              className="block text-black text-lg font-semibold"
+            >
+              Email :
+            </p>
+            <p className="block text-black text-lg "> {userDetails?.email}</p>
+          </div>
+          {/* -----------contact----------- */}
+          <div className="mt-3 flex flex-row">
+            <p
+              className="block text-black text-lg font-semibold"
+            >
+              Mobile Number :
+            </p>
+            <p className="block text-black text-lg "> {userDetails?.contactNumber}</p>
+          </div>
+          {/* -----------address----------- */}
+          <div className="mt-3 flex flex-row">
+            <p
+              className="block text-black text-lg font-semibold"
+            >
+              Address:
+            </p>
+            <p className=" text-black text-lg flex flex-wrap"> {" "} {userDetails?.address?.houseNo}, {userDetails?.address?.floor}, {userDetails?.address?.block}, {userDetails?.address?.pinCode}, {userDetails?.address?.area} ,{userDetails?.address?.district} ,{userDetails?.ddress?.state}</p>
+          </div>
+          <hr class=" mt-3" />
+
+
+          {/* ----------------------------------------otp verification section---------------------------------------- */}
+          <div class="flex flex-col">
+            <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
+            <div class="bg-gray-300 flex flex-row rounded-lg" style={{ maxWidth: '11rem' }} >
+              <img src={phone} alt="phone" class="pl-5 pr-1"></img>
+              <input
+                className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
+                type="number"
+                id="mobileNo"
+                name="mobileNo"
+                value={mobileNo?.contactNumber}
+                style={{ border: "", height: "45px", paddingLeft: "1.5%", maxWidth: '8rem' }}
+              />
+            </div>
 
             <div
-              className="flex  gap-1 md:gap-2 w-full"
+              className="flex w-full my-3"
               style={{
-                top: "8%",
+
                 position: "relative",
                 overflow: "hidden",
-                justifyContent: "center",
               }}
             >
               {otp.map((digit, index) => (
@@ -465,60 +363,42 @@ const OTP = () =>
                   key={index}
                   ref={(input) => (otpInputs[index] = input)}
                   type="text"
-                  className="w-8 h-10 md:w-14 md:h-14 lg:w-14 lg:h-14 mx-2 text-4xl md:text-5xl lg:text-6xl border rounded-md text-center"
+                  className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
                   maxLength={1}
-                  style={{ border: "1px solid #89CFF0" }}
                   value={digit}
                   onChange={(e) => handleInputChange(e, index)}
-                  onKeyDown={(e) => {
-                    if (e.key === "Backspace" && index > 0 && !digit) {
+                  onKeyDown={(e) =>
+                  {
+                    if (e.key === "Backspace" && index > 0 && !digit)
+                    {
                       otpInputs[index - 1].focus();
                     }
                   }}
                 />
               ))}
             </div>
-            <text
-              className="mt-20"
-              style={{
-                color: "#A4A4A4",
-                display: "flex",
-                fontWeight: 400,
-                fontSize: "18px",
-                lineHeight: "21.6px",
-                justifyContent: "center",
-              }}
+
+            <p class="text-gray-600">Otp will expire in <span
+              className="timer"
+              style={{ color: "#666", cursor: "pointer" }}
             >
-              Resnd OTP in
               <text className="mx-2" style={{ color: "#000000" }}>
-                0.90
-              </text>{" "}
-              Sec
-            </text>
-            <div style={{ display: "flex", justifyContent: "center" }}>
-              <button
-                className="mt-4 bg-customRed"
-                style={{
-                  display: "inline",
-                  width: isTab ? "150px" : "198px",
-                  height: isTab ? "35px" : "45px",
-                  borderRadius: "43px",
-                  color: "white",
-                  fontSize: "24px",
-                  fontWeight: 600,
-                  lineHeight: "28.8px",
-                }}
-                onClick={verifyOTP}
-              >
-                Verify
-              </button>
-            </div>
-          </div> */}
+                {formatTime(seconds)} sec
+              </text>
+            </span> seconds  <button onClick={SendOTP} class="font-medium underline text-black">Resend</button> </p>
 
-
-
+          </div>
+          <div className="flex flex-row-reverse mt-5 my-2">
+            <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{ backgroundColor: '#89CFF0' }} onClick={verifyOTP}>
+              Verify
+            </button>
+          </div>
         </div>
-      </div>
+
+
+
+      </div >
+
     </>
   );
 };
