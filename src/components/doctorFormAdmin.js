@@ -535,7 +535,7 @@ export default function DoctorFormAdmin()
 
           <div className="mt-4">
             <p className="block text-black text-lg font-semibold">
-              Working Days
+              Working Days<span className="text-red-500">*</span>{" "}
             </p>
             <div className="block w-full mt-0 rounded-lg border border-[#89CFF0] bg-white text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40">
               <Select
@@ -558,7 +558,7 @@ export default function DoctorFormAdmin()
 
           <div className="mt-3">
             <p className="block text-black text-lg font-semibold">
-              Working Hours
+              Working Hours<span className="text-red-500">*</span>{" "}
             </p>
             <div className="flex flex-row-ml-2 mr-2">
               <div className="flex ">
@@ -596,7 +596,7 @@ export default function DoctorFormAdmin()
               for="total-experience"
               className="block text-black text-lg font-semibold"
             >
-              Total Experience
+              Total Experience<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In yrs ex: 1, 2, 3... ]</span>
             </label>
             <input
               type="text"
@@ -615,7 +615,7 @@ export default function DoctorFormAdmin()
               for="specialist"
               className="block text-black text-lg font-semibold"
             >
-              Specialist
+              Specialist<span className="text-red-500">*</span>{" "}
             </label>
             <style>
               {`
@@ -647,7 +647,7 @@ export default function DoctorFormAdmin()
               for="degree"
               className="block text-black text-lg font-semibold"
             >
-              Degree
+              Degree<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
@@ -671,7 +671,7 @@ export default function DoctorFormAdmin()
                 for="name"
                 className="block text-black text-lg font-semibold"
               >
-                Name
+                Name<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 type="text"
@@ -688,7 +688,7 @@ export default function DoctorFormAdmin()
                 for="name"
                 className="block text-black text-lg font-semibold"
               >
-                Registration Number
+                Registration Number<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 type="text"
@@ -707,7 +707,7 @@ export default function DoctorFormAdmin()
                 for="email"
                 className="block text-black text-lg font-semibold"
               >
-                Email
+                Email<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 type="text"
@@ -724,7 +724,7 @@ export default function DoctorFormAdmin()
                 for="contact"
                 className="block text-black text-lg font-semibold"
               >
-                Contact Number
+                Contact Number<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 type="text"
@@ -750,7 +750,7 @@ export default function DoctorFormAdmin()
                 for="interval"
                 className="block text-black text-lg font-semibold"
               >
-                Interval <span style={{ fontSize: "12px", color: "gray" }}>[ In mins ex: 10, 20, 30... ]</span>
+                Interval<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In mins ex: 10, 20, 30... ]</span>
               </label>
               <input
                 type="text"
@@ -773,7 +773,7 @@ export default function DoctorFormAdmin()
                 for="consultationFee"
                 className="block text-black text-lg font-semibold"
               >
-                Consultation fees
+                Consultation fees<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 type="text"
@@ -887,7 +887,7 @@ export default function DoctorFormAdmin()
                             id="pinCode"
                             name="pinCode"
                             onChange={handleChange}
-                            placeholder="Pin Code"
+                            placeholder="Pin Code*"
                             className="block w-full rounded-lg border bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                             onInput={(e) =>
                             {
@@ -897,7 +897,7 @@ export default function DoctorFormAdmin()
                               );
                             }}
                           />
-                          <p style={{ color: "red" }}>*</p>
+
                         </div>
                       ) : (
                         <input
@@ -905,7 +905,7 @@ export default function DoctorFormAdmin()
                           id="pinCode"
                           name="pinCode"
                           value={doctorDetails?.address?.pinCode}
-                          placeholder="Pin Code"
+                          placeholder="Pin Code*"
                           className="block w-full rounded-lg border bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                           readOnly
                         />
@@ -952,7 +952,7 @@ export default function DoctorFormAdmin()
                         id="district"
                         name="district"
                         onChange={handleChange}
-                        placeholder="District"
+                        placeholder="District*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
@@ -961,7 +961,7 @@ export default function DoctorFormAdmin()
                         id="district"
                         name="district"
                         value={doctorDetails?.address?.district}
-                        placeholder="District"
+                        placeholder="District*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}
@@ -979,7 +979,7 @@ export default function DoctorFormAdmin()
                         id="state"
                         name="state"
                         onChange={handleChange}
-                        placeholder="State"
+                        placeholder="State*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     ) : (
@@ -988,7 +988,7 @@ export default function DoctorFormAdmin()
                         id="state"
                         name="state"
                         value={doctorDetails?.address?.state}
-                        placeholder="State"
+                        placeholder="State*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                       />
                     )}

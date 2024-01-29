@@ -611,7 +611,7 @@ export default function EditDoctorFormAdmin()
               for="total-experience"
               className="block text-black text-lg font-semibold mt-1 mb-1"
             >
-              Total Experience<span className="text-red-500">*</span>{" "}
+              Total Experience<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In yrs ex: 1, 2, 3... ]</span>
             </label>
             <input
               type="text"
@@ -791,7 +791,7 @@ export default function EditDoctorFormAdmin()
                 for="interval"
                 className="block text-black text-lg font-semibold mt-1 mb-1"
               >
-                Interval<span className="text-red-500">*</span>{" "}
+                Interval<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In mins ex: 10, 20, 30... ]</span>
               </label>
               <input
                 type="text"
@@ -812,12 +812,15 @@ export default function EditDoctorFormAdmin()
                 Consultation fees<span className="text-red-500">*</span>{" "}
               </label>
               <input
-                type="number"
-                // placeholder="+91-8603678862"
+                type="text"
                 id="consultationFee"
                 name="consultationFee"
                 value={doctorDetails?.consultationFee}
                 onChange={handleChange}
+                onInput={(e) =>
+                {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
               {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
