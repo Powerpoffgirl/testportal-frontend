@@ -200,9 +200,9 @@ export default function PatientListAdmin({ searchTerm }) {
           },
         }}
       >
-        <div class="flex flex-row-reverse md:-mb-14  -mb-14 z-50">
+        <div class="flex flex-row-reverse md:-mb-14  -mb-18 z-50">
           <button className="z-50" onClick={onCloseModal}>
-            <img src={close_button} className="w-8 mb-1"></img>
+            <img src={close_button} className="w-8 mb-5"></img>
           </button>
         </div>
 
@@ -213,52 +213,50 @@ export default function PatientListAdmin({ searchTerm }) {
               alt="Avatar"
               style={{
                 borderRadius: "50%",
-                height: isTab ? "40px" : "123px",
-                width: isTab ? "40px" : "123px",
-                marginTop: "10px",
+                height: isTab ? "80px" : "123px",
+                width: isTab ? "80px" : "123px",
                 marginRight: "auto",
                 marginLeft: "auto",
                 boxShadow: "inset 0 0 0 2px #76767",
               }}
             />
           ) : (
-            <div className="flex flex-row w-[100%] justify-center ">
-              <AccountCircleIcon
-                style={{
-                  fontSize: isTab ? "50px" : "90px",
-                  color: "#B1DAED",
-                  borderRadius: "50%",
-                  height: isTab ? "80px" : "123px",
-                  width: isTab ? "80px" : "123px",
-                  boxShadow: "inset 0 0 0 2px #76767",
-                  // Adjust or remove marginRight if necessary
-                }}
-              />
-            </div>
+            <AccountCircleIcon
+              style={{
+                fontSize: "90px",
+                color: "#B1DAED",
+                borderRadius: "50%",
+                height: isTab ? "40px" : "123px",
+                width: isTab ? "40px" : "123px",
+                marginRight: "auto",
+                marginLeft: "auto",
+                boxShadow: "inset 0 0 0 2px #76767",
+              }}
+            />
           )}
         </div>
 
         <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
-          <div className="flex flex-row w-[100%] justify-between"></div>
           <text
-            className="ml-4 text-center mt-4"
+            className="ml-4 text-start mt-4"
             style={{
               fontSize: isTab ? "18px" : "26px",
               fontWeight: 600,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
+              color: "#000000",
             }}
           >
             {selectedPatient?.name}
           </text>
           <text
-            className="ml-4 text-center mt-4"
+            className="ml-4 text-start mt-4"
             style={{
               fontSize: isTab ? "12px" : "20px",
               fontWeight: 400,
               lineHeight: "24px",
               fontFamily: "Lato, sans-serif",
-              color: "black",
+              color: "#000000",
               marginBottom: "2%",
             }}
           >
@@ -275,50 +273,22 @@ export default function PatientListAdmin({ searchTerm }) {
               color: "black",
             }}
           >
-            {selectedPatient?.address?.houseNo +
-              " " +
-              selectedPatient?.address?.block +
-              " " +
-              selectedPatient?.address?.area +
-              ", " +
-              selectedPatient?.address?.district +
-              ", " +
-              selectedPatient?.address?.state +
-              " " +
-              selectedPatient?.address?.pinCode}
-          </text>
 
-          {/* <div className="flex flex-row justify-center gap-8 w-[100%] mt-8">
-            <span
-              style={{
-                width: "25px",
-                height: "25px",
-              }}
-              onClick={() => handleDeletePatient(selectedPatient?._id)}
-              dangerouslySetInnerHTML={{ __html: svg5 }}
-            ></span>
-          </div> */}
-          {/* <div className="flex flex-row justify-between gap-3 mt-10 w-[95%]">
-            <span className="flex">
-              <span
-                className="mr-8"
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg1 }}
-              ></span>
-              <span
-                style={{ width: "8px", height: "20px" }}
-                dangerouslySetInnerHTML={{ __html: svg2 }}
-              ></span>
-            </span>
-          </div> */}
+            {selectedPatient?.address?.houseNo && `${selectedPatient.address.houseNo} `}
+            {selectedPatient?.address?.block && `${selectedPatient.address.block} `}
+            {selectedPatient?.address?.area && `${selectedPatient.address.area}, `}
+            {selectedPatient?.address?.district && `${selectedPatient.address.district}, `}
+            {selectedPatient?.address?.state && `${selectedPatient.address.state} `}
+            {selectedPatient?.address?.pinCode && `${selectedPatient.address.pinCode}`}
+          </text>
         </div>
       </Modal>
       <div className="flex flex-col">
         {filteredPatients?.map((patient) => (
           <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
-            <div className="flex flex-row justify-start items-center">
+            <div className="flex lg:flex-row flex-col justify-start items-center ">
               <div
-                class="flex items-center gap-x-2"
+                class="flex items-center gap-x-2 mr-auto"
                 onClick={() => findSelectedDoctor(patient._id)}
               >
                 {patient.patientPic ? (
@@ -329,27 +299,28 @@ export default function PatientListAdmin({ searchTerm }) {
                   />
                 ) : (
                   <AccountCircleIcon
-                    style={{ fontSize: "90px", color: "#B1DAED" }}
+                    style={{
+                      color: "#B1DAED",
+                      fontSize: isTab ? "50px" : "90px",
+                    }}
                   />
                 )}
                 <div>
-                  <ToastContainer />
-                  <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize ml-2">
+                  <h1 class=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
                     {patient.name}
                   </h1>
-                  <p class=" text-gray-500 text-sm capitalize ml-2">
-                    {patient.age} yrs, {patient.bodyWeight} kg
+                  <p>
+                    {patient.age} yrs , {patient.bodyWeight} kg
                   </p>
-                  <p class=" text-gray-500 text-sm capitalize ml-2">
-                    {patient.address?.houseNo} {patient.address?.block}{" "}
-                    {patient.address?.area}, {patient.address?.district},{" "}
-                    {patient.address?.state}, {patient.address?.pinCode}
-                  </p>
-                  {/* <p class="text-gray-500 sm:text-sm text-xs">Wednesday<span className="ms-2">15:00</span></p> */}
+                  {patient.address?.district && `${patient.address.district}, `}
+                  {patient.address?.state && `${patient.address.state}, `}
+                  {patient.address?.pinCode && `${patient.address.pinCode}`}
+
+
                 </div>
               </div>
 
-              <div class="flex flex-row ms-auto gap-1 sm:gap-4">
+              <div class="flex flex-row ms-auto gap-1 sm:gap-4  mt-3">
                 <Popconfirm
                   title="Delete the Patient"
                   description="Are you sure to delete this Patient?"
@@ -364,6 +335,7 @@ export default function PatientListAdmin({ searchTerm }) {
                     Delete
                   </button>
                 </Popconfirm>
+
                 <button
                   class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
                   onClick={() => handleBookAppointment(patient._id)}

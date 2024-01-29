@@ -35,7 +35,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 export default function AppointmentListAdmin({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+  let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [appointmentList, setAppointmentList] = useState([]);
   const navigate = useNavigate();
@@ -214,7 +214,6 @@ export default function AppointmentListAdmin({ searchTerm }) {
         patient={selectedAppointment}
         styles={{
           modal: {
-            // Set your custom width here (e.g., '70%')
             width: isTab ? "80%" : "70%",
             backgroundColor: "#E3F6FF",
             alignContent: "center",
@@ -256,7 +255,6 @@ export default function AppointmentListAdmin({ searchTerm }) {
                   height: isTab ? "80px" : "123px",
                   width: isTab ? "80px" : "123px",
                   boxShadow: "inset 0 0 0 2px #76767",
-                  // Adjust or remove marginRight if necessary
                 }}
               />
             </div>
@@ -277,7 +275,7 @@ export default function AppointmentListAdmin({ searchTerm }) {
               fontWeight: 600,
               lineHeight: "28.8px",
               fontFamily: "Lato, sans-serif",
-              marginLeft: " 8px",
+              marginLeft: -70,
             }}
           >
             {selectedAppointment?.patientId?.name
@@ -311,12 +309,13 @@ export default function AppointmentListAdmin({ searchTerm }) {
             style={{
               fontSize: isTab ? "12px" : "20px",
               fontWeight: 400,
-              lineHeight: "28.8px",
+              lineHeight: "24px",
               fontFamily: "Lato, sans-serif",
               color: "black",
               marginBottom: "2%",
             }}
           ></text>
+
           <text
             className="ml-4 text-start mt-4"
             style={{
@@ -408,8 +407,189 @@ export default function AppointmentListAdmin({ searchTerm }) {
           </div> */}
         </div>
       </Modal>
-
       <div className="flex flex-col">
+        {filteredAppointmentList?.length > 0 ? (
+          filteredAppointmentList?.map((appointment) => (
+            <div className="bg-white w-full p-4 sm:px-5 px-1 mb-5">
+              <div className="flex flex-col xl:flex-row justify-start items-center">
+                <div
+                  class="flex items-center gap-x-2 mr-auto"
+                  onClick={() => findSelectedDoctor(appointment?._id)}
+                >
+                  {appointment?.doctorId?.doctorPic ? (
+                    <img
+                      class="object-cover w-20 h-20  rounded-full"
+                      src={appointment?.doctorId?.doctorPic}
+                      alt={appointment?.doctorId?.doctorPic.name}
+                    />
+                  ) : (
+                    <AccountCircleIcon
+                      style={{
+                        fontSize: isTab ? "50px" : "90px",
+                        color: "#B1DAED",
+                      }}
+                    />
+                  )}
+                  <div class="flex flex-row">
+                    <div class="flex lg:flex-row flex-col ">
+                      <div
+                        class="flex  bg-white p-2 md:flex-row justify-between"
+                        style={{
+                          borderRadius: "5px",
+                          marginBottom: "-8px",
+                          position: "relative",
+                        }}
+                      >
+                        <div className="flex flex-row items-center">
+                          <div>
+                            <h1 class="font-semibold text-gray-700 sm:text-lg text-sm capitalize">
+                              <p class="text-gray-500 sm:text-sm text-xs">
+                                Doctor's Name:<span className="ms-2"></span>
+                              </p>
+
+                              {appointment?.doctorId?.name}
+                            </h1>
+                          </div>
+                        </div>
+                      </div>
+                      <div style={{ textAlign: "center" }} class="mt-2">
+                        <h1
+                          class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                          style={{
+                            marginLeft: isTab ? "2px" : "8px",
+                            marginRight: isTab ? "4px" : "8px",
+                          }}
+                        >
+                          <p class="text-gray-500 sm:text-sm text-xs">
+                            Patient's Name:<span className="ms-2"></span>
+                          </p>
+                          {appointment?.patientId?.name
+                            ? appointment?.patientId?.name
+                            : "No Name"}
+                        </h1>
+                      </div>
+                    </div>
+
+                    <div class="flex lg:flex-row flex-col ">
+                      <div
+                        style={{
+                          textAlign: "center",
+                          marginBottom: isTab ? "-19px" : "0px",
+                        }}
+                        class="mt-2"
+                      >
+                        <h1
+                          class="font-semibold text-gray-700 sm:text-lg text-sm capitalize"
+                          style={{
+                            marginLeft: isTab ? "2px" : "8px",
+                            marginRight: isTab ? "4px" : "8px",
+                          }}
+                        >
+                          <p class="text-gray-500 sm:text-sm text-xs">
+                            Date & Time:<span className="ms-2"></span>
+                          </p>
+                          {appointment?.appointmentDate?.date
+                            ? appointment?.appointmentDate?.date
+                              .split("-")
+                              .reverse()
+                              .join("-")
+                            : "No Date"}
+                        </h1>
+                      </div>
+                      <div
+                        class={` ${isTab ? "mt-5" : ""} display:`}
+                        style={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          borderRadius: "5px",
+                          marginBottom: "20px",
+                          position: "relative",
+                          left: "29px",
+                          top: "8px",
+                          gap: "1px",
+                        }}
+                      >
+                        <h1
+                          class="font-semibold text-gray-700 sm:text-lg text-sm capitalize  "
+                          style={{
+                            marginLeft: isTab ? "-30px" : "8px",
+                            marginRight: isTab ? "4px" : "8px",
+                          }}
+                        >
+                          <p class="text-gray-500 sm:text-sm text-xs">
+                            Appointment status:<span className="ms-2"></span>
+                          </p>
+                          {appointment?.appointmentStatus}
+                        </h1>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="flex flex-row ms-auto gap-1 sm:gap-1"
+                  style={{ flexDirection: "row" }}
+                >
+                  <Popconfirm
+                    title="Delete the Appointment"
+                    description="Are you sure to delete this Appointment?"
+                    okText="Delete"
+                    okType="danger"
+                    cancelText="No"
+                    className="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                    onConfirm={() =>
+                      handleDeleteAppointment(
+                        appointment._id,
+                        appointment?.appointmentDate?.date,
+                        appointment?.appointmentDate?.time,
+                        appointment?.doctorId?._id
+                      )
+                    }
+                  >
+                    <button
+                      danger
+                      class="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-black bg-[#EF5F5F] text-xs sm:text-sm"
+                      // onClick={() => handleDeleteAppointment(appointment._id)}
+                      style={{ marginRight: 10 }}
+                    >
+                      {"Delete"}
+                    </button>
+                  </Popconfirm>
+                  <button
+                    class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
+                    onClick={() =>
+                      handleEditAppointment(
+                        appointment._id,
+                        // appointment,
+                        // appointment?.appointmentDate?.date,
+                        // appointment?.appointmentDate?.time,
+                        // appointment?.doctorId?._id
+                      )
+                    }
+                    style={{
+                      height: isTab ? null : null,
+                      marginTop: isTab ? null : null,
+                    }}
+                  >
+                    {"Edit"}
+                  </button>
+                </div>
+              </div>
+              <ToastContainer />
+            </div>
+          ))
+        ) : (
+          <p>
+            Please book an appointment.{" "}
+            <span
+              style={{ textDecoration: "underline" }}
+              onClick={() => navigate("/doctorlistuser")}
+            >
+              Click here.
+            </span>
+          </p>
+        )}
+      </div>
+      {/* <div className="flex flex-col">
         {filteredAppointmentList
           ?.filter(
             (appointment) =>
@@ -424,13 +604,16 @@ export default function AppointmentListAdmin({ searchTerm }) {
                 >
                   {appointment?.doctorId?.doctorPic ? (
                     <img
-                      class="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
+                      class="object-cover w-20 h-20  rounded-full"
                       src={appointment?.doctorId?.doctorPic}
-                      alt={appointment?.doctorId?.name}
+                      alt={appointment?.doctorId?.doctorPic.name}
                     />
                   ) : (
                     <AccountCircleIcon
-                      style={{ fontSize: "90px", color: "#B1DAED" }}
+                      style={{
+                        fontSize: "90px",
+                        color: "#B1DAED",
+                      }}
                     />
                   )}
 
@@ -555,7 +738,7 @@ export default function AppointmentListAdmin({ searchTerm }) {
               <ToastContainer />
             </div>
           ))}
-      </div>
+      </div> */}
     </>
   );
 }
