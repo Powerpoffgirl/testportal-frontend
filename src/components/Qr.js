@@ -30,7 +30,6 @@ export default function Qr()
             headers: {
               "x-auth-token": token,
             },
-            // body: JSON.stringify(doctorDetails),
           });
           const data = await response.json();
           setUserDetails(data.data);
@@ -136,7 +135,7 @@ export default function Qr()
                 >
                   Name :
                 </p>
-                <p className="block text-black text-lg "> {userDetails?.name}</p>
+                <p className="block text-black text-lg ">{userDetails?.name}</p>
               </div>
 
               {/* ------------email------------ */}
@@ -197,7 +196,7 @@ export default function Qr()
                 >
                   Specialist:
                 </p>
-                <p className="block text-black text-lg ">{userDetails?.speciality}</p>
+                <p className="block text-black text-lg ">{userDetails?.speciality.join(', ')}</p>
               </div>
 
               <div className="mt-3 flex flex-row">
@@ -221,6 +220,7 @@ export default function Qr()
                   <p className=" text-black text-lg  " >{userDetails?.address?.houseNo}, {userDetails?.address?.floor}, {userDetails?.address?.block}, {userDetails?.address?.pinCode}, {userDetails?.address?.area} ,{userDetails?.address?.district} ,{userDetails?.address?.state}
                   </p>
                 </div>
+
               </div>
             </div>
 

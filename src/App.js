@@ -100,7 +100,14 @@ function App()
         <Route path="/usersignup" element={<UserSignup />}></Route>
         <Route path="/admin" element={<Admin></Admin>}></Route>
         <Route path="/form" element={<Form></Form>}></Route>
-        <Route path="/otp" element={<OTP />}></Route>
+        <Route path="/otp" element={
+          <Layout
+            Component={OTP}
+            type="admin"
+            headerTextTop={"Doctor"}
+            headerTextBottom={"Verify OTP"}
+          />
+        }></Route>
         <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/otpverify" element={<OtpVerify />} />
         <Route path="/superadminlogin" element={<SuperAdminLogin />} />
@@ -498,8 +505,8 @@ function App()
             <Layout
               Component={EditDoctorForm}
               type="doctor"
-              headerTextTop={"Edit Doctor's"}
-              headerTextBottom={"Form"}
+              headerTextTop={"Doctor's"}
+              headerTextBottom={"Profile"}
             />
           }
         ></Route>

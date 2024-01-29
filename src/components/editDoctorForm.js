@@ -236,15 +236,8 @@ export default function EditDoctorForm()
 
       toast.success("Doctor Image removed successfully.");
       setDoctorImage("");
-      // window.location.reload();
-      // onOpenModal()
-      // navigate("/doctorlistadmin")
-
-      // localStorage.setItem("id", data.data._id)
     }
     console.log("DATA from response", data);
-
-    // Logic to handle removing the current profile picture
     handleClose();
   };
 
@@ -261,57 +254,9 @@ export default function EditDoctorForm()
   {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
-      // workingDays: e,
       speciality: e,
     }));
   };
-
-  // const validateField = (name, value) =>
-  // {
-  //     switch (name)
-  //     {
-  //         case "name":
-  //             return value ? "" : "Name is required.";
-  //         case "email":
-  //             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-  //                 ? ""
-  //                 : "Email is not valid.";
-  //         case "contactNumber":
-  //             return value.length > 0 && value.length === 10
-  //                 ? ""
-  //                 : "Contact number is required or Add valid 10 Digit Number.";
-  //         case "degree":
-  //             return value ? "" : "Degree is required  ";
-  //         case "totalExperience":
-  //             return value ? "" : "Total Experience is required  ";
-  //         case "houseNo":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "houseNo is required  ";
-  //         case "floor":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-  //         case "block":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Block is required  ";
-  //         case "area":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Area is required and must be a string ";
-  //         case "pinCode":
-  //             return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-  //         case "district":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "District is required and must be a string ";
-  //         case "state":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "State is required and must be a string ";
-  //         case "workHourFrom":
-  //             // Assuming time in HH:MM format, adjust as needed
-  //             return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //                 ? ""
-  //                 : "Invalid start time.";
-  //         case "workHourTo":
-  //             return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //                 ? ""
-  //                 : "Invalid end time.";
-  //         // Add more cases as needed for other fields
-  //         default:
-  //             return "";
-  //     }
-  // };
 
   const handleChange = (e) =>
   {
@@ -338,9 +283,6 @@ export default function EditDoctorForm()
         setmobileNumberError("Please enter a valid Number");
       }
     }
-
-    // const error = validateField(name, value);
-    // setErrors({ ...errors, [name]: error });
 
     if (name === "workingDays")
     {
@@ -404,9 +346,6 @@ export default function EditDoctorForm()
       about: doctorDetails?.about,
       consultationFee: doctorDetails?.consultationFee,
       registrationNo: doctorDetails?.registrationNo,
-
-      // email: doctorDetails?.email, // Added email field
-      // contactNumber: doctorDetails?.contactNumber, // Added contactNumber field
 
       consultationFee: doctorDetails?.consultationFee,
       workingDays: doctorDetails?.workingDays, // Added workingDays field
@@ -505,10 +444,7 @@ export default function EditDoctorForm()
         console.log("Doctor updated successfully.");
 
         toast.success("Doctor updated successfully.");
-        // onOpenModal()
-        // navigate("/doctorlistadmin")
 
-        // localStorage.setItem("id", data.data._id)
       }
       console.log("DATA from response", data);
     }
@@ -607,124 +543,9 @@ export default function EditDoctorForm()
     console.log("DATA from response", data);
   };
 
-  const handleDelete = (workingDay) =>
-  {
-    console.log("delete", workingDay);
-    const days = doctorDetails.workingDays.filter(
-      (doctorDetail) => doctorDetail !== workingDay
-    );
-
-    // Assuming you want to update the doctorDetails state after filtering
-    setDoctorDetails({
-      ...doctorDetails,
-      workingDays: days,
-    });
-  };
   const toggleQrCode = () =>
   {
     setShowQrCode(!showQrCode);
-  };
-
-  const handleRegister = async (e) =>
-  {
-    e.preventDefault();
-    // Check if the token exists
-    if (doctorDetails.name === "")
-    {
-      toast.error("Please write name");
-    } else if (doctorDetails.email === "")
-    {
-      toast.error("Please write email");
-    } else if (doctorDetails.contactNumber === "")
-    {
-      toast.error("Please write contact number");
-    } else if (doctorDetails.totalExperience === "")
-    {
-      toast.error("Please write total experience");
-    } else if (doctorDetails.degree === "")
-    {
-      toast.error("Please write degree");
-    } else if (doctorDetails.address.pinCode === "")
-    {
-      toast.error("Please write Pincode");
-    } else if (doctorDetails.address.district === "")
-    {
-      toast.error("Please write district");
-    } else if (doctorDetails.address.state === "")
-    {
-      toast.error("Please write state");
-    } else
-    {
-      const token = localStorage.getItem("token");
-      if (!token)
-      {
-        console.error("No token found in local storage");
-        localStorage.clear();
-        navigate(`/adminlogin`);
-      }
-
-      const isEmpty = Object.values(doctorDetails).some(
-        (value) => value === ""
-      );
-
-      if (isEmpty || isEditing === false)
-      {
-        toast.error("Please fill the fields or Update");
-        setIsEditing(false);
-        return;
-      }
-
-      const response = await fetch(`${baseUrl}/api/v1/admin/register_doctor`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(doctorDetails),
-      });
-      const data = await response.json();
-
-      if (data.statusCode === 400)
-      {
-        toast.error("Please fill the details");
-      } else
-      {
-        toast.error("Contact number already registered");
-      }
-
-      if (data.message === "Permission denied")
-      {
-        toast.error("Permission Denied");
-      }
-
-      if (data.statusCode === 500)
-      {
-        toast.error("Enter Unique Values or Values already Exist ");
-      }
-
-      if (data.success === true)
-      {
-        navigate("/otp", {
-          state: { contactNumber: doctorDetails.contactNumber },
-        });
-        localStorage.setItem("id", data.data._id);
-      }
-      console.log("DATA from response", data);
-    }
-
-    const handleDelete = (workingDay) =>
-    {
-      console.log("delete", workingDay);
-      const days = doctorDetails.workingDays.filter(
-        (doctorDetail) => doctorDetail !== workingDay
-      );
-
-      // Assuming you want to update the doctorDetails state after filtering
-      setDoctorDetails({
-        ...doctorDetails,
-        workingDays: days,
-      });
-    };
   };
 
   console.log("DOCTOR DETAILS", doctorDetails);
@@ -732,8 +553,6 @@ export default function EditDoctorForm()
   updateUser(doctorDetails?.name);
   updateUserEmail(doctorDetails?.email);
   updateUserimage(doctorDetails?.doctorPic);
-
-
 
   const handleDownload = () =>
   {
@@ -952,7 +771,7 @@ export default function EditDoctorForm()
               for="total-experience"
               className="block text-black text-lg font-semibold mt-1 mb-1"
             >
-              Total Experience<span className="text-red-500">*</span>{" "}
+              Total Experience<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In yrs ex: 1, 2, 3... ]</span>
             </label>
             <input
               type="text"
@@ -1069,8 +888,7 @@ export default function EditDoctorForm()
                 Registration Number<span className="text-red-500">*</span>{" "}
               </label>
               <input
-                type="number"
-                // placeholder="Dr. Sneha Ahuja"
+                type="text"
                 id="registrationNo"
                 name="registrationNo"
                 value={doctorDetails?.registrationNo}
@@ -1133,7 +951,7 @@ export default function EditDoctorForm()
                 for="interval"
                 className="block text-black text-lg font-semibold mt-1 mb-1"
               >
-                Interval<span className="text-red-500">*</span>{" "}
+                Interval<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In mins ex: 10, 20, 30... ]</span>
               </label>
               <input
                 type="text"
@@ -1154,12 +972,15 @@ export default function EditDoctorForm()
                 Consultation fees<span className="text-red-500">*</span>{" "}
               </label>
               <input
-                type="number"
-                // placeholder="+91-8603678862"
+                type="text"
                 id="consultationFee"
                 name="consultationFee"
                 value={doctorDetails?.consultationFee}
                 onChange={handleChange}
+                onInput={(e) =>
+                {
+                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
               {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}

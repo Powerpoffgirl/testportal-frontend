@@ -527,7 +527,7 @@ export default function DoctorList({ searchTerm })
               </div>
               <div className="flex flex-col  py-4 px-5 bg-white mt-1">
                 <p className="text-xs text-black font-medium mb-2">
-                  Registration No. :- 33256
+                  Registration No. :- {selectedDoctor?.registrationNo}
                 </p>
 
                 <p className="text-black text-3xl font-medium mb-2">
@@ -743,7 +743,7 @@ export default function DoctorList({ searchTerm })
                           <hr />
                           <p class="mt-2">Mobile Number</p>
                           <div class="flex flex-row">
-                            <img src={phonelogo} class="pl-1 pr-3"></img>
+                            <img src={phonelogo} alt="phonelogo" class="pl-1 pr-3"></img>
                             <input
                               class=" border my-1 placeholder-gray-500 p-1 pl-2"
                               type="tel"

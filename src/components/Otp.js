@@ -9,8 +9,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import AdminSidebar from "./adminSidebar";
 import AdminHeader from "./adminHeader";
 import phone from '../assets/phone.svg'
+import { toast } from "react-toastify";
 
-const OTP = () => {
+const OTP = () =>
+{
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [userDetails, setUserDetails] = useState(null);
   const otpInputs = [];
@@ -23,12 +25,20 @@ const OTP = () => {
   const id = localStorage.getItem('id')
   const token = localStorage.getItem('token')
   console.log(location.state);
-  useEffect(() => {
+  const [seconds, setSeconds] = useState(90);
+  const [resendClicked, setResendClicked] = useState(false);
+  const [firstTime, setFirstTime] = useState(true);
+
+
+  useEffect(() =>
+  {
 
     setMobileNo(location?.state)
 
-    const fetchData = async () => {
-      try {
+    const fetchData = async () =>
+    {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/admin/get_doctor/${id}`, {
           method: "GET",
           headers: {
@@ -40,7 +50,8 @@ const OTP = () => {
         setUserDetails(data.data);
         console.log("registered data", userDetails)
         console.log("address", userDetails.address.houseNo)
-      } catch (error) {
+      } catch (error)
+      {
         console.error('Error:', error);
       }
     };
@@ -48,17 +59,20 @@ const OTP = () => {
     fetchData();
   }, [])
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target
     setMobileNo(value)
   }
 
-  const SendOTP = async () => {
+  const SendOTP = async () =>
+  {
     // Retrieve the token from local storage
     const token = localStorage.getItem("token");
     const id = localStorage.getItem("id")
     // If there's no token, log an error and exit
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       return;
     }
@@ -69,7 +83,8 @@ const OTP = () => {
     };
     const apiUrl = `${baseUrl}/api/v1/admin/send_otp/${id}`;
 
-    try {
+    try
+    {
       // Send the POST request
       const response = await fetch(apiUrl, {
         method: "POST",
@@ -84,23 +99,29 @@ const OTP = () => {
       const data = await response.json();
 
       // Check the response status
-      if (response.ok) {
-        console.log("OTP sent successfully", data);
-      } else {
+      if (response.ok)
+      {
+        toast.success("OTP sent")
+      } else
+      {
         console.error("Error sending OTP:", data);
       }
 
-    } catch (error) {
+    } catch (error)
+    {
       console.error("Error during the API call:", error);
     }
   }
 
 
-  const verifyOTP = async () => {
-    try {
+  const verifyOTP = async () =>
+  {
+    try
+    {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("id")
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         return;
       }
@@ -115,29 +136,61 @@ const OTP = () => {
       });
 
       const data = await response.json();
-      if (data.success === true) {
+      if (data.success === true)
+      {
         navigate("/qr")
       }
       console.log("DATA from response", data)
-    } catch (error) {
+    } catch (error)
+    {
       console.error('There was an error verifying the OTP:', error);
     }
   };
 
-  const handleInputChange = (e, index) => {
+  const handleInputChange = (e, index) =>
+  {
     const value = e.target.value;
 
-    if (isNaN(value)) {
+    if (isNaN(value))
+    {
       return; // Allow only numeric input
     }
 
     otp[index] = value;
 
-    if (index < MAX_LENGTH - 1 && value) {
+    if (index < MAX_LENGTH - 1 && value)
+    {
       otpInputs[index + 1].focus();
     }
 
     setOtp([...otp]);
+  };
+
+  useEffect(() =>
+  {
+    if (resendClicked || firstTime)
+    {
+      const intervalId = setInterval(() =>
+      {
+        if (seconds > 0)
+        {
+          setSeconds((prevSeconds) => prevSeconds - 1);
+        } else
+        {
+          setFirstTime(false);
+          setSeconds(90);
+          setResendClicked(false);
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [seconds, resendClicked, firstTime]);
+
+  const formatTime = (time) =>
+  {
+    const minutes = Math.floor(time / 60);
+    const remainingSeconds = time % 60;
+    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
   console.log("OTP", otp)
@@ -150,14 +203,11 @@ const OTP = () => {
         className="flex min-h-screen relative overflow-auto 
     box-border"
       >
-        <AdminSidebar></AdminSidebar>
         <div
           className="flex flex-col bg-customGreen"
           style={{
             width: isTab ? "100%" : "77%",
           }}>
-          <AdminHeader line1="Find" line2="Doctors"></AdminHeader>
-
           <div className="flex flex-col lg:flex-row ml-2">
             {/* --------------left-------------- */}
             <div className="flex flex-col border bg-white lg:w-1/3 p-5 ml-5 mt-5 mb-5 md:1/3">
@@ -187,7 +237,8 @@ const OTP = () => {
               <div className="mt-4 flex flex-row">
                 <p className="block text-black text-lg font-semibold" >Working Days :</p>
                 <p className="block text-black text-lg ">
-                  {userDetails?.workingDays.map((item, index) => {
+                  {userDetails?.workingDays.map((item, index) =>
+                  {
                     return (
                       <div key={index}>
                         {item}
@@ -224,7 +275,8 @@ const OTP = () => {
                 </p>
 
                 <p class=" flex flex-wrap">
-                  {userDetails?.speciality?.map((item, index) => {
+                  {userDetails?.speciality?.map((item, index) =>
+                  {
                     return (
                       <p key={index} className="block text-black text-lg ">{item},</p>
 
@@ -322,8 +374,10 @@ const OTP = () => {
                       maxLength={1}
                       value={digit}
                       onChange={(e) => handleInputChange(e, index)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Backspace" && index > 0 && !digit) {
+                      onKeyDown={(e) =>
+                      {
+                        if (e.key === "Backspace" && index > 0 && !digit)
+                        {
                           otpInputs[index - 1].focus();
                         }
                       }}
@@ -331,7 +385,14 @@ const OTP = () => {
                   ))}
                 </div>
 
-                <p class="text-gray-600">Otp will expire in 30 seconds  <button onClick={SendOTP} class="font-medium underline text-black">Resend</button> </p>
+                <p class="text-gray-600">Otp will expire in <span
+                  className="timer"
+                  style={{ color: "#666", cursor: "pointer" }}
+                >
+                  <text className="mx-2" style={{ color: "#000000" }}>
+                    {formatTime(seconds)} sec
+                  </text>
+                </span> seconds  <button onClick={SendOTP} class="font-medium underline text-black">Resend</button> </p>
 
               </div>
               <div className="flex flex-row-reverse mt-5 my-2">

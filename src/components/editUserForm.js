@@ -830,14 +830,12 @@ export default function EditUserForm()
               }
               else
               {
-                toast.error("Slot not available4")
+                navigate("/doctorlistuser")
+                toast.error("Slot not available")
               }
             }
           }
-
-
         }
-
       }
     }
   };
