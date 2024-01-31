@@ -86,6 +86,57 @@ export default function Qr()
     document.body.removeChild(element);
   };
 
+  function abbreviateAndCombineDays(days)
+  {
+    const weekDays = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+    const dayIndexes = days.map((day) => weekDays.indexOf(day));
+    let combinedDays = [];
+    let i = 0;
+
+    while (i < dayIndexes.length)
+    {
+      let startDay = weekDays[dayIndexes[i]].substring(0, 3);
+      let endDayIndex = i;
+
+      while (
+        endDayIndex < dayIndexes.length - 1 &&
+        dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1
+      )
+      {
+        endDayIndex++;
+      }
+
+      let endDay = weekDays[dayIndexes[endDayIndex]].substring(0, 3);
+
+      if (i === endDayIndex)
+      {
+        combinedDays.push(startDay);
+      } else
+      {
+        combinedDays.push(`${startDay}-${endDay}`);
+      }
+
+      i = endDayIndex + 1;
+    }
+
+    return combinedDays.join(" ");
+  }
+
+  const workingDays =
+    userDetails && userDetails.workingDays
+      ? abbreviateAndCombineDays(userDetails.workingDays)
+      : "";
+
+  console.log("WORKING DAYS", workingDays)
+  console.log(userDetails.email.length)
   return (
     <>
       <div
@@ -129,7 +180,7 @@ export default function Qr()
               {/* -------name------- */}
               <div className="mt-3 flex flex-row">
                 <p
-                  className="block text-black text-lg font-semibold"
+                  className="block text-black text-lg font-semibold mr-1"
                 >
                   Name :
                 </p>
@@ -139,16 +190,22 @@ export default function Qr()
               {/* ------------email------------ */}
               <div className="mt-3 flex flex-row">
                 <p
-                  className="block text-black text-lg font-semibold"
+                  className="block text-black text-lg font-semibold mr-1"
                 >
                   Email :
                 </p>
-                <p className="block text-black text-lg "> {userDetails?.email}</p>
+                <p className="block text-black text-lg">
+                  {/* {userDetails?.email.length > 26
+                    ? userDetails?.email.slice(0, 26) + "..."
+                    : userDetails?.email} */}
+                  {userDetails?.email}
+                </p>
+
               </div>
               {/* -----------contact----------- */}
               <div className="mt-3 flex flex-row">
                 <p
-                  className="block text-black text-lg font-semibold"
+                  className="block text-black text-lg font-semibold mr-1"
                 >
                   Mobile Number :
                 </p>
@@ -156,32 +213,24 @@ export default function Qr()
               </div>
 
               <div className="mt-3 flex flex-row">
-                <p className="block text-black text-lg font-semibold" >Working Days :</p>
+                <p className="block text-black text-lg font-semibold mr-1" >Working Days :</p>
                 <p className=" text-black text-lg flex flex-wrap">
-                  {userDetails?.workingDays.map((item, index) =>
-                  {
-                    return (
-                      <div key={index}>
-                        {item},
-                      </div>
-                    )
-                  })}
+                  {workingDays.split(" ").map((day) => <p className="mr-1">{day}</p>)}
                 </p>
 
               </div>
 
               <div className="mt-3 flex flex-row">
-                <p className="block text-black text-lg font-semibold">Working Hours :</p>
+                <p className="block text-black text-lg font-semibold mr-1">Working Hours :</p>
                 <p className="block text-black text-lg ">
                   {userDetails?.workingHours?.workHourFrom} - {userDetails?.workingHours?.workHourTo}
-
                 </p>
 
               </div>
 
               <div className=" mt-3 flex flex-row">
                 <p
-                  className="block text-black text-lg font-semibold"
+                  className="block text-black text-lg font-semibold mr-1"
                 >
                   Total Experience :
                 </p>
@@ -190,16 +239,16 @@ export default function Qr()
 
               <div className="mt-3 flex flex-row" >
                 <p
-                  className="block text-black text-lg font-semibold"
+                  className="block text-black text-lg font-semibold mr-1"
                 >
                   Specialist:
                 </p>
-                <p className="block text-black text-lg ">{userDetails?.speciality.join(', ')}</p>
+                <p className="block text-black text-lg ">{userDetails?.speciality.map((sp) => <p>{sp}</p>)}</p>
               </div>
 
               <div className="mt-3 flex flex-row">
                 <p
-                  className="block text-black text-lg font-semibold"
+                  className="block text-black text-lg font-semibold mr-1"
                 >
                   Degree:
                 </p>
@@ -208,14 +257,52 @@ export default function Qr()
               </div>
 
               {/* -----------address----------- */}
-              <div className="mt-3 flex flex-row ">
+              <div className="mt-3 flex flex-row">
 
-                <p className="block text-black text-lg font-semibold">
+                <p className="block text-black text-lg font-semibold mr-1">
                   Address:
                 </p>
 
                 <div class="flex flex- overflow-hidden">
-                  <p className=" text-black text-lg  " >{userDetails?.address?.houseNo}, {userDetails?.address?.floor}, {userDetails?.address?.block}, {userDetails?.address?.pinCode}, {userDetails?.address?.area} ,{userDetails?.address?.district} ,{userDetails?.address?.state}
+                  <p className=" text-black text-lg flex flex-wrap">
+                    {
+                      userDetails?.address?.houseNo &&
+                      <p>{userDetails?.address?.houseNo}</p>
+                    }
+                    {
+                      userDetails?.address?.floor &&
+                      <p>
+                        , {userDetails?.address?.floor}
+                      </p>
+                    }
+                    {
+                      userDetails?.address?.block &&
+                      <p>
+                        , {userDetails?.address?.block}
+                      </p>
+                    }
+                    {
+                      userDetails?.address?.area &&
+                      <p>
+                        , {userDetails?.address?.area}
+                      </p>
+                    }
+
+                    {userDetails?.address?.district &&
+                      <p>
+                        , {userDetails?.address?.district}
+                      </p>
+                    }
+                    {userDetails?.ddress?.state &&
+                      <p >, {userDetails?.ddress?.state}</p>
+                    }
+                    {userDetails?.address?.pinCode &&
+                      <p>
+                        , {userDetails?.address?.pinCode}
+                      </p>
+                    }
+
+                    {/* {" "} {userDetails?.address?.houseNo} {userDetails?.address?.floor} {userDetails?.address?.block} {userDetails?.address?.pinCode}, {userDetails?.address?.area} ,{userDetails?.address?.district} ,{userDetails?.ddress?.state} */}
                   </p>
                 </div>
 

@@ -833,6 +833,8 @@ export default function DoctorFormAdmin()
                         />
                       )}
                     </div>
+                    {/* <p class=" text-red-500 ">{houseNoError}</p> */}
+
                     <div className="px-2 lg:w-1/2 mt-3">
                       {doctorsList?.length === 0 ||
                         doctorDetails?.newDoctor === true ? (
@@ -932,7 +934,7 @@ export default function DoctorFormAdmin()
                       id="area"
                       name="area"
                       onChange={handleChange}
-                      placeholder="Area/Landmark"
+                      placeholder="Area/Landmark*"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   ) : (
@@ -941,7 +943,7 @@ export default function DoctorFormAdmin()
                       id="area"
                       name="area"
                       value={doctorDetails?.address?.area}
-                      placeholder="Area/Landmark"
+                      placeholder="Area/Landmark*"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
                   )}

@@ -229,7 +229,7 @@ const OTP = () =>
           </div>
 
           <div className="mt-4 flex flex-row">
-            <p className="block text-black text-lg font-semibold" >Working Days :</p>
+            <p className="block text-black text-lg font-semibold mr-1" >Working Days :</p>
             <p className="block text-black text-lg ">
               {userDetails?.workingDays.map((item, index) =>
               {
@@ -244,7 +244,7 @@ const OTP = () =>
           </div>
 
           <div className="mt-3 flex flex-row">
-            <p className="block text-black text-lg font-semibold">Working Hours :</p>
+            <p className="block text-black text-lg font-semibold mr-1">Working Hours :</p>
             <p className="block text-black text-lg ">
               {userDetails?.workingHours?.workHourFrom} - {userDetails?.workingHours?.workHourTo}
 
@@ -254,7 +254,7 @@ const OTP = () =>
 
           <div className=" mt-3 flex flex-row">
             <p
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mr-1"
             >
               Total Experience :
             </p>
@@ -263,7 +263,7 @@ const OTP = () =>
 
           <div className="mt-3 flex flex-row" >
             <p
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mr-1"
             >
               Specialist:
             </p>
@@ -282,7 +282,7 @@ const OTP = () =>
 
           <div className="mt-3 flex flex-row">
             <p
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mr-1"
             >
               Degree:
             </p>
@@ -298,7 +298,7 @@ const OTP = () =>
           {/* -------name------- */}
           <div className="mt-3 flex flex-row">
             <p
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mr-1"
             >
               Name :
             </p>
@@ -308,7 +308,7 @@ const OTP = () =>
           {/* ------------email------------ */}
           <div className="mt-3 flex flex-row">
             <p
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mr-1"
             >
               Email :
             </p>
@@ -317,7 +317,7 @@ const OTP = () =>
           {/* -----------contact----------- */}
           <div className="mt-3 flex flex-row">
             <p
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mr-1"
             >
               Mobile Number :
             </p>
@@ -326,11 +326,50 @@ const OTP = () =>
           {/* -----------address----------- */}
           <div className="mt-3 flex flex-row">
             <p
-              className="block text-black text-lg font-semibold"
+              className="block text-black text-lg font-semibold mr-1"
             >
               Address:
             </p>
-            <p className=" text-black text-lg flex flex-wrap"> {" "} {userDetails?.address?.houseNo}, {userDetails?.address?.floor}, {userDetails?.address?.block}, {userDetails?.address?.pinCode}, {userDetails?.address?.area} ,{userDetails?.address?.district} ,{userDetails?.ddress?.state}</p>
+            <p className=" text-black text-lg flex flex-wrap">
+              {
+                userDetails?.address?.houseNo &&
+                <p>, {userDetails?.address?.houseNo}</p>
+              }
+              {
+                userDetails?.address?.floor &&
+                <p>
+                  , {userDetails?.address?.floor}
+                </p>
+              }
+              {
+                userDetails?.address?.block &&
+                <p>
+                  , {userDetails?.address?.block}
+                </p>
+              }
+              {
+                userDetails?.address?.area &&
+                <p>
+                  , {userDetails?.address?.area}
+                </p>
+              }
+
+              {userDetails?.address?.district &&
+                <p>
+                  , {userDetails?.address?.district}
+                </p>
+              }
+              {userDetails?.ddress?.state &&
+                <p >, {userDetails?.ddress?.state}</p>
+              }
+              {userDetails?.address?.pinCode &&
+                <p>
+                  , {userDetails?.address?.pinCode}
+                </p>
+              }
+
+            </p>
+
           </div>
           <hr class=" mt-3" />
 
@@ -363,7 +402,7 @@ const OTP = () =>
                   key={index}
                   ref={(input) => (otpInputs[index] = input)}
                   type="text"
-                  className="w-10 h-8   text-lg  border-2 text-black border-gray-400 text-center "
+                  className="w-10 h-8 mr-1.5  text-lg  border-2 text-black border-gray-400 text-center "
                   maxLength={1}
                   value={digit}
                   onChange={(e) => handleInputChange(e, index)}
