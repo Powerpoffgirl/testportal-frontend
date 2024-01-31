@@ -136,7 +136,7 @@ export default function Qr()
       : "";
 
   console.log("WORKING DAYS", workingDays)
-  console.log(userDetails.email.length)
+  console.log(userDetails?.email?.length)
   return (
     <>
       <div

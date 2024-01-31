@@ -56,7 +56,7 @@ export default function DoctorFormAdmin()
 
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
-
+  const [houseNoError, setHouseNoError] = useState("")
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -290,6 +290,24 @@ export default function DoctorFormAdmin()
       ].includes(name)
     )
     {
+      if ("houseNo" === name)
+      {
+        if (value.length > 5)
+        {
+          setHouseNoError("Max 5 chars.")
+        }
+        else
+        {
+          setHouseNoError("")
+          setDoctorDetails((prevDoctorDetails) => ({
+            ...prevDoctorDetails,
+            address: {
+              ...prevDoctorDetails.address,
+              [name]: value,
+            },
+          }))
+        }
+      }
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -756,7 +774,7 @@ export default function DoctorFormAdmin()
                 for="interval"
                 className="block text-black text-lg font-semibold"
               >
-                Interval<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In mins ex: 10, 20, 30... ]</span>
+                Interval<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}></span>
               </label>
               <input
                 type="text"
@@ -812,28 +830,21 @@ export default function DoctorFormAdmin()
                 <div className="flex lg:flex-row flex-col">
                   <div class="flex flex-row ">
                     <div className="px-2 lg:w-1/2  mt-3">
-                      {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
-                        <input
-                          type="text"
-                          placeholder="House No."
-                          id="houseNo"
-                          name="houseNo"
-                          onChange={handleChange}
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          placeholder="House No."
-                          id="houseNo"
-                          name="houseNo"
-                          value={doctorDetails?.address?.houseNo}
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
+                      <input
+                        type="text"
+                        placeholder="House No."
+                        id="houseNo"
+                        name="houseNo"
+                        onChange={handleChange}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                      <p class=" text-red-500 flex flex-wrap">
+                        {houseNoError &&
+                          <p>
+                            {houseNoError}</p>
+                        }
+                      </p>
                     </div>
-                    {/* <p class=" text-red-500 ">{houseNoError}</p> */}
 
                     <div className="px-2 lg:w-1/2 mt-3">
                       {doctorsList?.length === 0 ||

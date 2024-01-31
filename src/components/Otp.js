@@ -333,7 +333,7 @@ const OTP = () =>
             <p className=" text-black text-lg flex flex-wrap">
               {
                 userDetails?.address?.houseNo &&
-                <p>, {userDetails?.address?.houseNo}</p>
+                <p> {userDetails?.address?.houseNo}</p>
               }
               {
                 userDetails?.address?.floor &&
