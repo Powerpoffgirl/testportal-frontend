@@ -369,6 +369,12 @@ export default function DoctorFormAdmin()
       });
       const data = await response.json();
 
+      if (data.message === "Mobile number is already registered")
+      {
+        toast.error(
+          "Mobile number is already registered"
+        )
+      }
       if (data.statusCode === 400)
       {
         toast.error("Please fill the details");
