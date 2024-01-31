@@ -113,9 +113,11 @@ const UserOTP = () =>
         localStorage.setItem("token", data?.data?.token);
         localStorage.setItem("pic", data?.data?.data?.userPic);
         console.log("token", data?.data?.token);
-        console.log("======NEW USER=======", data?.data?.data?.newUser);
-        localStorage.setItem("patientId", data?.data?.data?._id);
-        if (data?.data?.data?.newUser)
+        console.log("======NEW USER=======", data?.data);
+        localStorage.setItem("patientId", data?.patient?._id);
+        console.log("DATA from response", data);
+
+        if (data?.patient)
         {
           navigate("/userprofile", { state: { user: user } });
         } else if (doctorName)
@@ -130,7 +132,7 @@ const UserOTP = () =>
       {
         toast.error("OTP expired!");
       }
-      console.log("DATA from response", data);
+
     } catch (error)
     {
       console.error("There was an error verifying the OTP:", error);

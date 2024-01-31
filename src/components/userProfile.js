@@ -458,38 +458,40 @@ export default function UserProfile()
       {
         toast.success("User details updated successfully");
         // console.log("Doctor updated successfully.");
+        const response1 = await fetch(
+          `${baseUrl}/api/v1/user/update_patient/${patientId}`,
+          {
+            method: "put",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+            body: JSON.stringify({
+              name: userDetails?.name,
+              age: userDetails?.age,
+              ageType: userDetails?.ageType,
+              gender: userDetails?.gender,
+              bodyWeight: userDetails?.bodyWeight,
+              address: {
+                houseNo: userDetails?.address?.houseNo,
+                floor: userDetails?.address?.floor,
+                block: userDetails?.address?.block,
+                area: userDetails?.address?.area,
+                pinCode: userDetails?.address?.pinCode,
+                district: userDetails?.address?.district,
+                state: userDetails?.address?.state,
+              },
+              patientPic: userImage,
+            }),
+          }
+        );
+        const data1 = await response1.json();
+        console.log("PATIENT UPDATED SUCCESSFULLY", data1);
+
         navigate("/doctorlistuser");
       }
       console.log("DATA from response", data);
-      const response1 = await fetch(
-        `${baseUrl}/api/v1/user/update_patient/${patientId}`,
-        {
-          method: "put",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token,
-          },
-          body: JSON.stringify({
-            name: userDetails?.name,
-            age: userDetails?.age,
-            ageType: userDetails?.ageType,
-            gender: userDetails?.gender,
-            bodyWeight: userDetails?.bodyWeight,
-            address: {
-              houseNo: userDetails?.address?.houseNo,
-              floor: userDetails?.address?.floor,
-              block: userDetails?.address?.block,
-              area: userDetails?.address?.area,
-              pinCode: userDetails?.address?.pinCode,
-              district: userDetails?.address?.district,
-              state: userDetails?.address?.state,
-            },
-            patientPic: userImage,
-          }),
-        }
-      );
-      const data1 = await response1.json();
-      console.log("PATIENT UPDATED SUCCESSFULLY", data1);
+
     }
   };
 
