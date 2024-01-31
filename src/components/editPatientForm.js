@@ -566,7 +566,7 @@ export default function EditPatientForm()
           </div>
 
           <div className="flex gap-2">
-            <div className="mt-3">
+            <div className="mt-3 flex flex-col w-1/2">
               <label
                 for="age"
                 className="block text-black text-lg font-semibold"
@@ -583,7 +583,7 @@ export default function EditPatientForm()
               />
               {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
-            <div className="mt-3">
+            <div className="mt-3 flex flex-col w-1/2">
               <label
                 for="age"
                 className="block text-black text-lg font-semibold"
@@ -692,65 +692,82 @@ export default function EditPatientForm()
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
-                <div className="flex flex-row">
-                  <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      placeholder="House No."
-                      id="houseNo"
-                      name="houseNo"
-                      onChange={handleChange}
-                      value={patientDetails?.address?.houseNo}
-                      // placeholder="1234"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                <div className="flex lg:flex-row flex-col">
+                  <div class="flex flex-row ">
+                    <div className="px-2 lg:w-1/2  mt-3">
+
+                      <input
+                        type="text"
+                        placeholder="House No."
+                        id="houseNo"
+                        name="houseNo"
+                        onChange={handleChange}
+                        value={patientDetails?.address?.houseNo}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+
+                    </div>
+                    <div className="px-2 lg:w-1/2 mt-3">
+
+                      <input
+                        type="text"
+                        id="floor"
+                        name="floor"
+                        onChange={handleChange}
+                        value={patientDetails?.address?.floor}
+                        placeholder="Floor"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+
+                    </div>
                   </div>
-                  <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      id="floor"
-                      name="floor"
-                      onChange={handleChange}
-                      value={patientDetails?.address?.floor}
-                      placeholder="Floor"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                  </div>
-                  <div className="px-2 w-full sm:w-1/3 mt-3">
-                    <input
-                      type="text"
-                      id="block"
-                      name="block"
-                      onChange={handleChange}
-                      value={patientDetails?.address?.block}
-                      placeholder="Block"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {errors.block && (
-                      <p className="text-red-500">{errors.block}</p>
-                    )}
-                  </div>
-                  <div className="px-2 w-full sm:w-1/2 mt-3">
-                    <input
-                      type="text"
-                      id="pinCode"
-                      name="pinCode"
-                      onChange={handleChange}
-                      value={patientDetails?.address?.pinCode}
-                      placeholder="Pin Code"
-                      onInput={(e) =>
-                      {
-                        e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                      }}
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
-                    {pinCodeError && (
-                      <p className="text-red-500">{pinCodeError}</p>
-                    )}
+                  <div class="flex flex-row">
+                    <div className="px-2 lg:w-1/2 mt-3">
+
+                      <input
+                        type="text"
+                        id="block"
+                        name="block"
+                        onChange={handleChange}
+                        value={patientDetails?.address?.block}
+                        placeholder="Block"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+
+
+                      {errors.block && (
+                        <p className="text-red-500">{errors.block}</p>
+                      )}
+                    </div>
+                    <div className="px-2 lg:w-1/2 mt-3">
+
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        value={patientDetails?.address?.pinCode}
+                        onChange={handleChange}
+                        placeholder="Pin Code*"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        onInput={(e) =>
+                        {
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]/g,
+                            ""
+                          );
+                        }}
+                      />
+
+
+                      {pinCodeError && (
+                        <p className="text-red-500">{pinCodeError}</p>
+                      )}
+                    </div>
                   </div>
                 </div>
-
+                {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
+
                   <input
                     type="text"
                     id="area"
@@ -758,37 +775,45 @@ export default function EditPatientForm()
                     onChange={handleChange}
                     value={patientDetails?.address?.area}
                     placeholder="Area/Landmark"
-                    className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
+
+
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
 
                 <div className="flex flex-row">
-                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                  <div className="px-2 w-1/2 mt-3">
+
                     <input
                       type="text"
                       id="district"
                       name="district"
                       onChange={handleChange}
                       value={patientDetails?.address?.district}
-                      placeholder="District"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      placeholder="District*"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+
+
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>
                     )}
                   </div>
 
-                  <div className="px-2 w-full sm:w-1/2 mt-3">
+                  <div className="px-2 w-1/2 mt-3">
+
                     <input
                       type="text"
                       id="state"
                       name="state"
                       onChange={handleChange}
                       value={patientDetails?.address?.state}
-                      placeholder="State"
-                      className="block w-full rounded-lg border  bg-gray-300 placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      placeholder="State*"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
+
+
                     {errors.state && (
                       <p className="text-red-500">{errors.state}</p>
                     )}

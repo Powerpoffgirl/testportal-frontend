@@ -1045,7 +1045,7 @@ export default function UserProfile()
             </button>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 }
