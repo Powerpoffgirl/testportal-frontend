@@ -403,7 +403,8 @@ export default function EditPatientForm()
       {
         onOpenModal();
         localStorage.setItem("id", data.data._id);
-        toast.success("Member's form booked");
+        toast.success("Member details updated");
+        navigate("/patientlistuser")
       }
       console.log("DATA from response", data);
     }
@@ -413,37 +414,6 @@ export default function EditPatientForm()
 
   return (
     <>
-      <Modal
-        open={open}
-        onClose={onCloseModal}
-        center
-        doctor={selectedDoctor}
-        styles={{
-          modal: {
-            // Set your custom width here (e.g., '70%')
-            width: isTab ? "80%" : "70%",
-            backgroundColor: "#89CFF0",
-            alignContent: "center",
-          },
-        }}
-      >
-        <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
-          <text
-            className="text-center mt-4 mb-4"
-            style={{
-              fontSize: isTab ? "14px" : "20px",
-              fontWeight: 600,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-            }}
-          >
-            Patient's Details is Saved.
-            <br />
-            Go to Patient's list to book an Appointment.
-          </text>
-        </div>
-      </Modal>
       <ToastContainer />
 
       <div className="flex flex-col -ml-7  lg:flex-row">

@@ -885,6 +885,7 @@ export default function EditUserForm()
                     name="patientName"
                     onChange={handleChange3}
                     placeholder="Select Member"
+                    value={patientDetails?.name}
                   >
                     {patientsList?.map((patient) => (
                       <Select.Option key={patient._id} value={patient._id}>
