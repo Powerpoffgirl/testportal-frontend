@@ -555,6 +555,7 @@ export default function DoctorDetail()
                     About The Doctor
                   </p>
 
+
                   <textarea
                     className="italic text-gray-600"
                     value={doctorDetails?.about}
@@ -624,7 +625,7 @@ export default function DoctorDetail()
                             Slot available for Tommorrow{" "}
                           </p>
                           <p className="flex flex-row justify-between  my-1 mx-2">
-                            <div className="w-1/4 px-2 h-10">
+                            <div className="w-1/3 px-2 h-10">
                               <div
                                 className="rounded-3xl py-1 px-2 mt-2 text-center"
                                 style={{
@@ -641,7 +642,7 @@ export default function DoctorDetail()
                               </div>
                             </div>
 
-                            <div className="w-1/4 px-2 h-10">
+                            <div className="w-1/3 px-2 h-10">
                               <div
                                 className="rounded-3xl py-1 px-2 mt-2 text-center"
                                 style={{
@@ -658,7 +659,7 @@ export default function DoctorDetail()
                               </div>
                             </div>
 
-                            <div className="w-1/4 px-2 h-10">
+                            <div className="w-1/3 px-2 h-10">
                               <div
                                 className="rounded-3xl py-1 px-2 mt-2 text-center"
                                 style={{
@@ -672,21 +673,6 @@ export default function DoctorDetail()
                                 }}
                               >
                                 {doctorDetails?.slots?.[2]?.startTime}
-                              </div>
-                            </div> <div className="w-1/4 px-2 h-10">
-                              <div
-                                className="rounded-3xl py-1 px-2 mt-2 text-center"
-                                style={{
-                                  backgroundColor: doctorDetails?.slots?.[3]
-                                    ?.isBooked
-                                    ? "#4974a5"
-                                    : "#E5E7EB",
-                                  color: doctorDetails?.slots?.[3]?.isBooked
-                                    ? "white"
-                                    : "#1F2937",
-                                }}
-                              >
-                                {doctorDetails?.slots?.[3]?.startTime}
                               </div>
                             </div>
                           </p>
@@ -746,16 +732,16 @@ export default function DoctorDetail()
                       )}
                       <div>
                         {bookingslottoggle && (
-                          <div className="flex flex-col "  >
+                          <div className="flex flex-col"  >
                             <div className=" flex flex-col text-center space-y-2">
-                              <div class="flex flex-row border-2">
+                              <div class="flex flex-row border-2" >
                                 <button
                                   className="text-white text-xs rounded-3xl mr-auto "
                                   onClick={goToPrev}
                                 >
                                   <FaAngleLeft style={{ color: "black" }} />
                                 </button>
-                                <div className="flex flex-row overflow-x-auto mx-2 ">
+                                <div className="flex flex-row overflow-x-auto mx-2 max-w-screen-xxsview md:max-w-screen-xsview xl:max-w-screen-md">
                                   {keys.map((item, index) =>
                                   {
                                     const { year, monthName, day, dayName } =
@@ -798,9 +784,10 @@ export default function DoctorDetail()
                                   if (index === currentTimeIndex)
                                   {
                                     return (
+
                                       <div
                                         key={index}
-                                        className={` w-1/4 px-2  ${marginb} `}
+                                        className={` w-1/3 px-2  ${marginb} `}
                                         disabled={item.isBooked}
                                       >
                                         <div
@@ -823,7 +810,7 @@ export default function DoctorDetail()
                                       >
                                         <div
                                           key={index}
-                                          className={` w-1/4 px-2 ${marginb}`}
+                                          className={` w-1/3 px-2 ${marginb}`}
                                           disabled
                                         >
                                           <div
@@ -843,7 +830,7 @@ export default function DoctorDetail()
                                     return (
                                       <div
                                         key={index}
-                                        className={` w-1/4 px-2  ${marginb}`}
+                                        className={` w-1/3 px-2  ${marginb}`}
                                         onClick={() =>
                                         {
                                           handleTimeClick(index);
@@ -926,7 +913,7 @@ export default function DoctorDetail()
                     class="bg-gray-300 flex flex-row rounded-lg"
                     style={{ maxWidth: "11rem" }}
                   >
-                    <img src={phonelogo} class="pl-5 pr-1"></img>
+                    <img src={phonelogo} alt="phone" class="pl-5 pr-1"></img>
                     <input
                       className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
                       type="number"

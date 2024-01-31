@@ -961,7 +961,7 @@ export default function DoctorList({ searchTerm })
                     class="bg-gray-300 flex flex-row rounded-lg"
                     style={{ maxWidth: "11rem" }}
                   >
-                    <img src={phonelogo} class="pl-5 pr-1"></img>
+                    <img src={phonelogo} alt="mobile" class="pl-5 pr-1"></img>
                     <input
                       className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
                       type="number"
