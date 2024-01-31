@@ -9,6 +9,7 @@ module.exports = {
         'Tabview': '900px', // Custom breakpoint larger than 'md' (768px)
         'xsview': '320px',
         'xxsview': '200px',
+        'xysview': "280px",
         'sview': '400px',
         'nview': '700'
       },

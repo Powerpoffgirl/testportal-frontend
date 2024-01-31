@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Flex, Row, Select } from "antd";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 // import Modal from "react-responsive-modal";
@@ -12,7 +12,8 @@ import { Modal } from "./tableModal";
 import { useReactToPrint } from "react-to-print";
 import './printStyles.css'
 
-export default function DescriptionSummary() {
+export default function DescriptionSummary()
+{
     const componentPDF = useRef();
     const { updateUser, updateUserEmail, updateUserimage } =
         useContext(UserContext);
@@ -20,6 +21,9 @@ export default function DescriptionSummary() {
     let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
     let isLg = useMediaQuery({ query: "(max-width: 1023px)" });
     const navigate = useNavigate();
+    const location = useLocation()
+    console.log("LOCATION", location.state)
+    const appointment = location.state.appointment
     const fileInputRef = useRef(null);
     const baseUrl = process.env.REACT_APP_BASE_URL;
     const [rowNumber, setRowNumber] = useState();
@@ -30,9 +34,11 @@ export default function DescriptionSummary() {
     const [patientsHistory, setPatientsHistory] = useState(null);
     const [patient, setPatient] = useState({});
 
-    const handleFileSelect1 = async (event) => {
+    const handleFileSelect1 = async (event) =>
+    {
         const file = event.target.files[0];
-        if (file) {
+        if (file)
+        {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("patientId");
             const doctorId = localStorage.getItem("doctorId");
@@ -40,7 +46,8 @@ export default function DescriptionSummary() {
             formData.append("patientReport", file);
 
             console.log("FORM DATA", formData);
-            try {
+            try
+            {
                 const response = await fetch(`${baseUrl}/api/v1/doctor/upload_patient_report/${patientId}`, {
                     method: "POST",
                     headers: {
@@ -49,26 +56,32 @@ export default function DescriptionSummary() {
                     body: formData,
                 });
 
-                if (!response.ok) {
+                if (!response.ok)
+                {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
 
                 fileInputRef.current.value = "";
-            } catch (error) {
+            } catch (error)
+            {
                 console.error("Error ", error);
                 toast.error("Error uploading pdf. Please try again.");
             }
         }
     };
 
-    useEffect(() => {
-        const fetchUserDetails = async () => {
-            try {
+    useEffect(() =>
+    {
+        const fetchUserDetails = async () =>
+        {
+            try
+            {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("patientId");
-                if (!token) {
+                if (!token)
+                {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -89,7 +102,8 @@ export default function DescriptionSummary() {
                 setUserDetailsEmail(data?.data.email);
                 setUserDetailsPic(data?.data.doctorPic);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error) {
+            } catch (error)
+            {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -97,11 +111,15 @@ export default function DescriptionSummary() {
     }, []);
 
 
-    useEffect(() => {
-        const fetchPatientDetails = async () => {
-            try {
+    useEffect(() =>
+    {
+        const fetchPatientDetails = async () =>
+        {
+            try
+            {
                 const token = localStorage.getItem("token");
-                if (!token) {
+                if (!token)
+                {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -123,7 +141,8 @@ export default function DescriptionSummary() {
                 setPatientsHistory(data?.data);
                 setPatient(data?.data[0]);
 
-            } catch (error) {
+            } catch (error)
+            {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -150,13 +169,17 @@ export default function DescriptionSummary() {
     const [rowToEdit, setRowToEdit] = useState(null);
 
 
-    useEffect(() => {
-        const fetchTestDetails = async () => {
-            try {
+    useEffect(() =>
+    {
+        const fetchTestDetails = async () =>
+        {
+            try
+            {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token) {
+                if (!token)
+                {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -176,7 +199,8 @@ export default function DescriptionSummary() {
                 console.log("DATA from response", responseData);
 
                 setRows(responseData.data || []);
-            } catch (error) {
+            } catch (error)
+            {
                 console.error("There was an error fetching test details:", error);
             }
         };
@@ -199,7 +223,7 @@ export default function DescriptionSummary() {
                         style={{
                             boxSizing: "border-box",
                             width: "100%",
-                            height: "80vh",
+                            height: "99vh",
                             float: "left",
                             backgroundColor: "white",
                             padding: "20px",
@@ -207,7 +231,7 @@ export default function DescriptionSummary() {
                         }}
                     >
                         <div class=""
-                            ref={componentPDF} 
+                            ref={componentPDF}
                             style={{ marginLeft: "5%", marginRight: "5%" }}
                         >
                             <div class="mb-3  text-3xl"
@@ -287,9 +311,9 @@ export default function DescriptionSummary() {
                                         </p>
                                         <p>
                                             {" "}
-                                            {patient?.patientId?.address?.district}
+                                            {patient?.patientId?.address?.district},
                                             {patient?.patientId?.address?.state},
-                                            {patient?.patientId?.address?.pinCode},{" "}
+                                            {patient?.patientId?.address?.pinCode}
 
                                         </p>
                                     </div>
@@ -298,21 +322,28 @@ export default function DescriptionSummary() {
 
                             <div class=" flex flex-col ">
 
-                                <div className="printContainer overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-xs mx-auto">
-                                    <table className=" divide-y divide-gray-200 ">
+                                <div className="overflow-y-auto h-72  printContainer overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-screen-xysview mx-auto">
+                                    <table className=" divide-y divide-gray-200 border border-grey">
                                         <thead className="bg-[#89CFF0]">
                                             <tr>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Dr. Name</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Date</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Time</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Issues</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Disease</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Medicine Name</th>
-                                                <th className="px-6 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Lab Test</th>
+                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Dr. Name</th>
+                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Date</th>
+                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Time</th>
+                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Issues</th>
+                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Disease</th>
+                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Medicine Name</th>
+                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Lab Test</th>
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {patientsHistory?.map((history, index) => (
+                                            <td className="w-[300px] px-2 whitespace-normal text-sm text-black break-words">{appointment?.doctorId?.name}</td>
+                                            <td className="w-[300px] px-2 whitespace-normal text-sm text-black break-words">{appointment?.appointmentDate?.date}</td>
+                                            <td className="w-[300px] px-2 whitespace-normal text-sm text-black break-words">{appointment?.appointmentDate?.time}</td>
+                                            <td className="w-[300px] px-2 py-4 whitespace-normal text-sm text-black break-words">{appointment?.issues.join(", ")}</td>
+                                            <td className="w-[300px] px-2 py-4 whitespace-normal text-sm text-black break-words">{appointment?.diseases.join(", ")}</td>
+                                            <td className="w-[300px] px-2 py-4 whitespace-normal text-sm text-black break-words">{appointment?.medicineName.join(", ")}</td>
+                                            <td className="w-[300px] px-2 py-4 whitespace-normal text-sm text-black break-words">{appointment?.labTests?.join(", ")}</td>
+                                            {/* {patientsHistory?.map((history, index) => (
                                                 <tr key={index}>
                                                     <td className=" px-6 py-4 whitespace-nowrap text-sm  text-gray-900">{history?.doctorId?.name}</td>
                                                     <td className="px-6 py-4 whitespace-nowrap text-sm text-black ">{history?.appointmentDate?.date}</td>
@@ -333,7 +364,7 @@ export default function DescriptionSummary() {
                                                     // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
                                                     >{history?.labTests?.join(', ')}</td>
                                                 </tr>
-                                            ))}
+                                            ))} */}
                                         </tbody>
                                     </table>
                                 </div>
@@ -343,20 +374,15 @@ export default function DescriptionSummary() {
 
                             </div>
                         </div>
-                        <div  className="flex  flex-col lg:flex-row-reverse mt-5 mb-5 p-3 ">
-
+                        <div className="flex  flex-col lg:flex-row-reverse mt-5 mb-5 ">
                             <button
                                 className=" bg-[#89CFF0] py-1 mb-3 px-8 mx-auto lg:mx-1 rounded-full text-white font-semibold text-xl leading-9 font-lato"
                                 onClick={generatePdf}
-                            // style={{
-                            //   borderRadius: "10px",
-                            //   marginTop: "20px",
-                            // }}
                             >
                                 Download PDF
                             </button>
                             <button
-                                className=" bg-[#89CFF0] py-1 mb-3 px-9 mx-auto lg:mr-2 rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                                className=" bg-[#89CFF0] py-1 mb-3 px-9 mx-auto lg:mr-2 rounded-full text-white font-semibold text-xl leading-9 font-lato "
                             // style={{
                             //   height: "40px",
                             //   width: "100px",

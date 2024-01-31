@@ -10,7 +10,6 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Select } from "antd";
-import { Popconfirm } from "antd";
 
 export default function EditDoctorFormAdmin()
 {

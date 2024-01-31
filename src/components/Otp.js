@@ -400,8 +400,8 @@ const OTP = () =>
               {otp.map((digit, index) => (
                 <input
                   key={index}
+                  type="number"
                   ref={(input) => (otpInputs[index] = input)}
-                  type="text"
                   className="w-10 h-8 mr-1.5  text-lg  border-2 text-black border-gray-400 text-center "
                   maxLength={1}
                   value={digit}

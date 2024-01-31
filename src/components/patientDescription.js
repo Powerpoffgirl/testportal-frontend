@@ -19,9 +19,10 @@ export default function PatientDescription()
 {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
-  const location = useLocation;
+  const location = useLocation();
+  // console.log("APPOINTMENT", location.state.appointment)
   const patientId = localStorage.getItem("patientId");
-
+  // const appointment = location.state.appointment
   console.log("patientId", patientId);
   const componentPDF = useRef();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -37,7 +38,7 @@ export default function PatientDescription()
 
   const [isHovered, setIsHovered] = useState(false);
   const [patientsHistory, setPatientsHistory] = useState(null);
-
+  const [appointment, setAppointment] = useState({})
   const [open, setOpen] = useState(false);
   const [patientDetails, setPatientDetails] = useState({
     medicineName: [],
@@ -539,7 +540,7 @@ export default function PatientDescription()
       // setModalOpen(true);
       localStorage.setItem("appointmentId", appointmentId);
       toast.success("Diagnosis saved.");
-
+      setAppointment(data.data)
     }
     console.log("DATA from response", data);
   };
@@ -1059,27 +1060,11 @@ export default function PatientDescription()
               </button>
               <button
                 className="w-60 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
-                onClick={() => navigate(`/descriptionsummary`)}
+                onClick={() => navigate(`/descriptionsummary`, { state: { appointment: patientsHistory[0] } })}
 
               >
                 Go to Patient Report
               </button>
-              {/* <button
-                className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
-              
-              >
-                <label htmlFor="files">Send To SMS</label>
-              </button>
-              <p className="block text-black text-lg font-semibold">
-                <input
-                  id="files"
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  accept="application/pdf"
-                  onChange={handleFileSelect1}
-                />
-              </p> */}
             </div>
           </div>
         </div>
