@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Flex, Row, Select } from "antd";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import Modal from "react-responsive-modal";
@@ -16,6 +16,7 @@ export default function BillingPage({ name, contactNo, gender, age })
   const componentPDF = useRef();
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
+
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   let xsview = useMediaQuery({ query: "(max-width: 375px)" });
   const navigate = useNavigate();
@@ -597,62 +598,6 @@ export default function BillingPage({ name, contactNo, gender, age })
                 onChange={(e) => setAppointmentDate(e.target.value)}
               />
             </div>
-            {/* <div style={{ display: "flex", flexDirection: 'row', gap: '10px' }}>
-              <button
-                onClick={generatePdf}
-                style={{
-                  height: "40px",
-                  width: "100%",
-                  backgroundColor: "#89CFF0",
-                  borderRadius: "10px",
-                  marginTop: "20px",
-                }}
-              >
-                Download PDF
-              </button>
-
-              <button
-
-                style={{
-                  height: "40px",
-                  width: "100%",
-                  backgroundColor: "#89CFF0",
-                  borderRadius: "10px",
-                  marginTop: "20px",
-                }}
-              >
-                <label htmlFor="files">Send To SMS</label>
-              </button>
-              <p className="block text-black text-lg font-semibold ">
-                <input
-                  id="files"
-                  type="file"
-                  ref={fileInputRef}
-                  style={{ display: "none" }}
-                  accept="application/pdf"
-                  onChange={handleFileSelect}
-                />
-              </p>
-            </div> */}
-
-            {/* <div style={{ marginTop: "15px" }}>
-              <p style={{ color: "gray" }}>Summary</p>
-            </div> */}
-
-            {/* <div style={{ marginTop: "15px" }}>
-              <p style={{ color: "gray" }}>Sample collector</p>
-              <p style={{ color: "black" }}>-</p>
-            </div>
-
-            <div style={{ marginTop: "15px" }}>
-              <p style={{ color: "gray" }}>Collected At</p>
-              <p style={{ color: "black" }}>-</p>
-            </div>
-
-            <div style={{ marginTop: "15px" }}>
-              <p style={{ color: "gray" }}>Organisation</p>
-              <p style={{ color: "black" }}>Self</p>
-            </div> */}
           </div>
 
           {/* --------------------right side-------------------- */}
@@ -995,7 +940,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                     padding: "2px",
                     color: 'white'
                   }}
-                  onClick={() => navigate(`/billingprice`)}
+                  onClick={() => navigate(`/billingprice`, { state: { reportDate: appointmentDate } })}
                 >
                   Go To Billing
                 </button>
@@ -1014,21 +959,6 @@ export default function BillingPage({ name, contactNo, gender, age })
                 >
                   Lab Report
                 </button>
-                {/* <button
-                  class="mx-4"
-                  style={{
-                    height: "40px",
-                    width: "120px",
-                    backgroundColor: "#89CFF0",
-                    borderRadius: "20px",
-                    marginTop: "20px",
-                    padding: "2px",
-                    color: 'white'
-                  }}
-                  onClick={handleSave}
-                >
-                  Confirm
-                </button> */}
               </div>
             </div>
           </div>

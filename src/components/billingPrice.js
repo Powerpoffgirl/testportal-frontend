@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useMediaQuery } from "react-responsive";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { Flex, Row, Select } from "antd";
 import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 // import Modal from "react-responsive-modal";
@@ -9,22 +9,80 @@ import { ToastContainer, toast } from "react-toastify";
 import "./Table.css";
 import { Table } from "./table";
 import { Modal } from "./tableModal";
+import { useReactToPrint } from "react-to-print";
 
 export default function BillingPrice()
 {
-
+    const componentPDF = useRef();
     const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
     let isTab1 = useMediaQuery({ query: "(max-width: 425px)" });
+    let isLg = useMediaQuery({ query: "(max-width: 1023px)" });
     const navigate = useNavigate()
+    const location = useLocation()
+    console.log("LOCATION============", location)
+    const reportDate = location.state.reportDate
+    console.log("REPORT DATE", reportDate)
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [rowNumber, setRowNumber] = useState();
     const [userDetailsName, setUserDetailsName] = useState();
     const [userDetailsEmail, setUserDetailsEmail] = useState();
     const [userDetailsPic, setUserDetailsPic] = useState();
+    const fileInputRef = useRef(null);
+    const generatePdf = useReactToPrint({
+        content: () => componentPDF.current,
+        documentTitle: "userReport",
 
+        onBeforeGetContent: () =>
+        {
+            // This is called before getting the content for printing
+            // You can enable the "Send To SMS" button here
+            const sendToSMSButton = document.getElementById('sendToSMSButton');
+            sendToSMSButton.disabled = false;
+        },
+        // onAfterPrint: () => alert("Data saved in PDF")
+    });
 
+    const handleFileSelect = async (event) =>
+    {
+        const file = event.target.files[0];
+        if (file)
+        {
+            const token = localStorage.getItem("token");
+            const patientId = localStorage.getItem("selectedPatientId");
+            const doctorId = localStorage.getItem("doctorId");
+            const formData = new FormData();
+            formData.append("patientReport", file);
 
+            console.log("FORM DATA", formData);
+            try
+            {
+                const response = await fetch(
+                    `${baseUrl}/api/v1/doctor/upload_report/${patientId}`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "x-auth-token": token,
+                        },
+                        body: formData,
+                    }
+                );
+
+                if (!response.ok)
+                {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+
+                fileInputRef.current.value = "";
+            } catch (error)
+            {
+                console.error("Error ", error);
+                toast.error("Error uploading pdf. Please try again.");
+            }
+        }
+    };
     useEffect(() =>
     {
         const fetchUserDetails = async () =>
@@ -217,10 +275,15 @@ export default function BillingPrice()
                 });
 
                 const responseData = await response.json();
-                console.log("DATA from response", responseData);
+                console.log("DATA from response", responseData.data.testAsked);
 
+                const filteredData = responseData.data.testAsked.filter((item) =>
+                {
+                    return item?.date?.includes(reportDate);
+                });
 
-                setRows(responseData?.data?.testAsked || []);
+                console.log("FILTERED DATA", filteredData);
+                setRows(filteredData);
 
             } catch (error)
             {
@@ -240,75 +303,201 @@ export default function BillingPrice()
 
     return (
         <>
-            <div style={{ margin: 0, minHeight: "100vh", width: "100%" }}>
+            <div style={{ margin: 0, minHeight: "100vh", width: "100%" }} class="md:max-w-[440px] lg:max-w-2xl xl:max-w-full 2xl:max-w-full">
                 <div className="MainContainer" style={{ width: "100%" }}>
                     <div
                         className="Right_side"
                         style={{
                             boxSizing: "border-box",
                             width: "100%",
-                            height: "75vh",
+                            height: "80vh",
                             float: "left",
                             backgroundColor: "white",
                             padding: "20px",
                             borderRadius: 20,
                         }}
                     >
-                        <table className="text-sm text-left text-gray-500 w-full">
-                            <thead className="text-xs text-gray-700 uppercase bg-gray-50">
-                                <tr>
-                                    <th scope="col" className=" text-left text-black text-sm font-semibold ">
-                                        Test/package
-                                    </th>
-                                    <th scope="col" className="py-3 text-left text-black text-sm font-semibold ">
-                                        Test Code
-                                    </th>
-                                    <th scope="col" className=" py-3 text-left text-black text-sm font-semibold ">
-                                        Price
-                                    </th>
+                        <div
+                            ref={componentPDF}
+                            style={{ marginLeft: "5%", marginRight: "5%" }}
+                        >
+                            <div class="mb-3  text-3xl "
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    fontWeight: 600,
+                                    marginTop: "10px",
+                                }}
+                            >
+                                Lab Patient Report
+                            </div>
+                            <div class=""
+                                style={{
+                                    display: "flex",
+                                    flexDirection: "row",
+                                    marginBottom: "20px",
+                                }}
+                            >
+                                <div class=""
+                                    style={{
+                                        flex: "1",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        marginRight: "20px",
+                                    }}
+                                >
+                                    <p style={{ fontWeight: 500, textTransform: 'capitalize' }}>
+                                        Date: {reportDate?.split('-').reverse().join('-')}
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {rows.map((row, idx) =>
-                                {
-                                    const statusText = row.status
-                                        ? row.status.charAt(0).toUpperCase() + row.status.slice(1)
-                                        : '';
+                                    </p>
+                                    <p style={{ fontWeight: 500, textTransform: 'capitalize' }}>
+                                        Name: {localStorage?.getItem("name")}
+                                    </p>
 
-                                    return (
-                                        <tr key={idx}>
-                                            <td style={{ textAlign: 'left', color: 'black' }}>{row?.id?.testName}</td>
-                                            <td style={{ textAlign: 'left', color: 'black' }}>{row?.id?.testCode}</td>
-                                            <td style={{ textAlign: 'left', color: 'black' }}>{row?.id?.costOfDiagnosticTest}</td>
+                                    <div
+                                        style={{
+                                            display: "flex",
+                                            flexDirection: "row",
+                                            gap: "10px",
+
+                                        }}
+                                    >
+                                        <p style={{ color: "black", fontWeight: 500 }}>Ref By: </p>
+                                        <p style={{ color: "black", fontWeight: 500, textTransform: 'capitalize' }}>
+                                            {localStorage.getItem("ref")}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="flex flex-col"
+                                    style={{
+                                        display: isLg ? "none" : "",
+                                    }}
+                                >
+                                    <div clss="ml-auto">
+                                        <p style={{ fontWeight: 500 }}>Home Collection</p>
+                                        <p>
+                                            {localStorage?.getItem("houseNo")},{" "}
+                                            {localStorage?.getItem("floor")},{" "}
+                                            {localStorage?.getItem("block")},
+                                        </p>
+                                        <p>
+                                            {" "}
+                                            {localStorage?.getItem("area")},{" "}
+                                            {localStorage?.getItem("district")},{" "}
+                                            {localStorage?.getItem("pincode")}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-xs mx-auto ">
+                                <table className="text-sm rtl:text-right text-black text-left   mx-auto">
+                                    <thead style={{ backgroundColor: "#89CFF0" }}
+                                        className="text-xs text-gray-700 text-left uppercase overflow-x-auto "
+                                    >
+                                        <tr>
+                                            <th
+                                                style={{ textAlign: "left" }}
+                                                scope="col"
+                                                className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
+                                            >
+                                                Test/package
+                                            </th>
+                                            <th
+                                                style={{ textAlign: "left" }}
+                                                scope="col"
+                                                className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
+
+                                            >
+                                                Test Code
+                                            </th>
+                                            <th
+                                                style={{ textAlign: "left" }}
+                                                scope="col"
+                                                className="px-3 py-3 text-white text-sm font-semibold lg:px-6"
+
+                                            >
+                                                Price
+                                            </th>
 
                                         </tr>
-                                    );
-                                })}
-                            </tbody>
-                        </table>
+                                    </thead>
+                                    <tbody>
+                                        {rows.map((row, idx) =>
+                                        {
+                                            const statusText = row.status
+                                                ? row.status.charAt(0).toUpperCase() + row.status.slice(1)
+                                                : '';
 
-                        <div>
-                            <p>Total Price : {localStorage.getItem("totalPrice")}</p>
+                                            return (
+                                                <tr key={idx}>
+                                                    <td className="px-3 lg:px-6 "
+                                                        style={{ textAlign: 'left', color: 'black' }}
+                                                    >{row?.id?.testName}</td>
+                                                    <td className="px-3 lg:px-6 " style={{ textAlign: 'left', color: 'black' }}>{row?.id?.testCode}</td>
+                                                    <td className="px-3 lg:px-6 " style={{ textAlign: 'left', color: 'black' }}>{row?.id?.costOfDiagnosticTest}</td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
+
+                                <div>
+                                    <p>Total Price : {localStorage.getItem("totalPrice")}</p>
+                                </div>
+                            </div>
                         </div>
 
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginTop: '100px' }}>
+                        <div class=" justify-content-center flex flex-col sm:flex-row"
+                            style={{
+                                gap: "10px",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginTop: "20px",
+                            }}
+                        >
                             <button
-                                class="mx-4"
+                                onClick={generatePdf}
                                 style={{
+                                    height: "40px",
+                                    width: "140px",
                                     backgroundColor: "#89CFF0",
-                                    borderRadius: "23px",
-                                    padding: "8px 15px 8px 15px",
+                                    borderRadius: "20px",
+                                    marginTop: "20px",
+                                    padding: "2px",
                                     color: "white",
-
                                 }}
-                                onClick={() => navigate(`/summary`)}
                             >
-                                Go To Summary
+                                Download PDF
                             </button>
+
+                            <button
+
+                                style={{
+                                    height: "40px",
+                                    width: "120px",
+                                    backgroundColor: "#89CFF0",
+                                    borderRadius: "20px",
+                                    marginTop: "20px",
+                                    padding: "2px",
+                                }}
+                            >
+                                <label htmlFor="files" id="sendToSMSButton" disabled style={{ color: "white" }}>
+                                    Send To SMS
+                                </label>
+                            </button>
+                            <p className="block text-black text-lg font-semibold ">
+                                <input
+                                    id="files"
+                                    type="file"
+                                    ref={fileInputRef}
+                                    style={{ display: "none" }}
+                                    accept="application/pdf"
+                                    onChange={handleFileSelect}
+                                />
+                            </p>
                         </div>
-
-
                     </div>
                 </div>
             </div>

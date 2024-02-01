@@ -23,7 +23,7 @@ export default function Summary()
     const [labReports, setLabReports] = useState()
     const location = useLocation()
     console.log("LOCATION============", location)
-    const reportDate = location.state.reportDate
+    const reportDate = location?.state?.reportDate
 
     console.log("REPORT DATE BILLING PAGE", reportDate)
 
