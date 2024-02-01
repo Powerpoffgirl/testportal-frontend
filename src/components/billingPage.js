@@ -258,7 +258,7 @@ export default function BillingPage({ name, contactNo, gender, age })
 
   // State to manage the date
 
-  const [appointmentDate, setAppointmentDate] = useState(dateString);
+  // const [appointmentDate, setAppointmentDate] = useState(dateString);
 
   const Toggle = (e) =>
   {
@@ -501,6 +501,24 @@ export default function BillingPage({ name, contactNo, gender, age })
   console.log("row =====", tableData);
   console.log("patient Report ====", patientReport);
 
+  const [appointmentDate, setAppointmentDate] = useState(getCurrentDate());
+
+  // Function to get the current date in the format 'YYYY-MM-DD'
+  function getCurrentDate()
+  {
+    const currentDate = new Date();
+    const year = currentDate.getFullYear();
+    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+    const day = String(currentDate.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  // useEffect to set the initial date when the component mounts
+  useEffect(() =>
+  {
+    setAppointmentDate(getCurrentDate());
+  }, []);
+
   return (
     <>
       <div class="flex" ref={componentPDF}>
@@ -572,7 +590,7 @@ export default function BillingPage({ name, contactNo, gender, age })
             <hr />
 
             <div>
-              <p style={{ color: "gray", marginTop: "15px" }}>Billing Date</p>
+              <p style={{ color: 'gray', marginTop: '15px' }}>Billing Date</p>
               <input
                 className="px-2 border h-10 rounded-lg w-50"
                 type="date"
