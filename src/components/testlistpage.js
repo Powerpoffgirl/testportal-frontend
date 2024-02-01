@@ -207,7 +207,7 @@ export default function TestListPage()
             });
         }
         setRowToEdit(null);
-        // window.location.reload();
+        window.location.reload();
     };
 
 

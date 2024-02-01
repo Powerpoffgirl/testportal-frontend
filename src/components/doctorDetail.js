@@ -65,6 +65,7 @@ export default function DoctorDetail()
   const [resendClicked, setResendClicked] = useState(false);
   const [seconds, setSeconds] = useState(90);
   const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
+  const [firstTime, setFirstTime] = useState(true);
   const [newSlot, setNewSlot] = useState({
     date: "",
     time: ""
@@ -449,6 +450,26 @@ export default function DoctorDetail()
 
     showSlot();
   };
+
+  useEffect(() =>
+  {
+    if (resendClicked || firstTime)
+    {
+      const intervalId = setInterval(() =>
+      {
+        if (seconds > 0)
+        {
+          setSeconds((prevSeconds) => prevSeconds - 1);
+        } else
+        {
+          setFirstTime(false);
+          setSeconds(90);
+          setResendClicked(false);
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [seconds, resendClicked, firstTime]);
 
   const formatTime = (time) =>
   {

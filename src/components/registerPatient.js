@@ -125,10 +125,6 @@ export default function PatientForm()
           value: doctor.name,   // Change this to the property that contains the doctor's unique identifier
         }));
         setRef((prevRef) => [...prevRef, ...doctorNames]);
-
-
-
-
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);
@@ -591,6 +587,10 @@ export default function PatientForm()
     } else if (!newPatientDetails.address?.state)
     {
       toast.error("Please write state");
+    }
+    else if (!newPatientDetails?.refBy)
+    {
+      toast.error("Please Select Ref By");
     } else
     {
       const doctorId = localStorage.getItem("doctorId");
@@ -1010,7 +1010,7 @@ export default function PatientForm()
               {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
           </div>
-          <div className="mt-3 flex flex-col w-full">
+          {/* <div className="mt-3 flex flex-col w-full">
             <label
               for="degree"
               className="block text-black text-lg font-semibold"
@@ -1020,8 +1020,8 @@ export default function PatientForm()
             <Space direction="vertical">
               <DatePicker onChange={onChange} />
             </Space>
-            {/* {errors.degree && <p className="text-red-500">{errors.degree}</p>} */}
-          </div>
+          
+          </div> */}
 
           {
             showQrCode && (<p class="mx-auto ">

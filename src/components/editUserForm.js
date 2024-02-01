@@ -630,48 +630,56 @@ export default function EditUserForm()
 
         // -------------------------CREATE APPOINTMENT FOR NEW USER-------------------
 
-        const appointmentResponse = await fetch(
-          `${baseUrl}/api/v1/user/create_appointment`,
-          {
-            method: "post",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token,
-            },
-            body: JSON.stringify(appointmentDetails),
-          }
-        );
-        const appointmentData = await appointmentResponse.json();
-
-        if (appointmentData.success === true)
+        if (appointmentDetails.patientId === null || appointmentDetails.patientId === "undefined")
         {
-
-          // -------------------------SLOT BOOKED FOR NEW USER-------------------
-
-          const response = await fetch(
-            `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
+          toast.error("Please select a member.")
+        }
+        else
+        {
+          const appointmentResponse = await fetch(
+            `${baseUrl}/api/v1/user/create_appointment`,
             {
               method: "post",
               headers: {
                 "Content-Type": "application/json",
+                "x-auth-token": token,
               },
-              body: JSON.stringify({
-                date: selectedDate,
-                time: selectedTime
-              }),
+              body: JSON.stringify(appointmentDetails),
             }
           );
-          const data = await response.json()
-          if (data.success === true)
+          const appointmentData = await appointmentResponse.json();
+
+          if (appointmentData.success === true)
           {
-            navigate("/appointmentlistuser")
-            toast.success("Appointment booked successfully")
-          }
-          else
-          {
-            toast.error("Slot not available")
+
+            // -------------------------SLOT BOOKED FOR NEW USER-------------------
+
+            const response = await fetch(
+              `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
+              {
+                method: "post",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  date: selectedDate,
+                  time: selectedTime
+                }),
+              }
+            );
+            const data = await response.json()
+            if (data.success === true)
+            {
+              navigate("/appointmentlistuser")
+              toast.success("Appointment booked successfully")
+            }
+            else
+            {
+              toast.error("Slot not available")
+            }
           }
         }
+
       }
       else
       {
@@ -792,48 +800,56 @@ export default function EditUserForm()
           {
             // -------------------------CREATE APPOINTMENT FOR OLD USER-------------------
 
-            const appointmentResponse = await fetch(
-              `${baseUrl}/api/v1/user/create_appointment`,
-              {
-                method: "post",
-                headers: {
-                  "Content-Type": "application/json",
-                  "x-auth-token": token,
-                },
-                body: JSON.stringify(appointmentDetails),
-              }
-            );
-            const appointmentData = await appointmentResponse.json();
-
-            if (appointmentData.success === true)
+            if (appointmentDetails.patientId === null || appointmentDetails.patientId === "undefined")
             {
-              // -------------------------SLOT BOOKED FOR OLD USER-------------------
-
-              const response = await fetch(
-                `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
+              toast.error("Please select a member.")
+            }
+            else
+            {
+              const appointmentResponse = await fetch(
+                `${baseUrl}/api/v1/user/create_appointment`,
                 {
                   method: "post",
                   headers: {
                     "Content-Type": "application/json",
+                    "x-auth-token": token,
                   },
-                  body: JSON.stringify({
-                    date: selectedDate,
-                    time: selectedTime
-                  }),
+                  body: JSON.stringify(appointmentDetails),
                 }
               );
-              const data = await response.json()
-              if (data.success === true)
+              const appointmentData = await appointmentResponse.json();
+
+              if (appointmentData.success === true)
               {
-                navigate("/appointmentlistuser")
-                toast.success("Appointment booked successfully")
-              }
-              else
-              {
-                navigate("/doctorlistuser")
-                toast.error("Slot not available")
+                // -------------------------SLOT BOOKED FOR OLD USER-------------------
+
+                const response = await fetch(
+                  `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
+                  {
+                    method: "post",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      date: selectedDate,
+                      time: selectedTime
+                    }),
+                  }
+                );
+                const data = await response.json()
+                if (data.success === true)
+                {
+                  navigate("/appointmentlistuser")
+                  toast.success("Appointment booked successfully")
+                }
+                else
+                {
+                  navigate("/doctorlistuser")
+                  toast.error("Slot not available")
+                }
               }
             }
+
           }
         }
       }
