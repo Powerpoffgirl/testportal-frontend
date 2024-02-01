@@ -347,7 +347,7 @@ export default function BillingPage({ name, contactNo, gender, age })
       const patientId = localStorage.getItem("selectedPatientId");
       console.log("consoling value", patientReport);
 
-      if (patientReport.testAsked.length > 0)
+      if (patientReport.testAsked.length > 1)
       {
         patientReport.testAsked.pop()
       }
