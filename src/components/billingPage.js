@@ -36,6 +36,8 @@ export default function BillingPage({ name, contactNo, gender, age })
   const dateString = localStorage.getItem("dateString");
   const [userDetailsPic, setUserDetailsPic] = useState();
   // const [index, setIndex] = useState(0);
+  const [appointmentDate, setAppointmentDate] = useState("");
+
   const [patientReport, setPatientReport] = useState({
     testAsked: [],
     // patientId: "",
@@ -252,9 +254,9 @@ export default function BillingPage({ name, contactNo, gender, age })
   const formattedDate =
     currentDate.getFullYear() +
     "-" +
-    ("0" + (currentDate.getMonth() + 1)).slice(-2) +
+    ("0" + (currentDate.getMonth() + 1))?.slice(-2) +
     "-" +
-    ("0" + currentDate.getDate()).slice(-2);
+    ("0" + currentDate.getDate())?.slice(-2);
 
   // State to manage the date
 
@@ -370,7 +372,7 @@ export default function BillingPage({ name, contactNo, gender, age })
       console.error("There was an error verifying the OTP:", error);
     }
 
-    navigate(`/summary`, { state: { reportDate: dateString } })
+    navigate(`/summary`, { state: { reportDate: appointmentDate } })
   };
 
   useEffect(() =>
@@ -501,7 +503,6 @@ export default function BillingPage({ name, contactNo, gender, age })
   console.log("row =====", tableData);
   console.log("patient Report ====", patientReport);
 
-  const [appointmentDate, setAppointmentDate] = useState(getCurrentDate());
 
   // Function to get the current date in the format 'YYYY-MM-DD'
   function getCurrentDate()
@@ -513,11 +514,7 @@ export default function BillingPage({ name, contactNo, gender, age })
     return `${year}-${month}-${day}`;
   }
 
-  // useEffect to set the initial date when the component mounts
-  useEffect(() =>
-  {
-    setAppointmentDate(getCurrentDate());
-  }, []);
+  console.log("APPOINTMENT DATE", appointmentDate)
 
   return (
     <>
@@ -975,7 +972,7 @@ export default function BillingPage({ name, contactNo, gender, age })
                           {row?.id?.bioRefInterval}
                         </td>
                         <td className="px-6 py-4">
-                          {row.date.slice(0, 10).split('-').reverse().join('-')}
+                          {row?.date?.slice(0, 10).split('-').reverse().join('-')}
                         </td>
                       </tr>
                     ))}
