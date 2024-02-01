@@ -28,6 +28,7 @@ export default function BillingPrice()
     const [userDetailsName, setUserDetailsName] = useState();
     const [userDetailsEmail, setUserDetailsEmail] = useState();
     const [userDetailsPic, setUserDetailsPic] = useState();
+    const [totalPrice, setTotalPrice] = useState(0)
     const fileInputRef = useRef(null);
     const generatePdf = useReactToPrint({
         content: () => componentPDF.current,
@@ -281,6 +282,13 @@ export default function BillingPrice()
                 {
                     return item?.date?.includes(reportDate);
                 });
+                const amount = filteredData.reduce((acc, curr) =>
+                {
+                    return acc + (curr?.id?.costOfDiagnosticTest || 0); // Use `0` as a fallback in case `curr.id.costOfDiagnosticTest` is undefined
+                }, 0);
+
+                console.log("Total Amount:", amount);
+                setTotalPrice(amount)
 
                 console.log("FILTERED DATA", filteredData);
                 setRows(filteredData);
@@ -444,7 +452,7 @@ export default function BillingPrice()
                                 </table>
 
                                 <div>
-                                    <p>Total Price : {localStorage.getItem("totalPrice")}</p>
+                                    <p>Total Price : {totalPrice}</p>
                                 </div>
                             </div>
                         </div>

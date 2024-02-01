@@ -20,12 +20,9 @@ export default function Summary()
     const [userDetailsEmail, setUserDetailsEmail] = useState();
     const [userDetailsPic, setUserDetailsPic] = useState();
     const [outRange, setOutRange] = useState(false);
-    const [labReports, setLabReports] = useState()
     const location = useLocation()
     console.log("LOCATION============", location)
-    const reportDate = location?.state?.reportDate
-
-    console.log("REPORT DATE BILLING PAGE", reportDate)
+    const reportDate = location.state.reportDate
 
     const handleFileSelect = async (event) =>
     {
@@ -151,10 +148,13 @@ export default function Summary()
 
                 const responseData = await response.json();
                 console.log("DATA from response", responseData.data.testAsked);
-
-                const filteredData = responseData.data.testAsked.filter((item) =>
+                const filteredData = responseData?.data?.testAsked?.filter((item) =>
                 {
-                    return item?.date?.includes(reportDate);
+                    console.log(item?.date?.slice(0, 10), "DATE &&", reportDate);
+                    if (item?.date?.slice(0, 10) === reportDate)
+                    {
+                        return item;
+                    }
                 });
 
                 console.log("FILTERED DATA", filteredData);
@@ -224,7 +224,7 @@ export default function Summary()
                                     }}
                                 >
                                     <p style={{ fontWeight: 500, textTransform: 'capitalize' }}>
-                                        Date: {reportDate?.split('-').reverse().join('-')}
+                                        Date: {reportDate.split('-').reverse().join('-')}
 
                                     </p>
                                     <p style={{ fontWeight: 500, textTransform: 'capitalize' }}>
