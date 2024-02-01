@@ -125,10 +125,6 @@ export default function PatientForm()
           value: doctor.name,   // Change this to the property that contains the doctor's unique identifier
         }));
         setRef((prevRef) => [...prevRef, ...doctorNames]);
-
-
-
-
       } catch (error)
       {
         console.error("There was an error verifying the OTP:", error);
