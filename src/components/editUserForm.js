@@ -630,7 +630,7 @@ export default function EditUserForm()
 
         // -------------------------CREATE APPOINTMENT FOR NEW USER-------------------
 
-        if (appointmentDetails.patientId === null)
+        if (appointmentDetails.patientId === null || appointmentDetails.patientId === "undefined")
         {
           toast.error("Please select a member.")
         }
@@ -800,7 +800,7 @@ export default function EditUserForm()
           {
             // -------------------------CREATE APPOINTMENT FOR OLD USER-------------------
 
-            if (appointmentDetails.patientId === null)
+            if (appointmentDetails.patientId === null || appointmentDetails.patientId === "undefined")
             {
               toast.error("Please select a member.")
             }
