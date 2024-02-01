@@ -1,13 +1,59 @@
-/* printStyles.css */
+/* printStyles.css
 @media print {
     .printContainer {
         max-width: max-content;
     }
-    .address{
-        display:'block'
+
+    .address {
+        display: 'block'
     }
+
     @page {
         size: A4 landscape;
-       
+
+    }
+
+    .printContainer1 {
+        max-width: max-content;
+
+        @page {
+            size: A4 portrait;
+        }
+    }
+
+    .address {
+        display: 'block'
+    }
+
+} */
+
+
+/* Styles for print */
+@media print {
+
+    /* Landscape view for .printContainer */
+    .printContainer {
+        max-width: max-content;
+    }
+
+    .address {
+        display: block;
+    }
+
+    @page {
+        size: A4 landscape;
+    }
+
+    /* Portrait view for .printContainer1 */
+    .printContainer1 {
+        max-width: max-content;
+    }
+
+    .address {
+        display: block;
+    }
+
+    @page {
+        size: A4 portrait;
     }
 }

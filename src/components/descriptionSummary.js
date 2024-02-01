@@ -12,8 +12,7 @@ import { Modal } from "./tableModal";
 import { useReactToPrint } from "react-to-print";
 import './printStyles.css'
 
-export default function DescriptionSummary()
-{
+export default function DescriptionSummary() {
     const componentPDF = useRef();
     const { updateUser, updateUserEmail, updateUserimage } =
         useContext(UserContext);
@@ -34,11 +33,9 @@ export default function DescriptionSummary()
     const [patientsHistory, setPatientsHistory] = useState(null);
     const [patient, setPatient] = useState({});
 
-    const handleFileSelect1 = async (event) =>
-    {
+    const handleFileSelect1 = async (event) => {
         const file = event.target.files[0];
-        if (file)
-        {
+        if (file) {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("patientId");
             const doctorId = localStorage.getItem("doctorId");
@@ -46,8 +43,7 @@ export default function DescriptionSummary()
             formData.append("patientReport", file);
 
             console.log("FORM DATA", formData);
-            try
-            {
+            try {
                 const response = await fetch(`${baseUrl}/api/v1/doctor/upload_patient_report/${patientId}`, {
                     method: "POST",
                     headers: {
@@ -56,32 +52,26 @@ export default function DescriptionSummary()
                     body: formData,
                 });
 
-                if (!response.ok)
-                {
+                if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
 
                 fileInputRef.current.value = "";
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("Error ", error);
                 toast.error("Error uploading pdf. Please try again.");
             }
         }
     };
 
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -102,8 +92,7 @@ export default function DescriptionSummary()
                 setUserDetailsEmail(data?.data.email);
                 setUserDetailsPic(data?.data.doctorPic);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -111,15 +100,11 @@ export default function DescriptionSummary()
     }, []);
 
 
-    useEffect(() =>
-    {
-        const fetchPatientDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchPatientDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -141,8 +126,7 @@ export default function DescriptionSummary()
                 setPatientsHistory(data?.data);
                 setPatient(data?.data[0]);
 
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -169,17 +153,13 @@ export default function DescriptionSummary()
     const [rowToEdit, setRowToEdit] = useState(null);
 
 
-    useEffect(() =>
-    {
-        const fetchTestDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchTestDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -199,8 +179,7 @@ export default function DescriptionSummary()
                 console.log("DATA from response", responseData);
 
                 setRows(responseData.data || []);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error fetching test details:", error);
             }
         };
@@ -297,8 +276,6 @@ export default function DescriptionSummary()
                                     style={{
                                         flex: "1",
                                         display: isLg ? "none" : "",
-                                        // flexDirection: "column",
-                                        // marginLeft: "auto",
                                     }}
                                 >
                                     <div class="ml-auto">
@@ -323,7 +300,7 @@ export default function DescriptionSummary()
                             <div class=" flex flex-col ">
 
                                 <div className="overflow-y-auto h-72  printContainer overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-screen-xysview mx-auto">
-                                    <table className=" divide-y divide-gray-200 border border-grey">
+                                    <table className=" divide-y divide-gray-200 border border-[#89CFF0]">
                                         <thead className="bg-[#89CFF0]">
                                             <tr>
                                                 <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Dr. Name</th>
