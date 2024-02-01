@@ -407,6 +407,8 @@ export default function AppointmentListAdmin({ searchTerm }) {
           </div> */}
         </div>
       </Modal>
+
+
       <div className="flex flex-col">
         {filteredAppointmentList?.length > 0 ? (
           filteredAppointmentList?.map((appointment) => (
@@ -423,12 +425,15 @@ export default function AppointmentListAdmin({ searchTerm }) {
                       alt={appointment?.doctorId?.doctorPic.name}
                     />
                   ) : (
-                    <AccountCircleIcon
-                      style={{
-                        fontSize: isTab ? "50px" : "90px",
-                        color: "#B1DAED",
-                      }}
-                    />
+                    <>
+                      <AccountCircleIcon
+                        style={{
+                          fontSize: "90px",
+                          color: "#B1DAED",
+                        }}
+                      />
+
+                    </>
                   )}
                   <div class="flex flex-row">
                     <div class="flex lg:flex-row flex-col ">
