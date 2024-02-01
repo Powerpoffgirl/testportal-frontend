@@ -1010,7 +1010,7 @@ export default function PatientForm()
               {errors.degree && <p className="text-red-500">{errors.degree}</p>}
             </div>
           </div>
-          {/* <div className="mt-3 flex flex-col w-full">
+          <div className="mt-3 flex flex-col w-full">
             <label
               for="degree"
               className="block text-black text-lg font-semibold"
@@ -1020,8 +1020,8 @@ export default function PatientForm()
             <Space direction="vertical">
               <DatePicker onChange={onChange} />
             </Space>
-          
-          </div> */}
+
+          </div>
 
           {
             showQrCode && (<p class="mx-auto ">
