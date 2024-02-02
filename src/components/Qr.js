@@ -5,8 +5,7 @@ import { useMediaQuery } from "react-responsive";
 import AdminSidebar from "./adminSidebar";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
-export default function Qr()
-{
+export default function Qr() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL
   const [qrCodeUrl, setQrCodeUrl] = useState("");
@@ -16,15 +15,11 @@ export default function Qr()
   const id = localStorage.getItem('id')
   const token = localStorage.getItem('token')
 
-  useEffect(() =>
-  {
-    const getQRCode = async () =>
-    {
+  useEffect(() => {
+    const getQRCode = async () => {
 
-      const fetchData = async () =>
-      {
-        try
-        {
+      const fetchData = async () => {
+        try {
           const response = await fetch(`${baseUrl}/api/v1/admin/get_doctor/${id}`, {
             method: "GET",
             headers: {
@@ -35,8 +30,7 @@ export default function Qr()
           setUserDetails(data.data);
           console.log("registered data", userDetails)
           console.log("address", userDetails.address.houseNo)
-        } catch (error)
-        {
+        } catch (error) {
           console.error('Error:', error);
         }
       };
@@ -44,12 +38,10 @@ export default function Qr()
       fetchData();
 
 
-      try
-      {
+      try {
         const token = localStorage.getItem("token");
         const id = localStorage.getItem("id")
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -67,16 +59,14 @@ export default function Qr()
         console.log("DOCTOR DETAILS", doctorDetails.qrCodeUrl)
         setQrCodeUrl(doctorDetails.qrCodeUrl)
         setName(doctorDetails.name)
-      } catch (error)
-      {
+      } catch (error) {
         console.error('There was an error verifying the OTP:', error);
       }
     }
     getQRCode()
   }, [])
 
-  const handleDownload = () =>
-  {
+  const handleDownload = () => {
     // Create a new anchor element
     const element = document.createElement("a");
     element.href = `${qrCodeUrl}`;
@@ -86,8 +76,7 @@ export default function Qr()
     document.body.removeChild(element);
   };
 
-  function abbreviateAndCombineDays(days)
-  {
+  function abbreviateAndCombineDays(days) {
     const weekDays = [
       "Monday",
       "Tuesday",
@@ -101,26 +90,22 @@ export default function Qr()
     let combinedDays = [];
     let i = 0;
 
-    while (i < dayIndexes.length)
-    {
+    while (i < dayIndexes.length) {
       let startDay = weekDays[dayIndexes[i]].substring(0, 3);
       let endDayIndex = i;
 
       while (
         endDayIndex < dayIndexes.length - 1 &&
         dayIndexes[endDayIndex + 1] === dayIndexes[endDayIndex] + 1
-      )
-      {
+      ) {
         endDayIndex++;
       }
 
       let endDay = weekDays[dayIndexes[endDayIndex]].substring(0, 3);
 
-      if (i === endDayIndex)
-      {
+      if (i === endDayIndex) {
         combinedDays.push(startDay);
-      } else
-      {
+      } else {
         combinedDays.push(`${startDay}-${endDay}`);
       }
 
@@ -253,7 +238,17 @@ export default function Qr()
                   Degree:
                 </p>
 
-                <p className="block text-black text-lg ">{userDetails?.degree}</p>
+                <p className=" text-black text-lg flex flex-row flex-wrap">
+                  {userDetails?.degree.split(' ').map((item, index) => {
+                    return (
+                      <>
+                        <p className="mr-3">
+                          {item}
+                        </p>
+                      </>
+                    )
+                  })}
+                </p>
               </div>
 
               {/* -----------address----------- */}
@@ -310,24 +305,28 @@ export default function Qr()
             </div>
 
             {/* ----------------------------------right---------------------------------- */}
-            <div className="border bg-white flex flex-col w-11/12 lg:w-11/12 p-6 my-5  ">
-              <text
-                className="text-center"
-                style={{
-                  fontWeight: 600,
-                  fontSize: isTab ? "20px" : "24px",
-                  lineHeight: "28.8px",
-                  fontFamily: "Lato, sans-serif"
-                }}
-              >
-                Generate Personal QR
-              </text>
-              <p class="mx-auto ">
-                {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
-              </p>
+            <div className=" bg-white flex flex-col w-11/12 lg:w-11/12 p-6 my-5  ">
+              <div class="">
+                <p class=" flex">
+                  <text
+                    className="  mx-auto text-center "
+                    style={{
+                      fontWeight: 600,
+                      fontSize: isTab ? "20px" : "24px",
+                      lineHeight: "28.8px",
+                      fontFamily: "Lato, sans-serif"
+                    }}
+                  >
+                    Generate Personal QR
+                  </text>
+                </p>
+                <p class="flex mx-auto  ">
+                  {qrCodeUrl && <img src={qrCodeUrl} class=" w-1/2 mx-auto" alt="QR Code" />}
+                </p>
 
+              </div>
 
-              <div className="flex mx-auto mt-5 my-2">
+              <div className="flex mx-auto mt-5 my-2 ">
                 <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white" style={{ backgroundColor: '#89CFF0' }} onClick={handleDownload}>                   Download
                 </button>
               </div>
