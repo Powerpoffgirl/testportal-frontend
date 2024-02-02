@@ -13,7 +13,8 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import close_button from "../assets/close_button.svg";
 
 
-export default function PatientListUser({ searchTerm }) {
+export default function PatientListUser({ searchTerm })
+{
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -29,13 +30,16 @@ export default function PatientListUser({ searchTerm }) {
   const [userDetailsName, setUserDetailsName] = useState();
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
-  const [userPatient, setUserPatient] = useState({})
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -53,26 +57,32 @@ export default function PatientListUser({ searchTerm }) {
 
         const data = await response.json();
         console.log("DATA from response", data);
-        if (data.message === "Invalid or expired token") {
+        if (data.message === "Invalid or expired token")
+        {
           toast.error("Invalid or expired token")
           navigate("/userlogin")
           localStorage.clear()
         }
         const filtered = data?.data.filter((patient) => patient.name !== null);
         setPatientsList(filtered);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, [searchTerm]);
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -90,65 +100,48 @@ export default function PatientListUser({ searchTerm }) {
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.userPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-<<<<<<< HEAD
-  updateUser(userDetailsName);
-  updateUserEmail(userDetailsEmail);
-  updateUserimage(userDetailsPic);
-
-
-  console.log("USER NAME", userDetailsName)
-
-
-
   useEffect(() =>
   {
     if (patientsList?.length > 0 && searchTerm)
     {
-=======
-  useEffect(() => {
-    if (patientsList?.length > 0 && searchTerm) {
->>>>>>> cba1e96f14665ad427a157bcf60b52c8f8628668
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedPatients = patientsList.filter((p) =>
         p.name.toLowerCase().includes(lowerCaseSearchTerm)
       );
-
       setFilteredPatients(matchedPatients);
-    } else {
+    } else
+    {
       setFilteredPatients(patientsList);
     }
-
   }, [patientsList, searchTerm]);
-
-<<<<<<< HEAD
-
-
 
   const handleEditPatient = (patientId) =>
   {
-=======
-  const handleEditPatient = (patientId) => {
->>>>>>> cba1e96f14665ad427a157bcf60b52c8f8628668
     localStorage.setItem("patientId", patientId);
     navigate("/editpatientform");
   };
 
-  const handleDeletePatient = async (patientId, patientName) => {
-    try {
+  const handleDeletePatient = async (patientId, patientName) =>
+  {
+    try
+    {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         return;
       }
 
-      if (patientName === userDetailsName) {
+      if (patientName === userDetailsName)
+      {
         // If the patientName is the same as userDetailsName, it appears to be trying to delete a user
         const response = await fetch(`${baseUrl}/api/v1/user/delete_user`, {
           method: "DELETE", // Use DELETE method for deleting user
@@ -159,14 +152,17 @@ export default function PatientListUser({ searchTerm }) {
         });
         const data = await response.json();
 
-        if (data.success === true) {
+        if (data.success === true)
+        {
           toast.success("User Deleted successfully");
           navigate("/userlogin");
           return; // Return to exit the function after deleting the user
-        } else {
+        } else
+        {
           console.error("Failed to delete user:", data?.message);
         }
-      } else {
+      } else
+      {
         // If the patientName is different from userDetailsName, it appears to be trying to delete a patient
         const response = await fetch(
           `${baseUrl}/api/v1/user/delete_patient/${patientId}`,
@@ -181,23 +177,27 @@ export default function PatientListUser({ searchTerm }) {
 
         const data = await response.json();
 
-        if (response.ok) {
+        if (response.ok)
+        {
           console.log("Patient deleted successfully", data);
           // Update the list in the UI by removing the deleted patient
           toast.success("Patient Deleted!");
           setPatientsList((prevPatientsList) =>
             prevPatientsList.filter((patient) => patient._id !== patientId)
           );
-        } else {
+        } else
+        {
           console.error("Failed to delete the patient", data?.message);
         }
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("There was an error deleting the patient:", error);
     }
   };
 
-  const handleBookAppointment = (patient) => {
+  const handleBookAppointment = (patient) =>
+  {
     console.log("PATIENT", patient);
     localStorage.setItem("patientId", patient?._id);
     localStorage.setItem("patientName", patient?.name);
@@ -205,7 +205,8 @@ export default function PatientListUser({ searchTerm }) {
   };
   console.log("PATIENT LISTS", patientsList);
 
-  const findSelectedDoctor = async (patientId) => {
+  const findSelectedDoctor = async (patientId) =>
+  {
     console.log("DOCTOR ID", patientId);
     const patient = patientsList?.find((doc) => doc._id === patientId);
     setSelectedPatient(patient); // This will return the doctor object if found, otherwise undefined
@@ -344,7 +345,8 @@ export default function PatientListUser({ searchTerm }) {
 
       <div className="flex flex-col">
         {(filteredPatients?.length > 0 && filteredPatients[0].name) ? (
-          filteredPatients?.map((patient, index) => {
+          filteredPatients?.map((patient, index) =>
+          {
             console.log("index ", index)
             return (
 
@@ -405,8 +407,6 @@ export default function PatientListUser({ searchTerm }) {
                       {"Edit"}
                     </button>
 
-<<<<<<< HEAD
-=======
                     <Popconfirm
                       title="Delete the Patient"
                       description="Are you sure to delete this Patient?"
@@ -433,7 +433,6 @@ export default function PatientListUser({ searchTerm }) {
                     Book Appointment
                   </button> */}
                   </div>
->>>>>>> cba1e96f14665ad427a157bcf60b52c8f8628668
                 </div>
                 <ToastContainer />
               </div>
