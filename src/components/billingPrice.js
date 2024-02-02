@@ -12,8 +12,7 @@ import { Modal } from "./tableModal";
 import { useReactToPrint } from "react-to-print";
 import "./printStyles.css";
 
-export default function BillingPrice()
-{
+export default function BillingPrice() {
     const componentPDF = useRef();
     const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -24,6 +23,8 @@ export default function BillingPrice()
     console.log("LOCATION============", location)
     const reportDate = location.state.reportDate
     console.log("REPORT DATE", reportDate)
+    const discountValue = location.state.discount
+    console.log("discount value is ", discountValue)
     const baseUrl = process.env.REACT_APP_BASE_URL
     const [rowNumber, setRowNumber] = useState();
     const [userDetailsName, setUserDetailsName] = useState();
@@ -31,70 +32,83 @@ export default function BillingPrice()
     const [userDetailsPic, setUserDetailsPic] = useState();
     const [totalPrice, setTotalPrice] = useState(0)
     const fileInputRef = useRef(null);
+
     const generatePdf = useReactToPrint({
         content: () => componentPDF.current,
         documentTitle: "userReport",
 
-        onBeforeGetContent: () =>
-        {
-            // This is called before getting the content for printing
-            // You can enable the "Send To SMS" button here
+        onBeforeGetContent: () => {
             const sendToSMSButton = document.getElementById('sendToSMSButton');
             sendToSMSButton.disabled = false;
         },
         // onAfterPrint: () => alert("Data saved in PDF")
     });
 
-    const handleFileSelect = async (event) =>
-    {
-        const file = event.target.files[0];
-        if (file)
-        {
-            const token = localStorage.getItem("token");
-            const patientId = localStorage.getItem("selectedPatientId");
-            const doctorId = localStorage.getItem("doctorId");
-            const formData = new FormData();
-            formData.append("patientReport", file);
 
-            console.log("FORM DATA", formData);
-            try
-            {
-                const response = await fetch(
-                    `${baseUrl}/api/v1/doctor/upload_report/${patientId}`,
-                    {
-                        method: "POST",
-                        headers: {
-                            "x-auth-token": token,
-                        },
-                        body: formData,
-                    }
-                );
+    // const handleFileSelect = async (event) => {
 
-                if (!response.ok)
-                {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+    //     const response = generatePdf(); // This will trigger the print functionality
+    //     console.log("PDF generation triggered", response);
 
-                const data = await response.json();
+    //     const file = event.target.files[0];
+    //     if (file) {
+    //         const token = localStorage.getItem("token");
+    //         const patientId = localStorage.getItem("selectedPatientId");
+    //         const doctorId = localStorage.getItem("doctorId");
+    //         const formData = new FormData();
+    //         formData.append("patientReport", file);
 
-                fileInputRef.current.value = "";
-            } catch (error)
-            {
-                console.error("Error ", error);
-                toast.error("Error uploading pdf. Please try again.");
-            }
-        }
+    //         console.log("FORM DATA", formData);
+    //         try {
+    //             const response = await fetch(
+    //                 `${baseUrl}/api/v1/doctor/upload_report/${patientId}`,
+    //                 {
+    //                     method: "POST",
+    //                     headers: {
+    //                         "x-auth-token": token,
+    //                     },
+    //                     body: formData,
+    //                 }
+    //             );
+
+    //             if (!response.ok) {
+    //                 throw new Error(`HTTP error! status: ${response.status}`);
+    //             }
+
+    //             const data = await response.json();
+
+    //             fileInputRef.current.value = "";
+    //         } catch (error) {
+    //             console.error("Error ", error);
+    //             toast.error("Error uploading pdf. Please try again.");
+    //         }
+    //     }
+    // };
+
+    const handleFileSelect = async () => {
+        // Generate the PDF
+        generatePdf();
+
+        // Simulate downloading the PDF (you can replace this with your SMS logic)
+        const pdfBlob = await componentPDF.current.toBlob();
+        const pdfUrl = URL.createObjectURL(pdfBlob);
+
+        // Create a hidden link and trigger the download
+        const downloadLink = document.createElement('a');
+        downloadLink.href = pdfUrl;
+        downloadLink.download = 'userReport.pdf';
+        downloadLink.style.display = 'none';
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
     };
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
+
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -115,8 +129,7 @@ export default function BillingPrice()
                 setUserDetailsEmail(data?.data.email);
                 setUserDetailsPic(data?.data.doctorPic);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -137,16 +150,13 @@ export default function BillingPrice()
     ]);
     const [rowToEdit, setRowToEdit] = useState(null);
 
-    const handleDeleteRow = async (index) =>
-    {
+    const handleDeleteRow = async (index) => {
 
-        try
-        {
+        try {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("selectedPatientId");
 
-            if (!token)
-            {
+            if (!token) {
                 console.error("No token found in local storage");
                 return;
             }
@@ -164,45 +174,36 @@ export default function BillingPrice()
             setRows(rows.filter((_, idx) => idx !== index));
 
 
-        } catch (error)
-        {
+        } catch (error) {
             console.error("There was an error deleting details:", error);
         }
 
 
     };
 
-    const handleEditRow = (idx) =>
-    {
+    const handleEditRow = (idx) => {
         setRowToEdit(idx);
         setModalOpen(true);
     };
 
 
-    const handleSubmit = (newRow) =>
-    {
+    const handleSubmit = (newRow) => {
 
         console.log("code working till now ")
-        setRows((prevRows) =>
-        {
-            if (rowToEdit === null)
-            {
+        setRows((prevRows) => {
+            if (rowToEdit === null) {
                 const updatedRows = [...prevRows, newRow];
                 const newRowNumber = updatedRows.length - 1;
                 setRowNumber(newRowNumber);
 
                 return updatedRows;
-            } else
-            {
-                const EditDetails = async () =>
-                {
-                    try
-                    {
+            } else {
+                const EditDetails = async () => {
+                    try {
                         const token = localStorage.getItem("token");
                         const patientId = localStorage.getItem("selectedPatientId");
 
-                        if (!token)
-                        {
+                        if (!token) {
                             console.error("No token found in local storage");
                             return;
                         }
@@ -233,8 +234,7 @@ export default function BillingPrice()
                         console.log("DATA from response", responseData);
                         // Handle responseData as needed (maybe update state?)
 
-                    } catch (error)
-                    {
+                    } catch (error) {
                         console.error("There was an error verifying the OTP:", error);
                     }
                 };
@@ -253,17 +253,13 @@ export default function BillingPrice()
 
 
 
-    useEffect(() =>
-    {
-        const fetchTestDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchTestDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -279,12 +275,10 @@ export default function BillingPrice()
                 const responseData = await response.json();
                 console.log("DATA from response", responseData.data.testAsked);
 
-                const filteredData = responseData.data.testAsked.filter((item) =>
-                {
+                const filteredData = responseData.data.testAsked.filter((item) => {
                     return item?.date?.includes(reportDate);
                 });
-                const amount = filteredData.reduce((acc, curr) =>
-                {
+                const amount = filteredData.reduce((acc, curr) => {
                     return acc + (curr?.id?.costOfDiagnosticTest || 0); // Use `0` as a fallback in case `curr.id.costOfDiagnosticTest` is undefined
                 }, 0);
 
@@ -294,8 +288,7 @@ export default function BillingPrice()
                 console.log("FILTERED DATA", filteredData);
                 setRows(filteredData);
 
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error fetching test details:", error);
             }
         };
@@ -434,8 +427,7 @@ export default function BillingPrice()
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {rows.map((row, idx) =>
-                                        {
+                                        {rows.map((row, idx) => {
                                             const statusText = row.status
                                                 ? row.status.charAt(0).toUpperCase() + row.status.slice(1)
                                                 : '';
@@ -451,6 +443,31 @@ export default function BillingPrice()
                                             );
                                         })}
                                         <br />
+                                        <br />
+                                        <tr className=" border border-[#89CFF0]" >
+
+                                            <td className="px-3 lg:px-6 " >
+                                                Sub Total :
+                                            </td>
+                                            <td >
+
+                                            </td>
+                                            <td className="px-3 lg:px-6 " >
+                                                {totalPrice}
+                                            </td>
+                                        </tr>
+                                        <tr className=" border border-[#89CFF0]" >
+
+                                            <td className="px-3 lg:px-6 " >
+                                                Discount Price :
+                                            </td>
+                                            <td >
+
+                                            </td>
+                                            <td className="px-3 lg:px-6 " >
+                                                {discountValue} %
+                                            </td>
+                                        </tr>
                                         <tr className=" border border-[#89CFF0]" >
 
                                             <td className="px-3 lg:px-6 " >
@@ -460,7 +477,7 @@ export default function BillingPrice()
 
                                             </td>
                                             <td className="px-3 lg:px-6 " >
-                                                {totalPrice}
+                                                {totalPrice - discountValue * totalPrice / 100}
                                             </td>
                                         </tr>
                                     </tbody>
@@ -507,7 +524,7 @@ export default function BillingPrice()
                             </button>
 
                             <button
-
+                                onClick={handleFileSelect}
                                 style={{
                                     height: "40px",
                                     width: "120px",
@@ -517,7 +534,7 @@ export default function BillingPrice()
                                     padding: "2px",
                                 }}
                             >
-                                <label htmlFor="files" id="sendToSMSButton" disabled style={{ color: "white" }}>
+                                <label htmlFor="files" id="sendToSMSButton" style={{ color: "white" }}>
                                     Send To SMS
                                 </label>
                             </button>
@@ -528,7 +545,7 @@ export default function BillingPrice()
                                     ref={fileInputRef}
                                     style={{ display: "none" }}
                                     accept="application/pdf"
-                                    onChange={handleFileSelect}
+                                // onChange={handleFileSelect}
                                 />
                             </p>
                         </div>
