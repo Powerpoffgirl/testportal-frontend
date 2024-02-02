@@ -78,8 +78,7 @@ import { ToastContainer } from "react-toastify";
 import UserProfile from "./components/userProfile";
 import AdminForgetpassword from "./components/adminForgetPassword";
 
-function App()
-{
+function App() {
   return (
     <>
       <ToastContainer />
