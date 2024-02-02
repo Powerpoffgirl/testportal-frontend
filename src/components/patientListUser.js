@@ -43,6 +43,7 @@ export default function PatientListUser({ searchTerm })
           console.error("No token found in local storage");
           return;
         }
+
         const response = await fetch(
           `${baseUrl}/api/v1/user/get_patientsList`,
           {
@@ -56,6 +57,12 @@ export default function PatientListUser({ searchTerm })
 
         const data = await response.json();
         console.log("DATA from response", data);
+        if (data.message === "Invalid or expired token")
+        {
+          toast.error("Invalid or expired token")
+          navigate("/userlogin")
+          localStorage.clear()
+        }
         const filtered = data?.data.filter((patient) => patient.name !== null);
         setPatientsList(filtered);
       } catch (error)

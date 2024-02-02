@@ -197,7 +197,7 @@ const UserOTP = () =>
       >
         <div className="left_side">
           <h1 className="left_heading">
-            Welcome To <br /> Doctalk'S{" "}
+            Welcome To <br /> Doctalk's{" "}
           </h1>
         </div>
         <div className="right_side">

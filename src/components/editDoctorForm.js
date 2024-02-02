@@ -190,6 +190,12 @@ export default function EditDoctorForm()
 
         const data = await response.json();
         console.log("DATA from USE EFFECT response", data?.data);
+        if (data.message === "Invalid or expired token")
+        {
+          toast.error("Invalid or expired token")
+          navigate("/doctorlogin")
+          localStorage.clear()
+        }
         setDoctorDetails(data?.data);
         setQrCodeUrl(data.data.qrCodeUrl)
         setName(data.data.name)

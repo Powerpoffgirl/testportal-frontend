@@ -147,7 +147,12 @@ export default function AppointmentList({ searchTerm })
 
         const data = await response.json();
         console.log("DATA from response", data);
-
+        if (data.message === "Invalid or expired token")
+        {
+          toast.error("Invalid or expired token")
+          navigate("/doctorlogin")
+          localStorage.clear()
+        }
         const filteredAppointmentList = data?.data.filter(
           (appointment) => appointment.patientId !== null
         );
