@@ -48,7 +48,7 @@ import ViewPatientDescription from "./components/viewPatientDescription";
 import UserSignup from "./components/userSignup";
 import DocAppointment from "./components/docAppointment";
 import Table from "./components/tabel";
-// import Sidebar2 from './components/Sidebar2';
+import AdminOtpVerify from "./components/adminOTPVerify";
 import Layout from "./components/Layout";
 // import Table2 from "./components/table2";
 import EditPatientForm from "./components/editPatientForm";
@@ -76,6 +76,7 @@ import SuperAdminOtp from "./components/superadminotp";
 import Pagenotfound from "./components/pagenotfound";
 import { ToastContainer } from "react-toastify";
 import UserProfile from "./components/userProfile";
+import AdminForgetpassword from "./components/adminForgetPassword";
 
 function App()
 {
@@ -109,7 +110,9 @@ function App()
           />
         }></Route>
         <Route path="/forgetpassword" element={<ForgetPassword />} />
+        <Route path="/adminforgetpassword" element={<AdminForgetpassword />} />
         <Route path="/otpverify" element={<OtpVerify />} />
+        <Route path="/adminotpverify" element={<AdminOtpVerify />} />
         <Route path="/superadminlogin" element={<SuperAdminLogin />} />
         <Route
           path="/superadmineditform"
