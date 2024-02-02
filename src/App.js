@@ -379,8 +379,8 @@ function App()
             <Layout
               Component={BillingPage}
               type="doctor"
-              headerTextTop={"Patients's"}
-              headerTextBottom={"Billing"}
+              headerTextTop={"Patient's"}
+              headerTextBottom={"Lab Tests"}
             />
           }
         ></Route>
@@ -390,8 +390,8 @@ function App()
             <Layout
               Component={BillingPrice}
               type="doctor"
-              headerTextTop={"Patients's"}
-              headerTextBottom={"Billing"}
+              headerTextTop={"Patient's"}
+              headerTextBottom={"Lab Bill"}
             />
           }
         ></Route>
@@ -401,8 +401,8 @@ function App()
             <Layout
               Component={Summary}
               type="doctor"
-              headerTextTop={"Patients's"}
-              headerTextBottom={"Summary"}
+              headerTextTop={"Patient's"}
+              headerTextBottom={"Lab Report"}
             />
           }
         ></Route>

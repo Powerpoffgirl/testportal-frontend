@@ -30,6 +30,7 @@ export default function PatientListUser({ searchTerm })
   const [userDetailsName, setUserDetailsName] = useState();
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
+  const [userPatient, setUserPatient] = useState({})
 
   useEffect(() =>
   {
@@ -108,6 +109,15 @@ export default function PatientListUser({ searchTerm })
     fetchUserDetails();
   }, []);
 
+  updateUser(userDetailsName);
+  updateUserEmail(userDetailsEmail);
+  updateUserimage(userDetailsPic);
+
+
+  console.log("USER NAME", userDetailsName)
+
+
+
   useEffect(() =>
   {
     if (patientsList?.length > 0 && searchTerm)
@@ -116,12 +126,17 @@ export default function PatientListUser({ searchTerm })
       const matchedPatients = patientsList.filter((p) =>
         p.name.toLowerCase().includes(lowerCaseSearchTerm)
       );
+
       setFilteredPatients(matchedPatients);
     } else
     {
       setFilteredPatients(patientsList);
     }
+
   }, [patientsList, searchTerm]);
+
+
+
 
   const handleEditPatient = (patientId) =>
   {
@@ -422,12 +437,6 @@ export default function PatientListUser({ searchTerm })
                     </button>
                   </Popconfirm>
 
-                  {/* <button
-                    className="rounded-full px-6 sm:px-4 py-2 sm:py-1 text-white bg-[#89CFF0] text-xs sm:text-sm"
-                    onClick={() => handleBookAppointment(patient)}
-                  >
-                    Book Appointment
-                  </button> */}
                 </div>
               </div>
               <ToastContainer />
