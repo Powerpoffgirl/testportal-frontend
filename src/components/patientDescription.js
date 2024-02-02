@@ -20,7 +20,7 @@ export default function PatientDescription()
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const location = useLocation();
-  // console.log("APPOINTMENT", location.state.appointment)
+  const [diagonisSaved, setDiagnosisSaved] = useState(false)
   const patientId = localStorage.getItem("patientId");
   // const appointment = location.state.appointment
   console.log("patientId", patientId);
@@ -541,6 +541,7 @@ export default function PatientDescription()
       localStorage.setItem("appointmentId", appointmentId);
       toast.success("Diagnosis saved.");
       setAppointment(data.data)
+      setDiagnosisSaved(true)
     }
     console.log("DATA from response", data);
   };
@@ -1058,13 +1059,16 @@ export default function PatientDescription()
               >
                 Process
               </button>
-              <button
-                className="w-60 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
-                onClick={() => navigate(`/descriptionsummary`, { state: { appointment: patientsHistory[0] } })}
+              {
+                diagonisSaved ? <button
+                  className="w-60 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
+                  onClick={() => navigate(`/descriptionsummary`, { state: { appointment: patientsHistory[0] } })}
 
-              >
-                Go to Patient Report
-              </button>
+                >
+                  Go to Patient Report
+                </button> : ""
+              }
+
             </div>
           </div>
         </div>

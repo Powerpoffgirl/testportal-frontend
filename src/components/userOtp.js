@@ -6,6 +6,7 @@ import { FaPhoneAlt } from "react-icons/fa";
 import { LuRefreshCcw } from "react-icons/lu";
 import "./userLogin.css";
 import { Tooltip } from "antd";
+import "../App.css"
 
 const UserOTP = () =>
 {

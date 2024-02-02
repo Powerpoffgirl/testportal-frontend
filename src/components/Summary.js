@@ -433,6 +433,23 @@ export default function Summary()
                             }}
                         >
                             <button
+                                class="mx-4"
+                                style={{
+                                    height: "40px",
+                                    width: "120px",
+                                    backgroundColor: "#89CFF0",
+                                    borderRadius: "20px",
+                                    marginTop: "20px",
+                                    padding: "2px",
+                                    color: 'white'
+                                }}
+                                onClick={
+                                    reportDate ? () => navigate(`/billing`, { state: { reportDate: reportDate } }) : () => { toast.error("please select a date") }
+                                }
+                            >
+                                Lab Tests
+                            </button>
+                            <button
                                 onClick={generatePdf}
                                 style={{
                                     height: "40px",
@@ -461,6 +478,23 @@ export default function Summary()
                                 <label htmlFor="files" id="sendToSMSButton" disabled style={{ color: "white" }}>
                                     Send To SMS
                                 </label>
+                            </button>
+                            <button
+                                class="mx-4"
+                                style={{
+                                    height: "40px",
+                                    width: "120px",
+                                    backgroundColor: "#89CFF0",
+                                    borderRadius: "20px",
+                                    marginTop: "20px",
+                                    padding: "2px",
+                                    color: 'white'
+                                }}
+                                onClick={
+                                    reportDate ? () => navigate(`/billingprice`, { state: { reportDate: reportDate } }) : () => { toast.error("please select a date") }
+                                }
+                            >
+                                Lab Bill
                             </button>
                             <p className="block text-black text-lg font-semibold ">
                                 <input

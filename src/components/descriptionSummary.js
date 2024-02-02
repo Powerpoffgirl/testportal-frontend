@@ -12,7 +12,8 @@ import { Modal } from "./tableModal";
 import { useReactToPrint } from "react-to-print";
 import './printStyles.css'
 
-export default function DescriptionSummary() {
+export default function DescriptionSummary()
+{
     const componentPDF = useRef();
     const { updateUser, updateUserEmail, updateUserimage } =
         useContext(UserContext);
@@ -33,9 +34,11 @@ export default function DescriptionSummary() {
     const [patientsHistory, setPatientsHistory] = useState(null);
     const [patient, setPatient] = useState({});
 
-    const handleFileSelect1 = async (event) => {
+    const handleFileSelect1 = async (event) =>
+    {
         const file = event.target.files[0];
-        if (file) {
+        if (file)
+        {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("patientId");
             const doctorId = localStorage.getItem("doctorId");
@@ -43,7 +46,8 @@ export default function DescriptionSummary() {
             formData.append("patientReport", file);
 
             console.log("FORM DATA", formData);
-            try {
+            try
+            {
                 const response = await fetch(`${baseUrl}/api/v1/doctor/upload_patient_report/${patientId}`, {
                     method: "POST",
                     headers: {
@@ -52,26 +56,32 @@ export default function DescriptionSummary() {
                     body: formData,
                 });
 
-                if (!response.ok) {
+                if (!response.ok)
+                {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
 
                 fileInputRef.current.value = "";
-            } catch (error) {
+            } catch (error)
+            {
                 console.error("Error ", error);
                 toast.error("Error uploading pdf. Please try again.");
             }
         }
     };
 
-    useEffect(() => {
-        const fetchUserDetails = async () => {
-            try {
+    useEffect(() =>
+    {
+        const fetchUserDetails = async () =>
+        {
+            try
+            {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("patientId");
-                if (!token) {
+                if (!token)
+                {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -92,7 +102,8 @@ export default function DescriptionSummary() {
                 setUserDetailsEmail(data?.data.email);
                 setUserDetailsPic(data?.data.doctorPic);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error) {
+            } catch (error)
+            {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -100,11 +111,15 @@ export default function DescriptionSummary() {
     }, []);
 
 
-    useEffect(() => {
-        const fetchPatientDetails = async () => {
-            try {
+    useEffect(() =>
+    {
+        const fetchPatientDetails = async () =>
+        {
+            try
+            {
                 const token = localStorage.getItem("token");
-                if (!token) {
+                if (!token)
+                {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -126,7 +141,8 @@ export default function DescriptionSummary() {
                 setPatientsHistory(data?.data);
                 setPatient(data?.data[0]);
 
-            } catch (error) {
+            } catch (error)
+            {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -153,13 +169,17 @@ export default function DescriptionSummary() {
     const [rowToEdit, setRowToEdit] = useState(null);
 
 
-    useEffect(() => {
-        const fetchTestDetails = async () => {
-            try {
+    useEffect(() =>
+    {
+        const fetchTestDetails = async () =>
+        {
+            try
+            {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token) {
+                if (!token)
+                {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -179,7 +199,8 @@ export default function DescriptionSummary() {
                 console.log("DATA from response", responseData);
 
                 setRows(responseData.data || []);
-            } catch (error) {
+            } catch (error)
+            {
                 console.error("There was an error fetching test details:", error);
             }
         };
@@ -353,22 +374,17 @@ export default function DescriptionSummary() {
                         </div>
                         <div className="flex  flex-col lg:flex-row-reverse mt-5 mb-5 ">
                             <button
+                                className=" bg-[#89CFF0] py-1 mb-3 px-9 mx-auto lg:mx-1 rounded-full text-white font-semibold text-xl leading-9 font-lato "
+                            >
+                                <label htmlFor="files">Send To SMS</label>
+                            </button>
+                            <button
                                 className=" bg-[#89CFF0] py-1 mb-3 px-8 mx-auto lg:mx-1 rounded-full text-white font-semibold text-xl leading-9 font-lato"
                                 onClick={generatePdf}
                             >
                                 Download PDF
                             </button>
-                            <button
-                                className=" bg-[#89CFF0] py-1 mb-3 px-9 mx-auto lg:mr-2 rounded-full text-white font-semibold text-xl leading-9 font-lato "
-                            // style={{
-                            //   height: "40px",
-                            //   width: "100px",
-                            //   borderRadius: "10px",
-                            //   marginTop: "20px",
-                            // }}
-                            >
-                                <label htmlFor="files">Send To SMS</label>
-                            </button>
+
                             <p className="block text-black text-lg font-semibold">
                                 <input
                                     id="files"
