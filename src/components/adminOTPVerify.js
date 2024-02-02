@@ -7,6 +7,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { LuRefreshCcw } from "react-icons/lu";
+import { Tooltip } from "antd";
 
 
 const svgContent = `
@@ -85,7 +86,7 @@ export default function AdminOtpVerify()
     const [contactError, setContactError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [firstTime, setFirstTime] = useState(true);
-    const [seconds, setSeconds] = useState(9);
+    const [seconds, setSeconds] = useState(90);
     const [resendClicked, setResendClicked] = useState(false);
     const location = useLocation();
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -329,7 +330,9 @@ export default function AdminOtpVerify()
                                     value={contactNumber}
                                     name="contactNumber"
                                 ></input>
-                                <LuRefreshCcw className="Resend_icon mt-5 mr-4 hover:cursor-pointer w-1/5 " style={{ color: 'white' }} onClick={SendOTP} />
+                                <Tooltip placement="top" title="Resend OTP">
+                                    <LuRefreshCcw className="Resend_icon mt-5 mr-4 hover:cursor-pointer w-1/5 " style={{ color: 'white' }} onClick={SendOTP} />
+                                </Tooltip>
                             </div>
 
 
@@ -378,7 +381,7 @@ export default function AdminOtpVerify()
                                     justifyContent: "center",
                                 }}
                             >
-                                Resend OTP in
+                                OTP expires in
                                 <text className="mx-2" style={{ color: "#000000" }}>
                                     {formatTime(seconds) == 0 ? '0' : formatTime(seconds)}
                                 </text>{" "}
@@ -402,9 +405,9 @@ export default function AdminOtpVerify()
                             </button>
                         </div>
                     </form>
-                </div>
+                </div >
 
-            </div>
+            </div >
         </>
     );
 }
