@@ -200,48 +200,6 @@ export default function EditAdminForm()
     handleClose();
   };
 
-  // const validateField = (name, value) =>
-  // {
-  //     switch (name)
-  //     {
-  //         case "name":
-  //             return value ? "" : "Name is required.";
-  //         case "email":
-  //             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
-  //                 ? ""
-  //                 : "Email is not valid.";
-  //         case "contactNumber":
-  //             return value.length > 0 && value.length === 10
-  //                 ? ""
-  //                 : "Contact number is required or Add valid 10 Digit Number.";
-  //         case "houseNo":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "houseNo is required  ";
-  //         case "floor":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "floor is required";
-  //         case "block":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Block is required  ";
-  //         case "area":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "Area is required and must be a string ";
-  //         case "pinCode":
-  //             return /^\d{6}$/.test(value) ? "" : "Pincode must be exactly 6 digits.";
-  //         case "district":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "District is required and must be a string ";
-  //         case "state":
-  //             return /^[a-zA-Z\s]+$/.test(value) && value ? "" : "State is required and must be a string ";
-  //         case "workHourFrom":
-  //             // Assuming time in HH:MM format, adjust as needed
-  //             return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //                 ? ""
-  //                 : "Invalid start time.";
-  //         case "workHourTo":
-  //             return /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/.test(value)
-  //                 ? ""
-  //                 : "Invalid end time.";
-  //         // Add more cases as needed for other fields
-  //         default:
-  //             return "";
-  //     }
-  // };
 
   const handleChange = (e) =>
   {
@@ -267,10 +225,6 @@ export default function EditAdminForm()
         setmobileNumberError("Please enter a valid Number");
       }
     }
-
-    // const error = validateField(name, value);
-    // setErrors({ ...errors, [name]: error });
-
     if (name === "workingDays")
     {
       setDoctorDetails((prevDoctorDetails) => ({
@@ -318,11 +272,8 @@ export default function EditAdminForm()
   const handleUpdate = async (e) =>
   {
     e.preventDefault();
-    // Check if the token exists
     const newDoctorDetails = {
       name: doctorDetails?.name,
-      // email: doctorDetails.email,
-      // contactNumber: doctorDetails.contactNumber,
       totalExperience: doctorDetails?.totalExperience,
       speciality: doctorDetails?.speciality,
       degree: doctorDetails?.degree,
@@ -370,13 +321,6 @@ export default function EditAdminForm()
         return;
       }
 
-      // if (isEditing === true)
-      // {
-
-      //     toast.success('Form submitted successfully!');
-
-      // }
-
       if (!token)
       {
         console.error("No token found in local storage");
@@ -402,8 +346,7 @@ export default function EditAdminForm()
       {
         console.log("Doctor updated successfully.");
         toast.success("Form submitted successfully!");
-        // navigate("/otp")
-        // localStorage.setItem("id", data.data._id)
+
       }
       console.log("DATA from response", data);
     }

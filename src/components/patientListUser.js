@@ -338,8 +338,6 @@ export default function PatientListUser({ searchTerm })
               " " +
               selectedPatient?.address?.pinCode}
           </text>
-
-
         </div>
       </Modal>
 

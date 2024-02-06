@@ -1,20 +1,16 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useNavigate } from "react-router-dom";
 import Modal from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-const svg1 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M17.7778 10C17.7778 7.83333 17.0231 5.99537 15.5139 4.48611C14.0046 2.97685 12.1667 2.22222 10 2.22222V0C11.3889 0 12.6898 0.263889 13.9028 0.791667C15.1157 1.31944 16.1713 2.03241 17.0694 2.93056C17.9676 3.8287 18.6806 4.88426 19.2083 6.09722C19.7361 7.31019 20 8.61111 20 10H17.7778ZM13.3333 10C13.3333 9.07407 13.0093 8.28704 12.3611 7.63889C11.713 6.99074 10.9259 6.66667 10 6.66667V4.44444C11.537 4.44444 12.8472 4.98611 13.9306 6.06944C15.0139 7.15278 15.5556 8.46296 15.5556 10H13.3333ZM18.8333 20C16.5185 20 14.2315 19.4954 11.9722 18.4861C9.71296 17.4769 7.65741 16.0463 5.80556 14.1944C3.9537 12.3426 2.52315 10.287 1.51389 8.02778C0.50463 5.76852 0 3.48148 0 1.16667C0 0.833333 0.111111 0.555556 0.333333 0.333333C0.555556 0.111111 0.833333 0 1.16667 0H5.66667C5.92593 0 6.15741 0.087963 6.36111 0.263889C6.56482 0.439815 6.68519 0.648148 6.72222 0.888889L7.44444 4.77778C7.48148 5.07407 7.47222 5.32407 7.41667 5.52778C7.36111 5.73148 7.25926 5.90741 7.11111 6.05556L4.41667 8.77778C4.78704 9.46296 5.22685 10.125 5.73611 10.7639C6.24537 11.4028 6.80556 12.0185 7.41667 12.6111C7.99074 13.1852 8.59259 13.7176 9.22222 14.2083C9.85185 14.6991 10.5185 15.1481 11.2222 15.5556L13.8333 12.9444C14 12.7778 14.2176 12.6528 14.4861 12.5694C14.7546 12.4861 15.0185 12.463 15.2778 12.5L19.1111 13.2778C19.3704 13.3519 19.5833 13.4861 19.75 13.6806C19.9167 13.875 20 14.0926 20 14.3333V18.8333C20 19.1667 19.8889 19.4444 19.6667 19.6667C19.4444 19.8889 19.1667 20 18.8333 20ZM3.36111 6.66667L5.19444 4.83333L4.72222 2.22222H2.25C2.34259 2.98148 2.47222 3.73148 2.63889 4.47222C2.80556 5.21296 3.0463 5.94444 3.36111 6.66667ZM13.3056 16.6111C14.0278 16.9259 14.7639 17.1759 15.5139 17.3611C16.2639 17.5463 17.0185 17.6667 17.7778 17.7222V15.2778L15.1667 14.75L13.3056 16.6111Z" fill="#89CFF0"/>
-</svg>`;
-const svg2 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M4 12H12V10H4V12ZM4 9H16V7H4V9ZM4 6H16V4H4V6ZM0 20V2C0 1.45 0.195833 0.979167 0.5875 0.5875C0.979167 0.195833 1.45 0 2 0H18C18.55 0 19.0208 0.195833 19.4125 0.5875C19.8042 0.979167 20 1.45 20 2V14C20 14.55 19.8042 15.0208 19.4125 15.4125C19.0208 15.8042 18.55 16 18 16H4L0 20ZM3.15 14H18V2H2V15.125L3.15 14Z" fill="#89CFF0"/>
-</svg>`;
-
-const svg3 = `<svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M12.5 0L15.3064 8.63729H24.3882L17.0409 13.9754L19.8473 22.6127L12.5 17.2746L5.15268 22.6127L7.95911 13.9754L0.611794 8.63729H9.69357L12.5 0Z" fill="#FFF500"/>
-</svg>`;
+import { Popconfirm } from "antd";
+import delete_button from "../assets/delete_button.svg";
+import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import { HiOutlineUserAdd } from "react-icons/hi";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 export default function SuperAdminAdminEditForm()
 {
@@ -26,6 +22,7 @@ export default function SuperAdminAdminEditForm()
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => setOpen(false);
   const navigate = useNavigate();
+  const [adminImage, setAdminImage] = useState();
   const [drName, setDrName] = useState("");
   const [drNameError, setDrNameError] = useState("");
   const [email, setEmail] = useState("");
@@ -46,230 +43,155 @@ export default function SuperAdminAdminEditForm()
   const [districtError, setDistrictError] = useState("");
   const [state, setState] = useState("");
   const [stateError, setStateError] = useState("");
+  const [doctorDetails, setDoctorDetails] = useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
+  // const open = Boolean(anchorEl);
+  const fileInputRef = useRef(null);
+  // const [isEditing, setIsEditing] = useState(false);
+  const [open1, setOpen1] = useState(false);
+  // const onCloseModal = () => setOpen1(false);
+  const [mobileNumberError, setmobileNumberError] = useState("");
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [isHovered, setIsHovered] = useState(false);
+  const [isHovered1, setIsHovered1] = useState(false);
+  const [errors, setErrors] = useState({});
 
-  const handleDrNameChange = (e) =>
+
+
+  useEffect(() =>
   {
-    const enteredDrName = e.target.value;
-    setDrName(enteredDrName);
+    const fetchDoctorDetails = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const id = localStorage.getItem("adminId");
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          localStorage.clear();
+          navigate(`/adminlogin`);
+        }
+        const response = await fetch(`${baseUrl}/api/v1/superAdmin/admin_byId/${id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
 
-    // Validation logic for Dr. Name
-    const drNameRegex = /^Dr\. [a-zA-Z\s-]+$/;
+        const data = await response.json();
+        console.log("DATA from response", data?.data);
+        setDoctorDetails(data?.data);
+      } catch (error)
+      {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchDoctorDetails();
+  }, []);
 
-    if (!enteredDrName.trim())
+  const handleFileSelect = async (event) =>
+  {
+    const file = event.target.files[0];
+    if (file)
     {
-      setDrNameError("Dr. Name is required");
-    } else if (!drNameRegex.test(enteredDrName))
-    {
-      setDrNameError("Invalid Dr. Name format. It should start with 'Dr. '");
-    } else
-    {
-      setDrNameError("");
+      const token = localStorage.getItem("token");
+      const doctorId = localStorage.getItem("doctorId");
+      const formData = new FormData();
+      formData.append("doctorPic", file);
+
+      console.log("FORM DATA", formData);
+      try
+      {
+        const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
+          method: "POST",
+          headers: {
+            "x-auth-token": token,
+          },
+          body: formData,
+        });
+
+        if (!response.ok)
+        {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Image uploaded successfully:", data);
+        setAdminImage(data.profilePicImageUrl);
+        toast.success("Image uploaded successfully.");
+
+        // Reset the file input
+        setSelectedFile(null);
+        fileInputRef.current.value = "";
+      } catch (error)
+      {
+        console.error("Error uploading image:", error);
+        toast.error("Error uploading image. Please try again.");
+      }
     }
   };
 
-  const handleEmailChange = (e) =>
+  const handleClick = (event) =>
   {
-    const enteredEmail = e.target.value;
-    setEmail(enteredEmail);
-
-    // Validation logic for email
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!enteredEmail.trim())
-    {
-      setEmailError("Email is required");
-    } else if (!emailPattern.test(enteredEmail))
-    {
-      setEmailError("Invalid email format");
-    } else
-    {
-      setEmailError("");
-    }
+    setAnchorEl(event.currentTarget);
   };
 
-  const handleContactChange = (e) =>
+  const handleClose = () =>
   {
-    const enteredContact = e.target.value;
-    setContact(enteredContact);
-
-    const contactPattern = /^\d{10}$/;
-
-    if (!enteredContact.trim())
-    {
-      setContactError("Contact number is required");
-    } else if (!contactPattern.test(enteredContact))
-    {
-      setContactError("Invalid contact format. Please enter a 10-digit number");
-    } else
-    {
-      setContactError("");
-    }
+    setAnchorEl(null);
   };
-
-  const handleHouseNoChange = (e) =>
-  {
-    const enteredHouseNo = e.target.value;
-    setHouseNo(enteredHouseNo);
-
-    // Validation logic
-    const houseNoRegex = /^\d+$/; // Allows only positive whole numbers
-
-    if (!enteredHouseNo.trim())
-    {
-      setHouseNoError("");
-    } else if (!houseNoRegex.test(enteredHouseNo))
-    {
-      setHouseNoError("");
-    } else
-    {
-      setHouseNoError("");
-    }
-  };
-
-  const handleFloorChange = (e) =>
-  {
-    const enteredFloor = e.target.value;
-    setFloor(enteredFloor);
-
-    // Validation logic
-    const alphabeticRegex = /^[a-zA-Z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-    const formatRegex =
-      /^(?=.*\b\d{1,3}(st|nd|rd|th)\b)\b\d{1,3}(st|nd|rd|th)?\b$/i; // Allows 1st, 2nd, 3rd, etc.
-
-    if (!enteredFloor.trim())
-    {
-      setFloorError("");
-    } else if (
-      !alphabeticRegex.test(enteredFloor) &&
-      !formatRegex.test(enteredFloor)
-    )
-    {
-      setFloorError("");
-    } else
-    {
-      setFloorError("");
-    }
-  };
-
-  const handleBlockChange = (e) =>
-  {
-    const enteredBlock = e.target.value;
-    setBlock(enteredBlock);
-
-    // Validation logic
-    const blockRegex = /^[A-Za-z0-9]+$/; // Allows alphanumeric characters
-
-    if (!enteredBlock.trim())
-    {
-      setBlockError("Block is required");
-    } else if (!blockRegex.test(enteredBlock))
-    {
-      setBlockError("Invalid block format");
-    } else
-    {
-      setBlockError("");
-    }
-  };
-
-  const handleAreaChange = (e) =>
-  {
-    const enteredArea = e.target.value;
-    setArea(enteredArea);
-
-    // Validation logic
-    const areaRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-
-    if (!enteredArea.trim())
-    {
-      setAreaError("Area is required");
-    } else if (!areaRegex.test(enteredArea))
-    {
-      setAreaError("Invalid area format");
-    } else
-    {
-      setAreaError("");
-    }
-  };
-
-  const handleDistrictChange = (e) =>
-  {
-    const enteredDistrict = e.target.value;
-    setDistrict(enteredDistrict);
-
-    // Validation logic
-    const districtRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-
-    if (!enteredDistrict.trim())
-    {
-      setDistrictError("District is required");
-    } else if (!districtRegex.test(enteredDistrict))
-    {
-      setDistrictError("Invalid district format");
-    } else
-    {
-      setDistrictError("");
-    }
-  };
-
-  const handleStateChange = (e) =>
-  {
-    const enteredState = e.target.value;
-    setState(enteredState);
-
-    // Validation logic
-    const stateRegex = /^[A-Za-z\s-]+$/; // Allows alphabetic characters, spaces, and hyphens
-
-    if (!enteredState.trim())
-    {
-      setStateError("State is required");
-    } else if (!stateRegex.test(enteredState))
-    {
-      setStateError("Invalid state format");
-    } else
-    {
-      setStateError("");
-    }
-  };
-  const [patientDetails, setPatientDetails] = useState({
-    name: "",
-    age: "",
-    bodyWeight: "",
-    address: {
-      houseNo: "",
-      floor: "",
-      block: "",
-      area: "",
-      pinCode: "",
-      district: "",
-      state: "",
-    },
-  });
-
-  const handlePincodeChange = (e) =>
-  {
-    const enteredPinCode = e.target.value;
-    setPinCode(enteredPinCode);
-
-    // Validation logic
-    const pinCodeRegex = /^\d{6}$/; // Allows exactly 6 digits
-
-    if (!enteredPinCode.trim())
-    {
-      setPinCodeError("Pincode is required");
-    } else if (!pinCodeRegex.test(enteredPinCode))
-    {
-      setPinCodeError("Invalid pincode format (should be 6 digits)");
-    } else
-    {
-      setPinCodeError("");
-    }
-  };
-
   const handleChange = (e) =>
   {
-    const { name, value } = e.target;
+    const { name, value, type, checked } = e.target;
 
-    if (
+    if (type === "checkbox")
+    {
+      setDoctorDetails({
+        ...doctorDetails,
+        permissions: {
+          ...doctorDetails.permissions,
+          [name]: checked,
+        },
+      });
+    }
+    else if (name === "pinCode")
+    {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
+        setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
+      } else
+      {
+        setPinCodeError("Please enter a valid Pincode");
+      }
+    }
+    if (name === "contactNumber")
+    {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
+      {
+        setmobileNumberError("");
+      } else
+      {
+        setmobileNumberError("Please enter a valid Number");
+      }
+    }
+    if (name === "workingDays")
+    {
+      setDoctorDetails((prevDoctorDetails) => ({
+        ...prevDoctorDetails,
+        workingDays: [...prevDoctorDetails.workingDays, value],
+      }));
+    } else if (name === "workHourFrom" || name === "workHourTo")
+    {
+      setDoctorDetails((prevDoctorDetails) => ({
+        ...prevDoctorDetails,
+        workingHours: {
+          ...prevDoctorDetails.workingHours,
+          [name]: value,
+        },
+      }));
+    } else if (
       [
         "houseNo",
         "floor",
@@ -281,351 +203,531 @@ export default function SuperAdminAdminEditForm()
       ].includes(name)
     )
     {
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
+      setDoctorDetails((prevDoctorDetails) => ({
+        ...prevDoctorDetails,
         address: {
-          ...prevPatientDetails.address,
+          ...prevDoctorDetails.address,
           [name]: value,
         },
       }));
-    } else if (["issues"].includes(name))
-    {
-      // Assuming the value is an array or a string to be added to the array
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
-        [name]: Array.isArray(value)
-          ? value
-          : [...prevPatientDetails[name], value],
-      }));
-    } else if (["diseases"].includes(name))
-    {
-      // Assuming the value is an array or a string to be added to the array
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
-        [name]: Array.isArray(value)
-          ? value
-          : [...prevPatientDetails[name], value],
-      }));
     } else
     {
-      setPatientDetails((prevPatientDetails) => ({
-        ...prevPatientDetails,
+      setDoctorDetails((prevDoctorDetails) => ({
+        ...prevDoctorDetails,
         [name]: value,
       }));
     }
     setIsEditing(true);
   };
 
-  const handleRegister = async (e) =>
+  const handleUpdate = async (e) =>
   {
     e.preventDefault();
-
-    const isEmpty = Object.values(patientDetails).some((value) => value === "");
-
-    if (isEmpty || isEditing === false)
-    {
-      toast.error("Please fill the fields");
-      setIsEditing(false);
-      return;
-    }
-
-    if (!isEmpty || isEditing === true)
-    {
-      toast.success("Form submitted successfully!");
-    }
-    // Check if the token exists
-    const token = localStorage.getItem("token");
-    if (!token)
-    {
-      console.error("No token found in local storage");
-      return;
-    }
-    const response = await fetch(`${baseUrl}/api/v1/user/register_patient`, {
-      method: "post",
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": token,
+    const newDoctorDetails = {
+      name: doctorDetails?.name,
+      email: doctorDetails?.email,
+      address: {
+        houseNo: doctorDetails?.address?.houseNo,
+        floor: doctorDetails?.address?.floor,
+        block: doctorDetails?.address?.block,
+        area: doctorDetails?.address?.area,
+        pinCode: doctorDetails?.address?.pinCode,
+        district: doctorDetails?.address?.district,
+        state: doctorDetails?.address?.state,
       },
-      body: JSON.stringify(patientDetails),
-    });
-    const data = await response.json();
-    if (data.success === true)
+      permissions: {
+        view: doctorDetails?.permissions?.view,
+        create: doctorDetails?.permissions?.create,
+        remove: doctorDetails?.permissions?.remove,
+        edit: doctorDetails?.permissions?.edit,
+      },
+      adminPic: adminImage,
+    };
+    if (doctorDetails.name === "")
     {
-      // navigate("/otp")
-      onOpenModal();
-      localStorage.setItem("id", data.data._id);
+      toast.error("Please write name");
+    } else if (doctorDetails.email === "")
+    {
+      toast.error("Please write email");
+    } else if (doctorDetails.contactNumber === "")
+    {
+      toast.error("Please write contact number");
+    } else if (doctorDetails.address.pinCode === "")
+    {
+      toast.error("Please write Pincode");
+    } else if (doctorDetails.address.district === "")
+    {
+      toast.error("Please write district");
+    } else if (doctorDetails.address.state === "")
+    {
+      toast.error("Please write state");
+    } else
+    {
+      const token = localStorage.getItem("token");
+      const id = localStorage.getItem("adminId");
+      const isEmpty = Object.values(newDoctorDetails).some(
+        (value) => value === ""
+      );
+
+      if (isEmpty || isEditing === false)
+      {
+        toast.error("Please fill the fields or Update");
+        setIsEditing(false);
+        return;
+      }
+
+      if (!token)
+      {
+        console.error("No token found in local storage");
+        localStorage.clear();
+        navigate(`/adminlogin`);
+      }
+
+      const response = await fetch(`${baseUrl}/api/v1/superAdmin/update_admin/${id}`, {
+        method: "put",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+        body: JSON.stringify(newDoctorDetails),
+      });
+      const data = await response.json();
+
+      if (data.statusCode === 400)
+      {
+        toast.error("Please fill the details");
+      }
+
+      if (data.success === true)
+      {
+        toast.success("Admin details updated successfully!");
+        navigate("/superadminadminlist")
+      }
+      console.log("DATA from response", data);
     }
-    console.log("DATA from response", data);
   };
-  console.log("PATIENT DETAILS", patientDetails);
 
   return (
     <>
-      <Modal
-        open={open}
-        onClose={onCloseModal}
-        center
-        doctor={selectedDoctor}
-        styles={{
-          modal: {
-            // Set your custom width here (e.g., '70%')
-            width: isTab ? "80%" : "70%",
-            backgroundColor: "#89CFF0",
-            alignContent: "center",
-          },
-        }}
-      >
-        <div className="flex flex-col bg-customRedp-2  items-center w-[100%] md:w-[100%]  mt-[2%]">
-          <text
-            className="text-center mt-4 mb-4"
-            style={{
-              fontSize: isTab ? "14px" : "20px",
-              fontWeight: 600,
-              lineHeight: "28.8px",
-              fontFamily: "Lato, sans-serif",
-              color: "#FFFFFF",
-            }}
+      <div className="flex flex-col -ml-7  lg:flex-row">
+        {/* --------------left-------------- */}
+        <div className="flex flex-col border bg-white lg:w-1/4 py-6 px-3  ml-5 my-5  ">
+          <div
+            className=" flex items-end justify-end w-100% "
+            style={{ marginRight: -40, marginTop: -20 }}
           >
-            Patient's Details is Saved.
-            <br />
-            Go to Patient's list to book an Appointment.
-          </text>
-        </div>
-      </Modal>
+            <Popconfirm
+              title="Delete the Profile"
+              description="Are you sure to delete this Profile?"
+              okText="Delete"
+              okType="danger"
+              cancelText="No"
+              className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
+            // onConfirm={handleDelete}
+            >
+              <button onClick={onCloseModal}>
+                <img src={delete_button} alt="df" class="w-8 mb-1"></img>
+              </button>
+            </Popconfirm>
+          </div>
+          <div className="mx-auto my-2">
+            <div className=" ">
+              <div
+                className=" border w-36 mx-auto rounded-full"
+                style={{ backgroundColor: "#B1DAED" }}
+              >
+                {adminImage || doctorDetails?.adminPic ? (
+                  <div
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  >
+                    <img
+                      src={adminImage || doctorDetails?.adminPic}
+                      alt="Avatar"
+                      style={{
+                        borderRadius: "50%",
+                        width: "145px",
+                        height: "145px",
+                        cursor: "pointer",
+                      }}
+                    />
+                  </div>
+                ) : (
+                  <PermIdentityOutlinedIcon
+                    style={{
+                      width: "auto",
+                      height: "auto",
+                      color: "white",
+                      cursor: "pointer",
+                    }}
+                    aria-controls="profile-pic-menu"
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  />
+                )}
+              </div>
+            </div>
 
-      <div className="flex flex-row">
-        <ToastContainer />
-        {/* <div className="md:fixed md:h-screen md:overflow-y-auto md:w-[337px]"></div> */}
-        <div className=" w-full">
-          <div className="mt-6 p-2">
-            <div class="grid grid-cols-1 w-full gap-4">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-black text-lg font-semibold"
-                >
-                  Dr. Name
-                </label>
+            <div className="flex flex-row mt-5 mb-3">
+              <p className="block text-black text-lg font-semibold ">
                 <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  onChange={handleDrNameChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${drNameError ? "border-red-500" : "border-[#89CFF0]"
-                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
+                  id="files"
+                  type="file"
+                  ref={fileInputRef}
+                  style={{ display: "none" }}
+                  accept="image/*"
+                  onChange={handleFileSelect}
                 />
-                {drNameError && (
-                  <p className="text-red-500 text-sm mt-1">{drNameError}</p>
-                )}
-              </div>{" "}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-black text-lg font-semibold"
+              </p>
+
+              <p
+                className="mt-2 ml-3"
+                aria-controls="profile-pic-menu"
+                aria-haspopup="true"
+                aria-expanded={open ? "true" : undefined}
+                onClick={handleClick}
+                style={{
+                  cursor: "pointer",
+                }}
+              >
+                {/* <FaAngleDown /> */}
+              </p>
+
+              <div style={{ backgroundColor: "#89CFF0" }}>
+                <Menu
+                  id="profile-pic-menu"
+                  anchorEl={anchorEl}
+                  open={open}
+                  onClose={handleClose}
+                  MenuListProps={{
+                    "aria-labelledby": "edit-profile-pic-text",
+                    style: { backgroundColor: "#89CFF0" }, // Set background color for the whole menu
+                  }}
                 >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  onChange={handleEmailChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${emailError ? "border-red-500" : "border-[#89CFF0]"
-                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
-                />
-                {emailError && (
-                  <p className="text-red-500 text-sm mt-1">{emailError}</p>
-                )}
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered ? "red" : "white",
+                    }}
+                    onClick={() =>
+                    {
+                      handleClose();
+                    }}
+                    onMouseEnter={() => setIsHovered(true)}
+                    onMouseLeave={() => setIsHovered(false)}
+                  >
+                    {" "}
+                    <span style={{ marginRight: "8px" }}>
+                      <HiOutlineUserAdd />
+                    </span>
+                    <label htmlFor="files">New profile picture</label>
+                  </MenuItem>
+
+                  <MenuItem
+                    style={{
+                      backgroundColor: "#89CFF0",
+                      color: isHovered1 ? "red" : "white",
+                    }}
+                    // onClick={handleRemoveProfilePicture}
+                    onMouseEnter={() => setIsHovered1(true)}
+                    onMouseLeave={() => setIsHovered1(false)}
+                  >
+                    <span style={{ marginRight: "8px" }}>
+                      <FaRegTrashAlt />
+                    </span>
+                    <span>Remove current picture</span>
+                  </MenuItem>
+                </Menu>
               </div>
-              <div>
-                <label
-                  htmlFor="contact"
-                  className="block text-black text-lg font-semibold"
-                >
-                  Contact Number
-                </label>
-                <input
-                  type="text"
-                  id="contact"
-                  name="contact"
-                  onChange={handleContactChange}
-                  className={`block mt-0 w-full placeholder-gray-400/70 rounded-lg border ${contactError ? "border-red-500" : "border-[#89CFF0]"
-                    } bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40`}
-                />
-                {contactError && (
-                  <p className="text-red-500 text-sm mt-1">{contactError}</p>
-                )}
-              </div>
-              {/* <div>
-                <label
-                  for="contact"
-                  class="block text-black text-lg font-semibold"
-                >
-                  Contact Number
-                </label>
-                <input
-                  type="number"
-                  id="contactNumber"
-                  name="contactNumber"
-                  onChange={handleChange}
-                  class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                />
-              </div> */}
-              <div class="p-3 pb-5 border border-[#89CFF0]">
-                <div class="flex flex-col sm:flex-row sm:flex-wrap -mx-2">
-                  <div class="px-2 w-full sm:w-1/3">
-                    <label
-                      for="houseNo"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      House No
-                    </label>
-                    <input
-                      type="text"
-                      id="houseNo"
-                      name="houseNo"
-                      onChange={handleChange}
-                      placeholder="1234"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+            </div>
+          </div>
+          <hr />
+
+          <div>
+            <div className="flex flex-col mr-2 mt-2">
+              <label
+                style={{ marginRight: "10px" }}
+                className="mx-2 text-lg font-semibold text-black font-lato"
+                htmlFor="Permission"
+              >
+                Permissions
+              </label>
+            </div>
+            <div
+              className="flex flex-col flex-grow mx-2"
+              style={{ justifyContent: "space-around" }}
+            >
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      View
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="view"
+                        checked={doctorDetails?.permissions.view}
+                        onChange={handleChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Create
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="create"
+                        checked={doctorDetails?.permissions.create}
+                        onChange={handleChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Remove
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="remove"
+                        checked={doctorDetails?.permissions.remove}
+                        onChange={handleChange}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      Edit
+                    </td>
+                    <td>
+                      <input
+                        type="checkbox"
+                        name="edit"
+                        checked={doctorDetails?.permissions.edit}
+                        onChange={handleChange}
+                      />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        {/* ----------------------------------right---------------------------------- */}
+        <div
+          div
+          className="border bg-white flex flex-col lg:w-3/4 p-6 my-5 mx-3"
+        >
+          <p className="text-3xl ">Personal Information</p>
+          <hr className="border my-2 " />
+          {/* -------name------- */}
+          <div className="mt-3">
+            <label
+              for="name"
+              className="block text-black text-lg font-semibold"
+            >
+              Name
+            </label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+              onChange={handleChange}
+              value={doctorDetails?.name}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.name && <p className="text-red-500">{errors.name}</p>}
+          </div>
+
+          {/* -----------contact----------- */}
+          <div className="mt-3">
+            <label
+              for="contact"
+              className="block text-black text-lg font-semibold"
+            >
+              Contact Number
+            </label>
+            <input
+              type="text"
+              id="contactNumber"
+              name="contactNumber"
+              onChange={handleChange}
+              onInput={(e) =>
+              {
+                e.target.value = e.target.value.replace(/[^0-9]/g, "");
+              }}
+              value={doctorDetails?.contactNumber}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {/* {errors.contactNumber && ( */}
+            <p class=" text-red-500 ">{mobileNumberError}</p>
+            {/* )} */}
+          </div>
+
+          {/* -----------email----------- */}
+          <div className="mt-3">
+            <label
+              for="email"
+              className="block text-black text-lg font-semibold"
+            >
+              email
+            </label>
+            <input
+              type="text"
+              id="email"
+              name="email"
+              onChange={handleChange}
+              value={doctorDetails?.email}
+              className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+            {errors.contactNumber && (
+              <p className="text-red-500">{errors.contactNumber}</p>
+            )}
+          </div>
+          {/* -----------address----------- */}
+          <div className="mt-3">
+            <label
+              for="houseNo"
+              className="block text-black text-lg font-semibold"
+            >
+              Address
+            </label>
+            <div className="p-3 pb-5 border shadow-lg rounded-md">
+              <div className="flex flex-col ">
+                <div className="flex lg:flex-row flex-col">
+                  <div class="flex flex-row ">
+                    <div className="px-2 lg:w-1/2  mt-3">
+
+                      <input
+                        type="text"
+                        placeholder="House No."
+                        id="houseNo"
+                        name="houseNo"
+                        value={doctorDetails?.address?.houseNo}
+                        onChange={handleChange}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    </div>
+                    <div className="px-2 lg:w-1/2 mt-3">
+                      <input
+                        type="text"
+                        id="floor"
+                        name="floor"
+                        onChange={handleChange}
+                        value={doctorDetails?.address?.floor}
+                        placeholder="Floor"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    </div>
                   </div>
-                  <div class="px-2 w-full sm:w-1/3">
-                    <label
-                      for="floor"
-                      class="block text-black text-lg font-semibold"
-                    >
-                      Floor
-                    </label>
-                    <input
-                      type="text"
-                      id="floor"
-                      name="floor"
-                      onChange={handleChange}
-                      placeholder="2nd"
-                      class="block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                    />
+                  <div class="flex flex-row">
+                    <div className="px-2 lg:w-1/2 mt-3">
+                      <input
+                        type="text"
+                        id="block"
+                        name="block"
+                        value={doctorDetails?.address?.block}
+                        onChange={handleChange}
+                        placeholder="Block"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                      {errors.block && (
+                        <p className="text-red-500">{errors.block}</p>
+                      )}
+                    </div>
+                    <div className="px-2 lg:w-1/2 mt-3">
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        value={doctorDetails?.address?.pinCode}
+                        onChange={handleChange}
+                        onInput={(e) =>
+                        {
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]/g,
+                            ""
+                          );
+                        }}
+                        placeholder="Pin Code"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                      {pinCodeError && (
+                        <p className="text-red-500">{pinCodeError}</p>
+                      )}
+                    </div>
                   </div>
-                  <div className="px-2 w-full sm:w-1/3">
-                    <label
-                      htmlFor="block"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      Block
-                    </label>
-                    <input
-                      type="text"
-                      id="block"
-                      name="block"
-                      value={block}
-                      onChange={handleBlockChange}
-                      placeholder="A"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${blockError ? "border-red-500" : ""
-                        }`}
-                    />
-                    {blockError && (
-                      <p className="text-red-500 text-sm mt-1">{blockError}</p>
-                    )}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="area"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      Area
-                    </label>
-                    <input
-                      type="text"
-                      id="area"
-                      name="area"
-                      value={area}
-                      onChange={handleAreaChange}
-                      placeholder="Green Park"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${areaError ? "border-red-500" : ""
-                        }`}
-                    />
-                    {areaError && (
-                      <p className="text-red-500 text-sm mt-1">{areaError}</p>
-                    )}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="pinCode"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      Pincode
-                    </label>
-                    <input
-                      type="text"
-                      id="pinCode"
-                      name="pinCode"
-                      value={pinCode}
-                      onChange={handlePincodeChange}
-                      placeholder="110016"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${pinCodeError ? "border-red-500" : ""
-                        }`}
-                    />
-                    {pinCodeError && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {pinCodeError}
-                      </p>
-                    )}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="district"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      District
-                    </label>
+                </div>
+                {/* ----------------------------area/landmark---------------------------- */}
+                <div className="px-2 w-full mt-3 ">
+
+                  <input
+                    type="text"
+                    id="area"
+                    name="area"
+                    value={doctorDetails?.address?.area}
+                    placeholder="Area/Landmark"
+                    className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                  />
+
+
+                  {errors.area && <p className="text-red-500">{errors.area}</p>}
+                </div>
+
+                <div className="flex flex-row">
+                  <div className="px-2 w-1/2 mt-3">
+
                     <input
                       type="text"
                       id="district"
                       name="district"
-                      value={district}
-                      onChange={handleDistrictChange}
-                      placeholder="South Delhi"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${districtError ? "border-red-500" : ""
-                        }`}
+                      value={doctorDetails?.address?.district}
+                      placeholder="District"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {districtError && (
-                      <p className="text-red-500 text-sm mt-1">
-                        {districtError}
-                      </p>
+
+
+                    {errors.district && (
+                      <p className="text-red-500">{errors.district}</p>
                     )}
-                  </div>{" "}
-                  <div className="px-2 w-full sm:w-1/2">
-                    <label
-                      htmlFor="state"
-                      className="block text-black text-lg font-semibold"
-                    >
-                      State
-                    </label>
+                  </div>
+
+                  <div className="px-2 w-1/2 mt-3">
                     <input
                       type="text"
                       id="state"
                       name="state"
-                      value={state}
-                      onChange={handleStateChange}
-                      placeholder="Delhi"
-                      className={`block w-full rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#08DA73] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40 ${stateError ? "border-red-500" : ""
-                        }`}
+                      value={doctorDetails?.address?.state}
+                      placeholder="State"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-                    {stateError && (
-                      <p className="text-red-500 text-sm mt-1">{stateError}</p>
+                    {errors.state && (
+                      <p className="text-red-500">{errors.state}</p>
                     )}
-                  </div>{" "}
+                  </div>
                 </div>
               </div>
             </div>
-            <div className="mt-10 w-100 items-center justify-center text-center">
-              <button
-                className="rounded-full justify-center px-9 py-2 bg-[#08DA73] text-white"
-                onClick={handleRegister}
-              >
-                Process
-              </button>
-            </div>
           </div>
+          <div className="flex flex-row-reverse mt-5 my-2">
+            <button
+              className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+              style={{
+                backgroundColor: "#89CFF0",
+              }}
+              onClick={handleUpdate}
+            >
+              Process
+            </button>
+          </div>
+          <ToastContainer />
         </div>
       </div>
     </>

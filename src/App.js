@@ -78,7 +78,8 @@ import { ToastContainer } from "react-toastify";
 import UserProfile from "./components/userProfile";
 import AdminForgetpassword from "./components/adminForgetPassword";
 
-function App() {
+function App()
+{
   return (
     <>
       <ToastContainer />
@@ -167,8 +168,9 @@ function App() {
           element={
             <Layout
               Component={SuperAdminAdminEditForm}
-              headerTextTop={"Super Admin Admin"}
-              headerTextBottom={"Edit Form"}
+              type="superAdmin"
+              headerTextTop={"Super Admin"}
+              headerTextBottom={"Admin Edit Form"}
             />
           }
         />
@@ -309,6 +311,7 @@ function App() {
           element={
             <Layout
               Component={SuperAdminOtp}
+              type="superAdmin"
               headerTextTop={"Super Admin"}
               headerTextBottom={"Otp"}
             />
