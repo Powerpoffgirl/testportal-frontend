@@ -80,9 +80,7 @@ export default function AdminOtpVerify()
     const baseUrl = process.env.REACT_APP_BASE_URL;
 
     const [isDoctor, setIsDoctor] = useState(true);
-    // const [contactNumber, setContactNumber] = useState("");
     const [selectedDoctor, setSelectedDoctor] = useState();
-    //   const [password, setPassword] = useState("");
     const [contactError, setContactError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [firstTime, setFirstTime] = useState(true);
@@ -122,7 +120,7 @@ export default function AdminOtpVerify()
         const requestBody = {
             contactNumber: contactNumber,
         };
-        const apiUrl = `${baseUrl}/api/v1/doctor/forget_password`;
+        const apiUrl = `${baseUrl}/api/v1/admin/forget_password`;
 
         try
         {
@@ -179,6 +177,7 @@ export default function AdminOtpVerify()
             console.log("data", data.data);
             if (data.success === true)
             {
+                toast.success("OTP Verified")
                 navigate("/adminforgetpassword");
             }
             console.log("DATA from response", data);

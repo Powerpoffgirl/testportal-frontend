@@ -185,8 +185,9 @@ export default function AdminLogin()
       // Check the response status
       if (response.ok)
       {
-        console.log("OTP sent successfully", data);
+        toast.success("OTP sent")
         console.log("ADMIN ID", data?.data?._id)
+        localStorage.setItem("contactNumber", data?.data?.contactNumber)
         localStorage.setItem("adminId", data?.data?._id)
         navigate("/adminotpverify");
       } else
