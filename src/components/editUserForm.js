@@ -127,9 +127,6 @@ export default function EditUserForm()
   const navigate = useNavigate();
   const location = useLocation();
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isHovered, setIsHovered] = useState(false);
-  const [isHovered1, setIsHovered1] = useState(false);
   const [open1, setOpen1] = useState(false);
   const [patientsList, setPatientsList] = useState([]);
   const [userImage, setUserImage] = useState();

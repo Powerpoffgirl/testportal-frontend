@@ -11,7 +11,8 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Select } from "antd";
 
-export default function EditDoctorFormAdmin() {
+export default function EditDoctorFormAdmin()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -31,16 +32,19 @@ export default function EditDoctorFormAdmin() {
   const [doctorsList, setDoctorsList] = useState([]);
   const [pinCodeError, setPinCodeError] = useState("");
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -49,7 +53,8 @@ export default function EditDoctorFormAdmin() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -61,14 +66,16 @@ export default function EditDoctorFormAdmin() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const handleNewProfilePictureClick = async () => {
+  const handleNewProfilePictureClick = async () =>
+  {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
@@ -88,12 +95,16 @@ export default function EditDoctorFormAdmin() {
   const open = Boolean(anchorEl);
   const fileInputRef = useRef(null);
 
-  useEffect(() => {
-    const fetchDoctorDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchDoctorDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem("doctorId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/adminlogin`);
@@ -113,54 +124,64 @@ export default function EditDoctorFormAdmin() {
         console.log("DATA from USE EFFECT response", data?.data);
         setDoctorDetails(data?.data);
         setQrCodeUrl(data.data.qrCodeUrl)
-        if (data.message === "Permission denied") {
+        if (data.message === "Permission denied")
+        {
           toast.error("Permission Denied");
         }
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () => {
+  const handleRemoveProfilePicture = () =>
+  {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) => {
+    ...Array.from({ length: 24 }, (v, i) =>
+    {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange2 = (e) => {
+  const handleChange2 = (e) =>
+  {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       speciality: e,
     }));
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
-    if (name === "workingDays") {
+    if (name === "workingDays")
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingDays: [...prevDoctorDetails?.workingDays, value],
       }));
-    } else if (name === "workHourFrom" || name === "workHourTo") {
+    } else if (name === "workHourFrom" || name === "workHourTo")
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -178,7 +199,8 @@ export default function EditDoctorFormAdmin() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -186,7 +208,8 @@ export default function EditDoctorFormAdmin() {
           [name]: value,
         },
       }));
-    } else {
+    } else
+    {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -195,15 +218,18 @@ export default function EditDoctorFormAdmin() {
     // setIsEditing(true);
   };
 
-  useEffect(() => {
+  useEffect(() =>
+  {
     setIsEditing(true);
   }, [doctorDetails]);
 
-  const toggleQrCode = () => {
+  const toggleQrCode = () =>
+  {
     setShowQrCode(!showQrCode);
   };
 
-  const handleUpdate = async (e) => {
+  const handleUpdate = async (e) =>
+  {
     e.preventDefault();
     // Check if the token exists
     const newDoctorDetails = {
@@ -236,20 +262,14 @@ export default function EditDoctorFormAdmin() {
       (value) => value === ""
     );
 
-    if (isEmpty || isEditing === false) {
+    if (isEmpty || isEditing === false)
+    {
       toast.error("Please fill the fields or Update");
       setIsEditing(false);
       return;
     }
-
-    // if (!isEmpty || isEditing === true)
-    // {
-
-    //     toast.success('Form submitted successfully!');
-
-    // }
-
-    if (!token) {
+    if (!token)
+    {
       console.error("No token found in local storage");
       localStorage.clear();
       navigate(`/adminlogin`);
@@ -267,11 +287,13 @@ export default function EditDoctorFormAdmin() {
     );
     const data = await response.json();
 
-    if (data.message === "Permission denied") {
+    if (data.message === "Permission denied")
+    {
       toast.error("Permission Denied");
     }
 
-    if (data.success === true) {
+    if (data.success === true)
+    {
       console.log("Doctor updated successfully.");
       toast.success("Form submitted successfully!");
       // onOpenModal()
@@ -282,7 +304,8 @@ export default function EditDoctorFormAdmin() {
     console.log("DATA from response", data);
   };
 
-  const handleChange1 = (value) => {
+  const handleChange1 = (value) =>
+  {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: value, // directly set the value, which is the updated array of working days
@@ -347,7 +370,8 @@ export default function EditDoctorFormAdmin() {
     value: specialty,
   }));
 
-  const handleDelete = (workingDay) => {
+  const handleDelete = (workingDay) =>
+  {
     console.log("delete", workingDay);
     const days = doctorDetails.workingDays.filter(
       (doctorDetail) => doctorDetail !== workingDay
@@ -360,7 +384,8 @@ export default function EditDoctorFormAdmin() {
     });
   };
 
-  const handleDownload = () => {
+  const handleDownload = () =>
+  {
     // Create a new anchor element
     const element = document.createElement("a");
     element.href = `${qrCodeUrl}`;
@@ -377,24 +402,7 @@ export default function EditDoctorFormAdmin() {
       <div className="flex flex-col -ml-7  lg:flex-row">
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-2/5 xl:w-1/4 py-6 px-3  ml-5 my-5  ">
-          {/* <div
-            className=" flex items-end justify-end w-100% "
-            style={{ marginRight: -40, marginTop: -20 }}
-          >
-            <Popconfirm
-              title="Delete the Profile"
-              description="Are you sure to delete this Profile?"
-              okText="Delete"
-              okType="danger"
-              cancelText="No"
-              className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
-              onConfirm={handleDeleteDoctor}
-            >
-              <button onClick={onCloseModal}>
-                <img src={delete_button} alt="df" class="w-8 mb-1"></img>
-              </button>
-            </Popconfirm>
-          </div> */}
+
           <div className="mx-auto my-2">
             <div className=" ">
               <div
@@ -477,7 +485,8 @@ export default function EditDoctorFormAdmin() {
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() => {
+                    onClick={() =>
+                    {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -738,7 +747,8 @@ export default function EditDoctorFormAdmin() {
                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 value={doctorDetails?.contactNumber}
                 onChange={handleChange}
-                onInput={(e) => {
+                onInput={(e) =>
+                {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -781,7 +791,8 @@ export default function EditDoctorFormAdmin() {
                 name="consultationFee"
                 value={doctorDetails?.consultationFee}
                 onChange={handleChange}
-                onInput={(e) => {
+                onInput={(e) =>
+                {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -888,7 +899,8 @@ export default function EditDoctorFormAdmin() {
                           value={doctorDetails?.address?.pinCode}
                           placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                          onInput={(e) => {
+                          onInput={(e) =>
+                          {
                             e.target.value = e.target.value.replace(
                               /[^0-9]/g,
                               ""

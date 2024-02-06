@@ -72,6 +72,7 @@ export default function SuperAdminAdminEditForm()
           localStorage.clear();
           navigate(`/adminlogin`);
         }
+
         const response = await fetch(`${baseUrl}/api/v1/superAdmin/admin_byId/${id}`, {
           method: "GET",
           headers: {
@@ -470,7 +471,7 @@ export default function SuperAdminAdminEditForm()
                       <input
                         type="checkbox"
                         name="view"
-                        checked={doctorDetails?.permissions.view}
+                        checked={doctorDetails?.permissions?.view}
                         onChange={handleChange}
                       />
                     </td>
@@ -483,7 +484,7 @@ export default function SuperAdminAdminEditForm()
                       <input
                         type="checkbox"
                         name="create"
-                        checked={doctorDetails?.permissions.create}
+                        checked={doctorDetails?.permissions?.create}
                         onChange={handleChange}
                       />
                     </td>
@@ -496,7 +497,7 @@ export default function SuperAdminAdminEditForm()
                       <input
                         type="checkbox"
                         name="remove"
-                        checked={doctorDetails?.permissions.remove}
+                        checked={doctorDetails?.permissions?.remove}
                         onChange={handleChange}
                       />
                     </td>
@@ -509,7 +510,7 @@ export default function SuperAdminAdminEditForm()
                       <input
                         type="checkbox"
                         name="edit"
-                        checked={doctorDetails?.permissions.edit}
+                        checked={doctorDetails?.permissions?.edit}
                         onChange={handleChange}
                       />
                     </td>

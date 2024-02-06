@@ -269,7 +269,7 @@ export default function PatientList({ searchTerm })
       >
         <div class="flex flex-row-reverse md:-mb-14  -mb-18 z-50">
           <button onClick={onCloseModal}>
-            <img src={close_button} class="w-8 mb-5"></img>
+            <img src={close_button} alt="close_button" class="w-8 mb-5"></img>
           </button>
 
         </div>

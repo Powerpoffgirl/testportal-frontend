@@ -410,6 +410,16 @@ export default function SuperAdminAppointmentList({ searchTerm })
                 class="flex flex-row ms-auto gap-1 sm:gap-1"
                 style={{ flexDirection: "row" }}
               >
+                <button
+                  class="rounded-full px-6 sm:px-6 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
+                  onClick={() => handleEditAppointment(appointment._id)}
+                  style={{
+                    height: isTab ? 25 : null,
+                    marginTop: isTab ? 90 : null,
+                  }}
+                >
+                  {isTab ? <FaEdit /> : "Edit"}
+                </button>
                 <Popconfirm
                   title="Delete the Appointment"
                   description="Are you sure to delete this Appointment?"
@@ -431,16 +441,7 @@ export default function SuperAdminAppointmentList({ searchTerm })
                     {isTab ? <FaTrashAlt /> : "Delete"}
                   </button>
                 </Popconfirm>
-                <button
-                  class="rounded-full px-6 sm:px-6 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
-                  onClick={() => handleEditAppointment(appointment._id)}
-                  style={{
-                    height: isTab ? 25 : null,
-                    marginTop: isTab ? 90 : null,
-                  }}
-                >
-                  {isTab ? <FaEdit /> : "Edit"}
-                </button>
+
               </div>
             </div>
             <ToastContainer />
