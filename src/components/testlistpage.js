@@ -121,20 +121,44 @@ export default function TestListPage()
     };
 
 
-    const handleSubmit = (newRow) =>
+    const handleSubmit = async (newRow) =>
     {
 
-        console.log("code working till now ")
+        console.log("code working till now ", newRow)
 
         const test = rows?.filter((row) =>
             row?.testName?.toLowerCase().includes(newRow?.testName.toLowerCase()) &&
             row?.testCode?.toLowerCase().includes(newRow?.testCode.toLowerCase())
         );
-        console.log("==================TEST===========================", test)
 
+
+        const token = localStorage.getItem("token")
         if (test.length > 0)
         {
-            toast.error("Test ")
+            console.log("==================TEST===========================", test)
+            const response = await fetch(`${baseUrl}/api/v1/doctor/update_testBooking/${rows[rowToEdit]._id}`, {
+                method: "Put",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-auth-token": token,
+                },
+                body: JSON.stringify({
+                    testName: newRow.testName,
+                    testCode: newRow.testCode,
+                    department: newRow.department,
+                    sampleType: newRow.sampleType,
+                    costOfDiagnosticTest: newRow.costOfDiagnosticTest,
+                    unit: newRow.unit,
+                    bioRefInterval: newRow.bioRefInterval,
+                    technology: newRow.technology,
+                    patientId: newRow.patientId,
+                }),
+            });
+
+            const responseData = await response.json();
+            console.log("DATA from response", responseData);
+            window.location.reload();
+
             return
         } else
         {
@@ -148,10 +172,6 @@ export default function TestListPage()
                     setRowNumber(newRowNumber);
                     setSubmitToggle(true);
                     return updatedRows;
-
-
-
-
                 } else
                 {
                     const EditDetails = async () =>
@@ -278,9 +298,6 @@ export default function TestListPage()
 
             submitDetails();
         }
-
-
-
     }, [rows])
 
 
