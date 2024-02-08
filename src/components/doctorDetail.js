@@ -674,18 +674,22 @@ export default function DoctorDetail() {
                           <div class="flex flex-row-reverse">
                             {mobileNumberError.length === 0 ? (
                               <button
-                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                // className="text-white text-xs rounded-3xl px-3 py-1 "
+                                // style={{ backgroundColor: " #89CFF0" }}
+                                className="btn btn-primary border py-3 px-4 rounded-3xl text-white text-center"
+                                style={{ backgroundColor: "#89CFF0", maxWidth: '210px' }}
                                 onClick={handleOtp}
-                                style={{ backgroundColor: " #89CFF0" }}
                               >
                                 Send OTP
                               </button>
                             ) : (
                               <button
-                                className="text-white text-xs rounded-3xl px-3 py-1 "
+                                // className="text-white text-xs rounded-3xl px-3 py-1 "
+                                // style={{ backgroundColor: " #89CFF0" }}
                                 disabled
                                 onClick={handleOtp}
-                                style={{ backgroundColor: " #89CFF0" }}
+                                className="btn btn-primary border py-3 px-4 rounded-3xl text-white text-center"
+                                style={{ backgroundColor: "#89CFF0", maxWidth: '210px' }}
                               >
                                 Send OTP
                               </button>
@@ -808,11 +812,12 @@ export default function DoctorDetail() {
                       <div className="flex flex-row-reverse my-1">
                         {!bookingslottoggle && !appointment && (
                           <button
-                            className="text-white text-xs rounded-3xl px-3 py-1 "
+                            // className="text-white text-xs rounded-3xl px-3 py-1 "
                             onClick={() => {
                               showSlot();
                             }}
-                            style={{ backgroundColor: " #89CFF0" }}
+                            className="btn btn-primary border py-3 px-4 rounded-3xl text-white text-center"
+                            style={{ backgroundColor: "#89CFF0", maxWidth: '110px' }}
                           >
                             Show Slots
                           </button>
@@ -820,9 +825,11 @@ export default function DoctorDetail() {
                         {bookingslottoggle && !appointment && (
                           <div class="flex mx-auto space-x-4 mt-3">
                             <button
-                              className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
                               onClick={handleBookAppointment}
-                              style={{ backgroundColor: " #89CFF0" }}
+                              className="btn btn-primary border py-3 px-4 rounded-3xl text-white text-center"
+                              style={{ backgroundColor: "#89CFF0", maxWidth: '210px' }}
+                            // className="text-white text-sm rounded-3xl px-3 py-1 mb-1 "
+                            // style={{ backgroundColor: " #89CFF0" }}
                             >
                               Book Appointment
                             </button>
@@ -939,13 +946,18 @@ export default function DoctorDetail() {
                       Resend
                     </button>{" "}
                   </p>
-                  <button
-                    className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-                    style={{ backgroundColor: "#89CFF0" }}
-                    onClick={verifyOTP}
-                  >
-                    Verify
-                  </button>
+                  <div class=" flex flex-row-reverse">
+                    <button
+                      className="btn btn-primary border py-3 px-6 rounded-3xl text-white text-center "
+                      style={{ backgroundColor: "#89CFF0", maxWidth: '210px' }}
+
+                      // className="btn btn-primary  py-3 px-4 rounded-3xl text-white ml-auto "
+                      // style={{ backgroundColor: "#89CFF0", maxWidth: '210px' }}
+                      onClick={verifyOTP}
+                    >
+                      Verify
+                    </button>
+                  </div>
                 </div>
               </div>
             )}

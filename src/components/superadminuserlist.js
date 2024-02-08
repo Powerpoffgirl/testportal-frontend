@@ -19,9 +19,8 @@ const svg2 = `<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns=
 <path d="M4 12H12V10H4V12ZM4 9H16V7H4V9ZM4 6H16V4H4V6ZM0 20V2C0 1.45 0.195833 0.979167 0.5875 0.5875C0.979167 0.195833 1.45 0 2 0H18C18.55 0 19.0208 0.195833 19.4125 0.5875C19.8042 0.979167 20 1.45 20 2V14C20 14.55 19.8042 15.0208 19.4125 15.4125C19.0208 15.8042 18.55 16 18 16H4L0 20ZM3.15 14H18V2H2V15.125L3.15 14Z" fill="#89CFF0"/>
 </svg>`;
 
-export default function SuperAdminUserList({ searchTerm })
-{
-  let isTab = useMediaQuery({ query: "(max-width: 768px)" });
+export default function SuperAdminUserList({ searchTerm }) {
+  let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const [usersList, setUsersList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -41,15 +40,11 @@ export default function SuperAdminUserList({ searchTerm })
     { name: "Physiotherapist", value: "6" },
   ];
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -67,33 +62,28 @@ export default function SuperAdminUserList({ searchTerm })
         const data = await response.json();
         console.log("DATA from response", data);
         setUsersList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  useEffect(() =>
-  {
-    if (usersList?.length > 0 && searchTerm)
-    {
+  useEffect(() => {
+    if (usersList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm?.toLowerCase().trim();
       const matchedPatients = usersList?.filter((p) =>
         p?.contactNumber?.toLowerCase()?.includes(lowerCaseSearchTerm)
       );
       setFilteredUsers(matchedPatients);
-    } else
-    {
+    } else {
       // If searchTerm is empty, show all patients
       setFilteredUsers(usersList);
     }
   }, [usersList, searchTerm]);
 
 
-  const findSelectedDoctor = async (patientId) =>
-  {
+  const findSelectedDoctor = async (patientId) => {
     console.log("DOCTOR ID", patientId);
     // // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const patient = usersList?.find((doc) => doc._id === patientId);
@@ -102,19 +92,15 @@ export default function SuperAdminUserList({ searchTerm })
   };
 
   console.log("FILTERED USERES", filteredUsers);
-  const handleBookAppointment = (userId) =>
-  {
+  const handleBookAppointment = (userId) => {
     localStorage.setItem("userId", userId);
     navigate("/superadminusereditform");
   };
 
-  const handleDeletePatient = async (userId) =>
-  {
-    try
-    {
+  const handleDeletePatient = async (userId) => {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -131,8 +117,7 @@ export default function SuperAdminUserList({ searchTerm })
 
       const data = await response.json();
 
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("Patient deleted successfully", data);
         // Update the list in the UI by removing the deleted doctor
         setUsersList((prevPatientsList) =>
@@ -141,12 +126,10 @@ export default function SuperAdminUserList({ searchTerm })
 
         // Show toast message for successful deletion
         toast.success("User deleted successfully");
-      } else
-      {
+      } else {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting the doctor:", error);
     }
   };
@@ -299,7 +282,7 @@ export default function SuperAdminUserList({ searchTerm })
                   />
                 ) : (
                   <AccountCircleIcon
-                    style={{ fontSize: "90px", color: "#B1DAED" }}
+                    style={{ fontSize: isTab ? "45px" : "90px", color: "#B1DAED" }}
                   />
                 )}
                 <div>
@@ -309,10 +292,17 @@ export default function SuperAdminUserList({ searchTerm })
                   <p>
                     {user.age} yrs , {user.bodyWeight} kg
                   </p>
-                  <p>
-                    {user.address?.houseNo} , {user.address?.block},{" "}
-                    {user.address?.area}, {user.address?.district},
-                    {user.address?.state}, {user.address?.pinCode}
+                  <p class="hidden lg:flex lg:flex-wrap"  >
+
+                    <p>{user?.address?.houseNo}</p>
+                    <p>{user?.address?.block}</p>
+                    <p>{user?.address?.area}</p>
+                    <p>{user?.address?.district}</p>
+                    <p>{user?.address?.state}</p>
+                    <p>{user?.address?.pinCode}</p>
+
+
+
                   </p>
                 </div>
               </div>

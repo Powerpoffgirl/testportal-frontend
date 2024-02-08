@@ -6,8 +6,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "./Table.css";
 import { useReactToPrint } from "react-to-print";
 
-export default function Summary()
-{
+export default function Summary() {
     const componentPDF = useRef();
     const { updateUser, updateUserEmail, updateUserimage } =
         useContext(UserContext);
@@ -24,11 +23,9 @@ export default function Summary()
     console.log("LOCATION============", location)
     const reportDate = location.state.reportDate
 
-    const handleFileSelect = async (event) =>
-    {
+    const handleFileSelect = async (event) => {
         const file = event.target.files[0];
-        if (file)
-        {
+        if (file) {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("selectedPatientId");
             const doctorId = localStorage.getItem("doctorId");
@@ -36,8 +33,7 @@ export default function Summary()
             formData.append("patientReport", file);
 
             console.log("FORM DATA", formData);
-            try
-            {
+            try {
                 const response = await fetch(
                     `${baseUrl}/api/v1/doctor/upload_report/${patientId}`,
                     {
@@ -49,32 +45,26 @@ export default function Summary()
                     }
                 );
 
-                if (!response.ok)
-                {
+                if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
 
                 fileInputRef.current.value = "";
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("Error ", error);
                 toast.error("Error uploading pdf. Please try again.");
             }
         }
     };
 
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -95,8 +85,7 @@ export default function Summary()
                 setUserDetailsEmail(data?.data.email);
                 setUserDetailsPic(data?.data.doctorPic);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -107,8 +96,7 @@ export default function Summary()
         content: () => componentPDF.current,
         documentTitle: "userReport",
 
-        onBeforeGetContent: () =>
-        {
+        onBeforeGetContent: () => {
             // This is called before getting the content for printing
             // You can enable the "Send To SMS" button here
             const sendToSMSButton = document.getElementById('sendToSMSButton');
@@ -120,17 +108,13 @@ export default function Summary()
     const [rows, setRows] = useState([]);
 
 
-    useEffect(() =>
-    {
-        const fetchTestDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchTestDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -148,19 +132,16 @@ export default function Summary()
 
                 const responseData = await response.json();
                 console.log("DATA from response", responseData.data.testAsked);
-                const filteredData = responseData?.data?.testAsked?.filter((item) =>
-                {
+                const filteredData = responseData?.data?.testAsked?.filter((item) => {
                     console.log(item?.date?.slice(0, 10), "DATE &&", reportDate);
-                    if (item?.date?.slice(0, 10) === reportDate)
-                    {
+                    if (item?.date?.slice(0, 10) === reportDate) {
                         return item;
                     }
                 });
 
                 console.log("FILTERED DATA", filteredData);
                 setRows(filteredData);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error fetching test details:", error);
             }
         };
@@ -268,7 +249,7 @@ export default function Summary()
                                     </div>
                                 </div>
                             </div>
-                            <div class="printContainer overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-xs mx-auto ">
+                            <div class="printContainer overflow-x-auto overflow-y-auto h-[190px] sm:h-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-xs mx-auto  ">
                                 <table className="text-sm rtl:text-right text-black text-left border border-[#89CFF0]  mx-auto">
                                     <thead
                                         style={{ backgroundColor: "#89CFF0" }}
@@ -320,8 +301,7 @@ export default function Summary()
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {rows.map((row, idx) =>
-                                        {
+                                        {rows.map((row, idx) => {
                                             const statusText = row.status
                                                 ? row.status.charAt(0).toUpperCase() + row.status.slice(1)
                                                 : "";

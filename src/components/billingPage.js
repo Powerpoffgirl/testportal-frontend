@@ -10,6 +10,7 @@ import { GiConfirmed } from "react-icons/gi";
 import { useReactToPrint } from "react-to-print";
 import { Tooltip } from "antd";
 import UserContext from "./userContext";
+import { TiTick } from "react-icons/ti";
 
 export default function BillingPage({ name, contactNo, gender, age }) {
   const componentPDF = useRef();
@@ -672,9 +673,10 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                     required
                   />
 
-                  <button class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-gray-900 bg-gray-50 rounded-e-lg border border-gray-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
+                  <button class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-gray-900 bg-gray-50 rounded-e-lg border border-gray-300 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
                     <svg
                       class="w-4 h-4"
+                      style={{ color: 'black' }}
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -901,19 +903,31 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
               </div>
               <div class="mt-3  ">
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} >
                   <label>
                     Discount(%) :
                     <input
                       type="number"
                       value={discountValue}
                       onChange={handleInputChange}
-                      className="w-52 h-10 border border-black rounded-lg pl-2 text-center placeholder-gray-300 mx-3"
+                      className="w-52 h-10 border border-gray-300  rounded-lg pl-2 text-center placeholder-gray-300 mx-3 text-sm"
+                      style={{ maxWidth: '110px' }}
                       placeholder="Enter discount"
                     />
                   </label>
-                  <button type="submit" className="mt-2 px-2 py-1.5 bg-blue-500 text-white rounded-lg">
-                    Apply
+                  <button type="submit"
+                  >
+                    <TiTick style={{
+                      height: "40px",
+                      width: "40px",
+                      backgroundColor: "#89CFF0",
+                      borderRadius: "20px",
+                      marginTop: "20px",
+                      marginBottom: '-15px',
+                      padding: "2px",
+                      color: 'white',
+                      // border: '1px solid black'
+                    }} />
                   </button>
                 </form>
               </div>

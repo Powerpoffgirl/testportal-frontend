@@ -394,7 +394,7 @@ export default function BillingPrice() {
                                     </div>
                                 </div>
                             </div>
-                            <div class=" overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-xs mx-auto ">
+                            <div class=" overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-xl  md:max-w-full max-w-xs mx-auto overflow-y-auto h-[250px] sm:h-auto ">
                                 <table className="text-sm rtl:text-right text-black text-left border  border-[#89CFF0]  mx-auto">
                                     <thead style={{ backgroundColor: "#89CFF0" }}
                                         className="text-xs text-gray-700 text-left uppercase overflow-x-auto "

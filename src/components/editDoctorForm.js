@@ -15,8 +15,7 @@ import UserContext from "./userContext";
 import { Popconfirm } from "antd";
 import delete_button from "../assets/delete_button.svg";
 
-export default function EditDoctorForm() 
-{
+export default function EditDoctorForm() {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -56,12 +55,9 @@ export default function EditDoctorForm()
     patientPic: "",
   });
 
-  useEffect(() =>
-  {
-    const fetchData = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         const response = await fetch(
           `https://api.postalpincode.in/pincode/${doctorDetails?.address?.pinCode}`,
           {
@@ -69,8 +65,7 @@ export default function EditDoctorForm()
           }
         );
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
@@ -88,23 +83,19 @@ export default function EditDoctorForm()
             state: state,
           },
         }));
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    if (doctorDetails?.address?.pinCode)
-    {
+    if (doctorDetails?.address?.pinCode) {
       fetchData();
     }
   }, [doctorDetails?.address?.pinCode]);
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
@@ -120,24 +111,20 @@ export default function EditDoctorForm()
         body: formData,
       });
 
-      if (!response.ok)
-      {
+      if (!response.ok) {
         toast.error("Error uploading image.");
       }
 
       const data = await response.json();
-      if (response.status === 500)
-      {
+      if (response.status === 500) {
         toast.error("file type not supported");
       }
 
-      if (response.status === 413)
-      {
+      if (response.status === 413) {
         toast.error("file Size is too big try smaller image");
       }
 
-      if (data.success === true)
-      {
+      if (data.success === true) {
         console.log("Image uploaded successfully:", data);
         setDoctorImage(data.profilePicImageUrl);
         toast.success("Image uploaded successfully.");
@@ -164,16 +151,12 @@ export default function EditDoctorForm()
   const open = Boolean(anchorEl);
   const fileInputRef = useRef(null);
 
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem("doctorId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -190,8 +173,7 @@ export default function EditDoctorForm()
 
         const data = await response.json();
         console.log("DATA from USE EFFECT response", data?.data);
-        if (data.message === "Invalid or expired token")
-        {
+        if (data.message === "Invalid or expired token") {
           toast.error("Invalid or expired token")
           navigate("/doctorlogin")
           localStorage.clear()
@@ -199,27 +181,23 @@ export default function EditDoctorForm()
         setDoctorDetails(data?.data);
         setQrCodeUrl(data.data.qrCodeUrl)
         setName(data.data.name)
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = async () =>
-  {
+  const handleRemoveProfilePicture = async () => {
     const token = localStorage.getItem("token");
 
     const doctorId = localStorage.getItem("doctorId");
@@ -236,8 +214,7 @@ export default function EditDoctorForm()
     // {
     //   toast.error('"workingHours.interval" must be a string');
     // }
-    if (data.success === true)
-    {
+    if (data.success === true) {
       console.log("Doctor updated successfully.");
 
       toast.success("Doctor Image removed successfully.");
@@ -249,49 +226,39 @@ export default function EditDoctorForm()
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) =>
-    {
+    ...Array.from({ length: 24 }, (v, i) => {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
   ];
 
-  const handleChange2 = (e) =>
-  {
+  const handleChange2 = (e) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       speciality: e,
     }));
   };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "pinCode")
-    {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
-      } else
-      {
+      } else {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
 
-    if (name === "contactNumber")
-    {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setmobileNumberError("");
-      } else
-      {
+      } else {
         setmobileNumberError("Please enter a valid Number");
       }
     }
 
-    if (name === "workingDays")
-    {
+    if (name === "workingDays") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingDays: [...prevDoctorDetails?.workingDays, value],
@@ -300,8 +267,7 @@ export default function EditDoctorForm()
       name === "workHourFrom" ||
       name === "workHourTo" ||
       name === "interval"
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -319,8 +285,7 @@ export default function EditDoctorForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -328,8 +293,7 @@ export default function EditDoctorForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -338,13 +302,11 @@ export default function EditDoctorForm()
     setIsEditing(true);
   };
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     setIsEditing(true);
   }, [doctorDetails]);
 
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     // Check if the token exists
     const newDoctorDetails = {
@@ -375,41 +337,29 @@ export default function EditDoctorForm()
       },
       doctorPic: doctorImage,
     };
-    if (newDoctorDetails.name === "")
-    {
+    if (newDoctorDetails.name === "") {
       toast.error("Please write Dr. name");
-    } else if (newDoctorDetails.email === "")
-    {
+    } else if (newDoctorDetails.email === "") {
       toast.error("Please write Email");
-    } else if (newDoctorDetails.contactNumber === "")
-    {
+    } else if (newDoctorDetails.contactNumber === "") {
       toast.error("Please write contact number");
-    } else if (newDoctorDetails.workingDays === "")
-    {
+    } else if (newDoctorDetails.workingDays === "") {
       toast.error("Please write working days");
-    } else if (newDoctorDetails.workingHours === "")
-    {
+    } else if (newDoctorDetails.workingHours === "") {
       toast.error("Please write working hours");
-    } else if (newDoctorDetails.totalExperience === "")
-    {
+    } else if (newDoctorDetails.totalExperience === "") {
       toast.error("Please write total experience");
-    } else if (newDoctorDetails.speciality === "")
-    {
+    } else if (newDoctorDetails.speciality === "") {
       toast.error("Please write speciality");
-    } else if (newDoctorDetails.degree === "")
-    {
+    } else if (newDoctorDetails.degree === "") {
       toast.error("Please write degree");
-    } else if (newDoctorDetails.address?.pinCode === "")
-    {
+    } else if (newDoctorDetails.address?.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (newDoctorDetails.address?.district === "")
-    {
+    } else if (newDoctorDetails.address?.district === "") {
       toast.error("Please write district");
-    } else if (newDoctorDetails.address?.state === "")
-    {
+    } else if (newDoctorDetails.address?.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       console.log("New DOCTOR DETAILS", newDoctorDetails);
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
@@ -418,15 +368,13 @@ export default function EditDoctorForm()
         (value) => value === ""
       );
 
-      if (isEmpty || isEditing === false)
-      {
+      if (isEmpty || isEditing === false) {
         toast.error("Please fill the fields or Update");
         setIsEditing(false);
         return;
       }
 
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/doctorlogin`);
@@ -441,12 +389,10 @@ export default function EditDoctorForm()
       });
 
       const data = await response.json();
-      if (data.statusCode === 400)
-      {
+      if (data.statusCode === 400) {
         toast.error('"workingHours.interval" must be a string');
       }
-      if (data.success === true)
-      {
+      if (data.success === true) {
         console.log("Doctor updated successfully.");
 
         toast.success("Doctor updated successfully.");
@@ -456,8 +402,7 @@ export default function EditDoctorForm()
     }
   };
 
-  const handleChange1 = (value) =>
-  {
+  const handleChange1 = (value) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: value, // directly set the value, which is the updated array of working days
@@ -522,12 +467,10 @@ export default function EditDoctorForm()
     value: specialty,
   }));
 
-  const handleDeleteDoctor = async () =>
-  {
+  const handleDeleteDoctor = async () => {
     const token = localStorage.getItem("token");
     const doctorId = localStorage.getItem("doctorId");
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
       localStorage.clear();
       navigate("/userlogin");
@@ -541,16 +484,14 @@ export default function EditDoctorForm()
     });
     const data = await response.json();
 
-    if (data.success === true)
-    {
+    if (data.success === true) {
       toast.success("Doctor Deleted successfully");
       navigate("/doctorlogin");
     }
     console.log("DATA from response", data);
   };
 
-  const toggleQrCode = () =>
-  {
+  const toggleQrCode = () => {
     setShowQrCode(!showQrCode);
   };
 
@@ -560,8 +501,7 @@ export default function EditDoctorForm()
   updateUserEmail(doctorDetails?.email);
   updateUserimage(doctorDetails?.doctorPic);
 
-  const handleDownload = () =>
-  {
+  const handleDownload = () => {
     // Create a new anchor element
     const element = document.createElement("a");
     element.href = `${qrCodeUrl}`;
@@ -576,7 +516,7 @@ export default function EditDoctorForm()
     <>
       <div className="flex flex-col -ml-7  lg:flex-row">
         {/* --------------left-------------- */}
-        <div className="flex flex-col border bg-white lg:w-2/5 xl:w-1/4 py-6 px-3  ml-5 my-5  ">
+        <div className="flex flex-col border bg-white    lg:w-2/5 xl:w-1/4 py-6 px-3  ml-5 my-5  ">
           <div
             className=" flex items-end justify-end w-100% "
             style={{ marginRight: -40, marginTop: -20 }}
@@ -677,8 +617,7 @@ export default function EditDoctorForm()
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() =>
-                    {
+                    onClick={() => {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -863,7 +802,7 @@ export default function EditDoctorForm()
         </div>
 
         {/* ----------------------------------right---------------------------------- */}
-        <div className="border bg-white flex flex-col lg:w-3/5 xl:w-3/4 p-6 my-5 mx-3">
+        <div className="border bg-white flex flex-col  lg:w-3/5 xl:w-3/4 p-6 my-5 mx-3">
           <p className="text-3xl ">Personal Information</p>
           <hr className="border my-2 " />
           {/* -------name------- */}
@@ -939,8 +878,7 @@ export default function EditDoctorForm()
                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 value={doctorDetails?.contactNumber}
                 onChange={handleChange}
-                onInput={(e) =>
-                {
+                onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -983,8 +921,7 @@ export default function EditDoctorForm()
                 name="consultationFee"
                 value={doctorDetails?.consultationFee}
                 onChange={handleChange}
-                onInput={(e) =>
-                {
+                onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -1091,8 +1028,7 @@ export default function EditDoctorForm()
                           value={doctorDetails?.address?.pinCode}
                           placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                          onInput={(e) =>
-                          {
+                          onInput={(e) => {
                             e.target.value = e.target.value.replace(
                               /[^0-9]/g,
                               ""
