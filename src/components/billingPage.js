@@ -484,11 +484,13 @@ export default function BillingPage({ name, contactNo, gender, age }) {
   const [discountValue, setDiscountValue] = useState('');
 
   const handleInputChange = (e) => {
+
     setDiscountValue(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    toast.success('Discount applied')
     console.log('Discount value:', discountValue);
 
   };

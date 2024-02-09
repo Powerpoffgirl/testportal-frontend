@@ -1,17 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Navigate, useNavigate } from "react-router-dom";
-import { Flex, Row, Select } from "antd";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
+// import { Flex, Row, Select } from "antd";
+// import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 // import Modal from "react-responsive-modal";
 import UserContext from './userContext';
-import { ToastContainer, toast } from "react-toastify";
+// import { ToastContainer, toast } from "react-toastify";
 
 import { Table } from "./table";
 import { Modal } from "./tableModal";
 
-export default function TestListPage()
-{
+export default function TestListPage() {
 
     const { updateUser, updateUserEmail, updateUserimage } = useContext(UserContext);
     let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -26,16 +25,12 @@ export default function TestListPage()
 
 
 
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -56,8 +51,7 @@ export default function TestListPage()
                 setUserDetailsEmail(data?.data.email);
                 setUserDetailsPic(data?.data.doctorPic);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -78,16 +72,13 @@ export default function TestListPage()
     ]);
     const [rowToEdit, setRowToEdit] = useState(null);
 
-    const handleDeleteRow = async (index) =>
-    {
+    const handleDeleteRow = async (index) => {
 
-        try
-        {
+        try {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("selectedPatientId");
 
-            if (!token)
-            {
+            if (!token) {
                 console.error("No token found in local storage");
                 return;
             }
@@ -106,23 +97,20 @@ export default function TestListPage()
             setRows(rows.filter((_, idx) => idx !== index));
 
 
-        } catch (error)
-        {
+        } catch (error) {
             console.error("There was an error deleting details:", error);
         }
 
 
     };
 
-    const handleEditRow = (idx) =>
-    {
+    const handleEditRow = (idx) => {
         setRowToEdit(idx);
         setModalOpen(true);
     };
 
 
-    const handleSubmit = async (newRow) =>
-    {
+    const handleSubmit = async (newRow) => {
 
         console.log("code working till now ", newRow)
 
@@ -133,8 +121,7 @@ export default function TestListPage()
 
 
         const token = localStorage.getItem("token")
-        if (test.length > 0)
-        {
+        if (test.length > 0) {
             console.log("==================TEST===========================", test)
             const response = await fetch(`${baseUrl}/api/v1/doctor/update_testBooking/${rows[rowToEdit]._id}`, {
                 method: "Put",
@@ -160,29 +147,22 @@ export default function TestListPage()
             window.location.reload();
 
             return
-        } else
-        {
-            setRows((prevRows) =>
-            {
-                if (rowToEdit === null)
-                {
+        } else {
+            setRows((prevRows) => {
+                if (rowToEdit === null) {
 
                     const updatedRows = [...prevRows, newRow];
                     const newRowNumber = updatedRows.length - 1;
                     setRowNumber(newRowNumber);
                     setSubmitToggle(true);
                     return updatedRows;
-                } else
-                {
-                    const EditDetails = async () =>
-                    {
-                        try
-                        {
+                } else {
+                    const EditDetails = async () => {
+                        try {
                             const token = localStorage.getItem("token");
                             const patientId = localStorage.getItem("selectedPatientId");
 
-                            if (!token)
-                            {
+                            if (!token) {
                                 console.error("No token found in local storage");
                                 return;
                             }
@@ -213,8 +193,7 @@ export default function TestListPage()
                             console.log("DATA from response", responseData);
                             // Handle responseData as needed (maybe update state?)
 
-                        } catch (error)
-                        {
+                        } catch (error) {
                             console.error("There was an error verifying the OTP:", error);
                         }
                     };
@@ -231,19 +210,15 @@ export default function TestListPage()
     };
 
 
-    useEffect(() =>
-    {
+    useEffect(() => {
 
 
-        const submitDetails = async () =>
-        {
-            try
-            {
+        const submitDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -287,14 +262,12 @@ export default function TestListPage()
 
 
 
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
 
-        if (submittoggle)
-        {
+        if (submittoggle) {
 
             submitDetails();
         }
@@ -303,17 +276,13 @@ export default function TestListPage()
 
 
 
-    useEffect(() =>
-    {
-        const fetchTestDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchTestDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -334,8 +303,7 @@ export default function TestListPage()
 
                 setRows(testList || []);
                 setSubmitToggle(false);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error fetching test details:", error);
             }
         };
@@ -383,8 +351,7 @@ export default function TestListPage()
 
                                 {modalOpen && (
                                     <Modal class="flex flex-col  border border-black "
-                                        closeModal={() =>
-                                        {
+                                        closeModal={() => {
                                             setModalOpen(false);
                                             setRowToEdit(null);
                                         }}

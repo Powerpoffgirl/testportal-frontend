@@ -38,6 +38,8 @@
 
     .address {
         display: block;
+        /* border: 1px solid black; */
+        margin-left: 250px;
     }
 
     @page {

@@ -806,7 +806,7 @@ export default function EditDoctorForm() {
           <p className="text-3xl ">Personal Information</p>
           <hr className="border my-2 " />
           {/* -------name------- */}
-          <div className="flex flex-row">
+          <div className="flex flex-col md:flex-row">
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
                 for="name"
@@ -844,7 +844,7 @@ export default function EditDoctorForm() {
             </div>
           </div>
           {/* ------------email------------ */}
-          <div className="flex flex-row">
+          <div className="flex flex-col md:flex-row">
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
                 for="email"
@@ -889,13 +889,13 @@ export default function EditDoctorForm() {
             </div>
           </div>
 
-          <div className="flex flex-row">
+          <div className="flex flex-col md:flex-row">
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
                 for="interval"
                 className="block text-black text-lg font-semibold mt-1 mb-1"
               >
-                Interval<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In mins ex: 10, 20, 30... ]</span>
+                Interval<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In mins: 10,20... ]</span>
               </label>
               <input
                 type="text"

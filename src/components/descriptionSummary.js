@@ -12,8 +12,7 @@ import { Modal } from "./tableModal";
 import { useReactToPrint } from "react-to-print";
 import './printStyles.css'
 
-export default function DescriptionSummary()
-{
+export default function DescriptionSummary() {
     const componentPDF = useRef();
     const { updateUser, updateUserEmail, updateUserimage } =
         useContext(UserContext);
@@ -34,11 +33,9 @@ export default function DescriptionSummary()
     const [patientsHistory, setPatientsHistory] = useState(null);
     const [patient, setPatient] = useState({});
 
-    const handleFileSelect1 = async (event) =>
-    {
+    const handleFileSelect1 = async (event) => {
         const file = event.target.files[0];
-        if (file)
-        {
+        if (file) {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("patientId");
             const doctorId = localStorage.getItem("doctorId");
@@ -46,8 +43,7 @@ export default function DescriptionSummary()
             formData.append("patientReport", file);
 
             console.log("FORM DATA", formData);
-            try
-            {
+            try {
                 const response = await fetch(`${baseUrl}/api/v1/doctor/upload_patient_report/${patientId}`, {
                     method: "POST",
                     headers: {
@@ -56,32 +52,26 @@ export default function DescriptionSummary()
                     body: formData,
                 });
 
-                if (!response.ok)
-                {
+                if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
 
                 const data = await response.json();
 
                 fileInputRef.current.value = "";
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("Error ", error);
                 toast.error("Error uploading pdf. Please try again.");
             }
         }
     };
 
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchUserDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -102,8 +92,7 @@ export default function DescriptionSummary()
                 setUserDetailsEmail(data?.data.email);
                 setUserDetailsPic(data?.data.doctorPic);
                 console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -111,15 +100,11 @@ export default function DescriptionSummary()
     }, []);
 
 
-    useEffect(() =>
-    {
-        const fetchPatientDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchPatientDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -141,8 +126,7 @@ export default function DescriptionSummary()
                 setPatientsHistory(data?.data);
                 setPatient(data?.data[0]);
 
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error verifying the OTP:", error);
             }
         };
@@ -169,17 +153,13 @@ export default function DescriptionSummary()
     const [rowToEdit, setRowToEdit] = useState(null);
 
 
-    useEffect(() =>
-    {
-        const fetchTestDetails = async () =>
-        {
-            try
-            {
+    useEffect(() => {
+        const fetchTestDetails = async () => {
+            try {
                 const token = localStorage.getItem("token");
                 const patientId = localStorage.getItem("selectedPatientId");
 
-                if (!token)
-                {
+                if (!token) {
                     console.error("No token found in local storage");
                     return;
                 }
@@ -199,8 +179,7 @@ export default function DescriptionSummary()
                 console.log("DATA from response", responseData);
 
                 setRows(responseData.data || []);
-            } catch (error)
-            {
+            } catch (error) {
                 console.error("There was an error fetching test details:", error);
             }
         };
@@ -262,34 +241,47 @@ export default function DescriptionSummary()
                                     }}
                                 >
                                     <div class="">
-                                        <p style={{ fontWeight: 500 }}>
-                                            Name: {patient?.patientId?.name}
-                                        </p>
 
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "row",
-                                                gap: "10px",
-                                            }}
-                                        >
-                                            <p style={{ color: "black", fontWeight: 500 }}>Age: </p>
-                                            <p style={{ color: "black", fontWeight: 500 }}>
-                                                {patient?.patientId?.age + " yr"}
-                                            </p>
+                                        <p style={{ fontWeight: 500 }}>Appointmment Details</p>
+                                        <div class="flex flex-col ">
+                                            <div class="flex flex-row space-x-2">
+                                                <p>{appointment?.appointmentDate?.date.split('-').reverse().join('/')}</p>
+                                                <p> {appointment?.appointmentDate?.time} </p>
+                                            </div>
+                                            <div class="">
+                                                <p class="capitalize">Dr. {appointment?.doctorId?.name}</p>
+                                            </div>
+                                            <div class="">
+                                                <p class="flex flex-wrap space-x-1 w-64" >
+                                                    <p>
+                                                        {appointment?.doctorId?.address?.houseNo}
+                                                    </p>
+                                                    <p>
+                                                        {appointment?.doctorId?.address?.floor}
+                                                    </p>
+                                                    <p>
+                                                        {appointment?.doctorId?.address?.block}
+                                                    </p>
+                                                    <p>
+                                                        {appointment?.doctorId?.address?.area}
+                                                    </p>
+                                                    <p>
+                                                        {appointment?.doctorId?.address?.district}
+                                                    </p>
+                                                    <p>
+                                                        {appointment?.doctorId?.address?.state}
+                                                    </p>
+                                                    <p>
+                                                        {appointment?.doctorId?.address?.pinCode}
+                                                    </p>
+
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div
-                                            style={{
-                                                display: "flex",
-                                                flexDirection: "row",
-                                                gap: "10px",
-                                            }}
-                                        >
-                                            <p style={{ color: "black", fontWeight: 500 }}>Weight: </p>
-                                            <p style={{ color: "black", fontWeight: 500 }}>
-                                                {patient?.patientId?.bodyWeight + " kg"}
-                                            </p>
-                                        </div>
+
+
+
+
                                     </div>
                                 </div>
 
@@ -299,9 +291,13 @@ export default function DescriptionSummary()
                                         display: isLg ? "none" : "",
                                     }}
                                 >
-                                    <div class="ml-auto">
-
-                                        <p style={{ fontWeight: 500 }}>Home Collection</p>
+                                    <div class="ml-auto ">
+                                        <p style={{ fontWeight: 500 }}>Patient Details</p>
+                                        <div class="flex flex-wrap space-x-1">
+                                            <p>{patient?.patientId?.name}, </p>
+                                            <p>{patient?.patientId?.age} yr,</p>
+                                            <p>{patient?.patientId?.bodyWeight} kg</p>
+                                        </div>
                                         <p>
                                             {patient?.patientId?.address?.houseNo},{" "}
                                             {patient?.patientId?.address?.block},{" "}
@@ -310,7 +306,9 @@ export default function DescriptionSummary()
                                         <p>
                                             {" "}
                                             {patient?.patientId?.address?.district},
+                                            {" "}
                                             {patient?.patientId?.address?.state},
+                                            {" "}
                                             {patient?.patientId?.address?.pinCode}
 
                                         </p>
@@ -324,9 +322,9 @@ export default function DescriptionSummary()
                                     <table className=" divide-y divide-gray-200 border border-[#89CFF0]">
                                         <thead className="bg-[#89CFF0]">
                                             <tr>
-                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Dr. Name</th>
-                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Date</th>
-                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Time</th>
+                                                {/* <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Dr. Name</th> */}
+                                                {/* <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Date</th>
+                                                <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Time</th> */}
                                                 <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Issues</th>
                                                 <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Disease</th>
                                                 <th className="px-2 py-3 text-left text-base font-medium text-white uppercase tracking-wider">Medicine Name</th>
@@ -334,9 +332,9 @@ export default function DescriptionSummary()
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            <td className="w-[300px] px-2 whitespace-normal text-sm text-black break-words">{appointment?.doctorId?.name}</td>
-                                            <td className="w-[300px] px-2 whitespace-normal text-sm text-black break-words">{appointment?.appointmentDate?.date}</td>
-                                            <td className="w-[300px] px-2 whitespace-normal text-sm text-black break-words">{appointment?.appointmentDate?.time}</td>
+                                            {/* <td className="w-[300px] px-2 whitespace-normal text-sm text-black break-words">{appointment?.doctorId?.name}</td> */}
+                                            {/* <td className="w-[300px] px-2 whitespace-normal text-sm text-black break-words">{appointment?.appointmentDate?.date}</td>
+                                            <td className="w-[300px] px-2 whitespace-normal text-sm text-black break-words">{appointment?.appointmentDate?.time}</td> */}
                                             <td className="w-[300px] px-2 py-4 whitespace-normal text-sm text-black break-words">{appointment?.issues.join(", ")}</td>
                                             <td className="w-[300px] px-2 py-4 whitespace-normal text-sm text-black break-words">{appointment?.diseases.join(", ")}</td>
                                             <td className="w-[300px] px-2 py-4 whitespace-normal text-sm text-black break-words">{appointment?.medicineName.join(", ")}</td>

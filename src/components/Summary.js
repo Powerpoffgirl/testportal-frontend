@@ -5,6 +5,10 @@ import UserContext from "./userContext";
 import { ToastContainer, toast } from "react-toastify";
 import "./Table.css";
 import { useReactToPrint } from "react-to-print";
+import { FaCircleChevronRight } from "react-icons/fa6";
+import { FaCircleChevronLeft } from "react-icons/fa6";
+import { MdDownloadForOffline } from "react-icons/md";
+import { BsFillSendFill } from "react-icons/bs";
 
 export default function Summary() {
     const componentPDF = useRef();
@@ -404,77 +408,62 @@ export default function Summary() {
                             </div>
                         </div>
 
-                        <div class=" justify-content-center flex flex-col sm:flex-row"
+                        <div class=" justify-content-center flex flex-row"
                             style={{
                                 gap: "10px",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                marginTop: "20px",
+                                marginTop: "30px",
                             }}
                         >
                             <button
-                                class="mx-4"
-                                style={{
-                                    height: "40px",
-                                    width: "120px",
-                                    backgroundColor: "#89CFF0",
-                                    borderRadius: "20px",
-                                    marginTop: "20px",
-                                    padding: "2px",
-                                    color: 'white'
-                                }}
+                                class=""
+
                                 onClick={
                                     reportDate ? () => navigate(`/billing`, { state: { reportDate: reportDate } }) : () => { toast.error("please select a date") }
                                 }
                             >
-                                Lab Tests
+                                <FaCircleChevronLeft style={{
+                                    color: 'white',
+                                    backgroundColor: "#89CFF0", borderRadius: "15px", fontSize: '40px',
+                                    padding: '5px 10px 5px 10px '
+                                }} />
                             </button>
                             <button
                                 onClick={generatePdf}
-                                style={{
-                                    height: "40px",
-                                    width: "140px",
-                                    backgroundColor: "#89CFF0",
-                                    borderRadius: "20px",
-                                    marginTop: "20px",
-                                    padding: "2px",
-                                    color: "white",
-                                }}
                             >
-                                Download PDF
+                                <MdDownloadForOffline style={{
+                                    color: 'white',
+                                    backgroundColor: "#89CFF0", borderRadius: "15px", fontSize: '40px',
+                                    padding: '5px 10px 5px 10px '
+                                }} />
                             </button>
 
-                            <button
-
-                                style={{
-                                    height: "40px",
-                                    width: "120px",
-                                    backgroundColor: "#89CFF0",
-                                    borderRadius: "20px",
-                                    marginTop: "20px",
-                                    padding: "2px",
-                                }}
-                            >
+                            <button  >
                                 <label htmlFor="files" id="sendToSMSButton" disabled style={{ color: "white" }}>
-                                    Send To SMS
+
+                                    <BsFillSendFill style={{
+                                        color: 'white',
+                                        backgroundColor: "#89CFF0", borderRadius: "15px", fontSize: '40px',
+                                        padding: '5px 10px 5px 10px '
+                                    }} />
                                 </label>
                             </button>
+
+
+
                             <button
-                                class="mx-4"
-                                style={{
-                                    height: "40px",
-                                    width: "120px",
-                                    backgroundColor: "#89CFF0",
-                                    borderRadius: "20px",
-                                    marginTop: "20px",
-                                    padding: "2px",
-                                    color: 'white'
-                                }}
+
+
                                 onClick={
                                     reportDate ? () => navigate(`/billingprice`, { state: { reportDate: reportDate } }) : () => { toast.error("please select a date") }
                                 }
                             >
-                                Lab Bill
+                                <FaCircleChevronRight style={{
+                                    color: 'white',
+                                    backgroundColor: "#89CFF0", borderRadius: "15px", fontSize: '40px',
+                                    padding: '5px 10px 5px 10px '
+                                }} />
                             </button>
                             <p className="block text-black text-lg font-semibold ">
                                 <input
@@ -489,7 +478,7 @@ export default function Summary() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

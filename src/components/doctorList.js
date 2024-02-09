@@ -702,9 +702,12 @@ export default function DoctorList({ searchTerm }) {
                           <div class="flex flex-row-reverse">
                             {mobileNumberError.length === 0 ? (
                               <button
-                                className="text-white text-xs rounded-3xl px-5 py-2 "
+                                // className="text-white text-xs rounded-3xl px-5 py-2 "
+                                // style={{ backgroundColor: " #89CFF0" }}
                                 onClick={handleOtp}
-                                style={{ backgroundColor: " #89CFF0" }}
+
+                                className="btn btn-primary border py-2 px-5 mt-4 rounded-3xl text-white"
+                                style={{ backgroundColor: "#89CFF0" }}
                               >
                                 Send OTP
                               </button>
@@ -848,9 +851,13 @@ export default function DoctorList({ searchTerm }) {
                         {bookingslottoggle && !appointment && (
                           <div class="flex mx-auto space-x-4 mt-3">
                             <button
-                              className="text-white text-sm rounded-3xl px-5 py-2 mb-1 "
                               onClick={handleBookAppointment}
-                              style={{ backgroundColor: " #89CFF0" }}
+
+                              className="btn btn-primary border py-2 px-10  rounded-3xl text-white"
+                              style={{ backgroundColor: "#89CFF0" }}
+
+                            // className="text-white text-sm rounded-3xl px-5 py-2 mb-1 "
+                            // style={{ backgroundColor: " #89CFF0" }}
                             >
                               Book Appointment
                             </button>
@@ -929,7 +936,7 @@ export default function DoctorList({ searchTerm }) {
                         key={index}
                         ref={(input) => (otpInputs[index] = input)}
                         type="number"
-                        className="w-10 h-8 mr-2 text-lg  border-2 text-black border-gray-400 text-center "
+                        className="w-7 h-8  md:w-8  mr-2 text-lg  border-2 text-black border-gray-400 text-center "
                         maxLength={1}
                         value={digit}
                         onChange={(e) => handleInputChange(e, index)}
@@ -967,7 +974,7 @@ export default function DoctorList({ searchTerm }) {
                       Resend
                     </button>{" "}
                   </p>
-                  <div style={{ width: '100%', display: 'flex', alignItems: "center", justifyContent: 'center' }}>
+                  <div class="flex flex-row-reverse " style={{ width: '100%' }}>
                     <button
                       className="btn btn-primary border py-2 px-10 mt-4 rounded-3xl text-white"
                       style={{ backgroundColor: "#89CFF0" }}

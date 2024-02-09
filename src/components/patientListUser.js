@@ -325,7 +325,7 @@ export default function PatientListUser({ searchTerm }) {
               >
                 <div className="flex lg:flex-row flex-col justify-start items-center ">
                   <div
-                    className="flex items-center gap-x-2 "
+                    className="flex items-center gap-x-2 mr-auto"
                     onClick={() => findSelectedDoctor(patient._id)}
                   >
                     {patient.patientPic ? (
@@ -336,7 +336,7 @@ export default function PatientListUser({ searchTerm }) {
                       />
                     ) : (
                       <AccountCircleIcon
-                        style={{ fontSize: "90px", color: "#B1DAED" }}
+                        style={{ fontSize: isTab ? "50px" : "90px", color: "#B1DAED" }}
                       />
                     )}
 
@@ -357,9 +357,9 @@ export default function PatientListUser({ searchTerm }) {
                       </p>
                     </div>
                   </div>
-                  <div className="flex flex-row ms-auto gap-1 sm:gap-4 pr-5">
+                  <div className="flex flex-row ms-auto gap-1 sm:gap-4 pr-10 md:pr-3">
                     <button
-                      class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
+                      class="rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
                       onClick={() =>
                         handleEditPatient(
                           patient._id,
@@ -373,7 +373,7 @@ export default function PatientListUser({ searchTerm }) {
                         marginTop: isTab ? null : null,
                       }}
                     >
-                      {"Edit"}
+                      {isTab ? <FaEdit /> : "Edit"}
                     </button>
 
                     <Popconfirm
