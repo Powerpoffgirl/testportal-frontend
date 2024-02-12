@@ -28,7 +28,7 @@ export default function EditDoctorForm() {
   const onOpenModal = () => setOpen1(true);
   const onCloseModal = () => setOpen1(false);
   const [doctorsList, setDoctorsList] = useState([]);
-  const [name, setName] = useState("")
+  const [name, setName] = useState("");
   const [doctorImage, setDoctorImage] = useState();
   const [isHovered, setIsHovered] = useState(false);
   const [isHovered1, setIsHovered1] = useState(false);
@@ -38,6 +38,7 @@ export default function EditDoctorForm() {
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [contactNumber, setcontactNumber] = useState(null);
   const [pinCodeError, setPinCodeError] = useState("");
+  const [houseNoError, setHouseNoError] = useState("");
 
   const [doctorDetails, setDoctorDetails] = useState({
     name: "",
@@ -174,13 +175,13 @@ export default function EditDoctorForm() {
         const data = await response.json();
         console.log("DATA from USE EFFECT response", data?.data);
         if (data.message === "Invalid or expired token") {
-          toast.error("Invalid or expired token")
-          navigate("/doctorlogin")
-          localStorage.clear()
+          toast.error("Invalid or expired token");
+          navigate("/doctorlogin");
+          localStorage.clear();
         }
         setDoctorDetails(data?.data);
-        setQrCodeUrl(data.data.qrCodeUrl)
-        setName(data.data.name)
+        setQrCodeUrl(data.data.qrCodeUrl);
+        setName(data.data.name);
       } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
@@ -286,6 +287,21 @@ export default function EditDoctorForm() {
         "state",
       ].includes(name)
     ) {
+      if ("houseNo" === name) {
+        if (value.length > 5) {
+          setHouseNoError("Max 5 chars.");
+        } else {
+          setHouseNoError("");
+          setDoctorDetails((prevDoctorDetails) => ({
+            ...prevDoctorDetails,
+            address: {
+              ...prevDoctorDetails.address,
+              [name]: value,
+            },
+          }));
+        }
+      }
+
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -396,7 +412,6 @@ export default function EditDoctorForm() {
         console.log("Doctor updated successfully.");
 
         toast.success("Doctor updated successfully.");
-
       }
       console.log("DATA from response", data);
     }
@@ -510,7 +525,6 @@ export default function EditDoctorForm() {
     element.click();
     document.body.removeChild(element);
   };
-
 
   return (
     <>
@@ -663,7 +677,7 @@ export default function EditDoctorForm() {
                 value={doctorDetails?.workingDays}
                 onChange={handleChange1}
                 placeholder="Mon-Fri"
-              // Add other props as needed
+                // Add other props as needed
               >
                 {Daysdropdown.map((option) => (
                   <Select.Option key={option.value} value={option.value}>
@@ -716,7 +730,10 @@ export default function EditDoctorForm() {
               for="total-experience"
               className="block text-black text-lg font-semibold mt-1 mb-1"
             >
-              Total Experience<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In yrs ex: 1, 2, 3... ]</span>
+              Total Experience<span className="text-red-500">*</span>{" "}
+              <span style={{ fontSize: "12px", color: "gray" }}>
+                [ In yrs ex: 1, 2, 3... ]
+              </span>
             </label>
             <input
               type="text"
@@ -781,24 +798,32 @@ export default function EditDoctorForm() {
             />
             {errors.degree && <p className="text-red-500">{errors.degree}</p>}
           </div>
-          {
-            showQrCode && (
-              <>
-                <p class="mx-auto ">
-                  {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
-                </p>
-                <div style={{ width: '100%', display: 'flex', alignItems: "center", justifyContent: 'center' }}>
-                  <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-                    style={{
-                      backgroundColor: "#89CFF0",
-                    }} onClick={handleDownload}> Download QR</button>
-                </div>
-              </>
-
-            )
-
-
-          }
+          {showQrCode && (
+            <>
+              <p class="mx-auto ">
+                {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
+              </p>
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <button
+                  className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+                  style={{
+                    backgroundColor: "#89CFF0",
+                  }}
+                  onClick={handleDownload}
+                >
+                  {" "}
+                  Download QR
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         {/* ----------------------------------right---------------------------------- */}
@@ -895,7 +920,10 @@ export default function EditDoctorForm() {
                 for="interval"
                 className="block text-black text-lg font-semibold mt-1 mb-1"
               >
-                Interval<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In mins: 10,20... ]</span>
+                Interval<span className="text-red-500">*</span>{" "}
+                <span style={{ fontSize: "12px", color: "gray" }}>
+                  [ In mins: 10,20... ]
+                </span>
               </label>
               <input
                 type="text"
@@ -944,7 +972,7 @@ export default function EditDoctorForm() {
                   <div class="flex flex-row ">
                     <div className="px-2 lg:w-1/2  mt-3">
                       {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
+                      doctorDetails?.newDoctor === true ? (
                         <input
                           type="text"
                           placeholder="House No."
@@ -964,10 +992,13 @@ export default function EditDoctorForm() {
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       )}
+                      <p class=" text-red-500 flex flex-wrap">
+                        {houseNoError && <p>{houseNoError}</p>}
+                      </p>
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
+                      doctorDetails?.newDoctor === true ? (
                         <input
                           type="text"
                           id="floor"
@@ -992,7 +1023,7 @@ export default function EditDoctorForm() {
                   <div class="flex flex-row">
                     <div className="px-2 lg:w-1/2 mt-3">
                       {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
+                      doctorDetails?.newDoctor === true ? (
                         <input
                           type="text"
                           id="block"
@@ -1019,7 +1050,7 @@ export default function EditDoctorForm() {
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
+                      doctorDetails?.newDoctor === true ? (
                         <input
                           type="text"
                           id="pinCode"
@@ -1055,7 +1086,7 @@ export default function EditDoctorForm() {
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {doctorsList?.length === 0 ||
-                    doctorDetails?.newDoctor === true ? (
+                  doctorDetails?.newDoctor === true ? (
                     <input
                       type="text"
                       id="area"
@@ -1082,7 +1113,7 @@ export default function EditDoctorForm() {
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
                     {doctorsList?.length === 0 ||
-                      doctorDetails?.newDoctor === true ? (
+                    doctorDetails?.newDoctor === true ? (
                       <input
                         type="text"
                         id="district"
@@ -1110,7 +1141,7 @@ export default function EditDoctorForm() {
 
                   <div className="px-2 w-1/2 mt-3">
                     {doctorsList?.length === 0 ||
-                      doctorDetails?.newUser === true ? (
+                    doctorDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="state"
@@ -1160,7 +1191,6 @@ export default function EditDoctorForm() {
             )}
           </div>
           <div className="flex flex-row-reverse mt-5 my-2 gap-4">
-
             <button
               className="btn btn-primary border py-3 px-6 rounded-3xl text-white"
               style={{

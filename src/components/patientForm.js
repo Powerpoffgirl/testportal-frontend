@@ -13,8 +13,7 @@ import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaAngleDown } from "react-icons/fa";
 import { Select } from "antd";
 
-export default function PatientForm()
-{
+export default function PatientForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -57,6 +56,7 @@ export default function PatientForm()
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [newPatientDetails, setNewPatientDetails] = useState({});
   const [doctorImage, setDoctorImage] = useState();
+
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [patientDetails, setPatientDetails] = useState({
     name: "",
@@ -77,12 +77,9 @@ export default function PatientForm()
     patientPic: "",
   });
 
-  useEffect(() =>
-  {
-    const fetchData = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
         const response = await fetch(
           `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
           {
@@ -90,8 +87,7 @@ export default function PatientForm()
           }
         );
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
 
@@ -110,30 +106,25 @@ export default function PatientForm()
             state: state,
           },
         }));
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    if (patientDetails?.address?.pinCode)
-    {
+    if (patientDetails?.address?.pinCode) {
       fetchData();
     }
   }, [patientDetails?.address?.pinCode]);
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const formData = new FormData();
       formData.append("userPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -142,8 +133,7 @@ export default function PatientForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -156,60 +146,48 @@ export default function PatientForm()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleChange1 = (e) =>
-  {
+  const handleChange1 = (e) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       gender: e,
     }));
   };
-  const handleChange2 = (e) =>
-  {
+  const handleChange2 = (e) => {
     setPatientDetails((prevPatientDetails) => ({
       ...prevPatientDetails,
       ageType: e,
     }));
   };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "pinCode")
-    {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setPinCodeError("");
-      } else
-      {
+      } else {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
 
-    if (name === "contactNumber")
-    {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setmobileNumberError("");
-      } else
-      {
+      } else {
         setmobileNumberError("Please enter a valid Number");
       }
     }
@@ -245,8 +223,22 @@ export default function PatientForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
+      if ("houseNo" === name) {
+        if (value.length > 5) {
+          setHouseNoError("Max 5 chars.");
+        } else {
+          setHouseNoError("");
+          setPatientDetails((prevPatientDetails) => ({
+            ...prevPatientDetails,
+            address: {
+              ...prevPatientDetails.address,
+              [name]: value,
+            },
+          }));
+        }
+      }
+
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -254,8 +246,7 @@ export default function PatientForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -276,8 +267,7 @@ export default function PatientForm()
     { label: "Other", value: "Other" },
   ];
 
-  const handleRegister = async (e) =>
-  {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     const newPatientDetails = {
@@ -299,41 +289,29 @@ export default function PatientForm()
       patientPic: userImage,
     };
 
-    if (newPatientDetails.gender === "")
-    {
+    if (newPatientDetails.gender === "") {
       toast.error("Please write gender");
-    } else if (newPatientDetails.age === "")
-    {
+    } else if (newPatientDetails.age === "") {
       toast.error("Please write age");
-    } else if (newPatientDetails.ageType === "")
-    {
+    } else if (newPatientDetails.ageType === "") {
       toast.error("Please write Age Type");
-    } else if (newPatientDetails.bodyWeight === "")
-    {
+    } else if (newPatientDetails.bodyWeight === "") {
       toast.error("Please write Body Weight");
-    } else if (newPatientDetails.name === "")
-    {
+    } else if (newPatientDetails.name === "") {
       toast.error("Please write name");
-    } else if (newPatientDetails.contactNumber === "")
-    {
+    } else if (newPatientDetails.contactNumber === "") {
       toast.error("Please write Contact Number");
-    } else if (!newPatientDetails.address?.pinCode)
-    {
+    } else if (!newPatientDetails.address?.pinCode) {
       toast.error("Please write Pincode");
-    } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode))
-    {
+    } else if (!/^\d{6}$/.test(newPatientDetails.address?.pinCode)) {
       toast.error("Please enter a valid 6-digit PIN code");
-    } else if (newPatientDetails.address?.district === "")
-    {
+    } else if (newPatientDetails.address?.district === "") {
       toast.error("Please write district");
-    } else if (newPatientDetails.address?.state === "")
-    {
+    } else if (newPatientDetails.address?.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/userlogin`);
@@ -347,20 +325,17 @@ export default function PatientForm()
         body: JSON.stringify(newPatientDetails),
       });
       const data = await response.json();
-      if (data.success === false)
-      {
-        if (data.message === "Invalid or expired token")
-        {
-          navigate("/userlogin")
+      if (data.success === false) {
+        if (data.message === "Invalid or expired token") {
+          navigate("/userlogin");
         }
         toast.error("Member already registerd");
       }
-      if (data.success === true)
-      {
+      if (data.success === true) {
         onOpenModal();
         localStorage.setItem("patientId", data.data._id);
         toast.success("Member details updated!");
-        window.history.back()
+        window.history.back();
       }
       console.log("DATA from response", data);
     }
@@ -455,8 +430,7 @@ export default function PatientForm()
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() =>
-                    {
+                    onClick={() => {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -537,8 +511,7 @@ export default function PatientForm()
                 name="age"
                 onChange={handleChange}
                 className="block mt-0 w-full placeholder-gray-400/70 rounded-lg border bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                onInput={(e) =>
-                {
+                onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
               />
@@ -592,8 +565,7 @@ export default function PatientForm()
               name="bodyWeight"
               onChange={handleChange}
               className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-              onInput={(e) =>
-              {
+              onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
             />
@@ -641,8 +613,7 @@ export default function PatientForm()
               pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
               required
               onChange={handleChange}
-              onInput={(e) =>
-              {
+              onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
               className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -665,7 +636,7 @@ export default function PatientForm()
                   <div class="flex flex-row ">
                     <div className="px-2 lg:w-1/2  mt-3">
                       {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                         <input
                           type="text"
                           placeholder="House No."
@@ -684,10 +655,13 @@ export default function PatientForm()
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       )}
+                      <p class=" text-red-500 flex flex-wrap">
+                        {houseNoError && <p>{houseNoError}</p>}
+                      </p>
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="floor"
@@ -711,7 +685,7 @@ export default function PatientForm()
                   <div class="flex flex-row">
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="block"
@@ -737,7 +711,7 @@ export default function PatientForm()
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
+                      userDetails?.newUser === true ? (
                         <input
                           type="text"
                           id="pinCode"
@@ -746,8 +720,7 @@ export default function PatientForm()
                           onChange={handleChange}
                           placeholder="Pin Code*"
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                          onInput={(e) =>
-                          {
+                          onInput={(e) => {
                             e.target.value = e.target.value.replace(
                               /[^0-9]/g,
                               ""
@@ -774,7 +747,7 @@ export default function PatientForm()
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                  userDetails?.newUser === true ? (
                     <input
                       type="text"
                       id="area"
@@ -800,7 +773,7 @@ export default function PatientForm()
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="district"
@@ -828,7 +801,7 @@ export default function PatientForm()
 
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="state"
