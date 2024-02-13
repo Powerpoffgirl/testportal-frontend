@@ -578,7 +578,7 @@ export default function AppointmentListUser({ searchTerm })
                           okText="Delete"
                           okType="danger"
                           cancelText="No"
-                          className="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                          className="rounded-full px-3 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                           onConfirm={() =>
                             handleDeleteAppointment(
                               appointment._id,
