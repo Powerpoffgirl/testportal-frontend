@@ -235,13 +235,14 @@ export default function AppointmentListUser({ searchTerm })
 
   const handleDownload = (appointment) =>
   {
-    const reportUrl = appointment.appointmentReport[0]; // Assuming this is the URL of the report
+    console.log("APPOINTMENT", appointment)
+    const reportUrl = appointment?.appointmentReport[0]; // Assuming this is the URL of the report
     const link = document.createElement('a');
     link.href = reportUrl;
     link.setAttribute('download', 'report.pdf'); // Change 'report.pdf' to whatever name you want the downloaded file to have
-    document.body.appendChild(link);
+    document?.body?.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    document?.body?.removeChild(link);
   }
 
   return (
