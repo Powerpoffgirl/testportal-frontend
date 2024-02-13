@@ -554,7 +554,13 @@ export default function AppointmentListUser({ searchTerm })
                   {
                     appointment.appointmentStatus === "Confirm" ? (
                       appointment.medicineName.length === 0 ?
-                        (<button className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-[#89CFF0] border border-[#89CFF0] text-xs sm:text-sm">Change Date</button>) :
+                        (<button className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-[#89CFF0] border border-[#89CFF0] text-xs sm:text-sm"
+                          onClick={() =>
+                            handleEditAppointment(
+                              appointment
+                            )
+                          }
+                        >Change Date</button>) :
                         (
                           <button
                             className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-[#89CFF0] border border-[#89CFF0] text-xs sm:text-sm"
