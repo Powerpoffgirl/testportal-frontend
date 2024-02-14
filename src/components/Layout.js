@@ -5,8 +5,7 @@ import { useMediaQuery } from "react-responsive";
 import NavigationLinks from "./NavigationLinks";
 import { IoIosSearch } from "react-icons/io";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import UserContext from './userContext';
-
+import UserContext from "./userContext";
 
 export default function Layout({
   Component,
@@ -15,41 +14,34 @@ export default function Layout({
   headerTextBottom,
   search,
   AddButton,
-  filter
-})
-{
-  const baseUrl = process.env.REACT_APP_BASE_URL
-  console.log("TYPE=================", type)
+  filter,
+}) {
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  console.log("TYPE=================", type);
   const userType = type?.toLowerCase();
-  const handleLogout = async () =>
-  {
+  const handleLogout = async () => {
     const token = localStorage.getItem("token");
 
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
-      localStorage.clear()
-      navigate(`/${userType}login`)
+      localStorage.clear();
+      navigate(`/${userType}login`);
       // return;
     }
-    const response = await fetch(
-      `${baseUrl}/api/v1/${type}/logout`,
-      {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,  // Add the token to the request headers
-        },
-        body: JSON.stringify({})
-      }
-    );
+    const response = await fetch(`${baseUrl}/api/v1/${type}/logout`, {
+      method: "post",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token, // Add the token to the request headers
+      },
+      body: JSON.stringify({}),
+    });
     const data = await response.json();
-    if (data.success === true)
-    {
+    if (data.success === true) {
       localStorage.removeItem("token");
-      localStorage.clear()
+      localStorage.clear();
     }
-  }
+  };
 
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const location = useLocation();
@@ -61,20 +53,16 @@ export default function Layout({
   const [searchTerm, setSearchTerm] = useState("");
   const sidebarRef = useRef(null);
   const [pic, setPic] = useState();
-  const [user, setUser] = useState()
+  const [user, setUser] = useState();
   const { userName, userEmail, userPic } = useContext(UserContext);
   const [userDetails, setUserDetails] = useState();
 
-
-
-  useEffect(() =>
-  {
-    if (type === "doctor" || "admin" || "user")
-    {
+  useEffect(() => {
+    if (type === "doctor" || "admin" || "user") {
       // const nameParts = userName.split(' '); // Split the string by spaces
       // const firstName = nameParts[0]; // Get the first part, which is the first name
       setUser("Dr. " + userName);
-      setPic(userPic)
+      setPic(userPic);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, userName]); // Include dependencies in the dependency array
@@ -114,6 +102,8 @@ export default function Layout({
 
   const link4 = [
     { text: "Doctor’s List", to: "/doctorlistadmin" },
+    { text: "Lab’s List", to: "/lablistadmin" },
+
     { text: "Patient’s List", to: "/patientlistadmin" },
     { text: "Appointment List", to: "/appointmentlistadmin" },
     { text: "Profile", to: "/editadminform" },
@@ -133,65 +123,52 @@ export default function Layout({
     { text: "Logout", to: "/superadminlogin", onClick: handleLogout },
   ];
 
-
-  const toggleSidebar = () =>
-  {
+  const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
 
-  const closeSidebarOnOutsideClick = (e) =>
-  {
-    if (sidebarRef.current && !sidebarRef.current.contains(e.target))
-    {
+  const closeSidebarOnOutsideClick = (e) => {
+    if (sidebarRef.current && !sidebarRef.current.contains(e.target)) {
       setIsSidebarOpen(false);
     }
   };
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     setPic(localStorage.getItem("pic"));
     document.addEventListener("click", closeSidebarOnOutsideClick);
 
-    return () =>
-    {
+    return () => {
       document.removeEventListener("click", closeSidebarOnOutsideClick);
     };
   }, []);
 
-  const handleEditProfile = () =>
-  {
-    if (type === "user")
-    {
+  const handleEditProfile = () => {
+    if (type === "user") {
       navigate("/edituserform");
-    } else if (type === "admin")
-    {
+    } else if (type === "admin") {
       navigate("/edituserform");
-    } else if (type === "superAdmin")
-    {
+    } else if (type === "superAdmin") {
       navigate("/superadminuserform");
-    } else
-    {
+    } else {
       navigate("/editdoctorform");
     }
   };
 
-  const handleDoctorForm = () =>
-  {
-    if (type === "user")
-    {
+  const handleDoctorForm = () => {
+    if (type === "user") {
       navigate("/patientform");
-    } else if (type === "admin")
-    {
+    } else if (type === "admin") {
       navigate("/doctorformadmin");
-    } else if (type === "superAdmin")
-    {
+    } else if (type === "superAdmin") {
       console.log("hello");
       navigate("/superadminadminform");
+    } else if (type === "labadmin") {
+      console.log("labadmin");
+      navigate("/labformadmin");
     }
   };
 
-  const handleSearchTerm = (e) =>
-  {
+  const handleSearchTerm = (e) => {
     setSearchTerm(e.target.value);
   };
 
@@ -201,11 +178,13 @@ export default function Layout({
     <>
       <div className="flex min-h-screen truncate">
         <aside
-          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#89CFF0] border-r transform ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-            } ease-in-out transition-all duration-300 md:transform-none`}
+          className={`fixed top-0 left-0 z-20 flex flex-col overflow-auto shadow-2xl w-72 h-screen px-4 py-8 bg-[#89CFF0] border-r transform ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          } ease-in-out transition-all duration-300 md:transform-none`}
         >
           <h1 className="font-bold text-2xl" style={{ color: "white" }}>
-            Welcome! {type ? type.charAt(0).toUpperCase() + type.slice(1) : "Guest"}
+            Welcome!{" "}
+            {type ? type.charAt(0).toUpperCase() + type.slice(1) : "Guest"}
           </h1>
           <div
             class="flex items-center gap-x-2 mt-3 truncate"
@@ -229,9 +208,7 @@ export default function Layout({
               </h1>
 
               <div class="truncate overflow-x-auto">
-                <p class="text-white text-base truncate">
-                  {userEmail}
-                </p>
+                <p class="text-white text-base truncate">{userEmail}</p>
               </div>
             </div>
           </div>
@@ -241,6 +218,7 @@ export default function Layout({
           {type === "doctor" && <NavigationLinks links={link3} />}
           {type === "admin" && <NavigationLinks links={link4} />}
           {type === "superAdmin" && <NavigationLinks links={link5} />}
+          {type === "labadmin" && <NavigationLinks links={link4} />}
         </aside>
         <div className="flex flex-col flex-grow md:pl-4 pr-2">
           <nav

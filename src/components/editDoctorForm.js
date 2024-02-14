@@ -289,7 +289,7 @@ export default function EditDoctorForm() {
     ) {
       if ("houseNo" === name) {
         if (value.length > 5) {
-          setHouseNoError("Max 5 chars.");
+          setHouseNoError("Max 10 chars.");
         } else {
           setHouseNoError("");
           setDoctorDetails((prevDoctorDetails) => ({

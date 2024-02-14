@@ -11,7 +11,7 @@ import { Select } from "antd";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function DoctorFormAdmin() {
+export default function LabFormAdmin() {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [doctorImage, setDoctorImage] = useState();
@@ -39,8 +39,8 @@ export default function DoctorFormAdmin() {
       interval: "",
     },
     totalExperience: "",
-    speciality: [],
-    degree: "",
+    availabletest: [],
+    certification: "",
     address: {
       houseNo: "",
       floor: "",
@@ -123,62 +123,122 @@ export default function DoctorFormAdmin() {
     { label: "Sunday", value: "Sunday" },
   ];
   const IndianDoctorSpecialties = [
-    "General Medicine",
-    "Cardiology",
-    "Dermatology",
-    "Endocrinology",
-    "Gastroenterology",
-    "Nephrology",
-    "Neurology",
-    "Oncology",
-    "Pediatrics",
-    "Psychiatry",
-    "Pulmonology",
-    "Rheumatology",
-    "General Surgery",
-    "Orthopedic Surgery",
-    "Cardiothoracic Surgery",
-    "Neurosurgery",
-    "Plastic Surgery",
-    "Urology",
-    "Vascular Surgery",
-    "Gynecology",
-    "Obstetrics",
-    "Ophthalmology",
-    "ENT (Ear, Nose, and Throat)",
-    "Dental Surgery",
-    "Anesthesiology",
-    "Radiology",
-    "Pathology",
-    "Hematology",
-    "Ayurveda",
-    "Homeopathy",
-    "Physical Medicine and Rehabilitation",
-    "Sports Medicine",
-    "Diabetology",
-    "Infectious Disease",
-    "Geriatrics",
-    "Pain Management",
-    "Critical Care Medicine",
-    "Emergency Medicine",
-    "Occupational Medicine",
-    "Preventive Medicine",
-    "Family Medicine",
-    "Pediatric Surgery",
-    "Gastrointestinal Surgery",
-    "Laparoscopic Surgery",
-    "Transplant Surgery",
-    "Nuclear Medicine",
-    "Reproductive Medicine",
-    "Neonatology",
-    "Allergy and Immunology",
-    "Audiology and Speech Therapy",
+    "Complete Blood Count (CBC)",
+    "Lipid Profile",
+    "Liver Function Test (LFT)",
+    "Renal Function Test (RFT)",
+    "Thyroid Stimulating Hormone (TSH)",
+    "Hemoglobin A1C (HbA1c)",
+    "Fasting Blood Sugar (FBS)",
+    "Postprandial Blood Sugar (PPBS)",
+    "Urine Routine Analysis",
+    "Serum Creatinine",
+    "Blood Urea Nitrogen (BUN)",
+    "Serum Uric Acid",
+    "Serum Electrolytes",
+    "C-Reactive Protein (CRP)",
+    "Erythrocyte Sedimentation Rate (ESR)",
+    "Prothrombin Time (PT)",
+    "Activated Partial Thromboplastin Time (APTT)",
+    "Serum Bilirubin",
+    "Alkaline Phosphatase (ALP)",
+    "Aspartate Aminotransferase (AST/SGOT)",
+    "Alanine Aminotransferase (ALT/SGPT)",
+    "Gamma-Glutamyl Transferase (GGT)",
+    "Serum Calcium",
+    "Serum Phosphorus",
+    "Serum Albumin",
+    "Serum Globulin",
+    "Serum Protein Electrophoresis",
+    "Vitamin D3 (25-Hydroxy)",
+    "Vitamin B12",
+    "Iron Studies (Serum Iron, TIBC, Ferritin)",
+    "D-Dimer",
+    "Troponin I or T",
+    "Rheumatoid Factor (RF)",
+    "Antinuclear Antibody (ANA)",
+    "HIV Testing",
+    "Hepatitis B Surface Antigen (HBsAg)",
+    "Hepatitis C Virus Antibody (HCV Ab)",
+    "Thyroid Profile (T3, T4, TSH)",
+    "Serum Testosterone",
+    "Serum Prolactin",
+    "Follicle Stimulating Hormone (FSH)",
+    "Luteinizing Hormone (LH)",
+    "Human Chorionic Gonadotropin (hCG)",
+    "Prostate-Specific Antigen (PSA)",
+    "Carcinoembryonic Antigen (CEA)",
+    "CA-125 (Cancer Antigen 125)",
+    "CA 15-3 (Breast Cancer Marker)",
+    "CA 19-9 (Pancreatic Cancer Marker)",
+    "Alpha-Fetoprotein (AFP)",
+    "Blood Culture",
+  ];
+
+  const IndianDoctorCertifications = [
+    "MBBS (Bachelor of Medicine and Bachelor of Surgery)",
+    "MD (Doctor of Medicine)",
+    "MS (Master of Surgery)",
+    "DM (Doctorate of Medicine)",
+    "MCh (Master of Chirurgiae)",
+    "DNB (Diplomate of National Board)",
+    "Fellowship in Medicine",
+    "Fellowship in Surgery",
+    "Fellowship in Cardiology",
+    "Fellowship in Endocrinology",
+    "Fellowship in Gastroenterology",
+    "Fellowship in Nephrology",
+    "Fellowship in Neurology",
+    "Fellowship in Oncology",
+    "Fellowship in Pediatrics",
+    "Fellowship in Neonatology",
+    "Fellowship in Critical Care Medicine",
+    "Fellowship in Dermatology",
+    "Fellowship in Pulmonology",
+    "Fellowship in Rheumatology",
+    "Fellowship in Infectious Diseases",
+    "Fellowship in Hematology",
+    "Fellowship in Orthopedics",
+    "Fellowship in Ophthalmology",
+    "Fellowship in ENT (Ear, Nose, and Throat)",
+    "Fellowship in Psychiatry",
+    "Fellowship in Anesthesiology",
+    "Fellowship in Radiology",
+    "Fellowship in Pathology",
+    "Ph.D. in Medical Sciences",
+    "M.Phil in Medical Sciences",
+    "Postgraduate Diploma in Child Health",
+    "Postgraduate Diploma in Obstetrics & Gynecology",
+    "Postgraduate Diploma in Dermatology",
+    "Postgraduate Diploma in Clinical Pathology",
+    "Postgraduate Diploma in Anesthesiology",
+    "Postgraduate Diploma in Medical Radio-Diagnosis",
+    "Postgraduate Diploma in Ophthalmology",
+    "Postgraduate Diploma in Orthopedics",
+    "Postgraduate Diploma in Psychological Medicine",
+    "Postgraduate Diploma in Tuberculosis & Chest Diseases",
+    "Certificate Course in Diabetology",
+    "Certificate Course in Cardiac Care",
+    "Certificate Course in Endocrinology",
+    "Certificate Course in Critical Care",
+    "Certificate Course in Rheumatology",
+    "Certificate Course in Infectious Diseases",
+    "Certificate Course in Hematology",
+    "Certificate Course in Neonatology",
+    "Certificate Course in Geriatric Medicine",
   ];
 
   const SpecialtiesDropdown = IndianDoctorSpecialties?.map((specialty) => ({
     label: specialty,
     value: specialty,
   }));
+
+  const CertificationDropdown = IndianDoctorCertifications?.map(
+    (certification) => ({
+      label: certification,
+      value: certification,
+    })
+  );
 
   const TimeDropdown = [
     { label: "Select Time", value: "" },
@@ -583,7 +643,7 @@ export default function DoctorFormAdmin() {
               for="specialist"
               className="block text-black text-lg font-semibold"
             >
-              Specialist<span className="text-red-500">*</span>{" "}
+              Available Test<span className="text-red-500">*</span>{" "}
             </label>
             <style>
               {`
@@ -612,10 +672,41 @@ export default function DoctorFormAdmin() {
 
           <div className="mt-3">
             <label
+              htmlFor="certification" // Changed for to htmlFor as per JSX conventions
+              className="block text-black text-lg font-semibold"
+            >
+              Certification<span className="text-red-500">*</span>
+            </label>
+            <style>
+              {`
+          .ant-select-selector {
+            border-color: white !important;
+          }
+        `}
+            </style>
+            <div className="border rounded-lg border-[#89CFF0]">
+              <Select
+                className="w-full border-none h-10 overflow-y-scroll"
+                id="certification" // Changed id and name to match the certification context
+                name="certification"
+                mode="multiple"
+                onChange={handleChange2}
+              >
+                {CertificationDropdown.map((option) => (
+                  <Select.Option key={option.value} value={option.value}>
+                    {option.label}
+                  </Select.Option>
+                ))}
+              </Select>
+            </div>
+          </div>
+
+          {/* <div className="mt-3">
+            <label
               for="degree"
               className="block text-black text-lg font-semibold"
             >
-              Degree<span className="text-red-500">*</span>{" "}
+              Certification<span className="text-red-500">*</span>{" "}
             </label>
             <input
               type="text"
@@ -624,8 +715,16 @@ export default function DoctorFormAdmin() {
               onChange={handleChange}
               className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
+
+            <Select>
+              {CertificationDropdown.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
             {errors.degree && <p className="text-red-500">{errors.degree}</p>}
-          </div>
+          </div> */}
         </div>
 
         {/* ----------------------------------right---------------------------------- */}
@@ -707,48 +806,6 @@ export default function DoctorFormAdmin() {
               />
               <p class=" text-red-500 ">{mobileNumberError}</p>
 
-              {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
-            </div>
-          </div>
-
-          <div className="flex flex-row">
-            <div className="px-2 w-full sm:w-1/2 mt-3">
-              <label
-                for="interval"
-                className="block text-black text-lg font-semibold"
-              >
-                Interval<span className="text-red-500">*</span>{" "}
-                <span style={{ fontSize: "12px", color: "gray" }}></span>
-              </label>
-              <input
-                type="text"
-                id="interval"
-                name="interval"
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                }}
-                onChange={handleChange}
-                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-              />
-              {errors.name && <p className="text-red-500">{errors.name}</p>}
-            </div>
-            <div className="px-2 w-full sm:w-1/2 mt-3">
-              <label
-                for="consultationFee"
-                className="block text-black text-lg font-semibold"
-              >
-                Consultation fees<span className="text-red-500">*</span>{" "}
-              </label>
-              <input
-                type="text"
-                onInput={(e) => {
-                  e.target.value = e.target.value.replace(/[^0-9]/g, "");
-                }}
-                id="consultationFee"
-                name="consultationFee"
-                onChange={handleChange}
-                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-              />
               {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
             </div>
           </div>

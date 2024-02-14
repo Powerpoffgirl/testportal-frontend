@@ -12,7 +12,6 @@ import { FaEdit } from "react-icons/fa";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import close_button from "../assets/close_button.svg";
 
-
 export default function PatientListUser({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
@@ -29,6 +28,9 @@ export default function PatientListUser({ searchTerm }) {
   const [userDetailsName, setUserDetailsName] = useState();
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
+  const handleShowMedicalHistory = () => {
+    navigate("/medicialhistory"); // Navigate to the Medical History page
+  };
 
   useEffect(() => {
     const fetchPatientDetails = async () => {
@@ -53,9 +55,9 @@ export default function PatientListUser({ searchTerm }) {
         const data = await response.json();
         console.log("DATA from response", data);
         if (data.message === "Invalid or expired token") {
-          toast.error("Invalid or expired token")
-          navigate("/userlogin")
-          localStorage.clear()
+          toast.error("Invalid or expired token");
+          navigate("/userlogin");
+          localStorage.clear();
         }
         const filtered = data?.data.filter((patient) => patient.name !== null);
         setPatientsList(filtered);
@@ -289,9 +291,7 @@ export default function PatientListUser({ searchTerm }) {
               " " +
               selectedPatient?.address?.block +
               " " +
-              selectedPatient?.address?.area
-
-            }
+              selectedPatient?.address?.area}
           </text>
 
           <text
@@ -311,14 +311,21 @@ export default function PatientListUser({ searchTerm }) {
               selectedPatient?.address?.pinCode}
           </text>
         </div>
+        <div className="flex justify-center mt-4">
+          <button
+            className="bg-[#89CFF0] hover:bg-[#89CFF0] text-white font-bold py-2 px-4 rounded-lg" // changed from 'rounded' to 'rounded-lg'
+            onClick={handleShowMedicalHistory}
+          >
+            Show Medical History
+          </button>
+        </div>
       </Modal>
 
       <div className="flex flex-col">
-        {(filteredPatients?.length > 0 && filteredPatients[0].name) ? (
+        {filteredPatients?.length > 0 && filteredPatients[0].name ? (
           filteredPatients?.map((patient, index) => {
-            console.log("index ", index)
+            console.log("index ", index);
             return (
-
               <div
                 className="bg-white w-full p-4 sm:px-5 px-1 mb-5"
                 key={patient._id}
@@ -336,7 +343,10 @@ export default function PatientListUser({ searchTerm }) {
                       />
                     ) : (
                       <AccountCircleIcon
-                        style={{ fontSize: isTab ? "50px" : "90px", color: "#B1DAED" }}
+                        style={{
+                          fontSize: isTab ? "50px" : "90px",
+                          color: "#B1DAED",
+                        }}
                       />
                     )}
 
@@ -382,7 +392,9 @@ export default function PatientListUser({ searchTerm }) {
                       okText="Delete"
                       okType="danger"
                       cancelText="No"
-                      className={`rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm ${index === filteredPatients?.length - 1 ? 'hidden' : ''} `}
+                      className={`rounded-full px-4 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm ${
+                        index === filteredPatients?.length - 1 ? "hidden" : ""
+                      } `}
                       onConfirm={() =>
                         handleDeletePatient(patient._id, patient.name)
                       }
@@ -405,9 +417,8 @@ export default function PatientListUser({ searchTerm }) {
                 </div>
                 <ToastContainer />
               </div>
-            )
-          }
-          )
+            );
+          })
         ) : (
           <p>
             Please complete your profile first.{" "}

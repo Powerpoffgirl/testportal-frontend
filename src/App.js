@@ -15,6 +15,8 @@ import DoctorDetail from "./components/doctorDetail";
 import PatientForm from "./components/patientForm";
 import DoctorForm from "./components/doctorForm";
 import DoctorFormAdmin from "./components/doctorFormAdmin";
+import LabFormAdmin from "./components/labFormAdmin";
+
 import PatientList from "./components/patientList";
 import DoctorList from "./components/doctorList";
 import DoctorLogin from "./components/doctorLogin";
@@ -38,8 +40,12 @@ import EditUserForm from "./components/editUserForm";
 import EditPatientFormAdmin from "./components/editPatientFormAdmin";
 import AppointmentList from "./components/appointmentList";
 import PatientDescription from "./components/patientDescription";
+import MedicialHistory from "./components/medicialHistory";
+
 import DescriptionSummary from "./components/descriptionSummary";
 import PatientListAdmin from "./components/patientListAdmin";
+import LabListAdmin from "./components/labListAdmin";
+
 import UserList from "./components/userList";
 import ShowPatientForm from "./components/showPatientForm";
 import EditAppointment from "./components/editAppointment";
@@ -78,8 +84,7 @@ import { ToastContainer } from "react-toastify";
 import UserProfile from "./components/userProfile";
 import AdminForgetpassword from "./components/adminForgetPassword";
 
-function App()
-{
+function App() {
   return (
     <>
       <ToastContainer />
@@ -101,14 +106,17 @@ function App()
         <Route path="/usersignup" element={<UserSignup />}></Route>
         <Route path="/admin" element={<Admin></Admin>}></Route>
         <Route path="/form" element={<Form></Form>}></Route>
-        <Route path="/otp" element={
-          <Layout
-            Component={OTP}
-            type="admin"
-            headerTextTop={"Doctor"}
-            headerTextBottom={"Verify OTP"}
-          />
-        }></Route>
+        <Route
+          path="/otp"
+          element={
+            <Layout
+              Component={OTP}
+              type="admin"
+              headerTextTop={"Doctor"}
+              headerTextBottom={"Verify OTP"}
+            />
+          }
+        ></Route>
         <Route path="/forgetpassword" element={<ForgetPassword />} />
         <Route path="/adminforgetpassword" element={<AdminForgetpassword />} />
         <Route path="/otpverify" element={<OtpVerify />} />
@@ -194,7 +202,7 @@ function App()
               headerTextTop={"Super Admin"}
               headerTextBottom={"User List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
@@ -218,7 +226,7 @@ function App()
               headerTextTop={"Super Admin"}
               headerTextBottom={"Patient List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
@@ -231,7 +239,7 @@ function App()
               headerTextTop={"Super Admin"}
               headerTextBottom={"Appointment List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
@@ -255,7 +263,7 @@ function App()
               headerTextTop={"Super Admin"}
               headerTextBottom={"Doctor List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
@@ -268,7 +276,7 @@ function App()
               headerTextTop={"Super Admin"}
               headerTextBottom={"Appointment List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
@@ -292,7 +300,7 @@ function App()
               headerTextTop={"Super Admin"}
               headerTextBottom={"Doctor List"}
               search={"true"}
-            // AddButton={"true"}
+              // AddButton={"true"}
             />
           }
         />
@@ -339,7 +347,9 @@ function App()
         ></Route>
         <Route
           path="/doctordetail/:id"
-          element={<Layout Component={DoctorDetail} headerTextTop={"Doctor Talk"} />}
+          element={
+            <Layout Component={DoctorDetail} headerTextTop={"Doctor Talk"} />
+          }
         ></Route>
         <Route
           path="/patientdescription/:id"
@@ -349,6 +359,17 @@ function App()
               type="doctor"
               headerTextTop={"Patients's"}
               headerTextBottom={"Description"}
+            />
+          }
+        ></Route>
+        <Route
+          path="/medicialhistory"
+          element={
+            <Layout
+              Component={MedicialHistory}
+              type="user"
+              headerTextTop={"Medical"}
+              headerTextBottom={"History"}
             />
           }
         ></Route>
@@ -504,6 +525,17 @@ function App()
             />
           }
         ></Route>
+        {/* <Route
+          path="/labformadmin"
+          element={
+            <Layout
+              Component={LabFormAdmin}
+              type="admin"
+              headerTextTop={"Lab's"}
+              headerTextBottom={"Form"}
+            />
+          }
+        ></Route> */}
         <Route
           path="/editdoctorform"
           element={
@@ -601,6 +633,30 @@ function App()
               headerTextTop={"Patient's"}
               headerTextBottom={"List"}
               search={"true"}
+            />
+          }
+        ></Route>
+        <Route
+          path="/lablistadmin"
+          element={
+            <Layout
+              Component={LabListAdmin}
+              type="labadmin"
+              headerTextTop={"Lab's"}
+              headerTextBottom={"List"}
+              search={"true"}
+              AddButton={"true"}
+            />
+          }
+        ></Route>
+        <Route
+          path="/labformadmin"
+          element={
+            <Layout
+              Component={LabFormAdmin}
+              type="labadmin"
+              headerTextTop={"Lab's"}
+              headerTextBottom={"Form"}
             />
           }
         ></Route>

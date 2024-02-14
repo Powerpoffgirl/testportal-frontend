@@ -89,22 +89,41 @@ export default function BillingPrice() {
   //     }
   // };
 
-  const handleFileSelect = async () => {
-    // Generate the PDF
-    generatePdf();
+  const handleFileSelect = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const token = localStorage.getItem("token");
+      const patientId = localStorage.getItem("selectedPatientId");
+      const doctorId = localStorage.getItem("doctorId");
+      const formData = new FormData();
+      formData.append("patientReport", file);
 
-    // Simulate downloading the PDF (you can replace this with your SMS logic)
-    const pdfBlob = await componentPDF.current.toBlob();
-    const pdfUrl = URL.createObjectURL(pdfBlob);
+      console.log("FORM DATA", formData);
+      try {
+        const response = await fetch(
+          `${baseUrl}/api/v1/doctor/upload_report/${patientId}`,
+          {
+            method: "POST",
+            headers: {
+              "x-auth-token": token,
+            },
+            body: formData,
+          }
+        );
 
-    // Create a hidden link and trigger the download
-    const downloadLink = document.createElement("a");
-    downloadLink.href = pdfUrl;
-    downloadLink.download = "userReport.pdf";
-    downloadLink.style.display = "none";
-    document.body.appendChild(downloadLink);
-    downloadLink.click();
-    document.body.removeChild(downloadLink);
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        toast.success("Report uploaded successfully!");
+
+        const data = await response.json();
+
+        fileInputRef.current.value = "";
+      } catch (error) {
+        console.error("Error ", error);
+        toast.error("Error uploading pdf. Please try again.");
+      }
+    }
   };
 
   useEffect(() => {
@@ -352,8 +371,6 @@ export default function BillingPrice() {
                     marginRight: "20px",
                   }}
                 >
-                  <p style={{ fontWeight: 500 }}>Test Details</p>
-
                   <p style={{ fontWeight: 500, textTransform: "capitalize" }}>
                     Date: {reportDate?.split("-").reverse().join("-")}
                   </p>
@@ -388,25 +405,17 @@ export default function BillingPrice() {
                   }}
                 >
                   <div clss="ml-auto">
-                    <p style={{ fontWeight: 500 }}>Patient Details</p>
+                    <p style={{ fontWeight: 500 }}>Home Collection</p>
                     <p>
-                      {localStorage.getItem("houseNo") !== "undefined" &&
-                        localStorage.getItem("houseNo")}{" "}
-                      {localStorage.getItem("floor") !== "undefined" &&
-                        localStorage.getItem("floor")}{" "}
-                      {localStorage.getItem("block") !== "undefined" &&
-                        localStorage.getItem("block")}{" "}
-                      {localStorage.getItem("area") !== "undefined" &&
-                        localStorage.getItem("area")}{" "}
+                      {localStorage?.getItem("houseNo")},{" "}
+                      {localStorage?.getItem("floor")},{" "}
+                      {localStorage?.getItem("block")},
                     </p>
                     <p>
                       {" "}
-                      {localStorage.getItem("district") !== "undefined" &&
-                        localStorage.getItem("district")}{" "}
-                      {localStorage.getItem("state") !== "undefined" &&
-                        localStorage.getItem("state")}{" "}
-                      {localStorage.getItem("pincode") !== "undefined" &&
-                        localStorage.getItem("pincode")}
+                      {localStorage?.getItem("area")},{" "}
+                      {localStorage?.getItem("district")},{" "}
+                      {localStorage?.getItem("pincode")}
                     </p>
                   </div>
                 </div>
@@ -564,7 +573,7 @@ export default function BillingPrice() {
                   ref={fileInputRef}
                   style={{ display: "none" }}
                   accept="application/pdf"
-                  // onChange={handleFileSelect}
+                  onChange={handleFileSelect}
                 />
               </p>
             </div>

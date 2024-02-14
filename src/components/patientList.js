@@ -70,9 +70,10 @@ export default function PatientList({ searchTerm }) {
 
         const data = await response.json();
         console.log("DATA from response", data);
-        const filteredPatients = data.data.filter((patient) => patient.name !== null);
+        const filteredPatients = data.data.filter(
+          (patient) => patient.name !== null
+        );
         setPatientsList(filteredPatients);
-
       } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
@@ -99,9 +100,9 @@ export default function PatientList({ searchTerm }) {
         const data = await response.json();
         console.log("DATA from response", data);
         if (data.message === "Invalid or expired token") {
-          toast.error("Invalid or expired token")
-          navigate("/doctorlogin")
-          localStorage.clear()
+          toast.error("Invalid or expired token");
+          navigate("/doctorlogin");
+          localStorage.clear();
         }
         setAppointmentList(data?.data);
       } catch (error) {
@@ -147,8 +148,8 @@ export default function PatientList({ searchTerm }) {
   useEffect(() => {
     if (patientsList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
-      const matchedPatients = patientsList.filter((p) =>
-        p.name && p.name.toLowerCase().includes(lowerCaseSearchTerm)
+      const matchedPatients = patientsList.filter(
+        (p) => p.name && p.name.toLowerCase().includes(lowerCaseSearchTerm)
       );
       setFilteredPatients(matchedPatients);
     } else {
@@ -243,7 +244,6 @@ export default function PatientList({ searchTerm }) {
           <button onClick={onCloseModal}>
             <img src={close_button} alt="close_button" class="w-8 mb-5"></img>
           </button>
-
         </div>
         <div className="flex flex-col bg-customRedp-2 w-[100%] md:w-[100%]  mt-[2%] ">
           <div className="flex flex-row w-[100%] justify-between">
@@ -311,13 +311,18 @@ export default function PatientList({ searchTerm }) {
               color: "#000000",
             }}
           >
-            {selectedPatient?.address?.houseNo && `${selectedPatient.address.houseNo} `}
-            {selectedPatient?.address?.block && `${selectedPatient.address.block} `}
-            {selectedPatient?.address?.area && `${selectedPatient.address.area}, `}
-            {selectedPatient?.address?.district && `${selectedPatient.address.district}, `}
-            {selectedPatient?.address?.state && `${selectedPatient.address.state} `}
-            {selectedPatient?.address?.pinCode && `${selectedPatient.address.pinCode}`}
-
+            {selectedPatient?.address?.houseNo &&
+              `${selectedPatient.address.houseNo} `}
+            {selectedPatient?.address?.block &&
+              `${selectedPatient.address.block} `}
+            {selectedPatient?.address?.area &&
+              `${selectedPatient.address.area}, `}
+            {selectedPatient?.address?.district &&
+              `${selectedPatient.address.district}, `}
+            {selectedPatient?.address?.state &&
+              `${selectedPatient.address.state} `}
+            {selectedPatient?.address?.pinCode &&
+              `${selectedPatient.address.pinCode}`}
           </text>
         </div>
       </Modal>
@@ -353,8 +358,6 @@ export default function PatientList({ searchTerm }) {
                   {/* {patient.address?.district && `${patient.address.district}, `} */}
                   {patient.address?.state && `${patient.address.state}, `}
                   {patient.address?.pinCode && `${patient.address.pinCode}`}
-
-
                 </div>
               </div>
               <div class="flex flex-row ms-auto gap-1 sm:gap-4">
@@ -371,7 +374,6 @@ export default function PatientList({ searchTerm }) {
                     Delete
                   </button>
                 </Popconfirm>
-
               </div>
             </div>
           </div>

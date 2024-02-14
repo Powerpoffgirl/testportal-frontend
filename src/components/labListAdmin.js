@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { Modal } from "react-responsive-modal";
 import { useNavigate } from "react-router-dom";
@@ -8,24 +8,27 @@ import three from "../assets/three.svg";
 import home from "../assets/home.svg";
 import education from "../assets/education.svg";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { FaAngleRight } from "react-icons/fa";
+import { FaAngleRight, FaTrashAlt } from "react-icons/fa";
 import { FaAngleLeft } from "react-icons/fa";
 import phonelogo from "../assets/phone.svg";
 import close_button from "../assets/close_button.svg";
+import delete_button from "../assets/delete_button.svg";
+import edit_button from "../assets/edit_button.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { Tooltip } from "antd";
+import UserContext from "./userContext";
+import { Popconfirm, Tooltip } from "antd";
 
-export default function DoctorList({ searchTerm }) {
+export default function LabListAdmin({ searchTerm }) {
+  const { updateUser, updateUserEmail, updateUserimage } =
+    useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 767px)" });
   const [doctorsList, setDoctorsList] = useState([]);
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState("");
+  const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
+
   const [open, setOpen] = useState(false);
-  const [newSlot, setNewSlot] = useState({
-    date: "",
-    time: "",
-  });
   const onOpenModal = () => setOpen(true);
   const onCloseModal = () => {
     console.log("modal closed");
@@ -44,6 +47,65 @@ export default function DoctorList({ searchTerm }) {
   const [seconds, setSeconds] = useState(90);
   const [resendClicked, setResendClicked] = useState(false);
   const [firstTime, setFirstTime] = useState(true);
+  const [userDetailsName, setUserDetailsName] = useState();
+  const [userDetailsEmail, setUserDetailsEmail] = useState();
+  const [userDetailsPic, setUserDetailsPic] = useState();
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("patientId");
+        if (!token) {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(`${baseUrl}/api/v1/admin/get_profile`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
+
+        const data = await response.json();
+        console.log("DATA from response", data);
+        setUserDetailsName(data?.data.name);
+        setUserDetailsEmail(data?.data.email);
+        setUserDetailsPic(data?.data.doctorPic);
+        console.log("usser name$$$$$$$", data?.data.name);
+      } catch (error) {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchUserDetails();
+  }, []);
+
+  const handleDelete = async (id) => {
+    console.log("DOCTRO ID", id);
+    const token = localStorage.getItem("token");
+    const response = await fetch(
+      `${baseUrl}/api/v1/admin/delete_doctor/${id}`,
+      {
+        method: "delete",
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": token,
+        },
+      }
+    );
+    const data = await response.json();
+    console.log("DATA FROM RESPONSE", data);
+    if (data.success) {
+      toast.success("Doctor deleted successfully");
+      setDoctorsList((prevDoctorsList) =>
+        prevDoctorsList.filter((patient) => patient._id !== id)
+      );
+    } else {
+      toast.error("Permission Denied");
+    }
+    onCloseModal();
+  };
 
   useEffect(() => {
     const fetchDoctorDetails = async () => {
@@ -91,7 +153,6 @@ export default function DoctorList({ searchTerm }) {
       setFilteredDoctors(doctorsList);
     }
   }, [doctorsList, searchTerm]);
-
   const handleQRCode = (doctorId) => {
     console.log("HELLO");
     localStorage.setItem("doctorId", doctorId);
@@ -99,35 +160,49 @@ export default function DoctorList({ searchTerm }) {
     setselectedDoctor(doctor);
     console.log(selectedDoctor);
     // console.log(selectedDoctor.degree.split(','))
+
     onOpenModal();
   };
 
   const handleBookAppointment = async () => {
+    console.log(selectedDoctor?.slots[currentIndex]);
     console.log("HANDLE BOOK APOOINTMENT");
     const bookslot = {
       date: keys[currentIndex],
       time: values[currentIndex][currentTimeIndex].start,
     };
+    console.log("selected doctor", selectedDoctor?._id);
+    const response = await fetch(
+      `${baseUrl}/api/v1/book_slot/${selectedDoctor?._id}`,
+      {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookslot),
+      }
+    );
 
-    setNewSlot((prevSlot) => ({
-      ...prevSlot,
-      date: bookslot.date,
-    }));
+    const data = await response.json();
 
-    setNewSlot((prevSlot) => ({
-      ...prevSlot,
-      time: bookslot.time,
-    }));
+    console.log("slot booked", data);
+    localStorage.setItem(
+      "appointment_date",
+      data?.doctorSlot?.date?.split("T")[0]
+    );
+    localStorage.setItem("appointment_time", data?.doctorSlot?.startTime);
 
-    const token = localStorage.getItem("token");
-    if (token) {
-      console.log("TOKEN PRESENT");
-      navigate("/edituserform", {
-        state: { selectedSlot: bookslot, selectedDoctor: selectedDoctor._id },
-      });
-    }
     showappointment();
     showSlot();
+    if (data.success === true) {
+      toast.success("Slot booked successfully", {
+        // position: "top-center",
+      });
+    } else {
+      toast.error("Please book another slot", {
+        // position: "top-center",
+      });
+    }
   };
 
   const handleFilterDocotors = (item) => {
@@ -141,12 +216,11 @@ export default function DoctorList({ searchTerm }) {
       setFilteredDoctors(filteredDoctors);
     }
   };
-
   const [bookingslottoggle, setbookingslottoggle] = useState(false);
   const [appointment, setappointment] = useState(false);
   const [otppage, setotppage] = useState(false);
+
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentTimeIndex, setCurrentTimeIndex] = useState(0);
   const [contactNumber, setcontactNumber] = useState(null);
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
@@ -175,10 +249,6 @@ export default function DoctorList({ searchTerm }) {
   };
 
   const handleOtp = async () => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      navigate("/edituserform");
-    }
     const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
       method: "post",
       headers: {
@@ -190,13 +260,11 @@ export default function DoctorList({ searchTerm }) {
     console.log("RESPONSE------", data);
     console.log("user id", data?.data?._id);
     localStorage.setItem("userId", data?.data?._id);
-    setResendClicked(true);
-    setSeconds(90);
-    toast.success("Otp sent !!");
+    localStorage.setItem("patientId", data?.patient?._id);
 
+    // localStorage.setItem("token", data?.user?.token)
     setotppage(true);
   };
-
   const handleInputChange = (e, index) => {
     const value = e.target.value;
 
@@ -215,6 +283,7 @@ export default function DoctorList({ searchTerm }) {
   const verifyOTP = async () => {
     try {
       const userId = localStorage.getItem("userId");
+
       const otpString = otp.join("");
 
       const response = await fetch(
@@ -228,46 +297,79 @@ export default function DoctorList({ searchTerm }) {
         }
       );
 
-      if (!response.ok) {
-        // toast.error("Wrong OTP");
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      let data;
-      try {
-        data = await response.json();
-      } catch (e) {
-        throw new Error("Failed to parse JSON");
-      }
-
-      if (data?.success === true) {
-        console.log(
-          "=============================DATA from response=========================",
-          data
-        );
-
-        if (data?.data?.data?.newUser === true) {
-          const patientId = data?.patient?._id;
-          if (patientId) {
-            console.log("Storing patient ID in local storage", patientId);
-            localStorage.setItem("patientId", patientId);
-          } else {
-            console.error("Patient ID is undefined");
-          }
-        } else {
-          // Handle the case where newUser is not true or undefined
-        }
+      const data = await response.json();
+      if (data.success === true) {
+        console.log("DATA from response", data);
 
         localStorage.setItem("token", data?.data?.token);
-        navigate("/edituserform", {
-          state: { selectedSlot: newSlot, selectedDoctor: selectedDoctor._id },
-        });
+        navigate("/edituserform");
       }
     } catch (error) {
-      toast.error("Wrong OTP");
       console.error("There was an error verifying the OTP:", error);
     }
   };
+
+  const bookingslot = selectedDoctor.slots;
+
+  const numberOfColumns = 4;
+  const numberOfRows = Math.ceil(bookingslot?.length / numberOfColumns);
+
+  function getYearMonthDay(dateString) {
+    // Create a new Date object using the provided date string
+    const date = new Date(dateString);
+
+    // Get the year, month, day, and day of the week from the date
+    const year = date.getFullYear(); // Retrieves the year as a four-digit number
+    const month = date.getMonth() + 1; // getMonth() returns 0-11, so adding 1 for human-readable format
+    const day = date.getDate(); // Retrieves the day of the month
+    const dayOfWeek = date.getDay(); // Retrieves the day of the week (0-6)
+    // console.log(month)
+    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+    const dayName = dayNames[dayOfWeek];
+
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const monthName = monthNames[month - 1];
+
+    return { year, monthName, day, dayName };
+  }
+
+  // processing for the booking slots
+  let processedSlots = {};
+
+  console.log("===============BOOKING SLOTS==============", bookingslot);
+  for (let i in bookingslot) {
+    let objTitle = bookingslot[i].date.split("T")[0];
+    // Use the title as the index
+    processedSlots[objTitle] = [];
+  }
+
+  for (let i in bookingslot) {
+    if (bookingslot[i].date.split("T")[0] in processedSlots) {
+      processedSlots[bookingslot[i].date.split("T")[0]].push({
+        start: bookingslot[i].startTime,
+        end: bookingslot[i].endTime,
+        isBooked: bookingslot[i].isBooked,
+        _id: bookingslot[i]._id,
+      });
+    }
+  }
+
+  const keys = Object.keys(processedSlots);
+  // console.log(keys)
+  const values = Object.values(processedSlots);
 
   function abbreviateAndCombineDays(days) {
     const weekDays = [
@@ -308,64 +410,6 @@ export default function DoctorList({ searchTerm }) {
     return combinedDays.join(" ");
   }
 
-  // processing for the booking slots
-  const bookingslot = selectedDoctor.slots;
-  let processedSlots = {};
-
-  console.log("===============BOOKING SLOTS==============", bookingslot);
-  for (let i in bookingslot) {
-    let objTitle = bookingslot[i].date.split("T")[0];
-    // Use the title as the index
-    processedSlots[objTitle] = [];
-  }
-
-  for (let i in bookingslot) {
-    if (bookingslot[i].date.split("T")[0] in processedSlots) {
-      processedSlots[bookingslot[i].date.split("T")[0]].push({
-        start: bookingslot[i].startTime,
-        end: bookingslot[i].endTime,
-        isBooked: bookingslot[i].isBooked,
-        _id: bookingslot[i]._id,
-      });
-    }
-  }
-
-  const keys = Object.keys(processedSlots);
-  // console.log(keys)
-  const values = Object.values(processedSlots);
-
-  function getYearMonthDay(dateString) {
-    // Create a new Date object using the provided date string
-    const date = new Date(dateString);
-
-    // Get the year, month, day, and day of the week from the date
-    const year = date.getFullYear(); // Retrieves the year as a four-digit number
-    const month = date.getMonth() + 1; // getMonth() returns 0-11, so adding 1 for human-readable format
-    const day = date.getDate(); // Retrieves the day of the month
-    const dayOfWeek = date.getDay(); // Retrieves the day of the week (0-6)
-    // console.log(month)
-    const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-    const dayName = dayNames[dayOfWeek];
-
-    const monthNames = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    const monthName = monthNames[month - 1];
-
-    return { year, monthName, day, dayName };
-  }
-
   const workingDays =
     selectedDoctor && selectedDoctor.workingDays
       ? abbreviateAndCombineDays(selectedDoctor.workingDays)
@@ -373,13 +417,14 @@ export default function DoctorList({ searchTerm }) {
 
   const handleDateClick = (index) => {
     setCurrentIndex(index);
-    console.log(currentIndex);
   };
+
   const handleTimeClick = (time) => {
     // console.log(time)
     setCurrentTimeIndex(time);
     console.log(currentTimeIndex);
   };
+
   const goToNext = () => {
     const isLastItem = currentIndex === bookingslot.length - 1;
     const nextIndex = isLastItem ? 0 : currentIndex + 1;
@@ -418,10 +463,18 @@ export default function DoctorList({ searchTerm }) {
     return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
   };
 
+  const handleEdit = (patientId) => {
+    localStorage.setItem("patientId", patientId);
+    navigate("/editdoctorformadmin");
+  };
+
+  updateUser(userDetailsName);
+  updateUserEmail(userDetailsEmail);
+  updateUserimage(userDetailsPic);
+
   return (
     <>
       {/* ---------------------------------------------modal--------------------------------------------- */}
-
       <Modal
         open={open}
         onClose={onCloseModal}
@@ -443,24 +496,39 @@ export default function DoctorList({ searchTerm }) {
           {`
           .react-responsive-modal-container{
             overflow-y:hidden;
-             
           }
           `}
         </style>
-        <div class="flex flex-col  ">
+
+        <div class="flex flex-col ">
           <div class="flex flex-row-reverse md:-mb-14  -mb-14 z-50">
             <button onClick={onCloseModal}>
-              <img src={close_button} class="w-8 mb-1"></img>
+              <img src={close_button} alt="closeButton" class="w-8 mb-1"></img>
+            </button>
+            <Popconfirm
+              title="Delete the Doctor"
+              description="Are you sure to delete this Doctor?"
+              okText="Delete"
+              okType="danger"
+              cancelText="No"
+              onConfirm={() => handleDelete(selectedDoctor?._id)}
+            >
+              <button>
+                <img src={delete_button} alt="deleteButton" class="w-8"></img>
+              </button>
+            </Popconfirm>
+            <button onClick={() => handleEdit(selectedDoctor?._id)}>
+              <img src={edit_button} alt="editButton" class="w-8"></img>
             </button>
           </div>
-          <div className="flex md:flex-row p-2 pt-5 flex-col overflow-y-scroll h-[80vh]">
+          <div className="flex md:flex-row p-2 pt-5 flex-col overflow-y-auto h-[90vh] ">
             {/* ---------------------------left part--------------------------- */}
             <div className="flex flex-col px-1 md:w-1/2">
               <div className="">
                 {selectedDoctor?.doctorPic ? (
                   <img
                     src={selectedDoctor?.doctorPic}
-                    alt={selectedDoctor?.name}
+                    alt="doctorimage"
                     className=" h-80 w-full"
                   ></img>
                 ) : (
@@ -523,28 +591,22 @@ export default function DoctorList({ searchTerm }) {
             </div>
             {/* --------------------------------right part-------------------------------- */}
             {!otppage && (
-              <div className="flex flex-col  md:w-1/2 px-2 pb-5  ">
+              <div className="flex flex-col  md:w-1/2 px-2">
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black ">SPECIALITY</p>
-                  <div className="flex flex-wrap">
+                  <div className="flex flex-wrap ">
                     {selectedDoctor?.speciality?.map((item, index) => {
-                      const formattedSpeciality = item.replace(
-                        /([a-z])([A-Z])/g,
-                        "$1 $2"
-                      ); // Split at capital letters
-
                       return (
                         <p
                           key={index}
-                          className="bg-white rounded-xl py-1 px-4 mx-2 my-1 space-between-words"
+                          className="bg-white rounded-xl py-1 px-4 mx-2 my-1 "
                         >
-                          {formattedSpeciality}
+                          {item}
                         </p>
                       );
                     })}
                   </div>
                 </div>
-
                 <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black">
                     About The Doctor
@@ -707,17 +769,15 @@ export default function DoctorList({ searchTerm }) {
                           <div class="flex flex-row-reverse">
                             {mobileNumberError.length === 0 ? (
                               <button
-                                // className="text-white text-xs rounded-3xl px-5 py-2 "
-                                // style={{ backgroundColor: " #89CFF0" }}
+                                className="text-white text-xs rounded-3xl px-3 py-1 "
                                 onClick={handleOtp}
-                                className="btn btn-primary border py-2 px-5 mt-4 rounded-3xl text-white"
-                                style={{ backgroundColor: "#89CFF0" }}
+                                style={{ backgroundColor: " #89CFF0" }}
                               >
                                 Send OTP
                               </button>
                             ) : (
                               <button
-                                className="text-white text-xs rounded-3xl px-5 py-2 "
+                                className="text-white text-xs rounded-3xl px-3 py-1 "
                                 disabled
                                 onClick={handleOtp}
                                 style={{ backgroundColor: " #89CFF0" }}
@@ -734,7 +794,7 @@ export default function DoctorList({ searchTerm }) {
                             <div className=" flex flex-col text-center space-y-2">
                               <div class="flex flex-row border-2">
                                 <button
-                                  className="text-white text-xs rounded-3xl mr-auto "
+                                  className="text-white text-xs rounded-3xl  "
                                   onClick={goToPrev}
                                 >
                                   <FaAngleLeft style={{ color: "black" }} />
@@ -768,12 +828,13 @@ export default function DoctorList({ searchTerm }) {
                                   })}
                                 </div>
                                 <button
-                                  className="text-white text-xs rounded-3xl ml-auto"
+                                  className="text-white text-xs rounded-3xl"
                                   onClick={goToNext}
                                 >
                                   <FaAngleRight style={{ color: "black" }} />
                                 </button>
                               </div>
+
                               <div className="flex flex-wrap -mx-2 space-y-2 my-2 overflow-y-scroll h-32 px-2">
                                 {values[currentIndex]?.map((item, index) => {
                                   const marginb = index === 0 ? " mt-2 -" : "";
@@ -843,7 +904,7 @@ export default function DoctorList({ searchTerm }) {
                       <div className="flex flex-row-reverse my-1">
                         {!bookingslottoggle && !appointment && (
                           <button
-                            className="text-white text-xs rounded-3xl px-5 py-2 "
+                            className="text-white text-xs rounded-3xl px-3 py-1 "
                             onClick={() => {
                               showSlot();
                             }}
@@ -852,139 +913,8 @@ export default function DoctorList({ searchTerm }) {
                             Show Slots
                           </button>
                         )}
-                        {bookingslottoggle && !appointment && (
-                          <div class="flex mx-auto space-x-4 mt-3">
-                            <button
-                              onClick={handleBookAppointment}
-                              className="btn btn-primary border py-2 px-10  rounded-3xl text-white"
-                              style={{ backgroundColor: "#89CFF0" }}
-
-                              // className="text-white text-sm rounded-3xl px-5 py-2 mb-1 "
-                              // style={{ backgroundColor: " #89CFF0" }}
-                            >
-                              Book Appointment
-                            </button>
-                          </div>
-                        )}
                       </div>
                     </div>
-                  </div>
-                </div>
-              </div>
-            )}
-            {otppage && (
-              <div className="border bg-white flex flex-col md:w-1/2  p-4  mx-1 pb-5 ">
-                <p className="text-3xl ">Personal Information</p>
-                <hr className="border my-2 " />
-                {/* ------------mobile Number------------ */}
-                <div className="mt-3 flex flex-row">
-                  <p className="block text-black text-base font-semibold">
-                    Mobile Number :{contactNumber}
-                  </p>
-                </div>
-                {/* -----------contact----------- */}
-                <div className="mt-3 flex flex-row">
-                  <p className="block text-black text-base font-semibold">
-                    Date :{" "}
-                    {selectedDoctor?.slots[currentIndex]?.date?.split("T")[0]}
-                  </p>
-                </div>
-                {/* -----------address----------- */}
-                <div className="mt-3 flex flex-row">
-                  <p className="block text-black text-base font-semibold">
-                    Time :{selectedDoctor?.slots[currentIndex]?.startTime}
-                  </p>
-                  <p></p>
-                </div>
-                <hr class=" mt-3" />
-
-                {/* ----------------------------------------otp verification section---------------------------------------- */}
-                <div class="flex flex-col">
-                  <p class="my-4 text-gray-600">Verify Your Mobile Number</p>
-                  <div
-                    class="bg-gray-300 flex flex-row rounded-lg"
-                    style={{ maxWidth: "11rem" }}
-                  >
-                    <img src={phonelogo} alt="mobile" class="pl-5 pr-1"></img>
-                    <input
-                      className="mx-2 bg-gray-300 rounded-lg font-medium text-lg"
-                      type="number"
-                      id="mobileNo"
-                      name="mobileNo"
-                      value={contactNumber}
-                      style={{
-                        border: "",
-                        height: "45px",
-                        paddingLeft: "1.5%",
-                        maxWidth: "8rem",
-                      }}
-                    />
-                  </div>
-
-                  <div
-                    className="flex w-full my-3"
-                    style={{
-                      position: "relative",
-                      overflow: "hidden",
-                    }}
-                  >
-                    {otp?.map((digit, index) => (
-                      <input
-                        onInput={(e) => {
-                          e.target.value = e.target.value.replace(
-                            /[^0-9]/g,
-                            ""
-                          );
-                        }}
-                        key={index}
-                        ref={(input) => (otpInputs[index] = input)}
-                        type="number"
-                        className="w-7 h-8  md:w-8  mr-2 text-lg  border-2 text-black border-gray-400 text-center "
-                        maxLength={1}
-                        value={digit}
-                        onChange={(e) => handleInputChange(e, index)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Backspace" && index > 0 && !digit) {
-                            otpInputs[index - 1].focus();
-                          }
-                        }}
-                      />
-                    ))}
-                  </div>
-
-                  <p
-                    style={{
-                      fontWeight: 400,
-                      fontSize: "16px",
-                      display: "flex",
-                      marginLeft: "40%",
-                    }}
-                  ></p>
-                  <p class="text-gray-600">
-                    Otp will expire in
-                    <span
-                      className="timer"
-                      style={{ color: "#666", cursor: "pointer" }}
-                    >
-                      <text className="mx-2" style={{ color: "#000000" }}>
-                        {formatTime(seconds)} sec
-                      </text>
-                    </span>
-                    <button
-                      onClick={handleOtp}
-                      class="font-medium underline text-black"
-                    >
-                      Resend
-                    </button>{" "}
-                  </p>
-                  <div class="flex flex-row-reverse " style={{ width: "100%" }}>
-                    <button
-                      className="btn btn-primary border py-2 px-10 mt-4 rounded-3xl text-white"
-                      style={{ backgroundColor: "#89CFF0" }}
-                      onClick={verifyOTP}
-                    >
-                      Verify
-                    </button>
                   </div>
                 </div>
               </div>
