@@ -12,7 +12,8 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { MdEdit } from "react-icons/md";
 import "react-toastify/dist/ReactToastify.css";
 import { useReactToPrint } from 'react-to-print'
-
+import { MdDownloadForOffline } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
 import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 
 export default function PatientDescription()
@@ -1020,6 +1021,7 @@ export default function PatientDescription()
                     <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Disease</th>
                     <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Medicine Name</th>
                     <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Lab Test</th>
+                    <th className="px-6 py-3 text-left text-base font-medium text-black uppercase tracking-wider">Report</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
@@ -1043,6 +1045,28 @@ export default function PatientDescription()
                         className="w-[300px] px-6 py-4 whitespace-normal text-sm text-black break-words" style={{ wordWrap: 'break-word' }}
                       // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
                       >{history?.labTests?.join(', ')}</td>
+                      <td
+                        className="px-6 py-4 flex flex-col gap-3 whitespace-normal text-sm text-black break-words" style={{ wordWrap: 'break-word' }}
+                      // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
+                      >
+                        <FaEye
+                          onClick={() => navigate(`/descriptionsummary`, { state: { appointment: patientsHistory[0] } })}
+                          style={{
+                            color: "white",
+                            backgroundColor: "#89CFF0",
+                            borderRadius: "15px",
+                            fontSize: "40px",
+                            padding: "5px 10px 5px 10px ",
+                          }} />
+                        <MdDownloadForOffline style={{
+                          color: "white",
+                          backgroundColor: "#89CFF0",
+                          borderRadius: "15px",
+                          fontSize: "40px",
+                          padding: "5px 10px 5px 10px ",
+                        }} />
+
+                      </td>
                     </tr>
                   ))}
                 </tbody>

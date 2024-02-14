@@ -98,7 +98,7 @@ export default function MedicialHistory()
     <>
       <ToastContainer />
       <div class=" flex flex-col ">
-        <div className=" overflow-x-auto xl:max-w-5xl 2xl:max-w-7xl lg:max-w-2xl  md:max-w-md max-w-xs mx-auto">
+        <div className=" overflow-x-auto xl:max-w-6xl 2xl:w-full lg:max-w-2xl  md:max-w-md max-w-xs mx-auto lg:mx-0 mb-10 mt-5">
           <table className=" divide-y divide-gray-200 ">
             <thead className="bg-gray-50">
               <tr>
