@@ -33,11 +33,6 @@ export default function PatientDescription()
   const onCloseModall = () => setOpen(false);
   const [userImage, setUserImage] = useState();
   const fileInputRef = useRef(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const [isHovered1, setIsHovered1] = useState(false);
-
-  const [isHovered, setIsHovered] = useState(false);
   const [patientsHistory, setPatientsHistory] = useState(null);
   const [appointment, setAppointment] = useState({})
   const [open, setOpen] = useState(false);
@@ -91,47 +86,6 @@ export default function PatientDescription()
   console.log("patientsHistory", patientsHistory);
   console.log("patient", patient);
 
-  const handleFileSelect = async (event) =>
-  {
-    const file = event.target.files[0];
-    if (file)
-    {
-      const token = localStorage.getItem("token");
-      const doctorId = localStorage.getItem("doctorId");
-      const formData = new FormData();
-      formData.append("doctorPic", file);
-
-      console.log("FORM DATA", formData);
-      try
-      {
-        const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
-          method: "POST",
-          headers: {
-            "x-auth-token": token,
-          },
-          body: formData,
-        });
-
-        if (!response.ok)
-        {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-        console.log("Image uploaded successfully:", data);
-        setUserImage(data.profilePicImageUrl);
-        toast.success("Image uploaded successfully.");
-
-        // Reset the file input
-        setSelectedFile(null);
-        fileInputRef.current.value = "";
-      } catch (error)
-      {
-        console.error("Error uploading image:", error);
-        toast.error("Error uploading image. Please try again.");
-      }
-    }
-  };
 
   const onCloseModal = () =>
   {
@@ -434,6 +388,16 @@ export default function PatientDescription()
     { label: "Malaria Test", value: "Malaria Test" },
   ];
 
+  const handleDownload = (appointment) =>
+  {
+    const reportUrl = appointment.appointmentReport[0]; // Assuming this is the URL of the report
+    const link = document.createElement("a");
+    link.href = reportUrl;
+    link.setAttribute("download", "report.pdf"); // Change 'report.pdf' to whatever name you want the downloaded file to have
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
   const updatedLabTests = labTests.map((test) => ({
     ...test,
     value: test.label,
@@ -999,14 +963,6 @@ export default function PatientDescription()
             >
               Medical History
             </label>
-
-            {/* <button
-          type="submit"
-          className="w-40 h-11 bg-[#89CFF0] rounded-full text-white font-semibold text-xl leading-9 font-lato"
-          onClick={handleRegister}
-        >
-          Process
-        </button> */}
           </div>
           <div class=" flex flex-col ">
 
@@ -1050,7 +1006,7 @@ export default function PatientDescription()
                       // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
                       >
                         <FaEye
-                          onClick={() => navigate(`/descriptionsummary`, { state: { appointment: patientsHistory[0] } })}
+                          onClick={() => navigate(`/descriptionsummary`, { state: { appointment: history } })}
                           style={{
                             color: "white",
                             backgroundColor: "#89CFF0",
@@ -1058,13 +1014,16 @@ export default function PatientDescription()
                             fontSize: "40px",
                             padding: "5px 10px 5px 10px ",
                           }} />
-                        <MdDownloadForOffline style={{
-                          color: "white",
-                          backgroundColor: "#89CFF0",
-                          borderRadius: "15px",
-                          fontSize: "40px",
-                          padding: "5px 10px 5px 10px ",
-                        }} />
+
+                        <MdDownloadForOffline
+                          onClick={() => handleDownload(history)}
+                          style={{
+                            color: "white",
+                            backgroundColor: "#89CFF0",
+                            borderRadius: "15px",
+                            fontSize: "40px",
+                            padding: "5px 10px 5px 10px ",
+                          }} />
 
                       </td>
                     </tr>
