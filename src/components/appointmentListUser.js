@@ -212,13 +212,14 @@ export default function AppointmentListUser({ searchTerm }) {
   };
 
   const handleDownload = (appointment) => {
-    const reportUrl = appointment.appointmentReport[0]; // Assuming this is the URL of the report
+    console.log("APPOINTMENT", appointment);
+    const reportUrl = appointment?.appointmentReport[0]; // Assuming this is the URL of the report
     const link = document.createElement("a");
     link.href = reportUrl;
     link.setAttribute("download", "report.pdf"); // Change 'report.pdf' to whatever name you want the downloaded file to have
-    document.body.appendChild(link);
+    document?.body?.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    document?.body?.removeChild(link);
   };
 
   return (
@@ -530,7 +531,10 @@ export default function AppointmentListUser({ searchTerm }) {
                 >
                   {appointment.appointmentStatus === "Confirm" ? (
                     appointment.medicineName.length === 0 ? (
-                      <button className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-[#89CFF0] border border-[#89CFF0] text-xs sm:text-sm">
+                      <button
+                        className="rounded-full px-4 sm:px-6 py-1 sm:py-2 text-[#89CFF0] border border-[#89CFF0] text-xs sm:text-sm"
+                        onClick={() => handleEditAppointment(appointment)}
+                      >
                         Change Date
                       </button>
                     ) : (
@@ -549,7 +553,7 @@ export default function AppointmentListUser({ searchTerm }) {
                         okText="Delete"
                         okType="danger"
                         cancelText="No"
-                        className="rounded-full px-3 sm:px-6 py-1 sm:py-1 text-white bg-[#EF5F5F] text-xs sm:text-sm"
+                        className="rounded-full px-3 sm:px-6 py-2 sm:py-2 text-white bg-[#EF5F5F] text-xs sm:text-sm"
                         onConfirm={() =>
                           handleDeleteAppointment(
                             appointment._id,
