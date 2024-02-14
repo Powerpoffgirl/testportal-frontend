@@ -11,6 +11,9 @@ import { Table } from "./table";
 import { Modal } from "./tableModal";
 import { useReactToPrint } from "react-to-print";
 import './printStyles.css'
+import { MdDownloadForOffline } from "react-icons/md";
+import { BsFillSendFill } from "react-icons/bs";
+import { FaCircleChevronLeft } from "react-icons/fa6";
 
 export default function DescriptionSummary()
 {
@@ -360,28 +363,6 @@ export default function DescriptionSummary()
                                             <td className="w-[300px] px-2 py-4 whitespace-normal text-sm text-black break-words">{appointment?.diseases.join(", ")}</td>
                                             <td className="w-[300px] px-2 py-4 whitespace-normal text-sm text-black break-words">{appointment?.medicineName.join(", ")}</td>
                                             <td className="w-[300px] px-2 py-4 whitespace-normal text-sm text-black break-words">{appointment?.labTests?.join(", ")}</td>
-                                            {/* {patientsHistory?.map((history, index) => (
-                                                <tr key={index}>
-                                                    <td className=" px-6 py-4 whitespace-nowrap text-sm  text-gray-900">{history?.doctorId?.name}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-black ">{history?.appointmentDate?.date}</td>
-                                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-black">{history?.appointmentDate?.time}</td>
-                                                    <td
-                                                        // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
-                                                        className="w-[300px] px-6 py-4 whitespace-normal text-sm text-black break-words" style={{ wordWrap: 'break-word' }}
-                                                    >{history?.issues?.join(', ')}</td>
-                                                    <td
-                                                        // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
-                                                        className="w-[300px] px-6 py-4 whitespace-normal text-sm text-black break-words" style={{ wordWrap: 'break-word' }}>{history?.diseases?.join(', ')}</td>
-                                                    <td
-                                                        className="w-[300px] px-6 py-4 whitespace-normal text-sm text-black break-words" style={{ wordWrap: 'break-word' }}
-                                                    // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
-                                                    >{history?.medicineName?.join(', ')}</td>
-                                                    <td
-                                                        className="w-[300px] px-6 py-4 whitespace-normal text-sm text-black break-words" style={{ wordWrap: 'break-word' }}
-                                                    // className="w-52 px-6 py-4 whitespace-nowrap text-sm text-black"
-                                                    >{history?.labTests?.join(', ')}</td>
-                                                </tr>
-                                            ))} */}
                                         </tbody>
                                     </table>
                                 </div>
@@ -391,23 +372,50 @@ export default function DescriptionSummary()
 
                             </div>
                         </div>
-                        <div className="flex  flex-col lg:flex-row mt-5 mb-5 ">
+                        <div
+                            class=" justify-content-center flex flex-col sm:flex-row"
+                            style={{
+                                gap: "10px",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                marginTop: "20px",
+                            }}
+                        >
                             <button
-                                className=" bg-[#89CFF0] py-1 mb-3 px-8 mx-auto lg:mx-1 rounded-full text-white font-semibold text-xl leading-9 font-lato"
-                            // onClick={() => navigate(`/patientdescription/${id}`)}
+                                onClick={() => navigate(`/patientdescription/${appointment?._id}`, { state: { appointment: appointment } })}
                             >
-                                Back
+                                <FaCircleChevronLeft
+                                    style={{
+                                        color: "white",
+                                        backgroundColor: "#89CFF0",
+                                        borderRadius: "15px",
+                                        fontSize: "40px",
+                                        padding: "5px 10px 5px 10px ",
+                                    }}
+                                />
                             </button>
+                            <button>
+                                <BsFillSendFill
+                                    style={{
+                                        color: "white",
+                                        backgroundColor: "#89CFF0",
+                                        borderRadius: "15px",
+                                        fontSize: "40px",
+                                        padding: "5px 10px 5px 10px ",
+                                    }}
+                                /> </button>
                             <button
-                                className=" bg-[#89CFF0] py-1 mb-3 px-9 mx-auto lg:mx-1 rounded-full text-white font-semibold text-xl leading-9 font-lato "
-                            >
-                                <label htmlFor="files">Send To SMS</label>
-                            </button>
-                            <button
-                                className=" bg-[#89CFF0] py-1 mb-3 px-8 mx-auto lg:mx-1 rounded-full text-white font-semibold text-xl leading-9 font-lato"
                                 onClick={generatePdf}
                             >
-                                Download PDF
+                                <MdDownloadForOffline
+                                    style={{
+                                        color: "white",
+                                        backgroundColor: "#89CFF0",
+                                        borderRadius: "15px",
+                                        fontSize: "40px",
+                                        padding: "5px 10px 5px 10px ",
+                                    }}
+                                />
                             </button>
 
                             <p className="block text-black text-lg font-semibold">
@@ -424,7 +432,7 @@ export default function DescriptionSummary()
 
                     </div>
                 </div>
-            </div>
+            </div >
         </>
     );
 }

@@ -290,8 +290,17 @@ export default function AppointmentList({ searchTerm })
     console.log("========appointment=========", appointment);
     localStorage.setItem("appointmentId", appointmentId);
     localStorage.setItem("patientId", appointment?.patientId._id);
-    navigate(`/patientdescription/${appointmentId}`, { state: { appointment: appointment } });
+    const currentDate = new Date()
+    console.log("==========================appointment.appointmentDate.date > currentDate.toISOString().substring(0, 10)=====================", appointment?.appointmentDate?.date, currentDate?.toISOString().substring(0, 10))
 
+    if (appointment.appointmentDate.date > currentDate.toISOString().substring(0, 10))
+    {
+      toast.error("Please consult on schedule date")
+    }
+    else
+    {
+      navigate(`/patientdescription/${appointmentId}`, { state: { appointment: appointment } });
+    }
   };
 
   console.log("PATIENT LISTS", patientsList);
