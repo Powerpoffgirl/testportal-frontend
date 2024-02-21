@@ -5,6 +5,8 @@ import Form from "./components/Form";
 import { Route, Routes } from "react-router-dom";
 import OTP from "./components/Otp";
 import Qr from "./components/Qr";
+import LabQr from "./components/labQr";
+
 import BillingPage from "./components/billingPage";
 import BillingPrice from "./components/billingPrice";
 import Summary from "./components/Summary";
@@ -20,7 +22,11 @@ import LabFormAdmin from "./components/labFormAdmin";
 import PatientList from "./components/patientList";
 import DoctorList from "./components/doctorList";
 import DoctorLogin from "./components/doctorLogin";
+import LabLogin from "./components/labLogin";
+
 import AdminLogin from "./components/adminLogin";
+import AdminOtp from "./components/adminotp";
+
 import UserLogin from "./components/userLogin";
 import DoctorListAdmin from "./components/doctorListAdmin";
 import TermsOfServices from "./components/TermsOfServices";
@@ -60,6 +66,7 @@ import Layout from "./components/Layout";
 import EditPatientForm from "./components/editPatientForm";
 import ForgetPassword from "./components/forgetpassword";
 import OtpVerify from "./components/otpverify";
+import LabVerifyOtp from "./components/labVerifyOtp";
 import SuperAdminLogin from "./components/superadminLogin";
 import EditAppointmentSuperAdmin from "./components/editAppointmentSuperAdmin";
 import SuperAdminEditForm from "./components/superadmineditform";
@@ -101,7 +108,9 @@ function App() {
           }
         ></Route>
         <Route path="/adminlogin" element={<AdminLogin />}></Route>
+        <Route path="/adminotp" element={<AdminOtp />}></Route>
         <Route path="/doctorlogin" element={<DoctorLogin />}></Route>
+        <Route path="/lablogin" element={<LabLogin />}></Route>
         <Route path="/userlogin" element={<UserLogin />}></Route>
         <Route path="/usersignup" element={<UserSignup />}></Route>
         <Route path="/admin" element={<Admin></Admin>}></Route>
@@ -113,6 +122,17 @@ function App() {
               Component={OTP}
               type="admin"
               headerTextTop={"Doctor"}
+              headerTextBottom={"Verify OTP"}
+            />
+          }
+        ></Route>
+        <Route
+          path="/labverifyotp"
+          element={
+            <Layout
+              Component={OTP}
+              type="admin"
+              headerTextTop={"Lab"}
               headerTextBottom={"Verify OTP"}
             />
           }
@@ -333,6 +353,17 @@ function App() {
               Component={Qr}
               type="admin"
               headerTextTop={"Doctor's"}
+              headerTextBottom={"QR Code"}
+            />
+          }
+        ></Route>
+        <Route
+          path="/labqr"
+          element={
+            <Layout
+              Component={LabQr}
+              type="admin"
+              headerTextTop={"Lab"}
               headerTextBottom={"QR Code"}
             />
           }

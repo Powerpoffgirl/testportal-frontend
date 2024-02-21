@@ -176,56 +176,10 @@ export default function LabFormAdmin() {
   ];
 
   const IndianDoctorCertifications = [
-    "MBBS (Bachelor of Medicine and Bachelor of Surgery)",
-    "MD (Doctor of Medicine)",
-    "MS (Master of Surgery)",
-    "DM (Doctorate of Medicine)",
-    "MCh (Master of Chirurgiae)",
-    "DNB (Diplomate of National Board)",
-    "Fellowship in Medicine",
-    "Fellowship in Surgery",
-    "Fellowship in Cardiology",
-    "Fellowship in Endocrinology",
-    "Fellowship in Gastroenterology",
-    "Fellowship in Nephrology",
-    "Fellowship in Neurology",
-    "Fellowship in Oncology",
-    "Fellowship in Pediatrics",
-    "Fellowship in Neonatology",
-    "Fellowship in Critical Care Medicine",
-    "Fellowship in Dermatology",
-    "Fellowship in Pulmonology",
-    "Fellowship in Rheumatology",
-    "Fellowship in Infectious Diseases",
-    "Fellowship in Hematology",
-    "Fellowship in Orthopedics",
-    "Fellowship in Ophthalmology",
-    "Fellowship in ENT (Ear, Nose, and Throat)",
-    "Fellowship in Psychiatry",
-    "Fellowship in Anesthesiology",
-    "Fellowship in Radiology",
-    "Fellowship in Pathology",
-    "Ph.D. in Medical Sciences",
-    "M.Phil in Medical Sciences",
-    "Postgraduate Diploma in Child Health",
-    "Postgraduate Diploma in Obstetrics & Gynecology",
-    "Postgraduate Diploma in Dermatology",
-    "Postgraduate Diploma in Clinical Pathology",
-    "Postgraduate Diploma in Anesthesiology",
-    "Postgraduate Diploma in Medical Radio-Diagnosis",
-    "Postgraduate Diploma in Ophthalmology",
-    "Postgraduate Diploma in Orthopedics",
-    "Postgraduate Diploma in Psychological Medicine",
-    "Postgraduate Diploma in Tuberculosis & Chest Diseases",
-    "Certificate Course in Diabetology",
-    "Certificate Course in Cardiac Care",
-    "Certificate Course in Endocrinology",
-    "Certificate Course in Critical Care",
-    "Certificate Course in Rheumatology",
-    "Certificate Course in Infectious Diseases",
-    "Certificate Course in Hematology",
-    "Certificate Course in Neonatology",
-    "Certificate Course in Geriatric Medicine",
+    "NOC fire deparment & municipality-> Garbage disposal",
+    " NABL certified",
+    "ISO 15189 Certification ",
+    "ISO 17025 is for General Labs and Calibration agencies. ",
   ];
 
   const SpecialtiesDropdown = IndianDoctorSpecialties?.map((specialty) => ({
@@ -350,77 +304,78 @@ export default function LabFormAdmin() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    navigate("/labverifyotp");
     // Check if the token exists
-    if (doctorDetails.name === "") {
-      toast.error("Please write name");
-    } else if (doctorDetails.registrationNo === "") {
-      toast.error("Please write registration number");
-    } else if (doctorDetails.email === "") {
-      toast.error("Please write email");
-    } else if (doctorDetails.contactNumber === "") {
-      toast.error("Please write contact number");
-    } else if (doctorDetails.totalExperience === "") {
-      toast.error("Please write total experience");
-    } else if (doctorDetails.degree === "") {
-      toast.error("Please write degree");
-    } else if (doctorDetails.address.pinCode === "") {
-      toast.error("Please write Pincode");
-    } else if (doctorDetails.address.district === "") {
-      toast.error("Please write district");
-    } else if (doctorDetails.address.state === "") {
-      toast.error("Please write state");
-    } else {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.error("No token found in local storage");
-        localStorage.clear();
-        navigate(`/adminlogin`);
-      }
+    // if (doctorDetails.name === "") {
+    //   toast.error("Please write name");
+    // } else if (doctorDetails.registrationNo === "") {
+    //   toast.error("Please write registration number");
+    // } else if (doctorDetails.email === "") {
+    //   toast.error("Please write email");
+    // } else if (doctorDetails.contactNumber === "") {
+    //   toast.error("Please write contact number");
+    // } else if (doctorDetails.totalExperience === "") {
+    //   toast.error("Please write total experience");
+    // } else if (doctorDetails.degree === "") {
+    //   toast.error("Please write degree");
+    // } else if (doctorDetails.address.pinCode === "") {
+    //   toast.error("Please write Pincode");
+    // } else if (doctorDetails.address.district === "") {
+    //   toast.error("Please write district");
+    // } else if (doctorDetails.address.state === "") {
+    //   toast.error("Please write state");
+    // } else {
+    //   const token = localStorage.getItem("token");
+    //   if (!token) {
+    //     console.error("No token found in local storage");
+    //     localStorage.clear();
+    //     navigate(`/adminlogin`);
+    //   }
 
-      const isEmpty = Object.values(doctorDetails).some(
-        (value) => value === ""
-      );
+    //   const isEmpty = Object.values(doctorDetails).some(
+    //     (value) => value === ""
+    //   );
 
-      if (isEmpty || isEditing === false) {
-        toast.error("Please fill the fields or Update");
-        setIsEditing(false);
-        return;
-      }
+    //   if (isEmpty || isEditing === false) {
+    //     toast.error("Please fill the fields or Update");
+    //     setIsEditing(false);
+    //     return;
+    //   }
 
-      const response = await fetch(`${baseUrl}/api/v1/admin/register_doctor`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(doctorDetails),
-      });
-      const data = await response.json();
+    //   const response = await fetch(`${baseUrl}/api/v1/admin/register_doctor`, {
+    //     method: "post",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       "x-auth-token": token,
+    //     },
+    //     body: JSON.stringify(doctorDetails),
+    //   });
+    //   const data = await response.json();
 
-      if (data.message === "Mobile number is already registered") {
-        toast.error("Mobile number is already registered");
-      }
-      if (data.statusCode === 400) {
-        toast.error("Please fill the details");
-      }
+    //   if (data.message === "Mobile number is already registered") {
+    //     toast.error("Mobile number is already registered");
+    //   }
+    //   if (data.statusCode === 400) {
+    //     toast.error("Please fill the details");
+    //   }
 
-      if (data.message === "Permission denied") {
-        toast.error("Permission Denied");
-      }
+    //   if (data.message === "Permission denied") {
+    //     toast.error("Permission Denied");
+    //   }
 
-      if (data.statusCode === 500) {
-        toast.error("Enter Unique Values or Values already Exist ");
-      }
+    //   if (data.statusCode === 500) {
+    //     toast.error("Enter Unique Values or Values already Exist ");
+    //   }
 
-      if (data.success === true) {
-        console.log("-----------------ID------------------", data?.data?._id);
-        localStorage.setItem("id", data?.data?._id);
-        navigate("/otp", {
-          state: { contactNumber: doctorDetails.contactNumber },
-        });
-      }
-      console.log("DATA from response", data);
-    }
+    //   if (data.success === true) {
+    //     console.log("-----------------ID------------------", data?.data?._id);
+    //     localStorage.setItem("id", data?.data?._id);
+    //     navigate("/otp", {
+    //       state: { contactNumber: doctorDetails.contactNumber },
+    //     });
+    //   }
+    //   console.log("DATA from response", data);
+    // }
 
     const handleDelete = (workingDay) => {
       console.log("delete", workingDay);
@@ -621,7 +576,7 @@ export default function LabFormAdmin() {
               for="total-experience"
               className="block text-black text-lg font-semibold"
             >
-              Total Experience<span className="text-red-500">*</span>{" "}
+              Total Experience<span className="text-red-500"></span>{" "}
               <span style={{ fontSize: "12px", color: "gray" }}>
                 [ In yrs ex: 1, 2, 3... ]
               </span>
@@ -638,36 +593,17 @@ export default function LabFormAdmin() {
             )}
           </div>
 
-          <div className="mt-3">
-            <label
-              for="specialist"
-              className="block text-black text-lg font-semibold"
-            >
-              Available Test<span className="text-red-500">*</span>{" "}
+          <div>
+            <label for="degree" class="block text-black text-lg font-semibold">
+              Degree
             </label>
-            <style>
-              {`
-          .ant-select-selector {
-            border-color: white !important;
-          }
-        `}
-            </style>
-
-            <div class="border rounded-lg border-[#89CFF0]">
-              <Select
-                className="w-full border-none h-10 overflow-y-scroll "
-                id="speciality"
-                name="speciality"
-                mode="multiple"
-                onChange={handleChange2}
-              >
-                {SpecialtiesDropdown.map((option) => (
-                  <Select.Option key={option.value} value={option.value}>
-                    {option.label}
-                  </Select.Option>
-                ))}
-              </Select>
-            </div>
+            <input
+              type="text"
+              id="degree"
+              name="degree"
+              onChange={handleChange}
+              class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
           </div>
 
           <div className="mt-3">
@@ -675,7 +611,7 @@ export default function LabFormAdmin() {
               htmlFor="certification" // Changed for to htmlFor as per JSX conventions
               className="block text-black text-lg font-semibold"
             >
-              Certification<span className="text-red-500">*</span>
+              Certification<span className="text-red-500"></span>
             </label>
             <style>
               {`
@@ -732,13 +668,50 @@ export default function LabFormAdmin() {
           <p className="text-3xl ">Personal Information</p>
           <hr className="border my-2 " />
           {/* -------name------- */}
+
           <div className="flex flex-row">
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
                 for="name"
                 className="block text-black text-lg font-semibold"
               >
-                Name<span className="text-red-500">*</span>{" "}
+                Owner Name<span className="text-red-500">*</span>{" "}
+              </label>
+              <input
+                type="text"
+                placeholder=""
+                id="name"
+                name="name"
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {errors.name && <p className="text-red-500">{errors.name}</p>}
+            </div>
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="name"
+                className="block text-black text-lg font-semibold"
+              >
+                Licence Number<span className="text-red-500">*</span>{" "}
+              </label>
+              <input
+                type="text"
+                id="registrationNo"
+                name="registrationNo"
+                onChange={handleChange}
+                className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+              />
+              {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
+            </div>
+          </div>
+
+          <div className="flex flex-row">
+            <div className="px-2 w-full sm:w-1/2 mt-3">
+              <label
+                for="name"
+                className="block text-black text-lg font-semibold"
+              >
+                Lab Name<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 type="text"
