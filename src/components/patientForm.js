@@ -56,7 +56,6 @@ export default function PatientForm() {
   const [userDetails, setUserDetails] = useState({ name: "" });
   const [newPatientDetails, setNewPatientDetails] = useState({});
   const [doctorImage, setDoctorImage] = useState();
-
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [patientDetails, setPatientDetails] = useState({
     name: "",
@@ -224,21 +223,6 @@ export default function PatientForm() {
         "state",
       ].includes(name)
     ) {
-      if ("houseNo" === name) {
-        if (value.length > 5) {
-          setHouseNoError("Max 10 chars.");
-        } else {
-          setHouseNoError("");
-          setPatientDetails((prevPatientDetails) => ({
-            ...prevPatientDetails,
-            address: {
-              ...prevPatientDetails.address,
-              [name]: value,
-            },
-          }));
-        }
-      }
-
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -655,9 +639,6 @@ export default function PatientForm() {
                           className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                         />
                       )}
-                      <p class=" text-red-500 flex flex-wrap">
-                        {houseNoError && <p>{houseNoError}</p>}
-                      </p>
                     </div>
                     <div className="px-2 lg:w-1/2 mt-3">
                       {patientsList?.length === 0 ||
