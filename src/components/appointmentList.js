@@ -291,8 +291,6 @@ export default function AppointmentList({ searchTerm })
     localStorage.setItem("appointmentId", appointmentId);
     localStorage.setItem("patientId", appointment?.patientId._id);
     const currentDate = new Date()
-    console.log("==========================appointment.appointmentDate.date > currentDate.toISOString().substring(0, 10)=====================", appointment?.appointmentDate?.date, currentDate?.toISOString().substring(0, 10))
-
     if (appointment.appointmentDate.date > currentDate.toISOString().substring(0, 10))
     {
       toast.error("Please consult on schedule date")
