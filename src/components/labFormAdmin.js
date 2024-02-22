@@ -793,7 +793,67 @@ export default function LabFormAdmin() {
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
-                <div className="flex lg:flex-row flex-col">
+                <div className="flex flex-row">
+                  <div className="px-2 w-1/2 mt-3">
+                    {doctorsList?.length === 0 ||
+                    doctorDetails?.newDoctor === true ? (
+                      <input
+                        type="text"
+                        placeholder="House No./Floor/Block"
+                        id="houseNo"
+                        name="houseNo"
+                        onChange={handleChange}
+                        value={doctorDetails?.address?.houseNo}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        placeholder="House No./Floor/Block"
+                        id="houseNo"
+                        name="houseNo"
+                        value={doctorDetails?.address?.houseNo}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
+                  </div>
+
+                  <div className="px-2 w-1/2 mt-3">
+                    {doctorsList?.length === 0 ||
+                    doctorDetails?.newDoctor === true ? (
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        onChange={handleChange}
+                        value={doctorDetails?.address?.pinCode}
+                        placeholder="Pin Code*"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        onInput={(e) => {
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]/g,
+                            ""
+                          );
+                        }}
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        value={doctorDetails?.address?.pinCode}
+                        placeholder="Pin Code*"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
+
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* <div className="flex lg:flex-row flex-col">
                   <div class="flex flex-row ">
                     <div className="px-2 lg:w-1/2  mt-3">
                       <input
@@ -896,7 +956,7 @@ export default function LabFormAdmin() {
                       )}
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {doctorsList?.length === 0 ||

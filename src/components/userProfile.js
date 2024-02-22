@@ -786,121 +786,66 @@ export default function UserProfile() {
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
-                <div className="flex lg:flex-row flex-col">
-                  <div class="flex flex-row ">
-                    <div className="px-2 lg:w-1/2  mt-3">
-                      {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
-                        <input
-                          type="text"
-                          placeholder="House No."
-                          id="houseNo"
-                          name="houseNo"
-                          onChange={handleChange}
-                          value={userDetails?.address?.houseNo}
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          placeholder="House No."
-                          id="houseNo"
-                          name="houseNo"
-                          value={userDetails?.address?.houseNo}
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
-                      <p class=" text-red-500 flex flex-wrap">
-                        {houseNoError && <p>{houseNoError}</p>}
-                      </p>
-                    </div>
-                    <div className="px-2 lg:w-1/2 mt-3">
-                      {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
-                        <input
-                          type="text"
-                          id="floor"
-                          name="floor"
-                          onChange={handleChange}
-                          value={userDetails?.address?.floor}
-                          placeholder="Floor"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="floor"
-                          name="floor"
-                          value={userDetails?.address?.floor}
-                          placeholder="Floor"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
-                    </div>
+                <div className="flex flex-row">
+                  <div className="px-2 w-1/2 mt-3">
+                    {patientsList?.length === 0 ||
+                    userDetails?.newUser === true ? (
+                      <input
+                        type="text"
+                        placeholder="House No./Floor/Block"
+                        id="houseNo"
+                        name="houseNo"
+                        onChange={handleChange}
+                        value={userDetails?.address?.houseNo}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        placeholder="House No./Floor/Block"
+                        id="houseNo"
+                        name="houseNo"
+                        value={userDetails?.address?.houseNo}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
                   </div>
-                  <div class="flex flex-row">
-                    <div className="px-2 lg:w-1/2 mt-3">
-                      {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
-                        <input
-                          type="text"
-                          id="block"
-                          name="block"
-                          onChange={handleChange}
-                          value={userDetails?.address?.block}
-                          placeholder="Block"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="block"
-                          name="block"
-                          value={userDetails?.address?.block}
-                          placeholder="Block"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
 
-                      {errors.block && (
-                        <p className="text-red-500">{errors.block}</p>
-                      )}
-                    </div>
-                    <div className="px-2 lg:w-1/2 mt-3">
-                      {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
-                        <input
-                          type="text"
-                          id="pinCode"
-                          name="pinCode"
-                          value={userDetails?.address?.pinCode}
-                          onChange={handleChange}
-                          placeholder="Pin Code*"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                          onInput={(e) => {
-                            e.target.value = e.target.value.replace(
-                              /[^0-9]/g,
-                              ""
-                            );
-                          }}
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="pinCode"
-                          name="pinCode"
-                          value={userDetails?.address?.pinCode}
-                          placeholder="Pin Code"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
+                  <div className="px-2 w-1/2 mt-3">
+                    {patientsList?.length === 0 ||
+                    userDetails?.newUser === true ? (
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        value={userDetails?.address?.pinCode}
+                        onChange={handleChange}
+                        placeholder="Pin Code*"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        onInput={(e) => {
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]/g,
+                            ""
+                          );
+                        }}
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        value={userDetails?.address?.pinCode}
+                        placeholder="Pin Code"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
 
-                      {pinCodeError && (
-                        <p className="text-red-500">{pinCodeError}</p>
-                      )}
-                    </div>
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
+                    )}
                   </div>
                 </div>
+
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {patientsList?.length === 0 ||
