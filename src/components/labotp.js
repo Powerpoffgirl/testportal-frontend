@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import phone from "../assets/phone.svg";
 import { toast } from "react-toastify";
 
-const OTP = () => {
+const LabOTP = () => {
   const [otp, setOtp] = useState(["", "", "", "", "", ""]);
   const [userDetails, setUserDetails] = useState(null);
   const otpInputs = [];
@@ -15,7 +15,7 @@ const OTP = () => {
   const baseUrl = process.env.REACT_APP_BASE_URL;
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const location = useLocation();
-  const id = localStorage.getItem("id");
+  const adminId = localStorage.getItem("adminId");
   const token = localStorage.getItem("token");
   console.log(location.state);
   const [seconds, setSeconds] = useState(90);
@@ -28,7 +28,7 @@ const OTP = () => {
     const fetchData = async () => {
       try {
         const response = await fetch(
-          `${baseUrl}/api/v1/admin/get_doctor/${id}`,
+          `${baseUrl}/api/v1/admin/get_lab/${adminId}`,
           {
             method: "GET",
             headers: {
@@ -98,24 +98,27 @@ const OTP = () => {
   const verifyOTP = async () => {
     try {
       const token = localStorage.getItem("token");
-      const id = localStorage.getItem("id");
+      const id = localStorage.getItem("adminId");
       if (!token) {
         console.error("No token found in local storage");
         return;
       }
       const otpString = otp.join("");
-      const response = await fetch(`${baseUrl}/api/v1/admin/verify_otp/${id}`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token, // Replace with your actual token from the previous session
-        },
-        body: JSON.stringify({ otp: otpString }),
-      });
+      const response = await fetch(
+        `${baseUrl}/api/v1/admin/verify_otp_by_admin_for_lab/${id}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+          body: JSON.stringify({ otp: otpString }),
+        }
+      );
 
       const data = await response.json();
       if (data.success === true) {
-        navigate("/qr");
+        navigate("/labqr");
       }
       console.log("DATA from response", data);
     } catch (error) {
@@ -229,7 +232,7 @@ const OTP = () => {
             </p>
           </div>
 
-          <div className="mt-3 flex flex-row">
+          {/* <div className="mt-3 flex flex-row">
             <p className="block text-black text-lg font-semibold mr-1">
               Specialist:
             </p>
@@ -243,7 +246,7 @@ const OTP = () => {
                 );
               })}
             </p>
-          </div>
+          </div> */}
 
           <div className="mt-3 flex flex-row">
             <p className="block text-black text-lg font-semibold mr-1">
@@ -263,7 +266,7 @@ const OTP = () => {
             <p className="block text-black text-lg font-semibold mr-1">
               Name :
             </p>
-            <p className="block text-black text-lg "> {userDetails?.name}</p>
+            <p className="block text-black text-lg "> {userDetails?.labName}</p>
           </div>
 
           {/* ------------email------------ */}
@@ -397,4 +400,4 @@ const OTP = () => {
   );
 };
 
-export default OTP;
+export default LabOTP;

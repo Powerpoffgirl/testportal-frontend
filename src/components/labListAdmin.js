@@ -60,7 +60,7 @@ export default function LabListAdmin({ searchTerm }) {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(`${baseUrl}/api/v1/admin/get_profile`, {
+        const response = await fetch(`${baseUrl}/api/v1/admin/list_labs`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -70,6 +70,10 @@ export default function LabListAdmin({ searchTerm }) {
 
         const data = await response.json();
         console.log("DATA from response", data);
+        if (data.success) {
+          setDoctorsList(data?.data);
+        }
+
         setUserDetailsName(data?.data.name);
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.doctorPic);
@@ -107,28 +111,28 @@ export default function LabListAdmin({ searchTerm }) {
     onCloseModal();
   };
 
-  useEffect(() => {
-    const fetchDoctorDetails = async () => {
-      try {
-        const response = await fetch(`${baseUrl}/api/v1/list_doctors`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+  // useEffect(() => {
+  //   const fetchDoctorDetails = async () => {
+  //     try {
+  //       const response = await fetch(`${baseUrl}/api/v1/admin/list_labs`, {
+  //         method: "GET",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //       });
 
-        const data = await response.json();
-        console.log("DATA from response", data);
-        const verifiedDoctors = data.data.filter(
-          (doctor) => doctor.accountVerified.isVerified
-        );
-        setDoctorsList(verifiedDoctors);
-      } catch (error) {
-        console.error("There was an error verifying the OTP:", error);
-      }
-    };
-    fetchDoctorDetails();
-  }, [searchTerm]);
+  //       const data = await response.json();
+  //       console.log("DATA from response", data);
+  //       const verifiedDoctors = data.data.filter(
+  //         (doctor) => doctor.accountVerified.isVerified
+  //       );
+  //       setDoctorsList(verifiedDoctors);
+  //     } catch (error) {
+  //       console.error("There was an error verifying the OTP:", error);
+  //     }
+  //   };
+  //   fetchDoctorDetails();
+  // }, [searchTerm]);
 
   useEffect(() => {
     // Check if there is a searchTerm and the doctorsList is not empty.

@@ -90,6 +90,10 @@ import Pagenotfound from "./components/pagenotfound";
 import { ToastContainer } from "react-toastify";
 import UserProfile from "./components/userProfile";
 import AdminForgetpassword from "./components/adminForgetPassword";
+import LabPatientsList from "./components/labpatientslist";
+import LabAppointmentList from "./components/labappointmentlist";
+import EditLabForm from "./components/editlabform";
+import LabOtp from "./components/labotp";
 
 function App() {
   return (
@@ -130,10 +134,21 @@ function App() {
           path="/labverifyotp"
           element={
             <Layout
-              Component={OTP}
+              Component={LabVerifyOtp}
               type="admin"
               headerTextTop={"Lab"}
               headerTextBottom={"Verify OTP"}
+            />
+          }
+        ></Route>
+        <Route
+          path="/labotp"
+          element={
+            <Layout
+              Component={LabOtp}
+              type="admin"
+              headerTextTop={"Lab"}
+              headerTextBottom={"OTP"}
             />
           }
         ></Route>
@@ -351,7 +366,7 @@ function App() {
           element={
             <Layout
               Component={Qr}
-              type="admin"
+              type="doctor"
               headerTextTop={"Doctor's"}
               headerTextBottom={"QR Code"}
             />
@@ -421,7 +436,7 @@ function App() {
           element={
             <Layout
               Component={RegisterPatient}
-              type="doctor"
+              type="lab"
               headerTextTop={"Lab Patient"}
               headerTextBottom={"Registration"}
             />
@@ -465,7 +480,7 @@ function App() {
           element={
             <Layout
               Component={TestListPage}
-              type="doctor"
+              type="lab"
               headerTextTop={"Lab Test"}
               headerTextBottom={"List"}
             />
@@ -793,6 +808,39 @@ function App() {
         ></Route>
         <Route path="/tabel" element={<Table></Table>}></Route>
         <Route path="*" element={<Pagenotfound></Pagenotfound>}></Route>
+        <Route
+          path="/labpatientslist"
+          element={
+            <Layout
+              Component={LabPatientsList}
+              type="lab"
+              headerTextTop={"Lab"}
+              headerTextBottom={"Patients"}
+            />
+          }
+        ></Route>
+        <Route
+          path="/labappointmentlist"
+          element={
+            <Layout
+              Component={LabAppointmentList}
+              type="lab"
+              headerTextTop={"Lab"}
+              headerTextBottom={"Appointment List"}
+            />
+          }
+        ></Route>
+        <Route
+          path="/editlabform"
+          element={
+            <Layout
+              Component={EditLabForm}
+              type="lab"
+              headerTextTop={"Lab"}
+              headerTextBottom={"Form"}
+            />
+          }
+        ></Route>
       </Routes>
     </>
   );

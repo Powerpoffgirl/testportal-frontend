@@ -11,7 +11,7 @@ import { Select } from "antd";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function LabFormAdmin() {
+export default function EditLabForm() {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [doctorImage, setDoctorImage] = useState();
@@ -26,32 +26,31 @@ export default function LabFormAdmin() {
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const [doctorDetails, setDoctorDetails] = useState({
-    ownerName: "",
-    labName: "",
-
+    name: "",
     registrationNo: "",
     email: "",
     contactNumber: "",
+    consultationFee: "",
     about: "",
     workingDays: [],
     workingHours: {
       workHourFrom: "",
       workHourTo: "",
-      // interval: "",
+      interval: "",
     },
     totalExperience: "",
-    // availabletest: [],
-    certification: [],
+    availabletest: [],
+    certification: "",
     address: {
       houseNo: "",
-      // floor: "",
-      // block: "",
+      floor: "",
+      block: "",
       area: "",
       pinCode: "",
       district: "",
       state: "",
     },
-    labPic: "",
+    doctorPic: "",
   });
 
   const [isHovered, setIsHovered] = useState(false);
@@ -123,58 +122,58 @@ export default function LabFormAdmin() {
     { label: "Saturday", value: "Saturday" },
     { label: "Sunday", value: "Sunday" },
   ];
-  // const IndianDoctorCertification = [
-  //   "Complete Blood Count (CBC)",
-  //   "Lipid Profile",
-  //   "Liver Function Test (LFT)",
-  //   "Renal Function Test (RFT)",
-  //   "Thyroid Stimulating Hormone (TSH)",
-  //   "Hemoglobin A1C (HbA1c)",
-  //   "Fasting Blood Sugar (FBS)",
-  //   "Postprandial Blood Sugar (PPBS)",
-  //   "Urine Routine Analysis",
-  //   "Serum Creatinine",
-  //   "Blood Urea Nitrogen (BUN)",
-  //   "Serum Uric Acid",
-  //   "Serum Electrolytes",
-  //   "C-Reactive Protein (CRP)",
-  //   "Erythrocyte Sedimentation Rate (ESR)",
-  //   "Prothrombin Time (PT)",
-  //   "Activated Partial Thromboplastin Time (APTT)",
-  //   "Serum Bilirubin",
-  //   "Alkaline Phosphatase (ALP)",
-  //   "Aspartate Aminotransferase (AST/SGOT)",
-  //   "Alanine Aminotransferase (ALT/SGPT)",
-  //   "Gamma-Glutamyl Transferase (GGT)",
-  //   "Serum Calcium",
-  //   "Serum Phosphorus",
-  //   "Serum Albumin",
-  //   "Serum Globulin",
-  //   "Serum Protein Electrophoresis",
-  //   "Vitamin D3 (25-Hydroxy)",
-  //   "Vitamin B12",
-  //   "Iron Studies (Serum Iron, TIBC, Ferritin)",
-  //   "D-Dimer",
-  //   "Troponin I or T",
-  //   "Rheumatoid Factor (RF)",
-  //   "Antinuclear Antibody (ANA)",
-  //   "HIV Testing",
-  //   "Hepatitis B Surface Antigen (HBsAg)",
-  //   "Hepatitis C Virus Antibody (HCV Ab)",
-  //   "Thyroid Profile (T3, T4, TSH)",
-  //   "Serum Testosterone",
-  //   "Serum Prolactin",
-  //   "Follicle Stimulating Hormone (FSH)",
-  //   "Luteinizing Hormone (LH)",
-  //   "Human Chorionic Gonadotropin (hCG)",
-  //   "Prostate-Specific Antigen (PSA)",
-  //   "Carcinoembryonic Antigen (CEA)",
-  //   "CA-125 (Cancer Antigen 125)",
-  //   "CA 15-3 (Breast Cancer Marker)",
-  //   "CA 19-9 (Pancreatic Cancer Marker)",
-  //   "Alpha-Fetoprotein (AFP)",
-  //   "Blood Culture",
-  // ];
+  const IndianDoctorSpecialties = [
+    "Complete Blood Count (CBC)",
+    "Lipid Profile",
+    "Liver Function Test (LFT)",
+    "Renal Function Test (RFT)",
+    "Thyroid Stimulating Hormone (TSH)",
+    "Hemoglobin A1C (HbA1c)",
+    "Fasting Blood Sugar (FBS)",
+    "Postprandial Blood Sugar (PPBS)",
+    "Urine Routine Analysis",
+    "Serum Creatinine",
+    "Blood Urea Nitrogen (BUN)",
+    "Serum Uric Acid",
+    "Serum Electrolytes",
+    "C-Reactive Protein (CRP)",
+    "Erythrocyte Sedimentation Rate (ESR)",
+    "Prothrombin Time (PT)",
+    "Activated Partial Thromboplastin Time (APTT)",
+    "Serum Bilirubin",
+    "Alkaline Phosphatase (ALP)",
+    "Aspartate Aminotransferase (AST/SGOT)",
+    "Alanine Aminotransferase (ALT/SGPT)",
+    "Gamma-Glutamyl Transferase (GGT)",
+    "Serum Calcium",
+    "Serum Phosphorus",
+    "Serum Albumin",
+    "Serum Globulin",
+    "Serum Protein Electrophoresis",
+    "Vitamin D3 (25-Hydroxy)",
+    "Vitamin B12",
+    "Iron Studies (Serum Iron, TIBC, Ferritin)",
+    "D-Dimer",
+    "Troponin I or T",
+    "Rheumatoid Factor (RF)",
+    "Antinuclear Antibody (ANA)",
+    "HIV Testing",
+    "Hepatitis B Surface Antigen (HBsAg)",
+    "Hepatitis C Virus Antibody (HCV Ab)",
+    "Thyroid Profile (T3, T4, TSH)",
+    "Serum Testosterone",
+    "Serum Prolactin",
+    "Follicle Stimulating Hormone (FSH)",
+    "Luteinizing Hormone (LH)",
+    "Human Chorionic Gonadotropin (hCG)",
+    "Prostate-Specific Antigen (PSA)",
+    "Carcinoembryonic Antigen (CEA)",
+    "CA-125 (Cancer Antigen 125)",
+    "CA 15-3 (Breast Cancer Marker)",
+    "CA 19-9 (Pancreatic Cancer Marker)",
+    "Alpha-Fetoprotein (AFP)",
+    "Blood Culture",
+  ];
 
   const IndianDoctorCertifications = [
     "NOC fire deparment & municipality-> Garbage disposal",
@@ -182,6 +181,11 @@ export default function LabFormAdmin() {
     "ISO 15189 Certification ",
     "ISO 17025 is for General Labs and Calibration agencies. ",
   ];
+
+  const SpecialtiesDropdown = IndianDoctorSpecialties?.map((specialty) => ({
+    label: specialty,
+    value: specialty,
+  }));
 
   const CertificationDropdown = IndianDoctorCertifications?.map(
     (certification) => ({
@@ -207,7 +211,7 @@ export default function LabFormAdmin() {
   const handleChange2 = (e) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
-      certification: e,
+      speciality: e,
     }));
   };
 
@@ -233,10 +237,10 @@ export default function LabFormAdmin() {
 
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
-      labPic: doctorImage,
+      doctorPic: doctorImage,
     }));
 
-    if (name === "workHourFrom") {
+    if (name === "workHourFrom" || name === "interval") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -258,7 +262,15 @@ export default function LabFormAdmin() {
         }));
       }
     } else if (
-      ["houseNo", "area", "pinCode", "district", "state"].includes(name)
+      [
+        "houseNo",
+        "floor",
+        "block",
+        "area",
+        "pinCode",
+        "district",
+        "state",
+      ].includes(name)
     ) {
       if ("houseNo" === name) {
         if (value.length > 5) {
@@ -357,8 +369,8 @@ export default function LabFormAdmin() {
 
       if (data.success === true) {
         console.log("-----------------ID------------------", data?.data?._id);
-        localStorage.setItem("adminId", data?.data?._id);
-        navigate("/labotp", {
+        localStorage.setItem("id", data?.data?._id);
+        navigate("/otp", {
           state: { contactNumber: doctorDetails.contactNumber },
         });
       }
@@ -624,6 +636,31 @@ export default function LabFormAdmin() {
               </Select>
             </div>
           </div>
+
+          {/* <div className="mt-3">
+            <label
+              for="degree"
+              className="block text-black text-lg font-semibold"
+            >
+              Certification<span className="text-red-500">*</span>{" "}
+            </label>
+            <input
+              type="text"
+              id="degree"
+              name="degree"
+              onChange={handleChange}
+              className="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+            />
+
+            <Select>
+              {CertificationDropdown.map((option) => (
+                <Select.Option key={option.value} value={option.value}>
+                  {option.label}
+                </Select.Option>
+              ))}
+            </Select>
+            {errors.degree && <p className="text-red-500">{errors.degree}</p>}
+          </div> */}
         </div>
 
         {/* ----------------------------------right---------------------------------- */}
@@ -635,7 +672,7 @@ export default function LabFormAdmin() {
           <div className="flex flex-row">
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
-                for="ownerName"
+                for="name"
                 className="block text-black text-lg font-semibold"
               >
                 Owner Name<span className="text-red-500">*</span>{" "}
@@ -643,8 +680,8 @@ export default function LabFormAdmin() {
               <input
                 type="text"
                 placeholder=""
-                id="ownerName"
-                name="ownerName"
+                id="name"
+                name="name"
                 onChange={handleChange}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
@@ -652,15 +689,15 @@ export default function LabFormAdmin() {
             </div>
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
-                for="licenseNo"
+                for="name"
                 className="block text-black text-lg font-semibold"
               >
                 Licence Number<span className="text-red-500">*</span>{" "}
               </label>
               <input
                 type="text"
-                id="licenseNo"
-                name="licenseNo"
+                id="registrationNo"
+                name="registrationNo"
                 onChange={handleChange}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
@@ -671,7 +708,7 @@ export default function LabFormAdmin() {
           <div className="flex flex-row">
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
-                for="labName"
+                for="name"
                 className="block text-black text-lg font-semibold"
               >
                 Lab Name<span className="text-red-500">*</span>{" "}
@@ -679,8 +716,8 @@ export default function LabFormAdmin() {
               <input
                 type="text"
                 placeholder=""
-                id="labName"
-                name="labName"
+                id="name"
+                name="name"
                 onChange={handleChange}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
@@ -688,7 +725,7 @@ export default function LabFormAdmin() {
             </div>
             <div className="px-2 w-full sm:w-1/2 mt-3">
               <label
-                for="registrationNo"
+                for="name"
                 className="block text-black text-lg font-semibold"
               >
                 Registration Number<span className="text-red-500">*</span>{" "}
@@ -1296,7 +1333,7 @@ export default function LabFormAdmin() {
                     name="speciality"
                     onChange={handleChange}
                   >
-                    {CertificationDropdown.map(({ label, value }) => (
+                    {SpecialtiesDropdown.map(({ label, value }) => (
                       <option key={value} value={value}>
                         {label}
                       </option>

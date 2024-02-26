@@ -12,7 +12,7 @@ export default function Qr() {
   const [name, setName] = useState("");
   const [userDetails, setUserDetails] = useState(null);
 
-  const id = localStorage.getItem("id");
+  const adminId = localStorage.getItem("adminId");
   const token = localStorage.getItem("token");
 
   useEffect(() => {
@@ -20,7 +20,7 @@ export default function Qr() {
       const fetchData = async () => {
         try {
           const response = await fetch(
-            `${baseUrl}/api/v1/admin/get_doctor/${id}`,
+            `${baseUrl}/api/v1/admin/get_lab/${adminId}`,
             {
               method: "GET",
               headers: {
@@ -169,7 +169,9 @@ export default function Qr() {
                 <p className="block text-black text-lg font-semibold mr-1">
                   Name :
                 </p>
-                <p className="block text-black text-lg ">{userDetails?.name}</p>
+                <p className="block text-black text-lg ">
+                  {userDetails?.labName}
+                </p>
               </div>
 
               {/* ------------email------------ */}
@@ -203,6 +205,7 @@ export default function Qr() {
                   {workingDays.split(" ").map((day) => (
                     <p className="mr-1">{day}</p>
                   ))}
+                  {userDetails?.workingDays}
                 </p>
               </div>
 

@@ -92,10 +92,22 @@ export default function Layout({
     { text: "Patient’s List", to: "/patientlist" },
     { text: "Appointment List", to: "/appointmentlist" },
     { text: "Profile", to: "/editdoctorform" },
+    // { text: "Go To Lab", to: "/registerpatient" },
+    // { text: "Available Test", to: "/testlist" },
+    { text: "Support", to: "#" },
+    { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
+  ];
+
+  // -------------Lab SIDEBAR NAVIGATION--------------------------
+
+  const link6 = [
+    { text: "Patient’s List", to: "/labpatientslist" },
+    { text: "Appointment List", to: "/labappointmentlist" },
+    { text: "Profile", to: "/editlabform" },
     { text: "Go To Lab", to: "/registerpatient" },
     { text: "Available Test", to: "/testlist" },
     { text: "Support", to: "#" },
-    { text: "Logout", to: "/doctorlogin", onClick: handleLogout },
+    { text: "Logout", to: "/lablogin", onClick: handleLogout },
   ];
 
   // ------------- ADMIN SIDEBAR NAVIGATION--------------------------
@@ -219,6 +231,7 @@ export default function Layout({
           {type === "admin" && <NavigationLinks links={link4} />}
           {type === "superAdmin" && <NavigationLinks links={link5} />}
           {type === "labadmin" && <NavigationLinks links={link4} />}
+          {type === "lab" && <NavigationLinks links={link6} />}
         </aside>
         <div className="flex flex-col flex-grow md:pl-4 pr-2">
           <nav

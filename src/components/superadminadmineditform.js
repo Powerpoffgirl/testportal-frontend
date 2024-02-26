@@ -12,8 +12,7 @@ import MenuItem from "@mui/material/MenuItem";
 import { HiOutlineUserAdd } from "react-icons/hi";
 import { FaRegTrashAlt } from "react-icons/fa";
 
-export default function SuperAdminAdminEditForm()
-{
+export default function SuperAdminAdminEditForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -56,55 +55,48 @@ export default function SuperAdminAdminEditForm()
   const [isHovered1, setIsHovered1] = useState(false);
   const [errors, setErrors] = useState({});
 
-
-
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const id = localStorage.getItem("adminId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/adminlogin`);
         }
 
-        const response = await fetch(`${baseUrl}/api/v1/superAdmin/admin_byId/${id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token, // Replace with your actual token from the previous session
-          },
-        });
+        const response = await fetch(
+          `${baseUrl}/api/v1/superAdmin/admin_byId/${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
+          }
+        );
 
         const data = await response.json();
         console.log("DATA from response", data?.data);
         setDoctorDetails(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -113,8 +105,7 @@ export default function SuperAdminAdminEditForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -126,29 +117,24 @@ export default function SuperAdminAdminEditForm()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
 
-    if (type === "checkbox")
-    {
+    if (type === "checkbox") {
       setDoctorDetails({
         ...doctorDetails,
         permissions: {
@@ -156,35 +142,26 @@ export default function SuperAdminAdminEditForm()
           [name]: checked,
         },
       });
-    }
-    else if (name === "pinCode")
-    {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    } else if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setPinCodeError(""); // Clear the error message if it's a valid 6-digit number without alphabetic characters
-      } else
-      {
+      } else {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
-    if (name === "contactNumber")
-    {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setmobileNumberError("");
-      } else
-      {
+      } else {
         setmobileNumberError("Please enter a valid Number");
       }
     }
-    if (name === "workingDays")
-    {
+    if (name === "workingDays") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingDays: [...prevDoctorDetails.workingDays, value],
       }));
-    } else if (name === "workHourFrom" || name === "workHourTo")
-    {
+    } else if (name === "workHourFrom" || name === "workHourTo") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -202,8 +179,7 @@ export default function SuperAdminAdminEditForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -211,8 +187,7 @@ export default function SuperAdminAdminEditForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -221,8 +196,7 @@ export default function SuperAdminAdminEditForm()
     setIsEditing(true);
   };
 
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     const newDoctorDetails = {
       name: doctorDetails?.name,
@@ -244,65 +218,57 @@ export default function SuperAdminAdminEditForm()
       },
       adminPic: adminImage,
     };
-    if (doctorDetails.name === "")
-    {
+    if (doctorDetails.name === "") {
       toast.error("Please write name");
-    } else if (doctorDetails.email === "")
-    {
+    } else if (doctorDetails.email === "") {
       toast.error("Please write email");
-    } else if (doctorDetails.contactNumber === "")
-    {
+    } else if (doctorDetails.contactNumber === "") {
       toast.error("Please write contact number");
-    } else if (doctorDetails.address.pinCode === "")
-    {
+    } else if (doctorDetails.address.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (doctorDetails.address.district === "")
-    {
+    } else if (doctorDetails.address.district === "") {
       toast.error("Please write district");
-    } else if (doctorDetails.address.state === "")
-    {
+    } else if (doctorDetails.address.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       const token = localStorage.getItem("token");
       const id = localStorage.getItem("adminId");
       const isEmpty = Object.values(newDoctorDetails).some(
         (value) => value === ""
       );
 
-      if (isEmpty || isEditing === false)
-      {
+      if (isEmpty || isEditing === false) {
         toast.error("Please fill the fields or Update");
         setIsEditing(false);
         return;
       }
 
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/adminlogin`);
       }
 
-      const response = await fetch(`${baseUrl}/api/v1/superAdmin/update_admin/${id}`, {
-        method: "put",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(newDoctorDetails),
-      });
+      const response = await fetch(
+        `${baseUrl}/api/v1/superAdmin/update_admin/${id}`,
+        {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+          body: JSON.stringify(newDoctorDetails),
+        }
+      );
       const data = await response.json();
 
-      if (data.statusCode === 400)
-      {
+      if (data.statusCode === 400) {
         toast.error("Please fill the details");
       }
 
-      if (data.success === true)
-      {
+      if (data.success === true) {
         toast.success("Admin details updated successfully!");
-        navigate("/superadminadminlist")
+        navigate("/superadminadminlist");
       }
       console.log("DATA from response", data);
     }
@@ -324,7 +290,7 @@ export default function SuperAdminAdminEditForm()
               okType="danger"
               cancelText="No"
               className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
-            // onConfirm={handleDelete}
+              // onConfirm={handleDelete}
             >
               <button onClick={onCloseModal}>
                 <img src={delete_button} alt="df" class="w-8 mb-1"></img>
@@ -413,8 +379,7 @@ export default function SuperAdminAdminEditForm()
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() =>
-                    {
+                    onClick={() => {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -464,9 +429,7 @@ export default function SuperAdminAdminEditForm()
               <table>
                 <tbody>
                   <tr>
-                    <td>
-                      View
-                    </td>
+                    <td>View</td>
                     <td>
                       <input
                         type="checkbox"
@@ -477,9 +440,7 @@ export default function SuperAdminAdminEditForm()
                     </td>
                   </tr>
                   <tr>
-                    <td>
-                      Create
-                    </td>
+                    <td>Create</td>
                     <td>
                       <input
                         type="checkbox"
@@ -490,9 +451,7 @@ export default function SuperAdminAdminEditForm()
                     </td>
                   </tr>
                   <tr>
-                    <td>
-                      Remove
-                    </td>
+                    <td>Remove</td>
                     <td>
                       <input
                         type="checkbox"
@@ -503,9 +462,7 @@ export default function SuperAdminAdminEditForm()
                     </td>
                   </tr>
                   <tr>
-                    <td>
-                      Edit
-                    </td>
+                    <td>Edit</td>
                     <td>
                       <input
                         type="checkbox"
@@ -560,8 +517,7 @@ export default function SuperAdminAdminEditForm()
               id="contactNumber"
               name="contactNumber"
               onChange={handleChange}
-              onInput={(e) =>
-              {
+              onInput={(e) => {
                 e.target.value = e.target.value.replace(/[^0-9]/g, "");
               }}
               value={doctorDetails?.contactNumber}
@@ -602,7 +558,39 @@ export default function SuperAdminAdminEditForm()
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
-                <div className="flex lg:flex-row flex-col">
+                <div className="flex flex-row">
+                  <div className="px-2 w-1/2 mt-3">
+                    <input
+                      type="text"
+                      placeholder="House No./Floor/Block"
+                      id="houseNo"
+                      name="houseNo"
+                      onChange={handleChange}
+                      value={doctorDetails?.address?.houseNo}
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+                  </div>
+
+                  <div className="px-2 w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="pinCode"
+                      name="pinCode"
+                      onChange={handleChange}
+                      value={doctorDetails?.address?.pinCode}
+                      placeholder="Pin Code*"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      onInput={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                      }}
+                    />
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* <div className="flex lg:flex-row flex-col">
                   <div class="flex flex-row ">
                     <div className="px-2 lg:w-1/2  mt-3">
 
@@ -665,10 +653,9 @@ export default function SuperAdminAdminEditForm()
                       )}
                     </div>
                   </div>
-                </div>
+                </div> */}
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
-
                   <input
                     type="text"
                     id="area"
@@ -678,13 +665,11 @@ export default function SuperAdminAdminEditForm()
                     className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   />
 
-
                   {errors.area && <p className="text-red-500">{errors.area}</p>}
                 </div>
 
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
-
                     <input
                       type="text"
                       id="district"
@@ -693,7 +678,6 @@ export default function SuperAdminAdminEditForm()
                       placeholder="District"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                     />
-
 
                     {errors.district && (
                       <p className="text-red-500">{errors.district}</p>

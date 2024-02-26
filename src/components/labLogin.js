@@ -113,49 +113,49 @@ export default function LabLogin() {
     }
   };
   const handleSubmit = async (e) => {
-    navigate("/lablistadmin");
-    // if (contactNumber === "") {
-    //   setError("Mobile number should not be empty");
-    // }
-    // if (password === "") {
-    //   setPassword("Password should not be empty");
-    // }
-    // e.preventDefault();
-    // if (isDoctor) {
-    //   const response = await fetch(`${baseUrl}/api/v1/doctor/login_doctor`, {
-    //     method: "post",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify({
-    //       contactNumber: contactNumber,
-    //       password: password,
-    //     }),
-    //   });
-    //   const data = await response.json();
-    //   if (data.success === true) {
-    //     if (data.token) {
-    //       localStorage.setItem("token", data.token);
-    //       localStorage.setItem("userContactNumber", contactNumber);
-    //       localStorage.setItem("name", data?.data?.name);
-    //       localStorage.setItem("doctorId", data?.data._id);
-    //       navigate("/patientlist");
-    //     }
-    //   }
-    //   if (data.success === false) {
-    //     toast.error("Wrong Credentials", {
-    //       position: "top-center",
-    //       autoClose: 5000,
-    //       hideProgressBar: false,
-    //       closeOnClick: true,
-    //       pauseOnHover: true,
-    //       draggable: true,
-    //       progress: undefined,
-    //       theme: "light",
-    //     });
-    //   }
-    //   console.log(data);
-    // }
+    navigate("/labpatientslist");
+    if (contactNumber === "") {
+      setError("Mobile number should not be empty");
+    }
+    if (password === "") {
+      setPassword("Password should not be empty");
+    }
+    e.preventDefault();
+    if (isDoctor) {
+      const response = await fetch(`${baseUrl}/api/v1/lab/login_lab`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          contactNumber: contactNumber,
+          password: password,
+        }),
+      });
+      const data = await response.json();
+      if (data.success === true) {
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("userContactNumber", contactNumber);
+          localStorage.setItem("name", data?.data?.name);
+          localStorage.setItem("labId", data?.data._id);
+          navigate("/labpatientslist");
+        }
+      }
+      if (data.success === false) {
+        toast.error("Wrong Credentials", {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+      console.log(data);
+    }
   };
   const handleForgetPassword = async (e) => {
     if (contactNumber === "") {

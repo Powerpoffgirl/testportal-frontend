@@ -11,8 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { MdEdit } from "react-icons/md";
 import { Select } from "antd";
 
-export default function SuperAdminDoctorEditForm()
-{
+export default function SuperAdminDoctorEditForm() {
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -24,24 +23,21 @@ export default function SuperAdminDoctorEditForm()
   const [doctorImage, setDoctorImage] = useState();
   const [showQrCode, setShowQrCode] = useState(false);
   const [qrCodeUrl, setQrCodeUrl] = useState("");
-  const [name, setName] = useState("")
+  const [name, setName] = useState("");
   const [mobileNumberError, setmobileNumberError] = useState("");
   const [doctorsList, setDoctorsList] = useState([]);
   const [pinCodeError, setPinCodeError] = useState("");
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -50,8 +46,7 @@ export default function SuperAdminDoctorEditForm()
           body: formData,
         });
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -63,16 +58,14 @@ export default function SuperAdminDoctorEditForm()
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  const handleNewProfilePictureClick = async () =>
-  {
+  const handleNewProfilePictureClick = async () => {
     // This will trigger the hidden file input to open the file dialog
     await fileInputRef.current.click();
   };
@@ -94,8 +87,7 @@ export default function SuperAdminDoctorEditForm()
   const [isEditing, setIsEditing] = useState(false);
   const TimeDropdown = [
     { label: "Select Time", value: "" },
-    ...Array.from({ length: 24 }, (v, i) =>
-    {
+    ...Array.from({ length: 24 }, (v, i) => {
       const hour = i.toString().padStart(2, "0");
       return { label: `${hour}:00`, value: `${hour}:00` };
     }),
@@ -158,36 +150,29 @@ export default function SuperAdminDoctorEditForm()
     label: specialty,
     value: specialty,
   }));
-  const handleChange1 = (value) =>
-  {
+  const handleChange1 = (value) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       workingDays: value, // directly set the value, which is the updated array of working days
     }));
   };
 
-  const handleChange2 = (e) =>
-  {
+  const handleChange2 = (e) => {
     setDoctorDetails((prevDoctorDetails) => ({
       ...prevDoctorDetails,
       speciality: e,
     }));
   };
 
-  const toggleQrCode = () =>
-  {
+  const toggleQrCode = () => {
     setShowQrCode(!showQrCode);
   };
-  useEffect(() =>
-  {
-    const fetchDoctorDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchDoctorDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const doctorId = localStorage.getItem("doctorId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -205,41 +190,34 @@ export default function SuperAdminDoctorEditForm()
         const data = await response.json();
         console.log("DATA from response", data?.data);
         setDoctorDetails(data?.data);
-        setQrCodeUrl(data.data.qrCodeUrl)
-      } catch (error)
-      {
+        setQrCodeUrl(data.data.qrCodeUrl);
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchDoctorDetails();
   }, []);
 
-  const handleClick = (event) =>
-  {
+  const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () =>
-  {
+  const handleClose = () => {
     setAnchorEl(null);
   };
 
-  const handleToggleEdit = () =>
-  {
+  const handleToggleEdit = () => {
     setIsEditing(!isEditing);
   };
 
   // Function to handle profile picture removal
-  const handleRemoveProfilePicture = () =>
-  {
+  const handleRemoveProfilePicture = () => {
     // Logic to handle removing the current profile picture
     handleClose();
   };
 
-  const validateField = (name, value) =>
-  {
-    switch (name)
-    {
+  const validateField = (name, value) => {
+    switch (name) {
       case "name":
         return value ? "" : "Name is required.";
       case "email":
@@ -292,21 +270,18 @@ export default function SuperAdminDoctorEditForm()
         return "";
     }
   };
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
 
     const error = validateField(name, value);
     setErrors({ ...errors, [name]: error });
 
-    if (name === "workingDays")
-    {
+    if (name === "workingDays") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingDays: [...prevDoctorDetails.workingDays, value],
       }));
-    } else if (name === "workHourFrom" || name === "workHourTo")
-    {
+    } else if (name === "workHourFrom" || name === "workHourTo") {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         workingHours: {
@@ -324,8 +299,7 @@ export default function SuperAdminDoctorEditForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
+    ) {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         address: {
@@ -333,8 +307,7 @@ export default function SuperAdminDoctorEditForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setDoctorDetails((prevDoctorDetails) => ({
         ...prevDoctorDetails,
         [name]: value,
@@ -343,8 +316,7 @@ export default function SuperAdminDoctorEditForm()
     setIsEditing(true);
   };
 
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
     // Check if the token exists
     const newDoctorDetails = {
@@ -372,15 +344,13 @@ export default function SuperAdminDoctorEditForm()
       (value) => value === ""
     );
 
-    if (isEmpty || isEditing === false)
-    {
+    if (isEmpty || isEditing === false) {
       toast.error("Please fill the fields or Update");
       setIsEditing(false);
       return;
     }
 
-    if (!token)
-    {
+    if (!token) {
       console.error("No token found in local storage");
       return;
     }
@@ -396,23 +366,20 @@ export default function SuperAdminDoctorEditForm()
       }
     );
     const data = await response.json();
-    if (data.statusCode === 400)
-    {
+    if (data.statusCode === 400) {
       toast.error("Please fill the details");
     }
 
-    if (data.success === true)
-    {
+    if (data.success === true) {
       console.log("Doctor updated successfully.");
       toast.success("Doctor updated successfully.");
-      navigate("/superadmindoctorlist")
+      navigate("/superadmindoctorlist");
       // localStorage.setItem("id", data.data._id)
     }
     console.log("DATA from response", data);
   };
 
-  const handleDownload = () =>
-  {
+  const handleDownload = () => {
     // Create a new anchor element
     const element = document.createElement("a");
     element.href = `${qrCodeUrl}`;
@@ -428,7 +395,6 @@ export default function SuperAdminDoctorEditForm()
       <div className="flex flex-col -ml-7  lg:flex-row">
         {/* --------------left-------------- */}
         <div className="flex flex-col border bg-white lg:w-2/5 xl:w-1/4 py-6 px-3  ml-5 my-5  ">
-
           <div className="mx-auto my-2">
             <div className=" ">
               <div
@@ -511,8 +477,7 @@ export default function SuperAdminDoctorEditForm()
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() =>
-                    {
+                    onClick={() => {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -558,7 +523,7 @@ export default function SuperAdminDoctorEditForm()
                 value={doctorDetails?.workingDays}
                 onChange={handleChange1}
                 placeholder="Mon-Fri"
-              // Add other props as needed
+                // Add other props as needed
               >
                 {Daysdropdown.map((option) => (
                   <Select.Option key={option.value} value={option.value}>
@@ -611,7 +576,10 @@ export default function SuperAdminDoctorEditForm()
               for="total-experience"
               className="block text-black text-lg font-semibold mt-1 mb-1"
             >
-              Total Experience<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[ In yrs ex: 1, 2, 3... ]</span>
+              Total Experience<span className="text-red-500">*</span>{" "}
+              <span style={{ fontSize: "12px", color: "gray" }}>
+                [ In yrs ex: 1, 2, 3... ]
+              </span>
             </label>
             <input
               type="text"
@@ -676,24 +644,32 @@ export default function SuperAdminDoctorEditForm()
             />
             {errors.degree && <p className="text-red-500">{errors.degree}</p>}
           </div>
-          {
-            showQrCode && (
-              <>
-                <p class="mx-auto ">
-                  {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
-                </p>
-                <div style={{ width: '100%', display: 'flex', alignItems: "center", justifyContent: 'center' }}>
-                  <button className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
-                    style={{
-                      backgroundColor: "#89CFF0",
-                    }} onClick={handleDownload}> Download QR</button>
-                </div>
-              </>
-
-            )
-
-
-          }
+          {showQrCode && (
+            <>
+              <p class="mx-auto ">
+                {qrCodeUrl && <img src={qrCodeUrl} alt="QR Code" />}
+              </p>
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <button
+                  className="btn btn-primary border py-3 px-4 rounded-3xl text-white"
+                  style={{
+                    backgroundColor: "#89CFF0",
+                  }}
+                  onClick={handleDownload}
+                >
+                  {" "}
+                  Download QR
+                </button>
+              </div>
+            </>
+          )}
         </div>
 
         {/* ----------------------------------right---------------------------------- */}
@@ -773,8 +749,7 @@ export default function SuperAdminDoctorEditForm()
                 pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
                 value={doctorDetails?.contactNumber}
                 onChange={handleChange}
-                onInput={(e) =>
-                {
+                onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -791,7 +766,10 @@ export default function SuperAdminDoctorEditForm()
                 for="interval"
                 className="block text-black text-lg font-semibold mt-1 mb-1"
               >
-                Interval<span className="text-red-500">*</span>{" "}<span style={{ fontSize: "12px", color: "gray" }}>[In mins ex:10,20...]</span>
+                Interval<span className="text-red-500">*</span>{" "}
+                <span style={{ fontSize: "12px", color: "gray" }}>
+                  [In mins ex:10,20...]
+                </span>
               </label>
               <input
                 type="text"
@@ -817,8 +795,7 @@ export default function SuperAdminDoctorEditForm()
                 name="consultationFee"
                 value={doctorDetails?.consultationFee}
                 onChange={handleChange}
-                onInput={(e) =>
-                {
+                onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
                 }}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -837,123 +814,70 @@ export default function SuperAdminDoctorEditForm()
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
-                <div className="flex lg:flex-row flex-col ">
-                  <div class="flex flex-row  lg:w-1/2 ">
-                    <div className="px-2 lg:w-1/2  mt-3">
-                      {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
-                        <input
-                          type="text"
-                          placeholder="House No."
-                          id="houseNo"
-                          name="houseNo"
-                          onChange={handleChange}
-                          value={doctorDetails?.address?.houseNo}
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          placeholder="House No."
-                          id="houseNo"
-                          name="houseNo"
-                          value={doctorDetails?.address?.houseNo}
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
-                    </div>
-                    <div className="px-2 lg:w-1/2 mt-3">
-                      {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
-                        <input
-                          type="text"
-                          id="floor"
-                          name="floor"
-                          onChange={handleChange}
-                          value={doctorDetails?.address?.floor}
-                          placeholder="Floor"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="floor"
-                          name="floor"
-                          value={doctorDetails?.address?.floor}
-                          placeholder="Floor"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
-                    </div>
+                <div className="flex flex-row">
+                  <div className="px-2 w-1/2 mt-3">
+                    {doctorsList?.length === 0 ||
+                    doctorDetails?.newDoctor === true ? (
+                      <input
+                        type="text"
+                        placeholder="House No./Floor/Block"
+                        id="houseNo"
+                        name="houseNo"
+                        onChange={handleChange}
+                        value={doctorDetails?.address?.houseNo}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        placeholder="House No./Floor/Block"
+                        id="houseNo"
+                        name="houseNo"
+                        value={doctorDetails?.address?.houseNo}
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
                   </div>
-                  <div class="flex flex-row  lg:w-1/2">
-                    <div className="px-2 lg:w-1/2 mt-3">
-                      {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
-                        <input
-                          type="text"
-                          id="block"
-                          name="block"
-                          onChange={handleChange}
-                          value={doctorDetails?.address?.block}
-                          placeholder="Block"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="block"
-                          name="block"
-                          value={doctorDetails?.address?.block}
-                          placeholder="Block"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
 
-                      {errors.block && (
-                        <p className="text-red-500">{errors.block}</p>
-                      )}
-                    </div>
-                    <div className="px-2 lg:w-1/2 mt-3">
-                      {doctorsList?.length === 0 ||
-                        doctorDetails?.newDoctor === true ? (
-                        <input
-                          type="text"
-                          id="pinCode"
-                          name="pinCode"
-                          onChange={handleChange}
-                          value={doctorDetails?.address?.pinCode}
-                          placeholder="Pin Code*"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                          onInput={(e) =>
-                          {
-                            e.target.value = e.target.value.replace(
-                              /[^0-9]/g,
-                              ""
-                            );
-                          }}
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="pinCode"
-                          name="pinCode"
-                          value={doctorDetails?.address?.pinCode}
-                          placeholder="Pin Code*"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
+                  <div className="px-2 w-1/2 mt-3">
+                    {doctorsList?.length === 0 ||
+                    doctorDetails?.newDoctor === true ? (
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        onChange={handleChange}
+                        value={doctorDetails?.address?.pinCode}
+                        placeholder="Pin Code*"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                        onInput={(e) => {
+                          e.target.value = e.target.value.replace(
+                            /[^0-9]/g,
+                            ""
+                          );
+                        }}
+                      />
+                    ) : (
+                      <input
+                        type="text"
+                        id="pinCode"
+                        name="pinCode"
+                        value={doctorDetails?.address?.pinCode}
+                        placeholder="Pin Code*"
+                        className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      />
+                    )}
 
-                      {pinCodeError && (
-                        <p className="text-red-500">{pinCodeError}</p>
-                      )}
-                    </div>
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
+                    )}
                   </div>
                 </div>
+
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {doctorsList?.length === 0 ||
-                    doctorDetails?.newDoctor === true ? (
+                  doctorDetails?.newDoctor === true ? (
                     <input
                       type="text"
                       id="area"
@@ -980,7 +904,7 @@ export default function SuperAdminDoctorEditForm()
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
                     {doctorsList?.length === 0 ||
-                      doctorDetails?.newDoctor === true ? (
+                    doctorDetails?.newDoctor === true ? (
                       <input
                         type="text"
                         id="district"
@@ -1008,7 +932,7 @@ export default function SuperAdminDoctorEditForm()
 
                   <div className="px-2 w-1/2 mt-3">
                     {doctorsList?.length === 0 ||
-                      doctorDetails?.newUser === true ? (
+                    doctorDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="state"
@@ -1058,7 +982,6 @@ export default function SuperAdminDoctorEditForm()
             )}
           </div>
           <div className="flex flex-row-reverse mt-5 my-2 gap-4">
-
             <button
               className="btn btn-primary border py-3 px-6 rounded-3xl text-white"
               style={{

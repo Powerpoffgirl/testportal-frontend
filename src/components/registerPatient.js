@@ -259,8 +259,8 @@ export default function PatientForm() {
 
         if (!token) {
           console.error("No token found in local storage");
-          localStorage.clear();
-          navigate(`/doctorlogin`);
+          // localStorage.clear();
+          // navigate(`/doctorlogin`);
         }
         const response = await fetch(
           `${baseUrl}/api/v1/doctor/list_labPatient`,
