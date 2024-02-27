@@ -688,7 +688,7 @@ function App() {
           element={
             <Layout
               Component={LabListAdmin}
-              type="labadmin"
+              type="admin"
               headerTextTop={"Lab's"}
               headerTextBottom={"List"}
               search={"true"}
@@ -701,7 +701,7 @@ function App() {
           element={
             <Layout
               Component={LabFormAdmin}
-              type="labadmin"
+              type="admin"
               headerTextTop={"Lab's"}
               headerTextBottom={"Form"}
             />
@@ -712,7 +712,7 @@ function App() {
           element={
             <Layout
               Component={EditLabFormAdmin}
-              type="labadmin"
+              type="admin"
               headerTextTop={"Edit Lab's"}
               headerTextBottom={"Form"}
             />

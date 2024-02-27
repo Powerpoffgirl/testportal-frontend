@@ -102,7 +102,7 @@ export default function Layout({
 
   const link6 = [
     { text: "Patient’s List", to: "/labpatientslist" },
-    { text: "Appointment List", to: "/labappointmentlist" },
+    // { text: "Appointment List", to: "/labappointmentlist" },
     { text: "Profile", to: "/editlabform" },
     { text: "Go To Lab", to: "/registerpatient" },
     { text: "Available Test", to: "/testlist" },
@@ -174,10 +174,12 @@ export default function Layout({
     } else if (type === "superAdmin") {
       console.log("hello");
       navigate("/superadminadminform");
-    } else if (type === "labadmin") {
-      console.log("labadmin");
-      navigate("/labformadmin");
-    } else if (type === "lab") {
+    }
+    //  else if (type === "labadmin") {
+    //   console.log("labadmin");
+    //   navigate("/labformadmin");
+    // }
+    else if (type === "lab") {
       navigate("/registerpatient");
     }
   };
@@ -232,7 +234,7 @@ export default function Layout({
           {type === "doctor" && <NavigationLinks links={link3} />}
           {type === "admin" && <NavigationLinks links={link4} />}
           {type === "superAdmin" && <NavigationLinks links={link5} />}
-          {type === "labadmin" && <NavigationLinks links={link4} />}
+          {/* {type === "labadmin" && <NavigationLinks links={link4} />} */}
           {type === "lab" && <NavigationLinks links={link6} />}
         </aside>
         <div className="flex flex-col flex-grow md:pl-4 pr-2">
