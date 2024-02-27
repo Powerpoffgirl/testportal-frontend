@@ -79,16 +79,13 @@ export default function BillingPage({ name, contactNo, gender, age }) {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_doctorDetails`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/v1/lab/get_labDetails`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
 
         const data = await response.json();
         console.log("DATA from response", data);
@@ -114,7 +111,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
           navigate(`/doctorlogin`);
         }
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/getall_testBooking`,
+          `${baseUrl}/api/v1/lab/getall_testBooking`,
           {
             method: "get",
             headers: {
@@ -161,26 +158,26 @@ export default function BillingPage({ name, contactNo, gender, age }) {
       department,
       sampleType
     ) =>
-      () => {
-        const testToAdd = {
-          id: id,
-          testPackage: testId,
-          price: cost,
-          technology: technology,
-          units: units,
-          bio: bioRef,
-          testCode: testcode,
-          sampleType: sampleType,
-          department: department,
-          Delete: <MdOutlineDelete />,
-          Save: <GiConfirmed />,
-        };
-        setTableData([...tableData, testToAdd]);
-
-        setSearchTerm("");
-
-        setIsListOpen(false);
+    () => {
+      const testToAdd = {
+        id: id,
+        testPackage: testId,
+        price: cost,
+        technology: technology,
+        units: units,
+        bio: bioRef,
+        testCode: testcode,
+        sampleType: sampleType,
+        department: department,
+        Delete: <MdOutlineDelete />,
+        Save: <GiConfirmed />,
       };
+      setTableData([...tableData, testToAdd]);
+
+      setSearchTerm("");
+
+      setIsListOpen(false);
+    };
 
   const deleteRow = (index) => {
     const updatedTableData = [...tableData];
@@ -206,7 +203,6 @@ export default function BillingPage({ name, contactNo, gender, age }) {
   };
 
   useEffect(() => {
-
     const calculateTotalPrice = () => {
       let totalPrice = 0;
 
@@ -221,10 +217,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     };
 
     calculateTotalPrice();
-
-
-  }, [])
-
+  }, []);
 
   const getTestNames = () => {
     return tableData?.map((row) => row.testPackage).join(", ");
@@ -269,27 +262,17 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
       setInputValues(newInputValues);
 
-      console.log("value is been setted", inputValues)
-
-
-
-    };
-
-
-
-
-
+      console.log("value is been setted", inputValues);
+    }
   };
 
   const handleBlur = (e, index) => {
     const patientId = localStorage.getItem("selectedPatientId");
     const { value } = e.target;
     const newInputValues = [...inputValues];
-    console.log("INPUT VALUES=====", inputValues)
+    console.log("INPUT VALUES=====", inputValues);
     newInputValues[index] = value;
     setInputValues(inputValues);
-
-
 
     const testId = tableData[index]?.id;
 
@@ -306,14 +289,13 @@ export default function BillingPage({ name, contactNo, gender, age }) {
       // Add a new test to the array
       return {
         ...prevPatientReport,
-        testAsked: [...prevPatientReport.testAsked, { id: testId, value: value, date: appointmentDate }],
-
+        testAsked: [
+          ...prevPatientReport.testAsked,
+          { id: testId, value: value, date: appointmentDate },
+        ],
       };
-    }
-    );
-
-  }
-
+    });
+  };
 
   const handleSave = async (e) => {
     try {
@@ -328,7 +310,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${baseUrl}/api/v1/doctor/update_labPatient/${patientId}`,
+        `${baseUrl}/api/v1/lab/update_labPatient/${patientId}`,
         {
           method: "put",
           headers: {
@@ -346,11 +328,10 @@ export default function BillingPage({ name, contactNo, gender, age }) {
       e.target.value = "";
       if (appointmentDate) {
         toast.success("Saved");
-        navigate(`/summary`, { state: { reportDate: appointmentDate } })
+        navigate(`/summary`, { state: { reportDate: appointmentDate } });
       } else {
-        toast.error("please select a date")
+        toast.error("please select a date");
       }
-
     } catch (error) {
       console.error("There was an error verifying the OTP:", error);
     }
@@ -368,7 +349,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
         }
 
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/getall_testBooking`,
+          `${baseUrl}/api/v1/lab/getall_testBooking`,
           {
             method: "get",
             headers: {
@@ -400,7 +381,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
         }
 
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_labPatient/${patientId}`,
+          `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
           {
             method: "get",
             headers: {
@@ -437,7 +418,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
       console.log("FORM DATA", formData);
       try {
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/upload_report/${patientId}`,
+          `${baseUrl}/api/v1/lab/upload_report/${patientId}`,
           {
             method: "POST",
             headers: {
@@ -465,34 +446,30 @@ export default function BillingPage({ name, contactNo, gender, age }) {
   updateUserEmail(userDetailsEmail);
   updateUserimage(userDetailsPic);
 
-
   console.log("row =====", tableData);
   console.log("patient Report ====", patientReport);
-
 
   // Function to get the current date in the format 'YYYY-MM-DD'
   function getCurrentDate() {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
-    const month = String(currentDate.getMonth() + 1).padStart(2, '0');
-    const day = String(currentDate.getDate()).padStart(2, '0');
+    const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+    const day = String(currentDate.getDate()).padStart(2, "0");
     return `${year}-${month}-${day}`;
   }
 
-  console.log("APPOINTMENT DATE", appointmentDate)
+  console.log("APPOINTMENT DATE", appointmentDate);
 
-  const [discountValue, setDiscountValue] = useState('');
+  const [discountValue, setDiscountValue] = useState("");
 
   const handleInputChange = (e) => {
-
     setDiscountValue(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    toast.success('Discount applied')
-    console.log('Discount value:', discountValue);
-
+    toast.success("Discount applied");
+    console.log("Discount value:", discountValue);
   };
 
   return (
@@ -501,8 +478,9 @@ export default function BillingPage({ name, contactNo, gender, age }) {
         <div className="MainContainer flex lg:flex-row flex-col w-full sm:ml-0">
           {/* --------------------left side-------------------- */}
           <div
-            className={` mb-3 flex flex-col w-5/12 lg:min-h-3/4 lg:w-3/12 p-6  bg-white md:w-1/2  sm:w-1/2 md:ml-5 ${xsview ? "" : "ml-10"
-              }  `}
+            className={` mb-3 flex flex-col w-5/12 lg:min-h-3/4 lg:w-3/12 p-6  bg-white md:w-1/2  sm:w-1/2 md:ml-5 ${
+              xsview ? "" : "ml-10"
+            }  `}
             style={{
               borderRadius: 20,
             }}
@@ -564,7 +542,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
             <hr />
 
             <div>
-              <p style={{ color: 'gray', marginTop: '15px' }}>Lab Tests Date</p>
+              <p style={{ color: "gray", marginTop: "15px" }}>Lab Tests Date</p>
               <input
                 className="px-2 border h-10 rounded-lg w-50"
                 type="date"
@@ -578,8 +556,9 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
           {/* --------------------right side-------------------- */}
           <div
-            className={` lg:w-4/12 p-6 md:w-1/2 xl:w-8/12 pr-8 bg-white lg:min-h-3/4 w-5/12 md:ml-5 ${xsview ? "" : "ml-10"
-              }  `}
+            className={` lg:w-4/12 p-6 md:w-1/2 xl:w-8/12 pr-8 bg-white lg:min-h-3/4 w-5/12 md:ml-5 ${
+              xsview ? "" : "ml-10"
+            }  `}
             style={{
               boxSizing: "border-box ",
               // height: "75vh",
@@ -678,7 +657,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                   <button class="absolute top-0 end-0 p-2.5 text-sm font-medium h-full text-gray-900 bg-gray-50 rounded-e-lg border border-gray-300 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 ">
                     <svg
                       class="w-4 h-4"
-                      style={{ color: 'black' }}
+                      style={{ color: "black" }}
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -697,7 +676,11 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                   <div style={{ zIndex: 9999 }}>
                     {isListOpen && (
                       <ul
-                        style={{ width: "95%", height: "150px", overflowY: "auto" }}
+                        style={{
+                          width: "95%",
+                          height: "150px",
+                          overflowY: "auto",
+                        }}
                         className=" absolute divide-y divide-gray-200 bg-white shadow-md"
                       >
                         {filteredTest?.map((test) => (
@@ -784,7 +767,6 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                       >
                         {/* Delete */}
                       </th>
-
                     </tr>
                   </thead>
                   <tbody className="overflow-y-auto">
@@ -894,18 +876,19 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                           {row?.id?.bioRefInterval}
                         </td>
                         <td className="px-6 py-4">
-                          {row?.date?.slice(0, 10).split('-').reverse().join('-')}
+                          {row?.date
+                            ?.slice(0, 10)
+                            .split("-")
+                            .reverse()
+                            .join("-")}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
-
-
-
               </div>
               <div class="mt-3  ">
-                <form onSubmit={handleSubmit} >
+                <form onSubmit={handleSubmit}>
                   <label>
                     Discount(%) :
                     <input
@@ -913,23 +896,24 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                       value={discountValue}
                       onChange={handleInputChange}
                       className="w-52 h-10 border border-gray-300  rounded-lg pl-2 text-center placeholder-gray-300 mx-3 text-sm"
-                      style={{ maxWidth: '110px' }}
+                      style={{ maxWidth: "110px" }}
                       placeholder="Enter discount"
                     />
                   </label>
-                  <button type="submit"
-                  >
-                    <TiTick style={{
-                      height: "40px",
-                      width: "40px",
-                      backgroundColor: "#89CFF0",
-                      borderRadius: "20px",
-                      marginTop: "20px",
-                      marginBottom: '-15px',
-                      padding: "2px",
-                      color: 'white',
-                      // border: '1px solid black'
-                    }} />
+                  <button type="submit">
+                    <TiTick
+                      style={{
+                        height: "40px",
+                        width: "40px",
+                        backgroundColor: "#89CFF0",
+                        borderRadius: "20px",
+                        marginTop: "20px",
+                        marginBottom: "-15px",
+                        padding: "2px",
+                        color: "white",
+                        // border: '1px solid black'
+                      }}
+                    />
                   </button>
                 </form>
               </div>
@@ -946,10 +930,20 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                     borderRadius: "20px",
                     marginTop: "20px",
                     padding: "2px",
-                    color: 'white'
+                    color: "white",
                   }}
                   onClick={
-                    appointmentDate ? () => navigate(`/billingprice`, { state: { reportDate: appointmentDate, discount: discountValue } }) : () => { toast.error("please select a date") }
+                    appointmentDate
+                      ? () =>
+                          navigate(`/billingprice`, {
+                            state: {
+                              reportDate: appointmentDate,
+                              discount: discountValue,
+                            },
+                          })
+                      : () => {
+                          toast.error("please select a date");
+                        }
                   }
                 >
                   Lab Bill
@@ -963,7 +957,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                     borderRadius: "20px",
                     marginTop: "20px",
                     padding: "2px",
-                    color: 'white'
+                    color: "white",
                   }}
                   onClick={handleSave}
                 >

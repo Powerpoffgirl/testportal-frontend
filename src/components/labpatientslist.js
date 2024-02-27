@@ -31,7 +31,7 @@ const svg5 = `<svg width="25" height="25" viewBox="0 0 25 25" fill="none" xmlns=
 <path d="M4.6875 24.9999C3.82812 24.9999 3.09245 24.7279 2.48047 24.1839C1.86849 23.6399 1.5625 22.986 1.5625 22.2221V4.16654H0V1.38877H7.8125V-0.00012207H17.1875V1.38877H25V4.16654H23.4375V22.2221C23.4375 22.986 23.1315 23.6399 22.5195 24.1839C21.9076 24.7279 21.1719 24.9999 20.3125 24.9999H4.6875ZM20.3125 4.16654H4.6875V22.2221H20.3125V4.16654ZM7.8125 19.4443H10.9375V6.94432H7.8125V19.4443ZM14.0625 19.4443H17.1875V6.94432H14.0625V19.4443Z" fill="white"/>
 </svg>`;
 
-export default function LabPatientsList({ searchTerm }) {
+export default function LabPatientList({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 767px)" });
@@ -57,16 +57,13 @@ export default function LabPatientsList({ searchTerm }) {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_patientsList`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/v1/lab/list_labPatient`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
 
         const data = await response.json();
         console.log("DATA from response", data);
@@ -79,37 +76,37 @@ export default function LabPatientsList({ searchTerm }) {
       }
     };
     fetchPatientDetails();
-    const fetchAppointmentDetails = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          console.error("No token found in local storage");
-          return;
-        }
-        const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_all_appointments`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
-          }
-        );
+    // const fetchAppointmentDetails = async () => {
+    //   try {
+    //     const token = localStorage.getItem("token");
+    //     if (!token) {
+    //       console.error("No token found in local storage");
+    //       return;
+    //     }
+    //     const response = await fetch(
+    //       `${baseUrl}/api/v1/lab/get_all_appointments`,
+    //       {
+    //         method: "GET",
+    //         headers: {
+    //           "Content-Type": "application/json",
+    //           "x-auth-token": token, // Replace with your actual token from the previous session
+    //         },
+    //       }
+    //     );
 
-        const data = await response.json();
-        console.log("DATA from response", data);
-        if (data.message === "Invalid or expired token") {
-          toast.error("Invalid or expired token");
-          navigate("/doctorlogin");
-          localStorage.clear();
-        }
-        setAppointmentList(data?.data);
-      } catch (error) {
-        console.error("There was an error verifying the OTP:", error);
-      }
-    };
-    fetchAppointmentDetails();
+    //     const data = await response.json();
+    //     console.log("DATA from response", data);
+    //     if (data.message === "Invalid or expired token") {
+    //       toast.error("Invalid or expired token");
+    //       navigate("/lablogin");
+    //       localStorage.clear();
+    //     }
+    //     setAppointmentList(data?.data);
+    //   } catch (error) {
+    //     console.error("There was an error verifying the OTP:", error);
+    //   }
+    // };
+    // fetchAppointmentDetails();
   }, []);
 
   useEffect(() => {
@@ -121,16 +118,13 @@ export default function LabPatientsList({ searchTerm }) {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_doctorDetails`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/v1/lab/get_labDetails`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
 
         const data = await response.json();
         console.log("DATA from response", data);
@@ -166,7 +160,7 @@ export default function LabPatientsList({ searchTerm }) {
         return;
       }
       const response = await fetch(
-        `${baseUrl}/api/v1/doctor/delete_patient/${patientId}`,
+        `${baseUrl}/api/v1/lab/delete_patient/${patientId}`,
         {
           method: "DELETE", // Use DELETE method
           headers: {

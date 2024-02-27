@@ -197,16 +197,13 @@ export default function PatientForm() {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_doctorDetails`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/v1/lab/get_labDetails`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
 
         const data = await response.json();
         console.log("DATA from response", data);
@@ -262,16 +259,13 @@ export default function PatientForm() {
           // localStorage.clear();
           // navigate(`/doctorlogin`);
         }
-        const response = await fetch(
-          `${baseUrl}/api/v1/doctor/list_labPatient`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/v1/lab/list_labPatient`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
 
         const data = await response.json();
         console.log(
@@ -491,7 +485,7 @@ export default function PatientForm() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
-    const doctorId = localStorage.getItem("doctorId");
+    const doctorId = localStorage.getItem("labId");
 
     const newPatientDetails = {
       name: patientDetails?.name,
@@ -512,7 +506,7 @@ export default function PatientForm() {
         state: patientDetails?.address?.state,
       },
       // patientId: JSON.stringify(generatePatientId()),
-      doctorId: JSON.stringify(doctorId),
+      labId: JSON.stringify(doctorId),
       // patientPic: userImage,
     };
     if (!newPatientDetails?.gender) {
@@ -574,7 +568,7 @@ export default function PatientForm() {
         navigate("/billing");
       } else {
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/create_labPatient`,
+          `${baseUrl}/api/v1/lab/create_labPatient`,
           {
             method: "post",
             headers: {

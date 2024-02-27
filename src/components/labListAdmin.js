@@ -74,9 +74,9 @@ export default function LabListAdmin({ searchTerm }) {
           setDoctorsList(data?.data);
         }
 
-        setUserDetailsName(data?.data.name);
+        setUserDetailsName(data?.data.labName);
         setUserDetailsEmail(data?.data.email);
-        setUserDetailsPic(data?.data.doctorPic);
+        setUserDetailsPic(data?.data.labPic);
         console.log("usser name$$$$$$$", data?.data.name);
       } catch (error) {
         console.error("There was an error verifying the OTP:", error);
@@ -88,16 +88,13 @@ export default function LabListAdmin({ searchTerm }) {
   const handleDelete = async (id) => {
     console.log("DOCTRO ID", id);
     const token = localStorage.getItem("token");
-    const response = await fetch(
-      `${baseUrl}/api/v1/admin/delete_doctor/${id}`,
-      {
-        method: "delete",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-      }
-    );
+    const response = await fetch(`${baseUrl}/api/v1/admin/delete_lab/${id}`, {
+      method: "delete",
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": token,
+      },
+    });
     const data = await response.json();
     console.log("DATA FROM RESPONSE", data);
     if (data.success) {
@@ -145,11 +142,11 @@ export default function LabListAdmin({ searchTerm }) {
           .includes(lowerCaseSearchTerm);
 
         // Check if any of the doctor's specialities include the searchTerm
-        const specialityMatch = doctor.speciality?.some((speciality) =>
-          speciality.toLowerCase().includes(lowerCaseSearchTerm)
+        const certificationMatch = doctor.certification?.some((certification) =>
+          certification.toLowerCase().includes(lowerCaseSearchTerm)
         );
 
-        return nameMatch || specialityMatch;
+        return nameMatch || certificationMatch;
       });
       setFilteredDoctors(matchedDoctors);
     } else {
@@ -215,7 +212,7 @@ export default function LabListAdmin({ searchTerm }) {
       setFilteredDoctors(doctorsList);
     } else {
       const filteredDoctors = doctorsList.filter(
-        (doc) => doc.speciality === item
+        (doc) => doc.certification === item
       );
       setFilteredDoctors(filteredDoctors);
     }
@@ -468,8 +465,8 @@ export default function LabListAdmin({ searchTerm }) {
   };
 
   const handleEdit = (patientId) => {
-    localStorage.setItem("patientId", patientId);
-    navigate("/editdoctorformadmin");
+    localStorage.setItem("adminId", patientId);
+    navigate("/editlabformadmin");
   };
 
   updateUser(userDetailsName);
@@ -529,9 +526,9 @@ export default function LabListAdmin({ searchTerm }) {
             {/* ---------------------------left part--------------------------- */}
             <div className="flex flex-col px-1 md:w-1/2">
               <div className="">
-                {selectedDoctor?.doctorPic ? (
+                {selectedDoctor?.labPic ? (
                   <img
-                    src={selectedDoctor?.doctorPic}
+                    src={selectedDoctor?.labPic}
                     alt="doctorimage"
                     className=" h-80 w-full"
                   ></img>
@@ -547,7 +544,7 @@ export default function LabListAdmin({ searchTerm }) {
                 </p>
 
                 <p className="text-black text-3xl font-medium mb-2">
-                  Dr. {selectedDoctor?.name}
+                  Dr. {selectedDoctor?.labName}
                 </p>
                 <div className="flex flex-row">
                   <div>
@@ -579,10 +576,6 @@ export default function LabListAdmin({ searchTerm }) {
                     <p className="text-gray-600 text-xl ">
                       {selectedDoctor?.address?.houseNo +
                         " " +
-                        selectedDoctor?.address?.block +
-                        " " +
-                        selectedDoctor?.address?.area +
-                        ", " +
                         selectedDoctor?.address?.district +
                         ", " +
                         selectedDoctor?.address?.state +
@@ -597,9 +590,11 @@ export default function LabListAdmin({ searchTerm }) {
             {!otppage && (
               <div className="flex flex-col  md:w-1/2 px-2">
                 <div className=" py-1 mb-2">
-                  <p className="text-lg font-medium text-black ">SPECIALITY</p>
+                  <p className="text-lg font-medium text-black ">
+                    CERTIFICATION
+                  </p>
                   <div className="flex flex-wrap ">
-                    {selectedDoctor?.speciality?.map((item, index) => {
+                    {selectedDoctor?.certification?.map((item, index) => {
                       return (
                         <p
                           key={index}
@@ -943,11 +938,11 @@ export default function LabListAdmin({ searchTerm }) {
             >
               <div className="flex flex-row justify-between">
                 <div className="flex items-center gap-x-2">
-                  {doctor.doctorPic ? (
+                  {doctor.labPic ? (
                     <img
                       className="object-cover sm:w-20 sm:h-20 w-10 h-10  rounded-full"
-                      src={doctor.doctorPic}
-                      alt={doctor.name}
+                      src={doctor.labPic}
+                      alt={doctor.labName}
                     />
                   ) : (
                     <AccountCircleIcon
@@ -959,12 +954,12 @@ export default function LabListAdmin({ searchTerm }) {
                   )}
                   <div>
                     <h1 className=" font-semibold text-gray-700 sm:text-lg text-sm capitalize">
-                      Dr. {doctor.name}
+                      Dr. {doctor.labName}
                     </h1>
 
                     <p className=" text-gray-500 sm:text-sm text-xs flex flex-row">
-                      {/* {doctor?.speciality?.join(", ")} */}
-                      {doctor?.speciality?.slice(0, 1).join(", ")}
+                      {/* {doctor?.certification?.join(", ")} */}
+                      {doctor?.certification?.slice(0, 1).join(", ")}
                       <p class="text-gray">...</p>
                     </p>
                     <p className=" text-gray-500 sm:text-sm text-xs ">

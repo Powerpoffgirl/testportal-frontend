@@ -39,7 +39,7 @@ export default function Summary() {
       console.log("FORM DATA", formData);
       try {
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/upload_report/${patientId}`,
+          `${baseUrl}/api/v1/lab/upload_report/${patientId}`,
           {
             method: "POST",
             headers: {
@@ -73,7 +73,7 @@ export default function Summary() {
           return;
         }
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_doctorDetails`,
+          `${baseUrl}/api/v1/lab/get_doctorDetails`,
           {
             method: "GET",
             headers: {
@@ -123,7 +123,7 @@ export default function Summary() {
         }
 
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_labPatient/${patientId}`,
+          `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
           {
             method: "get",
             headers: {

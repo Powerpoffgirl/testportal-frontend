@@ -101,7 +101,7 @@ export default function BillingPrice() {
       console.log("FORM DATA", formData);
       try {
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/upload_report/${patientId}`,
+          `${baseUrl}/api/v1/lab/upload_report/${patientId}`,
           {
             method: "POST",
             headers: {
@@ -135,16 +135,13 @@ export default function BillingPrice() {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_doctorDetails`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/v1/lab/get_labDetails`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
 
         const data = await response.json();
         console.log("DATA from response", data);
@@ -183,7 +180,7 @@ export default function BillingPrice() {
       }
 
       const response = await fetch(
-        `${baseUrl}/api/v1/doctor/delete_testBooking/${rows[index]._id}`,
+        `${baseUrl}/api/v1/lab/delete_testBooking/${rows[index]._id}`,
         {
           method: "delete",
           headers: {
@@ -229,7 +226,7 @@ export default function BillingPrice() {
             const lastItem = rows[rowToEdit];
 
             const response = await fetch(
-              `${baseUrl}/api/v1/doctor/update_testBooking/${rows[rowToEdit]._id}`,
+              `${baseUrl}/api/v1/lab/update_testBooking/${rows[rowToEdit]._id}`,
               {
                 method: "Put",
                 headers: {
@@ -279,7 +276,7 @@ export default function BillingPrice() {
         }
 
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_labPatient/${patientId}`,
+          `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
           {
             method: "get",
             headers: {

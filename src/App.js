@@ -94,6 +94,7 @@ import LabPatientsList from "./components/labpatientslist";
 import LabAppointmentList from "./components/labappointmentlist";
 import EditLabForm from "./components/editlabform";
 import LabOtp from "./components/labotp";
+import EditLabFormAdmin from "./components/editlabformadmin";
 
 function App() {
   return (
@@ -447,7 +448,7 @@ function App() {
           element={
             <Layout
               Component={BillingPage}
-              type="doctor"
+              type="lab"
               headerTextTop={"Patient's"}
               headerTextBottom={"Lab Tests"}
             />
@@ -458,7 +459,7 @@ function App() {
           element={
             <Layout
               Component={BillingPrice}
-              type="doctor"
+              type="lab"
               headerTextTop={"Patient's"}
               headerTextBottom={"Lab Bill"}
             />
@@ -469,7 +470,7 @@ function App() {
           element={
             <Layout
               Component={Summary}
-              type="doctor"
+              type="lab"
               headerTextTop={"Patient's"}
               headerTextBottom={"Lab Report"}
             />
@@ -707,6 +708,17 @@ function App() {
           }
         ></Route>
         <Route
+          path="/editlabformadmin"
+          element={
+            <Layout
+              Component={EditLabFormAdmin}
+              type="labadmin"
+              headerTextTop={"Edit Lab's"}
+              headerTextBottom={"Form"}
+            />
+          }
+        ></Route>
+        <Route
           path="/patientlist"
           element={
             <Layout
@@ -816,6 +828,8 @@ function App() {
               type="lab"
               headerTextTop={"Lab"}
               headerTextBottom={"Patients"}
+              search={"true"}
+              AddButton={"true"}
             />
           }
         ></Route>

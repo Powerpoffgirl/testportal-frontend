@@ -12,7 +12,7 @@ import { Select } from "antd";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-export default function EditLabForm() {
+export default function EditLabFormAdmin() {
   const navigate = useNavigate();
   const [selectedFile, setSelectedFile] = useState(null);
   const [doctorImage, setDoctorImage] = useState();
@@ -28,8 +28,10 @@ export default function EditLabForm() {
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   const [doctorDetails, setDoctorDetails] = useState({
-    labname: "",
+    ownerName: "",
+    labName: "",
     registrationNo: "",
+    licenseNo: "",
     email: "",
     contactNumber: "",
     // consultationFee: "",
@@ -61,19 +63,22 @@ export default function EditLabForm() {
     const fetchDoctorDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const labId = localStorage.getItem("labId");
+        const adminId = localStorage.getItem("adminId");
         if (!token) {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/adminlogin`);
         }
-        const response = await fetch(`${baseUrl}/api/v1/lab/get_labDetails`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "x-auth-token": token, // Replace with your actual token from the previous session
-          },
-        });
+        const response = await fetch(
+          `${baseUrl}/api/v1/admin/get_lab/${adminId}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token, // Replace with your actual token from the previous session
+            },
+          }
+        );
 
         const data = await response.json();
         console.log("DATA from USE EFFECT response", data?.data);
@@ -318,15 +323,19 @@ export default function EditLabForm() {
       //   setIsEditing(false);
       //   return;
       // }
+      const adminId = localStorage.getItem("adminId");
 
-      const response = await fetch(`${baseUrl}/api/v1/lab/update_lab`, {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": token,
-        },
-        body: JSON.stringify(doctorDetails),
-      });
+      const response = await fetch(
+        `${baseUrl}/api/v1/admin/update_lab/${adminId}`,
+        {
+          method: "put",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token,
+          },
+          body: JSON.stringify(doctorDetails),
+        }
+      );
       const data = await response.json();
 
       if (data.message === "Mobile number is already registered") {
@@ -381,7 +390,7 @@ export default function EditLabForm() {
                 className=" border w-36 mx-auto rounded-full"
                 style={{ backgroundColor: "#B1DAED" }}
               >
-                {doctorImage || doctorDetails?.doctorPic ? (
+                {doctorImage || doctorDetails?.labPic ? (
                   <div
                     aria-controls="profile-pic-menu"
                     aria-haspopup="true"
@@ -500,6 +509,7 @@ export default function EditLabForm() {
                 mode="multiple"
                 id="workingDays"
                 name="workingDays"
+                value={doctorDetails?.workingDays}
                 onChange={handleChange1}
                 placeholder="Mon-Fri"
                 // Add other props as needed
@@ -522,6 +532,7 @@ export default function EditLabForm() {
                 <select
                   className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   name="workHourFrom"
+                  value={doctorDetails?.workingHours?.workHourFrom}
                   onChange={handleChange}
                 >
                   {TimeDropdown.map((time) => (
@@ -536,6 +547,7 @@ export default function EditLabForm() {
                 <select
                   className="mx-2 block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
                   name="workHourTo"
+                  value={doctorDetails?.workingHours?.workHourTo}
                   onChange={handleChange}
                 >
                   {TimeDropdown.map((time) => (
@@ -562,6 +574,7 @@ export default function EditLabForm() {
               type="text"
               id="total-experience"
               name="totalExperience"
+              value={doctorDetails?.totalExperience}
               onChange={handleChange}
               className="block w-full mt-0 placeholder-gray-400/70 rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
@@ -578,6 +591,7 @@ export default function EditLabForm() {
               type="text"
               id="degree"
               name="degree"
+              value={doctorDetails?.degree}
               onChange={handleChange}
               class="block mt-0 w-full placeholder-gray-400/70  rounded-lg border border-[#89CFF0] bg-white px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />
@@ -602,6 +616,7 @@ export default function EditLabForm() {
                 className="w-full border-none h-10 overflow-y-scroll"
                 id="certification" // Changed id and name to match the certification context
                 name="certification"
+                value={doctorDetails?.certification}
                 mode="multiple"
                 onChange={handleChange2}
               >
@@ -659,6 +674,7 @@ export default function EditLabForm() {
                 placeholder=""
                 id="name"
                 name="name"
+                value={doctorDetails?.ownerName}
                 onChange={handleChange}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
@@ -673,9 +689,10 @@ export default function EditLabForm() {
               </label>
               <input
                 type="text"
-                id="registrationNo"
-                name="registrationNo"
+                id="licenseNo"
+                name="licenseNo"
                 onChange={handleChange}
+                value={doctorDetails?.licenseNo}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
               {/* {errors.name && <p className="text-red-500">{errors.name}</p>} */}
@@ -695,6 +712,7 @@ export default function EditLabForm() {
                 placeholder=""
                 id="name"
                 name="name"
+                value={doctorDetails?.labName}
                 onChange={handleChange}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
@@ -711,6 +729,7 @@ export default function EditLabForm() {
                 type="text"
                 id="registrationNo"
                 name="registrationNo"
+                value={doctorDetails?.registrationNo}
                 onChange={handleChange}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
               />
@@ -730,6 +749,7 @@ export default function EditLabForm() {
                 type="text"
                 id="email"
                 name="email"
+                value={doctorDetails?.email}
                 placeholder=""
                 onChange={handleChange}
                 className="block  w-full placeholder-gray-400  rounded-lg border  bg-white px-5 py-2.5 text-gray-900  focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -748,6 +768,7 @@ export default function EditLabForm() {
                 placeholder=""
                 id="contactNumber"
                 name="contactNumber"
+                value={doctorDetails?.contactNumber}
                 onChange={handleChange}
                 onInput={(e) => {
                   e.target.value = e.target.value.replace(/[^0-9]/g, "");
@@ -1030,6 +1051,7 @@ export default function EditLabForm() {
               type="text"
               id="about"
               name="about"
+              value={doctorDetails?.about}
               onChange={handleChange}
               className="block w-full h-24 placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
             />

@@ -177,6 +177,8 @@ export default function Layout({
     } else if (type === "labadmin") {
       console.log("labadmin");
       navigate("/labformadmin");
+    } else if (type === "lab") {
+      navigate("/registerpatient");
     }
   };
 
