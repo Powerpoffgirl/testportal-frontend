@@ -286,25 +286,60 @@ export default function EditLabFormAdmin() {
 
   const handleRegister = async (e) => {
     e.preventDefault();
+    const newDoctorDetails = {
+      ownerName: doctorDetails?.ownerName,
+      labName: doctorDetails?.labName,
+
+      about: doctorDetails?.about,
+      licenseNo: doctorDetails?.licenseNo,
+      registrationNo: doctorDetails?.registrationNo,
+
+      // consultationFee: doctorDetails?.consultationFee,
+      workingDays: doctorDetails?.workingDays, // Added workingDays field
+      workingHours: {
+        workHourFrom: doctorDetails?.workingHours?.workHourFrom,
+        workHourTo: doctorDetails?.workingHours?.workHourTo,
+        // interval: doctorDetails?.workingHours?.interval,
+      },
+      totalExperience: doctorDetails?.totalExperience,
+      degree: doctorDetails?.degree,
+      certification: doctorDetails?.certification,
+
+      address: {
+        houseNo: doctorDetails?.address?.houseNo,
+        // floor: doctorDetails?.address?.floor,
+        // block: doctorDetails?.address?.block,
+        area: doctorDetails?.address?.area,
+        pinCode: doctorDetails?.address?.pinCode,
+        district: doctorDetails?.address?.district,
+        state: doctorDetails?.address?.state,
+      },
+      labPic: doctorImage,
+    };
+
     // navigate("/labverifyotp");
     // Check if the token exists
-    if (doctorDetails.name === "") {
-      toast.error("Please write name");
-    } else if (doctorDetails.registrationNo === "") {
-      toast.error("Please write registration number");
-    } else if (doctorDetails.email === "") {
-      toast.error("Please write email");
-    } else if (doctorDetails.contactNumber === "") {
+    if (newDoctorDetails.name === "") {
+      toast.error("Please write Dr. name");
+    } else if (newDoctorDetails.email === "") {
+      toast.error("Please write Email");
+    } else if (newDoctorDetails.contactNumber === "") {
       toast.error("Please write contact number");
-    } else if (doctorDetails.totalExperience === "") {
+    } else if (newDoctorDetails.workingDays === "") {
+      toast.error("Please write working days");
+    } else if (newDoctorDetails.workingHours === "") {
+      toast.error("Please write working hours");
+    } else if (newDoctorDetails.totalExperience === "") {
       toast.error("Please write total experience");
-    } else if (doctorDetails.degree === "") {
+    } else if (newDoctorDetails.speciality === "") {
+      toast.error("Please write speciality");
+    } else if (newDoctorDetails.degree === "") {
       toast.error("Please write degree");
-    } else if (doctorDetails.address.pinCode === "") {
+    } else if (newDoctorDetails.address?.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (doctorDetails.address.district === "") {
+    } else if (newDoctorDetails.address?.district === "") {
       toast.error("Please write district");
-    } else if (doctorDetails.address.state === "") {
+    } else if (newDoctorDetails.address?.state === "") {
       toast.error("Please write state");
     } else {
       const token = localStorage.getItem("token");
@@ -333,7 +368,7 @@ export default function EditLabFormAdmin() {
             "Content-Type": "application/json",
             "x-auth-token": token,
           },
-          body: JSON.stringify(doctorDetails),
+          body: JSON.stringify(newDoctorDetails),
         }
       );
       const data = await response.json();
@@ -356,7 +391,7 @@ export default function EditLabFormAdmin() {
       if (data.success === true) {
         console.log("-----------------ID------------------", data?.data?._id);
         localStorage.setItem("id", data?.data?._id);
-        navigate("/otp", {
+        navigate("/lablistadmin", {
           state: { contactNumber: doctorDetails.contactNumber },
         });
       }
@@ -398,7 +433,7 @@ export default function EditLabFormAdmin() {
                     onClick={handleClick}
                   >
                     <img
-                      src={doctorImage || doctorDetails?.doctorPic}
+                      src={doctorImage || doctorDetails?.labPic}
                       alt={doctorDetails?.name}
                       style={{
                         borderRadius: "50%",
@@ -963,6 +998,7 @@ export default function EditLabFormAdmin() {
                       type="text"
                       id="area"
                       name="area"
+                      value={doctorDetails?.address?.area}
                       onChange={handleChange}
                       placeholder="Area/Landmark*"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -989,6 +1025,7 @@ export default function EditLabFormAdmin() {
                         type="text"
                         id="district"
                         name="district"
+                        value={doctorDetails?.address?.district}
                         onChange={handleChange}
                         placeholder="District*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -1016,6 +1053,7 @@ export default function EditLabFormAdmin() {
                         type="text"
                         id="state"
                         name="state"
+                        value={doctorDetails?.address?.state}
                         onChange={handleChange}
                         placeholder="State*"
                         className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
