@@ -15,6 +15,7 @@ import { FaCircleChevronRight } from "react-icons/fa6";
 import { FaCircleChevronLeft } from "react-icons/fa6";
 import { MdDownloadForOffline } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
+import { Tooltip } from "antd";
 
 export default function BillingPrice() {
   const componentPDF = useRef();
@@ -510,49 +511,21 @@ export default function BillingPrice() {
                 marginTop: "20px",
               }}
             >
-              <button
-                class=""
-                onClick={
-                  reportDate
-                    ? () =>
-                        navigate(`/billing`, {
-                          state: { reportDate: reportDate },
-                        })
-                    : () => {
-                        toast.error("please select a date");
-                      }
-                }
-              >
-                <FaCircleChevronLeft
-                  style={{
-                    color: "white",
-                    backgroundColor: "#89CFF0",
-                    borderRadius: "15px",
-                    fontSize: "40px",
-                    padding: "5px 10px 5px 10px ",
-                  }}
-                />
-              </button>
-              <button onClick={generatePdf}>
-                <MdDownloadForOffline
-                  style={{
-                    color: "white",
-                    backgroundColor: "#89CFF0",
-                    borderRadius: "15px",
-                    fontSize: "40px",
-                    padding: "5px 10px 5px 10px ",
-                  }}
-                />
-              </button>
-
-              <button>
-                <label
-                  htmlFor="files"
-                  id="sendToSMSButton"
-                  disabled
-                  style={{ color: "white" }}
+              <Tooltip title="Go back to the previous page">
+                <button
+                  class=""
+                  onClick={
+                    reportDate
+                      ? () =>
+                          navigate(`/billing`, {
+                            state: { reportDate: reportDate },
+                          })
+                      : () => {
+                          toast.error("please select a date");
+                        }
+                  }
                 >
-                  <BsFillSendFill
+                  <FaCircleChevronLeft
                     style={{
                       color: "white",
                       backgroundColor: "#89CFF0",
@@ -561,8 +534,42 @@ export default function BillingPrice() {
                       padding: "5px 10px 5px 10px ",
                     }}
                   />
-                </label>
-              </button>
+                </button>
+              </Tooltip>
+              <Tooltip title="Download PDF">
+                <button onClick={generatePdf}>
+                  <MdDownloadForOffline
+                    style={{
+                      color: "white",
+                      backgroundColor: "#89CFF0",
+                      borderRadius: "15px",
+                      fontSize: "40px",
+                      padding: "5px 10px 5px 10px ",
+                    }}
+                  />
+                </button>
+              </Tooltip>
+              <Tooltip title="Send via SMS">
+                <button>
+                  <label
+                    htmlFor="files"
+                    id="sendToSMSButton"
+                    disabled
+                    style={{ color: "white" }}
+                  >
+                    <BsFillSendFill
+                      style={{
+                        color: "white",
+                        backgroundColor: "#89CFF0",
+                        borderRadius: "15px",
+                        fontSize: "40px",
+                        padding: "5px 10px 5px 10px ",
+                      }}
+                    />
+                  </label>
+                </button>
+              </Tooltip>
+
               <p className="block text-black text-lg font-semibold ">
                 <input
                   id="files"
