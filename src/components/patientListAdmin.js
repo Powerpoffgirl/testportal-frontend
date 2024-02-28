@@ -16,9 +16,7 @@ import close_button from "../assets/close_button.svg";
 
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 
-
-export default function PatientListAdmin({ searchTerm })
-{
+export default function PatientListAdmin({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -34,16 +32,12 @@ export default function PatientListAdmin({ searchTerm })
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
 
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -61,23 +55,18 @@ export default function PatientListAdmin({ searchTerm })
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.doctorPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -91,27 +80,22 @@ export default function PatientListAdmin({ searchTerm })
 
         const data = await response.json();
 
-        if (data.message === "Permission denied")
-        {
+        if (data.message === "Permission denied") {
           toast.error("Permission Denied");
         }
         console.log("DATA from response", data);
         setPatientsList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, [searchTerm]);
 
-  const handleDeletePatient = async (patientId) =>
-  {
-    try
-    {
+  const handleDeletePatient = async (patientId) => {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -128,56 +112,46 @@ export default function PatientListAdmin({ searchTerm })
 
       const data = await response.json();
 
-      if (data.message === "Permission denied")
-      {
+      if (data.message === "Permission denied") {
         toast.error("Permission Denied");
-      } else
-      {
+      } else {
         toast.success("Deleted successfully");
       }
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("Patient deleted successfully", data);
         // Update the list in the UI by removing the deleted doctor
         setPatientsList((prevPatientsList) =>
           prevPatientsList.filter((patient) => patient._id !== patientId)
         );
-      } else
-      {
+      } else {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting the doctor:", error);
     }
   };
 
-  const findSelectedDoctor = async (patientId) =>
-  {
+  const findSelectedDoctor = async (patientId) => {
     console.log("DOCTOR ID", patientId);
     // // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const patient = patientsList?.find((doc) => doc._id === patientId);
     setSelectedPatient(patient); // This will return the doctor object if found, otherwise undefined
     onOpenModal();
   };
-  useEffect(() =>
-  {
-    if (patientsList?.length > 0 && searchTerm)
-    {
+  useEffect(() => {
+    if (patientsList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm?.toLowerCase().trim();
       const matchedPatients = patientsList?.filter((p) =>
         p?.name?.toLowerCase()?.includes(lowerCaseSearchTerm)
       );
       setFilteredPatients(matchedPatients);
-    } else
-    {
+    } else {
       // If searchTerm is empty, show all patients
       setFilteredPatients(patientsList);
     }
   }, [patientsList, searchTerm]);
 
-  const handleBookAppointment = (patientId) =>
-  {
+  const handleBookAppointment = (patientId) => {
     localStorage.setItem("patientId", patientId);
     navigate("/editpatientformadmin");
   };
@@ -280,13 +254,18 @@ export default function PatientListAdmin({ searchTerm })
               color: "black",
             }}
           >
-
-            {selectedPatient?.address?.houseNo && `${selectedPatient.address.houseNo} `}
-            {selectedPatient?.address?.block && `${selectedPatient.address.block} `}
-            {selectedPatient?.address?.area && `${selectedPatient.address.area}, `}
-            {selectedPatient?.address?.district && `${selectedPatient.address.district}, `}
-            {selectedPatient?.address?.state && `${selectedPatient.address.state} `}
-            {selectedPatient?.address?.pinCode && `${selectedPatient.address.pinCode}`}
+            {selectedPatient?.address?.houseNo &&
+              `${selectedPatient.address.houseNo} `}
+            {selectedPatient?.address?.block &&
+              `${selectedPatient.address.block} `}
+            {selectedPatient?.address?.area &&
+              `${selectedPatient.address.area}, `}
+            {selectedPatient?.address?.district &&
+              `${selectedPatient.address.district}, `}
+            {selectedPatient?.address?.state &&
+              `${selectedPatient.address.state} `}
+            {selectedPatient?.address?.pinCode &&
+              `${selectedPatient.address.pinCode}`}
           </text>
         </div>
       </Modal>
@@ -322,8 +301,6 @@ export default function PatientListAdmin({ searchTerm })
                   {patient.address?.district && `${patient.address.district}, `}
                   {patient.address?.state && `${patient.address.state}, `}
                   {patient.address?.pinCode && `${patient.address.pinCode}`}
-
-
                 </div>
               </div>
 

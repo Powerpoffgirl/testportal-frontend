@@ -19,7 +19,6 @@ import "react-toastify/dist/ReactToastify.css";
 import UserContext from "./userContext";
 import { Popconfirm, Tooltip } from "antd";
 
-
 export default function DoctorListAdmin({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
@@ -98,15 +97,14 @@ export default function DoctorListAdmin({ searchTerm }) {
     const data = await response.json();
     console.log("DATA FROM RESPONSE", data);
     if (data.success) {
-      toast.success("Doctor deleted successfully")
+      toast.success("Doctor deleted successfully");
       setDoctorsList((prevDoctorsList) =>
         prevDoctorsList.filter((patient) => patient._id !== id)
       );
+    } else {
+      toast.error("Permission Denied");
     }
-    else {
-      toast.error("Permission Denied")
-    }
-    onCloseModal()
+    onCloseModal();
   };
 
   useEffect(() => {
@@ -168,7 +166,7 @@ export default function DoctorListAdmin({ searchTerm }) {
 
   const handleBookAppointment = async () => {
     console.log(selectedDoctor?.slots[currentIndex]);
-    console.log("HANDLE BOOK APOOINTMENT")
+    console.log("HANDLE BOOK APOOINTMENT");
     const bookslot = {
       date: keys[currentIndex],
       time: values[currentIndex][currentTimeIndex].start,
@@ -513,9 +511,7 @@ export default function DoctorListAdmin({ searchTerm }) {
               okText="Delete"
               okType="danger"
               cancelText="No"
-              onConfirm={() =>
-                handleDelete(selectedDoctor?._id)
-              }
+              onConfirm={() => handleDelete(selectedDoctor?._id)}
             >
               <button>
                 <img src={delete_button} alt="deleteButton" class="w-8"></img>
@@ -551,7 +547,11 @@ export default function DoctorListAdmin({ searchTerm }) {
                 </p>
                 <div className="flex flex-row">
                   <div>
-                    <img src={education} alt="education" className="w-5 py-2 "></img>
+                    <img
+                      src={education}
+                      alt="education"
+                      className="w-5 py-2 "
+                    ></img>
                   </div>
                   <div className="ml-1">
                     {selectedDoctor?.degree?.split(",")?.map((item) => (
@@ -637,7 +637,7 @@ export default function DoctorListAdmin({ searchTerm }) {
                           {workingDays.split(" ")[1]}:
                         </p>
                         <p className="text-gray-600">
-                          {selectedDoctor?.workingHours?.workHourFrom} - {" "}
+                          {selectedDoctor?.workingHours?.workHourFrom} -{" "}
                           {selectedDoctor?.workingHours?.workHourTo}
                         </p>
                         {/* <p className="text-gray-600">3:00 AM - 7:00 PM</p> */}
@@ -749,7 +749,11 @@ export default function DoctorListAdmin({ searchTerm }) {
                           <hr />
                           <p class="mt-2">Mobile Number</p>
                           <div class="flex flex-row">
-                            <img src={phonelogo} alt="phonelogo" class="pl-1 pr-3"></img>
+                            <img
+                              src={phonelogo}
+                              alt="phonelogo"
+                              class="pl-1 pr-3"
+                            ></img>
                             <input
                               class=" border my-1 placeholder-gray-500 p-1 pl-2"
                               type="tel"
@@ -945,7 +949,7 @@ export default function DoctorListAdmin({ searchTerm }) {
                     <AccountCircleIcon
                       style={{
                         fontSize: isTab ? "45px" : "90px",
-                        color: "#B1DAED"
+                        color: "#B1DAED",
                       }}
                     />
                   )}

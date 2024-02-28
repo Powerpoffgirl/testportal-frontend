@@ -148,28 +148,23 @@ export default function LabVerifyOtp() {
   };
   const verifyOTP = async (e) => {
     e.preventDefault();
-    console.log("i am in verify otp");
-    // navigate("/labqr");
     try {
       // const token = localStorage.getItem("token");
-      const id = localStorage.getItem("adminId");
+      const id = localStorage.getItem("doctorId");
       const otpString = otp.join("");
-      const response = await fetch(
-        `${baseUrl}/api/v1/admin/verify_otp_by_admin_for_lab/${id}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            // "x-auth-token": token, // Replace with your actual token from the previous session
-          },
-          body: JSON.stringify({ otp: otpString }),
-        }
-      );
+      const response = await fetch(`${baseUrl}/api/v1/lab/verify_otp/${id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          // "x-auth-token": token, // Replace with your actual token from the previous session
+        },
+        body: JSON.stringify({ otp: otpString }),
+      });
 
       const data = await response.json();
       console.log("data", data.data);
       if (data.success === true) {
-        navigate("/forgetpassword");
+        navigate("/labforgetpassword");
       }
       console.log("DATA from response", data);
     } catch (error) {

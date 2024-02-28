@@ -65,6 +65,8 @@ import Layout from "./components/Layout";
 // import Table2 from "./components/table2";
 import EditPatientForm from "./components/editPatientForm";
 import ForgetPassword from "./components/forgetpassword";
+import LabForgetPassword from "./components/labforgetpassword";
+
 import OtpVerify from "./components/otpverify";
 import LabVerifyOtp from "./components/labVerifyOtp";
 import SuperAdminLogin from "./components/superadminLogin";
@@ -95,6 +97,7 @@ import LabAppointmentList from "./components/labappointmentlist";
 import EditLabForm from "./components/editlabform";
 import LabOtp from "./components/labotp";
 import EditLabFormAdmin from "./components/editlabformadmin";
+import EditPatientFormLab from "./components/editpatientformlab";
 
 function App() {
   return (
@@ -131,17 +134,10 @@ function App() {
             />
           }
         ></Route>
-        <Route
+        {/* <Route
           path="/labverifyotp"
-          element={
-            <Layout
-              Component={LabVerifyOtp}
-              type="admin"
-              headerTextTop={"Lab"}
-              headerTextBottom={"Verify OTP"}
-            />
-          }
-        ></Route>
+          element={<Layout Component={LabVerifyOtp} type="admin" />}
+        ></Route> */}
         <Route
           path="/labotp"
           element={
@@ -154,8 +150,10 @@ function App() {
           }
         ></Route>
         <Route path="/forgetpassword" element={<ForgetPassword />} />
+        <Route path="/labforgetpassword" element={<LabForgetPassword />} />
         <Route path="/adminforgetpassword" element={<AdminForgetpassword />} />
         <Route path="/otpverify" element={<OtpVerify />} />
+        <Route path="/labverifyotp" element={<LabVerifyOtp />} />
         <Route path="/adminotpverify" element={<AdminOtpVerify />} />
         <Route path="/superadminlogin" element={<SuperAdminLogin />} />
         <Route
@@ -714,6 +712,17 @@ function App() {
               Component={EditLabFormAdmin}
               type="admin"
               headerTextTop={"Edit Lab's"}
+              headerTextBottom={"Form"}
+            />
+          }
+        ></Route>
+        <Route
+          path="/editpatientformlab"
+          element={
+            <Layout
+              Component={EditPatientFormLab}
+              type="lab"
+              headerTextTop={"Edit Patient's"}
               headerTextBottom={"Form"}
             />
           }

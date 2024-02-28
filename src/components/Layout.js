@@ -72,6 +72,8 @@ export default function Layout({
   const link1 = [
     { text: "User Login", to: "/userlogin" },
     { text: "Doctor Login", to: "/doctorlogin" },
+    { text: "Lab Login", to: "/lablogin" },
+
     { text: "Support", to: "#" },
   ];
 

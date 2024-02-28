@@ -52,6 +52,34 @@ export default function LabListAdmin({ searchTerm }) {
   const [userDetailsPic, setUserDetailsPic] = useState();
 
   useEffect(() => {
+    const fetchUserDetails1 = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("patientId");
+        if (!token) {
+          console.error("No token found in local storage");
+          return;
+        }
+        const response = await fetch(`${baseUrl}/api/v1/admin/get_profile`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
+
+        const data = await response.json();
+        console.log("DATA from response", data);
+        setUserDetailsName(data?.data.name);
+        setUserDetailsEmail(data?.data.email);
+        setUserDetailsPic(data?.data.doctorPic);
+        console.log("usser name$$$$$$$", data?.data.name);
+      } catch (error) {
+        console.error("There was an error verifying the OTP:", error);
+      }
+    };
+    fetchUserDetails1();
+
     const fetchUserDetails = async () => {
       try {
         const token = localStorage.getItem("token");
@@ -73,11 +101,6 @@ export default function LabListAdmin({ searchTerm }) {
         if (data.success) {
           setDoctorsList(data?.data);
         }
-
-        setUserDetailsName(data?.data.labName);
-        setUserDetailsEmail(data?.data.email);
-        setUserDetailsPic(data?.data.labPic);
-        console.log("usser name$$$$$$$", data?.data.name);
       } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
@@ -98,7 +121,7 @@ export default function LabListAdmin({ searchTerm }) {
     const data = await response.json();
     console.log("DATA FROM RESPONSE", data);
     if (data.success) {
-      toast.success("Doctor deleted successfully");
+      toast.success("Lab deleted successfully");
       setDoctorsList((prevDoctorsList) =>
         prevDoctorsList.filter((patient) => patient._id !== id)
       );
@@ -507,8 +530,8 @@ export default function LabListAdmin({ searchTerm }) {
               <img src={close_button} alt="closeButton" class="w-8 mb-1"></img>
             </button>
             <Popconfirm
-              title="Delete the Doctor"
-              description="Are you sure to delete this Doctor?"
+              title="Delete the Lab"
+              description="Are you sure to delete this Lab?"
               okText="Delete"
               okType="danger"
               cancelText="No"
@@ -659,7 +682,7 @@ export default function LabListAdmin({ searchTerm }) {
                   </div>
                 </div>
 
-                <div className=" py-1 mb-2">
+                {/* <div className=" py-1 mb-2">
                   <p className="text-lg font-medium text-black">
                     Select service
                   </p>
@@ -915,7 +938,7 @@ export default function LabListAdmin({ searchTerm }) {
                       </div>
                     </div>
                   </div>
-                </div>
+                </div> */}
               </div>
             )}
           </div>
