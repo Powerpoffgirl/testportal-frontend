@@ -891,14 +891,16 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                 <form onSubmit={handleSubmit}>
                   <label>
                     Discount(%) :
-                    <input
-                      type="number"
-                      value={discountValue}
-                      onChange={handleInputChange}
-                      className="w-52 h-10 border border-gray-300  rounded-lg pl-2 text-center placeholder-gray-300 mx-3 text-sm"
-                      style={{ maxWidth: "110px" }}
-                      placeholder="Enter discount"
-                    />
+                    <Tooltip title="Enter the discount percentage">
+                      <input
+                        type="number"
+                        value={discountValue}
+                        onChange={handleInputChange}
+                        className="w-52 h-10 border border-gray-300 rounded-lg pl-2 text-center placeholder-gray-300 mx-3 text-sm"
+                        style={{ maxWidth: "110px" }}
+                        placeholder="Enter discount"
+                      />
+                    </Tooltip>
                   </label>
                   <button type="submit">
                     <TiTick

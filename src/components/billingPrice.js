@@ -15,6 +15,7 @@ import { FaCircleChevronRight } from "react-icons/fa6";
 import { FaCircleChevronLeft } from "react-icons/fa6";
 import { MdDownloadForOffline } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
+import { Tooltip } from "antd";
 
 export default function BillingPrice()
 {

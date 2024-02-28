@@ -9,6 +9,7 @@ import { FaCircleChevronRight } from "react-icons/fa6";
 import { FaCircleChevronLeft } from "react-icons/fa6";
 import { MdDownloadForOffline } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
+import { Tooltip } from "antd";
 
 export default function Summary() {
   const componentPDF = useRef();
@@ -72,16 +73,13 @@ export default function Summary() {
           console.error("No token found in local storage");
           return;
         }
-        const response = await fetch(
-          `${baseUrl}/api/v1/lab/get_doctorDetails`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token, // Replace with your actual token from the previous session
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/v1/lab/get_labDetails`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "x-auth-token": token, // Replace with your actual token from the previous session
+          },
+        });
 
         const data = await response.json();
         console.log("DATA from response", data);
@@ -115,7 +113,7 @@ export default function Summary() {
     const fetchTestDetails = async () => {
       try {
         const token = localStorage.getItem("token");
-        const patientId = localStorage.getItem("selectedPatientId");
+        const patientId = localStorage.getItem("PatientId");
 
         if (!token) {
           console.error("No token found in local storage");
@@ -461,82 +459,89 @@ export default function Summary() {
                 marginTop: "30px",
               }}
             >
-              <button
-                class=""
-                onClick={
-                  reportDate
-                    ? () =>
-                        navigate(`/billing`, {
-                          state: { reportDate: reportDate },
-                        })
-                    : () => {
-                        toast.error("please select a date");
-                      }
-                }
-              >
-                <FaCircleChevronLeft
-                  style={{
-                    color: "white",
-                    backgroundColor: "#89CFF0",
-                    borderRadius: "15px",
-                    fontSize: "40px",
-                    padding: "5px 10px 5px 10px ",
-                  }}
-                />
-              </button>
-              <button onClick={generatePdf}>
-                <MdDownloadForOffline
-                  style={{
-                    color: "white",
-                    backgroundColor: "#89CFF0",
-                    borderRadius: "15px",
-                    fontSize: "40px",
-                    padding: "5px 10px 5px 10px ",
-                  }}
-                />
-              </button>
-
-              <button>
-                <label
-                  htmlFor="files"
-                  id="sendToSMSButton"
-                  disabled
-                  style={{ color: "white" }}
+              <Tooltip title="Go back to the previous page">
+                <button
+                  onClick={
+                    reportDate
+                      ? () =>
+                          navigate(`/billing`, {
+                            state: { reportDate: reportDate },
+                          })
+                      : () => {
+                          toast.error("please select a date");
+                        }
+                  }
                 >
-                  <BsFillSendFill
+                  <FaCircleChevronLeft
                     style={{
                       color: "white",
                       backgroundColor: "#89CFF0",
                       borderRadius: "15px",
                       fontSize: "40px",
-                      padding: "5px 10px 5px 10px ",
+                      padding: "5px 10px 5px 10px",
                     }}
                   />
-                </label>
-              </button>
+                </button>
+              </Tooltip>
 
-              <button
-                onClick={
-                  reportDate
-                    ? () =>
-                        navigate(`/billingprice`, {
-                          state: { reportDate: reportDate },
-                        })
-                    : () => {
-                        toast.error("please select a date");
-                      }
-                }
-              >
-                <FaCircleChevronRight
-                  style={{
-                    color: "white",
-                    backgroundColor: "#89CFF0",
-                    borderRadius: "15px",
-                    fontSize: "40px",
-                    padding: "5px 10px 5px 10px ",
-                  }}
-                />
-              </button>
+              <Tooltip title="Download report">
+                <button onClick={generatePdf}>
+                  <MdDownloadForOffline
+                    style={{
+                      color: "white",
+                      backgroundColor: "#89CFF0",
+                      borderRadius: "15px",
+                      fontSize: "40px",
+                      padding: "5px 10px 5px 10px",
+                    }}
+                  />
+                </button>
+              </Tooltip>
+
+              <Tooltip title="Send report via SMS">
+                <button>
+                  <label
+                    htmlFor="files"
+                    id="sendToSMSButton"
+                    style={{ cursor: "not-allowed" }}
+                  >
+                    <BsFillSendFill
+                      style={{
+                        color: "white",
+                        backgroundColor: "#89CFF0",
+                        borderRadius: "15px",
+                        fontSize: "40px",
+                        padding: "5px 10px 5px 10px",
+                      }}
+                    />
+                  </label>
+                </button>
+              </Tooltip>
+
+              <Tooltip title="Go to the next page">
+                <button
+                  onClick={
+                    reportDate
+                      ? () =>
+                          navigate(`/billingprice`, {
+                            state: { reportDate: reportDate },
+                          })
+                      : () => {
+                          toast.error("please select a date");
+                        }
+                  }
+                >
+                  <FaCircleChevronRight
+                    style={{
+                      color: "white",
+                      backgroundColor: "#89CFF0",
+                      borderRadius: "15px",
+                      fontSize: "40px",
+                      padding: "5px 10px 5px 10px",
+                    }}
+                  />
+                </button>
+              </Tooltip>
               <p className="block text-black text-lg font-semibold ">
                 <input
                   id="files"
