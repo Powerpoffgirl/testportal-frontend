@@ -13,7 +13,8 @@ import PermIdentityOutlinedIcon from "@mui/icons-material/PermIdentityOutlined";
 import { Popconfirm, Select } from "antd";
 import delete_button from "../assets/delete_button.svg";
 
-export default function EditPatientFormLab() {
+export default function EditPatientFormLab()
+{
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [selectedDoctor, setselectedDoctor] = useState();
@@ -50,16 +51,19 @@ export default function EditPatientFormLab() {
     },
   });
 
-  const handleFileSelect = async (event) => {
+  const handleFileSelect = async (event) =>
+  {
     const file = event.target.files[0];
-    if (file) {
+    if (file)
+    {
       const token = localStorage.getItem("token");
       const doctorId = localStorage.getItem("doctorId");
       const formData = new FormData();
       formData.append("doctorPic", file);
 
       console.log("FORM DATA", formData);
-      try {
+      try
+      {
         const response = await fetch(`${baseUrl}/api/v1/upload_image`, {
           method: "POST",
           headers: {
@@ -68,7 +72,8 @@ export default function EditPatientFormLab() {
           body: formData,
         });
 
-        if (!response.ok) {
+        if (!response.ok)
+        {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
@@ -80,19 +85,24 @@ export default function EditPatientFormLab() {
         // Reset the file input
         setSelectedFile(null);
         fileInputRef.current.value = "";
-      } catch (error) {
+      } catch (error)
+      {
         console.error("Error uploading image:", error);
         toast.error("Error uploading image. Please try again.");
       }
     }
   };
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/adminlogin`);
@@ -113,23 +123,28 @@ export default function EditPatientFormLab() {
         setUserImage(data.profilePicImageUrl);
 
         setPatientDetails(data?.data);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, []);
 
-  const handleClick = (event) => {
+  const handleClick = (event) =>
+  {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = () =>
+  {
     setAnchorEl(null);
   };
 
-  const validateField = (name, value) => {
-    switch (name) {
+  const validateField = (name, value) =>
+  {
+    switch (name)
+    {
       case "name":
         return value ? "" : "Name is required.";
       case "email":
@@ -179,7 +194,8 @@ export default function EditPatientFormLab() {
     }
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
+  {
     const { name, value } = e.target;
 
     // const error = validateField(name, value);
@@ -195,7 +211,8 @@ export default function EditPatientFormLab() {
         "district",
         "state",
       ].includes(name)
-    ) {
+    )
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         address: {
@@ -203,7 +220,8 @@ export default function EditPatientFormLab() {
           [name]: value,
         },
       }));
-    } else if (["issues"].includes(name)) {
+    } else if (["issues"].includes(name))
+    {
       // Assuming the value is an array or a string to be added to the array
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
@@ -211,7 +229,8 @@ export default function EditPatientFormLab() {
           ? value
           : [...prevPatientDetails[name], value],
       }));
-    } else if (["diseases"].includes(name)) {
+    } else if (["diseases"].includes(name))
+    {
       // Assuming the value is an array or a string to be added to the array
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
@@ -219,7 +238,8 @@ export default function EditPatientFormLab() {
           ? value
           : [...prevPatientDetails[name], value],
       }));
-    } else {
+    } else
+    {
       setPatientDetails((prevPatientDetails) => ({
         ...prevPatientDetails,
         [name]: value,
@@ -240,40 +260,51 @@ export default function EditPatientFormLab() {
     { label: "Other", value: "Other" },
   ];
 
-  const handleChange1 = (e) => {
+  const handleChange1 = (e) =>
+  {
     setPatientDetails((prevUserDetails) => ({
       ...prevUserDetails,
       gender: e,
     }));
   };
 
-  const handleChange2 = (e) => {
+  const handleChange2 = (e) =>
+  {
     setPatientDetails((prevUserDetails) => ({
       ...prevUserDetails,
       ageType: e,
     }));
   };
 
-  const handleRegister = async (e) => {
+  const handleRegister = async (e) =>
+  {
     e.preventDefault();
 
-    if (patientDetails.name === "") {
+    if (patientDetails.name === "")
+    {
       toast.error("Please write name");
-    } else if (patientDetails.age === "") {
+    } else if (patientDetails.age === "")
+    {
       toast.error("Please write age");
-    } else if (patientDetails.bodyWeight === "") {
+    } else if (patientDetails.bodyWeight === "")
+    {
       toast.error("Please write body weight");
-    } else if (patientDetails.address?.pinCode === "") {
+    } else if (patientDetails.address?.pinCode === "")
+    {
       toast.error("Please write Pincode");
-    } else if (patientDetails.address?.district === "") {
+    } else if (patientDetails.address?.district === "")
+    {
       toast.error("Please write district");
-    } else if (patientDetails.address?.state === "") {
+    } else if (patientDetails.address?.state === "")
+    {
       toast.error("Please write state");
-    } else {
+    } else
+    {
       // Check if the token exists
       const token = localStorage.getItem("token");
       const patientId = localStorage.getItem("patientId");
-      if (!token) {
+      if (!token)
+      {
         console.error("No token found in local storage");
         localStorage.clear();
         navigate(`/adminlogin`);
@@ -283,11 +314,7 @@ export default function EditPatientFormLab() {
         (value) => value === ""
       );
 
-      // if (isEmpty || isEditing === false) {
-      //   toast.error("Please fill the fields or Update");
-      //   setIsEditing(false);
-      //   return;
-      // }
+
       console.log("patientDetails", patientDetails);
       const response = await fetch(
         `${baseUrl}/api/v1/lab/update_labPatient/${patientId}`,
@@ -299,6 +326,8 @@ export default function EditPatientFormLab() {
           },
           body: JSON.stringify({
             age: patientDetails?.age?.toString(),
+            ageType: patientDetails.ageType,
+            gender: patientDetails.gender,
             bodyWeight: patientDetails.bodyWeight,
             name: patientDetails.name,
             address: patientDetails.address,
@@ -311,11 +340,13 @@ export default function EditPatientFormLab() {
       //   toast.error("Please fill the details");
       // }
 
-      if (data.message === "Permission denied") {
+      if (data.message === "Permission denied")
+      {
         toast.error("Permission denied");
       }
 
-      if (data.success === true) {
+      if (data.success === true)
+      {
         onOpenModal();
         localStorage.setItem("id", data.data._id);
         toast.success("Form submitted successfully!");
@@ -373,7 +404,7 @@ export default function EditPatientFormLab() {
               okText="Delete"
               cancelText="No"
               className="rounded-full px-4 sm:px-8 py-1 sm:py-2 text-white text-xs sm:text-sm"
-              // onConfirm={handleDelete}
+            // onConfirm={handleDelete}
             >
               <button onClick={onCloseModal}>
                 <img src={delete_button} alt="df" class="w-8 mb-1"></img>
@@ -462,7 +493,8 @@ export default function EditPatientFormLab() {
                       backgroundColor: "#89CFF0",
                       color: isHovered ? "red" : "white",
                     }}
-                    onClick={() => {
+                    onClick={() =>
+                    {
                       handleClose();
                     }}
                     onMouseEnter={() => setIsHovered(true)}
@@ -690,7 +722,8 @@ export default function EditPatientFormLab() {
                       onChange={handleChange}
                       placeholder="Pin Code*"
                       className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                      onInput={(e) => {
+                      onInput={(e) =>
+                      {
                         e.target.value = e.target.value.replace(/[^0-9]/g, "");
                       }}
                     />
