@@ -623,6 +623,7 @@ export default function EditUserForm()
               ageType: userDetails?.ageType,
               gender: userDetails?.gender,
               bodyWeight: userDetails?.bodyWeight,
+              contactNumber: userDetails?.contactNumber,
               address: {
                 houseNo: userDetails?.address?.houseNo,
                 floor: userDetails?.address?.floor,

@@ -160,14 +160,7 @@ export default function DescriptionSummary()
 
     const [modalOpen, setModalOpen] = useState(false);
     const [rows, setRows] = useState([
-        // {
-        //     _id: "empty",
-        //     testName: "Empty",
-        //     testCode: "Empty",
-        //     department: "Empty",
-        //     sampleType: "Empty",
-        //     costOfDiagnosticTest: "$0",
-        // },
+
     ]);
     const [rowToEdit, setRowToEdit] = useState(null);
 
