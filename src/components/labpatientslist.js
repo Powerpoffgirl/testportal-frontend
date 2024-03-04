@@ -14,9 +14,7 @@ import "react-toastify/dist/ReactToastify.css";
 import delete_button from "../assets/delete_button.svg";
 import edit_button from "../assets/edit_button.svg";
 
-
-export default function LabPatientList({ searchTerm })
-{
+export default function LabPatientList({ searchTerm }) {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 767px)" });
@@ -34,15 +32,11 @@ export default function LabPatientList({ searchTerm })
   const [userDetailsEmail, setUserDetailsEmail] = useState();
   const [userDetailsPic, setUserDetailsPic] = useState();
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -60,25 +54,19 @@ export default function LabPatientList({ searchTerm })
           (patient) => patient.name !== null
         );
         setPatientsList(filteredPatients);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
-
   }, []);
 
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -96,37 +84,30 @@ export default function LabPatientList({ searchTerm })
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.userPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  useEffect(() =>
-  {
-    if (patientsList?.length > 0 && searchTerm)
-    {
+  useEffect(() => {
+    if (patientsList?.length > 0 && searchTerm) {
       const lowerCaseSearchTerm = searchTerm.toLowerCase().trim();
       const matchedPatients = patientsList.filter(
         (p) => p.name && p.name.toLowerCase().includes(lowerCaseSearchTerm)
       );
       setFilteredPatients(matchedPatients);
-    } else
-    {
+    } else {
       const filteredPatients = patientsList.filter((p) => p.name !== undefined);
       setFilteredPatients(filteredPatients);
     }
   }, [patientsList, searchTerm]);
 
-  const handleDeletePatient = async (patientId) =>
-  {
-    try
-    {
+  const handleDeletePatient = async (patientId) => {
+    try {
       const token = localStorage.getItem("token");
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -143,8 +124,7 @@ export default function LabPatientList({ searchTerm })
 
       const data = await response.json();
 
-      if (response.ok)
-      {
+      if (response.ok) {
         console.log("Patient deleted successfully", data);
         // navigate("/labpatientlist");
         // Update the list in the UI by removing the deleted doctor
@@ -153,24 +133,20 @@ export default function LabPatientList({ searchTerm })
         setPatientsList((prevPatientsList) =>
           prevPatientsList.filter((patient) => patient._id !== patientId)
         );
-      } else
-      {
+      } else {
         console.error("Failed to delete the doctor", data?.message);
       }
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting the doctor:", error);
     }
   };
 
-  const handleEdit = (patientId) =>
-  {
+  const handleEdit = (patientId) => {
     localStorage.setItem("patientId", patientId);
     navigate("/editpatientformlab");
   };
 
-  const findSelectedDoctor = async (patientId) =>
-  {
+  const findSelectedDoctor = async (patientId) => {
     console.log("DOCTOR ID", patientId);
     // // Assuming doctorsList is an array of doctor objects and each doctor has an _id field.
     const patient = patientsList?.find((doc) => doc._id === patientId);
@@ -178,8 +154,7 @@ export default function LabPatientList({ searchTerm })
     onOpenModal();
   };
 
-  const handleEditPatient = (patientId) =>
-  {
+  const handleEditPatient = (patientId) => {
     localStorage.setItem("patientId", patientId);
     navigate("/editpatientform");
   };
@@ -189,16 +164,9 @@ export default function LabPatientList({ searchTerm })
 
   // }
 
-<<<<<<< HEAD
   const handleBookAppointment = (patient) => {
     localStorage.setItem("patientId", patient._id);
     navigate("/billing", { state: { patient } });
-=======
-  const handleBookAppointment = (patientId) =>
-  {
-    localStorage.setItem("patientId", patientId);
-    navigate("/billing");
->>>>>>> 21b762acc01936b7306b5b9dc689b4c6088012a8
   };
 
   console.log("PATIENT LISTS", patientsList);

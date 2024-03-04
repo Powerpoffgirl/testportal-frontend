@@ -197,7 +197,6 @@ export default function DescriptionSummary() {
           return;
         }
 
-<<<<<<< HEAD
         const response = await fetch(
           `${baseUrl}/api/v1/doctor/getall_testBookingByPatientId/${patientId}`,
           {
@@ -217,112 +216,6 @@ export default function DescriptionSummary() {
         console.error("There was an error fetching test details:", error);
       }
     };
-=======
-    useEffect(() =>
-    {
-        const fetchUserDetails = async () =>
-        {
-            try
-            {
-                const token = localStorage.getItem("token");
-                const patientId = localStorage.getItem("patientId");
-                if (!token)
-                {
-                    console.error("No token found in local storage");
-                    return;
-                }
-                const response = await fetch(
-                    `${baseUrl}/api/v1/doctor/get_doctorDetails`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "x-auth-token": token, // Replace with your actual token from the previous session
-                        },
-                    }
-                );
-
-                const data = await response.json();
-                console.log("DATA from response", data);
-                setUserDetailsName(data?.data.name);
-                setUserDetailsEmail(data?.data.email);
-                setUserDetailsPic(data?.data.doctorPic);
-                console.log("usser name$$$$$$$", data?.data.name);
-            } catch (error)
-            {
-                console.error("There was an error verifying the OTP:", error);
-            }
-        };
-        fetchUserDetails();
-    }, []);
-
-
-    useEffect(() =>
-    {
-        const fetchPatientDetails = async () =>
-        {
-            try
-            {
-                const token = localStorage.getItem("token");
-                if (!token)
-                {
-                    console.error("No token found in local storage");
-                    return;
-                }
-                const patientId = localStorage.getItem("patientId");
-                const response = await fetch(
-                    `${baseUrl}/api/v1/doctor/get_patientHistoryById/${patientId}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Content-Type": "application/json",
-                            "x-auth-token": token, // Replace with your actual token from the previous session
-                        },
-                    }
-                );
-
-                const data = await response.json();
-
-                console.log("DATA from response", data.data);
-                setPatientsHistory(data?.data);
-                setPatient(data?.data[0]);
-
-            } catch (error)
-            {
-                console.error("There was an error verifying the OTP:", error);
-            }
-        };
-        fetchPatientDetails();
-    }, []);
-
-    const generatePdf = useReactToPrint({
-        content: () => componentPDF.current,
-        documentTitle: "userReport",
-        // onAfterPrint: () => alert("Data saved in PDF")
-    });
-
-    const [modalOpen, setModalOpen] = useState(false);
-    const [rows, setRows] = useState([
-
-    ]);
-    const [rowToEdit, setRowToEdit] = useState(null);
-
-
-    useEffect(() =>
-    {
-        const fetchTestDetails = async () =>
-        {
-            try
-            {
-                const token = localStorage.getItem("token");
-                const patientId = localStorage.getItem("selectedPatientId");
-
-                if (!token)
-                {
-                    console.error("No token found in local storage");
-                    return;
-                }
->>>>>>> 21b762acc01936b7306b5b9dc689b4c6088012a8
 
     fetchTestDetails();
 

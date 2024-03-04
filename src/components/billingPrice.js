@@ -17,8 +17,7 @@ import { MdDownloadForOffline } from "react-icons/md";
 import { BsFillSendFill } from "react-icons/bs";
 import { Tooltip } from "antd";
 
-export default function BillingPrice()
-{
+export default function BillingPrice() {
   const componentPDF = useRef();
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
@@ -44,8 +43,7 @@ export default function BillingPrice()
     content: () => componentPDF.current,
     documentTitle: "userReport",
 
-    onBeforeGetContent: () =>
-    {
+    onBeforeGetContent: () => {
       const sendToSMSButton = document.getElementById("sendToSMSButton");
       sendToSMSButton.disabled = false;
     },
@@ -92,11 +90,9 @@ export default function BillingPrice()
   //     }
   // };
 
-  const handleFileSelect = async (event) =>
-  {
+  const handleFileSelect = async (event) => {
     const file = event.target.files[0];
-    if (file)
-    {
+    if (file) {
       const token = localStorage.getItem("token");
       const patientId = localStorage.getItem("selectedPatientId");
       const doctorId = localStorage.getItem("doctorId");
@@ -104,8 +100,7 @@ export default function BillingPrice()
       formData.append("patientReport", file);
 
       console.log("FORM DATA", formData);
-      try
-      {
+      try {
         const response = await fetch(
           `${baseUrl}/api/v1/lab/upload_report/${patientId}`,
           {
@@ -117,8 +112,7 @@ export default function BillingPrice()
           }
         );
 
-        if (!response.ok)
-        {
+        if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         toast.success("Report uploaded successfully!");
@@ -126,24 +120,19 @@ export default function BillingPrice()
         const data = await response.json();
 
         fileInputRef.current.value = "";
-      } catch (error)
-      {
+      } catch (error) {
         console.error("Error ", error);
         toast.error("Error uploading pdf. Please try again.");
       }
     }
   };
 
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -161,8 +150,7 @@ export default function BillingPrice()
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.doctorPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -182,15 +170,12 @@ export default function BillingPrice()
   ]);
   const [rowToEdit, setRowToEdit] = useState(null);
 
-  const handleDeleteRow = async (index) =>
-  {
-    try
-    {
+  const handleDeleteRow = async (index) => {
+    try {
       const token = localStorage.getItem("token");
       const patientId = localStorage.getItem("selectedPatientId");
 
-      if (!token)
-      {
+      if (!token) {
         console.error("No token found in local storage");
         return;
       }
@@ -209,41 +194,32 @@ export default function BillingPrice()
       const responseData = await response.json();
       console.log("DATA from response", responseData);
       setRows(rows.filter((_, idx) => idx !== index));
-    } catch (error)
-    {
+    } catch (error) {
       console.error("There was an error deleting details:", error);
     }
   };
 
-  const handleEditRow = (idx) =>
-  {
+  const handleEditRow = (idx) => {
     setRowToEdit(idx);
     setModalOpen(true);
   };
 
-  const handleSubmit = (newRow) =>
-  {
+  const handleSubmit = (newRow) => {
     console.log("code working till now ");
-    setRows((prevRows) =>
-    {
-      if (rowToEdit === null)
-      {
+    setRows((prevRows) => {
+      if (rowToEdit === null) {
         const updatedRows = [...prevRows, newRow];
         const newRowNumber = updatedRows.length - 1;
         setRowNumber(newRowNumber);
 
         return updatedRows;
-      } else
-      {
-        const EditDetails = async () =>
-        {
-          try
-          {
+      } else {
+        const EditDetails = async () => {
+          try {
             const token = localStorage.getItem("token");
             const patientId = localStorage.getItem("selectedPatientId");
 
-            if (!token)
-            {
+            if (!token) {
               console.error("No token found in local storage");
               return;
             }
@@ -275,8 +251,7 @@ export default function BillingPrice()
             const responseData = await response.json();
             console.log("DATA from response", responseData);
             // Handle responseData as needed (maybe update state?)
-          } catch (error)
-          {
+          } catch (error) {
             console.error("There was an error verifying the OTP:", error);
           }
         };
@@ -290,17 +265,13 @@ export default function BillingPrice()
     // window.location.reload();
   };
 
-  useEffect(() =>
-  {
-    const fetchTestDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchTestDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("selectedPatientId");
 
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -319,12 +290,10 @@ export default function BillingPrice()
         const responseData = await response.json();
         console.log("DATA from response", responseData.data.testAsked);
 
-        const filteredData = responseData.data.testAsked.filter((item) =>
-        {
+        const filteredData = responseData.data.testAsked.filter((item) => {
           return item?.date?.includes(reportDate);
         });
-        const amount = filteredData.reduce((acc, curr) =>
-        {
+        const amount = filteredData.reduce((acc, curr) => {
           return acc + (curr?.id?.costOfDiagnosticTest || 0); // Use `0` as a fallback in case `curr.id.costOfDiagnosticTest` is undefined
         }, 0);
 
@@ -333,8 +302,7 @@ export default function BillingPrice()
 
         console.log("FILTERED DATA", filteredData);
         setRows(filteredData);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error fetching test details:", error);
       }
     };
@@ -481,11 +449,10 @@ export default function BillingPrice()
                     </tr>
                   </thead>
                   <tbody>
-                    {rows.map((row, idx) =>
-                    {
+                    {rows.map((row, idx) => {
                       const statusText = row.status
                         ? row.status.charAt(0).toUpperCase() +
-                        row.status.slice(1)
+                          row.status.slice(1)
                         : "";
 
                       return (
@@ -544,7 +511,6 @@ export default function BillingPrice()
                 marginTop: "20px",
               }}
             >
-<<<<<<< HEAD
               <Tooltip title="Back">
                 <button
                   class=""
@@ -558,50 +524,6 @@ export default function BillingPrice()
                           toast.error("please select a date");
                         }
                   }
-=======
-              <button
-                class=""
-                onClick={
-                  reportDate
-                    ? () =>
-                      navigate(`/billing`, {
-                        state: { reportDate: reportDate },
-                      })
-                    : () =>
-                    {
-                      toast.error("please select a date");
-                    }
-                }
-              >
-                <FaCircleChevronLeft
-                  style={{
-                    color: "white",
-                    backgroundColor: "#89CFF0",
-                    borderRadius: "15px",
-                    fontSize: "40px",
-                    padding: "5px 10px 5px 10px ",
-                  }}
-                />
-              </button>
-              <button onClick={generatePdf}>
-                <MdDownloadForOffline
-                  style={{
-                    color: "white",
-                    backgroundColor: "#89CFF0",
-                    borderRadius: "15px",
-                    fontSize: "40px",
-                    padding: "5px 10px 5px 10px ",
-                  }}
-                />
-              </button>
-
-              <button>
-                <label
-                  htmlFor="files"
-                  id="sendToSMSButton"
-                  disabled
-                  style={{ color: "white" }}
->>>>>>> 21b762acc01936b7306b5b9dc689b4c6088012a8
                 >
                   <BsFillSendFill
                     style={{
@@ -612,7 +534,6 @@ export default function BillingPrice()
                       padding: "5px 10px 5px 10px ",
                     }}
                   />
-<<<<<<< HEAD
                 </button>
               </Tooltip>
               <Tooltip title="Send SMS">
@@ -636,10 +557,6 @@ export default function BillingPrice()
                 </button>
               </Tooltip>
 
-=======
-                </label>
-              </button>
->>>>>>> 21b762acc01936b7306b5b9dc689b4c6088012a8
               <p className="block text-black text-lg font-semibold ">
                 <input
                   id="files"
