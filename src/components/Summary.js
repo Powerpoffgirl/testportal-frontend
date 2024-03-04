@@ -122,48 +122,48 @@ export default function Summary() {
 
   const [rows, setRows] = useState([]);
 
-  // useEffect(() => {
-  //   const fetchTestDetails = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       const patientId = localStorage.getItem("PatientId");
+  useEffect(() => {
+    const fetchTestDetails = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("PatientId");
 
-  //       if (!token) {
-  //         console.error("No token found in local storage");
-  //         return;
-  //       }
+        if (!token) {
+          console.error("No token found in local storage");
+          return;
+        }
 
-  //       const response = await fetch(
-  //         `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
-  //         {
-  //           method: "get",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             "x-auth-token": token,
-  //           },
-  //         }
-  //       );
+        const response = await fetch(
+          `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
+          {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+          }
+        );
 
-  //       const responseData = await response.json();
-  //       console.log("DATA from response", responseData.data.testAsked);
-  //       const filteredData = responseData?.data?.testAsked?.filter((item) => {
-  //         console.log(item?.date?.slice(0, 10), "DATE &&", reportDate);
-  //         if (item?.date?.slice(0, 10) === reportDate) {
-  //           return item;
-  //         }
-  //       });
+        const responseData = await response.json();
+        console.log("DATA from response", responseData.data.testAsked);
+        const filteredData = responseData?.data?.testAsked?.filter((item) => {
+          console.log(item?.date?.slice(0, 10), "DATE &&", reportDate);
+          if (item?.date?.slice(0, 10) === reportDate) {
+            return item;
+          }
+        });
 
-  //       console.log("FILTERED DATA", filteredData);
-  //       setRows(filteredData);
-  //     } catch (error) {
-  //       console.error("There was an error fetching test details:", error);
-  //     }
-  //   };
+        console.log("FILTERED DATA", filteredData);
+        setRows(filteredData);
+      } catch (error) {
+        console.error("There was an error fetching test details:", error);
+      }
+    };
 
-  //   fetchTestDetails();
+    fetchTestDetails();
 
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   updateUser(userDetailsName);
   updateUserEmail(userDetailsEmail);

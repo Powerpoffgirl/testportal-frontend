@@ -603,7 +603,7 @@ export default function RegisterPatient() {
           localStorage.setItem("state", newPatientDetails.address.state);
           localStorage.setItem("pincode", newPatientDetails.address.pinCode);
 
-          navigate("/billing", { state: { patient: newPatientDetails } });
+          navigate("/billing", { state: { patient: data.data } });
           console.log("DATA from response", data);
         }
       }
