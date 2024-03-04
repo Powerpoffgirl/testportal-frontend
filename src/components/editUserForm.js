@@ -119,13 +119,12 @@ const SymptomsDropdown = [
   { label: "Snoring", value: "Snoring" },
 ];
 
-export default function EditUserForm()
-{
+export default function EditUserForm() {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("LOCATION APPOINTMENT===", location?.state?.appointment)
+  console.log("LOCATION APPOINTMENT===", location?.state?.appointment);
   const baseUrl = process.env.REACT_APP_BASE_URL;
   const [open1, setOpen1] = useState(false);
   const [patientsList, setPatientsList] = useState([]);
@@ -198,32 +197,25 @@ export default function EditUserForm()
     patientPic: "",
   });
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     setPatientId(localStorage.getItem("patientId"));
     console.log("+++++++++++++++PATIENT ID++++++++++++", patientId);
   }, [patientId]);
 
-  useEffect(() =>
-  {
+  useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token)
-    {
+    if (!token) {
       localStorage.clear();
       navigate(`/userlogin`);
     }
   }, []);
 
-  useEffect(() =>
-  {
-    const fetchPatientDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -245,23 +237,18 @@ export default function EditUserForm()
         setPatientDetails(data?.data);
         // localStorage.setItem("patientId", patientId);
         console.log("################PATIENT NAME$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientDetails();
   }, [appointmentDetails?.patientId]);
 
-  useEffect(() =>
-  {
-    const fetchUserDetails = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -274,35 +261,28 @@ export default function EditUserForm()
         });
 
         const data = await response.json();
-        if (data.message === "Invalid or expired token")
-        {
+        if (data.message === "Invalid or expired token") {
           localStorage.clear();
           toast.error("Invalid or Expired Token");
           navigate(`/userlogin`);
         }
         console.log("DATA from response", data);
-        if (data.data.newUser === true)
-        {
+        if (data.data.newUser === true) {
           setNewUser(true);
         }
         setUserDetails(data?.data);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  useEffect(() =>
-  {
-    const fetchData = async () =>
-    {
-      if (patientDetails?.address?.pinCode?.length === 6)
-      {
-        try
-        {
+  useEffect(() => {
+    const fetchData = async () => {
+      if (patientDetails?.address?.pinCode?.length === 6) {
+        try {
           const response = await fetch(
             `https://api.postalpincode.in/pincode/${patientDetails?.address?.pinCode}`,
             {
@@ -310,8 +290,7 @@ export default function EditUserForm()
             }
           );
 
-          if (!response.ok)
-          {
+          if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
           }
           const data = await response.json();
@@ -328,27 +307,21 @@ export default function EditUserForm()
               state: state,
             },
           }));
-        } catch (error)
-        {
+        } catch (error) {
           console.error("Error fetching data:", error);
         }
       }
     };
-    if (patientDetails?.address?.pinCode.length === 6)
-    {
+    if (patientDetails?.address?.pinCode.length === 6) {
       fetchData();
     }
   }, [patientDetails?.address?.pinCode]);
 
-  useEffect(() =>
-  {
-    const fetchPatientList = async () =>
-    {
-      try
-      {
+  useEffect(() => {
+    const fetchPatientList = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -367,20 +340,16 @@ export default function EditUserForm()
 
         console.log("DATA from response", data);
         setPatientsList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchPatientList();
 
-    const fetchAppointmentList = async () =>
-    {
-      try
-      {
+    const fetchAppointmentList = async () => {
+      try {
         const token = localStorage.getItem("token");
-        if (!token)
-        {
+        if (!token) {
           console.error("No token found in local storage");
           return;
         }
@@ -399,48 +368,41 @@ export default function EditUserForm()
 
         console.log("DATA from response", data);
         setAppointmentList(data?.data);
-      } catch (error)
-      {
+      } catch (error) {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchAppointmentList();
   }, []);
 
-  const handleChangeIssues = (value) =>
-  {
+  const handleChangeIssues = (value) => {
     const cleanedValues = value.filter((item) => item.trim() !== " ");
     setAppointmentDetails({ ...appointmentDetails, issues: cleanedValues });
   };
 
-  const handleChangeDiseases = (values) =>
-  {
+  const handleChangeDiseases = (values) => {
     setAppointmentDetails((prevAppointmentDetails) => ({
       ...prevAppointmentDetails,
       diseases: values,
     }));
   };
 
-  const handleChange2 = (e) =>
-  {
+  const handleChange2 = (e) => {
     setUserDetails((prevUserDetails) => ({
       ...prevUserDetails,
       ageType: e,
     }));
   };
 
-  const handleChange1 = (e) =>
-  {
+  const handleChange1 = (e) => {
     setUserDetails((prevUserDetails) => ({
       ...prevUserDetails,
       gender: e,
     }));
   };
 
-  const handleChange3 = (e) =>
-  {
-    if (e === "add-member")
-    {
+  const handleChange3 = (e) => {
+    if (e === "add-member") {
       navigate("/patientform");
     }
     console.log("HELLOOOOOOOO");
@@ -453,27 +415,20 @@ export default function EditUserForm()
     localStorage.setItem("patientId", e);
   };
 
-  const handleChange = (e) =>
-  {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    if (name === "pinCode")
-    {
-      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "pinCode") {
+      if (/^\d{6}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setPinCodeError("");
-      } else
-      {
+      } else {
         setPinCodeError("Please enter a valid Pincode");
       }
     }
 
-    if (name === "contactNumber")
-    {
-      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value))
-      {
+    if (name === "contactNumber") {
+      if (/^\d{10}$/.test(value) && !/[A-Za-z]/.test(value)) {
         setmobileNumberError("");
-      } else
-      {
+      } else {
         setmobileNumberError("Please enter a valid Number");
       }
     }
@@ -488,15 +443,11 @@ export default function EditUserForm()
         "district",
         "state",
       ].includes(name)
-    )
-    {
-      if ("houseNo" === name)
-      {
-        if (value.length > 5)
-        {
+    ) {
+      if ("houseNo" === name) {
+        if (value.length > 5) {
           setHouseNoError("Max 5 chars.");
-        } else
-        {
+        } else {
           setHouseNoError("");
           setUserDetails((prevUserDetails) => ({
             ...prevUserDetails,
@@ -523,8 +474,7 @@ export default function EditUserForm()
           [name]: value,
         },
       }));
-    } else
-    {
+    } else {
       setUserDetails((prevUserDetails) => ({
         ...prevUserDetails,
         [name]: value,
@@ -537,8 +487,7 @@ export default function EditUserForm()
     }
   };
 
-  const handleUpdate = async (e) =>
-  {
+  const handleUpdate = async (e) => {
     e.preventDefault();
 
     const newUserDetails = {
@@ -559,33 +508,24 @@ export default function EditUserForm()
       },
       userPic: userImage,
     };
-    if (newUserDetails.name === "")
-    {
+    if (newUserDetails.name === "") {
       toast.error("Please write name");
-    } else if (newUserDetails.email === "")
-    {
+    } else if (newUserDetails.email === "") {
       toast.error("Please write email");
-    } else if (newUserDetails.contactNumber === "")
-    {
+    } else if (newUserDetails.contactNumber === "") {
       toast.error("Please write contact number");
-    } else if (newUserDetails.address?.pinCode === "")
-    {
+    } else if (newUserDetails.address?.pinCode === "") {
       toast.error("Please write Pincode");
-    } else if (newUserDetails.address?.district === "")
-    {
+    } else if (newUserDetails.address?.district === "") {
       toast.error("Please write district");
-    } else if (newUserDetails.address?.state === "")
-    {
+    } else if (newUserDetails.address?.state === "") {
       toast.error("Please write state");
-    } else
-    {
+    } else {
       const token = localStorage.getItem("token");
       const patientId = localStorage.getItem("patientId");
       // ---------------------if New User--------------------
-      if (newUser)
-      {
-        if (!token)
-        {
+      if (newUser) {
+        if (!token) {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate("/userlogin");
@@ -602,8 +542,7 @@ export default function EditUserForm()
         });
         const data = await response.json();
 
-        if (data.statusCode === 400)
-        {
+        if (data.statusCode === 400) {
           toast.error("Please fill the details");
         }
 
@@ -644,11 +583,9 @@ export default function EditUserForm()
         if (
           appointmentDetails.patientId === null ||
           appointmentDetails.patientId === "undefined"
-        )
-        {
+        ) {
           toast.error("Please select a member.");
-        } else
-        {
+        } else {
           const appointmentResponse = await fetch(
             `${baseUrl}/api/v1/user/create_appointment`,
             {
@@ -662,8 +599,7 @@ export default function EditUserForm()
           );
           const appointmentData = await appointmentResponse.json();
 
-          if (appointmentData.success === true)
-          {
+          if (appointmentData.success === true) {
             // -------------------------SLOT BOOKED FOR NEW USER-------------------
 
             const response = await fetch(
@@ -680,28 +616,23 @@ export default function EditUserForm()
               }
             );
             const data = await response.json();
-            if (data.success === true)
-            {
+            if (data.success === true) {
               navigate("/appointmentlistuser");
               toast.success("Appointment booked successfully");
-            } else
-            {
+            } else {
               toast.error("Slot not available");
             }
           }
         }
-      } else
-      {
-        if (!token)
-        {
+      } else {
+        if (!token) {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate("/userlogin");
         }
 
         //-------- IF AN APPOINTMENT ALREADY EXSISTS AND USER WANTS TO EDIT IT
-        if (isEditing)
-        {
+        if (isEditing) {
           //----------------1. UPDATE APPOINTMENT API------------------------
           const appointmentResponse = await fetch(
             `${baseUrl}/api/v1/user/update_appointmentById/${oldAppointmentId}`,
@@ -725,8 +656,7 @@ export default function EditUserForm()
           );
           const appointmentData = await appointmentResponse.json();
 
-          if (appointmentData.success)
-          {
+          if (appointmentData.success) {
             // ---------------2. BOOK  SLOT API--------------------------------
             const response = await fetch(
               `${baseUrl}/api/v1/book_slot/${selectedDoctor}`,
@@ -742,11 +672,9 @@ export default function EditUserForm()
               }
             );
             const data = await response.json();
-            if (data.success === true)
-            {
+            if (data.success === true) {
               toast.success("Appointment edited successfully");
-            } else
-            {
+            } else {
               toast.error("Slot not available for editing");
             }
           }
@@ -765,25 +693,20 @@ export default function EditUserForm()
             }
           );
           const data = await response.json();
-          if (data.success === true)
-          {
+          if (data.success === true) {
             navigate("/appointmentlistuser");
-          } else
-          {
+          } else {
             toast.error("Slot not available for cancelling");
           }
-        } else
-        {
+        } else {
           // ------------------------CHECK WHETHER AN APPOINTMENT ALREADY EXSISTS OR NOT---------------
-          const existingAppointment = appointmentList?.find((appointment) =>
-          {
+          const existingAppointment = appointmentList?.find((appointment) => {
             if (
               appointment?.doctorId?._id === appointmentDetails?.doctorId &&
               appointment?.patientId?._id === appointmentDetails?.patientId &&
-              (appointment?.appointmentDate?.date >=
-                appointmentDetails?.appointmentDate?.date)
-            )
-            {
+              appointment?.appointmentDate?.date >=
+                appointmentDetails?.appointmentDate?.date
+            ) {
               console.log(
                 "IDS ARE MATCHING",
                 appointment?.appointmentDate?.date,
@@ -795,23 +718,19 @@ export default function EditUserForm()
 
           console.log("EXSISTING APPOINTMENT", existingAppointment);
 
-          if (existingAppointment)
-          {
+          if (existingAppointment) {
             toast.error(
               "An appointment already exsists. Please edit that appointment"
             );
-          } else
-          {
+          } else {
             // -------------------------CREATE APPOINTMENT FOR OLD USER-------------------
 
             if (
               appointmentDetails.patientId === null ||
               appointmentDetails.patientId === "undefined"
-            )
-            {
+            ) {
               toast.error("Please select a member.");
-            } else
-            {
+            } else {
               const appointmentResponse = await fetch(
                 `${baseUrl}/api/v1/user/create_appointment`,
                 {
@@ -825,8 +744,7 @@ export default function EditUserForm()
               );
               const appointmentData = await appointmentResponse.json();
 
-              if (appointmentData.success === true)
-              {
+              if (appointmentData.success === true) {
                 // -------------------------SLOT BOOKED FOR OLD USER-------------------
 
                 const response = await fetch(
@@ -843,12 +761,10 @@ export default function EditUserForm()
                   }
                 );
                 const data = await response.json();
-                if (data.success === true)
-                {
+                if (data.success === true) {
                   navigate("/appointmentlistuser");
                   toast.success("Appointment booked successfully");
-                } else
-                {
+                } else {
                   navigate("/doctorlistuser");
                   toast.error("Slot not available");
                 }
@@ -929,14 +845,13 @@ export default function EditUserForm()
                       Age
                     </label>
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="age"
                         name="age"
                         onChange={handleChange}
-                        onInput={(e) =>
-                        {
+                        onInput={(e) => {
                           e.target.value = e.target.value.replace(
                             /[^0-9]/g,
                             ""
@@ -968,7 +883,7 @@ export default function EditUserForm()
                       Age Type
                     </label>
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <Select
                         className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
@@ -1026,7 +941,7 @@ export default function EditUserForm()
                       Gender
                     </label>
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <Select
                         className="border rounded-lg h-11"
                         popupClassName="no-border-dropdown-menu"
@@ -1095,8 +1010,7 @@ export default function EditUserForm()
                     id="bodyWeight"
                     name="bodyWeight"
                     onChange={handleChange}
-                    onInput={(e) =>
-                    {
+                    onInput={(e) => {
                       e.target.value = e.target.value.replace(/[^0-9]/g, "");
                     }}
                     className="block w-full placeholder-gray-400 rounded-lg border bg-white px-5 py-2.5 text-gray-900 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
@@ -1180,21 +1094,17 @@ export default function EditUserForm()
                     name="issues"
                     onChange={handleChangeIssues}
                     ref={inputRef}
-                    onInputKeyDown={(e) =>
-                    {
-                      if (e.key === "Enter")
-                      {
+                    onInputKeyDown={(e) => {
+                      if (e.key === "Enter") {
                         e.preventDefault();
                         let inputValue = e.target.value.trim();
-                        if (inputValue)
-                        {
+                        if (inputValue) {
                           handleChangeIssues([
                             ...appointmentDetails?.issues,
                             inputValue,
                           ]);
                           inputRef.current.focus();
-                          setTimeout(() =>
-                          {
+                          setTimeout(() => {
                             e.target.value = "";
                             inputValue = "";
                           }, 0);
@@ -1235,20 +1145,16 @@ export default function EditUserForm()
                   id="diseases"
                   name="diseases"
                   onChange={handleChangeDiseases}
-                  onInputKeyDown={(e) =>
-                  {
-                    if (e.key === "Enter")
-                    {
+                  onInputKeyDown={(e) => {
+                    if (e.key === "Enter") {
                       e.preventDefault();
                       let inputValue = e?.target?.value?.trim();
-                      if (inputValue)
-                      {
+                      if (inputValue) {
                         handleChangeDiseases([
                           ...appointmentDetails?.diseases,
                           inputValue,
                         ]);
-                        setTimeout(() =>
-                        {
+                        setTimeout(() => {
                           e.target.value = "";
                           inputValue = "";
                         }, 0);
@@ -1284,123 +1190,46 @@ export default function EditUserForm()
             </label>
             <div className="p-3 pb-5 border shadow-lg rounded-md">
               <div className="flex flex-col ">
-                <div className="flex lg:flex-row flex-col">
-                  <div class="flex flex-row ">
-                    <div className="px-2 lg:w-1/2  mt-3">
-                      {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
-                        <input
-                          type="text"
-                          placeholder="House No."
-                          id="houseNo"
-                          name="houseNo"
-                          onChange={handleChange}
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          placeholder="House No."
-                          id="houseNo"
-                          name="houseNo"
-                          value={patientDetails?.address?.houseNo}
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
-                      <p class=" text-red-500 flex flex-wrap">
-                        {houseNoError && <p>{houseNoError}</p>}
-                      </p>
-                    </div>
-                    <div className="px-2 lg:w-1/2 mt-3">
-                      {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
-                        <input
-                          type="text"
-                          id="floor"
-                          name="floor"
-                          onChange={handleChange}
-                          placeholder="Floor"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="floor"
-                          name="floor"
-                          value={patientDetails?.address?.floor}
-                          placeholder="Floor"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
-                    </div>
+                <div className="flex flex-row">
+                  <div className="px-2 w-1/2 mt-3">
+                    <input
+                      type="text"
+                      placeholder="House No./Floor/Block"
+                      id="houseNo"
+                      name="houseNo"
+                      onChange={handleChange}
+                      value={patientDetails?.address?.houseNo}
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                    />
+
+                    {errors.district && (
+                      <p className="text-red-500">{errors.district}</p>
+                    )}
                   </div>
-                  <div class="flex flex-row">
-                    <div className="px-2 lg:w-1/2 mt-3">
-                      {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
-                        <input
-                          type="text"
-                          id="block"
-                          name="block"
-                          onChange={handleChange}
-                          placeholder="Block"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="block"
-                          name="block"
-                          value={patientDetails?.address?.block}
-                          placeholder="Block"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
 
-                      {errors.block && (
-                        <p className="text-red-500">{errors.block}</p>
-                      )}
-                    </div>
-                    <div className="px-2 lg:w-1/2 mt-3">
-                      {patientsList?.length === 0 ||
-                        userDetails?.newUser === true ? (
-                        <input
-                          type="text"
-                          id="pinCode"
-                          name="pinCode"
-                          onChange={handleChange}
-                          value={patientDetails?.address?.pinCode}
-                          placeholder="Pin Code"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                          onInput={(e) =>
-                          {
-                            e.target.value = e.target.value.replace(
-                              /[^0-9]/g,
-                              ""
-                            );
-                          }}
-                        />
-                      ) : (
-                        <input
-                          type="text"
-                          id="pinCode"
-                          name="pinCode"
-                          value={patientDetails?.address?.pinCode}
-                          placeholder="Pin Code"
-                          className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
-                        />
-                      )}
+                  <div className="px-2 w-1/2 mt-3">
+                    <input
+                      type="text"
+                      id="pinCode"
+                      name="pinCode"
+                      value={patientDetails?.address?.pinCode}
+                      onChange={handleChange}
+                      placeholder="Pin Code*"
+                      className="block w-full rounded-lg border  bg-[#EAEAEA] placeholder-gray-500 font-medium px-5 py-2.5 text-gray-700 focus:border-[#89CFF0] focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-40"
+                      onInput={(e) => {
+                        e.target.value = e.target.value.replace(/[^0-9]/g, "");
+                      }}
+                    />
 
-                      {pinCodeError && (
-                        <p className="text-red-500">{pinCodeError}</p>
-                      )}
-                    </div>
+                    {pinCodeError && (
+                      <p className="text-red-500">{pinCodeError}</p>
+                    )}
                   </div>
                 </div>
                 {/* ----------------------------area/landmark---------------------------- */}
                 <div className="px-2 w-full mt-3 ">
                   {patientsList?.length === 0 ||
-                    userDetails?.newUser === true ? (
+                  userDetails?.newUser === true ? (
                     <input
                       type="text"
                       id="area"
@@ -1426,7 +1255,7 @@ export default function EditUserForm()
                 <div className="flex flex-row">
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="district"
@@ -1454,7 +1283,7 @@ export default function EditUserForm()
 
                   <div className="px-2 w-1/2 mt-3">
                     {patientsList?.length === 0 ||
-                      userDetails?.newUser === true ? (
+                    userDetails?.newUser === true ? (
                       <input
                         type="text"
                         id="state"

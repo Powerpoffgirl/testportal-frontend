@@ -16,7 +16,7 @@ import { IoIosSearch } from "react-icons/io";
 import UserContext from "./userContext";
 import DoctorList from "./doctorList";
 
-export default function PatientForm() {
+export default function RegisterPatient() {
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
   let isTab = useMediaQuery({ query: "(max-width: 768px)" });
@@ -224,12 +224,13 @@ export default function PatientForm() {
       try {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("selectedPatientId");
+
         if (!token) {
           console.error("No token found in local storage");
           return;
         }
         const response = await fetch(
-          `${baseUrl}/api/v1/doctor/get_labPatient/${patientId}`,
+          `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
           {
             method: "GET",
             headers: {
@@ -505,9 +506,10 @@ export default function PatientForm() {
         district: patientDetails?.address?.district,
         state: patientDetails?.address?.state,
       },
+
       // patientId: JSON.stringify(generatePatientId()),
       labId: JSON.stringify(doctorId),
-      // patientPic: userImage,
+      patientPic: userImage,
     };
     if (!newPatientDetails?.gender) {
       toast.error("Please write gender");
@@ -565,8 +567,10 @@ export default function PatientForm() {
         localStorage.setItem("state", patient[0].address.state);
         localStorage.setItem("pincode", patient[0].address.pinCode);
 
-        navigate("/billing");
+        navigate("/billing", { state: { patient: patient[0] } });
       } else {
+        console.log("newpatientDetails", newPatientDetails);
+
         const response = await fetch(
           `${baseUrl}/api/v1/lab/create_labPatient`,
           {
@@ -599,7 +603,7 @@ export default function PatientForm() {
           localStorage.setItem("state", newPatientDetails.address.state);
           localStorage.setItem("pincode", newPatientDetails.address.pinCode);
 
-          navigate("/billing");
+          navigate("/billing", { state: { patient: newPatientDetails } });
           console.log("DATA from response", data);
         }
       }

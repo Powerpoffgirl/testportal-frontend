@@ -511,7 +511,7 @@ export default function BillingPrice() {
                 marginTop: "20px",
               }}
             >
-              <Tooltip title="Go back to the previous page">
+              <Tooltip title="Back">
                 <button
                   class=""
                   onClick={
@@ -549,7 +549,7 @@ export default function BillingPrice() {
                   />
                 </button>
               </Tooltip>
-              <Tooltip title="Send via SMS">
+              <Tooltip title="Send SMS">
                 <button>
                   <label
                     htmlFor="files"

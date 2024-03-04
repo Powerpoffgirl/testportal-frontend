@@ -38,7 +38,9 @@ export default function BillingPage({ name, contactNo, gender, age }) {
   const [userDetailsPic, setUserDetailsPic] = useState();
   // const [index, setIndex] = useState(0);
   const [appointmentDate, setAppointmentDate] = useState(getCurrentDate());
-
+  const location = useLocation();
+  const { patient } = location.state || {}; // Defaulting to an empty object if state is undefined
+  console.log("########patient@###########", patient);
   const [patientReport, setPatientReport] = useState({
     testAsked: [],
     // patientId: "",
@@ -49,6 +51,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     diseases: [],
     labTests: [],
   });
+  const [testAdded, setTestAdded] = useState([]);
 
   const [selectedMethod, setSelectedMethod] = useState(null);
 
@@ -310,7 +313,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `${baseUrl}/api/v1/lab/update_labPatient/${patientId}`,
+        `${baseUrl}/api/v1/lab/update_labPatient/${patient?._id}`,
         {
           method: "put",
           headers: {
@@ -323,12 +326,19 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
       const responseData = await response.json();
       console.log("DATA from response", responseData);
-
+      setTestAdded(responseData.testAsked);
       // window.location.reload();
       e.target.value = "";
       if (appointmentDate) {
         toast.success("Saved");
-        navigate(`/summary`, { state: { reportDate: appointmentDate } });
+        navigate(`/summary`, {
+          state: {
+            reportDate: appointmentDate,
+            patient: patient,
+            testAsked: patientReport,
+            responseData: responseData,
+          },
+        });
       } else {
         toast.error("please select a date");
       }
@@ -369,42 +379,42 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     fetchTestDetails();
   }, []);
 
-  useEffect(() => {
-    const fetchTestDetails = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const patientId = localStorage.getItem("selectedPatientId");
+  // useEffect(() => {
+  //   const fetchTestDetails = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const patientId = localStorage.getItem("selectedPatientId");
 
-        if (!token) {
-          console.error("No token found in local storage");
-          return;
-        }
+  //       if (!token) {
+  //         console.error("No token found in local storage");
+  //         return;
+  //       }
 
-        const response = await fetch(
-          `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
-          {
-            method: "get",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token,
-            },
-          }
-        );
+  //       const response = await fetch(
+  //         `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
+  //         {
+  //           method: "get",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             "x-auth-token": token,
+  //           },
+  //         }
+  //       );
 
-        const responseData = await response.json();
-        console.log("DATA from response getAll_testBooking ", responseData);
+  //       const responseData = await response.json();
+  //       console.log("DATA from response getAll_testBooking ", responseData);
 
-        setupdatedData(responseData?.data?.testAsked || []);
-        console.log("DATA from response updated data ", updatedData);
-      } catch (error) {
-        console.error("There was an error fetching test details:", error);
-      }
-    };
+  //       setupdatedData(responseData?.data?.testAsked || []);
+  //       console.log("DATA from response updated data ", updatedData);
+  //     } catch (error) {
+  //       console.error("There was an error fetching test details:", error);
+  //     }
+  //   };
 
-    fetchTestDetails();
+  //   fetchTestDetails();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
@@ -489,23 +499,23 @@ export default function BillingPage({ name, contactNo, gender, age }) {
               Patient Details
             </p>
             <p style={{ color: "black", fontWeight: 500, marginTop: "10px" }}>
-              {localStorage.getItem("name")}
+              {patient?.name}
             </p>
             <p style={{ color: "black", fontWeight: 500, marginTop: "10px" }}>
-              {localStorage.getItem("registrationNo")}
+              {patient?.registrationNo}
             </p>
 
             <div class="flex flex-row mt-3 space-x-5">
               <div>
                 <div style={{ color: "gray", fontWeight: 500 }}>Gender</div>
                 <div style={{ color: "black", fontWeight: 500 }}>
-                  {localStorage.getItem("gender")}
+                  {patient?.gender}
                 </div>
               </div>
               <div>
                 <div style={{ color: "gray", fontWeight: 500 }}>Age</div>
                 <div style={{ color: "black", fontWeight: 500 }}>
-                  {localStorage.getItem("age")}
+                  {patient?.age}
                 </div>
               </div>
             </div>
@@ -520,7 +530,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                   marginBottom: "10px",
                 }}
               >
-                {localStorage.getItem("phoneNo")}
+                {patient?.phoneNo}
               </p>
             </div>
 
@@ -534,7 +544,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                   marginBottom: "10px",
                 }}
               >
-                {localStorage.getItem("ref")}
+                {patient?.refBy}
               </p>
             </div>
 
@@ -891,32 +901,38 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                 <form onSubmit={handleSubmit}>
                   <label>
                     Discount(%) :
-                    <Tooltip title="Enter the discount percentage">
-                      <input
-                        type="number"
-                        value={discountValue}
-                        onChange={handleInputChange}
-                        className="w-52 h-10 border border-gray-300 rounded-lg pl-2 text-center placeholder-gray-300 mx-3 text-sm"
-                        style={{ maxWidth: "110px" }}
-                        placeholder="Enter discount"
-                      />
-                    </Tooltip>
-                  </label>
-                  <button type="submit">
-                    <TiTick
-                      style={{
-                        height: "40px",
-                        width: "40px",
-                        backgroundColor: "#89CFF0",
-                        borderRadius: "20px",
-                        marginTop: "20px",
-                        marginBottom: "-15px",
-                        padding: "2px",
-                        color: "white",
-                        // border: '1px solid black'
-                      }}
+                    <input
+                      type="number"
+                      value={discountValue}
+                      onChange={handleInputChange}
+                      className="w-52 h-10 border border-gray-300 rounded-lg pl-2 text-center placeholder-gray-300 mx-3 text-sm"
+                      style={{ maxWidth: "110px" }}
+                      placeholder="Enter discount"
                     />
-                  </button>
+                  </label>
+                  <Tooltip title="Discount">
+                    <button
+                      type="submit"
+                      style={{
+                        border: "none",
+                        backgroundColor: "transparent",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <TiTick
+                        style={{
+                          height: "40px",
+                          width: "40px",
+                          backgroundColor: "#89CFF0",
+                          borderRadius: "20px",
+                          marginTop: "20px",
+                          marginBottom: "-15px",
+                          padding: "2px",
+                          color: "white",
+                        }}
+                      />
+                    </button>
+                  </Tooltip>
                 </form>
               </div>
               <div

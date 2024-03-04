@@ -132,7 +132,7 @@ export default function LabPatientList({ searchTerm }) {
         console.log("DATA from response", data);
         setUserDetailsName(data?.data.name);
         setUserDetailsEmail(data?.data.email);
-        setUserDetailsPic(data?.data.doctorPic);
+        setUserDetailsPic(data?.data.userPic);
         console.log("usser name$$$$$$$", data?.data.name);
       } catch (error) {
         console.error("There was an error verifying the OTP:", error);
@@ -162,7 +162,7 @@ export default function LabPatientList({ searchTerm }) {
         return;
       }
       const response = await fetch(
-        `${baseUrl}/api/v1/lab/delete_patient/${patientId}`,
+        `${baseUrl}/api/v1//lab/delete_labPatient/${patientId}`,
         {
           method: "DELETE", // Use DELETE method
           headers: {
@@ -176,7 +176,10 @@ export default function LabPatientList({ searchTerm }) {
 
       if (response.ok) {
         console.log("Patient deleted successfully", data);
+        // navigate("/labpatientlist");
         // Update the list in the UI by removing the deleted doctor
+        toast.success("Patient deleted successfully");
+
         setPatientsList((prevPatientsList) =>
           prevPatientsList.filter((patient) => patient._id !== patientId)
         );
@@ -211,9 +214,9 @@ export default function LabPatientList({ searchTerm }) {
 
   // }
 
-  const handleBookAppointment = (patientId) => {
-    localStorage.setItem("patientId", patientId);
-    navigate("/billing");
+  const handleBookAppointment = (patient) => {
+    localStorage.setItem("patientId", patient._id);
+    navigate("/billing", { state: { patient } });
   };
 
   console.log("PATIENT LISTS", patientsList);
@@ -389,7 +392,7 @@ export default function LabPatientList({ searchTerm }) {
               <div class="flex flex-row ms-auto gap-1 sm:gap-4  mt-3">
                 <button
                   class="rounded-full px-6 sm:px-8 py-1 sm:py-2 text-white bg-[#89CFF0] text-xs sm:text-sm"
-                  onClick={() => handleBookAppointment(patient._id)}
+                  onClick={() => handleBookAppointment(patient)}
                 >
                   Report
                 </button>

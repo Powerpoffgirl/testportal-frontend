@@ -106,7 +106,7 @@ export default function Layout({
     { text: "Patient’s List", to: "/labpatientslist" },
     // { text: "Appointment List", to: "/labappointmentlist" },
     { text: "Profile", to: "/editlabform" },
-    { text: "Go To Lab", to: "/registerpatient" },
+    // { text: "Go To Lab", to: "/registerpatient" },
     { text: "Available Test", to: "/testlist" },
     { text: "Support", to: "#" },
     { text: "Logout", to: "/lablogin", onClick: handleLogout },

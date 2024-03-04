@@ -25,8 +25,20 @@ export default function Summary() {
   const [userDetailsPic, setUserDetailsPic] = useState();
   const [outRange, setOutRange] = useState(false);
   const location = useLocation();
-  console.log("LOCATION============", location);
+  const { patient, testAsked, responseData } = location.state || {};
+  console.log("PATIENT============", patient);
   const reportDate = location.state.reportDate;
+  console.log("=======testAsked======", testAsked);
+  console.log("====responseData==", responseData);
+
+  const [patientReport, setPatientReport] = useState({
+    testAsked: [],
+    // patientId: "",
+  });
+  const [testlist, setTestlist] = useState([]);
+  useEffect(() => {
+    setTestlist(responseData?.data?.testAsked);
+  }, []);
 
   const handleFileSelect = async (event) => {
     const file = event.target.files[0];
@@ -53,6 +65,7 @@ export default function Summary() {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
+        toast.success("Report uploaded successfully!");
 
         const data = await response.json();
 
@@ -109,48 +122,48 @@ export default function Summary() {
 
   const [rows, setRows] = useState([]);
 
-  useEffect(() => {
-    const fetchTestDetails = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const patientId = localStorage.getItem("PatientId");
+  // useEffect(() => {
+  //   const fetchTestDetails = async () => {
+  //     try {
+  //       const token = localStorage.getItem("token");
+  //       const patientId = localStorage.getItem("PatientId");
 
-        if (!token) {
-          console.error("No token found in local storage");
-          return;
-        }
+  //       if (!token) {
+  //         console.error("No token found in local storage");
+  //         return;
+  //       }
 
-        const response = await fetch(
-          `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
-          {
-            method: "get",
-            headers: {
-              "Content-Type": "application/json",
-              "x-auth-token": token,
-            },
-          }
-        );
+  //       const response = await fetch(
+  //         `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
+  //         {
+  //           method: "get",
+  //           headers: {
+  //             "Content-Type": "application/json",
+  //             "x-auth-token": token,
+  //           },
+  //         }
+  //       );
 
-        const responseData = await response.json();
-        console.log("DATA from response", responseData.data.testAsked);
-        const filteredData = responseData?.data?.testAsked?.filter((item) => {
-          console.log(item?.date?.slice(0, 10), "DATE &&", reportDate);
-          if (item?.date?.slice(0, 10) === reportDate) {
-            return item;
-          }
-        });
+  //       const responseData = await response.json();
+  //       console.log("DATA from response", responseData.data.testAsked);
+  //       const filteredData = responseData?.data?.testAsked?.filter((item) => {
+  //         console.log(item?.date?.slice(0, 10), "DATE &&", reportDate);
+  //         if (item?.date?.slice(0, 10) === reportDate) {
+  //           return item;
+  //         }
+  //       });
 
-        console.log("FILTERED DATA", filteredData);
-        setRows(filteredData);
-      } catch (error) {
-        console.error("There was an error fetching test details:", error);
-      }
-    };
+  //       console.log("FILTERED DATA", filteredData);
+  //       setRows(filteredData);
+  //     } catch (error) {
+  //       console.error("There was an error fetching test details:", error);
+  //     }
+  //   };
 
-    fetchTestDetails();
+  //   fetchTestDetails();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
   updateUser(userDetailsName);
   updateUserEmail(userDetailsEmail);
@@ -215,7 +228,7 @@ export default function Summary() {
                     Date: {reportDate.split("-").reverse().join("-")}
                   </p>
                   <p style={{ fontWeight: 500, textTransform: "capitalize" }}>
-                    Name: {localStorage?.getItem("name")}
+                    Name:{patient?.name}
                   </p>
 
                   <div
@@ -225,7 +238,9 @@ export default function Summary() {
                       gap: "10px",
                     }}
                   >
-                    <p style={{ color: "black", fontWeight: 500 }}>Ref By: </p>
+                    <p style={{ color: "black", fontWeight: 500 }}>
+                      Ref By:{patient?.refBy}{" "}
+                    </p>
                     <p
                       style={{
                         color: "black",
@@ -247,23 +262,12 @@ export default function Summary() {
                   <div clss="ml-auto">
                     <p style={{ fontWeight: 500 }}>Patient Details</p>
                     <p>
-                      {localStorage.getItem("houseNo") !== "undefined" &&
-                        localStorage.getItem("houseNo")}{" "}
-                      {localStorage.getItem("floor") !== "undefined" &&
-                        localStorage.getItem("floor")}{" "}
-                      {localStorage.getItem("block") !== "undefined" &&
-                        localStorage.getItem("block")}{" "}
-                      {localStorage.getItem("area") !== "undefined" &&
-                        localStorage.getItem("area")}{" "}
+                      {patient?.address?.houseNo} {patient?.address?.area}{" "}
+                      {patient?.address?.district}{" "}
                     </p>
 
                     <p>
-                      {localStorage.getItem("district") !== "undefined" &&
-                        localStorage.getItem("district")}{" "}
-                      {localStorage.getItem("state") !== "undefined" &&
-                        localStorage.getItem("state")}{" "}
-                      {localStorage.getItem("pincode") !== "undefined" &&
-                        localStorage.getItem("pincode")}
+                      {patient?.address?.pinCode} {patient?.address?.state}{" "}
                     </p>
                   </div>
                 </div>
@@ -320,7 +324,7 @@ export default function Summary() {
                     </tr>
                   </thead>
                   <tbody>
-                    {rows.map((row, idx) => {
+                    {testlist?.map((row, idx) => {
                       const statusText = row.status
                         ? row.status.charAt(0).toUpperCase() +
                           row.status.slice(1)
@@ -459,13 +463,17 @@ export default function Summary() {
                 marginTop: "30px",
               }}
             >
-              <Tooltip title="Go back to the previous page">
+              <Tooltip title="Back">
                 <button
                   onClick={
                     reportDate
                       ? () =>
                           navigate(`/billing`, {
-                            state: { reportDate: reportDate },
+                            state: {
+                              reportDate: reportDate,
+                              patient: patient,
+                              testAsked: patient,
+                            },
                           })
                       : () => {
                           toast.error("please select a date");
@@ -498,7 +506,7 @@ export default function Summary() {
                 </button>
               </Tooltip>
 
-              <Tooltip title="Send report via SMS">
+              <Tooltip title="Send report">
                 <button>
                   <label
                     htmlFor="files"
@@ -518,13 +526,17 @@ export default function Summary() {
                 </button>
               </Tooltip>
 
-              <Tooltip title="Go to the next page">
+              <Tooltip title="Next">
                 <button
                   onClick={
                     reportDate
                       ? () =>
                           navigate(`/billingprice`, {
-                            state: { reportDate: reportDate },
+                            state: {
+                              reportDate: reportDate,
+                              patient: patient,
+                              testAsked: patient,
+                            },
                           })
                       : () => {
                           toast.error("please select a date");
