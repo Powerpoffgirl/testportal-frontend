@@ -525,7 +525,7 @@ export default function BillingPrice() {
                         }
                   }
                 >
-                  <BsFillSendFill
+                  <FaCircleChevronLeft
                     style={{
                       color: "white",
                       backgroundColor: "#89CFF0",

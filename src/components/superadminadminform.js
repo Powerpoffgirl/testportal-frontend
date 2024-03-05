@@ -91,8 +91,6 @@ export default function SuperAdminAdminForm() {
     },
     address: {
       houseNo: "",
-      floor: "",
-      block: "",
       area: "",
       pinCode: "",
       district: "",
