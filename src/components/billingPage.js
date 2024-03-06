@@ -1,9 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
 import { useMediaQuery } from "react-responsive";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Flex, Row, Select } from "antd";
-import { IoIosCheckmarkCircleOutline } from "react-icons/io";
-import Modal from "react-responsive-modal";
 import { ToastContainer, toast } from "react-toastify";
 import { MdOutlineDelete } from "react-icons/md";
 import { GiConfirmed } from "react-icons/gi";
@@ -12,7 +9,8 @@ import { Tooltip } from "antd";
 import UserContext from "./userContext";
 import { TiTick } from "react-icons/ti";
 
-export default function BillingPage({ name, contactNo, gender, age }) {
+export default function BillingPage({ name, contactNo, gender, age })
+{
   const componentPDF = useRef();
   const { updateUser, updateUserEmail, updateUserimage } =
     useContext(UserContext);
@@ -40,7 +38,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
   const [appointmentDate, setAppointmentDate] = useState(getCurrentDate());
   const location = useLocation();
   const { patient } = location.state || {}; // Defaulting to an empty object if state is undefined
-  console.log("########patient@###########", patient);
+  const [testlist, setTestlist] = useState([]);
   const [patientReport, setPatientReport] = useState({
     testAsked: [],
     // patientId: "",
@@ -55,11 +53,13 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
   const [selectedMethod, setSelectedMethod] = useState(null);
 
-  const handleMethodClick = (method) => {
+  const handleMethodClick = (method) =>
+  {
     setSelectedMethod(method);
   };
 
-  const handleSearch = (event) => {
+  const handleSearch = (event) =>
+  {
     const searchTerm = event?.target?.value?.toLowerCase();
 
     setSearchTerm(searchTerm);
@@ -73,12 +73,16 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     console.log("filtered value", filteredTest);
   };
 
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchUserDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("patientId");
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -96,19 +100,24 @@ export default function BillingPage({ name, contactNo, gender, age }) {
         setUserDetailsEmail(data?.data.email);
         setUserDetailsPic(data?.data.patientPic);
         console.log("usser name$$$$$$$", data?.data.name);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
     fetchUserDetails();
   }, []);
 
-  useEffect(() => {
-    const fetchPatientDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchPatientDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
 
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           localStorage.clear();
           navigate(`/doctorlogin`);
@@ -134,7 +143,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
         const testList = testData?.filter((test) => test.value == null);
         console.log("=============TESTS===========COIMING", testList);
         setTests(testList);
-      } catch (error) {
+      } catch (error)
+      {
         console.error("There was an error verifying the OTP:", error);
       }
     };
@@ -161,28 +171,30 @@ export default function BillingPage({ name, contactNo, gender, age }) {
       department,
       sampleType
     ) =>
-    () => {
-      const testToAdd = {
-        id: id,
-        testPackage: testId,
-        price: cost,
-        technology: technology,
-        units: units,
-        bio: bioRef,
-        testCode: testcode,
-        sampleType: sampleType,
-        department: department,
-        Delete: <MdOutlineDelete />,
-        Save: <GiConfirmed />,
+      () =>
+      {
+        const testToAdd = {
+          id: id,
+          testPackage: testId,
+          price: cost,
+          technology: technology,
+          units: units,
+          bio: bioRef,
+          testCode: testcode,
+          sampleType: sampleType,
+          department: department,
+          Delete: <MdOutlineDelete />,
+          Save: <GiConfirmed />,
+        };
+        setTableData([...tableData, testToAdd]);
+
+        setSearchTerm("");
+
+        setIsListOpen(false);
       };
-      setTableData([...tableData, testToAdd]);
 
-      setSearchTerm("");
-
-      setIsListOpen(false);
-    };
-
-  const deleteRow = (index) => {
+  const deleteRow = (index) =>
+  {
     const updatedTableData = [...tableData];
 
     updatedTableData.splice(index, 1);
@@ -190,7 +202,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     setTableData(updatedTableData);
   };
 
-  const addRow = () => {
+  const addRow = () =>
+  {
     setTableData([
       ...tableData,
       {
@@ -205,11 +218,14 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     ]);
   };
 
-  useEffect(() => {
-    const calculateTotalPrice = () => {
+  useEffect(() =>
+  {
+    const calculateTotalPrice = () =>
+    {
       let totalPrice = 0;
 
-      tableData.forEach((row) => {
+      tableData.forEach((row) =>
+      {
         // Assuming price is a number, you might need to parse it if it's a string
         totalPrice += row.price;
       });
@@ -222,7 +238,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     calculateTotalPrice();
   }, []);
 
-  const getTestNames = () => {
+  const getTestNames = () =>
+  {
     return tableData?.map((row) => row.testPackage).join(", ");
   };
 
@@ -240,7 +257,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
   // const [appointmentDate, setAppointmentDate] = useState(dateString);
 
-  const Toggle = (e) => {
+  const Toggle = (e) =>
+  {
     e.preventDefault();
 
     setIsListOpen(true);
@@ -252,14 +270,17 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     // onAfterPrint: () => alert("Data saved in PDF")
   });
 
-  const handleInputFocus = () => {
+  const handleInputFocus = () =>
+  {
     setIsListOpen(true);
   };
 
-  const handleChange = (e, index) => {
+  const handleChange = (e, index) =>
+  {
     const { name, value, key } = e.target;
 
-    if (key === "Enter" && name === "value") {
+    if (key === "Enter" && name === "value")
+    {
       const newInputValues = [...inputValues];
       newInputValues[index] = value;
 
@@ -269,7 +290,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     }
   };
 
-  const handleBlur = (e, index) => {
+  const handleBlur = (e, index) =>
+  {
     const patientId = localStorage.getItem("selectedPatientId");
     const { value } = e.target;
     const newInputValues = [...inputValues];
@@ -279,17 +301,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
     const testId = tableData[index]?.id;
 
-    setPatientReport((prevPatientReport) => {
-      // const existingTest = prevPatientReport.testAsked.find((test) => test.id === testId);
-
-      // if (existingTest)
-      // {
-      //   // Update the existing test's value
-      //   existingTest.value = value;
-      //   return { ...prevPatientReport };
-      // } else
-      // {
-      // Add a new test to the array
+    setPatientReport((prevPatientReport) =>
+    {
       return {
         ...prevPatientReport,
         testAsked: [
@@ -300,15 +313,12 @@ export default function BillingPage({ name, contactNo, gender, age }) {
     });
   };
 
-  const handleSave = async (e) => {
-    try {
+  const handleSave = async (e) =>
+  {
+    try
+    {
       const patientId = localStorage.getItem("selectedPatientId");
       console.log("consoling value", patientReport);
-
-      // if (patientReport.testAsked.length > 1) {
-      //   patientReport.testAsked.pop()
-      // }
-
       console.log("consoling value AFTER POP", patientReport);
 
       const token = localStorage.getItem("token");
@@ -327,9 +337,11 @@ export default function BillingPage({ name, contactNo, gender, age }) {
       const responseData = await response.json();
       console.log("DATA from response", responseData);
       setTestAdded(responseData.testAsked);
+      setTestlist(responseData?.data?.testAsked);
       // window.location.reload();
       e.target.value = "";
-      if (appointmentDate) {
+      if (appointmentDate)
+      {
         toast.success("Saved");
         navigate(`/summary`, {
           state: {
@@ -339,21 +351,27 @@ export default function BillingPage({ name, contactNo, gender, age }) {
             responseData: responseData,
           },
         });
-      } else {
+      } else
+      {
         toast.error("please select a date");
       }
-    } catch (error) {
+    } catch (error)
+    {
       console.error("There was an error verifying the OTP:", error);
     }
   };
 
-  useEffect(() => {
-    const fetchTestDetails = async () => {
-      try {
+  useEffect(() =>
+  {
+    const fetchTestDetails = async () =>
+    {
+      try
+      {
         const token = localStorage.getItem("token");
         const patientId = localStorage.getItem("selectedPatientId");
 
-        if (!token) {
+        if (!token)
+        {
           console.error("No token found in local storage");
           return;
         }
@@ -371,86 +389,52 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
         const responseData = await response.json();
         console.log("DATA from response from table ", responseData);
-      } catch (error) {
+      } catch (error)
+      {
+        console.error("There was an error fetching test details:", error);
+      }
+    };
+
+    const fetchPatientHistory = async () =>
+    {
+      try
+      {
+        const token = localStorage.getItem("token");
+        const patientId = localStorage.getItem("selectedPatientId");
+
+        if (!token)
+        {
+          console.error("No token found in local storage");
+          return;
+        }
+
+        const response = await fetch(
+          `${baseUrl}/api/v1/lab/get_labPatient/${patient?._id}`,
+          {
+            method: "get",
+            headers: {
+              "Content-Type": "application/json",
+              "x-auth-token": token,
+            },
+          }
+        );
+
+        const responseData = await response.json();
+        if (responseData.success)
+        {
+          setupdatedData(responseData?.data?.testAsked)
+        }
+        console.log("DATA from response from table ", responseData);
+      } catch (error)
+      {
         console.error("There was an error fetching test details:", error);
       }
     };
 
     fetchTestDetails();
+    fetchPatientHistory();
   }, []);
 
-  // useEffect(() => {
-  //   const fetchTestDetails = async () => {
-  //     try {
-  //       const token = localStorage.getItem("token");
-  //       const patientId = localStorage.getItem("selectedPatientId");
-
-  //       if (!token) {
-  //         console.error("No token found in local storage");
-  //         return;
-  //       }
-
-  //       const response = await fetch(
-  //         `${baseUrl}/api/v1/lab/get_labPatient/${patientId}`,
-  //         {
-  //           method: "get",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             "x-auth-token": token,
-  //           },
-  //         }
-  //       );
-
-  //       const responseData = await response.json();
-  //       console.log("DATA from response getAll_testBooking ", responseData);
-
-  //       setupdatedData(responseData?.data?.testAsked || []);
-  //       console.log("DATA from response updated data ", updatedData);
-  //     } catch (error) {
-  //       console.error("There was an error fetching test details:", error);
-  //     }
-  //   };
-
-  //   fetchTestDetails();
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
-
-  const handleFileSelect = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      const token = localStorage.getItem("token");
-      const patientId = localStorage.getItem("selectedPatientId");
-      const doctorId = localStorage.getItem("doctorId");
-      const formData = new FormData();
-      formData.append("patientReport", file);
-
-      console.log("FORM DATA", formData);
-      try {
-        const response = await fetch(
-          `${baseUrl}/api/v1/lab/upload_report/${patientId}`,
-          {
-            method: "POST",
-            headers: {
-              "x-auth-token": token,
-            },
-            body: formData,
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const data = await response.json();
-
-        fileInputRef.current.value = "";
-      } catch (error) {
-        console.error("Error ", error);
-        toast.error("Error uploading pdf. Please try again.");
-      }
-    }
-  };
 
   updateUser(userDetailsName);
   updateUserEmail(userDetailsEmail);
@@ -460,7 +444,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
   console.log("patient Report ====", patientReport);
 
   // Function to get the current date in the format 'YYYY-MM-DD'
-  function getCurrentDate() {
+  function getCurrentDate()
+  {
     const currentDate = new Date();
     const year = currentDate.getFullYear();
     const month = String(currentDate.getMonth() + 1).padStart(2, "0");
@@ -472,11 +457,13 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
   const [discountValue, setDiscountValue] = useState("");
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e) =>
+  {
     setDiscountValue(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e) =>
+  {
     e.preventDefault();
     toast.success("Discount applied");
     console.log("Discount value:", discountValue);
@@ -488,9 +475,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
         <div className="MainContainer flex lg:flex-row flex-col w-full sm:ml-0">
           {/* --------------------left side-------------------- */}
           <div
-            className={` mb-3 flex flex-col w-5/12 lg:min-h-3/4 lg:w-3/12 p-6  bg-white md:w-1/2  sm:w-1/2 md:ml-5 ${
-              xsview ? "" : "ml-10"
-            }  `}
+            className={` mb-3 flex flex-col w-5/12 lg:min-h-3/4 lg:w-3/12 p-6  bg-white md:w-1/2  sm:w-1/2 md:ml-5 ${xsview ? "" : "ml-10"
+              }  `}
             style={{
               borderRadius: 20,
             }}
@@ -566,9 +552,8 @@ export default function BillingPage({ name, contactNo, gender, age }) {
 
           {/* --------------------right side-------------------- */}
           <div
-            className={` lg:w-4/12 p-6 md:w-1/2 xl:w-8/12 pr-8 bg-white lg:min-h-3/4 w-5/12 md:ml-5 ${
-              xsview ? "" : "ml-10"
-            }  `}
+            className={` lg:w-4/12 p-6 md:w-1/2 xl:w-8/12 pr-8 bg-white lg:min-h-3/4 w-5/12 md:ml-5 ${xsview ? "" : "ml-10"
+              }  `}
             style={{
               boxSizing: "border-box ",
               // height: "75vh",
@@ -939,33 +924,7 @@ export default function BillingPage({ name, contactNo, gender, age }) {
                 style={{ gap: "", marginTop: "10px" }}
                 class=" flex flex-row-reverse  w-full  "
               >
-                <button
-                  class="mx-4"
-                  style={{
-                    height: "40px",
-                    width: "120px",
-                    backgroundColor: "#89CFF0",
-                    borderRadius: "20px",
-                    marginTop: "20px",
-                    padding: "2px",
-                    color: "white",
-                  }}
-                  onClick={
-                    appointmentDate
-                      ? () =>
-                          navigate(`/billingprice`, {
-                            state: {
-                              reportDate: appointmentDate,
-                              discount: discountValue,
-                            },
-                          })
-                      : () => {
-                          toast.error("please select a date");
-                        }
-                  }
-                >
-                  Lab Bill
-                </button>
+
                 <button
                   class="mx-4"
                   style={{
