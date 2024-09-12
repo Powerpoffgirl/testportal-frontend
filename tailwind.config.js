@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        'Tabview': '900px', // Custom breakpoint larger than 'md' (768px)
+        'Tabview': '900px', // Custom kpoint larger than 'md' (768px)
         'xsview': '320px',
         'xxsview': '200px',
         'xysview': "280px",
