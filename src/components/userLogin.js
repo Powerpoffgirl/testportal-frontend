@@ -1,101 +1,89 @@
 import React, { useEffect } from "react";
-// import "../App.css";
 import "./userLogin.css";
-import { FaPhoneAlt } from "react-icons/fa";
-import { useMediaQuery } from "react-responsive";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 import "react-toastify/dist/ReactToastify.css";
-// import "react-datepicker/dist/react-datepicker.min.css";
 
-export default function UserLogin() {
-  let isTab = useMediaQuery({ query: "(max-width: 640px)" });
+export default function UserLogin()
+{
   const navigate = useNavigate();
   const baseUrl = process.env.REACT_APP_BASE_URL;
-
-  const [isDoctor, setIsDoctor] = useState(true);
-  const [contactNumber, setContactNumber] = useState("");
-  const [selectedDoctor, setSelectedDoctor] = useState();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const location = useLocation();
   const [error, setError] = useState("");
   const [passwordError, setPasswordError] = useState("");
-  const [isValid, setIsValid] = useState(true);
-  const [isChecked, setIsChecked] = useState(false);
-  const [checkboxerror, setCheckboxerror] = useState();
-  const [isValidNumber, setIsValidNumber] = useState(true);
+  const [emailError, setEmailError] = useState("");
 
-  const handleCheckboxChange = (event) => {
-    setIsChecked(event.target.checked);
-  };
-
-  const handleMobileNumberChange = (e) => {
-    const number = e.target.value;
-    const isValidNumber = validateMobileNumber(number);
-    setIsValid(isValidNumber);
-    setContactNumber(number);
-    setIsValidNumber(isValidNumber);
-    if (isValidNumber || number === "") {
-      setContactNumber(number);
+  const handleEmailChange = (e) =>
+  {
+    const enteredEmail = e.target.value;
+    setEmail(enteredEmail);
+    // Basic email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(enteredEmail) && enteredEmail !== "")
+    {
+      setEmailError("Please enter a valid email address");
+    } else
+    {
+      setEmailError("");
     }
   };
 
-  const validateMobileNumber = (number) => {
-    const isValidFormat = /^\d{0,10}$/.test(number); // Validates up to 10 digits
-    return isValidFormat;
-  };
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e) =>
+  {
     const enteredPassword = e.target.value;
     setPassword(enteredPassword);
 
     // Password validation
-    if (enteredPassword.trim().length < 6) {
+    if (enteredPassword.trim().length < 6)
+    {
       setPasswordError("Password should be at least 6 characters");
-    } else {
+    } else
+    {
       setPasswordError("");
     }
   };
 
-  useEffect(() => {
-    const doctor = location?.state;
-    setSelectedDoctor(doctor?.doctor);
-    console.log("SELECTED DOCTOR", selectedDoctor);
-  }, []);
-
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) =>
+  {
     e.preventDefault();
 
-    if (!isChecked) {
-      setCheckboxerror("Please select the Checkbox");
-    }
-    if (isValid && isChecked) {
-      const response = await fetch(`${baseUrl}/api/v1/user/send_otp`, {
-        method: "post",
+    if (!emailError && !passwordError)
+    {
+      const response = await fetch(`${baseUrl}/api/v1/student/login`, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          contactNumber: contactNumber,
+          email: email,
+          password: password,
         }),
       });
-      const data = await response.json();
-      console.log("=========eeeeeeeeee==============DATA FROM RESPONSE===================", data);
-      if (data?.user?._id) {
-        localStorage.setItem("userId", data?.user?._id);
-        localStorage.setItem("name", data?.user?.name);
-        localStorage.setItem("userContactNumber", data?.user?.email);
-      } else {
-        localStorage.setItem("userId", data?.data?._id);
-      }
-      localStorage.setItem("contactNumber", contactNumber);
-      navigate("/userotp", {
-        state: { name: selectedDoctor?.name, id: selectedDoctor?._id },
-      });
 
-      console.log(data);
+      const data = await response.json();
+      if (data?.status === 200)
+      {
+        console.log("----------DATA-------------", data?.data?.token)
+        const token = data?.data?.token
+        const userId = data?.data?.user?._id
+        if (userId)
+        {
+          localStorage.setItem('userId', userId);
+        }
+        localStorage.setItem('token', token);
+        navigate("/dashboard");
+      } else
+      {
+        setError("Invalid email or password");
+      }
     }
   };
+
+  const handleRegister = async () =>
+  {
+    navigate("/usersignup")
+  }
 
   return (
     <div
@@ -104,70 +92,42 @@ export default function UserLogin() {
     >
       <div className="left_side">
         <h1 className="left_heading">
-          Welcome To <br /> Doctalk's{" "}
+          Test Portal<br />
         </h1>
       </div>
       <div className="right_side">
         <h3 className="right_heading">User Login</h3>
-        <p className="para_one" style={{ fontSize: "22px", fontWeight: 700 }}>
-          Add Your Mobile Number
-        </p>
-        <p className="para_two" style={{ fontSize: "18px", fontWeight: 300 }}>
-          Apply with your phone number
-        </p>
         <div className="input_container ">
-          <FaPhoneAlt className="call_icon" />
           <input
-            className={`input_box ${isValid ? "" : "invalid"}`}
-            type="text"
-            placeholder="Enter your mobile number"
-            value={contactNumber}
-            onChange={handleMobileNumberChange}
-            maxLength={10}
-            onInput={(e) => {
-              e.target.value = e.target.value.replace(/[^0-9]/g, '');
-            }}
+            className={`input_box ${emailError ? "invalid" : ""}`}
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={handleEmailChange}
           />
-          {!isValid && (
-            <p className="error_message">Please enter a valid mobile number</p>
-          )}
-          {isValid && !isChecked && (
-            <p className="error_message1">{checkboxerror}</p>
-          )}{" "}
+          {emailError && <p className="error_message">{emailError}</p>}
         </div>
-        <label className="label1  ml-10 md:ml-2" style={{ fontWeight: 400, fontSize: "16px" }}>
+        <div className="input_container ">
           <input
-            type="checkbox"
-            checked={isChecked}
-            onChange={handleCheckboxChange}
-          />{" "}
-          I agree with the{" "}
-          <a
-            onClick={() => navigate("/termsofservices")}
-            style={{
-              color: "#666",
-              fontWeight: "bolder",
-              textDecoration: "underline",
-            }}
-          >
-            Terms of service
-          </a>{" "}
-          and{" "}
-          <a
-            onClick={() => navigate("/privacypolicy")}
-            style={{
-              color: "#666",
-              fontWeight: "bolder",
-              textDecoration: "underline",
-            }}
-          >
-            Privacy policy
-          </a>
-        </label>
-        <button className="button1" onClick={handleSubmit}>
-          {" "}
-          Agree & Continue
-        </button>
+            className="input_box"
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={handlePasswordChange}
+          />
+          {passwordError && (
+            <p className="error_message">{passwordError}</p>
+          )}
+        </div>
+
+        <div>
+          <button className="button1" onClick={handleSubmit}>
+            Login
+          </button>
+          <button className="button1" onClick={handleRegister}>
+            Register
+          </button>
+        </div>
       </div>
     </div>
   );
